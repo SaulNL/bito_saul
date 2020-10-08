@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Inicio de Sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="ion-justify-content-center ion-text-center ion-align-items-center">
+      <img width="150" height="150" src="https://ecoevents.blob.core.windows.net/comprandoando/logos%2Flogo%201.0.png">
+  </div>
+  <ion-item>
+    <ion-label position="floating">Usuario</ion-label>
+    <ion-input [(ngModel)]="usuario.usuario"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Contraseña</ion-label>
+    <ion-input type="password" [(ngModel)]="usuario.password"></ion-input>
+  </ion-item>
+  <ion-button class="ion-margin-top" expand="block" (click)="doLogin()">Iniciar sesión</ion-button>
+  
+</ion-content>

@@ -1,0 +1,7 @@
+{
+  "name": "BitooApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-title>
+            Inicio
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title size="large">Inicio</ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <ion-searchbar></ion-searchbar>
+    <ion-grid>
+        <ion-row *ngFor="let cat of listaCategorias">
+            <ion-text class="w-100">
+                <h2>{{cat.nombre}}</h2>
+            </ion-text>
+            <ion-col size="6" *ngFor="let proveedor of cat.negocios">
+                <ion-card [routerLink]="['/tabs/negocio/' + proveedor.url_negocio]" class="m-0 fixed">
+                    <img class="img-card-w" *ngIf="proveedor.url_logo !== null" [src]="proveedor.url_logo"
+                         alt="Falla al cargar la imagen">
+                    <ion-card-header>
+                        <ion-card-subtitle>{{proveedor.nombre_comercial}}</ion-card-subtitle>
+                        <ion-badge *ngIf="proveedor.abierto == 'ABIERTO'" color="success">Abierto</ion-badge>
+                        <ion-badge *ngIf="proveedor.abierto !== 'ABIERTO'" color="danger">Cerrado</ion-badge>
+                    </ion-card-header>
+                    <ion-card-content>
+                        {{proveedor.descripcion}}
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
+</ion-content>

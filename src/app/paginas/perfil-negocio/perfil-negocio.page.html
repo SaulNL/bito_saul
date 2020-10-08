@@ -1,0 +1,122 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" defaultHref="/"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Información del negocio</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding" *ngIf="loader" fullscreen>
+    <div class="spin" >
+        <ion-spinner></ion-spinner>
+    </div>
+</ion-content >
+<ion-content class="ion-padding" *ngIf="!loader" fullscreen>
+    <ion-grid>
+        <ion-row>
+            <ion-col class="ion-align-items-center ion-justify-content-center" size="12">
+                <ion-avatar style="height: auto; width: 150px; margin: auto">
+                    <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" [srcset]="informacionNegocio.url_logo">
+                </ion-avatar>
+            </ion-col>
+            <ion-col  size="12">
+                    <ion-text class="ion-align-items-center ion-text-center ion-justify-content-center">
+                        <h1>{{informacionNegocio.nombre_comercial}}</h1>
+                    </ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-item>
+                <p>{{informacionNegocio.descripcion}}</p>
+            </ion-item>
+        </ion-row>
+    </ion-grid>
+    <ion-toolbar>
+        <ion-segment [(ngModel)]="seccion" (ionChange)="cambio()">
+            <ion-segment-button value="ubicacion">Ubicación</ion-segment-button>
+            <ion-segment-button value="productos" *ngIf="informacionNegocio.catProductos.length > 0">Productos</ion-segment-button>
+            <ion-segment-button value="servicios" *ngIf="informacionNegocio.catServicos.length > 0">Servicios</ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+
+    <ion-grid *ngIf="seccion === 'ubicacion'">
+        <ion-row>
+            <ion-col size="12">
+                <p> Dirección: {{informacionNegocio.det_domicilio.calle}} {{informacionNegocio.det_domicilio.numero_ext}} {{informacionNegocio.det_domicilio.colonia}}, {{informacionNegocio.det_domicilio.nombre_localidad !== undefined ? informacionNegocio.det_domicilio.nombre_localidad + ', ': ''}}{{informacionNegocio.det_domicilio.nombre_municipio}},
+                    {{informacionNegocio.det_domicilio.nombre_estado}}</p>
+                <div id="mapId" style="height:200px"></div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid *ngIf="seccion === 'productos'">
+        <ion-row *ngFor="let cat of informacionNegocio.catProductos">
+            <ion-text class="w-100">
+                <h2>{{cat.nombre}}</h2>
+            </ion-text>
+            <ion-col size="6" *ngFor="let producto of cat.productos">
+                <ion-card (click)="irAlDetalle(producto)" class="m-0 fixed">
+                    <img class="img-card-w"  [src]="producto.imagen"
+                         alt="Falla al cargar la imagen">
+                    <ion-card-header>
+                        <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
+                        <ion-badge *ngIf="producto.precio !== null" color="success">$ {{producto.precio}}</ion-badge>
+                    </ion-card-header>
+                    <ion-card-content>
+                        {{producto.descripcion}}
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-grid *ngIf="seccion === 'servicios'">
+        <ion-row *ngFor="let cat of informacionNegocio.catServicos">
+            <ion-text class="w-100">
+                <h2>{{cat.nombre}}</h2>
+            </ion-text>
+            <ion-col size="6" *ngFor="let producto of cat.servicios">
+                <ion-card (click)="irAlDetalle(producto)" class="m-0 fixed">
+                    <img class="img-card-w"  [src]="producto.imagen"
+                         alt="Falla al cargar la imagen">
+                    <ion-card-header>
+                        <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
+                        <ion-badge *ngIf="producto.precio !== null" color="success">$ {{producto.precio}}</ion-badge>
+                    </ion-card-header>
+                    <ion-card-content>
+                        {{producto.descripcion}}
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
+    <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+        <ion-fab-button color="primary">
+            <ion-icon name="call"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="top">
+            <ion-fab-button  *ngIf="informacionNegocio.telefono !== null && informacionNegocio.telefono !== ''" color="light" (click)="llamar(informacionNegocio.telefono)">
+                <ion-icon name="call"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button color="light" (click)="enviarWhasapp(informacionNegocio.celular)">
+                <ion-icon name="logo-whatsapp"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button color="light">
+                <ion-icon name="logo-facebook"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button color="light">
+                <ion-icon name="logo-twitter"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button color="light">
+                <ion-icon name="logo-instagram"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button color="light">
+                <ion-icon name="logo-tiktok"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button color="light">
+                <ion-icon name="logo-youtube"></ion-icon>
+            </ion-fab-button>
+        </ion-fab-list>
+    </ion-fab>
+</ion-content>
