@@ -20,6 +20,10 @@ const routes: Routes = [
         loadChildren: () => import('../inicio/inicio.module').then(m => m.Tab3PageModule)
       },
       {
+        path: 'categorias',
+        loadChildren: () => import('../categorias/categorias.module').then(m => m.CategoriasPageModule)
+      },
+      {
         path: 'negocio/:negocio',
         loadChildren: () => import('../perfil-negocio/perfil-negocio.module').then(m => m.PerfilNegocioPageModule)
       },

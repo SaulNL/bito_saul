@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Categorias</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row *ngFor="let nomCategoria of listaCategorias">
+        <img *ngIf="nomCategoria.url_imagen_movil !== null" [src]="nomCategoria.url_imagen_movil"
+        alt="Falla al cargar la imagen">        
+        <ion-col size="6" *ngFor="let subCategoria of nomCategoria.categorias" 
+        (click)="seleccionarCategoria(subCategoria)">
+          <img class="img-card-w" *ngIf="subCategoria.url_imagen !== null" [src]="subCategoria.url_imagen"
+          alt="Falla al cargar la imagen">
+          <p style="text-align: center;">{{subCategoria.nombre}}</p>
+        </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

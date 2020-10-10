@@ -78,4 +78,11 @@ export class BusquedaService {
       return jsOrigen;
     }));
   }
+  public obtenerCategorias():Observable<any>{
+    return this.http.get(this.url + '/buscar/datos/inicio/allfiltro',
+      { headers: {'Content-Type':'application/json'}}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
 }
