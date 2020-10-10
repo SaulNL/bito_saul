@@ -1,0 +1,30 @@
+<ion-content fullscreen>
+  <ion-card>
+    <ion-fab horizontal="end" class="ion-margin-top" >
+      <ion-icon  style="font-size: 20px;" name="settings-outline" [routerLink]="['/tabs/datos-basicos']"></ion-icon>
+    </ion-fab>
+    <div class="ion-text-center ion-margin-top">
+    <img  class="rounded-circle" [src]="usuario.imagen !== null ? usuario.imagen: url_user" alt="">
+    <img *ngIf="false" src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg" />
+  </div>
+    <ion-card-header class="ion-text-center">
+      <ion-card-title>
+        <h4 style="margin-top: -10px;">{{usuario.nombre}}  {{usuario.paterno}}  {{usuario.materno}}</h4></ion-card-title>
+      <ion-label>{{usuario.telefono}}</ion-label>
+      <br>
+      <ion-label>{{usuario.correo}}</ion-label>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item [routerLink]="['/tabs/cambio-contrasenia']">
+          <ion-icon name="key-outline" style="margin-right: 5px; font-size: 20px;"></ion-icon>
+          <ion-label style="font-size: 15px;">Cambiar Contraseña</ion-label>
+        </ion-item>
+        <ion-item [routerLink]="['/tabs/datos-complementarios']">
+          <ion-icon name="create-outline" style="margin-right: 5px; font-size: 20px;"></ion-icon>
+          <ion-label style="font-size: 15px;">Datos Complementarios</ion-label>
+        </ion-item>       
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

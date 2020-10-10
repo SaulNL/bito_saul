@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-icon class="ion-float-left " name="chevron-back-outline" [routerLink]="['/tabs/ajustes']"></ion-icon>
+    <ion-title>Datos Complementarios</ion-title>
+    <ion-icon class="ion-float-right "name="save-outline"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+        <form>
+        <ion-list>
+          <ion-item>
+            <ion-label position="stacked">Sexo</ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar">
+              <ion-select-option value="dos">Hombre</ion-select-option>
+              <ion-select-option value="lunix">Mujer</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Télefono Oficina</ion-label>
+            <ion-input  #telefono="ngModel" name="idCompTelefono" [(ngModel)]="proveedorTO.telefono"></ion-input>
+          </ion-item>  
+          <ion-item>
+            <ion-label position="stacked">Estado</ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar">
+              <ion-select-option value="dos">Tlaxcala</ion-select-option>
+            </ion-select>
+          </ion-item>    
+          <ion-item>
+            <ion-label position="stacked">Municipio</ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar">
+              <ion-select-option value="dos">Chiautempan</ion-select-option>
+            </ion-select>
+          </ion-item>  
+          <ion-item>
+            <ion-label position="stacked">Localidad</ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar">
+              <ion-select-option value="dos">Ixcotla</ion-select-option>
+            </ion-select>
+          </ion-item> 
+          <ion-item>
+            <ion-label position="stacked">Colonia</ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar">
+              <ion-select-option value="dos">Ixcotla</ion-select-option>
+            </ion-select>
+          </ion-item>  
+          <ion-item>
+            <ion-label position="stacked">Calle</ion-label>
+            <ion-input></ion-input>
+          </ion-item> 
+          <ion-item>
+            <ion-label position="stacked">Número Interior</ion-label>
+            <ion-input  type="number" ></ion-input>
+          </ion-item>  
+          <ion-item>
+            <ion-label position="stacked">Número Exterior</ion-label>
+            <ion-input  type="number" ></ion-input>
+          </ion-item>   
+          <ion-item>
+            <ion-label position="stacked">Código Postal</ion-label>
+            <ion-input  type="number" ></ion-input>
+          </ion-item> 
+        </ion-list>
+        </form>
+    </ion-card-content>
+</ion-card>
+</ion-content>

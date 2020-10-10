@@ -15,8 +15,9 @@ export class TabsPage {
   constructor(
       private util: UtilsCls
   ) {
-    this.existeSesion = util.existe_sesion()
+    this.existeSesion = util.existe_sesion();
     this.usuario = util.getData();
+
   }
 
 }
