@@ -1,8 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+     Perfil
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-icon  style="font-size: 20px;" name="settings-outline" [routerLink]="['/tabs/datos-basicos']"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+  </ion-header>
 <ion-content fullscreen>
   <ion-card>
-    <ion-fab horizontal="end" class="ion-margin-top" >
-      <ion-icon  style="font-size: 20px;" name="settings-outline" [routerLink]="['/tabs/datos-basicos']"></ion-icon>
-    </ion-fab>
     <div class="ion-text-center ion-margin-top">
     <img  class="rounded-circle" [src]="usuario.imagen !== null ? usuario.imagen: url_user" alt="">
     <img *ngIf="false" src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg" />
