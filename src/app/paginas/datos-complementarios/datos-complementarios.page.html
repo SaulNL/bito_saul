@@ -2,7 +2,6 @@
   <ion-toolbar>
     <ion-icon class="ion-float-left" name="chevron-back-outline" [routerLink]="['/tabs/ajustes']"></ion-icon>
     <ion-title>Datos Complementarios</ion-title>
-    <ion-icon class="ion-float-right "name="save-outline"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
@@ -88,7 +87,7 @@
             <ion-input   #cp="ngModel" name="codigo_postal" mask="00000" [(ngModel)]="proveedorTO.det_domicilio.codigo_postal"></ion-input>
           </ion-item> 
         </ion-list>
-                <ion-button class="ion-justify-content-end"  size="small" type="submit" color="primary" [disabled]="formBasicos.invalid">Actualizar</ion-button>
+        <ion-button type="submit" color="primary" [disabled]="formBasicos.invalid" expand="block">Actualizar</ion-button>
         </form>
     </ion-card-content>
 </ion-card>

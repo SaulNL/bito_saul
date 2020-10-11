@@ -2,7 +2,6 @@
   <ion-toolbar>
     <ion-icon class="ion-float-left " name="chevron-back-outline"[routerLink]="['/tabs/ajustes']"></ion-icon>
     <ion-title>Cambiar Contrasenia</ion-title>
-    <ion-icon class="ion-float-right "name="save-outline"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
@@ -37,7 +36,7 @@
                 Las contraseñas no coinciden
               </span>     
         </ion-list>
-        <ion-button  type="submit" color="primary" [disabled]="formGroup1.invalid || blnIguales">Actualizar</ion-button>
+        <ion-button type="submit" color="primary" [disabled]="formGroup1.invalid || blnIguales" expand="block">Actualizar</ion-button>
         </form>
     </ion-card-content>
 </ion-card>
