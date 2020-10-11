@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon class="ion-float-left " name="chevron-back-outline" [routerLink]="['/tabs/ajustes']"></ion-icon>
+    <ion-icon class="ion-float-left" name="chevron-back-outline" [routerLink]="['/tabs/ajustes']"></ion-icon>
     <ion-title>Datos Complementarios</ion-title>
     <ion-icon class="ion-float-right "name="save-outline"></ion-icon>
   </ion-toolbar>
@@ -9,60 +9,86 @@
 <ion-content>
   <ion-card>
     <ion-card-content>
-        <form>
+        <form #formBasicos="ngForm" (ngSubmit)="actualizarDatos(formBasicos)">
         <ion-list>
           <ion-item>
             <ion-label position="stacked">Sexo</ion-label>
-            <ion-select ok-text="Ok" cancel-text="Cancelar">
-              <ion-select-option value="dos">Hombre</ion-select-option>
-              <ion-select-option value="lunix">Mujer</ion-select-option>
+            <ion-select ok-text="Ok" cancel-text="Cancelar"  #sexo="ngModel" name="sexo" [(ngModel)]="proveedorTO.genero" required>
+              <ion-select-option *ngFor="let s of sexos" [value]="s.id">{{s.sexo}}</ion-select-option>
             </ion-select>
           </ion-item>
+          <div *ngIf="sexo.touched  && sexo.invalid">
+            <div *ngIf="sexo.errors.required">El sexo es requerido
+            </div>
+        </div>
           <ion-item>
             <ion-label position="stacked">Télefono Oficina</ion-label>
-            <ion-input  #telefono="ngModel" name="idCompTelefono" [(ngModel)]="proveedorTO.telefono"></ion-input>
+            <ion-input #telefono="ngModel" name="idCompTelefono" [(ngModel)]="proveedorTO.telefono"></ion-input>
           </ion-item>  
           <ion-item>
             <ion-label position="stacked">Estado</ion-label>
-            <ion-select ok-text="Ok" cancel-text="Cancelar">
-              <ion-select-option value="dos">Tlaxcala</ion-select-option>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" #estado="ngModel" required (selectionChange)="get_list_cat_municipio($event,true)" name="estado" [(ngModel)]="proveedorTO.det_domicilio.id_estado">
+              <ion-select-option *ngFor="let e of list_cat_estado" [value]="e.id_estado">{{e.nombre}}</ion-select-option>
             </ion-select>
-          </ion-item>    
+          </ion-item>   
+          <div *ngIf="estado.touched  && estado.invalid" class="alert alert-danger">
+            <div *ngIf="estado.errors.required">El estado es requerido
+            </div>
+        </div> 
           <ion-item>
             <ion-label position="stacked">Municipio</ion-label>
-            <ion-select ok-text="Ok" cancel-text="Cancelar">
-              <ion-select-option value="dos">Chiautempan</ion-select-option>
+            <ion-select ok-text="Ok" cancel-text="Cancelar"  #municipio="ngModel" required (selectionChange)="get_list_cat_localidad($event,true)" name="municipio" [(ngModel)]="proveedorTO.det_domicilio.id_municipio" [disabled]="!select_estado">
+              <ion-select-option *ngFor="let e of list_cat_municipio" [value]="e.id_municipio">{{e.nombre}}</ion-select-option>
             </ion-select>
           </ion-item>  
+          <div *ngIf="municipio.touched  && municipio.invalid" class="alert alert-danger">
+            <div *ngIf="municipio.errors.required">El municipio es requerido
+            </div>
+        </div>
           <ion-item>
             <ion-label position="stacked">Localidad</ion-label>
-            <ion-select ok-text="Ok" cancel-text="Cancelar">
-              <ion-select-option value="dos">Ixcotla</ion-select-option>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" #localidad="ngModel" required name="localidad" [(ngModel)]="proveedorTO.det_domicilio.id_localidad" [disabled]="!select_municipio">
+              <ion-select-option *ngFor="let e of list_cat_localidad" [value]="e.id_localidad"> {{e.nombre}}</ion-select-option>
             </ion-select>
           </ion-item> 
+          <div *ngIf="localidad.touched  && localidad.invalid" class="alert alert-danger">
+            <div *ngIf="localidad.errors.required">La localidad es requerida
+            </div>
+        </div>
           <ion-item>
             <ion-label position="stacked">Colonia</ion-label>
-            <ion-select ok-text="Ok" cancel-text="Cancelar">
-              <ion-select-option value="dos">Ixcotla</ion-select-option>
-            </ion-select>
-          </ion-item>  
+            <ion-input #colonia="ngModel" required matInput name="colonia" [(ngModel)]="proveedorTO.det_domicilio.colonia"></ion-input>
+          </ion-item> 
+          <div *ngIf="colonia.touched  && colonia.invalid" class="alert alert-danger">
+            <div *ngIf="colonia.errors.required">La colonia es requerida
+            </div>
+        </div> 
           <ion-item>
             <ion-label position="stacked">Calle</ion-label>
-            <ion-input></ion-input>
-          </ion-item> 
+            <ion-input #calle="ngModel" required name="calle" [(ngModel)]="proveedorTO.det_domicilio.calle"></ion-input>
+          </ion-item>
+          <div *ngIf="calle.touched  && calle.invalid" class="alert alert-danger">
+            <div *ngIf="calle.errors.required">La calle es requerida
+            </div>
+        </div> 
           <ion-item>
             <ion-label position="stacked">Número Interior</ion-label>
-            <ion-input  type="number" ></ion-input>
+            <ion-input  #numeroInt="ngModel" name="numero_int" [(ngModel)]="proveedorTO.det_domicilio.numero_int"></ion-input>
           </ion-item>  
           <ion-item>
             <ion-label position="stacked">Número Exterior</ion-label>
-            <ion-input  type="number" ></ion-input>
+            <ion-input  #numeroExt="ngModel" required  name="numero_ext" [(ngModel)]="proveedorTO.det_domicilio.numero_ext"></ion-input>
           </ion-item>   
+          <div *ngIf="numeroExt.touched  && numeroExt.invalid" class="alert alert-danger">
+            <div *ngIf="numeroExt.errors.required">El número exterior es requerido
+            </div>
+        </div>
           <ion-item>
             <ion-label position="stacked">Código Postal</ion-label>
-            <ion-input  type="number" ></ion-input>
+            <ion-input   #cp="ngModel" name="codigo_postal" mask="00000" [(ngModel)]="proveedorTO.det_domicilio.codigo_postal"></ion-input>
           </ion-item> 
         </ion-list>
+                <ion-button class="ion-justify-content-end"  size="small" type="submit" color="primary" [disabled]="formBasicos.invalid">Actualizar</ion-button>
         </form>
     </ion-card-content>
 </ion-card>

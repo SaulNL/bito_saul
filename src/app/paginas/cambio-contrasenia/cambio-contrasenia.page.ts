@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import { PersonaService } from '../../api/persona.service';
+import { LoadingController } from '@ionic/angular';
 
 
 
@@ -14,19 +15,19 @@ export class CambioContraseniaPage implements OnInit {
   contrasenia: string;
   contraseniaRepit: string;
   contraseniaAct: any;
-  loader: boolean;
   private user: any;
   blnIguales: boolean;
   blnIgualesPassOriginalNuevo: boolean;
   public formGroup1: FormGroup;
+  public loader: any;
 
 
   constructor(
     private _formBuilder: FormBuilder,
-    private servicioPersona: PersonaService
+    private servicioPersona: PersonaService,
+    public loadingController: LoadingController
   ) { 
     this.user = JSON.parse(localStorage.getItem('u_sistema'));;
-    this.loader =  false;
     this.blnIguales =  false;
   }
   
@@ -41,7 +42,13 @@ export class CambioContraseniaPage implements OnInit {
       contraseniaR: ['', Validators.required],
     });
   }
-
+  async presentLoading() {
+    this.loader = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'por favor espera...'
+    });
+   return this.loader.present();
+  }
   contraseniasIguales(){
     if (this.contraseniaRepit !== undefined) {
       this.blnIguales = (this.contrasenia !== this.contraseniaRepit);
@@ -53,19 +60,21 @@ export class CambioContraseniaPage implements OnInit {
   }
   cambiarContrasenia() {
     if (this.formGroup1.valid){
-      this.loader = true;
+      this.presentLoading();
       const contra = {contaseniaAtual: this.contraseniaAct, newContrasenia: this.contrasenia};
       this.servicioPersona.cambiarContrasenia(this.user.id_usuario_sistema, contra).subscribe(
         respuesta =>{
           if (respuesta.code === 200){
+            this.loader.dismiss();
             //this.notificacionService.pushInfo(respuesta.message);
            // this.iniciarForm();
             //this.router.navigate(['/home/mi/cuenta/inicio']);
           }
           if (respuesta.code === 402){
+            this.loader.dismiss();
            // this.notificacionService.pushAlert(respuesta.message);
           }
-          this.loader = false;
+          this.loader.dismiss();
         }
       );
     }
