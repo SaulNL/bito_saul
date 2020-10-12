@@ -3,6 +3,9 @@ import {NgForm} from '@angular/forms';
 import { MsPersonaModel } from './../../Modelos/MsPersonaModel';
 import { PersonaService } from '../../api/persona.service';
 import { LoadingController } from '@ionic/angular';
+import {ArchivoComunModel} from '../../Modelos/ArchivoComunModel';
+import { UtilsCls } from './../../utils/UtilsCls';
+
 
 
 @Component({
@@ -16,7 +19,8 @@ export class DatosBasicosPage implements OnInit {
 
   constructor(
     private servicioPersona: PersonaService,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    private utilsCls: UtilsCls
   ) { }
 
   ngOnInit() {
@@ -60,4 +64,44 @@ export class DatosBasicosPage implements OnInit {
     miPrimeraPromise.then((successMessage) => {
     });
   }
+  public subir_imagen_cuadrada(event) {
+    if (event.target.files && event.target.files.length) {
+      let height;
+      let width;
+      for (const archivo of event.target.files) {
+        const reader = new FileReader();
+        reader.readAsDataURL(archivo);
+        reader.onload = () => {
+          const img = new Image();
+          img.src = reader.result as string;
+          img.onload = () => {
+          height = img.naturalHeight;
+          width = img.naturalWidth;
+          if (width === 400 && height === 400) {
+            const file_name = archivo.name;
+            const file = archivo;
+            if (file.size < 3145728) {
+              let file_64: any;
+              const utl = new UtilsCls();
+              utl.getBase64(file).then(
+                data => {
+                  const archivo = new ArchivoComunModel();
+                  if (file_name != null) {
+                    archivo.nombre_archivo = this.utilsCls.convertir_nombre(file_name);
+                    archivo.archivo_64 = file_64;
+                  }
+                  this.usuarioSistema.selfie = archivo;
+                }
+              );
+            } else {
+            //  this.notificacionService.pushAlert('comun.file_sobrepeso');
+            }
+          }else {
+            console.log('es mayor');
+          }
+        }
+      }
+    }
+  }
+ }
 }

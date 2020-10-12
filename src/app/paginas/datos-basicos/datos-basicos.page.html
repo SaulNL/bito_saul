@@ -13,6 +13,30 @@
         <ion-card-header>
             <form #formBasicos="ngForm" (ngSubmit)="actualizarDatos(formBasicos)">
             <ion-list>
+              <ion-item> 
+                <div class="avatar-upload">
+                  <div class="avatar-edit">
+                    <input type='file' id="selfie" accept="image/*"
+                    (change)="subir_imagen_cuadrada($event)"
+                    />
+                    <label for="selfie">
+                      <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
+                    </label>  
+                  </div>
+              <div class="avatar-preview">
+                  <div *ngIf="usuarioSistema.selfie === null || usuarioSistema.selfie === undefined"
+                       id="perfil"
+                       [ngStyle]="usuarioSistema.imagen !== null ? {'background-image': 'url('+usuarioSistema.imagen+')'} : ''"
+                  >
+                  </div>
+                  <div *ngIf="usuarioSistema.selfie !== null && usuarioSistema.selfie !== undefined"
+                       [ngStyle]="{
+                         'background-image': 'url('+usuarioSistema.selfie.archivo_64+')'}">
+                  </div>
+                </div>
+                <ion-label>Foto de perfil</ion-label>
+              </div>
+              </ion-item>
                 <ion-item>
                     <ion-label position="stacked">Nombre</ion-label>
                     <ion-input placeholder="Nombre" #nombre="ngModel" required  name="nombre" [(ngModel)]="usuarioSistema.nombre"></ion-input>

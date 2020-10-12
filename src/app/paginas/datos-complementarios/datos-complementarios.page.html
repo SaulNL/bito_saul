@@ -88,7 +88,51 @@
           <ion-item>
             <ion-label position="stacked">Código Postal</ion-label>
             <ion-input   #cp="ngModel" name="codigo_postal" mask="00000" [(ngModel)]="proveedorTO.det_domicilio.codigo_postal"></ion-input>
+          </ion-item>
+          <ion-item>
+            <div class="avatar-uploadIne">
+              <div class="avatar-editIne">
+                  <input type='file' hidden id="imageUpload"  accept="image/*"  (change)="subirArchivo($event,1)"/>
+                  <label for="imageUpload">
+                    <ion-icon name="camera-outline" style="
+                    position: relative;
+                    top: 10px;
+                "></ion-icon>
+                  </label>
+              </div>
+              <div class="avatar-previewIne">
+                  <div *ngIf="proveedorTO.ine1 === null || proveedorTO.ine1 === undefined " id="imagePreview" [ngStyle]="{
+         'background-image': 'url('+proveedorTO.ineFrente+')'}">
+                  </div>
+                  <div *ngIf="proveedorTO.ine1 !== null && proveedorTO.ine1 !== undefined" [ngStyle]="{
+         'background-image': 'url('+proveedorTO.ine1.archivo_64+')'}">
+                  </div>
+              </div>
+              <label for="imageUpload" class="col-form-label ">INE (Frente)</label>
+          </div>
           </ion-item> 
+          <ion-item>
+            <div class="avatar-uploadIne">
+              <div class="avatar-editIne">
+                  <input type='file' hidden id="imageUploadLocal"  accept="image/*" (change)="subirArchivo($event,2)"/>
+                  <label for="imageUploadLocal">
+                    <ion-icon name="camera-outline" style="
+                    position: relative;
+                    top: 10px;
+                "></ion-icon>
+                  </label>
+              </div>
+              <div class="avatar-previewIne">
+                  <div *ngIf="proveedorTO.ine2 === null || proveedorTO.ine2 === undefined" id="imagePreviewLocal" [ngStyle]="{
+         'background-image': 'url('+proveedorTO.ineAtras+')'}">
+                  </div>
+                  <div *ngIf="proveedorTO.ine2 !== null && proveedorTO.ine2 !== undefined" [ngStyle]="{
+         'background-image': 'url('+proveedorTO.ine2.archivo_64+')'}">
+                  </div>
+              </div>
+              <label for="imageUploadLocal" class="col-form-label ">INE (Atras)</label>
+          </div>
+          </ion-item>
         </ion-list>
         <ion-button type="submit" color="primary" [disabled]="formBasicos.invalid" expand="block">Actualizar</ion-button>
         </form>

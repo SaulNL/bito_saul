@@ -10,6 +10,7 @@ import {DetDomicilioModel} from "../../Modelos/DetDomicilioModel";
 import {SessionUtil} from "../../utils/sessionUtil";
 import { NgForm } from '@angular/forms';
 import { LoadingController } from '@ionic/angular';
+import {ArchivoComunModel} from '../../Modelos/ArchivoComunModel';
 @Component({
   selector: 'app-datos-complementarios',
   templateUrl: './datos-complementarios.page.html',
@@ -34,6 +35,9 @@ export class DatosComplementariosPage implements OnInit {
     {id: 2, sexo: 'Mujer'},
   ];
   public loader: any;
+  private file_img_galeria: FileList;
+  public nombreArchivo:string ;
+  public nombreArchivo2:string ;
   constructor(
     private _general_service: GeneralServicesService,
     private _utils_cls: UtilsCls,
@@ -48,7 +52,8 @@ export class DatosComplementariosPage implements OnInit {
     this.list_cat_localidad = [];
     this.select_estado = false;
     this.select_municipio = false;
-
+    this.nombreArchivo = '';
+    this.nombreArchivo2 = '';
   }
 
   ngOnInit() {
@@ -174,5 +179,28 @@ export class DatosComplementariosPage implements OnInit {
       miPrimeraPromise.then((successMessage) => {
         console.log(successMessage);
       });
+  }
+  public subirArchivo(event, tipo: number) {
+    this.file_img_galeria = event.target.files;
+    const file_name = this.file_img_galeria[0].name;
+    const file = this.file_img_galeria[0];
+      let file_64: any;
+      const utl = new UtilsCls();
+      utl.getBase64(file).then(
+        data => {
+          file_64 = data;
+          const archivo = new ArchivoComunModel();
+          archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
+          archivo.archivo_64 = file_64;
+          switch (tipo) {
+            case 1:
+              this.proveedorTO.ine1 = archivo;
+              break;
+            case 2:
+              this.proveedorTO.ine2 = archivo;
+              break;
+          }
+        }
+      );
   }
 }
