@@ -81,11 +81,16 @@
                     *ngIf="celular.errors.required">El celular es requerido
                   </div>
                 </div>
+                <ion-item>
+                  <ion-label>Start Date</ion-label>
+                  <ion-datetime value="1990-02-19" placeholder="Select Date"></ion-datetime>
+                </ion-item>
                   <ion-item>
-                    <ion-label position="stacked">Fecha Nacimiento</ion-label>                   
-                    <ion-datetime #picker  name="fecha"  #nacimiento="ngModel" [min]="minDate" [max]="maxDate"
-                      [(ngModel)]="usuarioSistema.fecha_nacimiento"  required></ion-datetime>
-                    <ion-icon  slot="end" name="calendar-outline"  (click)="picker.open()"></ion-icon>
+                    <ion-label position="stacked">Fecha Nacimiento</ion-label>    
+                    <ion-input name="fecha" #nacimiento="ngModel" (focus)="picker.open()" [ngModel]="usuarioSistema.fecha_nacimiento"  required>               
+                    <ion-datetime #picker displayFormat="D/MM/YYYY"  monthShortNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre" required></ion-datetime>
+                  </ion-input>
+                  <ion-icon  slot="end" name="calendar-outline"  (click)="picker.open()"></ion-icon>
                   </ion-item>  
                   <ion-item>
                     <ion-label position="stacked">Correo</ion-label>

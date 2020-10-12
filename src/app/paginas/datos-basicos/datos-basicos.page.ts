@@ -37,6 +37,8 @@ export class DatosBasicosPage implements OnInit {
   private actualizarUsuario() {
     this.usuarioSistema = JSON.parse(localStorage.getItem('u_data'));
     this.usuarioSistema.fecha_nacimiento = this.usuarioSistema.fecha_nacimiento !== null ? new Date(this.usuarioSistema.fecha_nacimiento) : null;
+    console.log(this.usuarioSistema.fecha_nacimiento.toLocaleDateString());
+    this.usuarioSistema.fecha_nacimiento = this.usuarioSistema.fecha_nacimiento.toLocaleDateString();
   }
   actualizarDatos(formBasicos: NgForm) {
     this.presentLoading();
