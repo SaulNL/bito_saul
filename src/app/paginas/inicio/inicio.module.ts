@@ -7,6 +7,8 @@ import { InicioPage } from './inicio.page';
 import { ExploreContainerComponentModule } from '../../explore-container/explore-container.module';
 
 import { Tab3PageRoutingModule } from './inicio-routing.module'
+import {ToolbarBusquedaComponent} from "../../componentes/toolbar-busqueda/toolbar-busqueda.component";
+import {FiltrosBusquedaModule} from "../../componentes/filtros-busqueda/filtros-busqueda.module";
 
 @NgModule({
   imports: [
@@ -16,7 +18,8 @@ import { Tab3PageRoutingModule } from './inicio-routing.module'
     ExploreContainerComponentModule,
     RouterModule.forChild([{ path: '', component: InicioPage }]),
     Tab3PageRoutingModule,
+      FiltrosBusquedaModule
   ],
-  declarations: [InicioPage]
+    declarations: [InicioPage, ToolbarBusquedaComponent]
 })
 export class Tab3PageModule {}

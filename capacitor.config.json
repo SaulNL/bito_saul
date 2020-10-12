@@ -1,4 +1,4 @@
-    {
+{
   "appId": "io.ionic.starter",
   "appName": "Bitoo",
   "bundledWebRuntime": false,
@@ -9,5 +9,8 @@
       "launchShowDuration": 0
     }
   },
-  "cordova": {}
+  "cordova": {},
+  "proxies": {
+  "proxyUrl": "https://beta-bitoo.azurewebsites.net"
+  }
 }

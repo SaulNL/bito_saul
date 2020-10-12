@@ -1,0 +1,120 @@
+<ion-header translucent>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="buscar()">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+                Buscar
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Filtros de busqueda</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="cerrarModal()">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+    <ion-toolbar>
+        <ion-segment value="localidad" [(ngModel)]="ubicacion">
+            <ion-segment-button value="localidad">Localidad</ion-segment-button>
+            <ion-segment-button value="ubicacion">Ubicación</ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+    <div *ngIf="ubicacion === 'localidad'">
+        <ion-item>
+            <ion-label>Estados</ion-label>
+            <ion-select placeholder="Seleccionar" (ionChange)="selectEstado()" [(ngModel)]="estado">
+                <ion-select-option *ngFor="let estado of lstCatEstados"
+                                   [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Municipios</ion-label>
+            <ion-select placeholder="Seleccionar" [disabled]="listCatMunicipio.length === 0"
+                        (ionChange)="selectMunicipio()" [(ngModel)]="municipio">
+                <ion-select-option *ngFor="let estado of listCatMunicipio"
+                                   [value]="estado.id_municipio">{{estado.nombre}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Localidad</ion-label>
+            <ion-select placeholder="Seleccionar" [disabled]="listCaLocalidad.length === 0"
+                        (ionChange)="selectLocalidad()" [(ngModel)]="localidad">
+                <ion-select-option *ngFor="let estado of listCaLocalidad"
+                                   [value]="estado.id_localidad">{{estado.nombre}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+    </div>
+    <div *ngIf="ubicacion === 'ubicacion'">
+        ubicacion
+    </div>
+
+    <ion-item-divider>
+        <ion-label>
+            Tipo de negocios
+        </ion-label>
+    </ion-item-divider>
+    <div *ngFor="let tipo of lstCatTipoNegocio">
+        <ion-item>
+            <ion-label>{{tipo.nombre}}</ion-label>
+            <ion-checkbox [value]="tipo.id_tipo_negocio" color="primary" [(ngModel)]="tipo.estaSeleccionado"
+                          slot="start"></ion-checkbox>
+        </ion-item>
+    </div>
+    <ion-item-divider>
+        <ion-label>
+            Categorias
+        </ion-label>
+    </ion-item-divider>
+    <ion-item>
+        <ion-label>Categorias</ion-label>
+        <ion-select placeholder="Seleccionar" [(ngModel)]="categoria" (ionChange)="selectCategoria()">
+            <ion-select-option *ngFor="let giro of lstCatTipoProducto;"
+                               [value]="giro.id_giro">{{giro.nombre}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-item-divider>
+        <ion-label>
+            Subcategorias
+        </ion-label>
+    </ion-item-divider>
+    <ion-item>
+        <ion-label>SubCategoria</ion-label>
+        <ion-select placeholder="Seleccionar" [(ngModel)]="subCategoria" (ionChange)="selectSubCategoria()">
+            <ion-select-option *ngFor="let sub of listaCategorias;"
+                               [value]="sub.id_categoria">{{sub.nombre}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-item-divider>
+        <ion-label>
+            Entega a domicilio
+        </ion-label>
+    </ion-item-divider>
+    <ion-item>
+        <ion-label>Si</ion-label>
+        <ion-checkbox [value]="1" [(ngModel)]="filtros.blnEntrega" [checked]="filtros.blnEntrega === 1" color="primary"
+                      slot="start"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+        <ion-label>No</ion-label>
+        <ion-checkbox [value]="0" [(ngModel)]="filtros.blnEntrega" [checked]="filtros.blnEntrega === 0" color="primary"
+                      slot="start"></ion-checkbox>
+    </ion-item>
+
+    <ion-item-divider>
+        <ion-label>
+            Abierto/Cerrado
+        </ion-label>
+    </ion-item-divider>
+    <ion-item>
+        <ion-label>Abierto</ion-label>
+        <ion-checkbox value="1" [(ngModel)]="filtros.abierto" color="primary" slot="start"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+        <ion-label>Cerrado</ion-label>
+        <ion-checkbox value="0" [(ngModel)]="filtros.abierto" color="primary" slot="start"></ion-checkbox>
+    </ion-item>
+
+
+</ion-content>
