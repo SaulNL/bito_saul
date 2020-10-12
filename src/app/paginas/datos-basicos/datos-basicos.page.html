@@ -13,6 +13,29 @@
         <ion-card-header>
             <form #formBasicos="ngForm" (ngSubmit)="actualizarDatos(formBasicos)">
             <ion-list>
+              <ion-item>
+                <div class="avatar-upload">
+                  <div class="avatar-edit">
+                    <input type='file' id="selfie" accept="image/*"
+                           (change)="subir_imagen_cuadrada($event)"
+                    />
+                    <label for="selfie"></label>
+                  </div>
+                  <div class="avatar-preview">
+                    <div *ngIf="usuarioSistema.selfie === null || usuarioSistema.selfie === undefined"
+                         id="perfil"
+                         [ngStyle]="usuarioSistema.imagen !== null ? {'background-image': 'url('+usuarioSistema.imagen+')'} : ''"
+                    >
+                    </div>
+                    <div *ngIf="usuarioSistema.selfie !== null && usuarioSistema.selfie !== undefined"
+                         [ngStyle]="{
+                           'background-image': 'url('+usuarioSistema.selfie.archivo_64+')'}">
+                    </div>
+                  </div>
+                  <label for="selfie" class="col-form-label ">Foto de perfil</label>
+    
+                </div>
+              </ion-item>
               <ion-item> 
                 <div class="avatar-upload">
                   <div class="avatar-edit">
@@ -81,17 +104,11 @@
                     *ngIf="celular.errors.required">El celular es requerido
                   </div>
                 </div>
-                <ion-item>
-                  <ion-label>Start Date</ion-label>
-                  <ion-datetime value="1990-02-19" placeholder="Select Date"></ion-datetime>
-                </ion-item>
                   <ion-item>
                     <ion-label position="stacked">Fecha Nacimiento</ion-label>    
-                    <ion-input name="fecha" #nacimiento="ngModel" (focus)="picker.open()" [ngModel]="usuarioSistema.fecha_nacimiento"  required>               
-                    <ion-datetime #picker displayFormat="D/MM/YYYY"  monthShortNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre" required></ion-datetime>
-                  </ion-input>
-                  <ion-icon  slot="end" name="calendar-outline"  (click)="picker.open()"></ion-icon>
-                  </ion-item>  
+                    <ion-datetime #picker displayFormat="D/MM/YYYY" [min]="minDate" [max]="maxDate"  value="{{usuarioSistema.fecha_nacimiento | date: 'yyyy-MM-dd'}}"  (ionChange)="convercionFechaNac($event)" required></ion-datetime>
+                  <ion-icon  slot="end" name="calendar-outline"  (click)="picker.open()"></ion-icon> 
+                </ion-item>  
                   <ion-item>
                     <ion-label position="stacked">Correo</ion-label>
                     <ion-input  id="correo" type="email" email name="correo" #correo="ngModel" placeholder="Correo" [(ngModel)]="usuarioSistema.correo"></ion-input>
