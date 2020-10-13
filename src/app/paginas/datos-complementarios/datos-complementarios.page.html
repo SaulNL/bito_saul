@@ -29,7 +29,7 @@
           </ion-item>  
           <ion-item>
             <ion-label position="stacked">Estado</ion-label>
-            <ion-select ok-text="Ok" cancel-text="Cancelar" #estado="ngModel" required (selectionChange)="get_list_cat_municipio($event,true)" name="estado" [(ngModel)]="proveedorTO.det_domicilio.id_estado">
+            <ion-select ok-text="Ok" cancel-text="Cancelar" #estado="ngModel" required (ionChange)="get_list_cat_municipio($event,true)" name="estado" [(ngModel)]="proveedorTO.det_domicilio.id_estado">
               <ion-select-option *ngFor="let e of list_cat_estado" [value]="e.id_estado">{{e.nombre}}</ion-select-option>
             </ion-select>
           </ion-item>   
@@ -39,7 +39,7 @@
         </div> 
           <ion-item>
             <ion-label position="stacked">Municipio</ion-label>
-            <ion-select ok-text="Ok" cancel-text="Cancelar"  #municipio="ngModel" required (selectionChange)="get_list_cat_localidad($event,true)" name="municipio" [(ngModel)]="proveedorTO.det_domicilio.id_municipio" [disabled]="!select_estado">
+            <ion-select ok-text="Ok" cancel-text="Cancelar"  #municipio="ngModel" required (ionChange)="get_list_cat_localidad($event,true)" name="municipio" [(ngModel)]="proveedorTO.det_domicilio.id_municipio" [disabled]="!select_estado">
               <ion-select-option *ngFor="let e of list_cat_municipio" [value]="e.id_municipio">{{e.nombre}}</ion-select-option>
             </ion-select>
           </ion-item>  

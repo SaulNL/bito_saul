@@ -86,6 +86,7 @@ export class DatosComplementariosPage implements OnInit {
     );
   }
   public get_list_cat_municipio(event, reset: boolean = false) {
+    let idE;
     if (event !== undefined){
       this.blnBuscadoMunicipios = true;
       if (!this.primeraVez) {
@@ -95,7 +96,11 @@ export class DatosComplementariosPage implements OnInit {
         this.proveedorTO.det_domicilio.id_municipio = undefined;
         this.proveedorTO.det_domicilio.id_localidad = undefined;
       }
-      const idE = event.value;
+      if(event.type === 'ionChange'){
+        idE = event.detail.value;
+      }else{
+         idE = event.value;
+      }
       this.select_estado = false;
       this.select_municipio = false;
       this._general_service.getMunicipios(idE).subscribe(
@@ -120,6 +125,7 @@ export class DatosComplementariosPage implements OnInit {
     }
   }
   public get_list_cat_localidad(event, reset: boolean = false) {
+    let id;
     if (event !== undefined) {
       this.blnBuscadoLocalidades = true;
       if (!this.primeraVez) {
@@ -127,7 +133,11 @@ export class DatosComplementariosPage implements OnInit {
         this.proveedorTO.det_domicilio.id_localidad = undefined;
         this.list_cat_localidad = [];
       }
-      const id = event.value;
+      if(event.type === 'ionChange'){
+        id = event.detail.value;
+      }else{
+         id = event.value;
+      }
       this.select_municipio = false;
       this._general_service.getLocalidad(id).subscribe(
         response => {
