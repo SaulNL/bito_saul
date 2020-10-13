@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-banner-promciones',
@@ -6,9 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./banner-promciones.component.scss'],
 })
 export class BannerPromcionesComponent implements OnInit {
+@Input() public listaPromociones: [];
+@Input() public listaAvisos: [];
+listaPromo: any;
+listaAviso: any;
+  constructor() { 
 
-  constructor() { }
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+   console.log(this.listaPromociones);
+   console.log(this.listaAvisos);
+  }
 
 }
