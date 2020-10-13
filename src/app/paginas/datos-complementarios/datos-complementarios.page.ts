@@ -170,10 +170,10 @@ export class DatosComplementariosPage implements OnInit {
       this.servicioPersona.guardar(this.proveedorTO).subscribe(
         data => {
           if (data.code === 200) {
+            this.loader.dismiss();
+            this.router.navigate(['/tabs/ajustes']);
             this.notificaciones.exito('Los datos se actualizaron');
             const resultado = this.sesionUtl.actualizarSesion();
-            this.router.navigate(['/tabs/ajustes']);
-            this.loader.dismiss();
             resolve(resultado);
           }
           if (data.code === 402) {
