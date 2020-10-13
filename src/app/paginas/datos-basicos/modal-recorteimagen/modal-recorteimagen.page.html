@@ -1,10 +1,15 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>modal-recorteimagen</ion-title>
+    <ion-title>
+      Editor Imagen
+     </ion-title>
+     <ion-buttons slot="end">
+      <ion-icon class="ion-float-end " name="close-outline" (click)="cerraModal()"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
+  <ion-label><p>Mueva el rectangulo para seleccionar el área deseada</p></ion-label>
  <image-cropper
                         style="max-height: 15em"
                          [imageChangedEvent]="imageChangedEvent"
@@ -17,8 +22,8 @@
                          (imageLoaded)="imageLoaded()"
                          (loadImageFailed)="loadImageFailed()"
 ></image-cropper>
-
-<img class="img-fluid" [src]="croppedImage" />
-  <ion-button color="primary" expand="block" (click)="cerraModal()">Cerra Modal</ion-button>
+<div style="margin: 10px;">
+  <img class="img-fluid" [src]="croppedImage" />
+</div>
   <ion-button color="primary" expand="block" (click)="guardarImagenRecortada()">Guardar</ion-button>
 </ion-content>
