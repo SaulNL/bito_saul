@@ -126,6 +126,7 @@ export class DatosBasicosPage implements OnInit {
                   }
                 );
               } else {
+                this.notificaciones.alerta('El tama\u00F1o m\u00E1ximo de archivo es de 3 Mb, por favor intente con otro archivo');
                 // this.notificacionService.pushAlert('comun.file_sobrepeso');
               }
             } else {
