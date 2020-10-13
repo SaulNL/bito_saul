@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import { PersonaService } from '../../api/persona.service';
 import { LoadingController } from '@ionic/angular';
+import {ToadNotificacionService} from "../../api/toad-notificacion.service";
+import {Router} from "@angular/router";
 
 
 
@@ -25,7 +27,9 @@ export class CambioContraseniaPage implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private servicioPersona: PersonaService,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    private notificaciones: ToadNotificacionService,
+    private router: Router
   ) { 
     this.user = JSON.parse(localStorage.getItem('u_sistema'));;
     this.blnIguales =  false;
@@ -66,13 +70,13 @@ export class CambioContraseniaPage implements OnInit {
         respuesta =>{
           if (respuesta.code === 200){
             this.loader.dismiss();
-            //this.notificacionService.pushInfo(respuesta.message);
-           // this.iniciarForm();
-            //this.router.navigate(['/home/mi/cuenta/inicio']);
+            this.notificaciones.exito('se guardo con éxito');
+            this.iniciarForm();
+            this.router.navigate(['/tabs/ajustes']);
           }
           if (respuesta.code === 402){
             this.loader.dismiss();
-           // this.notificacionService.pushAlert(respuesta.message);
+            this.notificaciones.alerta(respuesta.message);
           }
           this.loader.dismiss();
         }

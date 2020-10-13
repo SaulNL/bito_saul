@@ -8,6 +8,9 @@ import { UtilsCls } from './../../utils/UtilsCls';
 import * as moment from 'moment';
 import { ModalController } from '@ionic/angular';
 import { ModalRecorteimagenPage } from '../datos-basicos/modal-recorteimagen/modal-recorteimagen.page';
+import {ToadNotificacionService} from "../../api/toad-notificacion.service";
+import {Router} from "@angular/router";
+
 
 
 
@@ -34,7 +37,9 @@ export class DatosBasicosPage implements OnInit {
     private servicioPersona: PersonaService,
     public loadingController: LoadingController,
     private utilsCls: UtilsCls,
-    public modalController: ModalController
+    public modalController: ModalController,
+    private notificaciones: ToadNotificacionService,
+    private router: Router
   ) {
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(currentYear - 100, 0, 0);
@@ -65,18 +70,18 @@ export class DatosBasicosPage implements OnInit {
         data => {
           if (data.code === 200) {
             this.loader.dismiss();
-            //this.notificacionService.pushAlert(data.message); 
+            this.notificaciones.alerta(data.data.mensaje);
           }
           //const resultado = this.sesionUtl.actualizarSesion();
-          //this.router.navigate(['/home/mi/cuenta/inicio']);
+          this.router.navigate(['/tabs/ajustes']);
           this.loader.dismiss();
-          //this.notificacionService.pushInfo(data.data.mensaje);
-          // resolve(resultado);
+          this.notificaciones.exito(data.data.mensaje);
+          //resolve(resultado);
 
         },
         error => {
           this.loader.dismiss();
-          //  this.notificacionService.pushError(error);
+          this.notificaciones.error(error);
           // this.lstPrincipal = new Array();
 
         });
