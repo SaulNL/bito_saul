@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>modal-recorteimagen</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+ <image-cropper
+                        style="max-height: 15em"
+                         [imageChangedEvent]="imageChangedEvent"
+                         [maintainAspectRatio]="maintainAspectRatio"
+                         [resizeToWidth]="resizeToWidth"
+                         [resizeToHeight]="resizeToHeight"
+                         [aspectRatio]="resizeToWidth/resizeToHeight"
+                         format="png"
+                         (imageCropped)="imageCropped($event)"
+                         (imageLoaded)="imageLoaded()"
+                         (loadImageFailed)="loadImageFailed()"
+></image-cropper>
+
+<img class="img-fluid" [src]="croppedImage" />
+  <ion-button color="primary" expand="block" (click)="cerraModal()">Cerra Modal</ion-button>
+  <ion-button color="primary" expand="block" (click)="guardarImagenRecortada()">Guardar</ion-button>
+</ion-content>

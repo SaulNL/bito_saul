@@ -6,6 +6,8 @@ import { LoadingController } from '@ionic/angular';
 import { ArchivoComunModel } from '../../Modelos/ArchivoComunModel';
 import { UtilsCls } from './../../utils/UtilsCls';
 import * as moment from 'moment';
+import { ModalController } from '@ionic/angular';
+import { ModalRecorteimagenPage } from '../datos-basicos/modal-recorteimagen/modal-recorteimagen.page';
 
 
 
@@ -21,12 +23,18 @@ export class DatosBasicosPage implements OnInit {
   public minDate: any;
   public maxDate: any;
   private file_img_galeria: FileList;
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+  resizeToWidth: number = 0;
+  resizeToHeight: number = 0;
+  maintainAspectRatio: boolean = false;
 
 
   constructor(
     private servicioPersona: PersonaService,
     public loadingController: LoadingController,
-    private utilsCls: UtilsCls
+    private utilsCls: UtilsCls,
+    public modalController: ModalController
   ) {
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(currentYear - 100, 0, 0);
@@ -83,20 +91,68 @@ export class DatosBasicosPage implements OnInit {
     this.usuarioSistema.fecha_nacimiento = fecha;
   }
 
-  public subir_imagen_cuadrada(event) {
-    this.file_img_galeria = event.target.files;
-    const file_name = this.file_img_galeria[0].name;
-    const file = this.file_img_galeria[0];
-    let file_64: any;
-    const utl = new UtilsCls();
-    utl.getBase64(file).then(
-      data => {
-        file_64 = data;
-        const archivo = new ArchivoComunModel();
-        archivo.nombre_archivo = this.utilsCls.convertir_nombre(file_name);
-        archivo.archivo_64 = file_64;
-        this.usuarioSistema.selfie = archivo;
+  public subir_imagen_cuadrado(event) {
+    if (event.target.files && event.target.files.length) {
+      let height;
+      let width;
+      for (const archivo of event.target.files) {
+        const reader = new FileReader();
+        reader.readAsDataURL(archivo);
+        reader.onload = () => {
+          const img = new Image();
+          img.src = reader.result as string;
+          img.onload = () => {
+            height = img.naturalHeight;
+            width = img.naturalWidth;
+            if (width === 400 && height === 400) {
+              const file_name = archivo.name;
+              const file = archivo;
+              if (file.size < 3145728) {
+                let file_64: any;
+                const utl = new UtilsCls();
+                utl.getBase64(file).then(
+                  data => {
+                    const archivo = new ArchivoComunModel();
+                    if (file_name != null) {
+                      archivo.nombre_archivo = this.utilsCls.convertir_nombre(file_name);
+                      archivo.archivo_64 = data;
+                    }
+                    this.usuarioSistema.selfie = archivo;
+                  }
+                );
+              } else {
+                // this.notificacionService.pushAlert('comun.file_sobrepeso');
+              }
+            } else {
+              this.abrirModal(event);
+            }
+          };
+        };
       }
-    );
+    }
+  }
+  async abrirModal(event) {
+    const modal = await this.modalController.create({
+      component: ModalRecorteimagenPage,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        eventoImagen: event
+      }
+    });
+    await modal.present();
+    const { data } = await modal.onDidDismiss();
+    if (data != null) {
+      this.guardarImagenRecortada(data.data, data.nombre_archivo);
+    }
+  }
+  guardarImagenRecortada(data, nombre_archivo) {
+    const file_name = nombre_archivo;
+    const file = data;
+    const archivo = new ArchivoComunModel();
+    if (file_name != null) {
+      archivo.nombre_archivo = file_name,
+        archivo.archivo_64 = file;
+    }
+    this.usuarioSistema.selfie = archivo;
   }
 }

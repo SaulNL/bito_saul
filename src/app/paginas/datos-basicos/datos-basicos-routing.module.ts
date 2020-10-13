@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: DatosBasicosPage
+  },
+  {
+    path: 'modal-recorteimagen',
+    loadChildren: () => import('./modal-recorteimagen/modal-recorteimagen.module').then( m => m.ModalRecorteimagenPageModule)
   }
 ];
 
