@@ -191,7 +191,6 @@ export class InicioPage implements OnInit {
       * @author Omar
       */
     rutaLink(ruta: string) {
-        console.log(ruta);
         //this._router.navigateByUrl('#' + ruta, { skipLocationChange: true });
         setTimeout(() => this._router.navigate([ruta]));
     }
