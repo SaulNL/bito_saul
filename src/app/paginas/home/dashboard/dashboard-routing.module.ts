@@ -9,8 +9,8 @@ const routes: Routes = [
     component: DashboardPage,
     children: [
       {
-        path: 'productos',
-        loadChildren: () => import('../../productos/productos.module').then(m => m.Tab1PageModule)
+        path: 'perfil',
+        loadChildren: () => import('../../ajustes/ajustes.module').then(m => m.AjustesPageModule)
       }
       ]
   },

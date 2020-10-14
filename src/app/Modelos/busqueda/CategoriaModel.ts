@@ -1,4 +1,4 @@
-import {ProductoModel} from './ProductoModel';
+import {ProductoModel} from "../ProductoModel";
 
 export class CategoriaModel {
   public nombre: string;

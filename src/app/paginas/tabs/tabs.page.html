@@ -19,11 +19,11 @@
       <ion-icon name="list-outline"></ion-icon>
       <ion-label>Categorias</ion-label>
     </ion-tab-button>
-    <ion-tab-button *ngIf="!existeSesion" [routerLink]="['/login']">
+    <ion-tab-button *ngIf="!existeSesion" [routerLink]="['/login']">s
       <ion-icon name="person-circle-outline"></ion-icon>
       <ion-label>Usuario</ion-label>
     </ion-tab-button>
-    <ion-tab-button *ngIf="existeSesion" [routerLink]="['/tabs/ajustes']">
+    <ion-tab-button *ngIf="existeSesion" [routerLink]="['/tabs/home/perfil']">
       <ion-avatar>
         <img src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg" [srcset]="usuario.imagen">
       </ion-avatar>
