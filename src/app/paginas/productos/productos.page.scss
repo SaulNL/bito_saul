@@ -1,0 +1,12 @@
+.scrolling-wrapper-flexbox {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+
+  .item {
+    flex: 0 0 auto;
+  }
+  .active{
+    box-shadow: 0px 5px 0px blue;
+  }
+}

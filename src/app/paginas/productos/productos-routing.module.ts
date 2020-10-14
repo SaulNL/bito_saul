@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: '',
     component: ProductosPage,
+  },
+  {
+    path: 'modal-producto',
+    loadChildren: () => import('./modal-producto/modal-producto.module').then( m => m.ModalProductoPageModule)
   }
 ];
 
