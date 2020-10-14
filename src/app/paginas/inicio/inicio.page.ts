@@ -8,6 +8,10 @@ import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { PromocionesService } from '../../api/busqueda/proveedores/promociones.service';
 import { FormControl } from '@angular/forms';
 import { IonSlides } from '@ionic/angular';
+import { NavBarServiceService } from '../../../app/api/busqueda/nav-bar-service.service';
+import { UbicacionModel } from '../../Modelos/busqueda/UbicacionModel';
+import { PromocionesModel } from '../../Modelos/busqueda/PromocionesModel';
+
 
 @Component({
     selector: 'app-tab3',
@@ -38,6 +42,10 @@ export class InicioPage implements OnInit {
         autoplay: true
     };
     @ViewChild('mySlider') slides: IonSlides;
+    public ubicacion = new UbicacionModel();
+    public promocion: PromocionesModel;
+    public numeroVistas: number;
+    public urlNegocio: string;
     constructor(
         public loadingController: LoadingController,
         private _router: Router,
@@ -45,7 +53,8 @@ export class InicioPage implements OnInit {
         private principalSercicio: BusquedaService,
         private modalController: ModalController,
         private notificaciones: ToadNotificacionService,
-        private servicioPromociones: PromocionesService
+        private servicioPromociones: PromocionesService,
+        private navBarServiceService: NavBarServiceService
     ) {
         this.Filtros = new FiltrosModel();
         this.Filtros.idEstado = 29;
@@ -158,6 +167,62 @@ export class InicioPage implements OnInit {
             },
             error => {
                 //this._notificacionService.pushError(error);
+            }
+        );
+    }
+    /**
+      * funcion para obtener la informacion de las promociones
+      * @param promocion
+      * @author Omar
+      */
+    accionPromocion(promocion, ruta) {
+        this.urlNegocio = ruta + promocion.url_negocio;
+        this.promocion = promocion;
+        this.visteMiPromocion(promocion);
+        this.quienNumeroVioPublicacion(promocion.id_promocion);
+        this.rutaLink(this.urlNegocio);
+        setTimeout(() => {
+            this.navBarServiceService.promocionSeleccionada(promocion);
+        }, 1500);
+    }
+    /**
+      * Funcion para enlazar a otra pagina
+      * @param ruta
+      * @author Omar
+      */
+    rutaLink(ruta: string) {
+        console.log(ruta);
+        //this._router.navigateByUrl('#' + ruta, { skipLocationChange: true });
+        setTimeout(() => this._router.navigate([ruta]));
+    }
+    /**
+   * Funcion para guardar el quien vio la promocion
+   * @param promocion
+   * @author Omar
+   */
+    visteMiPromocion(promocion: PromocionesModel) {
+        this.ubicacion.latitud = this.miUbicacionlatitud;
+        this.ubicacion.longitud = this.miUbicacionlongitud;
+        this.servicioPromociones.guardarQuienVioPromocion(promocion, this.ubicacion).subscribe(
+            response => {
+                if (response.code === 200) {
+                }
+            },
+            error => {
+            }
+        );
+    }
+    /**
+ * funcion para obtener el detalle de quien ha visto la publicacion
+ * @param id_promocion
+ * @autor Omar
+ */
+    quienNumeroVioPublicacion(id_promocion) {
+        this.servicioPromociones.obtenerNumeroQuienVioPublicacion(id_promocion).subscribe(
+            response => {
+                this.numeroVistas = response.data;
+            },
+            error => {
             }
         );
     }
