@@ -3,9 +3,6 @@
     <ion-title>
      Perfil
     </ion-title>
-    <ion-buttons slot="end">
-      <ion-icon  style="font-size: 20px;" name="settings-outline" [routerLink]="['/tabs/datos-basicos']"></ion-icon>
-    </ion-buttons>
   </ion-toolbar>
   </ion-header>
 <ion-content fullscreen>
@@ -22,6 +19,10 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
+        <ion-item [routerLink]="['/tabs/datos-basicos']">
+          <ion-icon name="person-outline" style="margin-right: 5px; font-size: 20px;"></ion-icon>
+          <ion-label style="font-size: 15px;">Mi Cuenta</ion-label>
+        </ion-item> 
         <ion-item [routerLink]="['/tabs/cambio-contrasenia']">
           <ion-icon name="key-outline" style="margin-right: 5px; font-size: 20px;"></ion-icon>
           <ion-label style="font-size: 15px;">Cambiar Contraseña</ion-label>
