@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+   Cambiar Contraseña
+     </ion-title>
+     <ion-buttons slot="start">
+      <ion-icon class="ion-float-left " name="chevron-back-outline"[routerLink]="['/tabs/ajustes']"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+        <form [formGroup]="formGroup1" (ngSubmit)="cambiarContrasenia()" >
+        <ion-list>
+            <ion-item>
+                <ion-label position="stacked">Contraseña Actual</ion-label>
+                <ion-input name="contraseniaActual" type="password" formControlName="contraseniaActual" [(ngModel)]="contraseniaAct" required  ></ion-input>
+              </ion-item>
+              <span *ngIf="formGroup1.controls.contraseniaActual.invalid && formGroup1.controls.contraseniaActual.touched" class="mat-requerido">
+                la contraseña actual es requerido 
+              </span>
+              <ion-item>
+                <ion-label position="stacked">Nueva Contraseña</ion-label>
+                <ion-input type="password" name="contraseniaN" (keyup)="contraseniasIguales()" formControlName="contraseniaN" type="password" [(ngModel)]="contrasenia"></ion-input>
+              </ion-item>
+              <span *ngIf="formGroup1.controls.contraseniaN.invalid && formGroup1.controls.contraseniaN.touched" class="mat-requerido">
+               la contraseña nueva campo es requerido 
+              </span>
+              <span *ngIf="blnIgualesPassOriginalNuevo">
+                La contraseña debe ser diferente a la contraseña original
+              </span>
+              <ion-item>
+                <ion-label position="stacked">Repetir Contraseña</ion-label>
+                <ion-input name="contraseniaR" (keyup)="contraseniasIguales()" formControlName="contraseniaR" type="password" [(ngModel)]="contraseniaRepit"
+                required></ion-input>
+              </ion-item> 
+              <span *ngIf="blnIguales">
+                Las contraseñas no coinciden
+              </span>     
+        </ion-list>
+        <ion-button type="submit" color="primary" [disabled]="formGroup1.invalid || blnIguales" expand="block">Actualizar</ion-button>
+        </form>
+    </ion-card-content>
+</ion-card>
+</ion-content>
+
