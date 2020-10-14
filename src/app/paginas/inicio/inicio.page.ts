@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { LoadingController, MenuController, ModalController, ToastController } from "@ionic/angular";
 import { BusquedaService } from "../../api/busqueda.service";
 import { FiltrosModel } from '../../Modelos/FiltrosModel';
@@ -7,6 +7,7 @@ import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/fil
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { PromocionesService } from '../../api/busqueda/proveedores/promociones.service';
 import { FormControl } from '@angular/forms';
+import { IonSlides } from '@ionic/angular';
 
 @Component({
     selector: 'app-tab3',
@@ -30,6 +31,13 @@ export class InicioPage implements OnInit {
     lstPromociones: any;
     public lstAvisos: any;
     public listaPrueba: any;
+    promocionDefault: any;
+    slideOptsOne = {
+        initialSlide: 0,
+        slidesPerView: 1,
+        autoplay: true
+    };
+    @ViewChild('mySlider') slides: IonSlides;
     constructor(
         public loadingController: LoadingController,
         private _router: Router,
@@ -51,7 +59,12 @@ export class InicioPage implements OnInit {
         this.obtenerPromociones();
         this.obtenerAvisos();
     }
-
+    swipeNext() {
+        this.slides.slideNext();
+    }
+    swipePrev() {
+        this.slides.slidePrev();
+    }
     buscarNegocios() {
         this.presentLoading().then(a => { });
         this.principalSercicio.obtenerDatos(this.Filtros).subscribe(
@@ -119,33 +132,33 @@ export class InicioPage implements OnInit {
       */
     public obtenerPromociones() {
         // this.loaderPromo = true;
-            this.anyFiltros = new FiltrosModel(this.strBuscar,
-                null, this.filterMunicipio.value, this.kilometrosView,
-                this.miUbicacionlatitud, this.miUbicacionlongitud, this.tipoNegocio, this.tipoProducto, this.entregaDomicilio);
+        this.anyFiltros = new FiltrosModel(this.strBuscar,
+            null, this.filterMunicipio.value, this.kilometrosView,
+            this.miUbicacionlatitud, this.miUbicacionlongitud, this.tipoNegocio, this.tipoProducto, this.entregaDomicilio);
 
-            this.servicioPromociones.buscarPromocinesPublicadasFiltros(this.anyFiltros).subscribe(
-                response => {
-                    this.lstPromociones = response.data;
-                    //this.loaderPromo = false;
-                },
-                error => {
-                    // this._notificacionService.pushError(error);
-                }
-            );
+        this.servicioPromociones.buscarPromocinesPublicadasFiltros(this.anyFiltros).subscribe(
+            response => {
+                this.lstPromociones = response.data;
+                //this.loaderPromo = false;
+            },
+            error => {
+                // this._notificacionService.pushError(error);
+            }
+        );
     }
-/**
-   * Funcion para obtener avisos
-*/
-  public obtenerAvisos() {
-   // this.loaderPromo = true;
-   this.servicioPromociones.obtenerAvisos().subscribe(
-      response => {
-        this.lstAvisos = response.data;
-       // this.loaderPromo = false;
-      },
-      error => {
-        //this._notificacionService.pushError(error);
-      }
-    );
-  }
+    /**
+       * Funcion para obtener avisos
+    */
+    public obtenerAvisos() {
+        // this.loaderPromo = true;
+        this.servicioPromociones.obtenerAvisos().subscribe(
+            response => {
+                this.lstAvisos = response.data;
+                // this.loaderPromo = false;
+            },
+            error => {
+                //this._notificacionService.pushError(error);
+            }
+        );
+    }
 }

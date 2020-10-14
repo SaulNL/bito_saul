@@ -9,7 +9,6 @@ import { ExploreContainerComponentModule } from '../../explore-container/explore
 import { Tab3PageRoutingModule } from './inicio-routing.module'
 import {ToolbarBusquedaComponent} from "../../componentes/toolbar-busqueda/toolbar-busqueda.component";
 import {FiltrosBusquedaModule} from "../../componentes/filtros-busqueda/filtros-busqueda.module";
-import {BannerPromcionesComponent} from './../../componentes/banner-promciones/banner-promciones.component';
 
 @NgModule({
   imports: [
@@ -21,6 +20,6 @@ import {BannerPromcionesComponent} from './../../componentes/banner-promciones/b
     Tab3PageRoutingModule,
       FiltrosBusquedaModule
   ],
-    declarations: [InicioPage, ToolbarBusquedaComponent, BannerPromcionesComponent]
+    declarations: [InicioPage, ToolbarBusquedaComponent]
 })
 export class Tab3PageModule {}
