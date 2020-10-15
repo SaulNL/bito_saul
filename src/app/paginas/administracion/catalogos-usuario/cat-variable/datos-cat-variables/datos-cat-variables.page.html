@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" (click)="regresar()">
+      <ion-back-button defaultHref="/tabs/home/cat-variable"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Variable</ion-title>
+    <ion-buttons slot="end" *ngIf="variableTO.id_variable !null" >
+      <ion-button (click)="presentActionSheet()">
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="position: fixed;">
+  <form #form="ngForm" (ngSubmit)="actualizarDatos(form)">
+    <ion-card>
+      <ion-card-header>
+        <ion-item>
+          <ion-label>Nombre :</ion-label>
+          <ion-input #nombre="ngModel" required type="text" name="nombre" [(ngModel)]="variableTO.nombre" ></ion-input>
+        </ion-item>
+        <div *ngIf="nombre.touched  && nombre.invalid" class="alert alert-danger">
+          <div *ngIf="nombre.errors.required">el nombre es requerido
+          </div>
+      </div>
+        <ion-item>
+          <ion-label>Variable :</ion-label>
+          <ion-input #variable="ngModel" required type="text" name="variable" [(ngModel)]="variableTO.variable" ></ion-input>
+        </ion-item>
+        <div *ngIf="variable.touched  && variable.invalid" class="alert alert-danger">
+          <div *ngIf="variable.errors.required">el variable es requerido
+          </div>
+      </div>
+        <ion-item>
+          <ion-label>Valor :</ion-label>
+          <ion-input #valor="ngModel" type="text" [(ngModel)]="variableTO.valor" name="valor"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Valor Cadena :</ion-label>
+          <ion-input #valor_cadena="ngModel" type="text" [(ngModel)]="variableTO.valor_cadena" name="valor_cadena"></ion-input>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>Descripcion :</ion-label>
+          <ion-input #descripcion="ngModel" required type="text" [(ngModel)]="variableTO.descripcion" name="descripcion"></ion-input>
+        </ion-item>
+        <div *ngIf="descripcion.touched  && descripcion.invalid" class="alert alert-danger">
+          <div *ngIf="descripcion.errors.required">la descripcion es requerido
+          </div>
+      </div>
+      </ion-card-content>
+    </ion-card>
+<ion-list>
+  </ion-list>
+    <ion-button  type="submit" *ngIf="variableTO.id_variable  == null" color="secondary" [disabled]="form.invalid">Guardar</ion-button>
+    <ion-button  type="submit" *ngIf="valida ===true" color="secondary" >Actualizar</ion-button>
+    
+  </form>
+</ion-content>

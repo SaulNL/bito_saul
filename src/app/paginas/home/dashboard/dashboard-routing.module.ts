@@ -11,6 +11,14 @@ const routes: Routes = [
       {
         path: 'productos',
         loadChildren: () => import('../../productos/productos.module').then(m => m.Tab1PageModule)
+      },
+      {
+        path: 'cat-variable',
+        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-variable/cat-variable.module').then( m => m.CatVariablePageModule)
+      },
+      {
+        path: 'datos-cat-variables',
+        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-variable/datos-cat-variables/datos-cat-variables.module').then( m => m.DatosCatVariablesPageModule)
       }
       ]
   },
