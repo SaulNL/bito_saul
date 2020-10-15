@@ -1,0 +1,115 @@
+  <div> 
+    <div class="contenedor">
+      <img class="image" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/no_imagen.png" [srcset]="promocion.url_imagen">
+      <div class="middle-modal">
+        <button class="boton" (click)="masInformacion(promocion)">Más información</button>
+      </div>
+    </div>
+  </div>
+  <ion-grid>
+    <ion-row (click)="masInformacion(promocion)">
+      <ion-col class="ion-text-center" >
+        <h1 class="sinMargin rosa">{{ promocion.nombre_comercial }}</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <h2 class="sinMargin">{{ promocion.descripcion }}</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <h2 class="sinMargin promocion">{{ promocion.promocion }}</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <h2 class="promocion" style="color: grey;">{{ promocion.terminos }}</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <h2 class="promocion">Quedan <span style="color: #fa4f72;">{{ promocion.restanDias }} días</span> de esta promoción</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-content>
+            <ion-grid>
+              <ion-row>
+                <ion-col size="12" class="ion-text-center">
+                  <label>CONTACTA AL PROVEEDOR</label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12" class="ion-text-center">
+                  <p class="promocion">
+                    Dirección: {{ promocion.calle }} {{ promocion.numero_ext }} {{ promocion.colonia }}, {{ promocion.nombre_localidad !== undefined ? promocion.nombre_localidad + ', ': '' }}{{ promocion.nombre_municipio }}, {{promocion.nombre_estado }}
+                  </p>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12" class="ion-text-center" *ngIf="blnPermisoUbicacion">
+                   <h2 class="promocion">A {{ promocion.distanciaNegocio}} Km cerca de tí.</h2>
+                   <ion-badge color="danger"><a href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{promocion.latitud}},{{promocion.longitud}}"
+                    target="_blank">Ir al lugar</a></ion-badge>
+                </ion-col>
+                <ion-col size="12" class="ion-text-center" *ngIf="!blnPermisoUbicacion">
+                  <h2 class="aDefault promocion" matTooltip="Bitoo no puede obtener tu ubicación. Por favor activa los permisos de ubicación del navegador para poder determinar la distancia a la que se encuentra el negocio">
+                      Distancia desconocida
+                  </h2>
+               </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12" class="ion-text-center">
+                  <h2>Enviale un whats: <a href="https://api.whatsapp.com/send?phone=+52{{promocion.celular}}" target="_blank" style="background-color: #1c7430" class="text-white">
+                    {{promocion.celular}}
+                  </a></h2>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <ion-grid>
+              <ion-row>
+                <ion-col size=12>
+                  <div (click)="motrarContacto = !motrarContacto;" class="list">
+                    <ul>
+                      <li>{{ promocion.estatus.tipo === 1 ? 'Abierto' : 'Cerrado'}}</li>
+                      <li class="lista">
+                        <div>
+                          {{ promocion.estatus.mensaje }}
+                        </div>
+                        <div style="margin: 0px 5px" *ngIf="!motrarContacto" >
+                            <ion-icon name="arrow-up-outline"></ion-icon>
+                        </div>
+                        <div style="margin: 0px 5px" *ngIf="motrarContacto">
+                          <ion-icon name="arrow-down-outline"></ion-icon>
+                        </div>
+                      </li>
+                    </ul>
+                    <div style="margin: 0px 5px" *ngIf="!motrarContacto && promocion.estatus!==undefined">
+                      <ion-list>
+                        <ion-item *ngFor="let dia of promocion.diasArray">
+                          <ion-grid>
+                            <ion-row class="lista">
+                              <ion-col><p [ngClass]="{'negritas':dia.id === hoy}">{{ dia.dia }}</p></ion-col>
+                              <ion-col *ngIf="dia.horarios.length > 0">
+                                <span *ngFor="let h of dia.horarios "><p class="negritas">{{h.texto}}</p></span>
+                              </ion-col>
+                              <ion-col *ngIf="dia.horarios.length === 0">
+                                <ion-badge color="danger">Cerrado</ion-badge>
+                              </ion-col>
+                            </ion-row>
+                          </ion-grid>
+                        </ion-item>
+                      </ion-list>
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
