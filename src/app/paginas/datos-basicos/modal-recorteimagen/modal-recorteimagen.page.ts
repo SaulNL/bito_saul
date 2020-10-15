@@ -54,6 +54,7 @@ guardarImagenRecortada(){
 }
 cerraModal(){
 this.modalController.dismiss();
-document.getElementById('selfie').value = "";
+var inputElement = <HTMLInputElement>document.getElementById('selfie');
+inputElement.value = '';
 }
 }
