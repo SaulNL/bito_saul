@@ -11,6 +11,14 @@ const routes: Routes = [
       {
         path: 'perfil',
         loadChildren: () => import('../../ajustes/ajustes.module').then(m => m.AjustesPageModule)
+      },
+      {
+        path: 'cat-variable',
+        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-variable/cat-variable.module').then( m => m.CatVariablePageModule)
+      },
+      {
+        path: 'datos-cat-variables',
+        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-variable/datos-cat-variables/datos-cat-variables.module').then( m => m.DatosCatVariablesPageModule)
       }
       ]
   },
