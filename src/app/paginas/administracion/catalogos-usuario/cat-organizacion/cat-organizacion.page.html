@@ -1,0 +1,47 @@
+<ion-header *ngIf="!blnActivaDatosOrganizacion">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Organizaciones</ion-title>
+    <ion-buttons slot="end" >
+      <ion-button (click)="agregaOrganizacion()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!blnActivaDatosOrganizacion">
+  <ion-item>
+    <h2 *ngIf="this.isToggled === false">Activar Filtros</h2>
+    <h2 *ngIf="this.isToggled === true">Cancelar Filtros</h2>
+    <ion-toggle slot="end" name="blackberry" color="dark" [(ngModel)]="isToggled" (ionChange)="notify()"></ion-toggle>
+  </ion-item>
+  <form *ngIf="this.isToggled === true" #formOrganizaciones="ngForm" (ngSubmit)="obtenerOrganizaciones()">
+    <ion-card>
+        <ion-item>
+          <ion-label>No Organizacion :</ion-label>
+          <ion-input #id_organizacion="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="id_organizacion" [(ngModel)]="filtro.id_organizacion"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Nombre :</ion-label>
+          <ion-input #nombre="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="nombre" [(ngModel)]="filtro.nombre"></ion-input>
+        </ion-item>
+    </ion-card>
+    <div>
+      <ion-button expand="full" type="submit"  color="secondary">Buscar</ion-button>
+    </div>
+  </form>
+  <ion-list>
+    <ion-item *ngFor="let item of lstCatOrganizaciones"> 
+      <ion-label  (click)="datosOrganizaciones(item)">
+         <h2>{{item.nombre}}</h2>
+      </ion-label>
+      <ion-icon name="caret-forward-outline"></ion-icon>   
+    </ion-item>
+  </ion-list>
+</ion-content>
+<div *ngIf="blnActivaDatosOrganizacion">
+  <app-datos-cat-organizacion [actualTO]="selectTO" ></app-datos-cat-organizacion>
+</div>
