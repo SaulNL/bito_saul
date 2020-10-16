@@ -6,8 +6,8 @@
 <!--    </ion-toolbar>-->
 <!--</ion-header>-->
 <app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
-<app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
 <ion-content [fullscreen]="true">
+    <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
         <ion-item>
                 <ion-buttons slot="end">
                     <ion-button (click)="abrirFiltros()">Filtrar

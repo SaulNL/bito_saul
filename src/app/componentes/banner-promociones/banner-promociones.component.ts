@@ -5,6 +5,7 @@ import { PromocionesModel } from '../../Modelos/busqueda/PromocionesModel';
 import { NavBarServiceService } from '../../../app/api/busqueda/nav-bar-service.service';
 import { Router } from '@angular/router';
 import { UbicacionModel } from './../../Modelos/busqueda/UbicacionModel';
+import { AlertController } from '@ionic/angular';
 
 
 
@@ -34,7 +35,8 @@ export class BannerPromocionesComponent implements OnInit {
   constructor(
     private servicioPromociones: PromocionesService,
     private navBarServiceService: NavBarServiceService,
-    private _router: Router
+    private _router: Router,
+    public alertController: AlertController
   ) {
     this.lstPromociones = [];
     this.lstAvisos = [];
@@ -43,6 +45,16 @@ export class BannerPromocionesComponent implements OnInit {
     this.obtenerGeolocalizacion();
     this.obtenerPromociones(this.anyFiltros);
     this.obtenerAvisos();
+  }
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Información',
+      message: 'Esta imagen es solo informativa',
+      buttons: ['Cerrar']
+    });
+
+    await alert.present();
   }
   swipeNext() {
     this.slides.slideNext();
