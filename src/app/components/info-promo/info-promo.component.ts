@@ -1,9 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
+import { HaversineService, GeoCoord } from "ng2-haversine";
+
+/*
 declare var require: any;
-const haversineCalculator = require('haversine-calculator');
+const haversineCalculator = require('haversine-calculator');*/
 
 
 @Component({
@@ -20,7 +22,7 @@ export class InfoPromoComponent implements OnInit {
   public miLng: any;
   public hoy: any;
 
-  constructor( public modalController: ModalController, private router: Router) { 
+  constructor( public modalController: ModalController, private router: Router, private _haversineService: HaversineService) { 
   }
 
   ngOnInit() {
@@ -47,7 +49,7 @@ export class InfoPromoComponent implements OnInit {
           latitude: promocion.latitud,
           longitude: promocion.longitud
         };
-        let dis = haversineCalculator(start, end);
+        let dis = this._haversineService.getDistanceInKilometers(start, end);
         promocion.distanciaNegocio = dis.toFixed(2);
       },
       error => {

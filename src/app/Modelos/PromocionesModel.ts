@@ -24,14 +24,9 @@ export class PromocionesModel {
   public proveedorNegocio: MsProveedorModel;
   public categoria:string;
   public id_giro:number;
-
   public fecha_inicio_public: Date;
   public fecha_fin_public: Date;
-
-  public proveedor:string;
   public id_proveedor:number;
-
-  public nombre_comercial: string;
   totalPublicaciones: number;
 
   public id_negocio:number;
@@ -39,7 +34,6 @@ export class PromocionesModel {
   public jsonImagenBanner:string;
 
   public id_publicacion:number;
-  public id_proveedor:number;
 
   public lstDatos: any;
   public promociones:Array<PromocionesModel>;

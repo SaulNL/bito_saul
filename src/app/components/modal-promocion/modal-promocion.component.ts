@@ -5,12 +5,13 @@ import { Router } from '@angular/router';
 import { PromocionesService } from '../../api/promociones.service';
 import { PromocionesModel } from '../../Modelos/PromocionesModel';
 import { FiltrosModel } from '../../Modelos/FiltrosModel';
-import { JsonPipe } from '@angular/common';
+import { HaversineService, GeoCoord } from "ng2-haversine";
 
+
+/*
 declare var require: any;
-
 const haversineCalculator = require('haversine-calculator');
-
+*/
 @Component({
   selector: 'app-modal-promocion',
   templateUrl: './modal-promocion.component.html',
@@ -40,7 +41,7 @@ export class ModalPromocionComponent implements OnInit {
   public anyFiltros    : FiltrosModel;
   public loader        : boolean = false;
 
-  constructor(public modalController: ModalController, private router: Router, private _promociones: PromocionesService ) { 
+  constructor(public modalController: ModalController, private router: Router, private _promociones: PromocionesService, private _haversineService: HaversineService ) { 
   }
 
   ngOnInit() {
@@ -221,7 +222,7 @@ export class ModalPromocionComponent implements OnInit {
           latitude: promocion.latitud,
           longitude: promocion.longitud
         };
-        let dis = haversineCalculator(start, end);
+        let dis = this._haversineService.getDistanceInKilometers(start, end);
         promocion.distanciaNegocio = dis.toFixed(2);
       },
       error => {

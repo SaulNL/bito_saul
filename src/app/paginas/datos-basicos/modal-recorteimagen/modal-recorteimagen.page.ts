@@ -52,8 +52,8 @@ guardarImagenRecortada(){
   'nombre_archivo': this.file_name
   });
 }
-cerraModal(){
-this.modalController.dismiss();
-document.getElementById('selfie').value = "";
-}
+  cerraModal(){
+    this.modalController.dismiss();
+    let tsnString = (document.getElementById("selfie") as HTMLTextAreaElement).value="";
+  }
 }
