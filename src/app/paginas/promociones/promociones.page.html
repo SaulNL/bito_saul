@@ -7,11 +7,25 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Promociones</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="promociones"></app-explore-container>
+  <div *ngIf="lstPromociones.length == 0 && !loader">
+    <ion-grid>
+      <ion-row style="margin: 10px;">
+        <ion-col size="12" style="background: red; border-radius: 20px; padding: 10px; text-align: center;">
+          <strong>Lo sentimos!</strong> No se encontraron promociones con la busqueda.
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div *ngIf="!loader">
+    <ion-grid *ngFor="let categorias of lstPromociones" class=".categoria" >
+      <ion-row class="categoria">
+        <h2>{{ categorias.nombre }}</h2>
+      </ion-row>
+      <ion-row *ngFor="let promocion of categorias.promociones">
+        <ion-col size="12">
+          <app-promocion [promocion]="promocion"></app-promocion>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-content>

@@ -11,6 +11,8 @@ import { AppComponent } from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import { FormsModule } from '@angular/forms';
 
+import { HaversineService } from "ng2-haversine";
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +21,7 @@ import { FormsModule } from '@angular/forms';
   providers: [
     StatusBar,
     SplashScreen,
+    HaversineService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

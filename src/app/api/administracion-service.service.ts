@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import { FiltroCatVariableModel } from './../Modelos/catalogos/FiltroCatVariableModel';
 import { FiltroCatOrgModel } from './../Modelos/catalogos/FiltroCatOrgModel';
+import { FiltroCatAvisosInfoModel } from './../Modelos/catalogos/FiltroCatAvisosInfoModel';
 import {AppSettings} from '../AppSettings';
 
 @Injectable({
@@ -104,6 +105,61 @@ export class AdministracionService {
     const body = JSON.stringify(filtro);
     return this._http.post(
       this.url + 'api/admin/catalogos/guardar/opganizacion', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+  /*CATALOGO AVISOS DE INFORMACIÓN*/
+  obtenerAviso(filtro: FiltroCatAvisosInfoModel): Observable<any> {
+    const body = JSON.stringify(filtro);
+    return this._http.post(
+      this.url + 'api/catalogos/adminUser/listAvisos', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+  listarAviso(): Observable<any> {
+    const body = JSON.stringify(null);
+    return this._http.post(
+      this.url + 'api/catalogos/adminUser/listAvisos', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+  guardarAviso(filtro: FiltroCatAvisosInfoModel): Observable<any> {
+    const body = JSON.stringify(filtro);
+    return this._http.post(
+      this.url + 'api/catalogos/adminUser/guardar/catAviso', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+  eliminarAviso(id_aviso: number): Observable<any> {
+    const body = JSON.stringify({'id_aviso': id_aviso});
+    return this._http.post(
+      this.url + 'api/catalogos/adminUser/eliminarAviso', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
+  validarAviso(aviso: any): Observable<any> {
+    const body = JSON.stringify(aviso);
+    return this._http.post(
+      this.url + 'api/catalogos/adminUser/cambiarEstatusAviso', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
+  guardarPopever(filtro: FiltroCatAvisosInfoModel): Observable<any> {
+    const body = JSON.stringify(filtro);
+    return this._http.post(
+      this.url + 'api/catalogos/adminUser/guardar/catAvisoPopover', body,
       {headers: AppSettings.getHeadersToken()}
     ).pipe(map(res => {
       return res;

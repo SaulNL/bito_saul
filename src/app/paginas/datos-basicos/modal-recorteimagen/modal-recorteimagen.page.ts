@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import {ArchivoComunModel} from '../../../Modelos/ArchivoComunModel';
 import { UtilsCls } from '../../../utils/UtilsCls';
+import {DatosBasicosPage} from '../datos-basicos.page';
 @Component({
   selector: 'app-modal-recorteimagen',
   templateUrl: './modal-recorteimagen.page.html',
@@ -16,7 +17,8 @@ export class ModalRecorteimagenPage implements OnInit {
   maintainAspectRatio: boolean = false;
   file_name: any;
   constructor(
-    public modalController: ModalController
+    public modalController: ModalController,
+    //public adminBasicos: DatosBasicosPage
   ) {
 
    }
@@ -52,5 +54,7 @@ guardarImagenRecortada(){
 }
 cerraModal(){
 this.modalController.dismiss();
+var inputElement = <HTMLInputElement>document.getElementById('selfie');
+inputElement.value = '';
 }
 }
