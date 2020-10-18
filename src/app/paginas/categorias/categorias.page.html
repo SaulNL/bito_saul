@@ -7,6 +7,7 @@
 
 
 <ion-content [fullscreen]="true">
+  <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
   <ion-grid>
     <ion-row *ngFor="let nomCategoria of listaCategorias">
         <img *ngIf="nomCategoria.url_imagen_movil !== null" [src]="nomCategoria.url_imagen_movil"

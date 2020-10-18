@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BusquedaService } from '../../api/busqueda.service';
 import {Router, ActivatedRoute} from '@angular/router';
+import { FiltrosModel } from '../../Modelos/FiltrosModel';
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.page.html',
@@ -9,7 +10,14 @@ import {Router, ActivatedRoute} from '@angular/router';
 export class CategoriasPage implements OnInit {
 
   public listaCategorias: Array<any>;
-  constructor(private busquedaService:BusquedaService,private router:Router) { }
+  private Filtros: FiltrosModel;
+  constructor(
+    private busquedaService:BusquedaService,
+    private router:Router
+    ) { 
+      this.Filtros = new FiltrosModel();
+      this.Filtros.idEstado = 29;
+    }
 
   ngOnInit() {
     this.obtenerCategorias();
