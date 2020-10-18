@@ -23,6 +23,10 @@ const routes: Routes = [
       {
         path: 'datos-cat-variables',
         loadChildren: () => import('./../../administracion/catalogos-usuario/cat-variable/datos-cat-variables/datos-cat-variables.module').then( m => m.DatosCatVariablesPageModule)
+      },
+      {
+        path: 'cat-categoria',
+        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-categoria/cat-categoria.module').then( m => m.CatCategoriaPageModule)
       }
       ]
   },
