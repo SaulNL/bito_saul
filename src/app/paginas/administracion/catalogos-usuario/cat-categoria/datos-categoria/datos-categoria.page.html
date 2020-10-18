@@ -1,0 +1,152 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons >
+      <ion-button  slot="start" (click)="regresar()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      <span *ngIf="categoriaTO.id_giro === null || categoriaTO.id_giro === undefined" class="">Agregar</span>
+      <span *ngIf="categoriaTO.id_giro!== null && categoriaTO.id_giro !== undefined" class="">Modificar</span>
+    </ion-title>
+    <ion-buttons slot="end" (click)="presentActionSheet()">
+      <ion-button>
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="position: fixed;">
+<ion-card>
+<!--<ion-card-header>-->
+<form #formBasicos="ngForm" (ngSubmit)="actualizarDatos(formBasicos)">
+<ion-list>
+  <ion-item>
+    <div class="form-group">
+      <div class="avatar-upload">
+          <div class="avatar-edit">
+              <input type='file' hidden id="imageUpload" accept="image/*" (change)="subirArchivo($event,3)" />
+              <label for="imageUpload">
+                <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
+              </label>
+          </div>
+          <div class="avatar-preview">
+              <div *ngIf="categoriaTO.icon === null || categoriaTO.icon === undefined" id="imageUpload" [ngStyle]="categoriaTO.icon !== null ?
+              {'background-image': 'url('+categoriaTO.url_icon+')'} : ''">
+              </div>
+              <div *ngIf="categoriaTO.icon !== null && categoriaTO.icon !== undefined" [ngStyle]="{
+           'background-image': 'url('+categoriaTO.icon.archivo_64+')'}">
+              </div>
+          </div>
+          <label for="imageUpload">Icono</label>
+      </div>
+  </div>
+  </ion-item>
+  <ion-item>
+    <div class="avatar-upload">
+      <div id="giroEdit" class="avatar-edit">
+          <input type='file' id="imageUploadLo" accept="image/*" (change)="subirArchivo($event,2)"/>
+          <label for="imageUploadLo">
+            <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
+          </label>
+      </div>
+      <div id="giro" class="avatar-preview">
+          <div *ngIf="categoriaTO.imagen_movil === null || categoriaTO.imagen_movil === undefined" id="imageUploadLo" [ngStyle]="categoriaTO.imagen_movil !== null ?
+          {'background-image': 'url('+categoriaTO.url_imagen_movil+')'} : ''">
+          </div>
+          <div *ngIf="categoriaTO.imagen_movil !== null && categoriaTO.imagen_movil !== undefined" [ngStyle]="{
+       'background-image': 'url('+categoriaTO.imagen_movil.archivo_64+')'}">
+          </div>
+      </div>
+      <label for="imageUploadLo">Separador Móvil</label>
+  </div>
+  </ion-item>
+  <ion-item>
+    <div class="avatar-upload">
+      <div id="giroBanner" class="avatar-edit">
+          <input type='file' id="imageUploadBanner" accept="image/*" (change)="subirArchivo($event,4)">
+          <label for="imageUploadBanner">
+            <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
+          </label>
+      </div>
+      <div id="banner" class="avatar-preview">
+          <div *ngIf="categoriaTO.banner === null || categoriaTO.banner === undefined" id="imageUploadBanners" [ngStyle]="categoriaTO.imagen_movil !== null ?
+          {'background-image': 'url('+categoriaTO.url_banner+')'} : ''">
+          </div>
+          <div *ngIf="categoriaTO.banner !== null && categoriaTO.banner !== undefined" [ngStyle]="{
+       'background-image': 'url('+categoriaTO.banner.archivo_64+')'}">
+          </div>
+      </div>
+      <label for="imageUploadBanner" >Banner</label>
+  </div>
+  </ion-item>
+  <ion-item>
+    <div class="avatar-upload">
+      <div id="giroImagenEdit" class="avatar-edit">
+          <input type='file' id="imageUploadLocal" accept="image/*" (change)="subirArchivo($event,1)" />
+          <label for="imageUploadLocal">
+            <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
+          </label>
+      </div>
+      <div id="giroImagen" class="avatar-preview">
+          <div *ngIf="categoriaTO.imagen === null || categoriaTO.imagen === undefined" id="imageUploadLocal" [ngStyle]="categoriaTO.imagen !== null ?
+          {'background-image': 'url('+categoriaTO.url_imagen+')'} : ''">
+          </div>
+          <div *ngIf="categoriaTO.imagen !== null && categoriaTO.imagen !== undefined" [ngStyle]="{
+       'background-image': 'url('+categoriaTO.imagen.archivo_64+')'}">
+          </div>
+      </div>
+      <label for="imageUploadLocal">Separador</label>
+  </div>
+  </ion-item>
+  <ion-item>
+    <div class="avatar-upload">
+      <div id="giroEdit" class="avatar-edit">
+        <input type='file' id="imageSepaUploadLocal" accept="image/*" (change)="subirArchivo($event, 5)" />
+        <label for="imageSepaUploadLocal">
+          <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
+        </label>
+      </div>
+      <div id="giro" class="avatar-preview">
+        <div *ngIf="categoriaTO.imagen_separador === null || categoriaTO.imagen_separador === undefined" id="imageUploadLo" [ngStyle]="categoriaTO.imagen_separador !== null ?
+                    {'background-image': 'url('+categoriaTO.url_imagen_separador+')'} : ''">
+        </div>
+        <div *ngIf="categoriaTO.imagen_separador !== null && categoriaTO.imagen_separador !== undefined" [ngStyle]="{
+                 'background-image': 'url('+categoriaTO.imagen_separador.archivo_64+')'}">
+        </div>
+      </div>
+      <label for="imageUploadLo" >Separador categoría</label>
+    </div>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Nombre</ion-label>
+    <ion-input  #nombre="ngModel" required  name="nombre" [(ngModel)]="categoriaTO.nombre"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Activo</ion-label>
+    <ion-select ok-text="Ok" cancel-text="Cancelar" #activo="ngModel" name="activo" [(ngModel)]="categoriaTO.activo" required>
+      <ion-select-option *ngFor="let a of activos" [value]="a.id">
+        {{a.activo}}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked" >Peso</ion-label>
+    <ion-input type="number" #peso="ngModel" required  name="peso" [(ngModel)]="categoriaTO.peso"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Tipo Negocio</ion-label>
+    <ion-select ok-text="Ok" cancel-text="Cancelar" #id_tipo_negocio="ngModel" required name="id_tipo_negocio" [(ngModel)]="categoriaTO.id_tipo_negocio">
+      <ion-select-option *ngFor="let e of lstCatTipoNego" [value]="e.id_tipo_negocio">{{e.nombre}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+</ion-list>
+<ion-button type="submit" color="primary" expand="block">
+  <span *ngIf="categoriaTO.id_giro === null || categoriaTO.id_giro === undefined">Guardar</span>
+  <span *ngIf="categoriaTO.id_giro!== null && categoriaTO.id_giro !== undefined">Actualizar</span>
+</ion-button>
+</form>
+<!--</ion-card-header>-->
+</ion-card>
+</ion-content>
