@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="regresar()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Rol</ion-title>
+    <ion-buttons slot="end" *ngIf="variableTO.id_rol !null">
+      <ion-button (click)="presentActionSheet()">
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #form="ngForm" (ngSubmit)="actualizarDatos(form)">
+    <ion-card>
+      <ion-card-header>
+        <ion-item>
+          <ion-label>Rol :</ion-label>
+          <ion-input #rol="ngModel" required type="text" name="rol" [(ngModel)]="variableTO.rol"></ion-input>
+        </ion-item>
+        <div *ngIf="rol.touched  && rol.invalid" class="alert alert-danger">
+          <div *ngIf="rol.errors.required">el rol es requerido
+          </div>
+        </div>
+        <ion-item>
+          <ion-label>Activo</ion-label>
+          <ion-toggle #activo="ngModel" name="activo" slot="end" name="blackberry" color="dark"
+            [(ngModel)]="variableTO.activo"></ion-toggle>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content>
+        <H2 *ngIf="blnBtnPermisos">Permisos</H2>
+        <div *ngIf="!blnBtnPermisos">
+          <ion-item color="danger">
+            <ion-label>Permisos requeridos</ion-label>
+          </ion-item>
+        </div>
+        <ion-item *ngFor="let permiso of variableTO.permisos">
+          <ion-label>{{permiso.nombre}}</ion-label>
+          <ion-checkbox [ngModelOptions]="{standalone: true}" (ionChange)="notify()"
+            [(ngModel)]="permiso.estaSeleccionado"></ion-checkbox>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div>
+            <ion-button style="position: relative;" type="submit" *ngIf="this.btnAdd.botonAgregar" color="secondary"
+              [disabled]="(!blnBtnPermisos ||form.invalid)&&this.btnAdd.botonAgregar===true">Guardar</ion-button>
+            <ion-button style="position: relative;" type="submit" *ngIf="valida ===true" color="secondary"
+              [disabled]="(!blnBtnPermisos ||form.invalid)&&this.btnAdd.botonAgregar===false">Actualizar</ion-button>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

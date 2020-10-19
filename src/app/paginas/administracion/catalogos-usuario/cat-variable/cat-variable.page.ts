@@ -3,6 +3,7 @@ import { FiltroCatVariableModel } from "../../../../Modelos/catalogos/FiltroCatV
 import { AdministracionService } from "../../../../api/administracion-service.service";
 import { constants } from "buffer";
 import { LoadingController } from "@ionic/angular";
+import { ToadNotificacionService } from "../../../../api/toad-notificacion.service";
 
 @Component({
   selector: "app-cat-variable",
@@ -16,8 +17,10 @@ export class CatVariablePage implements OnInit {
   public blnActivaDatosVariable: boolean;
   public isToggled: boolean;
   public loader : boolean;
+  public blnBtnFiltro: boolean;
 
   constructor(
+    private notifi: ToadNotificacionService,
     private servicioUsuarios: AdministracionService,
     public loadingController: LoadingController
   ) {
@@ -35,6 +38,19 @@ export class CatVariablePage implements OnInit {
   }
   ngOnInit() {
     this.getVariables();
+  }
+  setBlnFiltro() {
+    this.blnBtnFiltro = this.validarFiltros();
+  }
+  validarFiltros() {
+    if ((this.filtro.nombre !== null && this.filtro.nombre !== '') ||
+      (this.filtro.variable !== null && this.filtro.variable !== '') ||
+      (this.filtro.descripcion !== null && this.filtro.descripcion !== '')
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
   datosVariables(variable: FiltroCatVariableModel) {
     this.selectTO =  JSON.parse(JSON.stringify(variable));
@@ -65,14 +81,14 @@ export class CatVariablePage implements OnInit {
         //this.blnMensajeFiltro = true;
       },
       error => {
-        //this._notificacionService.pushError(error);
+        this.notifi.error(error);
       }
     );
-      //if (this.validarFiltros()) {
+      if (this.validarFiltros()) {
         //this.load = true;
         
-      //} else {
-        //this._notificacionService.pushAlert('Seleccione un parametro de búsqueda');
-      //}
+      } else {
+        this.notifi.alerta('Seleccione un parametro de búsqueda');
+      }
     }
 }

@@ -1,0 +1,63 @@
+<ion-header *ngIf="!blnActivaDatosPalabra">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Palabras Reservadas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="agregarPalabra()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!blnActivaDatosPalabra">
+  <ion-item>
+    <h2 *ngIf="!this.isToggled">Activar Filtros</h2>
+    <h2 *ngIf="this.isToggled">Cancelar Filtros</h2>
+    <ion-toggle slot="end" name="blackberry" color="dark" [(ngModel)]="isToggled" (ionChange)="notify()"></ion-toggle>
+  </ion-item>
+  <form *ngIf="this.isToggled" #form="ngForm" (ngSubmit)="logForm(form)">
+    <ion-card>
+      <ion-card-header>
+        <ion-item>
+          <ion-label>Palabra :</ion-label>
+          <ion-input type="text" #palabra="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="palabra" [(ngModel)]="filtro.palabra" ></ion-input>
+        </ion-item>
+      </ion-card-header>
+    </ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div>
+            
+            <ion-button type="submit" color="secondary" [disabled]="!blnBtnFiltro">Buscar</ion-button>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div>    
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    </form>
+  <ion-list >
+    <ion-item *ngFor="let palabras of lstCatPalabras">
+      <ion-buttons slot="start">
+        <ion-label >
+          {{palabras.id_palabra}}
+        </ion-label>
+      </ion-buttons>
+      <ion-label (click)="datosPalabra(palabras)">
+        {{palabras.palabra}}
+      </ion-label>
+      
+      <ion-toggle slot="end" name="cherry"  color="danger" (ionChange)="validarActivo(palabras)" [checked]="palabras.activo == 1"  ></ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<div *ngIf="blnActivaDatosPalabra">  
+  <app-datos-palabra-reservadas [actualTO]="selectTO"></app-datos-palabra-reservadas> 
+  
+</div>

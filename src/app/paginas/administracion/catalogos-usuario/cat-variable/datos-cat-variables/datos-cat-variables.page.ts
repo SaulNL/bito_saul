@@ -6,6 +6,7 @@ import { AlertController } from "@ionic/angular";
 import {NgForm} from "@angular/forms";
 import { CatVariablePage } from "../cat-variable.page";
 import { ActionSheetController } from '@ionic/angular';
+import { ToadNotificacionService } from "../../../../../api/toad-notificacion.service";
 
 
 @Component({
@@ -25,8 +26,10 @@ export class DatosCatVariablesPage implements OnInit {
   public lstCatVariable: Array<any>;
   public filtro: FiltroCatVariableModel;
   public valida: boolean;
-  constructor(public actionSheetController: ActionSheetController
-    ,private admin: CatVariablePage,
+  constructor(
+    private noti:  ToadNotificacionService,
+    public actionSheetController: ActionSheetController,
+    private admin: CatVariablePage,
     private route: ActivatedRoute,
     private servicioUsuarios: AdministracionService,
     public alertController: AlertController) {
@@ -39,19 +42,21 @@ export class DatosCatVariablesPage implements OnInit {
   }
   regresar(){
     this.admin.blnActivaDatosVariable = false;
+    this.admin.getVariables();
   }
   actualizarDatos(form: NgForm) {
     this.servicioUsuarios.guardarVarible(this.variableTO).subscribe(
       (data) => {
         if (data.code === 200) {
-          this.guardados();
+          this.noti.exito("Se guardo con exito");
+          this.regresar();
         } 
         if (data.code === 309) {
-          this.errorNombre();
+          this.noti.alerta("La Variable ya existe");
         }
       },
       (error) => {
-        this.errorServidor();
+        this.noti.error(error);
       }
     );
   }
@@ -80,54 +85,16 @@ export class DatosCatVariablesPage implements OnInit {
     });
     await alert.present();
   }
-  async errorNombre() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "La variable ya existe"
-    });
-    await alert.present();
-  }
-  async borrado() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Variable borrada"
-    });
-    await alert.present();
-  }
-  async errorServidor() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Error con el servidor"
-    });
-    await alert.present();
-  }
-  async errorEnUso() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Esta Variable esta en uso"
-    });
-    await alert.present();
-  }
-  async guardados() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Variable Guardada"
-    });
-    await alert.present();
-    this.regresar();
-  }
-  
   modalEliminar() {
     this.servicioUsuarios
       .eliminarVariable(this.variableTO.id_variable)
       .subscribe(
         (response) => {
-            this.borrado();
+          this.noti.exito("Variable borrada");
           this.regresar();
         },
         (error) => {
-          this.regresar();
-          this.errorServidor();
+          this.noti.error(error);
         }
       );
   }

@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start" (click)="regresar()">
-      <ion-back-button defaultHref="/tabs/home/cat-variable"></ion-back-button>
+    <ion-buttons slot="start">
+    <ion-button (click)="regresar()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
     </ion-buttons>
     <ion-title>Variable</ion-title>
     <ion-buttons slot="end" *ngIf="variableTO.id_variable !null" >
@@ -12,7 +14,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content style="position: fixed;">
+<ion-content>
   <form #form="ngForm" (ngSubmit)="actualizarDatos(form)">
     <ion-card>
       <ion-card-header>
@@ -52,10 +54,19 @@
       </div>
       </ion-card-content>
     </ion-card>
-<ion-list>
-  </ion-list>
-    <ion-button  type="submit" *ngIf="variableTO.id_variable  == null" color="secondary" [disabled]="form.invalid">Guardar</ion-button>
-    <ion-button  type="submit" *ngIf="valida ===true" color="secondary" >Actualizar</ion-button>
-    
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div>
+            <ion-button  type="submit" *ngIf="variableTO.id_variable  == null" color="secondary" [disabled]="form.invalid">Guardar</ion-button>
+            <ion-button  type="submit" *ngIf="valida ===true" color="secondary" >Actualizar</ion-button>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div>    
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </form>
 </ion-content>
