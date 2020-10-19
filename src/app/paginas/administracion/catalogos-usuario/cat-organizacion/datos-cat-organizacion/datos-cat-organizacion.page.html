@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" (click)="regresar()">
+      <ion-button>
+        <ion-icon name="arrow-back-sharp" #boton ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    
+
+    <ion-title>Detalles</ion-title>
+    <ion-buttons slot="end" (click)="presentActionSheet()">
+      <ion-button>
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="position: fixed;">
+  <form #formBasicos="ngForm" (ngSubmit)="actualizarDatos(formBasicos)">
+    <ion-card style="height: 100%;">
+      <ion-item>
+        <ion-label >Nombre: </ion-label>
+        <ion-input type="text" #nombre="ngModel" required name="nombre" [(ngModel)]="organizacionTO.nombre"></ion-input>
+      </ion-item>
+      <div *ngIf="nombre.touched  && nombre.invalid" class="alert alert-danger">
+        <div *ngIf="nombre.errors.required">El nombre es requerido
+        </div>
+      </div>
+      <ion-item>
+        <ion-label>Acrónimo: </ion-label>
+        <ion-input type="text" #acronimo="ngModel" required name="acronimo" [(ngModel)]="organizacionTO.acronimo"></ion-input>
+      </ion-item>
+      <div *ngIf="acronimo.touched  && acronimo.invalid" class="alert alert-danger">
+        <div *ngIf="acronimo.errors.required">El acronimo es requerido
+        </div>
+      </div>
+      <ion-item>
+        <ion-label>No productos: </ion-label>
+        <ion-input type="number" #num_proc="ngModel"name="num_proc" [(ngModel)]="organizacionTO.num_productos"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>No publicaciones: </ion-label>
+        <ion-input type="number" #num_public="ngModel"name="num_public" [(ngModel)]="organizacionTO.num_publicaciones"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Descripción: </ion-label>
+        <ion-textarea #decripcion="ngModel" required matInput name="descripcion" [(ngModel)]="organizacionTO.descripcion"></ion-textarea>
+      </ion-item>
+      <div *ngIf="decripcion.touched  && decripcion.invalid" class="alert alert-danger">
+          <div *ngIf="decripcion.errors.required">La descripción es requerida</div>
+      </div>   
+    </ion-card>
+
+    <div>
+      <ion-button  type="submit" *ngIf="organizacionTO.id_organizacion === null || organizacionTO.id_organizacion === undefined" color="secondary" [disabled]=" loader ||formBasicos.invalid">Guardar</ion-button>
+      <ion-button  type="submit" *ngIf="valida ===true" color="secondary" [disabled]=" loader ||formBasicos.invalid">Actualizar</ion-button>
+    </div>
+
+  </form>
+</ion-content>

@@ -6,7 +6,14 @@ import { FormsModule } from '@angular/forms';
 import { PromocionesPage } from './promociones.page';
 import { ExploreContainerComponentModule } from '../../explore-container/explore-container.module';
 
+
 import { Tab2PageRoutingModule } from './promociones-routing.module';
+
+/* Componentes */
+
+import { PromocionComponent } from '../../components/promocion/promocion.component';
+import { ModalPromocionComponent } from '../../components/modal-promocion/modal-promocion.component';
+import { InfoPromoComponent } from '../../components/info-promo/info-promo.component';
 
 @NgModule({
   imports: [
@@ -14,8 +21,13 @@ import { Tab2PageRoutingModule } from './promociones-routing.module';
     CommonModule,
     FormsModule,
     ExploreContainerComponentModule,
-    Tab2PageRoutingModule
+    Tab2PageRoutingModule,
   ],
-  declarations: [PromocionesPage]
+  declarations: [
+    PromocionesPage,
+    PromocionComponent,
+    ModalPromocionComponent,
+    InfoPromoComponent
+  ]
 })
 export class Tab2PageModule {}

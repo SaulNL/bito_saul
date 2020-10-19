@@ -1,4 +1,7 @@
-import {NegocioModel} from "./NegocioModel";
+import {MsNegocioModel} from './MsNegocioModel';
+import {MsProveedorModel} from './MsProveedorModel';
+import {EstatusModel} from "./EstatusModel";
+import {DiasArrayModel} from "./DiasArrayModel";
 
 export class PromocionesModel {
   public id_promocion: number;
@@ -11,19 +14,19 @@ export class PromocionesModel {
   public url_imagen: string;
   public url_imagen_banner: string;
   public url_imagen_poster: string;
-  public activo: number;
-
+  public activo: boolean;
   public fecha_inicio: Date;
   public fecha_fin: Date;
-  public activo_public:number;
-
+  public proveedor: string;
+  public nombre: string;
+  public nombre_comercial: string;
+  public negocio: MsNegocioModel;
+  public proveedorNegocio: MsProveedorModel;
+  public categoria:string;
+  public id_giro:number;
   public fecha_inicio_public: Date;
   public fecha_fin_public: Date;
-
-  public proveedor:string;
   public id_proveedor:number;
-
-  public nombre_comercial: string;
   totalPublicaciones: number;
 
   public id_negocio:number;
@@ -31,4 +34,40 @@ export class PromocionesModel {
   public jsonImagenBanner:string;
 
   public id_publicacion:number;
+
+  public lstDatos: any;
+  public promociones:Array<PromocionesModel>;
+
+  public restanDias:any;
+  public select:any;
+
+  public distanciaNegocio:any;
+  public latitud:any;
+  public longitud:any;
+
+  public diasArray:Array<DiasArrayModel>;
+  public estatus:EstatusModel;
+  public horarios:any;
+
+  public abierto:any;
+  public giro_negocio: any;
+
+  constructor(id_promocion: number = 0, promocion: string = '', tags: Array<string> = [], terminos: string = '', imagen: any = '', imagenBanner: any = '', imagenPoster: any = '', url_imagen: string = '', url_imagen_banner: string = '', url_imagen_poster: string = '', activo: boolean = null, fecha_inicio: Date = null, fecha_fin: Date = null, proveedor: string = '', nombre_comercial: string = '', select = 0) {
+    this.id_promocion = id_promocion;
+    this.promocion = promocion;
+    this.tags = tags;
+    this.terminos = terminos;
+    this.imagen = imagen;
+    this.imagenBanner = imagenBanner;
+    this.imagenPoster = imagenPoster;
+    this.url_imagen = url_imagen;
+    this.url_imagen_banner = url_imagen_banner;
+    this.url_imagen_poster = url_imagen_poster;
+    this.activo = activo;
+    this.fecha_inicio = fecha_inicio;
+    this.fecha_fin = fecha_fin;
+    this.proveedor = proveedor;
+    this.nombre_comercial = nombre_comercial;
+    this.select = select;
+  }
 }
