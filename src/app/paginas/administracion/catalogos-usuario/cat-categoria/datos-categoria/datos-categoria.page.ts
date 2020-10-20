@@ -29,6 +29,8 @@ export class DatosCategoriaPage implements OnInit {
   ];
   private file_img_galeria: FileList;
   public loader: any;
+  public blnActivoSubcategorias: boolean;
+  public blnActivoCategoria: boolean;
   constructor(
     private servicioUsuarios: AdministracionService,
     public actionSheetController: ActionSheetController,
@@ -39,6 +41,8 @@ export class DatosCategoriaPage implements OnInit {
     public loadingController: LoadingController
   ) {
     this.lstCatTipoNego = [];
+    this.blnActivoSubcategorias = false;
+    this.blnActivoCategoria = true;
   }
 
   ngOnInit() {
@@ -67,19 +71,20 @@ export class DatosCategoriaPage implements OnInit {
     const actionSheet = await this.actionSheetController.create({
       header: 'Categoria',
       cssClass: 'my-custom-class',
-      buttons: [{
+      buttons: [ {
+        text: 'Subcategorias',
+        icon: 'book-outline',
+        handler: () => {
+          //  this._router.navigate(['/tabs/cambio-contrasenia']);
+          this.abrirSubcategorias();
+        }
+      },{
         text: 'Eliminar',
         icon: 'trash-outline',
         role: 'destructive',
         handler: () => {
           this.presentAlertConfirm();
           // this._router.navigate(['/tabs/datos-basicos']);
-        }
-      }, {
-        text: 'Subcategoria',
-        icon: 'book-outline',
-        handler: () => {
-          //  this._router.navigate(['/tabs/cambio-contrasenia']);
         }
       }, {
         text: 'Cancel',
@@ -231,6 +236,10 @@ export class DatosCategoriaPage implements OnInit {
         this.loader.dismiss();
       }
     );
+  }
+  abrirSubcategorias(){
+    this.blnActivoSubcategorias = true;
+    this.blnActivoCategoria = false;
   }
 }
 

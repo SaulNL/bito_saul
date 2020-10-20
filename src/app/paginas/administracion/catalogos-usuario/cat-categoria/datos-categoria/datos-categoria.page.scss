@@ -99,5 +99,98 @@
     top: 3.1vh;
 }
 
-
-  
+/*@media only screen and (min-width: 1024px) and (orientation: landscape) { 
+  #giro, #giroImagen, #banner  {
+    width: 52vw;
+    height: 10vh;
+    left: -18vw;
+  }
+  #giro>div {
+    max-height: 8vh !important;
+  }
+  #giroEdit, #giroBanner , #giroImagenEdit {
+    right: -20vw !important;
+    top: 2vh !important;
+  }
+  #giroImagen>div, #banner>div {
+    max-height: 2vh;
+  }
+  .avatar-preview {
+    right: -37vh;
+  }
+  .avatar-edit {
+    right: -32vw !important;
+  }
+ }*/
+/*@media only screen and (min-width: 768px) and (orientation: landscape) { 
+  #giro, #giroImagen, #banner  {
+    width: 54vw;
+    height: 9vh;
+    border-radius: 0%;
+    left: -22vw;
+  }
+  #giro>div {
+    max-height: 71px;
+  }
+  #giroEdit, #giroBanner , #giroImagenEdit {
+    right: -20vw !important;
+    top: 2vh !important;
+  }
+  #giroImagen>div, #banner>div {
+    max-height: 28px;
+  }
+  .avatar-preview {
+    right: -23vw;
+  }
+  .avatar-edit {
+    right: -32vw !important;
+  }
+ }*/
+/* @media only screen and (min-device-width: 1024px) and (orientation: portrait) { 
+  #giro, #giroImagen, #banner {
+    width: 60vw !important;
+    height: 7vh !important;
+    left: -22vw !important;
+   }
+   #giro>div {
+    max-height: 5vh !important;
+  }
+  #giroImagen>div, #banner>div {
+    max-height: 1vh !important;
+  }
+  #giroEdit, #giroBanner , #giroImagenEdit {
+    right: -23vw !important;
+    top: 1vh !important;
+  }
+ .avatar-preview {
+    right: -26vw;
+  }
+  .avatar-edit {
+    right: -32vw !important;
+  }
+ }*/
+ /*@media only screen and (min-device-width: 768px) and (orientation: portrait) { 
+  #giro, #giroImagen, #banner {
+    width: 60vw !important;
+    height: 7vh !important;
+    left: -22vw !important;
+   }
+   #giro>div {
+    max-height: 5vh !important;
+  }
+  #giroImagen>div, #banner>div {
+    max-height: 3vh !important;
+    top: 2vh;
+  }
+  #giroEdit, #giroBanner , #giroImagenEdit {
+    right: -23vw !important;
+    top: 1vh !important;
+  }
+  .avatar-preview {
+    right: -25vw;
+  }
+  .avatar-edit {
+    right: -40vw !important;
+    top: 4vh !important;
+  }
+ }*/
