@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BusquedaService } from '../../api/busqueda.service';
 import {Router, ActivatedRoute} from '@angular/router';
 import { FiltrosModel } from '../../Modelos/FiltrosModel';
+import { HostListener } from '@angular/core';
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.page.html',
@@ -11,6 +12,7 @@ export class CategoriasPage implements OnInit {
 
   public listaCategorias: Array<any>;
   private Filtros: FiltrosModel;
+  public imgMobil:boolean;
   constructor(
     private busquedaService:BusquedaService,
     private router:Router
@@ -21,7 +23,21 @@ export class CategoriasPage implements OnInit {
 
   ngOnInit() {
     this.obtenerCategorias();
+    if(window.innerWidth<=768){
+      this.imgMobil=true;
+    }else{
+      this.imgMobil=false;
+    }
   }
+
+  @HostListener('window:resize', ['$event']) 
+    onResize(event){
+      if(window.innerWidth<=768){
+        this.imgMobil=true;
+      }else{
+        this.imgMobil=false;
+      }
+    } 
   
   obtenerCategorias(){
     this.busquedaService.obtenerCategorias().subscribe(
