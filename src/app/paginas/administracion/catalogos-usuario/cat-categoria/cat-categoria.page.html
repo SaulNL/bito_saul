@@ -1,0 +1,57 @@
+<ion-header *ngIf="blnActivaDatosCategoria">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Categorias</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="agregarCategoria()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="blnActivaDatosCategoria">
+  <ion-item>
+    <ion-buttons slot="end">
+        <ion-button (click)="abrirFiltro()">
+          <span *ngIf="!blnActivaFitro">Filtros</span>
+          <ion-icon *ngIf="!blnActivaFitro" name="search-outline"></ion-icon>
+          <span *ngIf="blnActivaFitro">Cerrar</span> 
+          <ion-icon *ngIf="blnActivaFitro" name="close-outline"></ion-icon>       
+        </ion-button>
+    </ion-buttons>
+</ion-item>
+  <ion-card *ngIf="blnActivaFitro">
+    <ion-card-header>
+      <form #formCtegoria="ngForm" (ngSubmit)="obtenerCategoria()">
+      <ion-list>
+        <ion-item>
+      <ion-label>No Categoria</ion-label>
+      <ion-input #id_giro="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="id_giro" [(ngModel)]="filtro.id_giro"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Nombre</ion-label>
+      <ion-input #nombre="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="nombre" [(ngModel)]="filtro.nombre"></ion-input>
+    </ion-item>
+    </ion-list>
+    <ion-button type="submit" color="primary" expand="block" [disabled]="!blnBtnFiltro">Buscar</ion-button>
+    <ion-button type="button" color="medium" expand="block" (click)="limpiarFiltro()" [disabled]="!blnBtnFiltro">Limpiar</ion-button>
+  </form>
+    </ion-card-header>
+  </ion-card>
+  <ion-card style="margin-bottom: 3%;">
+<ion-list *ngFor="let item of lstCatCategoria">
+  <ion-item (click)="datosCategoria(item)">
+    <img [src]="item.url_icon" style="width:8vw; margin: 5px;">
+    <ion-label>{{item.nombre}}</ion-label>
+    <ion-buttons slot="end">
+    <ion-icon name="chevron-forward-outline"></ion-icon>
+  </ion-buttons>
+  </ion-item>
+</ion-list>
+</ion-card>
+</ion-content>
+<app-datos-categoria *ngIf="!blnActivaDatosCategoria" [actualTO]="selectTO"></app-datos-categoria>
+

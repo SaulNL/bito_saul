@@ -9,10 +9,12 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./paginas/login/login.module').then( m => m.LoginPageModule)
-  },  {
+  },
+  {
     path: 'categorias',
     loadChildren: () => import('./paginas/categorias/categorias.module').then( m => m.CategoriasPageModule)
   }
+
 
 ];
 @NgModule({

@@ -1,0 +1,30 @@
+<ion-header *ngIf="!blnActivaDatosSubcategoria">
+  <ion-toolbar>
+    <ion-buttons slot="start" (click)=" cerraCatSubcategoria();">
+      <ion-button>
+        <ion-icon class="ion-float-left " name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Subcategorias</ion-title>
+    <ion-buttons slot="end" (click)="agregarSubcategoria()">
+      <ion-button>
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="position: fixed;" *ngIf="!blnActivaDatosSubcategoria">
+ <ion-card style="margin-bottom: 15%;">
+  <ion-list *ngFor="let item of lstCatSubcategoria">
+    <ion-item (click)="datosSubcategoria(item)">
+      <img [src]="item.url_icon" style="width:8vw; margin: 5px;">
+      <ion-label>{{item.nombre}}</ion-label>
+      <ion-buttons slot="end">
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-buttons>
+    </ion-item>
+  </ion-list>
+ </ion-card>
+</ion-content>
+<app-datos-subcategoria *ngIf="blnActivaDatosSubcategoria" [actualTO]="selectTO"></app-datos-subcategoria>

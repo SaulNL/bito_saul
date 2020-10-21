@@ -43,6 +43,10 @@ const routes: Routes = [
       {
         path: 'datos-palabra-reservadas',
         loadChildren: () => import('./../../administracion/catalogos-usuario/cat-palabra-reservadas/datos-palabra-reservadas/datos-palabra-reservadas.module').then( m => m.DatosPalabraReservadasPageModule)
+      },
+      {
+        path: 'cat-categoria',
+        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-categoria/cat-categoria.module').then(m => m.CatCategoriaPageModule)
       }
       ]
   },
