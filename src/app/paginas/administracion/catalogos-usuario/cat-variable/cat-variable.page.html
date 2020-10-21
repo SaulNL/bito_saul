@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Catalogo Variables</ion-title>
+    <ion-title>Catalogo de Variables</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="agregarVariable()">
         <ion-icon name="add-outline"></ion-icon>
@@ -23,21 +23,33 @@
       <ion-card-header>
         <ion-item>
           <ion-label>Nombre :</ion-label>
-          <ion-input type="text" [(ngModel)]="filtro.nombre" name="nombre"></ion-input>
+          <ion-input type="text" #nombre="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="nombre" [(ngModel)]="filtro.nombre" ></ion-input>
         </ion-item>
         <ion-item>
           <ion-label>Variable :</ion-label>
-          <ion-input type="text" [(ngModel)]="filtro.variable" name="variable"></ion-input>
+          <ion-input type="text" #variable="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="variable" [(ngModel)]="filtro.variable" ></ion-input>
         </ion-item>
       </ion-card-header>
       <ion-card-content>
         <ion-item>
           <ion-label>Descripcion :</ion-label>
-          <ion-input type="text" [(ngModel)]="filtro.descripcion" name="descripcion"></ion-input>
+          <ion-input type="text" #descripcion="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="descripcion" [(ngModel)]="filtro.descripcion" ></ion-input>
         </ion-item>
       </ion-card-content>
     </ion-card>
-        <ion-button expand="full" type="submit" color="secondary">Buscar</ion-button>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div>
+            <ion-button type="submit" color="secondary" [disabled]="!blnBtnFiltro">Buscar</ion-button>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div>    
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
     </form>
   <ion-list >
     <ion-item *ngFor="let variable of lstCatVariable" >
