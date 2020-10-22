@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter} from '@angular/core';
 import {ProductoModel} from "../../Modelos/ProductoModel";
 import {LoadingController, ModalController, ToastController} from "@ionic/angular";
 import {Router} from "@angular/router";
@@ -7,6 +7,8 @@ import {ProductosService} from "../../api/productos.service";
 import {FiltrosModel} from "../../Modelos/FiltrosModel";
 import {FiltroABCModel} from "../../Modelos/FiltroABCModel";
 import {ModalProductoPage} from "./modal-producto/modal-producto.page";
+import {ToadNotificacionService} from "../../api/toad-notificacion.service";
+import {FiltrosBusquedaComponent} from "../../componentes/filtros-busqueda/filtros-busqueda.component";
 
 @Component({
   selector: 'app-tab1',
@@ -28,6 +30,9 @@ export class ProductosPage {
   public producto: any;
   public seleccionadoDetalleArray: Array<ProductoModel>;
   public currentModal:HTMLIonModalElement;
+  public listaCategorias: any;
+  private modal: any;
+  public strBuscar: any;
 
   constructor(
       public loadingController: LoadingController,
@@ -35,16 +40,18 @@ export class ProductosPage {
       private toadController: ToastController,
       private principalSercicio: BusquedaService,
       private servicioProductos: ProductosService,
-      public modalController: ModalController
+      public modalController: ModalController,
+      private notificaciones: ToadNotificacionService
   ) {}
 
   ngOnInit(): void {
+    this.anyFiltros = new FiltrosModel();
+    this.anyFiltros.idEstado = 29;
     this.producto = null;
     this.loader = null;
     this.motrarContacto = true;
     this.loaderLike = false;
     this.filtroCheckend = null;
-    this.anyFiltros = new FiltrosModel();
     this.lstProductos = new Array<ProductoModel>();
     this.lstProductosBK = new Array<ProductoModel>();
     this.seleccionadoDetalleArray = new Array<ProductoModel>();
@@ -218,5 +225,36 @@ export class ProductosPage {
     });
     this.currentModal = modal;
     return await modal.present();
+  }
+
+  /**
+   * Funcion para obtener
+   * @param event
+   */
+  buscarToolbar(event) {
+    this.anyFiltros.strBuscar = event;
+    this.obtenerProductos();
+  }
+  abrirFiltros() {
+    this.presentModalFiltro();
+  }
+  async presentModalFiltro() {
+    let eventEmitter = new EventEmitter();
+    eventEmitter.subscribe(res => {
+      this.modal.dismiss({
+        'dismissed': true
+      });
+      this.anyFiltros = res;
+      console.log(res);
+      this.obtenerProductos();
+    });
+    this.modal = await this.modalController.create({
+      component: FiltrosBusquedaComponent,
+      componentProps: {
+        buscarPorFiltros: eventEmitter,
+        filtros: this.anyFiltros
+      }
+    });
+    return await this.modal.present();
   }
 }
