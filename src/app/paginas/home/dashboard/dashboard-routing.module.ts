@@ -47,6 +47,14 @@ const routes: Routes = [
       {
         path: 'cat-categoria',
         loadChildren: () => import('./../../administracion/catalogos-usuario/cat-categoria/cat-categoria.module').then(m => m.CatCategoriaPageModule)
+      },
+      {
+        path: 'cat-denuncias-negocio',
+        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-denuncias-negocio/cat-denuncias-negocio.module').then(m => m.CatDenunciasNegocioPageModule)
+      },
+      {
+        path: 'cat-tipo-venta',
+        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-tipo-venta/cat-tipo-venta.module').then(m => m.CatTipoVentaPageModule)
       }
       ]
   },

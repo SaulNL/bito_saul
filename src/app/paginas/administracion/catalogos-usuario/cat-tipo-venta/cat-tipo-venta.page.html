@@ -1,0 +1,68 @@
+<ion-header *ngIf="!blnActivaDatosTipoVenta">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Tipo Venta</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="agregaTipoVenta()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!blnActivaDatosTipoVenta">
+  <ion-item>
+    <h2 *ngIf="!this.isToggled">Activar Filtros</h2>
+    <h2 *ngIf="this.isToggled">Cancelar Filtros</h2>
+    <ion-toggle slot="end" name="blackberry" color="dark" [(ngModel)]="isToggled" (ionChange)="notify()"></ion-toggle>
+  </ion-item>
+  <form *ngIf="this.isToggled" #form="ngForm" (ngSubmit)="logForm(form)">
+    <ion-card>
+      <ion-card-header>
+        <ion-item>
+          <ion-label>No Tipo Venta: </ion-label>
+          <ion-input type="number" #nombre="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="id_tipo_venta" [(ngModel)]="filtro.id_tipo_venta" ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Nombre : </ion-label>
+          <ion-input type="text" #variable="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="nombre" [(ngModel)]="filtro.nombre" ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Precio : </ion-label>
+          <ion-input type="number" #variable="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="precio" [(ngModel)]="filtro.precio" ></ion-input>
+        </ion-item>
+      </ion-card-header>
+    </ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div>
+            <ion-button type="submit" color="secondary" [disabled]="!blnBtnFiltro">Buscar</ion-button>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div>    
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    </form>
+    <ion-list >
+      <ion-item *ngFor="let ventas of lstCatTipoVenta" >
+        <ion-buttons slot="start">
+          <ion-label >
+            {{ventas.id_tipo_venta}}
+          </ion-label>
+        </ion-buttons>
+        <ion-label (click)="datosTipoVenta(ventas)">
+          <h2>{{ventas.nombre}}</h2>
+        </ion-label>
+        <ion-icon slot="end" name="caret-forward-outline"></ion-icon>
+      </ion-item>
+    </ion-list>
+</ion-content>
+<div *ngIf="blnActivaDatosTipoVenta">  
+  <app-datos-cat-tipo-ventas [actualTO]="selectTO"></app-datos-cat-tipo-ventas>
+</div>
