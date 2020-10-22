@@ -47,9 +47,12 @@ export class CatPalabraReservadasPage implements OnInit {
     );
   }
   public notify() {
-    if (this.isToggled === false) {
+    if (this.isToggled) {
+      this.isToggled = false;
       this.getPalabras();
-    }
+    } else {
+      this.isToggled = true;
+}
     this.filtro = new FiltroCatPalabrasResModel();
   }
   logForm(form) {

@@ -34,8 +34,11 @@ export class CatDenunciasNegocioPage implements OnInit {
     this.obtenerDenunciasNegocio();
   }
   public notify() {
-    if (this.isToggled === false) {
+    if (this.isToggled) {
+      this.isToggled = false;
       this.obtenerDenunciasNegocio();
+    } else {
+      this.isToggled = true;
     }
     this.filtro = '';
   }

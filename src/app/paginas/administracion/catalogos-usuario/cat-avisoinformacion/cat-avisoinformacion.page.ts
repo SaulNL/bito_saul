@@ -35,8 +35,11 @@ export class CatAvisoinformacionPage implements OnInit {
   }
 
   public notify() {
-    if (this.isToggled === false) {
+    if (this.isToggled) {
+      this.isToggled = false;
       this.getAvisos();
+    } else {
+      this.isToggled = true;
     }
     this.filtro = new FiltroCatAvisosInfoModel();
   }

@@ -14,10 +14,15 @@
 
 <ion-content *ngIf="!blnActivaDatosTipoVenta">
   <ion-item>
-    <h2 *ngIf="!this.isToggled">Activar Filtros</h2>
-    <h2 *ngIf="this.isToggled">Cancelar Filtros</h2>
-    <ion-toggle slot="end" name="blackberry" color="dark" [(ngModel)]="isToggled" (ionChange)="notify()"></ion-toggle>
-  </ion-item>
+    <ion-buttons slot="end">
+        <ion-button (click)="notify()">
+          <span *ngIf="!this.isToggled">Filtros</span>
+          <ion-icon *ngIf="!this.isToggled" name="search-outline"></ion-icon>
+          <span  *ngIf="this.isToggled" >Cerrar</span> 
+          <ion-icon *ngIf="this.isToggled" name="close-outline"></ion-icon>       
+        </ion-button>
+    </ion-buttons>
+</ion-item>
   <form *ngIf="this.isToggled" #form="ngForm" (ngSubmit)="logForm(form)">
     <ion-card>
       <ion-card-header>
@@ -39,7 +44,7 @@
       <ion-row>
         <ion-col>
           <div>
-            <ion-button type="submit" color="secondary" [disabled]="!blnBtnFiltro">Buscar</ion-button>
+            <ion-button type="submit" class="bg-rosa" [disabled]="!blnBtnFiltro">Buscar</ion-button>
           </div>
         </ion-col>
         <ion-col>

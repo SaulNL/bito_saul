@@ -33,9 +33,12 @@ export class CatOrganizacionPage implements OnInit {
   }
 
   public notify() {
-    if (this.isToggled === false) {
+    if (this.isToggled) {
+      this.isToggled = false;
       this.getOrganizaciones();
-    }
+    } else {
+      this.isToggled = true;
+}
     this.filtro = new FiltroCatOrgModel();
   }
 

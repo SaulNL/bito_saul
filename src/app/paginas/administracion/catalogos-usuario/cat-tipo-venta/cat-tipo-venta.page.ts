@@ -39,9 +39,13 @@ export class CatTipoVentaPage implements OnInit {
   }
   
   public notify() {
-    if (this.isToggled === false) {
+    if (this.isToggled) {
+      this.isToggled = false;
       this.getTipoVenta();
-    }
+    } else {
+      this.isToggled = true;
+}
+      
     this.filtro = new FiltroCatTipoVentaModel();
   }
   logForm(form) {
