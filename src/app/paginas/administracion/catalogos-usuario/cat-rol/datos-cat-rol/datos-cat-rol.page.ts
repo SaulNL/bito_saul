@@ -1,0 +1,213 @@
+import { Component, OnInit, Input } from "@angular/core";
+import { FiltroCatRolModel } from "../../../../../Modelos/catalogos/FiltroCatRolModel";
+import { AdministracionService } from "../../../../../api/administracion-service.service";
+import { CatRolPage } from "./../cat-rol.page";
+import { NgForm } from "@angular/forms";
+import { AlertController } from "@ionic/angular";
+import { ActionSheetController } from "@ionic/angular";
+import { ToadNotificacionService } from "../../../../../api/toad-notificacion.service";
+
+@Component({
+  selector: "app-datos-cat-rol",
+  templateUrl: "./datos-cat-rol.page.html",
+  styleUrls: ["./datos-cat-rol.page.scss"],
+})
+export class DatosCatRolPage implements OnInit {
+  @Input() public actualTO: FiltroCatRolModel;
+  public selectTO: FiltroCatRolModel;
+  public variableTO: FiltroCatRolModel;
+  public valida: boolean;
+  public isToggled: boolean;
+  public filtro: FiltroCatRolModel;
+  public activos = [
+    { id: 0, activo: "No" },
+    { id: 1, activo: "Si" },
+  ];
+  public lstCatPermisos: Array<any>;
+  public blnBtnPermisos: boolean;
+
+  constructor(
+    public actionSheetController: ActionSheetController,
+    public alertController: AlertController,
+    private admin: CatRolPage,
+    public btnAdd: CatRolPage,
+    private notificaciones: ToadNotificacionService,
+    private servicioUsuarios: AdministracionService
+  ) {
+    this.variableTO = new FiltroCatRolModel();
+    this.valida = false;
+    this.isToggled = false;
+  }
+  public notify() {
+    let permisoSeleccionado = this.variableTO.permisos.filter(function (
+      permiso
+    ) {
+      return permiso.estaSeleccionado === true;
+    });
+    if (permisoSeleccionado.length > 0) {
+      this.blnBtnPermisos = true;
+    } else {
+      this.blnBtnPermisos = false;
+    }
+  }
+  regresar() {
+    this.admin.blnActivaDatosRol = false;
+    this.btnAdd.botonAgregar = false;
+  }
+  ngOnInit() {
+    this.rolPermisos();
+    this.getPermiso();
+    
+  }
+  rolPermisos() {
+    if (this.actualTO.id_rol === null || this.actualTO.id_rol === undefined) {
+      this.variableTO = this.actualTO;
+    } else {
+      this.buscarRol();
+      this.blnBtnPermisos = true;
+    }
+  }
+
+  editarorno() {
+    this.valida = true;
+  }
+  buscarRol() {
+    // this.loaderGiro = true;
+    this.servicioUsuarios.buscarRol(this.actualTO.id_rol).subscribe(
+      (respuesta) => {
+        //   this.loaderGiro = false;
+        this.variableTO = respuesta.data;
+        this.getPermiso();
+        // console.log(this.rolTO);
+      },
+      (error) => {
+        //console.log(error);
+      },
+      () => {}
+    );
+  }
+  getPermiso() {
+    //this.loaderGiro = true;
+    this.servicioUsuarios.listarPermiso().subscribe(
+      (response) => {
+        //this.loaderGiro = false;
+        this.lstCatPermisos = response.data;
+        if (
+          this.actualTO.id_rol === null ||
+          this.actualTO.id_rol === undefined
+        ) {
+          this.variableTO.permisos = this.lstCatPermisos;
+        }
+      },
+      (error) => {
+        this.notificaciones.error('Error');
+      }
+    );
+  }
+  actualizarDatos(form: NgForm) {
+    //this.loader = true;
+    if (this.variableTO.activo === null) {
+      this.variableTO.activo = 0;
+    }
+    this.servicioUsuarios.guardarRol(this.variableTO).subscribe(
+      (data) => {
+        if (data.code === 200) {
+          if (this.btnAdd.botonAgregar) {
+            this.notificaciones.exito("Rol guardado");  
+            this.regresar();
+          }else{
+            this.notificaciones.exito("Rol actualizado");
+            this.valida = false;
+          }
+          this.admin.getRoles();
+          //this.admin.blnActivaDatosRol = false;
+          //this.admin.activarTabla();
+        } else {
+          //this.loader = false;
+          this.notificaciones.alerta(data.message);
+        }
+      },
+      (error) => {
+        this.notificaciones.alerta(error);
+        //this._notificacionService.pushError(error);
+        //this.loader = false;
+      },
+      () => {
+        //window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    );
+    this.valida = false;
+  }
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetController.create({
+      header: "Opciones",
+      cssClass: "my-custom-class",
+      buttons: [
+        {
+          text: "Borrar",
+          role: "destructive",
+          handler: () => {
+            this.presentAlertMultipleButtons();
+          },
+        },
+        {
+          text: "Editar",
+          role: "edit",
+          handler: () => {
+            this.editarorno();
+          },
+        },
+        {
+          text: "Cancel",
+          icon: "close",
+          role: "cancel",
+          handler: () => {},
+        },
+      ],
+    });
+    await actionSheet.present();
+  }
+  async presentAlertMultipleButtons() {
+    const alert = await this.alertController.create({
+      cssClass: "my-custom-class",
+      header: "Borrar",
+      message: "Confirmar borrar variable",
+      buttons: [
+        {
+          text: "Cancelar",
+          role: "No",
+          handler: (blah) => {},
+        },
+        {
+          text: "Confirmar",
+          role: "Si",
+          handler: (blah) => {
+            this.eliminarRol();
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+  eliminarRol() {
+    //this.loader = true;
+    this.servicioUsuarios.eliminarRol(this.variableTO.id_rol).subscribe(
+      (response) => {
+        if (response.code === 200) {
+          //    this.loader = false;
+          this.regresar();
+          this.admin.getRoles();
+          //this.cancelarConfirmado();
+          this.notificaciones.exito('se elimino correctamente');
+        } else {
+          //this.loader = false;
+          //this.cancelarConfirmado();
+          this.notificaciones.error(response.message);
+        }
+      },
+      (error) => {
+        this.notificaciones.error(error);
+      }
+    );
+  }
+}

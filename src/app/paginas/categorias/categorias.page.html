@@ -7,11 +7,14 @@
 
 
 <ion-content [fullscreen]="true">
+  <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
   <ion-grid>
     <ion-row *ngFor="let nomCategoria of listaCategorias">
-        <img *ngIf="nomCategoria.url_imagen_movil !== null" [src]="nomCategoria.url_imagen_movil"
-        alt="Falla al cargar la imagen">        
-        <ion-col size="6" *ngFor="let subCategoria of nomCategoria.categorias" 
+        <img *ngIf="nomCategoria.url_imagen_movil !== null && imgMobil==true" [src]="nomCategoria.url_imagen_movil"
+        alt="Falla al cargar la imagen"> 
+        <img *ngIf="nomCategoria.url_imagen !== null && imgMobil==false" [src]="nomCategoria.url_imagen"
+        alt="Falla al cargar la imagen"> 
+        <ion-col sizeLg="3" sizeXs="6" sizeSm="4" sizeMd="4" *ngFor="let subCategoria of nomCategoria.categorias" 
         (click)="seleccionarCategoria(subCategoria)">
           <img class="img-card-w" *ngIf="subCategoria.url_imagen !== null" [src]="subCategoria.url_imagen"
           alt="Falla al cargar la imagen">

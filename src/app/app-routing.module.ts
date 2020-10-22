@@ -9,7 +9,8 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./paginas/login/login.module').then( m => m.LoginPageModule)
-  },  {
+  },
+  {
     path: 'categorias',
     loadChildren: () => import('./paginas/categorias/categorias.module').then( m => m.CategoriasPageModule)
   },
@@ -25,6 +26,7 @@ const routes: Routes = [
     path: 'footer',
     loadChildren: () => import('./paginas/busqueda/footer/footer.module').then( m => m.FooterPageModule)
   }
+
 
 ];
 @NgModule({
