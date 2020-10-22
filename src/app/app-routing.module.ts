@@ -13,6 +13,18 @@ const routes: Routes = [
   {
     path: 'categorias',
     loadChildren: () => import('./paginas/categorias/categorias.module').then( m => m.CategoriasPageModule)
+  },
+  {
+    path: 'conocenos',
+    loadChildren: () => import('./paginas/busqueda/busqueda/conocenos/conocenos.module').then( m => m.ConocenosPageModule)
+  },
+  {
+    path: 'contacto',
+    loadChildren: () => import('./paginas/busqueda/contacto/contacto.module').then( m => m.ContactoPageModule)
+  },
+  {
+    path: 'footer',
+    loadChildren: () => import('./paginas/busqueda/footer/footer.module').then( m => m.FooterPageModule)
   }
 
 

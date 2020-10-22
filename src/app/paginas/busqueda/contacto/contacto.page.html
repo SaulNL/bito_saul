@@ -1,0 +1,21 @@
+<form #formBasicos="ngForm" (ngSubmit)="enviarCorreo()">
+  <ion-card>
+    <ion-item>
+      <ion-label position="floating">Nombre: </ion-label>
+      <ion-input type="text" #nombre="ngModel" required name="nombre" [(ngModel)]="contacto.nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Teléfono: </ion-label>
+      <ion-input type="text" #telefono="ngModel" required name="telefono" [(ngModel)]="contacto.telefono"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Correo: </ion-label>
+      <ion-input type="email" #correo="ngModel" required name="correo" [(ngModel)]="contacto.correo"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Comentario:</ion-label>
+      <ion-input type="text" #comentario="ngModel" required name="comentario" [(ngModel)]="contacto.comentario"></ion-input>
+    </ion-item>
+    <ion-button [disabled]=" loader || formBasicos.invalid" type="submit" color="danger">Enviar</ion-button>
+  </ion-card>
+</form>
