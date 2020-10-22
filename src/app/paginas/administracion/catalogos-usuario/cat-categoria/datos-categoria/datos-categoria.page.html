@@ -18,7 +18,7 @@
 </ion-header>
 
 <ion-content style="position: fixed;" *ngIf="blnActivoCategoria">
-<ion-card style="height: 139%;">
+<ion-card style="margin-bottom: 9vh;">
 <!--<ion-card-header>-->
 <form #formBasicos="ngForm" (ngSubmit)="actualizarDatos(formBasicos)">
 <ion-list>
@@ -142,7 +142,7 @@
     </ion-select>
   </ion-item>
 </ion-list>
-<ion-button type="submit" color="primary" expand="block" [disabled]="formBasicos.invalid">
+<ion-button type="submit" color="primary" expand="block" [disabled]="formBasicos.invalid" style="margin-bottom: 2vh;">
   <span *ngIf="categoriaTO.id_giro === null || categoriaTO.id_giro === undefined">Guardar</span>
   <span *ngIf="categoriaTO.id_giro!== null && categoriaTO.id_giro !== undefined">Actualizar</span>
 </ion-button>

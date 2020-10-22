@@ -35,7 +35,7 @@
           </div>
       </ion-card-header>
   </ion-card>-->
-<ion-card style="height: 86%;">
+<ion-card style="margin-bottom: 9vh;">
 <form #formBasicos="ngForm" (ngSubmit)="actualizarDatos(formBasicos)">
   <ion-list>
     <ion-item>
@@ -99,7 +99,7 @@
       </div>
   </div>
   </ion-list>
-  <ion-button type="submit" color="primary" expand="block" [disabled]="formBasicos.invalid">
+  <ion-button type="submit" color="primary" expand="block" [disabled]="formBasicos.invalid" style="margin-bottom: 2vh;">
     <span *ngIf="subcategoriaTO.id_categoria === null || subcategoriaTO.id_categoria === undefined">Guardar</span>
     <span *ngIf="subcategoriaTO.id_categoria !== null && subcategoriaTO.id_categoria !== undefined">Actualizar</span>
   </ion-button>

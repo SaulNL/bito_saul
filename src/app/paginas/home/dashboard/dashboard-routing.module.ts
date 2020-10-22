@@ -27,6 +27,10 @@ const routes: Routes = [
       {
         path: 'cat-categoria',
         loadChildren: () => import('./../../administracion/catalogos-usuario/cat-categoria/cat-categoria.module').then(m => m.CatCategoriaPageModule)
+      },
+      {
+        path: 'solicitudes',
+        loadChildren: () => import('./../../solicitudes/solicitudes.module').then(m => m.SolicitudesPageModule)
       }
     ]
   },

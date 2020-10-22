@@ -142,7 +142,10 @@ export class DatosBasicosPage implements OnInit {
       component: ModalRecorteimagenPage,
       cssClass: 'my-custom-class',
       componentProps: {
-        eventoImagen: event
+        eventoImagen: event,
+        width: 200,
+        height: 200,
+        IdInput: 'selfie'
       }
     });
     await modal.present();
