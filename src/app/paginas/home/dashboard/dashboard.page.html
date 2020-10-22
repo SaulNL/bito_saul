@@ -5,7 +5,7 @@
         <ion-list-header> <strong>Bitoo</strong></ion-list-header>
           <ion-note>{{ correnume }}</ion-note>
         <ion-menu-toggle auto-hide="true" >
-          <ion-item routerDirection="root"  lines="none" detail="false">
+          <ion-item [routerLink]="['/tabs/home/perfil']" routerDirection="root"  lines="none" detail="false">
             <ion-avatar slot="start">
               <img [src]="usuario.imagen !== null ? usuario.imagen: url_user">
             </ion-avatar>
