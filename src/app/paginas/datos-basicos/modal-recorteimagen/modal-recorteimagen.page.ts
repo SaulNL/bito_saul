@@ -12,6 +12,9 @@ export class ModalRecorteimagenPage implements OnInit {
   imageChangedEvent: any = '';
   croppedImage: any = '';
   @Input() eventoImagen: any ;
+  @Input() width: any ;
+  @Input() height: any ;
+  @Input() IdInput: any ;
   resizeToWidth: number = 0;
   resizeToHeight: number = 0;
   maintainAspectRatio: boolean = false;
@@ -25,8 +28,8 @@ export class ModalRecorteimagenPage implements OnInit {
 
   ngOnInit() {
     this.maintainAspectRatio = true;
-    this.resizeToWidth = 400;
-    this.resizeToHeight = 400;
+    this.resizeToWidth = this.width;
+    this.resizeToHeight = this.height;
     this.fileChangeEvent(this.eventoImagen);
 
   }
@@ -54,7 +57,7 @@ guardarImagenRecortada(){
 }
 cerraModal(){
 this.modalController.dismiss();
-var inputElement = <HTMLInputElement>document.getElementById('selfie');
+var inputElement = <HTMLInputElement>document.getElementById(this.IdInput);
 inputElement.value = '';
 }
 }

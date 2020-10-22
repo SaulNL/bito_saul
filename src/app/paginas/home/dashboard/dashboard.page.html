@@ -15,7 +15,6 @@
           <ion-item [routerLink]="['/tabs/home/conocenos']">
             <ion-label>Conócenos</ion-label>
           </ion-item>
-          
         </ion-menu-toggle>
       </ion-list>
         <ion-list-header>Administracion</ion-list-header>
@@ -66,8 +65,11 @@
                 <ion-icon name="ellipse-sharp"></ion-icon>
                 <ion-list-header>Avisos</ion-list-header>
               </ion-item>
+              <ion-item lines="none"  [routerLink]="['/tabs/home/solicitudes']">
+                <ion-label>Solicitudes</ion-label>
+              </ion-item>
             </ion-list>
-          </ion-menu-toggle>  
+          </ion-menu-toggle>
       </ion-list>
     </ion-content>
   </ion-menu>

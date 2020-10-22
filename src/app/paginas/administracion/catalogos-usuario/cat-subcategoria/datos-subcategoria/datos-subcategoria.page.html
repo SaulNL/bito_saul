@@ -99,7 +99,7 @@
       </div>
   </div>
   </ion-list>
-  <ion-button type="submit" class="bg-rosa" expand="block" [disabled]="formBasicos.invalid">
+  <ion-button type="submit" color="bg-rosa" expand="block" [disabled]="formBasicos.invalid" style="margin-bottom: 2vh;">
     <span *ngIf="subcategoriaTO.id_categoria === null || subcategoriaTO.id_categoria === undefined">Guardar</span>
     <span *ngIf="subcategoriaTO.id_categoria !== null && subcategoriaTO.id_categoria !== undefined">Actualizar</span>
   </ion-button>
