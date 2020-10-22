@@ -28,9 +28,14 @@ export class CatRolPage implements OnInit {
     this.getRoles(); 
   }
   public notify() {
-    if (this.isToggled === false) {
+    if (this.isToggled) {
+      this.isToggled = false;
       this.getRoles();
-    }
+    } else {
+      this.isToggled = true;
+}
+      
+ 
     this.selectTO = new FiltroCatRolModel();
   }
   logForm(form) {

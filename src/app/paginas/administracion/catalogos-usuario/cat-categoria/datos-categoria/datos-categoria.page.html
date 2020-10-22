@@ -142,7 +142,7 @@
     </ion-select>
   </ion-item>
 </ion-list>
-<ion-button type="submit" color="primary" expand="block" [disabled]="formBasicos.invalid">
+<ion-button type="submit" class="bg-rosa" expand="block" [disabled]="formBasicos.invalid">
   <span *ngIf="categoriaTO.id_giro === null || categoriaTO.id_giro === undefined">Guardar</span>
   <span *ngIf="categoriaTO.id_giro!== null && categoriaTO.id_giro !== undefined">Actualizar</span>
 </ion-button>

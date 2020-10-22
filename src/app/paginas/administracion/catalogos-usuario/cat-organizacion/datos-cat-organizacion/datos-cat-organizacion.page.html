@@ -54,8 +54,8 @@
     </ion-card>
 
     <div>
-      <ion-button  type="submit" *ngIf="organizacionTO.id_organizacion === null || organizacionTO.id_organizacion === undefined" color="secondary" [disabled]=" loader ||formBasicos.invalid">Guardar</ion-button>
-      <ion-button  type="submit" *ngIf="valida ===true" color="secondary" [disabled]=" loader ||formBasicos.invalid">Actualizar</ion-button>
+      <ion-button  type="submit" *ngIf="organizacionTO.id_organizacion === null || organizacionTO.id_organizacion === undefined" class="bg-rosa" [disabled]=" loader ||formBasicos.invalid">Guardar</ion-button>
+      <ion-button  type="submit" *ngIf="valida ===true" class="bg-rosa" [disabled]=" loader ||formBasicos.invalid">Actualizar</ion-button>
     </div>
 
   </form>

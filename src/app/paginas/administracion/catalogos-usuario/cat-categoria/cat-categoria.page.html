@@ -36,8 +36,8 @@
       <ion-input #nombre="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="nombre" [(ngModel)]="filtro.nombre"></ion-input>
     </ion-item>
     </ion-list>
-    <ion-button type="submit" color="primary" expand="block" [disabled]="!blnBtnFiltro">Buscar</ion-button>
-    <ion-button type="button" color="medium" expand="block" (click)="limpiarFiltro()" [disabled]="!blnBtnFiltro">Limpiar</ion-button>
+    <ion-button type="submit" class="bg-rosa" expand="block" [disabled]="!blnBtnFiltro">Buscar</ion-button>
+    <ion-button type="button" class="bg-rosa" expand="block" (click)="limpiarFiltro()" [disabled]="!blnBtnFiltro">Limpiar</ion-button>
   </form>
     </ion-card-header>
   </ion-card>
