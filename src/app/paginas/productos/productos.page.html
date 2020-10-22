@@ -57,9 +57,9 @@
       <ion-col>
         <ion-list>
           <ion-item-sliding *ngFor="let producto of lstProductos">
-          <ion-item>
+          <ion-item (click)="abrirModal(producto)">
             <ion-thumbnail slot="start">
-              <img [src]="producto.imagen" (click)="abrirModal(producto)">
+              <img [src]="producto.imagen">
             </ion-thumbnail>
             <ion-label>
               <h2>{{producto.nombre}}</h2>
