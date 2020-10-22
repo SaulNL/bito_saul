@@ -55,6 +55,10 @@ const routes: Routes = [
       {
         path: 'cat-tipo-venta',
         loadChildren: () => import('./../../administracion/catalogos-usuario/cat-tipo-venta/cat-tipo-venta.module').then(m => m.CatTipoVentaPageModule)
+      },
+      {
+        path: 'conocenos',
+        loadChildren: () => import('./../../busqueda/busqueda/conocenos/conocenos.module').then(m => m.ConocenosPageModule)
       }
       ]
   },
