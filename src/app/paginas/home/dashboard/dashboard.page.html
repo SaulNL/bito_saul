@@ -1,11 +1,11 @@
 <ion-split-pane contentId="main-content">
   <ion-menu side="start" menuId="first" contentId="main-content">
-    <ion-content>
+    <ion-content  *ngIf="usuario != null">
       <ion-list id="inbox-list">
         <ion-list-header> <strong>Bitoo</strong></ion-list-header>
           <ion-note>{{ correnume }}</ion-note>
         <ion-menu-toggle auto-hide="true" >
-          <ion-item routerDirection="root"  lines="none" detail="false">
+          <ion-item  routerDirection="root"  lines="none" detail="false">
             <ion-avatar slot="start">
               <img [src]="usuario.imagen !== null ? usuario.imagen: url_user">
             </ion-avatar>

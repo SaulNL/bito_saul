@@ -17,7 +17,7 @@ export class TabsPage {
   ) {
     this.existeSesion = util.existe_sesion();
     this.usuario = util.getData();
-
+    console.log(this.usuario);
   }
 
 }

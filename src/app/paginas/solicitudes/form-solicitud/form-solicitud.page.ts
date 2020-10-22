@@ -1,7 +1,7 @@
 import { ModalRecorteimagenPage } from './../../datos-basicos/modal-recorteimagen/modal-recorteimagen.page';
 import { GeneralServicesService } from './../../../api/general-services.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { Map, tileLayer, marker } from 'leaflet';
+import {Map, tileLayer, marker, Marker} from 'leaflet';
 import { SolicitudesModel } from 'src/app/Modelos/SolicitudesModel';
 import { UtilsCls } from './../../../utils/UtilsCls';
 import { CatEstadoModel } from 'src/app/Modelos/catalogos/CatEstadoModel';
@@ -39,6 +39,7 @@ export class FormSolicitudPage implements OnInit {
   public blnImgCuadrada: boolean;
   public usuario: any;
   public loader: any;
+  private marker: Marker<any>;
   constructor(
     private _general_service: GeneralServicesService,
     private _utils_cls: UtilsCls,
@@ -46,7 +47,7 @@ export class FormSolicitudPage implements OnInit {
     private solicitudesService: SolicitudesService,
     private notificaciones: ToadNotificacionService,
     public loadingController: LoadingController,
-    public modalController: ModalController
+    public modalController: ModalController,
   ) {
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
   }
@@ -132,7 +133,7 @@ export class FormSolicitudPage implements OnInit {
       this.longitud = -98.1467336;
       this.map = new Map("mapId").setView([this.latitud, this.longitud], 16);
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
-      marker([this.latitud, this.longitud], {
+      this.marker = marker([this.latitud, this.longitud], {
         draggable:
           true
       }).addTo(this.map);
@@ -254,10 +255,13 @@ export class FormSolicitudPage implements OnInit {
         ];*/
         // this.map = new Map("mapId").setView([latitude, longitude], 16);
         //  tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
-        marker([latitude, longitude], {
-          draggable:
-            true
-        }).addTo(this.map);
+
+        this.marker.setLatLng([latitude, longitude]);
+
+        // marker([latitude, longitude], {
+        //   draggable:
+        //     true
+        // }).addTo(this.map);
         // this.loaderUbicacionMapa = false;
       }
       /*,
