@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {FormControl, FormGroup, NgForm} from '@angular/forms';
 import {GeneralServicesService} from "../../../api/general-services.service";
+import {ToadNotificacionService} from '../../../api/toad-notificacion.service';
 
 @Component({
   selector: 'app-contacto',
@@ -18,8 +19,8 @@ export class ContactoPage implements OnInit {
     comentario: ''
   }
   constructor(
-    private _general_service: GeneralServicesService
-    //private servicioNotificaciones: NotificacionService
+    private _general_service: GeneralServicesService,
+    private notificaciones: ToadNotificacionService
   ) { }
 
   ngOnInit() {
@@ -55,13 +56,10 @@ export class ContactoPage implements OnInit {
             this.contacto.correo='';
             this.contacto.comentario='';
           }
-          //this.servicioNotificaciones.pushMsjRespuesta(response.message, response.code);
-          console.log(`${response.message}\n${response.code}`);
-          
+          this.notificaciones.exito(response.message);          
         },
         error => {
-          //this.servicioNotificaciones.pushMsjRespuesta(error.message, error.code);
-          console.log(error);          
+          this.notificaciones.error(error);       
         },
         () => {
         this.btnLoader = false;
