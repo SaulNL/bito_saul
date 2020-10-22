@@ -10,6 +10,7 @@ import { FiltroCatPermisosModel } from './../Modelos/catalogos/FiltroCatPermisos
 import { FiltroCatPalabrasResModel } from './../Modelos/catalogos/FiltroCatPalabrasResModel';
 import {FiltroCatCategoriasModel} from './../Modelos/catalogos/FiltroCatCategoriasModel';
 import {FiltroCatSubCategoriasModel} from './../Modelos/catalogos/FiltroCatSubcategoriasModel';
+import { FiltroCatAvisosInfoModel } from '../Modelos/catalogos/FiltroCatAvisosInfoModel';
 
 @Injectable({
   providedIn: 'root'

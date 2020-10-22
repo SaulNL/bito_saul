@@ -47,6 +47,10 @@ const routes: Routes = [
       {
         path: 'cat-categoria',
         loadChildren: () => import('./../../administracion/catalogos-usuario/cat-categoria/cat-categoria.module').then(m => m.CatCategoriaPageModule)
+      },
+      {
+        path: 'conocenos',
+        loadChildren: () => import('./../../busqueda/busqueda/conocenos/conocenos.module').then(m => m.ConocenosPageModule)
       }
       ]
   },
