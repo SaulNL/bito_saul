@@ -21,6 +21,10 @@ const routes: Routes = [
         loadChildren: () => import('./../../administracion/catalogos-usuario/cat-organizacion/cat-organizacion.module').then( m => m.CatOrganizacionPageModule)
       },
       {
+        path: 'conocenos',
+        loadChildren: () => import('./../../busqueda/busqueda/conocenos/conocenos.module').then( m => m.ConocenosPageModule)
+      },
+      {
         path: 'datos-cat-variables',
         loadChildren: () => import('./../../administracion/catalogos-usuario/cat-variable/datos-cat-variables/datos-cat-variables.module').then( m => m.DatosCatVariablesPageModule)
       }

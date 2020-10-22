@@ -45,4 +45,20 @@ export class GeneralServicesService {
       return data;
     }));
   }
+
+  /**
+   * Funcion para enviar el comentario por correo
+   * @param datos
+   * @author Omar
+   */
+  enviarComentarioCorreo(datos:any): Observable<any>{
+    const body = JSON.stringify(datos);
+    return this._http.post(
+      `${this.url}api/comentario/enviar`,
+      body,
+      {headers: AppSettings.getHeaders()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
 }
