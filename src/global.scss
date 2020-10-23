@@ -48,9 +48,10 @@ ion-tab-bar{
   //background: linear-gradient(90deg,#fa4f72,#a74eef);
 }
 ion-toolbar {
-  --background: linear-gradient(90deg,#fa4f72,#a74eef);
-  --color: white; 
+  --background: linear-gradient(90deg,#fa4f72,#a74eef) !important;
+  --color: white !important; 
 }
+
 ion-content{
 --background: #f2f2f2;
 }
@@ -62,6 +63,9 @@ ion-content{
 ion-segment-button{
   color: white;
 }
+.searchbar-left-aligned.sc-ion-searchbar-ios-h .searchbar-input.sc-ion-searchbar-ios{
+  background: white;
+}
 .bg-rosa{
   --background: linear-gradient(90deg,#fa4f72,#a74eef);
 }
@@ -69,10 +73,31 @@ ion-segment-button{
   --border-radius: 9em ;
     color: #fa4f72;
 }
+.searchbar-input-container.sc-ion-searchbar-ios{
+  height: 36px;
+  position: relative;
+  bottom: -8px;
+  --border-radius: 9em;
+    color: #fa4f72;
+}
 .searchbar-search-icon.sc-ion-searchbar-md, .searchbar-cancel-button.sc-ion-searchbar-md{
+  color: #fa4f72;
+}
+.searchbar-search-icon.sc-ion-searchbar-ios, .searchbar-cancel-button.sc-ion-searchbar-ios{
   color: #fa4f72;
 }
 
 .searchbar-clear-icon.sc-ion-searchbar-md{
   color: #a74eef;
+}
+
+.searchbar-clear-icon.sc-ion-searchbar-ios{
+  color: #a74eef;
+}
+
+ion-avatar.md.hydrated{
+  --border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  position: relative;
 }
