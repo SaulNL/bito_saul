@@ -41,13 +41,13 @@
 }
 
 ion-tab-button{
-  //background: transparent;
-  //color: #fff;
+//  background: transparent;
+//  color: #fff;
 }
 ion-tab-bar{
-  //background: linear-gradient(90deg,#fa4f72,#a74eef);
+//  background: linear-gradient(90deg,#fa4f72,#a74eef);
 }
-ion-toolbar {
+.tolbar{
   --background: linear-gradient(90deg,#fa4f72,#a74eef) !important;
   --color: white !important; 
 }
@@ -55,19 +55,20 @@ ion-toolbar {
 ion-content{
 --background: #f2f2f2;
 }
+.bg-gris{
+  --background: #f2f2f2;
+}
 
 .backgroundgris{
   --background: #f2f2f2;
 }
 
-ion-segment-button{
-  color: white;
-}
 .searchbar-left-aligned.sc-ion-searchbar-ios-h .searchbar-input.sc-ion-searchbar-ios{
   background: white;
 }
 .bg-rosa{
   --background: linear-gradient(90deg,#fa4f72,#a74eef);
+  color: white;
 }
 .searchbar-input-container.sc-ion-searchbar-md{
   --border-radius: 9em ;

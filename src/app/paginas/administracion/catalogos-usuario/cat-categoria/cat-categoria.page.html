@@ -1,5 +1,5 @@
 <ion-header *ngIf="blnActivaDatosCategoria">
-  <ion-toolbar>
+  <ion-toolbar class="tolbar">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content *ngIf="blnActivaDatosCategoria">
-  <ion-item>
+  <ion-item class="bg-gris">
     <ion-buttons slot="end">
         <ion-button (click)="abrirFiltro()">
           <span *ngIf="!blnActivaFitro">Filtros</span>
