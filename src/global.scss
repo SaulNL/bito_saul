@@ -39,3 +39,40 @@
 .h-100{
   width: 100%;
 }
+
+ion-tab-button{
+  //background: transparent;
+  //color: #fff;
+}
+ion-tab-bar{
+  //background: linear-gradient(90deg,#fa4f72,#a74eef);
+}
+ion-toolbar {
+  --background: linear-gradient(90deg,#fa4f72,#a74eef);
+  --color: white; 
+}
+ion-content{
+--background: #f2f2f2;
+}
+
+.backgroundgris{
+  --background: #f2f2f2;
+}
+
+ion-segment-button{
+  color: white;
+}
+.bg-rosa{
+  --background: linear-gradient(90deg,#fa4f72,#a74eef);
+}
+.searchbar-input-container.sc-ion-searchbar-md{
+  --border-radius: 9em ;
+    color: #fa4f72;
+}
+.searchbar-search-icon.sc-ion-searchbar-md, .searchbar-cancel-button.sc-ion-searchbar-md{
+  color: #fa4f72;
+}
+
+.searchbar-clear-icon.sc-ion-searchbar-md{
+  color: #a74eef;
+}

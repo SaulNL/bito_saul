@@ -14,11 +14,11 @@ const routes: Routes = [
       },
       {
         path: 'cat-variable',
-        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-variable/cat-variable.module').then( m => m.CatVariablePageModule)
+        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-variable/cat-variable.module').then(m => m.CatVariablePageModule)
       },
       {
         path: 'cat-organizaciones',
-        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-organizacion/cat-organizacion.module').then( m => m.CatOrganizacionPageModule)
+        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-organizacion/cat-organizacion.module').then(m => m.CatOrganizacionPageModule)
       },
       {
         path: 'cat-avisos',
@@ -26,7 +26,7 @@ const routes: Routes = [
       },
       {
         path: 'datos-cat-variables',
-        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-variable/datos-cat-variables/datos-cat-variables.module').then( m => m.DatosCatVariablesPageModule)
+        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-variable/datos-cat-variables/datos-cat-variables.module').then(m => m.DatosCatVariablesPageModule)
       },
       {
         path: 'cat-rol',
@@ -47,8 +47,24 @@ const routes: Routes = [
       {
         path: 'cat-categoria',
         loadChildren: () => import('./../../administracion/catalogos-usuario/cat-categoria/cat-categoria.module').then(m => m.CatCategoriaPageModule)
+      },
+      {
+        path: 'cat-denuncias-negocio',
+        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-denuncias-negocio/cat-denuncias-negocio.module').then(m => m.CatDenunciasNegocioPageModule)
+      },
+      {
+        path: 'cat-tipo-venta',
+        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-tipo-venta/cat-tipo-venta.module').then(m => m.CatTipoVentaPageModule)
+      },
+      {
+        path: 'conocenos',
+        loadChildren: () => import('./../../busqueda/busqueda/conocenos/conocenos.module').then(m => m.ConocenosPageModule)
+      },
+      {
+        path: 'solicitudes',
+        loadChildren: () => import('./../../solicitudes/solicitudes.module').then(m => m.SolicitudesPageModule)
       }
-      ]
+    ]
   },
   {
     path: '',
@@ -61,4 +77,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class DashboardPageRoutingModule {}
+export class DashboardPageRoutingModule { }

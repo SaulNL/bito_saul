@@ -83,7 +83,7 @@ export class AppSettings {
         localStorage.clear();
         localStorage.clear();
         setTimeout(() => {
-            _router.navigate(['/inicio']);
+            _router.navigate(['/tabs/inicio']);
         }, 1000);
         return true;
     }

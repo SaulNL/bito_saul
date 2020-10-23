@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="regresar()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      <span *ngIf="this.btnAdd.botonAgregar">Agregar Tipo Venta</span>
+      <span *ngIf="!this.btnAdd.botonAgregar">Modificar Tipo Venta</span>
+    </ion-title>
+    <ion-buttons slot="end" *ngIf="ventaTO.id_tipo_venta !null">
+      <ion-button (click)="presentActionSheet()">
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #form="ngForm" (ngSubmit)="actualizarDatos(form)">
+    <ion-card>
+      <ion-item>
+        <div class="avatar-upload">
+          <div class="avatar-edit">
+            <input type='file' id="imageUpload" accept="image/*" (change)="subirArchivo($event)" />
+            <label for="imageUpload">
+              <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
+            </label>
+          </div>
+          <div class="avatar-preview">
+            <div *ngIf="ventaTO.icono === null || ventaTO.icono === undefined" 
+            id="imageUpl"
+             [ngStyle]="ventaTO.icono !== null || ventaTO.imagen !== undefined ? {'background-image': 'url('+ventaTO.imagen+')'} : ''">
+            </div>
+            <div *ngIf="ventaTO.icono !== null && ventaTO.icono !== undefined" 
+            [ngStyle]="{'background-image': 'url('+ventaTO.icono.archivo_64+')'}">
+            </div>
+          </div>
+          <ion-label>Icono</ion-label>
+        </div>
+      </ion-item>
+      <ion-card-header>
+        <ion-item>
+          <ion-label>Nombre</ion-label>
+          <ion-input #nombre="ngModel" required type="text" name="nombre" [(ngModel)]="ventaTO.nombre"></ion-input>
+        </ion-item>
+        <div *ngIf="nombre.touched  && nombre.invalid" class="alert alert-danger">
+          <div *ngIf="nombre.errors.required">El nombre es requerido
+          </div>
+        </div>
+        <ion-item>
+          <ion-label>Precio</ion-label>
+          <ion-input #precio="ngModel" required type="text" name="precio" [(ngModel)]="ventaTO.precio"></ion-input>
+        </ion-item>
+        <div *ngIf="precio.touched  && precio.invalid" class="alert alert-danger">
+          <div *ngIf="precio.errors.required">El precio es requerido
+          </div>
+        </div>
+        <ion-item>
+          <ion-label>Activo</ion-label>
+          <ion-toggle #activo="ngModel" name="activo" slot="end" name="blackberry" color="dark"
+            [(ngModel)]="ventaTO.activo"></ion-toggle>
+        </ion-item>
+      </ion-card-header>
+    </ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div>
+            <ion-button style="position: relative;" type="submit" *ngIf="this.btnAdd.botonAgregar" class="bg-rosa"
+              [disabled]="form.invalid&&this.btnAdd.botonAgregar===true">Guardar</ion-button>
+            <ion-button style="position: relative;" type="submit" *ngIf="valida ===true" class="bg-rosa"
+              [disabled]="form.invalid&&this.btnAdd.botonAgregar===false">Actualizar</ion-button>
+       
+          </div>
+        </ion-col>
+        <ion-col>
+          <div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

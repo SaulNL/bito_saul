@@ -51,8 +51,8 @@
       </div>
     </div>
     
-    <ion-button color="secondary" type="submit" *ngIf="popoverTO.id_aviso === null || popoverTO.id_aviso  === undefined" [disabled]=" loader ||formBasicos.invalid">Guardar</ion-button>
-    <ion-button color="secondary" type="submit" *ngIf="valida ===true" [disabled]=" loader ||formBasicos.invalid">Actualizar</ion-button>
+    <ion-button class="bg-rosa" type="submit" *ngIf="popoverTO.id_aviso === null || popoverTO.id_aviso  === undefined" [disabled]=" loader ||formBasicos.invalid">Guardar</ion-button>
+    <ion-button class="bg-rosa" type="submit" *ngIf="valida ===true" [disabled]=" loader ||formBasicos.invalid">Actualizar</ion-button>
   </form>
   
 </ion-content>

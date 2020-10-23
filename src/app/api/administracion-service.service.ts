@@ -10,7 +10,12 @@ import { FiltroCatPermisosModel } from './../Modelos/catalogos/FiltroCatPermisos
 import { FiltroCatPalabrasResModel } from './../Modelos/catalogos/FiltroCatPalabrasResModel';
 import {FiltroCatCategoriasModel} from './../Modelos/catalogos/FiltroCatCategoriasModel';
 import {FiltroCatSubCategoriasModel} from './../Modelos/catalogos/FiltroCatSubcategoriasModel';
-import {FiltroCatAvisosInfoModel} from '../Modelos/catalogos/FiltroCatAvisosInfoModel';
+import { FiltroCatAvisosInfoModel } from './../Modelos/catalogos/FiltroCatAvisosInfoModel';
+import { FiltroCatTipoVentaModel } from './../Modelos/catalogos/FiltroCatTipoVentaModel';
+import { DenunciaModel } from './../Modelos/DenunciaModel';
+import { FiltroCatTipoNegoModel } from './../Modelos/catalogos/FiltroCatTipoNegoModel';
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -417,4 +422,117 @@ export class AdministracionService {
         return res;
       }));
     }
+    /*GUARDAR DENUNCIA PARA NEGOCIO */
+  guardarDenunciaNegocio(denuncia: DenunciaModel): Observable<any> {
+    const body = JSON.stringify(denuncia);
+    console.log(body);
+    return this._http.post(
+      this.url + 'api/servicios/denunciar/enviar', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      console.log(res);
+      return res;
+    }));
+  }
+  /*OBTENER LA LISTA  DE DENUNCIAS */
+  obtenerDenuncias(): Observable<any> {
+    return this._http.post(
+      this.url + 'api/servicios/denunciar/cunsulta', {},
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+busquedaNegocioDenuncias(nombre_comercial: string): Observable<any> {
+    const body = JSON.stringify({'nombre_comercial': nombre_comercial});
+    return this._http.post(
+      this.url + 'api/servicios/denunciar/cunsulta',body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+  /*CATALOGO TIPO VENTA*/
+  obtenerTipoVenta(filtro: FiltroCatTipoVentaModel): Observable<any> {
+    const body = JSON.stringify(filtro);
+    return this._http.post(
+      this.url + 'api/catalogos/adminUser/listVenta', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+  listarTipoVenta(): Observable<any> {
+    const body = JSON.stringify(null);
+    return this._http.post(
+      this.url + 'api/catalogos/adminUser/listVenta', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+  eliminarTipoVenta(id_tipo_venta: number): Observable<any> {
+    const body = JSON.stringify({'id_tipo_venta': id_tipo_venta});
+    return this._http.post(
+      this.url + 'api/catalogos/adminUser/eliminarVenta', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
+  buscarTipoVenta(id_tipo_venta: number): Observable<any> {
+    const body = JSON.stringify({'id_tipo_venta': id_tipo_venta});
+    return this._http.post(
+      this.url + 'api/catalogos/adminUser/buscarVenta', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
+  guardarTipoVenta(filtro: FiltroCatTipoVentaModel): Observable<any> {
+    const body = JSON.stringify(filtro);
+    return this._http.post(
+      this.url + 'api/admin/catalogos/guardar/catTipoVenta', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+  /*CATALOGO TIPO NEGOCIO*/
+  obtenerTipoNego(filtro: FiltroCatTipoNegoModel): Observable<any> {
+    const body = JSON.stringify(filtro);
+    return this._http.post(
+      this.url + 'api/catalogos/adminUser/listNegocio', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+  eliminarTipoNego(id_tipo_negocio: number): Observable<any> {
+    const body = JSON.stringify({'id_tipo_negocio': id_tipo_negocio});
+    return this._http.post(
+      this.url + 'api/catalogos/adminUser/eliminarNegocio', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
+  buscarTipoNego(id_tipo_negocio: number): Observable<any> {
+    const body = JSON.stringify({'id_tipo_negocio': id_tipo_negocio});
+    return this._http.post(
+      this.url + 'api/catalogos/adminUser/buscarNegocio', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
+  guardarTipoNego(filtro: FiltroCatTipoNegoModel): Observable<any> {
+    const body = JSON.stringify(filtro);
+    return this._http.post(
+      this.url + 'api/admin/catalogos/guardar/catTipoNegocio', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
 }

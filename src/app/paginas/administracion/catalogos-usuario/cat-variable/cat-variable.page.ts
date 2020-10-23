@@ -31,9 +31,14 @@ export class CatVariablePage implements OnInit {
     this.filtro = new FiltroCatVariableModel();
   }
   public notify() {
-    if (this.isToggled === false) {
+    if (this.isToggled) {
+      this.isToggled = false;
       this.getVariables();
-    }
+    } else {
+      this.isToggled = true;
+}
+ 
+
     this.filtro = new FiltroCatVariableModel();
   }
   ngOnInit() {

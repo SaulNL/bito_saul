@@ -1,10 +1,10 @@
-<ion-header [translucent]="true">
+<!--<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
       Productos
     </ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header>-->
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
@@ -12,7 +12,8 @@
       <ion-title size="large">Productos</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-searchbar></ion-searchbar>
+  <!--<ion-searchbar></ion-searchbar>-->
+  <app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
   <ion-grid>
     <ion-row>
       <ion-col>
@@ -57,9 +58,9 @@
       <ion-col>
         <ion-list>
           <ion-item-sliding *ngFor="let producto of lstProductos">
-          <ion-item>
+          <ion-item (click)="abrirModal(producto)">
             <ion-thumbnail slot="start">
-              <img [src]="producto.imagen" (click)="abrirModal(producto)">
+              <img [src]="producto.imagen">
             </ion-thumbnail>
             <ion-label>
               <h2>{{producto.nombre}}</h2>

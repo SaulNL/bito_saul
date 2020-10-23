@@ -1,0 +1,129 @@
+@media screen and (max-width: 719px) {
+    #logoBitooFooter {
+      height: 4em !important;
+    }
+  }
+  
+  @media screen and (max-width: 959px) and (min-width: 720px) {
+    #logoBitooFooter {
+      height: 4em !important;
+    }
+  }
+  p {
+    color: white;
+  }
+  #footerMovil {
+    display: none !important;
+    padding-top: 2vw;
+    padding-bottom: 2vw;
+    background: linear-gradient(
+      90deg,
+      rgba(250, 79, 114, 1) 0%, 
+      rgba(167, 78, 239, 1) 100%);
+    
+  }
+  .separa {
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+  }
+  a {
+    color: white;
+    text-decoration: underline !important;
+  }
+  #footerB {
+    padding-top: 2vw;
+    padding-bottom: 2vw;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 104, 121, 1) 19%,
+      rgb(253, 118, 194, 1) 56%,
+      rgba(139, 160, 233, 1) 100%
+    );
+  }
+  #espaciotop{
+    padding-top: 1vw;
+  }
+  .linea{
+      padding: 0.01vw;
+      background-color: white;
+  }
+  .lineamovil{
+    padding: 0.0899vw;
+    background-color: white;
+  }
+  .lineamovil2{
+    padding: 0.2vw;
+    background-color: white;
+  }
+  @media (min-width:1600px){
+    .part3{
+        height: 3rem !important;
+    }  
+  }
+  @media (max-width: 992px) {
+    #footerB {
+      display: none !important;
+    }
+    #footerMovil {
+      display: block !important;
+      position: relative;
+      padding-bottom: 0px;
+      
+    }
+    i{
+      color: white;
+      font-size: 6vw !important;
+      padding-bottom: 0.5vw;
+    }
+    #logoBitooFooter {
+      height: 3em !important;
+    }
+  }
+  i{
+    color: white;
+    font-size: 2vw;
+    padding-bottom: 0.5vw;
+  }
+  .part1{
+    height: 5rem;
+  }
+  .part2{
+    position: relative;
+      height: 3rem;
+      left: 10px;
+  }
+  .part3{
+    position: relative;
+      height: 2rem;
+  }
+  p.letra {
+    margin-top: -16px;
+    font-size: 15px !important;
+  }
+  
+  p.tamano {
+    font-size: 16px;
+  }
+  .pyy{
+    padding-top: 2rem;
+    padding-bottom: 10px;  
+  }
+  .presen{
+    padding-bottom: 1rem;
+  }
+
+  ion-icon {
+    font-size: 24px;
+  }
+
+  //esto es el siguiente estilo
+  .container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  #detail, #speakers, #sponsors, footer {
+    text-align: center;
+  }
