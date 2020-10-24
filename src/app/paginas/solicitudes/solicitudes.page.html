@@ -167,9 +167,20 @@
       <br>
       <ion-label>{{seleccionadoAdmin.fecha_inicio_public}} <span style="color: black;">al</span> {{seleccionadoAdmin.fecha_fin_public}}</ion-label>
       <ion-button type="button" color="primary" expand="block">Postulados</ion-button>     
-      <ion-button  type="button"  color="medium" expand="block">Despublicar</ion-button>  
+      <ion-button  type="button"  color="medium" expand="block" (click)="abrirModalDejarPublicarPublicacion(seleccionadoAdmin)">Despublicar</ion-button>  
       <ion-button  type="button"  color="medium" expand="block" (click)="cerrarSeleAdminPublicada()">Cancelar</ion-button>          
       </ion-card-header>
+  </ion-card>
+</ion-content>
+<ion-content *ngIf="blnDejaPublicar"> 
+  <ion-card>
+    <ion-card-header>
+      <ion-label>!Precaución! esta acción no podrá ser revertida</ion-label>
+      <br>
+      <ion-label>¿Desea dejar de publicar esta publicación de la promoción <strong>{{seleccionTO.solicitud}}</strong>?</ion-label>
+      <ion-button type="button" color="primary" expand="block" (click)="quitarPublicacion()">Aceptar</ion-button>  
+      <ion-button  type="button"  color="medium" expand="block" (click)="cerrrarQuitarPublicacion()">Cancelar</ion-button>   
+    </ion-card-header>
   </ion-card>
 </ion-content>
   <!--Formulario Solicitudes-->

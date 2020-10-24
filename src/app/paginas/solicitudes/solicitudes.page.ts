@@ -46,6 +46,7 @@ export class SolicitudesPage implements OnInit {
   public blnAdminPublicadas: boolean;
   public blnSolicitud: boolean;
   public seleccionadoAdmin: SolicitudesModel;
+  public blnDejaPublicar: boolean;
   constructor(
     private solicitudesService: SolicitudesService,
     public actionSheetController: ActionSheetController,
@@ -75,7 +76,8 @@ export class SolicitudesPage implements OnInit {
     this.diasPermitidos = 0;
     this.modalPublicacion = false;
     this.blnAdminPublicadas = false;
-    this.blnSolicitud  = false ;
+    this.blnSolicitud = false;
+    this.blnDejaPublicar = false;
   }
   async presentLoading() {
     this.loader = await this.loadingController.create({
@@ -161,7 +163,7 @@ export class SolicitudesPage implements OnInit {
     this.seleccionaSolicitud = true;
     this.accionFormulario = 'Detalle';
     this.solicitud = solicitud;
-   // this.filtro = solicitud.solicitud;
+    // this.filtro = solicitud.solicitud;
     //this.btnBuscar();
   }
   cerrarSolicitud() {
@@ -326,22 +328,52 @@ export class SolicitudesPage implements OnInit {
         || element.descripcion.toLowerCase().indexOf(this.filtro.toString().toLowerCase()) > -1;
     });
   }
-  abriAdminPublicadas(){
-   this.blnAdminPublicadas = true;
-   this.blnActivaListaSolictud = false;
+  abriAdminPublicadas() {
+    this.blnAdminPublicadas = true;
+    this.blnActivaListaSolictud = false;
   }
-  cerrarAdminPublicadas(){
+  cerrarAdminPublicadas() {
     this.blnAdminPublicadas = false;
     this.blnActivaListaSolictud = true;
   }
-  selecAdminPublicada(solicitud: any){
+  selecAdminPublicada(solicitud: any) {
     this.seleccionadoAdmin = solicitud;
     this.blnAdminPublicadas = false;
     this.blnSolicitud = true;
   }
-  cerrarSeleAdminPublicada(){
+  cerrarSeleAdminPublicada() {
     this.blnAdminPublicadas = true;
     this.blnSolicitud = false;
   }
+  /**
+ * Funcion para dejar de publicar una publicacion
+ * @param modal
+ * @param id_promocion
+ * @author Omar
+ */
+  public abrirModalDejarPublicarPublicacion(solicitud) {
+    this.seleccionTO = solicitud;
+    this.blnSolicitud = false;
+    this.blnDejaPublicar = true;
+  }
+  /**
+   * Funcion para dejar de publicar un publicacion
+   * @author Omar
+   */
+  quitarPublicacion() {
+    this.solicitudesService.quitarPublicacion(this.seleccionTO).subscribe(
+      response => {
+        this.buscar();
+        //this.cerrarModal();
+      },
+      error => {
+        //this._notificacionService.pushError(error);
+      }
+    );
+  }
+  cerrrarQuitarPublicacion(){
+    this.blnSolicitud = true;
+    this.blnDejaPublicar = false;
+  }
+
 }
-  

@@ -14,6 +14,9 @@ import { SolicitudesService } from './../../../api/solicitudes.service';
 import { ToadNotificacionService } from '../../../api/toad-notificacion.service';
 import { LoadingController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
+import {Plugins} from '@capacitor/core';
+
+const {Geolocation} = Plugins;
 
 
 
@@ -50,6 +53,7 @@ export class FormSolicitudPage implements OnInit {
     public modalController: ModalController
   ) {
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
+    this.getCurrentPosition();
   }
   ngOnInit() {
     this.list_cat_estado = new Array<CatEstadoModel>();
@@ -224,6 +228,14 @@ export class FormSolicitudPage implements OnInit {
       this.list_cat_localidad = [];
     }
   }
+  async getCurrentPosition() {
+    const coordinates = await Geolocation.getCurrentPosition().then(res => {
+        console.log(res)
+    }).catch(error => {
+        console.log(error, 'asdasdsad')
+        }
+    );
+}
   /**
      * Funcion para obtener la ubicacion actual
      */
