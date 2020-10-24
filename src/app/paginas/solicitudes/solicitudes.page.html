@@ -15,6 +15,7 @@
  <!--lista Solicitudes-->
  <ion-content *ngIf="blnActivaListaSolictud">
   <ion-card style="margin-bottom: 3%; height: 100%;">
+    <ion-label *ngIf="lstSolicitudes === null ">No tienes Solicitudes Creadas</ion-label>
     <ion-list  *ngFor="let solicitud of lstSolicitudes" >
       <ion-item (click)="seleccionarSolicitud(solicitud)">
         <img [src]="solicitud.url_imagen" [alt]="solicitud.solicitud" style="border-radius: 100%;width: 35px;height: 35px;margin-right: 5px">
@@ -68,13 +69,107 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-button type="submit" color="primary" expand="block">Publicar
+      <ion-button (click)="abrirModal(solicitud)" type="submit" color="primary" expand="block">Publicar
         <ion-icon name="globe-outline"></ion-icon>
       </ion-button>
       <ion-button  (click)="modificar(solicitud)" type="button" color="warning" expand="block">Editar 
         <ion-icon name="create-outline"></ion-icon>
       </ion-button>
     </ion-card-header>
+  </ion-card>
+</ion-content>
+<!--Publicar Solicitud-->
+<ion-content *ngIf="modalPublicacion">
+  <ion-card>
+    <br>
+    <ion-card-header>
+    <div class="ion-text-center">
+      <span> Publicar Solicitud</span>
+    </div>
+    <div *ngIf="mensajePublicacion">
+      <span>Lo sentimos!!! Su cuenta gratuita solo permite hacer {{publicacionesPermitidas}} publicaciones...</span>
+    </div>
+    <ion-list>
+      <form #formBasicos="ngForm" (ngSubmit)="guardarPublicacion(formBasicos)">
+        <ion-item>
+          <ion-label stacked>
+            Fecha inicial
+          </ion-label>
+          <ion-datetime #fechaInicio="ngModel" name="fechaInicio" required (ionChange)="calcularRangoFechas()" [min]="minDate" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Inicio"  [(ngModel)]="fechaini"></ion-datetime>
+        </ion-item>
+        <div *ngIf="fechaInicio.touched  && fechaInicio.invalid">
+          <div *ngIf="fechaInicio.errors.required">Fecha de Inicio es requerido
+          </div>
+      </div>
+        <ion-item>
+          <ion-label stacked>
+            Fecha final
+          </ion-label>
+          <ion-datetime #fechaFinal="ngModel" name="fechaFinal" required (ionChange)="calcularRangoFechas()" [min]="minDate" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Final" [(ngModel)]="fechafin"></ion-datetime>
+        </ion-item> 
+        <div *ngIf="fechaFinal.touched  && fechaFinal.invalid">
+          <div *ngIf="fechaFinal.errors.required">Fecha Final es requerido
+          </div>
+      </div>
+        <br>
+        <div class="ion-text-center">
+          <span>Selecciona un rango de fechas no mayor a {{diasPermitidos}} días para la publicación</span>
+        </div>
+        <div  class="ion-text-center" *ngIf="blnSelectFecha" style="color: red;">
+          <span>Sólo puede seleccionar {{diasPermitidos}} días, verifique sus fechas</span>
+        </div>
+        <ion-button type="submit" color="primary" expand="block" [disabled]="formBasicos.invalid || blnSelectFecha">Publicar</ion-button>     
+        <ion-button  type="button"  color="medium" expand="block"(click)="cancelarPublicacion()">Cancelar</ion-button>          
+      </form>
+    </ion-list>
+  </ion-card-header>
+  </ion-card>
+</ion-content>
+<!--Publicaciones que haz realizado-->
+<ion-content *ngIf="blnAdminPublicadas">
+  <ion-card>
+    <ion-card-header>
+    <ion-searchbar (ionInput)="btnBuscar($event)" [(ngModel)]="filtro" type="text"></ion-searchbar>
+    <br>
+    <ion-list *ngFor="let soliPubli of lstSolicitudesPublicadas; index as is">
+      <ion-item (click)="selecAdminPublicada(soliPubli)">
+      <img src="{{soliPubli.url_imagen}}" style="width:8vw; margin: 5px;">
+      <ion-label>{{soliPubli.solicitud}}</ion-label>
+      <ion-buttons slot="end">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-buttons>
+    </ion-item>
+    </ion-list>
+    <ion-button  type="button"  color="medium" expand="block"(click)="cerrarAdminPublicadas()">Cancelar</ion-button>  
+  </ion-card-header> 
+  </ion-card>
+</ion-content>
+<!--Publicacion Realizada seleccionada-->
+<ion-content *ngIf="blnSolicitud">
+  <ion-card class="ion-text-center">
+    <ion-card-header>
+      <ion-card-title></ion-card-title>
+      <div class="ion-margin-top">
+        <img [src]="seleccionadoAdmin.url_imagen" [alt]="seleccionadoAdmin.solicitud">
+      </div>
+      <ion-label><span style="color: black;">Imagen</span></ion-label>
+      <br>
+      <ion-label><span style="color: black;">Usted publicó:</span>{{seleccionadoAdmin.solicitud}}</ion-label>
+      <br>
+      <ion-label><span style="color: black;">Descripción: </span>{{seleccionadoAdmin.descripcion}}</ion-label>
+      <br>
+      <ion-label><span style="color: black;">Estatus:</span>
+        <label *ngIf="seleccionadoAdmin.activo_public !== 1">No Vigente</label>
+        <label style="color: blue;" *ngIf="seleccionadoAdmin.activo_public === 1" >Vigente</label>
+      </ion-label>
+      <br>
+      <ion-label><span style="color: black;">Fecha de Publicación:</span></ion-label>
+      <br>
+      <ion-label>{{seleccionadoAdmin.fecha_inicio_public}} <span style="color: black;">al</span> {{seleccionadoAdmin.fecha_fin_public}}</ion-label>
+      <ion-button type="button" color="primary" expand="block">Postulados</ion-button>     
+      <ion-button  type="button"  color="medium" expand="block">Despublicar</ion-button>  
+      <ion-button  type="button"  color="medium" expand="block" (click)="cerrarSeleAdminPublicada()">Cancelar</ion-button>          
+      </ion-card-header>
   </ion-card>
 </ion-content>
   <!--Formulario Solicitudes-->

@@ -1,7 +1,7 @@
 import { ModalRecorteimagenPage } from './../../datos-basicos/modal-recorteimagen/modal-recorteimagen.page';
 import { GeneralServicesService } from './../../../api/general-services.service';
 import { Component, OnInit, Input } from '@angular/core';
-import {Map, tileLayer, marker, Marker} from 'leaflet';
+import { Map, tileLayer, marker, Marker } from 'leaflet';
 import { SolicitudesModel } from 'src/app/Modelos/SolicitudesModel';
 import { UtilsCls } from './../../../utils/UtilsCls';
 import { CatEstadoModel } from 'src/app/Modelos/catalogos/CatEstadoModel';
@@ -47,11 +47,10 @@ export class FormSolicitudPage implements OnInit {
     private solicitudesService: SolicitudesService,
     private notificaciones: ToadNotificacionService,
     public loadingController: LoadingController,
-    public modalController: ModalController,
+    public modalController: ModalController
   ) {
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
   }
-
   ngOnInit() {
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
@@ -61,6 +60,7 @@ export class FormSolicitudPage implements OnInit {
     this.blnImgCuadrada = true;
     this.blnImgCuadrada = !(this.actualTO.url_imagen !== undefined);
   }
+
   regresar() {
     if (this.actualTO.id_persona_solicitud !== null && this.actualTO.id_persona_solicitud !== undefined) {
       this.admin.blnActivarFormularioEdicion = false;
@@ -111,7 +111,7 @@ export class FormSolicitudPage implements OnInit {
             form.resetForm();
             // this._buscar.emit();
           }
-         // this.notificaciones.alerta(response.message + ',' + response.code);
+          // this.notificaciones.alerta(response.message + ',' + response.code);
         },
         error => {
           this.loader.dismiss();
@@ -131,7 +131,7 @@ export class FormSolicitudPage implements OnInit {
     setTimeout(it => {
       this.latitud = 19.4166896;
       this.longitud = -98.1467336;
-      this.map = new Map("mapId").setView([this.latitud, this.longitud], 16);
+      this.map = new Map("mapId").setView([this.latitud, this.longitud], 16).on('click', this.getLatLong);
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
       this.marker = marker([this.latitud, this.longitud], {
         draggable:
@@ -255,9 +255,8 @@ export class FormSolicitudPage implements OnInit {
         ];*/
         // this.map = new Map("mapId").setView([latitude, longitude], 16);
         //  tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
-
+        this.map.setView([latitude, longitude], 16);
         this.marker.setLatLng([latitude, longitude]);
-
         // marker([latitude, longitude], {
         //   draggable:
         //     true
@@ -284,7 +283,15 @@ export class FormSolicitudPage implements OnInit {
       }, { enableHighAccuracy: true, maximumAge: 60000, timeout: 10000 }*/
     );
   }
+  getLatLong(e){
+    let latitude = e.latlng.lat;
+    let longitude = e.latlng.lng;
+    console.log(latitude);
+    console.log(longitude);
+    this.map.setView([latitude, longitude], 16);
+    this.marker.setLatLng([latitude, longitude]);
 
+  }
   /************************************************************
    * IMAGENES
    ***********************************************************/
@@ -294,73 +301,73 @@ export class FormSolicitudPage implements OnInit {
    * @param modal
    */
   public subir_imagen_cuadrada(event) {
-    if (event.target.files && event.target.files.length) {
-      let height;
-      let width;
-      for (const archivo of event.target.files) {
-        const reader = new FileReader();
-        reader.readAsDataURL(archivo);
-        reader.onload = () => {
-          const img = new Image();
-          img.src = reader.result as string;
-          img.onload = () => {
-            height = img.naturalHeight;
-            width = img.naturalWidth;
-            if (width === 200 && height === 200) {
-              //   this.procesando_img = true;
-              const file_name = archivo.name;
-              const file = archivo;
-              if (file.size < 3145728) {
-                let file_64: any;
-                const utl = new UtilsCls();
-                utl.getBase64(file).then(
-                  data => {
-                    file_64 = data;
-                    const imagen = new ArchivoComunModel();
-                    imagen.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
-                    imagen.archivo_64 = file_64;
-                    this.actualTO.imagen = imagen;
-                    //   this.procesando_img = false;
-                    this.blnImgCuadrada = false;
-                  }
-                );
-              } else {
-                // this._notificacionService.pushAlert(this._lang.transform('comun.file_sobrepeso'));
-              }
+  if (event.target.files && event.target.files.length) {
+    let height;
+    let width;
+    for (const archivo of event.target.files) {
+      const reader = new FileReader();
+      reader.readAsDataURL(archivo);
+      reader.onload = () => {
+        const img = new Image();
+        img.src = reader.result as string;
+        img.onload = () => {
+          height = img.naturalHeight;
+          width = img.naturalWidth;
+          if (width === 200 && height === 200) {
+            //   this.procesando_img = true;
+            const file_name = archivo.name;
+            const file = archivo;
+            if (file.size < 3145728) {
+              let file_64: any;
+              const utl = new UtilsCls();
+              utl.getBase64(file).then(
+                data => {
+                  file_64 = data;
+                  const imagen = new ArchivoComunModel();
+                  imagen.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
+                  imagen.archivo_64 = file_64;
+                  this.actualTO.imagen = imagen;
+                  //   this.procesando_img = false;
+                  this.blnImgCuadrada = false;
+                }
+              );
             } else {
-              this.abrirModal(event);
+              // this._notificacionService.pushAlert(this._lang.transform('comun.file_sobrepeso'));
             }
-          };
+          } else {
+            this.abrirModal(event);
+          }
         };
-      }
+      };
     }
   }
-  async abrirModal(event) {
-    const modal = await this.modalController.create({
-      component:  ModalRecorteimagenPage,
-      cssClass: 'my-custom-class',
-      componentProps: {
-        eventoImagen: event,
-        width: 400,
-        height: 400,
-        IdInput: 'cuadrado',
-      }
-    });
-    await modal.present();
-    const { data } = await modal.onDidDismiss();
-    if (data != null) {
-      this.guardarImagenRecortada(data.data, data.nombre_archivo);
+}
+async abrirModal(event) {
+  const modal = await this.modalController.create({
+    component: ModalRecorteimagenPage,
+    cssClass: 'my-custom-class',
+    componentProps: {
+      eventoImagen: event,
+      width: 400,
+      height: 400,
+      IdInput: 'cuadrado',
     }
+  });
+  await modal.present();
+  const { data } = await modal.onDidDismiss();
+  if (data != null) {
+    this.guardarImagenRecortada(data.data, data.nombre_archivo);
   }
-  guardarImagenRecortada(data, nombre_archivo) {
-    const file_name = nombre_archivo;
-    const file = data;
-    const imagen = new ArchivoComunModel();
-    if (file_name != null) {
-      imagen.nombre_archivo = file_name,
+}
+guardarImagenRecortada(data, nombre_archivo) {
+  const file_name = nombre_archivo;
+  const file = data;
+  const imagen = new ArchivoComunModel();
+  if (file_name != null) {
+    imagen.nombre_archivo = file_name,
       imagen.archivo_64 = file;
-      this.blnImgCuadrada = false;
-    }
-    this.actualTO.imagen = imagen;
+    this.blnImgCuadrada = false;
   }
+  this.actualTO.imagen = imagen;
+}
 }
