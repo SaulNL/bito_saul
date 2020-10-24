@@ -25,10 +25,6 @@ const routes: Routes = [
         loadChildren: () => import('./../../administracion/catalogos-usuario/cat-avisoinformacion/cat-avisoinformacion.module').then( m => m.CatAvisoinformacionPageModule)
       },
       {
-        path: 'datos-cat-variables',
-        loadChildren: () => import('./../../administracion/catalogos-usuario/cat-variable/datos-cat-variables/datos-cat-variables.module').then(m => m.DatosCatVariablesPageModule)
-      },
-      {
         path: 'cat-rol',
         loadChildren: () => import('./../../administracion/catalogos-usuario/cat-rol/cat-rol.module').then( m => m.CatRolPageModule)
       },

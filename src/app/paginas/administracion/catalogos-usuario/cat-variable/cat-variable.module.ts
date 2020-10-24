@@ -6,8 +6,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { CatVariablePageRoutingModule } from './cat-variable-routing.module';
 
-import { DatosCatVariablesPage } from './datos-cat-variables/datos-cat-variables.page';
-
 import { CatVariablePage } from './cat-variable.page';
 
 @NgModule({
@@ -17,9 +15,6 @@ import { CatVariablePage } from './cat-variable.page';
     IonicModule,
     CatVariablePageRoutingModule
   ],
-  declarations: [
-    CatVariablePage,
-    DatosCatVariablesPage
-  ]
+  declarations: [CatVariablePage]
 })
 export class CatVariablePageModule {}

@@ -4,6 +4,7 @@ import { AdministracionService } from "../../../../api/administracion-service.se
 import { constants } from "buffer";
 import { LoadingController } from "@ionic/angular";
 import { ToadNotificacionService } from "../../../../api/toad-notificacion.service";
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: "app-cat-variable",
@@ -19,10 +20,11 @@ export class CatVariablePage implements OnInit {
   public loader : boolean;
   public blnBtnFiltro: boolean;
 
-  constructor(
+  constructor(private router: Router,
     private notifi: ToadNotificacionService,
     private servicioUsuarios: AdministracionService,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    private active: ActivatedRoute
   ) {
     this.loader = false;
     this.isToggled = false;
@@ -43,6 +45,13 @@ export class CatVariablePage implements OnInit {
   }
   ngOnInit() {
     this.getVariables();
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          this.getVariables();
+        }
+      }
+    });
   }
   setBlnFiltro() {
     this.blnBtnFiltro = this.validarFiltros();
@@ -59,11 +68,15 @@ export class CatVariablePage implements OnInit {
   }
   datosVariables(variable: FiltroCatVariableModel) {
     this.selectTO =  JSON.parse(JSON.stringify(variable));
-    this.blnActivaDatosVariable = true;
+    let navigationExtras = JSON.stringify(this.selectTO);
+  this.router.navigate(['/tabs/home/cat-variable/datos-cat-variables'], { queryParams: {special: navigationExtras}  });
+    //this.blnActivaDatosVariable = true;
   }
   agregarVariable() {
     this.selectTO = new FiltroCatVariableModel();
-    this.blnActivaDatosVariable = true;
+    let navigationExtras = JSON.stringify(this.selectTO);
+  this.router.navigate(['/tabs/home/cat-variable/datos-cat-variables'], { queryParams: {special: navigationExtras}  });
+    //this.blnActivaDatosVariable = true;
   }
   getVariables() {
     this.servicioUsuarios.listarVariables().subscribe(
