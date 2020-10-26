@@ -50,10 +50,10 @@
       <ion-row>
         <ion-col>
           <div>
-            <ion-button style="position: relative;" type="submit" *ngIf="this.btnAdd.botonAgregar" class="bg-rosa"
-              [disabled]="(!blnBtnPermisos ||form.invalid)&&this.btnAdd.botonAgregar===true">Guardar</ion-button>
+            <ion-button style="position: relative;" type="submit" *ngIf="this.botonAgregar" class="bg-rosa"
+              [disabled]="(!blnBtnPermisos ||form.invalid)&&this.botonAgregar===true">Guardar</ion-button>
             <ion-button style="position: relative;" type="submit" *ngIf="valida ===true" class="bg-rosa"
-              [disabled]="(!blnBtnPermisos ||form.invalid)&&this.btnAdd.botonAgregar===false">Actualizar</ion-button>
+              [disabled]="(!blnBtnPermisos ||form.invalid)&&this.botonAgregar===false">Actualizar</ion-button>
           </div>
         </ion-col>
         <ion-col>

@@ -6,8 +6,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { CatPalabraReservadasPageRoutingModule } from './cat-palabra-reservadas-routing.module';
 
-import { DatosPalabraReservadasPage } from './datos-palabra-reservadas/datos-palabra-reservadas.page';
-
 import { CatPalabraReservadasPage } from './cat-palabra-reservadas.page';
 
 @NgModule({
@@ -17,7 +15,6 @@ import { CatPalabraReservadasPage } from './cat-palabra-reservadas.page';
     IonicModule,
     CatPalabraReservadasPageRoutingModule
   ],
-  declarations: [CatPalabraReservadasPage,
-    DatosPalabraReservadasPage]
+  declarations: [CatPalabraReservadasPage]
 })
 export class CatPalabraReservadasPageModule {}

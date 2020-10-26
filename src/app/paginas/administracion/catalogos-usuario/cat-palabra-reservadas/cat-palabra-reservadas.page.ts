@@ -2,6 +2,7 @@ import { Component, OnInit, TrackByFunction } from "@angular/core";
 import { FiltroCatPalabrasResModel } from "../../../../Modelos/catalogos/FiltroCatPalabrasResModel";
 import { AdministracionService } from "../../../../api/administracion-service.service";
 import { ToadNotificacionService } from "../../../../api/toad-notificacion.service";
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: "app-cat-palabra-reservadas",
@@ -21,7 +22,9 @@ export class CatPalabraReservadasPage implements OnInit {
   constructor(
     
     private notificaciones: ToadNotificacionService,
-    private servicioUsuarios: AdministracionService
+    private servicioUsuarios: AdministracionService,
+    private router: Router,
+    private active: ActivatedRoute
   ) {
     this.isToggled = false;
     this.filtro = new FiltroCatPalabrasResModel();
@@ -33,6 +36,13 @@ export class CatPalabraReservadasPage implements OnInit {
 
   ngOnInit() {
     this.getPalabras();
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          this.getPalabras();
+        }
+      }
+    });
   }
   getPalabras() {
     //this.loaderGiro = true;
@@ -87,16 +97,18 @@ export class CatPalabraReservadasPage implements OnInit {
   }
   datosPalabra(palabra: FiltroCatPalabrasResModel) {
     this.selectTO = JSON.parse(JSON.stringify(palabra));
-    this.blnActivaDatosPalabra = true;
+    let navigationExtras = JSON.stringify(this.selectTO);
+    this.router.navigate(['/tabs/home/cat-palabra-reservadas/datos-palabra-reservadas'], { queryParams: {special: navigationExtras}  });
     //this.activarTabla();
     //window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   agregarPalabra() {
    // window.scrollTo({ top: 0, behavior: 'smooth' });
     this.selectTO = new FiltroCatPalabrasResModel();
-    this.blnActivaDatosPalabra = true;
-   // this.activarTabla();
-   this.botonAgregar = true;
+    let navigationExtras = JSON.stringify(this.selectTO);
+  this.router.navigate(['/tabs/home/cat-palabra-reservadas/datos-palabra-reservadas'], { queryParams: {special: navigationExtras}  });
+  
+  
   }
   validarActivo(palabra: FiltroCatPalabrasResModel) {
     palabra.activo = palabra.activo === 1 ? 0 : 1;

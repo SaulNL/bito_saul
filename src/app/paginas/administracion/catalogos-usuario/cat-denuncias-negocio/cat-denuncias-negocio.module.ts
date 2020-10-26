@@ -6,8 +6,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { CatDenunciasNegocioPageRoutingModule } from './cat-denuncias-negocio-routing.module';
 
-import { DatosCatDenunciaPage } from './datos-cat-denuncia/datos-cat-denuncia.page';
-
 import { CatDenunciasNegocioPage } from './cat-denuncias-negocio.page';
 
 @NgModule({
@@ -17,6 +15,6 @@ import { CatDenunciasNegocioPage } from './cat-denuncias-negocio.page';
     IonicModule,
     CatDenunciasNegocioPageRoutingModule
   ],
-  declarations: [CatDenunciasNegocioPage,DatosCatDenunciaPage]
+  declarations: [CatDenunciasNegocioPage]
 })
 export class CatDenunciasNegocioPageModule {}

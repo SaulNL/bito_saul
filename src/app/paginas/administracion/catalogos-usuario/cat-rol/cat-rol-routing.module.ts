@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: CatRolPage
+  },
+  {
+    path: 'datos-cat-rol',
+    loadChildren: () => import('./datos-cat-rol/datos-cat-rol.module').then( m => m.DatosCatRolPageModule)
   }
 ];
 

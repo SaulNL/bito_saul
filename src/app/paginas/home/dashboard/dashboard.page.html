@@ -65,6 +65,11 @@
                 <ion-icon name="ellipse-sharp"></ion-icon>
                 <ion-list-header>Avisos</ion-list-header>
               </ion-item>
+              <ion-item menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-denuncias-negocio']"
+                [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
+                <ion-icon name="ellipse-sharp"></ion-icon>
+                <ion-list-header>Denuncias</ion-list-header>
+              </ion-item>
             </ion-list>
           </ion-menu-toggle>  
       </ion-list>

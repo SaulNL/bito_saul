@@ -1,4 +1,4 @@
-<ion-header *ngIf="!blnActivaDatosPalabra">
+<ion-header >
   <ion-toolbar class="tolbar">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="!blnActivaDatosPalabra">
+<ion-content >
   <ion-item class="bg-gris">
     <ion-buttons slot="end">
         <ion-button (click)="notify()">
@@ -66,7 +66,3 @@
       </ion-card-header>
     </ion-card>
 </ion-content>
-<div *ngIf="blnActivaDatosPalabra">  
-  <app-datos-palabra-reservadas [actualTO]="selectTO"></app-datos-palabra-reservadas> 
-  
-</div>

@@ -1,4 +1,4 @@
-<ion-header *ngIf="!blnActivaDatosTipoVenta">
+<ion-header >
   <ion-toolbar class="tolbar">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="!blnActivaDatosTipoVenta">
+<ion-content >
   <ion-item class="bg-gris">
     <ion-buttons slot="end">
         <ion-button (click)="notify()">
@@ -72,6 +72,3 @@
       </ion-card-header>
     </ion-card>
 </ion-content>
-<div *ngIf="blnActivaDatosTipoVenta">  
-  <app-datos-cat-tipo-ventas [actualTO]="selectTO"></app-datos-cat-tipo-ventas>
-</div>

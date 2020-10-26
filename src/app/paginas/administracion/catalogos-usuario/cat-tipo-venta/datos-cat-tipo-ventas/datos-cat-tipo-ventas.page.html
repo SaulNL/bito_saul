@@ -6,8 +6,8 @@
       </ion-button>
     </ion-buttons>
     <ion-title>
-      <span *ngIf="this.btnAdd.botonAgregar">Agregar Tipo Venta</span>
-      <span *ngIf="!this.btnAdd.botonAgregar">Modificar Tipo Venta</span>
+      <span *ngIf="this.botonAgregar">Agregar Tipo Venta</span>
+      <span *ngIf="!this.botonAgregar">Modificar Tipo Venta</span>
     </ion-title>
     <ion-buttons slot="end" *ngIf="ventaTO.id_tipo_venta !null">
       <ion-button (click)="presentActionSheet()">
@@ -20,7 +20,7 @@
 <ion-content>
   <form #form="ngForm" (ngSubmit)="actualizarDatos(form)">
     <ion-card>
-      <ion-item>
+      <ion-item class="espacio">
         <div class="avatar-upload">
           <div class="avatar-edit">
             <input type='file' id="imageUpload" accept="image/*" (change)="subirArchivo($event)" />
@@ -68,10 +68,10 @@
       <ion-row>
         <ion-col>
           <div>
-            <ion-button style="position: relative;" type="submit" *ngIf="this.btnAdd.botonAgregar" class="bg-rosa"
-              [disabled]="form.invalid&&this.btnAdd.botonAgregar===true">Guardar</ion-button>
+            <ion-button style="position: relative;" type="submit" *ngIf="this.botonAgregar" class="bg-rosa"
+              [disabled]="form.invalid&&this.botonAgregar===true">Guardar</ion-button>
             <ion-button style="position: relative;" type="submit" *ngIf="valida ===true" class="bg-rosa"
-              [disabled]="form.invalid&&this.btnAdd.botonAgregar===false">Actualizar</ion-button>
+              [disabled]="form.invalid&&this.botonAgregar===false">Actualizar</ion-button>
        
           </div>
         </ion-col>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DenunciaModel } from '../../../../Modelos/DenunciaModel';
 import { AdministracionService } from '../../../../api/administracion-service.service';
 import { ToadNotificacionService } from "../../../../api/toad-notificacion.service";
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cat-denuncias-negocio',
@@ -22,7 +23,9 @@ export class CatDenunciasNegocioPage implements OnInit {
 
   constructor(
     private adminServicio: AdministracionService,
-    private notificaciones: ToadNotificacionService
+    private notificaciones: ToadNotificacionService,
+    private router: Router,
+    private active: ActivatedRoute
   ) { 
     this.blnActivaComentarios = false;
     this.filtro = '';
@@ -32,6 +35,13 @@ export class CatDenunciasNegocioPage implements OnInit {
 
   ngOnInit() {
     this.obtenerDenunciasNegocio();
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          this.obtenerDenunciasNegocio();
+        }
+      }
+    });
   }
   public notify() {
     if (this.isToggled) {
@@ -85,7 +95,8 @@ export class CatDenunciasNegocioPage implements OnInit {
   }
   datosNegocio(denuncia: DenunciaModel) {
     this.selectTO =  JSON.parse(JSON.stringify(denuncia));
-    this.blnActivaComentarios = true;
+    let navigationExtras = JSON.stringify(this.selectTO);
+  this.router.navigate(['/tabs/home/cat-denuncias-negocio/datos-cat-denuncia'], { queryParams: {special: navigationExtras}  });
     //this.activarTabla();
     //window.scrollTo({ top: 0, behavior: 'smooth' });
   }

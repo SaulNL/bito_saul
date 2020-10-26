@@ -6,8 +6,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { CatRolPageRoutingModule } from './cat-rol-routing.module';
 
-import { DatosCatRolPage } from './datos-cat-rol/datos-cat-rol.page';
-
 import { CatRolPage } from './cat-rol.page';
 
 @NgModule({
@@ -17,6 +15,6 @@ import { CatRolPage } from './cat-rol.page';
     IonicModule,
     CatRolPageRoutingModule
   ],
-  declarations: [CatRolPage,DatosCatRolPage]
+  declarations: [CatRolPage]
 })
 export class CatRolPageModule {}
