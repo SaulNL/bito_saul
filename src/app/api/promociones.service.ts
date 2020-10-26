@@ -4,6 +4,8 @@ import { AppSettings } from "../AppSettings";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { FiltrosModel } from '../Modelos/FiltrosModel';
+import { PromocionesModel } from '../Modelos/busqueda/PromocionesModel';
+import { PublicacionesModel } from '../Modelos/PublicacionesModel';
 
 @Injectable({
   providedIn: 'root'
@@ -82,6 +84,100 @@ export class PromocionesService {
       jsOrigen.data = jsCategoria;
 
       return jsOrigen;
+    }));
+  }
+
+  buscar(promocion: PromocionesModel): Observable<any> {
+    const body = JSON.stringify(promocion);
+    return this._http.post(
+      this.url + 'api/promociones/persona', body,
+      {headers: AppSettings.getHeaders()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  obtenerNumeroPublicacionesPromocion(id_proveedor): Observable<any>{
+    const body = JSON.stringify({'id_proveedor':id_proveedor});
+    return this._http.post(
+      this.url + 'api/promocion/obtener/numero_publicaciones', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
+
+  obtenerPromocinesPublicadas(promocion: PromocionesModel): Observable<any> {
+    const body = JSON.stringify(promocion);
+    return this._http.post(
+      this.url + 'api/promociones/obtener/publicadas', body,
+      {headers:  AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  quitarPublicacionPromocion(variable: PromocionesModel) {
+    console.log( variable );
+    const body = JSON.stringify(variable);
+    return this._http.post(
+      this.url + 'api/promociones/eliminar/publicacion', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
+
+  obtenerQuienVioPublicacion(id_promocion, id_persona): Observable<any>{
+    const body = JSON.stringify({'id_promocion': id_promocion, 'id_persona': id_persona});
+    return this._http.post(
+      this.url + 'api/promociones/obtener/viste_mi_promocion', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
+
+  obtenerNumeroQuienVioPublicacion(id_promocion): Observable<any>{
+    const body = JSON.stringify({'id_promocion': id_promocion});
+    return this._http.post(
+      this.url + 'api/promociones/obtener/numero_viste_mi_promocion', body,
+      {headers:  AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
+
+  guardar(variable: PromocionesModel): Observable<any> {
+    const body = JSON.stringify(variable);
+    return this._http.post(
+      this.url + 'api/promociones/guardar', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+
+      return data;
+    }));
+  }
+
+  eliminar(variable: PromocionesModel) {
+    const body = JSON.stringify(variable);
+    return this._http.post(
+      this.url + 'api/promociones/eliminar', body,
+      {headers:  AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+
+      return data;
+    }));
+  }
+
+  guardarPublicacion(publicacion: PublicacionesModel): Observable<any> {
+    const body = JSON.stringify(publicacion);
+    return this._http.post(
+      this.url + 'api/promocion/publicar', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+
+      return data;
     }));
   }
 
