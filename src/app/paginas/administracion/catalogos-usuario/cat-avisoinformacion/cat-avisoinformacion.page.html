@@ -1,4 +1,4 @@
-<ion-header *ngIf="!blnActivaDatosPopover && !blnActivaDatosAvisos">
+<ion-header >
   <ion-toolbar class="tolbar">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -13,7 +13,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="!blnActivaDatosPopover && !blnActivaDatosAvisos">
+<ion-content >
   <ion-item class="bg-gris">
     <ion-buttons slot="end">
         <ion-button (click)="notify()">
@@ -50,11 +50,3 @@
     </ion-card-header>
   </ion-card>
 </ion-content>
-
-<div *ngIf="blnActivaDatosAvisos">
-  <app-datos-avisos-informacion [actualTO]="selectTO" ></app-datos-avisos-informacion>
-</div>
-
-<div *ngIf="blnActivaDatosPopover">
-  <app-datos-popover [actualTO]="selectTO"></app-datos-popover>
-</div>

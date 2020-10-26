@@ -3,7 +3,7 @@ import { ActionSheetController, AlertController } from '@ionic/angular';
 import { AdministracionService } from '../../../../../api/administracion-service.service';
 import { FiltroCatOrgModel } from '../../../../../Modelos/catalogos/FiltroCatOrgModel';
 import {NgForm} from "@angular/forms";
-import {CatOrganizacionPage} from '../cat-organizacion.page';
+import {Router, ActivatedRoute} from '@angular/router';
 
 
 @Component({
@@ -12,7 +12,7 @@ import {CatOrganizacionPage} from '../cat-organizacion.page';
   styleUrls: ['./datos-cat-organizacion.page.scss'],
 })
 export class DatosCatOrganizacionPage implements OnInit {
-  @Input() public actualTO: FiltroCatOrgModel;
+  public actualTO: FiltroCatOrgModel;
   public organizacionTO: FiltroCatOrgModel;
   public filtro=new FiltroCatOrgModel();
   public valida:boolean;
@@ -20,22 +20,28 @@ export class DatosCatOrganizacionPage implements OnInit {
     private administracionService: AdministracionService,
     private actionSheetController: ActionSheetController,
     public alertController: AlertController,
-    private admin:CatOrganizacionPage
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) { 
     this.valida=false;
   }
 
   ngOnInit() {
-    this.organizacionTO = this.actualTO;
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params && params.special) {
+        this.actualTO = JSON.parse(params.special);
+        this.organizacionTO = this.actualTO;
+      }
+    });
   }
+  
   
   eliminarOrganizacion() {
     //this.loader = true;
     this.administracionService.eliminarOrganizacion(this.organizacionTO.id_organizacion).subscribe(
       response => {
         if (response.code === 200) {
-          this.admin.blnActivaDatosOrganizacion=false;
-          this.admin.getOrganizaciones();
+          this.regresar();
           this.borrado();
           //this.loader = false;
           //this.getOrganizaciones();
@@ -59,8 +65,7 @@ export class DatosCatOrganizacionPage implements OnInit {
     this.administracionService.guardarCatOrganizacion(this.organizacionTO).subscribe(
       data => {
         if (data.code === 200) {        
-          this.admin.blnActivaDatosOrganizacion=false;
-          this.admin.getOrganizaciones();
+          this.regresar();
           this.guardados();
           //this._notificacionService.pushInfo('Los datos se guardaron correctamente');
           //this.loader = false;
@@ -81,7 +86,7 @@ export class DatosCatOrganizacionPage implements OnInit {
   }
 
   regresar(){
-    this.admin.blnActivaDatosOrganizacion = false;
+    this.router.navigate(['/tabs/home/cat-organizaciones'], { queryParams: {special: true}  });
   }
 
   async presentActionSheet() {

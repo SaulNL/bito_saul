@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FiltroCatAvisosInfoModel } from '../../../../Modelos/catalogos/FiltroCatAvisosInfoModel';
 import { AdministracionService } from "../../../../api/administracion-service.service";
 import { ActionSheetController, AlertController } from '@ionic/angular';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cat-avisoinformacion',
@@ -21,7 +22,9 @@ export class CatAvisoinformacionPage implements OnInit {
   constructor(
     private _administradorService: AdministracionService,
     private actionSheetController: ActionSheetController,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private router: Router,
+    private active: ActivatedRoute
   ) {
     this.lstCatAvisos = [];
     this.blnActivaDatosAvisos = false;
@@ -32,6 +35,13 @@ export class CatAvisoinformacionPage implements OnInit {
 
   ngOnInit() {
     this.getAvisos();
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          this.getAvisos();
+        }
+      }
+    });
   }
 
   public notify() {
@@ -62,13 +72,15 @@ export class CatAvisoinformacionPage implements OnInit {
       //console.log('1');
       //console.log(aviso.tipo_aviso);
       this.selectTO = JSON.parse(JSON.stringify(aviso));
-      this.blnActivaDatosAvisos = true;
+      let navigationExtras = JSON.stringify(this.selectTO);
+  this.router.navigate(['/tabs/home/cat-avisos/datos-avisos-informacion'], { queryParams: {special: navigationExtras}  });
       //window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       //console.log('2');
       //console.log(aviso.tipo_aviso);
       this.selectTO = JSON.parse(JSON.stringify(aviso));
-      this.blnActivaDatosPopover = true;
+      let navigationExtras = JSON.stringify(this.selectTO);
+  this.router.navigate(['/tabs/home/cat-avisos/datos-popover'], { queryParams: {special: navigationExtras}  });
       //window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -77,13 +89,17 @@ export class CatAvisoinformacionPage implements OnInit {
   agregarAviso() {
     //window.scrollTo({ top: 0, behavior: 'smooth' });
     this.selectTO = new FiltroCatAvisosInfoModel();
-    this.blnActivaDatosAvisos = true;
+    let navigationExtras = JSON.stringify(this.selectTO);
+  this.router.navigate(['/tabs/home/cat-avisos/datos-avisos-informacion'], { queryParams: {special: navigationExtras}  });
+
     //this.activarTabla();
   }
   agregarPopover() {
     //window.scrollTo({ top: 0, behavior: 'smooth' });
     this.selectTO = new FiltroCatAvisosInfoModel();
-    this.blnActivaDatosPopover = true;
+    let navigationExtras = JSON.stringify(this.selectTO);
+  this.router.navigate(['/tabs/home/cat-avisos/datos-popover'], { queryParams: {special: navigationExtras}  });
+
     //this.activarTablaPopover();
   }
 

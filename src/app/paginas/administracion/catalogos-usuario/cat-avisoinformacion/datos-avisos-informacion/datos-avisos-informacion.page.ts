@@ -1,11 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FiltroCatAvisosInfoModel } from '../../../../../Modelos/catalogos/FiltroCatAvisosInfoModel';
 import { AdministracionService } from "../../../../../api/administracion-service.service";
-import {CatAvisoinformacionPage} from '../cat-avisoinformacion.page';
 import { ActionSheetController, AlertController } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
 import { UtilsCls } from "../../../../../utils/UtilsCls";
 import { ArchivoComunModel } from "../../../../../Modelos/ArchivoComunModel";
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-datos-avisos-informacion',
@@ -13,7 +13,7 @@ import { ArchivoComunModel } from "../../../../../Modelos/ArchivoComunModel";
   styleUrls: ['./datos-avisos-informacion.page.scss'],
 })
 export class DatosAvisosInformacionPage implements OnInit {
-  @Input() public actualTO: FiltroCatAvisosInfoModel;
+  public actualTO: FiltroCatAvisosInfoModel;
   public avisoTO: FiltroCatAvisosInfoModel;
   private file_img_galeria: FileList;
   public activos = [
@@ -28,17 +28,22 @@ export class DatosAvisosInformacionPage implements OnInit {
 
   constructor(
     private servicioAdminitracion: AdministracionService,
-    private admin: CatAvisoinformacionPage,
     private actionSheetController: ActionSheetController,
     public alertController: AlertController,
-    private _utils_cls: UtilsCls
+    private _utils_cls: UtilsCls,
+    private router: Router,
+    private active: ActivatedRoute
   ) { 
     this.valida=false;
   }
 
   ngOnInit() {
-    this.avisoTO=this.actualTO;
-    console.log(this.avisoTO);
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        this.actualTO = JSON.parse(params.special);
+        this.avisoTO=this.actualTO;
+      }
+    });
     
   }
 
@@ -47,10 +52,10 @@ export class DatosAvisosInformacionPage implements OnInit {
     this.servicioAdminitracion.guardarAviso(this.avisoTO).subscribe(
       data => {
         if (data.code === 200) {
-          this.admin.getAvisos();
+          
           //this._notificacionService.pushInfo('Los datos se guardaron correctamente');
           //this.loader = false;
-          this.admin.blnActivaDatosAvisos = false;
+          this.regresar();
           this.guardados();
           //this.admin.activarTabla();
         } else {
@@ -69,7 +74,7 @@ export class DatosAvisosInformacionPage implements OnInit {
   }
   regresar() {
     //window.scrollTo({ top: 0, behavior: 'smooth' });
-    this.admin.blnActivaDatosAvisos = false;
+    this.router.navigate(['/tabs/home/cat-avisos'], { queryParams: {special: true}  });
     //this.admin.activarTablaPopover();
   }
 
@@ -117,8 +122,7 @@ export class DatosAvisosInformacionPage implements OnInit {
       response => {
         if (response.code === 200) {
           //this.loader = false;
-          this.admin.blnActivaDatosAvisos=false;
-          this.admin.getAvisos();
+          this.regresar();
           this.borrado();
           //this.cancelarConfirmado();
           //this._notificacionService.pushInfo('se elimino correctamente');
