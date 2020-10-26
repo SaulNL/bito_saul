@@ -11,6 +11,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { ModalPublicarComponent } from '../../components/modal-publicar/modal-publicar.component';
 import { ModalInfoPromoComponent } from '../../components/modal-info-promo/modal-info-promo.component';
 
+
 @NgModule({
   imports: [
     CommonModule,
