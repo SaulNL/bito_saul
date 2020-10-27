@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SolicitudesService } from '../../../api/solicitudes.service';
 import { SolicitudesModel } from 'src/app/Modelos/SolicitudesModel';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ToadNotificacionService } from '../../../api/toad-notificacion.service';
 
 @Component({
   selector: 'app-admin-solicitudes-publicadas',
@@ -17,10 +18,12 @@ export class AdminSolicitudesPublicadasPage implements OnInit {
   public seleccionTO: SolicitudesModel;
   public filtro: any;
   public solicitud: SolicitudesModel;
+  public numeroPublicadas: number;
   constructor(
     private solicitudesService: SolicitudesService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    public notificaciones: ToadNotificacionService
   ) { }
 
   ngOnInit() {
@@ -43,12 +46,11 @@ export class AdminSolicitudesPublicadasPage implements OnInit {
     this.seleccionTO.id_persona = this.id_persona;
     this.solicitudesService.obtenerSolcitudesPublicadas(this.seleccionTO).subscribe(response => {
       this.lstSolicitudesPublicadas = response.data;
+      this.numeroPublicadas = this.lstSolicitudesPublicadas.length;
       this.lstSolicitudesPublicadasBK = response.data;
-      // this.loader = false;
     },
       error => {
-        // this.notificaciones.error(error);
-        // this.loader = false;
+             this.notificaciones.error(error);
       });
   }
   btnBuscar(e) {

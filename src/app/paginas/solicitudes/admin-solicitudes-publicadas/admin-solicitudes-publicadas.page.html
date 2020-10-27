@@ -9,7 +9,12 @@
 
 <ion-content>
   <ion-card>
-    <ion-card-header>
+    <div *ngIf="numeroPublicadas == 0">
+      <ion-chip color="warning">
+        <ion-label><strong>Lo sentimos!</strong> Aún no tienes ninguna solicitud publicada.</ion-label>
+      </ion-chip>
+    </div>
+    <ion-card-header *ngIf="numeroPublicadas > 0">
     <ion-searchbar (ionInput)="btnBuscar($event)" [(ngModel)]="filtro" type="text"></ion-searchbar>
     <br>
     <ion-list *ngFor="let soliPubli of lstSolicitudesPublicadas; index as is">

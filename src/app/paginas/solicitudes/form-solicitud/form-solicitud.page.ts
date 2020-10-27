@@ -125,8 +125,8 @@ export class FormSolicitudPage implements OnInit {
    */
   public cagarMapa() {
     setTimeout(it => {
-      //this.map = new Map("mapId").setView([this.latitud, this.longitud], 16).on('click', this.getLatLong);
-      this.map = new Map("mapId").setView([this.latitud, this.longitud], 16);
+      this.map = new Map("mapId").setView([this.latitud, this.longitud], 16).on('click', this.getLatLong);
+     // this.map = new Map("mapId").setView([this.latitud, this.longitud], 16);
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
       this.marker = marker([this.latitud, this.longitud], {
         draggable:
@@ -246,12 +246,13 @@ export class FormSolicitudPage implements OnInit {
     );
   }
   getLatLong(e) {
-    let latitude = e.latlng.lat;
+    console.log(e);
+   let latitude = e.latlng.lat;
     let longitude = e.latlng.lng;
     console.log(latitude);
     console.log(longitude);
-    this.map.setView([latitude, longitude], 16);
-    this.marker.setLatLng([latitude, longitude]);
+   // this.map.setView([latitude, longitude], 16);
+   // this.marker.setLatLng([latitude, longitude]);
 
   }
   /************************************************************
