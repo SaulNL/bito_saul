@@ -16,6 +16,7 @@ export class DatosCatOrganizacionPage implements OnInit {
   public organizacionTO: FiltroCatOrgModel;
   public filtro=new FiltroCatOrgModel();
   public valida:boolean;
+    loader:boolean;
   constructor(
     private administracionService: AdministracionService,
     private actionSheetController: ActionSheetController,

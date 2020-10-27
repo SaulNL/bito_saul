@@ -1,4 +1,4 @@
-<ion-header *ngIf="blnActivaDatosCategoria">
+<ion-header >
   <ion-toolbar class="tolbar">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="blnActivaDatosCategoria">
+<ion-content >
   <ion-item class="bg-gris">
     <ion-buttons slot="end">
         <ion-button (click)="abrirFiltro()">
@@ -53,5 +53,4 @@
 </ion-list>
 </ion-card>
 </ion-content>
-<app-datos-categoria *ngIf="!blnActivaDatosCategoria" [actualTO]="selectTO"></app-datos-categoria>
 

@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: DatosCategoriaPage
+  },
+  {
+    path: 'cat-subcategoria',
+    loadChildren: () => import('./../../cat-subcategoria/cat-subcategoria.module').then( m => m.CatSubcategoriaPageModule)
   }
 ];
 

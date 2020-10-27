@@ -17,7 +17,7 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content style="position: fixed;">
+<ion-content >
   <!--<ion-card class="ion-text-center" *ngIf="blnActivoPrevio">
     <ion-card-header>
       <ion-card-title>{{subcategoriaTO.nombre}}</ion-card-title>
@@ -35,7 +35,7 @@
           </div>
       </ion-card-header>
   </ion-card>-->
-<ion-card style="height: 86%;">
+<ion-card >
 <form #formBasicos="ngForm" (ngSubmit)="actualizarDatos(formBasicos)">
   <ion-list>
     <ion-item>
@@ -99,7 +99,7 @@
       </div>
   </div>
   </ion-list>
-  <ion-button type="submit" color="bg-rosa" expand="block" [disabled]="formBasicos.invalid" style="margin-bottom: 2vh;">
+  <ion-button type="submit" class="bg-rosa" expand="block" [disabled]="formBasicos.invalid" style="margin-bottom: 2vh;">
     <span *ngIf="subcategoriaTO.id_categoria === null || subcategoriaTO.id_categoria === undefined">Guardar</span>
     <span *ngIf="subcategoriaTO.id_categoria !== null && subcategoriaTO.id_categoria !== undefined">Actualizar</span>
   </ion-button>

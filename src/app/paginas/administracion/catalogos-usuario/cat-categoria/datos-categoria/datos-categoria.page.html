@@ -1,4 +1,4 @@
-<ion-header *ngIf="blnActivoCategoria">
+<ion-header >
   <ion-toolbar class="tolbar">
     <ion-buttons >
       <ion-button  slot="start" (click)="regresar()">
@@ -17,8 +17,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content style="position: fixed;" *ngIf="blnActivoCategoria">
-<ion-card style="margin-bottom: 9vh;">
+<ion-content >
+<ion-card >
 <!--<ion-card-header>-->
 <form #formBasicos="ngForm" (ngSubmit)="actualizarDatos(formBasicos)">
 <ion-list>
@@ -142,7 +142,7 @@
     </ion-select>
   </ion-item>
 </ion-list>
-<ion-button type="submit" color="bg-rosa" expand="block" [disabled]="formBasicos.invalid" style="margin-bottom: 2vh;">
+<ion-button type="submit" class="bg-rosa"  [disabled]="formBasicos.invalid" style="margin-bottom: 2vh; ">
   <span *ngIf="categoriaTO.id_giro === null || categoriaTO.id_giro === undefined">Guardar</span>
   <span *ngIf="categoriaTO.id_giro!== null && categoriaTO.id_giro !== undefined">Actualizar</span>
 </ion-button>
@@ -150,4 +150,3 @@
 <!--</ion-card-header>-->
 </ion-card>
 </ion-content>
-<app-cat-subcategoria *ngIf="blnActivoSubcategorias" [subcategoriaTO]="actualTO"></app-cat-subcategoria>

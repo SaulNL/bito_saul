@@ -1,4 +1,3 @@
-import { CatSubcategoriaPage } from './../cat-subcategoria.page';
 import { Component, ErrorHandler, Input, OnInit } from '@angular/core';
 import { FiltroCatSubCategoriasModel } from '../../../../../Modelos/catalogos/FiltroCatSubcategoriasModel';
 import { ActionSheetController } from '@ionic/angular';
@@ -9,13 +8,16 @@ import { ToadNotificacionService } from './../../../../../api/toad-notificacion.
 import { ArchivoComunModel } from '../../../../../Modelos/ArchivoComunModel';
 import { UtilsCls } from 'src/app/utils/UtilsCls';
 import { NgForm } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-datos-subcategoria',
   templateUrl: './datos-subcategoria.page.html',
   styleUrls: ['./datos-subcategoria.page.scss'],
 })
 export class DatosSubcategoriaPage implements OnInit {
-  @Input() public actualTO: FiltroCatSubCategoriasModel;
+  public actualTO: FiltroCatSubCategoriasModel;
+  public all: any;
   public subcategoriaTO: FiltroCatSubCategoriasModel;
   public activos = [
     { id: 0, activo: 'No' },
@@ -25,19 +27,29 @@ export class DatosSubcategoriaPage implements OnInit {
   private file_img_galeria: FileList;
   public blnActivoFormulario: boolean;
   constructor(
-    private admin: CatSubcategoriaPage,
     public actionSheetController: ActionSheetController,
     public alertController: AlertController,
     private servicioUsuarios: AdministracionService,
     public loadingController: LoadingController,
     public _notificacionService: ToadNotificacionService,
-    private _utils_cls: UtilsCls
+    private _utils_cls: UtilsCls,
+    private active: ActivatedRoute,
+    private router: Router
   ) {
     this.blnActivoFormulario = false;
    }
 
   ngOnInit() {
-    this.subcategoriaTO = this.actualTO;
+
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+         this.all = JSON.parse(params.special);
+         this.subcategoriaTO = this.all.make;
+        //this.listaSubcategoria(this.subcategoriaTO.id_giro);
+        
+      }
+    });
+    
   }
   async presentLoading() {
     this.loader = await this.loadingController.create({
@@ -47,7 +59,9 @@ export class DatosSubcategoriaPage implements OnInit {
     return this.loader.present();
   }
   cerraDatosSubcategoria() {
-    this.admin.blnActivaDatosSubcategoria = false;
+    let navigationExtras = JSON.stringify(this.all.model);
+    this.router.navigate(['/tabs/home/cat-categoria/datos-categoria/cat-subcategoria'], { queryParams: {subcat: navigationExtras}  });
+    //this.admin.blnActivaDatosSubcategoria = false;
   }
 
   async presentActionSheet() {
@@ -103,7 +117,7 @@ export class DatosSubcategoriaPage implements OnInit {
         if (response.code === 200) {
           this.loader.dismiss();
           this.cerraDatosSubcategoria();
-          this.admin.listaSubcategoria();
+          //this.admin.listaSubcategoria();
           this._notificacionService.exito('se elimino correctamente');
         } else {
           this.loader.dismiss();
@@ -165,14 +179,14 @@ export class DatosSubcategoriaPage implements OnInit {
     }
   }
   actualizarDatos(formBasicos: NgForm) {
-    this.subcategoriaTO.id_giro = this.admin.subcategoriaTO.id_giro;
+    this.subcategoriaTO.id_giro = this.subcategoriaTO.id_giro;
     this.presentLoading();
     this.servicioUsuarios.guardarSubcategoria(this.subcategoriaTO).subscribe(
       data => {
         if (data.code === 200) {
           this.loader.dismiss();
           this.cerraDatosSubcategoria();
-          this.admin.listaSubcategoria();
+          //this.admin.listaSubcategoria();
           this._notificacionService.exito('Los datos se guardaron correctamente');
         } else {
           this.loader.dismiss();
