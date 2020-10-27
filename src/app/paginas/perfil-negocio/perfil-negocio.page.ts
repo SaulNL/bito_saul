@@ -1,8 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {Map, tileLayer, marker} from 'leaflet';
+import {Map, tileLayer, marker, icon} from 'leaflet';
 import {ActivatedRoute} from "@angular/router";
 import {ToastController} from "@ionic/angular";
 import {NegocioService} from "../../api/negocio.service";
+import {Geolocation} from "@capacitor/core";
+import {ToadNotificacionService} from "../../api/toad-notificacion.service";
+import { Location } from "@angular/common";
+import {UtilsCls} from "../../utils/UtilsCls";
+import {SideBarService} from "../../api/busqueda/side-bar-service";
 
 @Component({
     selector: 'app-perfil-negocio',
@@ -10,30 +15,55 @@ import {NegocioService} from "../../api/negocio.service";
     styleUrls: ['./perfil-negocio.page.scss'],
 })
 export class PerfilNegocioPage implements OnInit {
-    seccion: any;
-    map: Map;
+    public seccion: any;
+    public map: Map;
     public negocio: string;
     public informacionNegocio: any;
     public loader: boolean;
+    public miLat: any;
+    public miLng: any;
+    public permisoUbicacionCancelado: boolean;
+    public existeSesion: boolean;
 
     constructor(
         private route: ActivatedRoute,
         private toadController: ToastController,
         private negocioService: NegocioService,
+        private notificacionService: ToadNotificacionService,
+        private location: Location,
+        private util: UtilsCls,
+        private sideBarService: SideBarService,
     ) {
-        this.seccion = 'ubicacion'
+        this.seccion = 'ubicacion';
+        this.loader = true;
+        this.existeSesion = util.existe_sesion();
     }
 
     ngOnInit() {
+        this.sideBarService.getObservable().subscribe((data) => {
+            this.existeSesion = this.util.existe_sesion();
+        });
         this.route.params.subscribe(params => {
             this.negocio = params.negocio;
         });
-
-        if (this.negocio !== undefined) {
+        if (this.negocio !== undefined && this.negocio !== null && this.negocio !== '') {
             this.obtenerInformacionNegocio();
+        }else {
+            this.notificacionService.error('Ocurrio un error con este negocio');
+            this.location.back();
         }
+        this.getCurrentPosition();
     }
 
+    async getCurrentPosition() {
+        const coordinates = await Geolocation.getCurrentPosition().then(res => {
+            this.miLat = res.coords.latitude;
+            this.miLng =  res.coords.longitude;
+        }).catch(error => {
+                this.permisoUbicacionCancelado = true;
+            }
+        );
+    }
 
     obtenerInformacionNegocio() {
         this.loader = true;
@@ -132,16 +162,20 @@ export class PerfilNegocioPage implements OnInit {
             });
     }
 
-    // The below function is added
     loadMap() {
         const lat = this.informacionNegocio.det_domicilio.latitud;
         const lng = this.informacionNegocio.det_domicilio.longitud;
         this.map = new Map("mapId").setView([lat, lng], 16);
         tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: ''}).addTo(this.map);
-        marker([lat, lng], {
-            draggable:
-                true
-        }).addTo(this.map)
+
+        var myIcon = icon({
+            iconUrl: 'https://ecoevents.blob.core.windows.net/comprandoando/marker.png',
+            iconSize: [45, 41],
+            iconAnchor: [13, 41],
+        });
+
+
+        marker([lat, lng], {icon: myIcon}).addTo(this.map)
     }
 
 

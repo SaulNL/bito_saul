@@ -3,11 +3,17 @@ import {Login} from "../../Modelos/login";
 import {LoginService} from "../../api/login.service";
 import {AppSettings} from "../../AppSettings";
 import {Location} from '@angular/common';
+import {SessionUtil} from "../../utils/sessionUtil";
+import {SideBarService} from "../../api/busqueda/side-bar-service";
+import {NavController} from "@ionic/angular";
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.page.html',
     styleUrls: ['./login.page.scss'],
+    providers: [
+        SessionUtil
+    ]
 })
 export class LoginPage implements OnInit {
 
@@ -15,8 +21,11 @@ export class LoginPage implements OnInit {
     public loader: boolean;
 
     constructor(
+        private navctrl: NavController,
         private loginService: LoginService,
-        private location: Location
+        private location: Location,
+        private sessionUtil: SessionUtil,
+        private sideBarService: SideBarService
     ) {
         this.loader = false;
         this.usuario = new Login();
@@ -28,12 +37,15 @@ export class LoginPage implements OnInit {
     doLogin() {
         this.loader = true;
         this.loginService.login(this.usuario).subscribe(
-            respuesta =>{
-                AppSettings.setTokenUser(respuesta);
-                this.loader = false;
-                const elemento = document.querySelector('ion-back-button');
-                elemento.click()
-            },error => {}
+            respuesta => {
+                const actualizado = AppSettings.setTokenUser(respuesta);
+                // this.sideBarService.actualizarSide();
+                // this.loader = false;
+                this.sideBarService.publishSomeData('');
+                this.navctrl.back()
+            }, error => {
+            }
         );
     }
+
 }

@@ -41,24 +41,25 @@ export class UtilsCls {
      * funcions nuevas
      * @author: ECR
      */
-    public existe_sesion(){
-        try{
+    public existe_sesion() {
+        try {
             const tk_str = localStorage.getItem('tk_str');
-            if (tk_str != null && tk_str != ''){
+            if (tk_str != null && tk_str != '') {
                 return true;
-            }return false;
-        }catch (e){
+            }
+            return false;
+        } catch (e) {
             return false;
         }
     }
 
-    public getIdUsuarioSistema(){
+    public getIdUsuarioSistema() {
         let id_usuario = 0;
-        try{
+        try {
             const usuario_sistema = JSON.parse(localStorage.getItem('u_sistema'));
             id_usuario = usuario_sistema.id_usuario_sistema;
             return id_usuario;
-        }catch (e){
+        } catch (e) {
             return 0;
         }
     }
@@ -74,6 +75,7 @@ export class UtilsCls {
 
         return id_persona;
     }
+
     public getIdProveedor() {
         let id = 0;
         try {
@@ -86,25 +88,25 @@ export class UtilsCls {
         return id;
     }
 
-    public is_success_response(code: number){
+    public is_success_response(code: number) {
         let success = false;
-        if (code == 200){
+        if (code == 200) {
             success = true;
         }
         return success;
     }
 
-    public checkSelectOther(option_val){
+    public checkSelectOther(option_val) {
         let is_other_espacio = false;
-        if (option_val !== undefined && option_val !== null && (option_val.indexOf('otro') != -1 || option_val.indexOf('Otro') != -1)){
+        if (option_val !== undefined && option_val !== null && (option_val.indexOf('otro') != -1 || option_val.indexOf('Otro') != -1)) {
             is_other_espacio = true;
         }
         return is_other_espacio;
     }
 
-    public check_select_value(option_val, compare_val){
+    public check_select_value(option_val, compare_val) {
         let is_compare = false;
-        if (option_val.indexOf(compare_val) != -1 || option_val.indexOf(compare_val) != -1){
+        if (option_val.indexOf(compare_val) != -1 || option_val.indexOf(compare_val) != -1) {
             is_compare = true;
         }
         return is_compare;
@@ -152,60 +154,62 @@ export class UtilsCls {
 
     }
 
-  /**
-   * Quitar caracteres especiales de cadenas
-   * Autor: Omar
-   */
-  public convertir_nombre(cadena: string){
-    if (cadena != '' && cadena != null){
-      let extension = '';
+    /**
+     * Quitar caracteres especiales de cadenas
+     * Autor: Omar
+     */
+    public convertir_nombre(cadena: string) {
+        if (cadena != '' && cadena != null) {
+            let extension = '';
 
-      extension = cadena.slice((cadena.lastIndexOf('.') - 1 >>> 0) + 2);
+            extension = cadena.slice((cadena.lastIndexOf('.') - 1 >>> 0) + 2);
 
-      const specialChars = '!@#$^&%*()+=-[]\/{}|:<>?,.';
+            const specialChars = '!@#$^&%*()+=-[]\/{}|:<>?,.';
 
-      for (let i = 0; i < specialChars.length; i++) {
-        cadena = cadena.replace(new RegExp('\\' + specialChars[i], 'gi'), '');
-      }
-      cadena = cadena.toLowerCase();
-      cadena = cadena.replace(/ /gi, '_');
-      cadena = cadena.normalize().replace(/\u00e1/gi, 'a');
-      cadena = cadena.normalize().replace(/\u00e9/gi, 'e');
-      cadena = cadena.normalize().replace(/\u00ed/gi, 'i');
-      cadena = cadena.normalize().replace(/\u00f3/gi, 'o');
-      cadena = cadena.normalize().replace(/\u00fa/gi, 'u');
-      cadena = cadena.normalize().replace(/\u00f1/gi, 'n');
-      cadena = cadena + '.' + extension;
-      return cadena;
-    }else{
-      return '';
+            for (let i = 0; i < specialChars.length; i++) {
+                cadena = cadena.replace(new RegExp('\\' + specialChars[i], 'gi'), '');
+            }
+            cadena = cadena.toLowerCase();
+            cadena = cadena.replace(/ /gi, '_');
+            cadena = cadena.normalize().replace(/\u00e1/gi, 'a');
+            cadena = cadena.normalize().replace(/\u00e9/gi, 'e');
+            cadena = cadena.normalize().replace(/\u00ed/gi, 'i');
+            cadena = cadena.normalize().replace(/\u00f3/gi, 'o');
+            cadena = cadena.normalize().replace(/\u00fa/gi, 'u');
+            cadena = cadena.normalize().replace(/\u00f1/gi, 'n');
+            cadena = cadena + '.' + extension;
+            return cadena;
+        } else {
+            return '';
+        }
     }
-  }
-  public validaRfc(rfc) {
-    let valido;
-    let strCorrecta;
-    if (rfc.length === 12) {
-      strCorrecta = ' ' + rfc;
-    } else {
-      strCorrecta = rfc;
-    }
-    const valid = '^(([A-Z]|[a-z]|\s){1})(([A-Z]|[a-z]){3})([0-9]{6})((([A-Z]|[a-z]|[0-9]){3}))';
-    const validRfc = new RegExp(valid);
-    const matchArray = strCorrecta.match(validRfc);
-    if (matchArray == null) {
-      valido = false;
-    } else {
-      valido =  true;
-    }
-    return valido;
-  }
 
-  public   getRutaPublic(){
-    return  AppSettings;
-  }
+    public validaRfc(rfc) {
+        let valido;
+        let strCorrecta;
+        if (rfc.length === 12) {
+            strCorrecta = ' ' + rfc;
+        } else {
+            strCorrecta = rfc;
+        }
+        const valid = '^(([A-Z]|[a-z]|\s){1})(([A-Z]|[a-z]){3})([0-9]{6})((([A-Z]|[a-z]|[0-9]){3}))';
+        const validRfc = new RegExp(valid);
+        const matchArray = strCorrecta.match(validRfc);
+        if (matchArray == null) {
+            valido = false;
+        } else {
+            valido = true;
+        }
+        return valido;
+    }
+
+    public getRutaPublic() {
+        return AppSettings;
+    }
 
     getData() {
-        const persona = JSON.parse(localStorage.getItem('u_data'));
+        const local = localStorage.getItem('u_data');
+        const persona = local === null ? local : JSON.parse(localStorage.getItem('u_data'));
         return persona;
     }
 }

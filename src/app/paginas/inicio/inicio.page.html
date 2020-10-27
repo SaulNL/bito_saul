@@ -1,46 +1,48 @@
-<!--<ion-header [translucent]="true" >-->
-<!--    <ion-toolbar>-->
-<!--        <ion-title>-->
-<!--            Inicio*-->
-<!--        </ion-title>-->
-<!--    </ion-toolbar>-->
-<!--</ion-header>-->
+
 <app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
-<ion-content [fullscreen]="true">
+
+<ion-content [fullscreen]="true" >
     <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
+    <ion-content class="ion-padding" *ngIf="loader" fullscreen>
+        <div class="spin" >
+            <ion-spinner></ion-spinner>
+        </div>
+    </ion-content >
+    <div *ngIf="!loader">
         <ion-item>
-                <ion-buttons slot="end">
-                    <ion-button (click)="abrirFiltros()">Filtrar
-                        <ion-icon name="filter-outline"></ion-icon>
-                    </ion-button>
-                </ion-buttons>
+            <ion-buttons slot="end">
+                <ion-button (click)="abrirFiltros()">Filtrar
+                    <ion-icon name="filter-outline"></ion-icon>
+                </ion-button>
+            </ion-buttons>
         </ion-item>
-    <ion-grid *ngIf="listaCategorias.length !== 0">
-        <ion-row *ngFor="let cat of listaCategorias">
-            <ion-text class="w-100">
-                <h2>{{cat.nombre}}</h2>
+        <ion-grid *ngIf="listaCategorias.length !== 0">
+            <ion-row *ngFor="let cat of listaCategorias">
+                <ion-text class="w-100">
+                    <h2>{{cat.nombre}}</h2>
+                </ion-text>
+                <ion-col sizeLg="3" sizeXs="6" sizeSm="4" sizeMd="4" *ngFor="let proveedor of cat.negocios">
+                    <ion-card [routerLink]="['/tabs/negocio/' + proveedor.url_negocio]" class="m-0 fixed">
+                        <img class="img-card-w" *ngIf="proveedor.url_logo !== null" [src]="proveedor.url_logo"
+                             alt="Falla al cargar la imagen">
+                        <ion-card-header>
+                            <ion-card-subtitle>{{proveedor.nombre_comercial}}</ion-card-subtitle>
+                            <ion-badge *ngIf="proveedor.abierto == 'ABIERTO'" color="success">Abierto</ion-badge>
+                            <ion-badge *ngIf="proveedor.abierto !== 'ABIERTO'" color="danger">Cerrado</ion-badge>
+                        </ion-card-header>
+                        <ion-card-content>
+                            {{proveedor.descripcion}}
+                        </ion-card-content>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <ion-grid *ngIf="listaCategorias.length === 0">
+            <ion-text color="primary">
+                <h2>No se encontraron negocios relacionados</h2>
             </ion-text>
-            <ion-col sizeLg="3" sizeXs="6" sizeSm="4" sizeMd="4" *ngFor="let proveedor of cat.negocios">
-                <ion-card [routerLink]="['/tabs/negocio/' + proveedor.url_negocio]" class="m-0 fixed">
-                    <img class="img-card-w" *ngIf="proveedor.url_logo !== null" [src]="proveedor.url_logo"
-                         alt="Falla al cargar la imagen">
-                    <ion-card-header>
-                        <ion-card-subtitle>{{proveedor.nombre_comercial}}</ion-card-subtitle>
-                        <ion-badge *ngIf="proveedor.abierto == 'ABIERTO'" color="success">Abierto</ion-badge>
-                        <ion-badge *ngIf="proveedor.abierto !== 'ABIERTO'" color="danger">Cerrado</ion-badge>
-                    </ion-card-header>
-                    <ion-card-content>
-                        {{proveedor.descripcion}}
-                    </ion-card-content>
-                </ion-card>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-    <ion-grid *ngIf="listaCategorias.length === 0">
-        <ion-text color="primary">
-            <h2>No se encontraron negocios relacionados</h2>
-        </ion-text>
-    </ion-grid>
+        </ion-grid>
+    </div>
 
 
 </ion-content>

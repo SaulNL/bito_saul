@@ -1,23 +1,39 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UtilsCls} from "../../utils/UtilsCls";
+import {SideBarService} from "../../api/busqueda/side-bar-service";
+import {Auth0Service} from "../../api/busqueda/auth0.service";
+import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-tabs',
-  templateUrl: 'tabs.page.html',
-  styleUrls: ['tabs.page.scss'],
-  providers: [
-      UtilsCls
-  ]
+    selector: 'app-tabs',
+    templateUrl: 'tabs.page.html',
+    styleUrls: ['tabs.page.scss'],
+    providers: [
+        UtilsCls,
+        SideBarService,
+        Auth0Service
+    ]
 })
-export class TabsPage {
-  existeSesion: boolean
-  usuario: any
-  constructor(
-      private util: UtilsCls
-  ) {
-    this.existeSesion = util.existe_sesion();
-    this.usuario = util.getData();
-    console.log(this.usuario);
-  }
+export class TabsPage implements OnInit{
+    existeSesion: boolean
+    usuario: any
 
+    constructor(
+        private util: UtilsCls,
+        private sideBarService: SideBarService,
+        private router:Router,
+    ) {
+        this.existeSesion = util.existe_sesion();
+    }
+
+    ngOnInit(): void {
+        this.sideBarService.getObservable().subscribe((data) => {
+            this.usuario = this.util.getData();
+        });
+        this.usuario = this.util.getData();
+    }
+
+    inicio() {
+        this.router.navigate(['/tabs/inicio']);
+    }
 }

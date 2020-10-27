@@ -21,7 +21,7 @@ const routes: Routes = [
       },
       {
         path: 'categorias',
-        loadChildren: () => import('../categorias/categorias.module').then(m => m.CategoriasPageModule)
+        loadChildren: () => import('../categorias/categorias.module').then(m => m.CategoriasPageModule),
       },
       {
         path: 'negocio/:negocio',
@@ -30,6 +30,10 @@ const routes: Routes = [
       {
         path: 'home',
         loadChildren: () => import('../home/dashboard/dashboard.module').then(m => m.DashboardPageModule)
+      },
+      {
+        path: 'login',
+        loadChildren: () => import('../login/login.module').then( m => m.LoginPageModule)
       },
       {
         path: 'ajustes',
