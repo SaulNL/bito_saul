@@ -17,55 +17,55 @@
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
-        <ion-list-header>Administracion</ion-list-header>
+        <ion-list-header >Administracion</ion-list-header>
         <ion-list id="labels-list">
           <ion-menu-toggle auto-hide="false">
             <ion-list lines="none">
             </ion-list>
           </ion-menu-toggle>
-          <ion-item lines="none" (click)="isRemainder === true ? isRemainder = false : isRemainder = true">
+          <ion-item *ngIf="admin" lines="none" (click)="isRemainder === true ? isRemainder = false : isRemainder = true">
             <ion-icon slot="start" ios="folder-open-outline" md="folder-open-sharp"></ion-icon>
             Catalogos
             <ion-icon slot="end" [name]="isRemainder? 'caret-down-outline' : 'caret-forward-outline'"></ion-icon>
           </ion-item>
           <ion-menu-toggle auto-hide="false">
             <ion-list lines="none">
-              <ion-item menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-variable']"
+              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-variable']"
                 [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
                 <ion-icon name="ellipse-sharp"></ion-icon>
                 <ion-list-header>Variables</ion-list-header>
               </ion-item>
-              <ion-item menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-organizaciones']"
+              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-organizaciones']"
                 [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
                 <ion-icon name="ellipse-sharp"></ion-icon>
                 <ion-list-header>Organizacion</ion-list-header>
               </ion-item>
-              <ion-item menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-rol']"
+              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-rol']"
                 [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
                 <ion-icon name="ellipse-sharp"></ion-icon>
                 <ion-list-header>Rol</ion-list-header>
               </ion-item>
-              <ion-item menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-tipo-venta']"
+              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-tipo-venta']"
                 [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
                 <ion-icon name="ellipse-sharp"></ion-icon>
                 <ion-list-header>Tipo venta</ion-list-header>
               </ion-item>
-              <ion-item menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-categoria']"
+              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-categoria']"
                 [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
                 <ion-icon name="ellipse-sharp"></ion-icon>
                 <ion-list-header>Categoria</ion-list-header>
               </ion-item>
-              <ion-item menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-palabra-reservadas']"
+              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-palabra-reservadas']"
                 [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
                 <ion-icon name="ellipse-sharp"></ion-icon>
                 <ion-list-header>Palabras Restringidas</ion-list-header>
               </ion-item>
-              <ion-item menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-avisos']"
+              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-avisos']"
                 [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
                 <ion-icon name="ellipse-sharp"></ion-icon>
                 <ion-list-header>Avisos</ion-list-header>
               </ion-item>
-              <ion-item menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-denuncias-negocio']"
+              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-denuncias-negocio']"
                 [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
                 <ion-icon name="ellipse-sharp"></ion-icon>
                 <ion-list-header>Denuncias</ion-list-header>
