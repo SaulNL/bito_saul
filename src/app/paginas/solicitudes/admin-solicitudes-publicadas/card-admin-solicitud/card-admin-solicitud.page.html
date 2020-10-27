@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Solicitud</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="ion-text-center">
+    <ion-card-header>
+      <ion-card-title></ion-card-title>
+      <div class="ion-margin-top">
+        <img [src]="seleccionadoAdmin.url_imagen" [alt]="seleccionadoAdmin.solicitud">
+      </div>
+      <ion-label><strong>Imagen</strong></ion-label>
+      <br>
+      <br>
+      <ion-label><strong>Usted publicó:</strong>{{seleccionadoAdmin.solicitud}}</ion-label>
+      <br>
+      <br>
+      <ion-label><strong>Descripción: </strong>{{seleccionadoAdmin.descripcion}}</ion-label>
+      <br>
+      <br>
+      <ion-label><strong>Estatus:</strong>
+        <label *ngIf="seleccionadoAdmin.activo_public !== 1">No Vigente</label>
+        <label style="color: blue;" *ngIf="seleccionadoAdmin.activo_public === 1" >Vigente</label>
+      </ion-label>
+      <br>
+      <br>
+      <ion-label><strong>Fecha de Publicación:</strong></ion-label>
+      <br>
+      <br>
+      <ion-label>{{seleccionadoAdmin.fecha_inicio_public}} <strong>al</strong> {{seleccionadoAdmin.fecha_fin_public}}</ion-label>
+      <ion-button type="button" color="primary" expand="block" (click)="abrirModalPostulados(seleccionadoAdmin)">Postulados</ion-button>     
+      <ion-button  type="button"  color="medium" expand="block" [disabled]="seleccionadoAdmin.activo_public !== 1" (click)="presentAlertConfirm()">Despublicar</ion-button>  
+      <ion-button  type="button"  color="medium" expand="block" (click)=" regresar()">Cancelar</ion-button>          
+      </ion-card-header>
+  </ion-card>
+</ion-content>

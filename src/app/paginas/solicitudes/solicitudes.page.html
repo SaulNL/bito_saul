@@ -1,5 +1,5 @@
  <!--lista Cabezera-->
-<ion-header *ngIf="blnActivaListaSolictud" >
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button>
@@ -13,7 +13,7 @@
   </ion-toolbar>
 </ion-header>
  <!--lista Solicitudes-->
- <ion-content *ngIf="blnActivaListaSolictud">
+ <ion-content>
   <ion-card style="margin-bottom: 3%; height: 100%;">
     <ion-label *ngIf="lstSolicitudes === null ">No tienes Solicitudes Creadas</ion-label>
     <ion-list  *ngFor="let solicitud of lstSolicitudes" >
@@ -29,7 +29,7 @@
 </ion-content>
 <!--Solictud Seleccionada-->
 <!--Solictud Cabezera-->
-<ion-header *ngIf="seleccionaSolicitud" >
+<!--<ion-header *ngIf="seleccionaSolicitud" >
   <ion-toolbar>
     <ion-buttons slot="start" (click)="cerrarSolicitud()">
       <ion-button>
@@ -38,9 +38,9 @@
     </ion-buttons>
     <ion-title>Solicitud</ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header>-->
 <!--Solictud Card-->
-<ion-content  *ngIf="seleccionaSolicitud">
+<!--<ion-content  *ngIf="seleccionaSolicitud">
   <ion-card style="margin-bottom: 3%; height: 60%;" >
     <ion-card-header>
       <ion-grid>
@@ -77,9 +77,9 @@
       </ion-button>
     </ion-card-header>
   </ion-card>
-</ion-content>
+</ion-content>-->
 <!--Publicar Solicitud-->
-<ion-content *ngIf="modalPublicacion">
+<!--<ion-content *ngIf="modalPublicacion">
   <ion-card>
     <br>
     <ion-card-header>
@@ -124,9 +124,9 @@
     </ion-list>
   </ion-card-header>
   </ion-card>
-</ion-content>
+</ion-content>-->
 <!--Publicaciones que haz realizado-->
-<ion-content *ngIf="blnAdminPublicadas">
+<!--<ion-content *ngIf="blnAdminPublicadas">
   <ion-card>
     <ion-card-header>
     <ion-searchbar (ionInput)="btnBuscar($event)" [(ngModel)]="filtro" type="text"></ion-searchbar>
@@ -143,9 +143,9 @@
     <ion-button  type="button"  color="medium" expand="block"(click)="cerrarAdminPublicadas()">Cancelar</ion-button>  
   </ion-card-header> 
   </ion-card>
-</ion-content>
+</ion-content>-->
 <!--Publicacion Realizada seleccionada-->
-<ion-content *ngIf="blnSolicitud">
+<!--<ion-content *ngIf="blnSolicitud">
   <ion-card class="ion-text-center">
     <ion-card-header>
       <ion-card-title></ion-card-title>
@@ -182,7 +182,7 @@
       <ion-button  type="button"  color="medium" expand="block" (click)="cerrrarQuitarPublicacion()">Cancelar</ion-button>   
     </ion-card-header>
   </ion-card>
-</ion-content>
+</ion-content>-->
   <!--Formulario Solicitudes-->
-<app-form-solicitud *ngIf="blnActivarFormularioEdicion"  [actualTO]="seleccionTO"></app-form-solicitud>
+<!--<app-form-solicitud *ngIf="blnActivarFormularioEdicion"  [actualTO]="seleccionTO"></app-form-solicitud>-->
 

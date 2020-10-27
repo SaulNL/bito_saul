@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="tabs/home/solicitudes"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Publicaciones Realizadas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+    <ion-searchbar (ionInput)="btnBuscar($event)" [(ngModel)]="filtro" type="text"></ion-searchbar>
+    <br>
+    <ion-list *ngFor="let soliPubli of lstSolicitudesPublicadas; index as is">
+      <ion-item (click)="selecAdminPublicada(soliPubli)">
+      <img src="{{soliPubli.url_imagen}}" style="width:8vw; margin: 5px;">
+      <ion-label>{{soliPubli.solicitud}}</ion-label>
+      <ion-buttons slot="end">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-buttons>
+    </ion-item>
+    </ion-list>  
+  </ion-card-header> 
+  </ion-card>
+</ion-content>

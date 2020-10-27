@@ -4,19 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SolicitudesPageRoutingModule } from './solicitudes-routing.module';
+import { CardPostuladoPageRoutingModule } from './card-postulado-routing.module';
 
-import { SolicitudesPage } from './solicitudes.page';
-
-
+import { CardPostuladoPage } from './card-postulado.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SolicitudesPageRoutingModule
+    CardPostuladoPageRoutingModule
   ],
-  declarations: [SolicitudesPage ]
+  declarations: [CardPostuladoPage]
 })
-export class SolicitudesPageModule {}
+export class CardPostuladoPageModule {}
