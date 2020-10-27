@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {UtilsCls} from "../../utils/UtilsCls";
 import {AppSettings} from "../../AppSettings";
-import {ActionSheetController} from '@ionic/angular';
+import {ActionSheetController, NavController} from '@ionic/angular';
+import {SideBarService} from "../../api/busqueda/side-bar-service";
+import {Location} from "@angular/common";
 
 
 @Component({
@@ -20,19 +22,24 @@ export class AjustesPage implements OnInit {
     constructor(
         private util: UtilsCls,
         public actionSheetController: ActionSheetController,
+        private sideBarService: SideBarService,
         private _router: Router,
+        private location: Location,
+        private navctrl: NavController,
     ) {
     }
 
     ngOnInit() {
         this.usuario = this.util.getData();
+        if (this.usuario === null ){
+            this.navctrl.navigateRoot('tabs/inicio')
+        }
         this.url_user = AppSettings.API_ENDPOINT + 'img/user.png';
     }
 
     async presentActionSheet() {
         const actionSheet = await this.actionSheetController.create({
             header: 'Perfil',
-            cssClass: 'my-custom-class',
             buttons: [
                 {
                     text: 'Mi Cuenta',
@@ -56,23 +63,30 @@ export class AjustesPage implements OnInit {
                     }
                 },
                 {
-                    text: 'Salir',
-                    icon: 'create-outline',
+                    text: 'Cerrar sesión',
+                    icon: 'log-out-outline',
                     handler: () => {
                         if (AppSettings.resetToken(this._router)) {
-                            location.reload();
+                            this.sideBarService.publishSomeData('');
+                            this._router.navigate(['/tabs/inicio']);
+                            location.reload()
                         }
                     }
                 },
                 {
-                    text: 'Cancel',
+                    text: 'Cancelar',
                     icon: 'close',
                     role: 'cancel',
                     handler: () => {
                     }
                 }]
+
         });
         await actionSheet.present();
+    }
+
+    misPromociones(){
+        this._router.navigateByUrl('tabs/home/promociones');
     }
 
 }

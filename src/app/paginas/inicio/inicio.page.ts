@@ -5,6 +5,7 @@ import { FiltrosModel } from '../../Modelos/FiltrosModel';
 import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/filtros-busqueda.component";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { FormControl } from '@angular/forms';
+import {ActivatedRoute} from "@angular/router";
 
 
 
@@ -14,7 +15,6 @@ import { FormControl } from '@angular/forms';
     styleUrls: ['inicio.page.scss']
 })
 export class InicioPage implements OnInit {
-    private loaderPrincipal: HTMLIonLoadingElement;
     private Filtros: FiltrosModel;
     public listaCategorias: any;
     private modal: any;
@@ -27,12 +27,15 @@ export class InicioPage implements OnInit {
     public tipoNegocio: any;
     public tipoProducto: any;
     public entregaDomicilio: boolean;
+    private seleccionado: any;
+    loader: any;
     constructor(
         public loadingController: LoadingController,
         private toadController: ToastController,
         private principalSercicio: BusquedaService,
         private modalController: ModalController,
-        private notificaciones: ToadNotificacionService
+        private notificaciones: ToadNotificacionService,
+        private route: ActivatedRoute
     ) {
         this.Filtros = new FiltrosModel();
         this.Filtros.idEstado = 29;
@@ -40,29 +43,27 @@ export class InicioPage implements OnInit {
     }
 
     ngOnInit(): void {
+        this.route.queryParams.subscribe(params => {
+            console.log(params === {});
+                if (params && params.seleccionado) {
+                    this.buscarSeleccionado(JSON.parse(params.seleccionado));
+                }
+            }
+        )
         this.buscarNegocios();
     }
     buscarNegocios() {
-        this.presentLoading().then(a => { });
+        this.loader = true;
         this.principalSercicio.obtenerDatos(this.Filtros).subscribe(
             respuesta => {
                 this.listaCategorias = respuesta.data;
-                this.loaderPrincipal.onDidDismiss();
+                this.loader = false;
             },
             error => {
-
                 this.notificaciones.error('Error al buscar los datos')
-                this.loaderPrincipal.onDidDismiss();
+                this.loader = false;
             }
         );
-    }
-
-    async presentLoading() {
-        this.loaderPrincipal = await this.loadingController.create({
-            message: 'Cargando. . .',
-            duration: 1000
-        });
-        return await this.loaderPrincipal.present();
     }
 
 
@@ -102,5 +103,13 @@ export class InicioPage implements OnInit {
             }
         });
         return await this.modal.present();
+    }
+
+    private buscarSeleccionado(seleccionado: any) {
+        this.seleccionado = seleccionado;
+        this.Filtros = new FiltrosModel();
+        this.Filtros.idCategoriaNegocio = [seleccionado.id_categoria];
+        this.Filtros.idGiro = [seleccionado.idGiro];
+        this.buscarNegocios();
     }
 }

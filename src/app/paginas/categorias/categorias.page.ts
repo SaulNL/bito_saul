@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BusquedaService } from '../../api/busqueda.service';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router} from '@angular/router';
 import { FiltrosModel } from '../../Modelos/FiltrosModel';
 import { HostListener } from '@angular/core';
+import {NavController} from "@ionic/angular";
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.page.html',
@@ -15,7 +16,7 @@ export class CategoriasPage implements OnInit {
   public imgMobil:boolean;
   constructor(
     private busquedaService:BusquedaService,
-    private router:Router
+    private router:Router,
     ) { 
       this.Filtros = new FiltrosModel();
       this.Filtros.idEstado = 29;

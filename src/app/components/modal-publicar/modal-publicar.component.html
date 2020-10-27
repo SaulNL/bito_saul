@@ -1,0 +1,84 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Publicar promoción</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen >
+  <form  #formBasicos="ngForm" (ngSubmit)="guardarPublicacion(formBasicos)">
+
+    <div *ngIf="mensajePublicacion2">
+      <div>
+        <div>
+          <p>
+            Lo sentimos!!! Su cuenta gratuita solo permite hacer {{publicacionesPermitidas}} publicaciones...
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!mensajePublicacion2">
+      <ion-list>
+
+        <ion-item>
+          <ion-label for="idNegocio">
+            Relacione su negocio:
+          </ion-label>
+          <ion-select id="idNegocio" name="idNegocio" [(ngModel)]="publicacion.id_negocio" (change)="decripcionSelect()" required>
+            <ion-select-option  *ngFor="let row of lstNegocios"  [value]="row.id_negocio">
+              {{row.nombre_comercial}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; background: white;">
+        <p>
+          Vigencia:
+        </p>
+        <ion-list>
+          
+          <ion-item>
+            <ion-label stacked>
+              Fecha inicial
+            </ion-label>
+            <ion-datetime #fechaInicio="ngModel" name="fechaInicio" required (ionChange)="calcularRangoFechas()" [min]="minDate" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Inicio"  [(ngModel)]="fechaini"></ion-datetime>
+          </ion-item>
+
+          <div *ngIf="fechaInicio.touched  && fechaInicio.invalid">
+            <div *ngIf="fechaInicio.errors.required">Fecha de Inicio es requerido
+            </div>
+          </div>
+
+          <ion-item>
+            <ion-label stacked>
+              Fecha final
+            </ion-label>
+            <ion-datetime #fechaFinal="ngModel" name="fechaFinal" required (ionChange)="calcularRangoFechas()" [min]="minDate" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Final" [(ngModel)]="fechafin"></ion-datetime>
+          </ion-item> 
+          
+          <div *ngIf="fechaFinal.touched  && fechaFinal.invalid">
+            <div *ngIf="fechaFinal.errors.required">Fecha Final es requerido
+            </div>
+          </div>
+
+          <br>
+          <div class="ion-text-center">
+            <span>Selecciona un rango de fechas no mayor a {{diasPermitidos}} días para la publicación</span>
+          </div>
+
+          <div  class="ion-text-center" *ngIf="blnSelectFecha" style="color: red;">
+            <span>Sólo puede seleccionar {{diasPermitidos}} días, verifique sus fechas</span>
+          </div>
+          
+          <ion-button type="submit" color="primary" expand="block" style="margin-top: 10px;">Publicar</ion-button>
+
+          <ion-button  type="button"  color="medium" expand="block"(click)="cancelarPublicacion()">Cancelar</ion-button>    
+          
+        </ion-list>
+      </div>
+    </div>
+  </form>
+</ion-content>

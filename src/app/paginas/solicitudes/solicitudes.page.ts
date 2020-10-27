@@ -5,6 +5,9 @@ import { DetDomicilioModel } from 'src/app/Modelos/busqueda/DetDomicilioModel';
 import { ActionSheetController } from '@ionic/angular';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
 import { LoadingController } from '@ionic/angular';
+import * as moment from 'moment';
+import { PublicacionesModel } from 'src/app/Modelos/PublicacionesModel';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -14,37 +17,42 @@ import { LoadingController } from '@ionic/angular';
 })
 export class SolicitudesPage implements OnInit {
   public usuario: any;
-  public id_proveedor:any;
-  public id_persona:any;
-  public blnActivarFormularioEdicion: boolean;
-  public seleccionaSolicitud: boolean;
-  public blnActivaListaSolictud: boolean;
+  public id_proveedor: any;
+  public id_persona: any;
   public lstSolicitudes: Array<SolicitudesModel>;
   public lstSolicitudesBK: Array<SolicitudesModel>;
   public lstSolicitudesPublicadas: Array<SolicitudesModel>;
   public lstSolicitudesPublicadasBK: Array<SolicitudesModel>;
   public seleccionTO: SolicitudesModel;
-  public solicitud: SolicitudesModel;
   public filtro: any;
   public accionFormulario: string;
   public loader: any;
+
+
   constructor(
     private solicitudesService: SolicitudesService,
     public actionSheetController: ActionSheetController,
     private notificaciones: ToadNotificacionService,
     public loadingController: LoadingController,
-  ) { }
+    private router: Router,
+    private active: ActivatedRoute
+  ) {
+
+  }
 
   ngOnInit() {
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
     this.id_proveedor = this.usuario.proveedor.id_proveedor;
     this.id_persona = this.usuario.id_persona;
-    this.blnActivaListaSolictud = true;
-    this.blnActivarFormularioEdicion = false;
-    this.seleccionaSolicitud = false;
     this.seleccionTO = new SolicitudesModel();
     this.buscar();
-    this.solicitud = new SolicitudesModel();
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          this.buscar();
+        }
+      }
+    });
   }
   async presentLoading() {
     this.loader = await this.loadingController.create({
@@ -61,16 +69,15 @@ export class SolicitudesPage implements OnInit {
         text: 'Agregar Solicitud',
         icon: 'add-circle-outline',
         handler: () => {
-       //   this._router.navigate(['/tabs/datos-basicos']);
-        this.agregar(); 
+          this.agregar();
         }
       }, {
         text: 'Publicaciones',
         icon: 'reader-outline',
         handler: () => {
-        //  this._router.navigate(['/tabs/cambio-contrasenia']);
+        this.router.navigate(['/tabs/home/solicitudes/admin-solicitudes-publicadas']);
         }
-      },{
+      }, {
         text: 'Cancel',
         icon: 'close',
         role: 'cancel',
@@ -81,65 +88,39 @@ export class SolicitudesPage implements OnInit {
     await actionSheet.present();
   }
 
-    /**
-   * Funcion para buscar solicitudes
-   * @author Omar
-   */
-  buscar(){
-   // this.cancelarEdicion();
+  /**
+ * Funcion para buscar solicitudes
+ * @author Omar
+ */
+  buscar() {
     this.seleccionTO.id_proveedor = this.usuario.proveedor.id_proveedor;
     this.seleccionTO.id_persona = this.usuario.id_persona;
     this.solicitudesService.buscar(this.seleccionTO).subscribe(
       response => {
         this.lstSolicitudes = response.data;
-        //this.lstSolicitudesBK = response.data;
-       // this.filtro = undefined;
-       // this.obtenerNumeroPublicacionesSolicitud();
-       // this.obtenerSolcitudesPublicadas();
-       // this.obtenerDiasPublicacionesSolicitud();
+        this.lstSolicitudesBK = response.data;
       },
       error => {
-       this.notificaciones.error(error);
+        this.notificaciones.error(error);
       }
     );
   }
-   /**
-   * Funcion para mostar detalle de solicitud
-   * @param solicitud
-   */
-  seleccionarSolicitud(solicitud){
-    this.blnActivarFormularioEdicion = false;
-    this.blnActivaListaSolictud = false;
-    this.seleccionaSolicitud = true;
-    this.accionFormulario = 'Detalle';
-    this.solicitud = solicitud;
-    this.filtro = solicitud.solicitud;
-    //this.btnBuscar();
+ 
+  seleccionarSolicitud(solicitud) {
+    this.seleccionTO =  JSON.parse(JSON.stringify(solicitud));
+    let navigationExtras = JSON.stringify(this.seleccionTO);
+    this.router.navigate(['/tabs/home/solicitudes/card-solicitud'], { queryParams: {special: navigationExtras}  });
   }
-  cerrarSolicitud(){
-    this.blnActivarFormularioEdicion = false;
-    this.seleccionaSolicitud = false;
-    this.blnActivaListaSolictud = true;
-  }
+
   agregar() {
     this.seleccionTO = new SolicitudesModel();
     this.seleccionTO.det_domicilio = new DetDomicilioModel();
-    this.blnActivarFormularioEdicion = true;
-    this.seleccionaSolicitud = false;
-    this.blnActivaListaSolictud = false;
-    this.accionFormulario = 'Agregar solcitud';
+    let navigationExtras = JSON.stringify(this.seleccionTO);
+    this.router.navigate(['/tabs/home/solicitudes/form-solicitud'],{ queryParams: {special: navigationExtras}  });
   }
-  /**
-   * Funcion para modificar solicitud
-   * @param seleccionTO
-   * @author Omar
-   */
-  public modificar(seleccionTO: SolicitudesModel) {
-   // this.btnBlockedNuevo = true;
-   this.blnActivarFormularioEdicion = true;
-   this.seleccionaSolicitud = false;
-   this.blnActivaListaSolictud = false;
-    this.seleccionTO = seleccionTO;
-    this.accionFormulario = 'Modificar Solicitud';
+
+  abriAdminPublicadas() {
+   this.router.navigate(['/tabs/home/solicitudes/admin-solicitudes-publicadas'], { queryParams: {special: true}  });
   }
+
 }

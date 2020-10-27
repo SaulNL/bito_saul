@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Postulado</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="ion-text-center">
+    <ion-card-header>
+      <ion-label><strong>Nombre: </strong>{{solicitudPostulado.nombre}}</ion-label>
+      <br>
+      <br>
+      <ion-label><strong>Tipo de oferta: </strong>{{solicitudPostulado.descripcion}}</ion-label>
+      <br>
+      <br>
+      <ion-label><strong>Archivo Adjunto: </strong>
+        <a *ngIf="solicitudPostulado.url_archivo !== ''" href="{{solicitudPostulado.url_archivo}}" download> Descargar </a>
+        <label *ngIf="solicitudPostulado.url_archivo === ''">Sin archivo adjunto</label>
+      </ion-label>
+      <br>
+      <br>
+      <ion-label><strong>Fecha: </strong>
+        {{solicitudPostulado.fecha | date: 'dd-MM-yyyy'}}
+      </ion-label>
+      <br>
+      <br>
+      <ion-label><strong>Contacto: </strong>
+        <a href="https://api.whatsapp.com/send?phone={{solicitudPostulado.celular}}" target="_blank">{{solicitudPostulado.celular}}</a>
+      </ion-label>
+      <br>
+      <br>
+      <ion-label><strong>Seleccionar: </strong>
+        <ion-checkbox slot="end" (ionChange)="checkSolicitud(solicitudPostulado)" [(ngModel)]="solicitudPostulado.checkend"></ion-checkbox>
+      </ion-label>
+    </ion-card-header>
+  </ion-card>
+</ion-content>

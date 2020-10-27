@@ -82,9 +82,9 @@ export class AppSettings {
     public static resetToken(_router) {
         localStorage.clear();
         localStorage.clear();
-        setTimeout(() => {
-            _router.navigate(['/tabs/inicio']);
-        }, 1000);
+        // setTimeout(() => {
+        //     _router.navigate(['/tabs/inicio']);
+        // }, 1000);
         return true;
     }
 

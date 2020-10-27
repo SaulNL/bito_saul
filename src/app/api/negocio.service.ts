@@ -37,4 +37,14 @@ export class NegocioService {
     }));
   }
 
+  misNegocios(id: number): Observable<any> {
+    const body = JSON.stringify({id_proveedor: id});
+    return this.http.post(
+      this.url + 'api/buscar/mis-negocios', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
 }

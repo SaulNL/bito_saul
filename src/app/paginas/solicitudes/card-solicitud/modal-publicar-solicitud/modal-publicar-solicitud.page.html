@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Publicar Solicitud</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <br>
+    <ion-card-header>
+    <div *ngIf="mensajePublicacion">
+      <span>Lo sentimos!!! Su cuenta gratuita solo permite hacer {{publicacionesPermitidas}} publicaciones...</span>
+    </div>
+    <ion-list>
+      <form #formBasicos="ngForm" (ngSubmit)="guardarPublicacion(formBasicos)">
+        <ion-item>
+          <ion-label stacked>
+            Fecha inicial
+          </ion-label>
+          <ion-datetime name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="fechaini" required (ionChange)="calcularRangoFechas()" [min]="minDate" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Inicio" ></ion-datetime>
+        </ion-item>
+        <div *ngIf="fechaInicio.touched  && fechaInicio.invalid">
+          <div *ngIf="fechaInicio.errors.required">Fecha de Inicio es requerido
+          </div>
+      </div>
+        <ion-item>
+          <ion-label stacked>
+            Fecha final
+          </ion-label>
+          <ion-datetime  name="fechaFinal" #fechaFinal="ngModel" [(ngModel)]="fechafin" required (ionChange)="calcularRangoFechas()" [min]="minDate" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Final"></ion-datetime>
+        </ion-item> 
+       <div *ngIf="fechaFinal.touched  && fechaFinal.invalid">
+          <div *ngIf="fechaFinal.errors.required">Fecha Final es requerido
+          </div>
+      </div>
+        <br>
+        <div class="ion-text-center">
+          <span>Selecciona un rango de fechas no mayor a {{diasPermitidos}} días para la publicación</span>
+        </div>
+        <div  class="ion-text-center" *ngIf="blnSelectFecha" style="color: red;">
+          <span>Sólo puede seleccionar {{diasPermitidos}} días, verifique sus fechas</span>
+        </div>
+        <ion-button type="submit" color="primary" expand="block" [disabled]="formBasicos.invalid || blnSelectFecha">Publicar</ion-button>
+      <ion-button  type="button"  color="medium" expand="block" (click)="regresar()">Cancelar</ion-button>       
+      </form>
+    </ion-list>
+  </ion-card-header>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Postulados</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="ion-text-center">
+    <div *ngIf="lstPostulados.length === 0 ">
+      <ion-chip color="warning">
+        <ion-label><strong>Lo sentimos!</strong> Aún no te envian alguna postulación.</ion-label>
+      </ion-chip>
+    </div>
+<ion-list *ngFor="let postulado of lstPostulados; index as index">
+  <ion-item  (click)="selePostulado(postulado)">
+    <ion-label>{{postulado.nombre}}</ion-label>
+    <ion-buttons slot="end">
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-buttons>
+  </ion-item>
+</ion-list>
+  </ion-card>
+</ion-content>

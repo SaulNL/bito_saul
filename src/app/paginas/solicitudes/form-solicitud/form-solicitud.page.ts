@@ -1,19 +1,22 @@
 import { ModalRecorteimagenPage } from './../../datos-basicos/modal-recorteimagen/modal-recorteimagen.page';
 import { GeneralServicesService } from './../../../api/general-services.service';
-import { Component, OnInit, Input } from '@angular/core';
-import {Map, tileLayer, marker, Marker} from 'leaflet';
+import { Component, OnInit } from '@angular/core';
+import { Map, tileLayer, marker, Marker } from 'leaflet';
 import { SolicitudesModel } from 'src/app/Modelos/SolicitudesModel';
 import { UtilsCls } from './../../../utils/UtilsCls';
 import { CatEstadoModel } from 'src/app/Modelos/catalogos/CatEstadoModel';
 import { CatMunicipioModel } from 'src/app/Modelos/catalogos/CatMunicipioModel';
 import { CatLocalidadModel } from 'src/app/Modelos/catalogos/CatLocalidadModel';
-import { SolicitudesPage } from '../solicitudes.page';
 import { ArchivoComunModel } from 'src/app/Modelos/ArchivoComunModel';
 import { NgForm } from '@angular/forms';
 import { SolicitudesService } from './../../../api/solicitudes.service';
 import { ToadNotificacionService } from '../../../api/toad-notificacion.service';
 import { LoadingController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
+import { Plugins } from '@capacitor/core';
+import { Router, ActivatedRoute } from '@angular/router';
+
+const { Geolocation } = Plugins;
 
 
 
@@ -29,7 +32,7 @@ import { ModalController } from '@ionic/angular';
   ]
 })
 export class FormSolicitudPage implements OnInit {
-  @Input() public actualTO: SolicitudesModel;
+  public actualTO: SolicitudesModel;
   map: Map;
   public latitud: any;
   public longitud: any;
@@ -43,16 +46,23 @@ export class FormSolicitudPage implements OnInit {
   constructor(
     private _general_service: GeneralServicesService,
     private _utils_cls: UtilsCls,
-    public admin: SolicitudesPage,
     private solicitudesService: SolicitudesService,
     private notificaciones: ToadNotificacionService,
     public loadingController: LoadingController,
     public modalController: ModalController,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
+    this.latitud = 19.4166896;
+    this.longitud = -98.1467336;
   }
-
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params && params.special) {
+        this.actualTO = JSON.parse(params.special);
+      }
+    });
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
     this.list_cat_localidad = new Array<CatLocalidadModel>();
@@ -61,23 +71,15 @@ export class FormSolicitudPage implements OnInit {
     this.blnImgCuadrada = true;
     this.blnImgCuadrada = !(this.actualTO.url_imagen !== undefined);
   }
-  regresar() {
-    if (this.actualTO.id_persona_solicitud !== null && this.actualTO.id_persona_solicitud !== undefined) {
-      this.admin.blnActivarFormularioEdicion = false;
-      this.admin.blnActivaListaSolictud = false;
-      this.admin.seleccionaSolicitud = true;
-    } else {
-      this.admin.blnActivarFormularioEdicion = false;
-      this.admin.blnActivaListaSolictud = true;
-      this.admin.seleccionaSolicitud = false;
-    }
-  }
   async presentLoading() {
     this.loader = await this.loadingController.create({
       cssClass: 'my-custom-class',
       message: 'por favor espera...'
     });
     return this.loader.present();
+  }
+  regresar(){
+    this.router.navigate(['/tabs/home/solicitudes'], { queryParams: { special: true } });
   }
   /**
    * Funcion para guardar los datos
@@ -89,8 +91,6 @@ export class FormSolicitudPage implements OnInit {
     if ((this.actualTO.imagen === undefined || this.actualTO.imagen === null)
       && (this.actualTO.url_imagen === undefined || this.actualTO.url_imagen === '')) {
       this.notificaciones.alerta('La imagen para tarjeta de la promoción es requerida');
-      //  this.inputTar.nativeElement.focus();
-      //  window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     if (form.valid) {
@@ -104,14 +104,10 @@ export class FormSolicitudPage implements OnInit {
           if (this._utils_cls.is_success_response(response.code)) {
             this.loader.dismiss();
             this.notificaciones.exito('Los datos se guardaron correctamente');
-            this.admin.blnActivarFormularioEdicion = false;
-            this.admin.seleccionaSolicitud = false;
-            this.admin.blnActivaListaSolictud = true;
-            this.admin.buscar();
             form.resetForm();
-            // this._buscar.emit();
+            this.regresar();
           }
-         // this.notificaciones.alerta(response.message + ',' + response.code);
+          // this.notificaciones.alerta(response.message + ',' + response.code);
         },
         error => {
           this.loader.dismiss();
@@ -129,18 +125,20 @@ export class FormSolicitudPage implements OnInit {
    */
   public cagarMapa() {
     setTimeout(it => {
-      this.latitud = 19.4166896;
-      this.longitud = -98.1467336;
+      // this.map = new Map("mapId").setView([this.latitud, this.longitud], 16);
       this.map = new Map("mapId").setView([this.latitud, this.longitud], 16);
+      this.map.on('click', respuesta => {
+        this.getLatLong(respuesta);
+      })
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
       this.marker = marker([this.latitud, this.longitud], {
         draggable:
           true
       }).addTo(this.map);
+      if (this.actualTO.det_domicilio.latitud !== null) {
+        this.localizacionTiempo(2);
+      }
     }, 500);
-    /* if(this.actualTO.det_domicilio.latitud !== null){
-       this.localizacionTiempo(2);
-     }*/
   }
 
   /**
@@ -215,6 +213,7 @@ export class FormSolicitudPage implements OnInit {
         },
         error => {
           //   this._notificacionService.pushError(error);
+          this.notificaciones.error(error);
         },
         () => {
           //  this.loaderLocalidad = false;
@@ -227,64 +226,37 @@ export class FormSolicitudPage implements OnInit {
   /**
      * Funcion para obtener la ubicacion actual
      */
-  public localizacionTiempo(tipo: number) {
+  async localizacionTiempo(tipo: number) {
     let latitude;
     let longitude;
-    //this.loaderUbicacionMapa = true;
-    navigator.geolocation.getCurrentPosition(
-      response => {
-        if (tipo === 1) {
-          this.actualTO.det_domicilio.latitud = response.coords.latitude;
-          latitude = response.coords.latitude;
-          this.actualTO.det_domicilio.longitud = response.coords.longitude;
-          longitude = response.coords.longitude;
-        } else {
-          latitude = this.actualTO.det_domicilio.latitud;
-          longitude = this.actualTO.det_domicilio.longitud;
-        }
-        /*this.center = latLng([latitude, longitude]);
-        this.layers = [
-          marker([latitude, longitude], {
-            icon: icon({
-              iconSize: [25, 41],
-              iconAnchor: [13, 41],
-              iconUrl: 'assets/leaflet/images/marker-icon.png',
-              shadowUrl: 'assets/leaflet/images/marker-shadow.png'
-            })
-          })
-        ];*/
-        // this.map = new Map("mapId").setView([latitude, longitude], 16);
-        //  tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
-
+    const coordinates = await Geolocation.getCurrentPosition().then(res => {
+      if (tipo === 1) {
+        this.actualTO.det_domicilio.latitud = res.coords.latitude;
+        latitude = res.coords.latitude;
+        this.actualTO.det_domicilio.longitud = res.coords.longitude;
+        longitude = res.coords.longitude;
+        this.map.setView([latitude, longitude], 16);
         this.marker.setLatLng([latitude, longitude]);
-
-        // marker([latitude, longitude], {
-        //   draggable:
-        //     true
-        // }).addTo(this.map);
-        // this.loaderUbicacionMapa = false;
+      } else {
+        latitude = this.actualTO.det_domicilio.latitud;
+        longitude = this.actualTO.det_domicilio.longitud;
+        this.map.setView([latitude, longitude], 16);
+        this.marker.setLatLng([latitude, longitude]);
       }
-      /*,
-      error => {
-        //  this.loaderUbicacionMapa = false;
-        console.error(error);
-        let navegador = '';
-        if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
-          navegador += 'navegador Chrome';
-        } else if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-          navegador += 'navegador FireFox';
-        } else if (navigator.userAgent.toLowerCase().indexOf('opera') > -1) {
-          navegador += 'navegador Opera';
-        } else if (navigator.userAgent.toLowerCase().indexOf('MSIE') > -1) {
-          navegador += 'explorador de internet';
-        } else {
-          navegador += 'dispositivo';
-        }
-        this._notificacionService.pushError('Para hacer uso de "Mi ubicación", Permita a Bitoo el acceso a su ubicación  en su ' + navegador);
-      }, { enableHighAccuracy: true, maximumAge: 60000, timeout: 10000 }*/
+    }).catch(error => {
+      this.notificaciones.error(error);
+    }
     );
   }
+  getLatLong(e) {
+    let latitude = e.latlng.lat;
+    let longitude = e.latlng.lng;
+    console.log(latitude);
+    console.log(longitude);
+    this.map.setView([latitude, longitude], 16);
+    this.marker.setLatLng([latitude, longitude]);
 
+  }
   /************************************************************
    * IMAGENES
    ***********************************************************/
@@ -325,7 +297,7 @@ export class FormSolicitudPage implements OnInit {
                   }
                 );
               } else {
-                // this._notificacionService.pushAlert(this._lang.transform('comun.file_sobrepeso'));
+                this.notificaciones.alerta('El tama\u00F1o m\u00E1ximo de archivo es de 3 Mb, por favor intente con otro archivo');
               }
             } else {
               this.abrirModal(event);
@@ -336,13 +308,13 @@ export class FormSolicitudPage implements OnInit {
     }
   }
   async abrirModal(event) {
+    console.log(event);
     const modal = await this.modalController.create({
-      component:  ModalRecorteimagenPage,
-      cssClass: 'my-custom-class',
+      component: ModalRecorteimagenPage,
       componentProps: {
         eventoImagen: event,
-        width: 400,
-        height: 400,
+        width: 200,
+        height: 200,
         IdInput: 'cuadrado',
       }
     });
@@ -358,7 +330,7 @@ export class FormSolicitudPage implements OnInit {
     const imagen = new ArchivoComunModel();
     if (file_name != null) {
       imagen.nombre_archivo = file_name,
-      imagen.archivo_64 = file;
+        imagen.archivo_64 = file;
       this.blnImgCuadrada = false;
     }
     this.actualTO.imagen = imagen;

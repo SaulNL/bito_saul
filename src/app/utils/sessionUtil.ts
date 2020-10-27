@@ -2,16 +2,17 @@ import {PersonaService} from '../api/persona.service';
 import {AppSettings} from '../AppSettings';
 import {UtilsCls} from './UtilsCls';
 import {NgModule} from '@angular/core';
+import {SideBarService} from "../api/busqueda/side-bar-service";
 //import {SideBarService} from '../services/side-bar-service';
 
 @NgModule({
-  providers: [ UtilsCls]
+  providers: [ UtilsCls, SideBarService ]
 })
 
 export class SessionUtil {
   constructor(
     private servicioPersona: PersonaService,
-   // private sideBarService: SideBarService,
+   private sideBarService: SideBarService,
     private util: UtilsCls
   ) {
   }
@@ -20,9 +21,6 @@ export class SessionUtil {
     const id = this.util.getIdPersona();
     let result = false;
     const miPrimeraPromise = new Promise((resolve, reject) => {
-      // Llamamos a resolve(...) cuando lo que estabamos haciendo finaliza con éxito, y reject(...) cuando falla.
-      // En este ejemplo, usamos setTimeout(...) para simular código asíncrono.
-      // En la vida real, probablemente uses algo como XHR o una API HTML5.
       this.servicioPersona.datosUsuario(id).subscribe(
         respuesta => {
           resolve(respuesta);
@@ -40,7 +38,7 @@ export class SessionUtil {
 
       if( AppSettings.actualizarDatos(data)){
         console.log("Actualizar datos");
-      // this.sideBarService.actualizarSide();
+        // this.sideBarService.actualizarSide();
        result = true;
       }else{
         result = false;
