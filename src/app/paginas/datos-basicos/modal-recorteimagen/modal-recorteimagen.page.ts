@@ -24,6 +24,7 @@ export class ModalRecorteimagenPage implements OnInit {
     //public adminBasicos: DatosBasicosPage
   ) {
 
+    
    }
 
   ngOnInit() {
