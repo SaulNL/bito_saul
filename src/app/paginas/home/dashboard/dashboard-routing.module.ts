@@ -51,6 +51,10 @@ const routes: Routes = [
       {
         path: 'solicitudes',
         loadChildren: () => import('./../../solicitudes/solicitudes.module').then(m => m.SolicitudesPageModule)
+      },
+      {
+        path: 'promociones',
+        loadChildren: () => import('./../../mispromociones/mispromociones.module').then(m => m.MispromocionesPageModule)
       }
     ]
   },

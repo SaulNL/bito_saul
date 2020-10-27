@@ -75,4 +75,8 @@ export class AjustesPage implements OnInit {
         await actionSheet.present();
     }
 
+    misPromociones(){
+        this._router.navigateByUrl('tabs/home/promociones');
+    }
+
 }
