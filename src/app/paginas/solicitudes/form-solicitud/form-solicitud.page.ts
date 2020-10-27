@@ -308,13 +308,13 @@ export class FormSolicitudPage implements OnInit {
     }
   }
   async abrirModal(event) {
+    console.log(event);
     const modal = await this.modalController.create({
       component: ModalRecorteimagenPage,
-      cssClass: 'my-custom-class',
       componentProps: {
         eventoImagen: event,
-        width: 400,
-        height: 400,
+        width: 200,
+        height: 200,
         IdInput: 'cuadrado',
       }
     });
