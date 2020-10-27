@@ -1,9 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start" (click)="regresar()">
-      <ion-button>
-        <ion-icon name="chevron-back-outline"></ion-icon>
-    </ion-button>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="tabs/home/solicitudes"></ion-back-button>
     </ion-buttons>
     <ion-title>
       <span *ngIf="actualTO.id_persona_solicitud === null || actualTO.id_persona_solicitud === undefined">Agregar</span>
@@ -13,7 +11,7 @@
 </ion-header>
 <ion-content style="position: fixed;">
 <ion-card style="margin-bottom: 15%;">
-  <ion-card-content>
+ <ion-card-content>
     <form #formVariable="ngForm" class="form-horizontal" (ngSubmit)="guardar(formVariable)">
      <ion-list>
       <ion-item>
