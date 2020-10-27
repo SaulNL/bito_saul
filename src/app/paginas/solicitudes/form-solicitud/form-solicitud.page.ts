@@ -43,6 +43,7 @@ export class FormSolicitudPage implements OnInit {
   public usuario: any;
   public loader: any;
   private marker: Marker<any>;
+  public tags = [];
   constructor(
     private _general_service: GeneralServicesService,
     private _utils_cls: UtilsCls,
@@ -80,6 +81,9 @@ export class FormSolicitudPage implements OnInit {
   }
   regresar(){
     this.router.navigate(['/tabs/home/solicitudes'], { queryParams: { special: true } });
+  }
+  agregarTags( tags: string[] ) {
+    this.tags = tags;
   }
   /**
    * Funcion para guardar los datos
@@ -251,8 +255,6 @@ export class FormSolicitudPage implements OnInit {
   getLatLong(e) {
     let latitude = e.latlng.lat;
     let longitude = e.latlng.lng;
-    console.log(latitude);
-    console.log(longitude);
     this.map.setView([latitude, longitude], 16);
     this.marker.setLatLng([latitude, longitude]);
 

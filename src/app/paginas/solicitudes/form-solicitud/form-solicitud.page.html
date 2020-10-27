@@ -24,6 +24,7 @@
       <ion-item>
         <ion-label position="stacked">Escriba las palabras (tags) que describen a lo que busca:</ion-label>
          <ion-input></ion-input>
+         <app-input-tags [tags]="actualTO.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
         </ion-item>
        <ion-item>
         <ion-label position="stacked">Descripción:</ion-label>
