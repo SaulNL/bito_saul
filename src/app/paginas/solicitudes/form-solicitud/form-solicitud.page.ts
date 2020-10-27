@@ -125,8 +125,11 @@ export class FormSolicitudPage implements OnInit {
    */
   public cagarMapa() {
     setTimeout(it => {
-      //this.map = new Map("mapId").setView([this.latitud, this.longitud], 16).on('click', this.getLatLong);
+      // this.map = new Map("mapId").setView([this.latitud, this.longitud], 16);
       this.map = new Map("mapId").setView([this.latitud, this.longitud], 16);
+      this.map.on('click', respuesta => {
+        this.getLatLong(respuesta);
+      })
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
       this.marker = marker([this.latitud, this.longitud], {
         draggable:

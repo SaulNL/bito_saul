@@ -13,7 +13,7 @@
   </ion-toolbar>
 </ion-header>
  <!--lista Solicitudes-->
- <ion-content *ngIf="blnActivaListaSolictud">
+ <ion-content >
   <ion-card style="margin-bottom: 3%; height: 100%;">
     <ion-list  *ngFor="let solicitud of lstSolicitudes" >
       <ion-item (click)="seleccionarSolicitud(solicitud)">
