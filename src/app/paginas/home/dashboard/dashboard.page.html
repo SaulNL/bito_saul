@@ -1,5 +1,5 @@
 <ion-split-pane contentId="main-content">
-  <ion-menu side="start" menuId="first" contentId="main-content">
+  <ion-menu *ngIf="usuario !== null" side="start" menuId="first" contentId="main-content">
     <ion-content>
       <ion-list id="inbox-list">
         <ion-list-header> <strong>Bitoo</strong></ion-list-header>
