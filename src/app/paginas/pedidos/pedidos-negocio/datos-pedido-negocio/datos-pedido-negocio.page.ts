@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
 import { PedidosService } from '../../../../api/pedidos.service';
 import {Map, tileLayer, marker} from 'leaflet';
-import {PedidosNegocioPage} from '../pedidos-negocio.page';
+import {Router, ActivatedRoute} from '@angular/router';
+import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
 
 @Component({
   selector: 'app-datos-pedido-negocio',
@@ -10,7 +10,7 @@ import {PedidosNegocioPage} from '../pedidos-negocio.page';
   styleUrls: ['./datos-pedido-negocio.page.scss'],
 })
 export class DatosPedidoNegocioPage implements OnInit {
-  @Input() public pedido:any;
+  public pedido:any;
   blnCancelar: boolean;
   motivo: any;
   numeroSolicitud: any;
@@ -18,28 +18,35 @@ export class DatosPedidoNegocioPage implements OnInit {
   map: any;
   constructor(
     private pedidosServicios: PedidosService,
-    public modalController: ModalController
+    private activatedRoute: ActivatedRoute,
+    private route: ActivatedRoute,
+    private router: Router,
+    private notificaciones: ToadNotificacionService
   ) {
     this.blnCancelar = false;
     this.loaderBtn = false;
    }
 
-  ngOnInit() {
+  ngOnInit() {    
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params && params.special) {
+        this.pedido = JSON.parse(params.special);
+      }      
+    });    
     if(this.pedido.id_tipo_pedido === 2){
       this.loadMap();
     }
-  }
-
-  closeModal(){
-    this.modalController.dismiss();
   }
 
   cancelar() {
     this.blnCancelar = true;
   }
 
-  regresar() {
+  regresar(){
     this.blnCancelar = false;
+    this.router.navigate(['/tabs/home/ventas'], { queryParams: {special: true}  });
+    //this.admin.blnActivaDatosVariable = false;
+    //this.admin.getVariables();
   }
 
   cancelarPedido(pedido: any) {
@@ -52,10 +59,11 @@ export class DatosPedidoNegocioPage implements OnInit {
         pedido.color = respuesta.data.color;
         pedido.motivo = respuesta.data.motivo;
         this.blnCancelar = false;
+        this.notificaciones.exito(respuesta.message);
       },
       error => {
         //this.loaderBtn = false;
-        console.log('error');        
+        this.notificaciones.error(error.message);    
       });
   }
   perpararPedido(pedido) {
@@ -66,9 +74,11 @@ export class DatosPedidoNegocioPage implements OnInit {
         pedido.id_estatus_pedido = respuesta.data.id;
         pedido.estatus = respuesta.data.estatus;
         pedido.color = respuesta.data.color;
+        this.notificaciones.exito(respuesta.message);
       },
       error => {
         this.loaderBtn = false;
+        this.notificaciones.error(error.message);
       });
   }
   enviarPedido(pedido: any) {
@@ -79,9 +89,11 @@ export class DatosPedidoNegocioPage implements OnInit {
         pedido.id_estatus_pedido = respuesta.data.id;
         pedido.estatus = respuesta.data.estatus;
         pedido.color = respuesta.data.color;
+        this.notificaciones.exito(respuesta.message);
       },
       error => {
         this.loaderBtn = false;
+        this.notificaciones.error(error.message);
       });
   }
   entregarPedido(pedido: any) {
@@ -92,9 +104,11 @@ export class DatosPedidoNegocioPage implements OnInit {
         pedido.id_estatus_pedido = respuesta.data.id;
         pedido.estatus = respuesta.data.estatus;
         pedido.color = respuesta.data.color;
+        this.notificaciones.exito(respuesta.message);
       },
       error => {
         this.loaderBtn = false;
+        this.notificaciones.error(error.message);
       });
   }
 
@@ -104,6 +118,5 @@ export class DatosPedidoNegocioPage implements OnInit {
     this.map = new Map("mapId").setView([lat, lng], 16);
     tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: ''}).addTo(this.map);
     marker([lat, lng]).addTo(this.map)
-}
-
+  }
 }

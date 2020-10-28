@@ -3,6 +3,8 @@ import { PedidosService } from '../../../api/pedidos.service';
 import {UtilsCls} from '../../../utils/UtilsCls';
 import { ModalController } from '@ionic/angular';
 import {DatosPedidoNegocioPage} from './datos-pedido-negocio/datos-pedido-negocio.page';
+import { Router, ActivatedRoute } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-pedidos-negocio',
@@ -13,21 +15,24 @@ export class PedidosNegocioPage implements OnInit {
   listaNegocioPedididos: any;
   public listaEstatus: any;
   public lstFiltroEstatus: any;
-  public btnDatosPedido:boolean;
+  public selectTO: any;
 
   constructor(
     private pedidosServicios: PedidosService,
     private utilsCls: UtilsCls,
-    public modalController: ModalController
+    public modalController: ModalController,
+    private router: Router,
+    private active: ActivatedRoute,
+    public loadingController: LoadingController
   ) {
     this.listaNegocioPedididos = [];
     this.lstFiltroEstatus = [1, 2, 3];
-    this.btnDatosPedido=false;
    }
 
   ngOnInit() {
     this.buscar();
     this.buscarEstatus();
+    this.presentLoading();
   }
   
   buscar() {
@@ -74,17 +79,21 @@ export class PedidosNegocioPage implements OnInit {
       }
     );
     this.buscar();
+    this.presentLoading();
   }
 
-  async presentModal(pedido:any) {
-    const modal = await this.modalController.create({
-      component: DatosPedidoNegocioPage,
+  datosPedido(pedido: any) {
+    this.selectTO =  JSON.parse(JSON.stringify(pedido));
+    let navigationExtras = JSON.stringify(this.selectTO);
+    this.router.navigate(['/tabs/home/ventas/datos-pedido-negocio'], { queryParams: {special: navigationExtras}  });
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
-      componentProps: {
-        pedido:pedido
-      }
+      duration: 500
     });
-    return await modal.present();
+    await loading.present();
   }
   
 }
