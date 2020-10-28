@@ -44,6 +44,10 @@ export class FormSolicitudPage implements OnInit {
   public loader: any;
   private marker: Marker<any>;
   public tags = [];
+  public btnEstado: boolean;
+  public btnMuncipio: boolean;
+  public btnLocalidad: boolean;
+
   constructor(
     private _general_service: GeneralServicesService,
     private _utils_cls: UtilsCls,
@@ -57,6 +61,9 @@ export class FormSolicitudPage implements OnInit {
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
     this.latitud = 19.4166896;
     this.longitud = -98.1467336;
+    this.btnEstado = false;
+    this.btnMuncipio = true;
+    this.btnLocalidad = true;
   }
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
@@ -84,6 +91,7 @@ export class FormSolicitudPage implements OnInit {
   }
   agregarTags( tags: string[] ) {
     this.tags = tags;
+    this.actualTO.tags = this.tags;
   }
   /**
    * Funcion para guardar los datos
@@ -180,7 +188,9 @@ export class FormSolicitudPage implements OnInit {
         response => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_municipio = response.data.list_cat_municipio;
+            this.btnMuncipio = false;
             if (this.actualTO.det_domicilio.id_municipio > 0) {
+              this.btnMuncipio = false;
               this.get_list_cat_localidad({ value: this.actualTO.det_domicilio.id_municipio });
             }
           }
@@ -212,6 +222,7 @@ export class FormSolicitudPage implements OnInit {
       this._general_service.getLocalidad(idE).subscribe(
         response => {
           if (this._utils_cls.is_success_response(response.code)) {
+            this.btnLocalidad = false;
             this.list_cat_localidad = response.data.list_cat_localidad;
           }
         },

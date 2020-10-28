@@ -23,7 +23,6 @@
       </div>
       <ion-item>
         <ion-label position="stacked">Escriba las palabras (tags) que describen a lo que busca:</ion-label>
-         <ion-input></ion-input>
          <app-input-tags [tags]="actualTO.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
         </ion-item>
        <ion-item>
@@ -53,7 +52,7 @@
        <span>¿Para qué lugar es esta solicitud?</span>
        <ion-item>
         <ion-label position="stacked">Estado</ion-label>
-        <ion-select ok-text="Ok" cancel-text="Cancelar" name="estado" required #compEstado="ngModel" [(ngModel)]="actualTO.det_domicilio.id_estado"
+        <ion-select [disabled]="btnEstado" ok-text="Ok" cancel-text="Cancelar" name="estado" required #compEstado="ngModel" [(ngModel)]="actualTO.det_domicilio.id_estado"
         #compEstado="ngModel" [(ngModel)]="actualTO.det_domicilio.id_estado"
                         (ionChange)="get_list_cat_municipio($event)">
           <ion-select-option *ngFor="let e of list_cat_estado" [value]="e.id_estado">{{e.nombre}}</ion-select-option>
@@ -64,7 +63,7 @@
       </div>
       <ion-item>
         <ion-label position="stacked">Municipio</ion-label>
-        <ion-select ok-text="Ok" cancel-text="Cancelar" name="municipio" required #compMunicipio="ngModel" [(ngModel)]="actualTO.det_domicilio.id_municipio"
+        <ion-select [disabled]="btnMuncipio" ok-text="Ok" cancel-text="Cancelar" name="municipio" required #compMunicipio="ngModel" [(ngModel)]="actualTO.det_domicilio.id_municipio"
         (ionChange)="get_list_cat_localidad($event)">
           <ion-select-option *ngFor="let mun of list_cat_municipio" [value]="mun.id_municipio">
             {{mun.nombre}}
@@ -76,7 +75,7 @@
       </div>
       <ion-item>
         <ion-label position="stacked">Localidad</ion-label>
-        <ion-select ok-text="Ok" cancel-text="Cancelar" name="localidad" required  #compLocalidad="ngModel" [(ngModel)]="actualTO.det_domicilio.id_localidad">
+        <ion-select [disabled]="btnLocalidad" ok-text="Ok" cancel-text="Cancelar" name="localidad" required  #compLocalidad="ngModel" [(ngModel)]="actualTO.det_domicilio.id_localidad">
           <ion-select-option *ngFor="let loc of list_cat_localidad" [value]="loc.id_localidad"> {{loc.nombre}}</ion-select-option>
         </ion-select>
       </ion-item>
@@ -124,7 +123,7 @@
         </div>
       </div>
      </ion-list>
-     <ion-button  expand="block" type="submit" color="primary">
+     <ion-button  expand="block" type="submit" color="primary" [disabled]="formVariable.invalid" >
       <span *ngIf="actualTO.id_persona_solicitud === null || actualTO.id_persona_solicitud === undefined">Guardar</span>
       <span *ngIf="actualTO.id_persona_solicitud !== null && actualTO.id_persona_solicitud !== undefined">Actualizar</span>
      </ion-button>
