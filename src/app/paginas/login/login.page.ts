@@ -6,6 +6,9 @@ import {Location} from '@angular/common';
 import {SessionUtil} from "../../utils/sessionUtil";
 import {SideBarService} from "../../api/busqueda/side-bar-service";
 import {NavController} from "@ionic/angular";
+import {Capacitor, Plugins, registerWebPlugin} from "@capacitor/core";
+import {NavigationExtras, Router} from "@angular/router";
+import {FacebookLogin} from "@rdlabo/capacitor-facebook-login";
 
 @Component({
     selector: 'app-login',
@@ -25,10 +28,12 @@ export class LoginPage implements OnInit {
         private loginService: LoginService,
         private location: Location,
         private sessionUtil: SessionUtil,
-        private sideBarService: SideBarService
+        private sideBarService: SideBarService,
+        private router: Router
     ) {
         this.loader = false;
         this.usuario = new Login();
+        registerWebPlugin(FacebookLogin);
     }
 
     ngOnInit(): void {
@@ -48,4 +53,24 @@ export class LoginPage implements OnInit {
         );
     }
 
+    /**
+     * Funcion para login por facebook
+     * @author Omar
+     */
+    async signInFacebook(): Promise<void> {
+        const FACEBOOK_PERMISSIONS = ['public_profile', 'email'];
+
+        const result = await Plugins.FacebookLogin.login({ permissions: FACEBOOK_PERMISSIONS });
+        console.log(result);
+        if (result && result.accessToken) {
+            let user = { token: result.accessToken.token, userId: result.accessToken.userId }
+            console.log('Datos Facebook: ', user);
+            let navigationExtras: NavigationExtras = {
+                queryParams: {
+                    userinfo: JSON.stringify(user)
+                }
+            };
+            this.router.navigate(["/home"], navigationExtras);
+        }
+    }
 }
