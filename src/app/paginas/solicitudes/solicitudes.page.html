@@ -6,7 +6,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-button>
     </ion-buttons>
-    <ion-title>Solicitudes</ion-title>
+    <ion-title>Mis Solicitudes</ion-title>
     <ion-buttons slot="end" (click)="agregar()">
       <!--<ion-icon  name="ellipsis-vertical-outline"></ion-icon>-->
       <ion-icon name="add-outline"></ion-icon>
@@ -17,6 +17,9 @@
  <ion-content >
   <ion-card>
     <ion-card-header>
+      <div class="ion-text-center">
+        <strong>Solicitudes Creadas</strong>
+      </div>
         <ion-list  *ngFor="let solicitud of lstSolicitudes" >
       <ion-item (click)="seleccionarSolicitud(solicitud)">
         <img [src]="solicitud.url_imagen" [alt]="solicitud.solicitud" style="border-radius: 100%;width: 35px;height: 35px;margin-right: 5px">
@@ -35,6 +38,9 @@
       </ion-chip>
     </div>
     <ion-card-header *ngIf="numeroPublicadas > 0">
+        <div class="ion-text-center">
+          <strong>Solicitudes Publicadas </strong>
+        </div>
     <ion-searchbar (ionInput)="btnBuscar($event)" [(ngModel)]="filtro" type="text"></ion-searchbar>
     <br>
     <ion-list *ngFor="let soliPubli of lstSolicitudesPublicadas; index as is">

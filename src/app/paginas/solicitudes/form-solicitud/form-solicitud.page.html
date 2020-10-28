@@ -90,7 +90,7 @@
             <div id="mapId" style="height:200px;"></div>
           </ion-col>
         </ion-row>
-        <ion-button size="small" type="button"(click)="localizacionTiempo(1)">
+        <ion-button size="small" class="bg-rosa" type="button"(click)="localizacionTiempo(1)">
           <ion-icon name="navigate-circle-outline"></ion-icon>
           Ubicación Actual
         </ion-button>
@@ -123,7 +123,7 @@
         </div>
       </div>
      </ion-list>
-     <ion-button  expand="block" type="submit" color="primary" [disabled]="formVariable.invalid" >
+     <ion-button  expand="block" type="submit" class="bg-rosa" [disabled]="formVariable.invalid" >
       <span *ngIf="actualTO.id_persona_solicitud === null || actualTO.id_persona_solicitud === undefined">Guardar</span>
       <span *ngIf="actualTO.id_persona_solicitud !== null && actualTO.id_persona_solicitud !== undefined">Actualizar</span>
      </ion-button>

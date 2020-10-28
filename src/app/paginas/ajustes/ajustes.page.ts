@@ -89,4 +89,8 @@ export class AjustesPage implements OnInit {
         this._router.navigateByUrl('tabs/home/promociones');
     }
 
+    misSolicitudes(){
+        this._router.navigateByUrl('tabs/home/solicitudes');
+    }
+
 }

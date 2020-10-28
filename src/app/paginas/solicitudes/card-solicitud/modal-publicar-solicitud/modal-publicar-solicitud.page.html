@@ -40,7 +40,7 @@
         <div  class="ion-text-center" *ngIf="blnSelectFecha" style="color: red;">
           <span>Sólo puede seleccionar {{diasPermitidos}} días, verifique sus fechas</span>
         </div>
-        <ion-button type="submit" color="primary" expand="block" [disabled]="formBasicos.invalid || blnSelectFecha">Publicar</ion-button>
+        <ion-button type="submit" class="bg-rosa" expand="block" [disabled]="formBasicos.invalid || blnSelectFecha">Publicar</ion-button>
       <ion-button  type="button"  color="medium" expand="block" (click)="regresar()">Cancelar</ion-button>       
       </form>
     </ion-list>
