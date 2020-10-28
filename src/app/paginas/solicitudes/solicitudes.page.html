@@ -22,7 +22,7 @@
       </div>
         <ion-list  *ngFor="let solicitud of lstSolicitudes" >
       <ion-item (click)="seleccionarSolicitud(solicitud)">
-        <img [src]="solicitud.url_imagen" [alt]="solicitud.solicitud" style="border-radius: 100%;width: 35px;height: 35px;margin-right: 5px">
+        <img [src]="solicitud.url_imagen" style="border-radius: 100%;width: 35px;height: 35px;margin-right: 5px">
         <ion-label>{{solicitud.solicitud}}</ion-label>
         <ion-buttons slot="end">
           <ion-icon name="chevron-forward-outline"></ion-icon>
