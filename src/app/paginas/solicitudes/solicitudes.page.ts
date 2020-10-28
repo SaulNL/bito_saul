@@ -27,6 +27,7 @@ export class SolicitudesPage implements OnInit {
   public filtro: any;
   public accionFormulario: string;
   public loader: any;
+  public numeroSolicitudes: number;
 //Admin Solicitudes Publicadas
 public solicitud: SolicitudesModel;
 public numeroPublicadas: number;
@@ -102,6 +103,7 @@ public numeroPublicadas: number;
     this.solicitudesService.buscar(this.seleccionTO).subscribe(
       response => {
         this.lstSolicitudes = response.data;
+        this.numeroSolicitudes = this.lstSolicitudes.length;
         this.lstSolicitudesBK = response.data;
       },
       error => {

@@ -14,13 +14,18 @@
   </ion-toolbar>
 </ion-header>
  <!--lista Solicitudes-->
- <ion-content >
+ <ion-content>
   <ion-card>
+    <div *ngIf="numeroSolicitudes == 0">
+      <ion-chip color="warning">
+        <ion-label><strong>Lo sentimos!</strong> Aún no tiene ninguna solicitud creada.</ion-label>
+      </ion-chip>
+    </div>
     <ion-card-header>
       <div class="ion-text-center">
         <strong>Solicitudes Creadas</strong>
       </div>
-        <ion-list  *ngFor="let solicitud of lstSolicitudes" >
+     <ion-list *ngFor="let solicitud of lstSolicitudes" >
       <ion-item (click)="seleccionarSolicitud(solicitud)">
         <img [src]="solicitud.url_imagen" style="border-radius: 100%;width: 35px;height: 35px;margin-right: 5px">
         <ion-label>{{solicitud.solicitud}}</ion-label>
@@ -34,7 +39,7 @@
   <ion-card>
     <div *ngIf="numeroPublicadas == 0">
       <ion-chip color="warning">
-        <ion-label><strong>Lo sentimos!</strong> Aún no tienes ninguna solicitud publicada.</ion-label>
+        <ion-label><strong>Lo sentimos!</strong> Aún no tiene ninguna solicitud publicada.</ion-label>
       </ion-chip>
     </div>
     <ion-card-header *ngIf="numeroPublicadas > 0">
@@ -52,7 +57,7 @@
       </ion-buttons>
     </ion-item>
     </ion-list>  
-  </ion-card-header> 
+  </ion-card-header>
   </ion-card>
 </ion-content>
 
