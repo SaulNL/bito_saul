@@ -15,6 +15,7 @@ import { LoadingController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import {RecorteImagenComponent} from "../../../components/recorte-imagen/recorte-imagen.component";
 
 const { Geolocation } = Plugins;
 
@@ -308,14 +309,19 @@ export class FormSolicitudPage implements OnInit {
     }
   }
   async abrirModal(event) {
-    console.log(event);
     const modal = await this.modalController.create({
-      component: ModalRecorteimagenPage,
+      component: RecorteImagenComponent,
+      cssClass: 'my-custom-class',
       componentProps: {
-        eventoImagen: event,
-        width: 200,
-        height: 200,
-        IdInput: 'cuadrado',
+        'imageChangedEvent': event,
+        'maintainAspectRatio': true,
+        'resizeToWidth': 400,
+        'resizeToHeight': 400,
+        'tipoImagen': 1,
+        'blnImgCuadrada': true,
+        'blnImgRectangulo' : false,
+        'blnImgPoster': false,
+        'procesando_img': false
       }
     });
     await modal.present();

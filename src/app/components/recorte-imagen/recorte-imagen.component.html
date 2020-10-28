@@ -1,41 +1,39 @@
 <ion-header translucent>
-  <ion-toolbar>
-    <ion-title>Recortar Imagen</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">Close</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>Recortar Imagen</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">
+                <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
-<ion-content fullscreen >
-  <div class="container" style="display: flex; flex-direction: column;">
-    <div>
-      <div>
-        <p style="text-align: center;">Mueva el rectangulo para seleccionar el área deseada a recortar</p>
-      </div>
+<ion-content fullscreen>
+    <div class="container" style="display: flex; flex-direction: column;">
+        <div>
+            <div>
+                <p style="text-align: center;">Mueva el rectangulo para seleccionar el área deseada a recortar</p>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <div>
+                <image-cropper
+                        [imageChangedEvent]="imageChangedEvent"
+                        [maintainAspectRatio]="true"
+                        [resizeToWidth]="resizeToWidth"
+                        [resizeToHeight]="resizeToHeight"
+                        [aspectRatio]="resizeToWidth/resizeToHeight"
+                        format="png"
+                        (imageCropped)="imageCropped($event)"
+                        (imageLoaded)="imageLoaded()"
+                        (loadImageFailed)="loadImageFailed()"
+                >
+                </image-cropper>
+            </div>
+        </div>
+        <div>
+            <ion-button expand="block" (click)="guardarImagenRecortada()">Guardar</ion-button>
+        </div>
     </div>
-    <div style="display: flex; justify-content: center; align-items: center;">
-      <div style="width: 50%;">
-        <image-cropper
-        [imageChangedEvent]="imageChangedEvent"
-        [maintainAspectRatio]="maintainAspectRatio"
-        [resizeToWidth]="resizeToWidth"
-        [resizeToHeight]="resizeToHeight"
-        [aspectRatio]="resizeToWidth/resizeToHeight"
-        format="png"
-        (imageCropped)="imageCropped($event)"
-        (imageLoaded)="imageLoaded()"
-        (loadImageFailed)="loadImageFailed()"
-        >
-        </image-cropper>
-      </div>
-      <div style="width: 50%;">
-        <img class="img-fluid" [src]="croppedImage" />
-      </div>
-    </div>
-    <div style="display: flex; justify-content: center; margin-top: 20px;">
-      <ion-button (click)="guardarImagenRecortada()">Guardar</ion-button>
-      <ion-button (click)="dismiss()" color="danger"> Cancelar</ion-button>
-    </div>
-  </div>
 
 </ion-content>
