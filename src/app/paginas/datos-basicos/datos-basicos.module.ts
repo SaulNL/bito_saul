@@ -8,13 +8,17 @@ import { DatosBasicosPageRoutingModule } from './datos-basicos-routing.module';
 
 import { DatosBasicosPage } from './datos-basicos.page';
 
+import { RecorteImagenComponent } from './../../components/recorte-imagen/recorte-imagen.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    DatosBasicosPageRoutingModule
+    DatosBasicosPageRoutingModule,
+    ImageCropperModule
   ],
-  declarations: [DatosBasicosPage]
+  declarations: [DatosBasicosPage, RecorteImagenComponent]
 })
 export class DatosBasicosPageModule {}

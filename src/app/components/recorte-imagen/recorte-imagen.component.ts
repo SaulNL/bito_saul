@@ -13,29 +13,24 @@ import { ArchivoComunModel } from '../../Modelos/ArchivoComunModel';
 })
 export class RecorteImagenComponent implements OnInit {
 
-  @Input() public actualTo: any;
   @Input() public imageChangedEvent: any;
-  @Input() public maintainAspectRatio: boolean;
   @Input() public resizeToWidth: number;
   @Input() public resizeToHeight: number;
-  @Input() public tipoImagen: number;
-  @Input() public blnImgCuadrada: boolean;
-  @Input() public blnImgRectangulo: boolean;
-  @Input() public blnImgPoster: boolean;
-  @Input() public procesando_img: boolean;
+  @Input() IdInput: any;
   public croppedImage: any = '';
 
-  constructor( public modalController: ModalController,
-               private _utils_cls: UtilsCls 
-              ) { }
+  constructor(
+    public modalController: ModalController,
+    private _utils_cls: UtilsCls
+  ) { 
+  }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  dismiss() {
-    this.modalController.dismiss({
-      'dismissed': true,
-      'data': this.actualTo
-    });
+  cerrar() {
+    this.modalController.dismiss();
+    var inputElement = <HTMLInputElement>document.getElementById(this.IdInput);
+    inputElement.value = '';
   }
 
   imageCropped(image: any) {
@@ -50,39 +45,15 @@ export class RecorteImagenComponent implements OnInit {
     // show message
   }
 
-  guardarImagenRecortada(){
+  guardarImagenRecortada() {
+    let name;
     for (const archivo of this.imageChangedEvent.target.files) {
-      const file_name = archivo.name;
-      const file = archivo;
-      if (file.size < 3145728) {
-        let file_64: any;
-        const utl = new UtilsCls();
-        utl.getBase64(file).then(
-          data => {
-            file_64 = data;
-            const imagen = new ArchivoComunModel();
-            imagen.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
-            imagen.archivo_64 = this.croppedImage;
-            switch (this.tipoImagen) {
-              case 1:
-                this.actualTo.imagen = imagen;
-                this.blnImgCuadrada = false;
-                break;
-              case 2:
-                this.actualTo.imagenBanner = imagen;
-                this.blnImgRectangulo = false;
-                break;
-              case 3:
-                this.actualTo.imagenPoster = imagen;
-                this.blnImgPoster = false;
-                break;
-            }
-            this.procesando_img = false;
-          }
-        );
-      }
+      name = archivo.name;
     }
-    this.dismiss();
+    this.modalController.dismiss({
+      'data': this.croppedImage,
+      'nombre_archivo': name
+    });
   }
 
 }

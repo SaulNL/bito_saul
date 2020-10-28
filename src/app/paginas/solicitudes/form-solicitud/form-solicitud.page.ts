@@ -1,4 +1,3 @@
-import { ModalRecorteimagenPage } from './../../datos-basicos/modal-recorteimagen/modal-recorteimagen.page';
 import { GeneralServicesService } from './../../../api/general-services.service';
 import { Component, OnInit } from '@angular/core';
 import { Map, tileLayer, marker, Marker } from 'leaflet';
@@ -15,6 +14,7 @@ import { LoadingController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { RecorteImagenComponent } from "../../../components/recorte-imagen/recorte-imagen.component";
 
 const { Geolocation } = Plugins;
 
@@ -47,6 +47,10 @@ export class FormSolicitudPage implements OnInit {
   public btnEstado: boolean;
   public btnMuncipio: boolean;
   public btnLocalidad: boolean;
+
+  public resizeToWidth: number = 0;
+  public resizeToHeight: number = 0;
+  public imageChangedEvent: any = '';
 
   constructor(
     private _general_service: GeneralServicesService,
@@ -86,10 +90,10 @@ export class FormSolicitudPage implements OnInit {
     });
     return this.loader.present();
   }
-  regresar(){
+  regresar() {
     this.router.navigate(['/tabs/home/solicitudes'], { queryParams: { special: true } });
   }
-  agregarTags( tags: string[] ) {
+  agregarTags(tags: string[]) {
     this.tags = tags;
     this.actualTO.tags = this.tags;
   }
@@ -313,39 +317,40 @@ export class FormSolicitudPage implements OnInit {
                 this.notificaciones.alerta('El tama\u00F1o m\u00E1ximo de archivo es de 3 Mb, por favor intente con otro archivo');
               }
             } else {
-              this.abrirModal(event);
+              this.resizeToWidth = 200;
+              this.resizeToHeight = 200;
+              this.abrirModal(event, this.resizeToWidth, this.resizeToHeight).then(r => {
+                if(r !== undefined ){
+                const archivo = new ArchivoComunModel();
+                archivo.nombre_archivo = r.nombre_archivo,
+                archivo.archivo_64 = r.data;
+                this.actualTO.imagen = archivo;
+                this.blnImgCuadrada = false;
+              }
+              }
+              );
             }
           };
         };
       }
     }
   }
-  async abrirModal(event) {
-    console.log(event);
+  async abrirModal(evento, width, heigh) {
     const modal = await this.modalController.create({
-      component: ModalRecorteimagenPage,
+      component: RecorteImagenComponent,
+      cssClass: 'my-custom-class',
       componentProps: {
-        eventoImagen: event,
-        width: 200,
-        height: 200,
-        IdInput: 'cuadrado',
+        imageChangedEvent: evento,
+        resizeToWidth: width,
+        resizeToHeight: heigh,
+        IdInput: 'cuadrado'
       }
     });
     await modal.present();
-    const { data } = await modal.onDidDismiss();
-    if (data != null) {
-      this.guardarImagenRecortada(data.data, data.nombre_archivo);
+    const { data } = await modal.onDidDismiss().then(r => {
+      return r;
     }
-  }
-  guardarImagenRecortada(data, nombre_archivo) {
-    const file_name = nombre_archivo;
-    const file = data;
-    const imagen = new ArchivoComunModel();
-    if (file_name != null) {
-      imagen.nombre_archivo = file_name,
-        imagen.archivo_64 = file;
-      this.blnImgCuadrada = false;
-    }
-    this.actualTO.imagen = imagen;
+    );
+    return data;
   }
 }
