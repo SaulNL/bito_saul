@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { ModalRecorteimagenPageRoutingModule } from './modal-recorteimagen-routing.module';
 
 import { ModalRecorteimagenPage } from './modal-recorteimagen.page';
-import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   imports: [
@@ -15,7 +14,6 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     FormsModule,
     IonicModule,
     ModalRecorteimagenPageRoutingModule,
-    ImageCropperModule
   ],
   declarations: [ModalRecorteimagenPage]
 })

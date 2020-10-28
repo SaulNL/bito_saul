@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdministracionService } from '../../../../api/administracion-service.service';
-import { Router} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FiltroCatOrgModel } from 'src/app/Modelos/catalogos/FiltroCatOrgModel';
 @Component({
   selector: 'app-cat-organizacion',
@@ -17,7 +17,9 @@ export class CatOrganizacionPage implements OnInit {
   public blnTabla: boolean;
   public isToggled:boolean;
   constructor(
-    private administracionService: AdministracionService
+    private administracionService: AdministracionService,
+    private router: Router,
+    private active: ActivatedRoute
   ) { 
     this.blnActivaDatosOrganizacion = false;
     this.filtro = new FiltroCatOrgModel();
@@ -30,6 +32,13 @@ export class CatOrganizacionPage implements OnInit {
 
   ngOnInit() {
     this.getOrganizaciones();
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          this.getOrganizaciones();
+        }
+      }
+    });
   }
 
   public notify() {
@@ -57,12 +66,14 @@ export class CatOrganizacionPage implements OnInit {
 
   datosOrganizaciones(organizacion: FiltroCatOrgModel) {
     this.selectTO = organizacion;
-    this.blnActivaDatosOrganizacion = true;
+    let navigationExtras = JSON.stringify(this.selectTO);
+  this.router.navigate(['/tabs/home/cat-organizaciones/datos-cat-organizacion'], { queryParams: {special: navigationExtras}  });
   }
 
   agregaOrganizacion() {
     this.selectTO = new FiltroCatOrgModel();
-    this.blnActivaDatosOrganizacion = true;
+    let navigationExtras = JSON.stringify(this.selectTO);
+  this.router.navigate(['/tabs/home/cat-organizaciones/datos-cat-organizacion'], { queryParams: {special: navigationExtras}  });
   }
 
   validarFiltros() {

@@ -1,5 +1,5 @@
 <ion-header translucent>
-    <ion-toolbar>
+    <ion-toolbar class="tolbar">
         <ion-buttons slot="start">
             <ion-button (click)="buscar()">
                 <ion-icon name="chevron-back-outline"></ion-icon>
@@ -81,7 +81,7 @@
     </ion-item-divider>
     <ion-item>
         <ion-label>SubCategoria</ion-label>
-        <ion-select placeholder="Seleccionar" [(ngModel)]="subCategoria" (ionChange)="selectSubCategoria()">
+        <ion-select placeholder="Seleccionar" multiple [(ngModel)]="subCategoria" (ionChange)="selectSubCategoria()">
             <ion-select-option *ngFor="let sub of listaCategorias;"
                                [value]="sub.id_categoria">{{sub.nombre}}</ion-select-option>
         </ion-select>

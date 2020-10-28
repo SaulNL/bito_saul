@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { CatTipoVentaPage } from "./../cat-tipo-venta.page";
 import { NgForm } from "@angular/forms";
 import { FiltroCatTipoVentaModel } from "../../../../../Modelos/catalogos/FiltroCatTipoVentaModel";
 import { AdministracionService } from "../../../../../api/administracion-service.service";
@@ -8,6 +7,7 @@ import { UtilsCls } from "./../../../../../utils/UtilsCls";
 import { ArchivoComunModel } from "./../../../../../Modelos/ArchivoComunModel";
 import { ActionSheetController } from "@ionic/angular";
 import { AlertController } from "@ionic/angular";
+import {Router, ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: "app-datos-cat-tipo-ventas",
@@ -15,7 +15,7 @@ import { AlertController } from "@ionic/angular";
   styleUrls: ["./datos-cat-tipo-ventas.page.scss"],
 })
 export class DatosCatTipoVentasPage implements OnInit {
-  @Input() public actualTO: FiltroCatTipoVentaModel;
+  public actualTO: FiltroCatTipoVentaModel;
   public ventaTO: FiltroCatTipoVentaModel;
   public loaderCarga: boolean;
   private file_img_galeria: FileList;
@@ -26,23 +26,37 @@ export class DatosCatTipoVentasPage implements OnInit {
     { id: 0, activo: "No" },
     { id: 1, activo: "Si" },
   ];
+  public botonAgregar: boolean;
   constructor(
     public actionSheetController: ActionSheetController,
     private servicioUsuarios: AdministracionService,
-    private admin: CatTipoVentaPage,
-    public btnAdd: CatTipoVentaPage,
     public alertController: AlertController,
     private utilsCls: UtilsCls,
-    public _notificacionService: ToadNotificacionService
+    public _notificacionService: ToadNotificacionService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
     this.valida = false;
+    this.botonAgregar= false;
   }
   regresar() {
-    this.admin.blnActivaDatosTipoVenta = false;
-    this.btnAdd.botonAgregar = false;
+    this.router.navigate(['/tabs/home/cat-tipo-venta'], { queryParams: {special: true}  });
+    //this.admin.blnActivaDatosTipoVenta = false;
+    //this.btnAdd.botonAgregar = false;
   }
   ngOnInit() {
-    this.ventaTO = this.actualTO;
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params && params.special) {
+        this.actualTO = JSON.parse(params.special);
+        this.ventaTO = this.actualTO;
+        if (this.actualTO.id_tipo_venta === null || this.actualTO.id_tipo_venta === undefined) {
+          this.botonAgregar=true;
+        }else{
+          this.botonAgregar=false;
+        }
+      }
+    });
+    
   }
 
   actualizarDatos(form: NgForm) {
@@ -62,10 +76,14 @@ export class DatosCatTipoVentasPage implements OnInit {
           this._notificacionService.exito(
             "Los datos se guardaron correctamente"
           );
+          if (this.botonAgregar){
+              this.regresar();
+          } else{
+            this.valida = false;
+          }
           //this.loader = false;
-          this.admin.getTipoVenta();
-          this.admin.blnActivaDatosTipoVenta = false;
-          // this.admin.activarTabla();
+          //this.regresar();
+          
         } else {
           //this.loader = false;
           this._notificacionService.error(data.message);
@@ -76,7 +94,6 @@ export class DatosCatTipoVentasPage implements OnInit {
         //this.loader = false;
       },
       () => {
-        //window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     );
   }
@@ -193,7 +210,6 @@ export class DatosCatTipoVentasPage implements OnInit {
         if (response.code === 200) {
           //this.loader = false;
           this._notificacionService.exito('Se elimino correctamente');
-          this.admin.getTipoVenta();
           this.regresar();
         } else {
           //this.loader = false;

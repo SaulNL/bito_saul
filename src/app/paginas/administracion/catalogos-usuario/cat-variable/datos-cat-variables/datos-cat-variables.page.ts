@@ -1,13 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
 import { FiltroCatVariableModel } from '../../../../../Modelos/catalogos/FiltroCatVariableModel';
 import { AdministracionService } from '../../../../../api/administracion-service.service';
 import { AlertController } from "@ionic/angular";
 import {NgForm} from "@angular/forms";
-import { CatVariablePage } from "../cat-variable.page";
 import { ActionSheetController } from '@ionic/angular';
 import { ToadNotificacionService } from "../../../../../api/toad-notificacion.service";
-
+import {Router, ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-datos-cat-variables',
@@ -15,8 +13,6 @@ import { ToadNotificacionService } from "../../../../../api/toad-notificacion.se
   styleUrls: ['./datos-cat-variables.page.scss'],
 })
 export class DatosCatVariablesPage implements OnInit {
-  
-  @Input() public actualTO: FiltroCatVariableModel;
   public variableTO: FiltroCatVariableModel;
   public loaderGiro: boolean;
   public id: any;
@@ -26,23 +22,29 @@ export class DatosCatVariablesPage implements OnInit {
   public lstCatVariable: Array<any>;
   public filtro: FiltroCatVariableModel;
   public valida: boolean;
-  constructor(
+  constructor(private activatedRoute: ActivatedRoute,
     private noti:  ToadNotificacionService,
     public actionSheetController: ActionSheetController,
-    private admin: CatVariablePage,
     private route: ActivatedRoute,
     private servicioUsuarios: AdministracionService,
-    public alertController: AlertController) {
+    public alertController: AlertController,
+    private router: Router,
+    ) {
       this.variableTO = new FiltroCatVariableModel();
       this.valida= false;
    }
 
   ngOnInit() {
-    this.variableTO = this.actualTO;
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params && params.special) {
+        this.variableTO = JSON.parse(params.special);
+      }
+    });
   }
   regresar(){
-    this.admin.blnActivaDatosVariable = false;
-    this.admin.getVariables();
+    this.router.navigate(['/tabs/home/cat-variable'], { queryParams: {special: true}  });
+    //this.admin.blnActivaDatosVariable = false;
+    //this.admin.getVariables();
   }
   actualizarDatos(form: NgForm) {
     this.servicioUsuarios.guardarVarible(this.variableTO).subscribe(

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, EventEmitter, Output} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppSettings} from "../AppSettings";
 import {Observable} from "rxjs";
@@ -9,6 +9,8 @@ import {map} from "rxjs/operators";
 })
 export class FiltrosService {
     private url: string;
+    public actualizar = false;
+    @Output() change: EventEmitter<boolean> = new EventEmitter();
 
     constructor(
         private http: HttpClient
@@ -79,5 +81,10 @@ export class FiltrosService {
         ).pipe(map(data => {
             return data;
         }));
+    }
+
+    actualizarfiltro() {
+        this.actualizar = true;
+        this.change.emit(this.actualizar);
     }
 }

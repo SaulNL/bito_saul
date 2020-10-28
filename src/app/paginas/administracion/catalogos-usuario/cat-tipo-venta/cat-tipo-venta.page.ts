@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FiltroCatTipoVentaModel } from '../../../../Modelos/catalogos/FiltroCatTipoVentaModel';
 import { AdministracionService } from '../../../../api/administracion-service.service';
 import { ToadNotificacionService } from "../../../../api/toad-notificacion.service";
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cat-tipo-venta',
@@ -19,23 +20,30 @@ export class CatTipoVentaPage implements OnInit {
   public blnBtnFiltro: boolean;
   public blnMensajeFiltro: boolean;
   public blnActivaDatosTipoVenta: boolean;
-  public botonAgregar: boolean;
   
   public mensaje = { principal: null, subMensaje: null };
 
   constructor(
     private notificacion: ToadNotificacionService,
-    private adminServicios: AdministracionService
+    private adminServicios: AdministracionService,
+    private router: Router,
+    private active: ActivatedRoute
   ) { 
     this.isToggled = false;
     this.blnMensajeFiltro = false;
     this.blnActivaDatosTipoVenta = false;
     this.filtro = new FiltroCatTipoVentaModel();
-    this.botonAgregar = false;
   }
 
   ngOnInit() {
     this.getTipoVenta();
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          this.getTipoVenta();
+        }
+      }
+    });
   }
   
   public notify() {
@@ -66,11 +74,9 @@ export class CatTipoVentaPage implements OnInit {
   
   
   agregaTipoVenta() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.selectTO = new FiltroCatTipoVentaModel();
-    this.blnActivaDatosTipoVenta = true;
-    //this.activarTabla();
-    this.botonAgregar = true;
+    let navigationExtras = JSON.stringify(this.selectTO);
+  this.router.navigate(['/tabs/home/cat-tipo-venta/datos-cat-tipo-ventas'], { queryParams: {special: navigationExtras}  });
   }
   
   public obtenerTipoVenta(form) {
@@ -104,9 +110,8 @@ export class CatTipoVentaPage implements OnInit {
   }
   datosTipoVenta(venta: FiltroCatTipoVentaModel) {
     this.selectTO = JSON.parse(JSON.stringify(venta));
-    this.blnActivaDatosTipoVenta = true;
-    //this.activarTabla();
-    //window.scrollTo({ top: 0, behavior: 'smooth' });
+    let navigationExtras = JSON.stringify(this.selectTO);
+  this.router.navigate(['/tabs/home/cat-tipo-venta/datos-cat-tipo-ventas'], { queryParams: {special: navigationExtras}  });
   }
   
 }

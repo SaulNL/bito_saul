@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { CatDenunciasNegocioPage } from '../cat-denuncias-negocio.page';
 import { DenunciaModel } from '../../../../../Modelos/DenunciaModel';
-import { AdministracionService } from '../../../../../api/administracion-service.service';
-import { ToadNotificacionService } from "../../../../../api/toad-notificacion.service";
+import {Router, ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-datos-cat-denuncia',
@@ -10,19 +8,26 @@ import { ToadNotificacionService } from "../../../../../api/toad-notificacion.se
   styleUrls: ['./datos-cat-denuncia.page.scss'],
 })
 export class DatosCatDenunciaPage implements OnInit {
-  @Input() public actualTO: DenunciaModel;
+  public actualTO: DenunciaModel;
   public variableTO: DenunciaModel;
   constructor(
-    private admin: CatDenunciasNegocioPage 
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) { 
     this.variableTO = new DenunciaModel();
   }
 
   ngOnInit() {
-    this.variableTO = this.actualTO;
-    console.log(this.variableTO);
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params && params.special) {
+        this.actualTO = JSON.parse(params.special);
+        this.variableTO = this.actualTO;
+      }
+    });
+    
+    
   }
   regresar() {
-    this.admin.blnActivaComentarios = false;
+    this.router.navigate(['/tabs/home/cat-denuncias-negocio'], { queryParams: {special: true}  });
   }
 }

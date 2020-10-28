@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FiltroCatAvisosInfoModel } from '../../../../../Modelos/catalogos/FiltroCatAvisosInfoModel';
 import { AdministracionService } from "../../../../../api/administracion-service.service";
-import {CatAvisoinformacionPage} from '../cat-avisoinformacion.page';
 import { NgForm } from '@angular/forms';
 import { ActionSheetController, AlertController } from '@ionic/angular';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-datos-popover',
@@ -11,7 +11,7 @@ import { ActionSheetController, AlertController } from '@ionic/angular';
   styleUrls: ['./datos-popover.page.scss'],
 })
 export class DatosPopoverPage implements OnInit {
-  @Input() public actualTO: FiltroCatAvisosInfoModel;
+  public actualTO: FiltroCatAvisosInfoModel;
   public popoverTO: FiltroCatAvisosInfoModel;
   public activos = [
     { id: 0, activo: 'No' },
@@ -24,15 +24,22 @@ export class DatosPopoverPage implements OnInit {
 
   constructor(
     private servicioAdminitracion: AdministracionService,
-    private admin: CatAvisoinformacionPage,
     private actionSheetController: ActionSheetController,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private router: Router,
+    private active: ActivatedRoute
   ) { 
     this.valida=false;
   }
 
   ngOnInit() {
-    this.popoverTO = this.actualTO;
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        this.actualTO = JSON.parse(params.special);
+        this.popoverTO = this.actualTO;
+
+      }
+    });
   }
 
   actualizarDatos(formBasicos: NgForm) {
@@ -40,8 +47,7 @@ export class DatosPopoverPage implements OnInit {
     this.servicioAdminitracion.guardarPopever(this.popoverTO).subscribe(
       data => {
         if (data.code === 200) {
-          this.admin.blnActivaDatosPopover=false;
-          this.admin.getAvisos();
+          this.regresar();
           this.guardados();
           //this._notificacionService.pushInfo('Los datos se guardaron correctamente');
           //this.loader = false;
@@ -64,8 +70,7 @@ export class DatosPopoverPage implements OnInit {
       response => {
         if (response.code === 200) {
           //this.loader = false;
-          this.admin.blnActivaDatosPopover=false;
-          this.admin.getAvisos();
+          this.regresar();
           this.borrado();
           //this.cancelarConfirmado();
           //this._notificacionService.pushInfo('se elimino correctamente');
@@ -82,7 +87,7 @@ export class DatosPopoverPage implements OnInit {
   }
   regresar() {
     //window.scrollTo({ top: 0, behavior: 'smooth' });
-    this.admin.blnActivaDatosPopover = false;
+    this.router.navigate(['/tabs/home/cat-avisos'], { queryParams: {special: true}  });
     //this.admin.activarTablaPopover();
   }
 

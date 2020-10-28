@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
+import {RouteConfigLoadStart, RouteReuseStrategy} from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -22,7 +22,7 @@ import { HaversineService } from "ng2-haversine";
     StatusBar,
     SplashScreen,
     HaversineService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })

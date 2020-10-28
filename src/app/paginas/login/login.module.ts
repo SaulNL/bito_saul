@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { LoginPageRoutingModule } from './login-routing.module';
 
 import { LoginPage } from './login.page';
+import {SideBarService} from "../../api/busqueda/side-bar-service";
+import {UtilsCls} from "../../utils/UtilsCls";
 
 @NgModule({
   imports: [
@@ -15,6 +17,7 @@ import { LoginPage } from './login.page';
     IonicModule,
     LoginPageRoutingModule
   ],
-  declarations: [LoginPage]
+  declarations: [LoginPage],
+  providers:[SideBarService,UtilsCls]
 })
 export class LoginPageModule {}

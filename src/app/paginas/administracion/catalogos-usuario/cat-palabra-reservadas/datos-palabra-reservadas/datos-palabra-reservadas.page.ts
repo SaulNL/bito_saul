@@ -2,10 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FiltroCatPalabrasResModel } from "../../../../../Modelos/catalogos/FiltroCatPalabrasResModel";
 import { AdministracionService } from "../../../../../api/administracion-service.service";
 import { ToadNotificacionService } from "../../../../../api/toad-notificacion.service";
-import { CatPalabraReservadasPage } from '../cat-palabra-reservadas.page';
 import {NgForm} from "@angular/forms";
 import { ActionSheetController } from "@ionic/angular";
 import { AlertController } from "@ionic/angular";
+import {Router, ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-datos-palabra-reservadas',
@@ -13,32 +13,44 @@ import { AlertController } from "@ionic/angular";
   styleUrls: ['./datos-palabra-reservadas.page.scss'],
 })
 export class DatosPalabraReservadasPage implements OnInit {
-  @Input() public actualTO: FiltroCatPalabrasResModel;
+  public actualTO: FiltroCatPalabrasResModel;
   public palabraTO: FiltroCatPalabrasResModel;
   public activos = [
     {id: 0, activo: 'No'},
     {id: 1, activo: 'Si'},
   ];
   public valida: boolean;
-  
+  public botonAgregar: boolean;
   constructor(
     public actionSheetController: ActionSheetController,
     private  servicioAdmin: AdministracionService,
-    private admin: CatPalabraReservadasPage,
-    public btnAdd: CatPalabraReservadasPage,
     private _notificacionService: ToadNotificacionService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
     
   ) {
     this.valida = false;
+    this.botonAgregar = false;
    }
 
   ngOnInit() {
-    this.palabraTO = this.actualTO;
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params && params.special) {
+        this.actualTO = JSON.parse(params.special);
+        this.palabraTO = this.actualTO;
+        if (this.actualTO.id_palabra === null || this.actualTO.id_palabra === undefined) {
+          this.botonAgregar=true;
+        }else{
+          this.botonAgregar=false;
+        }
+      }
+    });
   }
   regresar() {
-    this.admin.blnActivaDatosPalabra = false;
-    this.btnAdd.botonAgregar = false;
+    this.router.navigate(['/tabs/home/cat-palabra-reservadas'], { queryParams: {special: true}  });
+    //this.admin.blnActivaDatosPalabra = false;
+    //this.btnAdd.botonAgregar = false;
   }
   actualizarDatos(form: NgForm) {
     if (this.palabraTO.activo === null) {
@@ -48,10 +60,14 @@ export class DatosPalabraReservadasPage implements OnInit {
     this.servicioAdmin.guardarPalabraReservada(this.palabraTO).subscribe(
       data => {
         if (data.code === 200) {
-          this.admin.getPalabras();
+          //this.admin.getPalabras();
           this._notificacionService.exito('Los datos se guardaron correctamente');
           //this.loader = false;
-          this.regresar();
+          if (this.botonAgregar) {
+            this.regresar();
+          } else {
+            this.valida = false;
+          }
           //this.admin.activarTabla();
         } else {
           //this.loader = false;
@@ -128,7 +144,6 @@ export class DatosPalabraReservadasPage implements OnInit {
       response => {
         if (response.code === 200) {
           //this.loader = false;
-          this.admin.getPalabras();
           //this.cancelarConfirmado();
           this._notificacionService.exito('se elimino correctamente');
           this.regresar();

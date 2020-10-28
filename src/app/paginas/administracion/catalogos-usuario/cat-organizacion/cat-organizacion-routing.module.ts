@@ -12,7 +12,6 @@ const routes: Routes = [
     path: 'datos-cat-organizacion',
     loadChildren: () => import('./datos-cat-organizacion/datos-cat-organizacion.module').then( m => m.DatosCatOrganizacionPageModule)
   }
-
 ];
 
 @NgModule({

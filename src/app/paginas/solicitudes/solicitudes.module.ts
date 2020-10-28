@@ -8,7 +8,6 @@ import { SolicitudesPageRoutingModule } from './solicitudes-routing.module';
 
 import { SolicitudesPage } from './solicitudes.page';
 
-import {FormSolicitudPage } from './form-solicitud/form-solicitud.page';
 
 
 @NgModule({
@@ -16,8 +15,8 @@ import {FormSolicitudPage } from './form-solicitud/form-solicitud.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    SolicitudesPageRoutingModule  
+    SolicitudesPageRoutingModule
   ],
-  declarations: [SolicitudesPage, FormSolicitudPage ]
+  declarations: [SolicitudesPage ]
 })
 export class SolicitudesPageModule {}

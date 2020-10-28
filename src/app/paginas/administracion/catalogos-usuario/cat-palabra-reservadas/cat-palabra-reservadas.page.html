@@ -1,5 +1,5 @@
-<ion-header *ngIf="!blnActivaDatosPalabra">
-  <ion-toolbar>
+<ion-header >
+  <ion-toolbar class="tolbar">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -12,8 +12,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="!blnActivaDatosPalabra">
-  <ion-item>
+<ion-content >
+  <ion-item class="bg-gris">
     <ion-buttons slot="end">
         <ion-button (click)="notify()">
           <span *ngIf="!this.isToggled">Filtros</span>
@@ -47,6 +47,8 @@
       </ion-row>
     </ion-grid>
     </form>
+    <ion-card>
+      <ion-card-header>
   <ion-list >
     <ion-item *ngFor="let palabras of lstCatPalabras">
       <ion-buttons slot="start">
@@ -61,8 +63,6 @@
       <ion-toggle slot="end" name="cherry"  color="danger" (ionChange)="validarActivo(palabras)" [checked]="palabras.activo == 1"  ></ion-toggle>
     </ion-item>
   </ion-list>
+      </ion-card-header>
+    </ion-card>
 </ion-content>
-<div *ngIf="blnActivaDatosPalabra">  
-  <app-datos-palabra-reservadas [actualTO]="selectTO"></app-datos-palabra-reservadas> 
-  
-</div>

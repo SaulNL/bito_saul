@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FiltroCatRolModel} from '../../../../Modelos/catalogos/FiltroCatRolModel';
 import { AdministracionService } from '../../../../api/administracion-service.service';
 import { ToadNotificacionService } from "../../../../api/toad-notificacion.service";
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cat-rol',
@@ -16,7 +17,10 @@ export class CatRolPage implements OnInit {
   public blnBtnFiltro: boolean;
   public botonAgregar: boolean;
   constructor(private notificaciones: ToadNotificacionService,
-    private servicioUsuarios: AdministracionService
+    private servicioUsuarios: AdministracionService,
+    private router: Router,
+    private active: ActivatedRoute
+    
   ) { 
     this.isToggled = false;
     this.blnActivaDatosRol = false;
@@ -26,6 +30,13 @@ export class CatRolPage implements OnInit {
 
   ngOnInit() {
     this.getRoles(); 
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          this.getRoles();
+        }
+      }
+    });
   }
   public notify() {
     if (this.isToggled) {
@@ -84,13 +95,12 @@ obtenerRol(form) {
   }
   agregarRol() {
     this.selectTO = new FiltroCatRolModel();
-    this.blnActivaDatosRol = true;
-    this.botonAgregar = true;
+    let navigationExtras = JSON.stringify(this.selectTO);
+  this.router.navigate(['/tabs/home/cat-rol/datos-cat-rol'], { queryParams: {special: navigationExtras}  });
   }
   datosRol(rol: FiltroCatRolModel) {
     this.selectTO =  JSON.parse(JSON.stringify(rol));
-    this.blnActivaDatosRol = true;
-    //this.activarTabla();
-    //window.scrollTo({ top: 0, behavior: 'smooth' });
+    let navigationExtras = JSON.stringify(this.selectTO);
+  this.router.navigate(['/tabs/home/cat-rol/datos-cat-rol'], { queryParams: {special: navigationExtras}  });
   }
 }

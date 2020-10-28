@@ -1,5 +1,5 @@
-<ion-header *ngIf="!blnActivaDatosPopover && !blnActivaDatosAvisos">
-  <ion-toolbar>
+<ion-header >
+  <ion-toolbar class="tolbar">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -13,8 +13,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="!blnActivaDatosPopover && !blnActivaDatosAvisos">
-  <ion-item>
+<ion-content >
+  <ion-item class="bg-gris">
     <ion-buttons slot="end">
         <ion-button (click)="notify()">
           <span *ngIf="!this.isToggled">Filtros</span>
@@ -37,7 +37,8 @@
     </ion-card>
     <ion-button expand="full" type="submit" class="bg-rosa">Buscar</ion-button>
   </form>
-
+  <ion-card>
+    <ion-card-header>
   <ion-list>
     <ion-item *ngFor="let item of lstCatAvisos">
       <ion-label (click)="datosAviso(item)">
@@ -46,12 +47,6 @@
       <ion-icon name="caret-forward-outline"></ion-icon>
     </ion-item>    
   </ion-list>
+    </ion-card-header>
+  </ion-card>
 </ion-content>
-
-<div *ngIf="blnActivaDatosAvisos">
-  <app-datos-avisos-informacion [actualTO]="selectTO" ></app-datos-avisos-informacion>
-</div>
-
-<div *ngIf="blnActivaDatosPopover">
-  <app-datos-popover [actualTO]="selectTO"></app-datos-popover>
-</div>

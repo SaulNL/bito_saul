@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: CatVariablePage
+  },
+  {
+    path: 'datos-cat-variables',
+    loadChildren: () => import('./datos-cat-variables/datos-cat-variables.module').then( m => m.DatosCatVariablesPageModule)
   }
 ];
 

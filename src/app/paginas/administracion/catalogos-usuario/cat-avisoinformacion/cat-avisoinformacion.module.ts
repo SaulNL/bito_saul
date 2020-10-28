@@ -7,8 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { CatAvisoinformacionPageRoutingModule } from './cat-avisoinformacion-routing.module';
 
 import { CatAvisoinformacionPage } from './cat-avisoinformacion.page';
-import { DatosAvisosInformacionPage } from './datos-avisos-informacion/datos-avisos-informacion.page';
-import { DatosPopoverPage } from './datos-popover/datos-popover.page';
 
 @NgModule({
   imports: [
@@ -17,10 +15,6 @@ import { DatosPopoverPage } from './datos-popover/datos-popover.page';
     IonicModule,
     CatAvisoinformacionPageRoutingModule
   ],
-  declarations: [
-    CatAvisoinformacionPage,
-    DatosAvisosInformacionPage,
-    DatosPopoverPage
-  ]
+  declarations: [CatAvisoinformacionPage]
 })
 export class CatAvisoinformacionPageModule {}

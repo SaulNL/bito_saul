@@ -1,12 +1,6 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Promociones
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
+<app-toolbar-busqueda placeHolder="Buscar promociones sobre productos, servicios y más..." (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
 <ion-content [fullscreen]="true">
+  <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
   <div *ngIf="lstPromociones.length == 0 && !loader">
     <ion-grid>
       <ion-row style="margin: 10px;">
