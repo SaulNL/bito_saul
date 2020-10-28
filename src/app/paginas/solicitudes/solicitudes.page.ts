@@ -27,7 +27,9 @@ export class SolicitudesPage implements OnInit {
   public filtro: any;
   public accionFormulario: string;
   public loader: any;
-
+//Admin Solicitudes Publicadas
+public solicitud: SolicitudesModel;
+public numeroPublicadas: number;
 
   constructor(
     private solicitudesService: SolicitudesService,
@@ -45,10 +47,12 @@ export class SolicitudesPage implements OnInit {
     this.id_proveedor = this.usuario.proveedor.id_proveedor;
     this.id_persona = this.usuario.id_persona;
     this.seleccionTO = new SolicitudesModel();
+    this.obtenerSolcitudesPublicadas();
     this.buscar();
     this.active.queryParams.subscribe(params => {
       if (params && params.special) {
         if (params.special){
+          this.obtenerSolcitudesPublicadas();
           this.buscar();
         }
       }
@@ -122,5 +126,30 @@ export class SolicitudesPage implements OnInit {
   abriAdminPublicadas() {
    this.router.navigate(['/tabs/home/solicitudes/admin-solicitudes-publicadas'], { queryParams: {special: true}  });
   }
-
+/*ADMINISTRADOT DE SOLICITUDES*/
+public obtenerSolcitudesPublicadas() {
+  this.seleccionTO.id_proveedor = this.id_proveedor;
+  this.seleccionTO.id_persona = this.id_persona;
+  this.solicitudesService.obtenerSolcitudesPublicadas(this.seleccionTO).subscribe(response => {
+    this.lstSolicitudesPublicadas = response.data;
+    this.numeroPublicadas = this.lstSolicitudesPublicadas.length;
+    this.lstSolicitudesPublicadasBK = response.data;
+  },
+    error => {
+           this.notificaciones.error(error);
+    });
+}
+btnBuscar(e) {
+  this.filtro = e.target.value;
+  this.lstSolicitudesPublicadas = this.lstSolicitudesPublicadasBK;
+  this.lstSolicitudesPublicadas = this.lstSolicitudesPublicadas.filter(element => {
+    return element.solicitud.toLowerCase().indexOf(this.filtro.toString().toLowerCase()) > -1
+      || element.descripcion.toLowerCase().indexOf(this.filtro.toString().toLowerCase()) > -1;
+  });
+}
+selecAdminPublicada(solicitud: any) {
+  this.solicitud = JSON.parse(JSON.stringify(solicitud));
+  let navigationExtras = JSON.stringify(this.solicitud);
+  this.router.navigate(['/tabs/home/solicitudes/admin-solicitudes-publicadas/card-admin-solicitud'], { queryParams: { special: navigationExtras } });
+}
 }

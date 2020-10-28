@@ -29,7 +29,7 @@ export class CardAdminSolicitudPage implements OnInit {
   }
 
   regresar() {
-    this.router.navigate(['/tabs/home/solicitudes/admin-solicitudes-publicadas'], { queryParams: { special: true } });
+    this.router.navigate(['/tabs/home/solicitudes'], { queryParams: { special: true } });
   }
   async presentAlertConfirm() {
     const alert = await this.alertController.create({
