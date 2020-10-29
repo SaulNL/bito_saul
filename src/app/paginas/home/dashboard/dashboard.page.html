@@ -21,6 +21,10 @@
         <ion-list id="labels-list">
           <ion-menu-toggle auto-hide="false">
             <ion-list lines="none">
+              <ion-item menuclose lines="none" [routerLink]="['/tabs/home/negocio']">
+                <ion-icon slot="start" ios="briefcase-outline" md="briefcase"></ion-icon>
+                Mis Negocios
+              </ion-item>
             </ion-list>
           </ion-menu-toggle>
           <ion-item *ngIf="admin" lines="none" (click)="isRemainder === true ? isRemainder = false : isRemainder = true">

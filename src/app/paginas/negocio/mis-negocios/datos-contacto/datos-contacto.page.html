@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title>Datos de contacto</ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" (click)="presentActionSheet()" class="blanco">
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-button (click)="regresar()" class="blanco">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label position="floating">Teléfono oficina :</ion-label>
+        <ion-input ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Célular/Whatsapp :</ion-label>
+        <ion-input ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Correo :</ion-label>
+        <ion-input ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-toggle name="cherry" [(ngModel)]="variaf"  (ionChange)="notifyf()" color="danger"  ></ion-toggle>
+        <ion-avatar slot="start" >
+          <img src="./../../../../../assets/images/fb.png" alt="">
+        </ion-avatar>
+        <ion-input *ngIf="variaf" placeholder="Facebook :"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-toggle name="cherry" [(ngModel)]="variat"  (ionChange)="notifyt()" color="danger"  ></ion-toggle>
+        <ion-avatar slot="start" >
+          <img src="./../../../../../assets/images/tw.png" alt="">
+        </ion-avatar>
+        <ion-input *ngIf="variat" placeholder="Twitter :"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-toggle name="cherry" [(ngModel)]="variai"  (ionChange)="notifyi()" color="danger"  ></ion-toggle>
+        <ion-avatar slot="start" >
+          <img src="./../../../../../assets/images/insta.png" alt="">
+        </ion-avatar>
+        <ion-input *ngIf="variai" placeholder="Instagram :"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-toggle name="cherry" [(ngModel)]="variay"  (ionChange)="notifyy()" color="danger"  ></ion-toggle>
+        <ion-avatar slot="start" >
+          <img src="./../../../../../assets/images/yt.png" alt="">
+        </ion-avatar>
+        <ion-input *ngIf="variay" placeholder="Youtube :"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-toggle name="cherry" [(ngModel)]="variak"  (ionChange)="notifyk()" color="danger"  ></ion-toggle>
+        <ion-avatar slot="start" >
+          <img src="./../../../../../assets/images/tt.png" alt="">
+        </ion-avatar>
+        <ion-input *ngIf="variak" placeholder="TikTok :"></ion-input>
+      </ion-item>
+        <ion-item>
+          <ion-label >Los campos con * son obligatorios</ion-label>
+        </ion-item>
+        
+    </ion-list>
+  </ion-card>
+  <ion-button *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>
+    <ion-button *ngIf="valido" type="submit" class="bg-rosa">Actualizar</ion-button>
+</ion-content>
+
+

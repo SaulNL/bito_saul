@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-buttons slot="start" >
+      <ion-menu-button class="blanco"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Mis Negocios</ion-title>
+    <ion-buttons slot="end" (click)="presentActionSheet()">
+      <ion-button class="blanco">
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list lines="none" class="bgs-gris">
+    <ion-card>
+      <ion-card-header>
+        <ion-item lines="none" (click)="agregarNegocio()">
+          <ion-icon slot="start" name="add-circle"></ion-icon>
+          <ion-label>
+            <h3></h3>
+            <h2>Agregar nuevo negocio</h2>
+            <p></p>
+          </ion-label>
+        </ion-item>
+      </ion-card-header>
+    </ion-card>
+  </ion-list>
+  <ion-list class="bgs-gris">
+    <ion-card>
+      <ion-card-header *ngFor="let item of listaNegocios">
+        <ion-item (click)="datosNegocio(item)">
+          <ion-avatar slot="start">
+            <img src="{{ item.url_logo }}" alt="{{ item.nombre_comercial }}">
+          </ion-avatar>
+          <ion-label>
+            <h3></h3>
+            <h2>{{item.nombre_comercial}}</h2>
+            <p></p>
+          </ion-label>
+        </ion-item>
+      </ion-card-header>
+    </ion-card>
+  </ion-list>
+</ion-content>
