@@ -87,7 +87,7 @@
               [disabled]="loaderBtn"
               color="danger"> Entregado
       </ion-button>
-      <div class="w-100 text-center" *ngIf="pedido.id_estatus_pedido === 4">
+      <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 4">
         <ion-icon name="checkmark-circle-outline" [style]="{'color': pedido.color}"></ion-icon><span> Pedido entregado</span>
       </div>
       <div class="w-100 text-center" *ngIf="pedido.id_estatus_pedido === 5 || pedido.id_estatus_pedido === 6">
