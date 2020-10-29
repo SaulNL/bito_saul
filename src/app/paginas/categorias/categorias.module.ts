@@ -7,15 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { CategoriasPageRoutingModule } from './categorias-routing.module';
 
 import { CategoriasPage } from './categorias.page';
-import {BannerPromocionesComponent} from '../../componentes/banner-promociones/banner-promociones.component';
+import { TabsPageModule } from '../tabs/tabs.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CategoriasPageRoutingModule
+    CategoriasPageRoutingModule,
+    TabsPageModule
   ],
-  declarations: [CategoriasPage,BannerPromocionesComponent]
+  declarations: [CategoriasPage]
 })
 export class CategoriasPageModule {}

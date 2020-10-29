@@ -34,6 +34,14 @@ export class TabsPage implements OnInit{
     }
 
     inicio() {
-        this.router.navigate(['/tabs/inicio']);
+        this.router.navigate(['/tabs/inicio'], { queryParams: {special: true}  });
+    }
+
+    promociones() {
+        this.router.navigate(['/tabs/promociones'], { queryParams: {special: true}  });
+    }
+
+    productos() {
+         this.router.navigate(['/tabs/productos'], { queryParams: {special: true}  });
     }
 }
