@@ -14,29 +14,10 @@
     <div class="ion-text-end">
       <ion-badge slot="end" color="primary">{{pedido.tipo}}</ion-badge>
       <small class="d-block"><strong>{{pedido.fc_pedido}}</strong></small>
+      <!-- esto parte también es duda -->
+      <!-- <small class="d-block" *ngIf="pedido.id_estatus_pedido === 2 || pedido.id_estatus_pedido === 3">Tiempo estimado de entrega: <strong>{{negocio.tiempo}}</strong></small> -->
+      <!-- <small class="d-block" *ngIf="pedido.id_estatus_pedido === 2 || pedido.id_estatus_pedido === 3">Costo de entrega: <strong>{{negocio.precioEntrega}}</strong></small> -->
     </div>
-    <ion-item >
-      <ion-grid>
-        <ion-row>
-          <ion-col size="3">
-            <ion-avatar>
-              <ion-img [src]="pedido.persona.imagen"></ion-img>
-            </ion-avatar>
-          </ion-col>
-          <ion-col class="ion-align-self-center">
-            <div>
-              <p style=" margin: 0 0 0px !important;">{{pedido.persona.nombre}}</p>
-              <div *ngIf="pedido.id_estatus_pedido < 5">
-                <small class="d-block">Telefono: {{pedido.persona.telefono}}</small>
-                <small class="d-block">Celular: {{pedido.persona.celular}}</small>
-                <small class="d-block">Correo: {{pedido.persona.correo}}</small>
-              </div>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
-    <div id="mapId" style="height:200px"></div>
     <ion-grid>
       <ion-row>
         <ion-col  class="ion-align-self-center"><h3>Artículos:</h3></ion-col>
@@ -69,26 +50,9 @@
     </ion-item>
 
     <div *ngIf="!blnCancelar">
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2 && pedido.id_tipo_pedido === 2" href="https://api.whatsapp.com/send?phone=+52{{numeroSolicitud}}" target="_blank"
-              
-              color="primary">
-        <ion-icon name="logo-whatsapp"></ion-icon> Solicitar repartidor
-      </ion-button>
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="cancelar()" [disabled]="loaderBtn" color="light">Cancelar</ion-button>
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 1" (click)="perpararPedido(pedido)" color="danger" [disabled]="loaderBtn">
-        Preparar
-      </ion-button>
-      
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2" (click)="enviarPedido(pedido)"
-              [disabled]="loaderBtn"
-              color="danger"> Enviar
-      </ion-button>
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 3" (click)="entregarPedido(pedido)"
-              [disabled]="loaderBtn"
-              color="danger"> Entregado
-      </ion-button>
+      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="cancelar()"  [disabled]="loaderBtn" color="light">Cancelar mi pedido</ion-button>
       <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 4">
-        <ion-icon name="checkmark-circle-outline" [style]="{'color': pedido.color}"></ion-icon><span> Pedido entregado</span>
+        <ion-icon name="checkmark-circle-outline" [style]="{'color': pedido.color}"></ion-icon><span> Tu pedido te fue entregado</span>
       </div>
       <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 5 || pedido.id_estatus_pedido === 6">
         <ion-icon name="ban-outline" style="color: darkred"></ion-icon><span> {{pedido.estatus}}</span>
