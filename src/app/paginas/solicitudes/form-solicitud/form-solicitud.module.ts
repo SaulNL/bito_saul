@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { FormSolicitudPageRoutingModule } from './form-solicitud-routing.module';
 
 import { FormSolicitudPage } from './form-solicitud.page';
+import { InputTagsComponent } from '../../../components/input-tags/input-tags.component';
+
 import { ImageCropperModule } from 'ngx-image-cropper';
 import {RecorteImagenComponent} from "../../../components/recorte-imagen/recorte-imagen.component";
 
@@ -18,6 +20,6 @@ import {RecorteImagenComponent} from "../../../components/recorte-imagen/recorte
     FormSolicitudPageRoutingModule,
       ImageCropperModule
   ],
-  declarations: [FormSolicitudPage, RecorteImagenComponent]
+  declarations: [FormSolicitudPage, InputTagsComponent,  RecorteImagenComponent]
 })
 export class FormSolicitudPageModule {}

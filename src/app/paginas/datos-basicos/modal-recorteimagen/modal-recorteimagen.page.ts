@@ -9,7 +9,7 @@ import {DatosBasicosPage} from '../datos-basicos.page';
   styleUrls: ['./modal-recorteimagen.page.scss'],
 })
 export class ModalRecorteimagenPage implements OnInit {
-  imageChangedEvent: any = '';
+ /* imageChangedEvent: any = '';
   croppedImage: any = '';
   @Input() eventoImagen: any ;
   @Input() width: any ;
@@ -18,9 +18,9 @@ export class ModalRecorteimagenPage implements OnInit {
   resizeToWidth: number = 0;
   resizeToHeight: number = 0;
   maintainAspectRatio: boolean = false;
-  file_name: any;
+  file_name: any;*/
   constructor(
-    public modalController: ModalController,
+  //  public modalController: ModalController,
     //public adminBasicos: DatosBasicosPage
   ) {
 
@@ -28,14 +28,14 @@ export class ModalRecorteimagenPage implements OnInit {
    }
 
   ngOnInit() {
-    this.maintainAspectRatio = true;
+   /* this.maintainAspectRatio = true;
     this.resizeToWidth = this.width;
     this.resizeToHeight = this.height;
-    this.fileChangeEvent(this.eventoImagen);
+    this.fileChangeEvent(this.eventoImagen);*/
 
   }
 
-fileChangeEvent(event: any): void {
+/*fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
 }
 imageCropped(image: any) {
@@ -60,5 +60,5 @@ cerraModal(){
 this.modalController.dismiss();
 var inputElement = <HTMLInputElement>document.getElementById(this.IdInput);
 inputElement.value = '';
-}
+}*/
 }

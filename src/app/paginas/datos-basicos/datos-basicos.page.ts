@@ -7,9 +7,9 @@ import { ArchivoComunModel } from '../../Modelos/ArchivoComunModel';
 import { UtilsCls } from './../../utils/UtilsCls';
 import * as moment from 'moment';
 import { ModalController } from '@ionic/angular';
-import { ModalRecorteimagenPage } from '../datos-basicos/modal-recorteimagen/modal-recorteimagen.page';
-import {ToadNotificacionService} from "../../api/toad-notificacion.service";
-import {Router} from "@angular/router";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { Router } from "@angular/router";
+import { RecorteImagenComponent } from 'src/app/components/recorte-imagen/recorte-imagen.component';
 
 
 
@@ -26,6 +26,7 @@ export class DatosBasicosPage implements OnInit {
   public minDate: any;
   public maxDate: any;
   private file_img_galeria: FileList;
+
   imageChangedEvent: any = '';
   croppedImage: any = '';
   resizeToWidth: number = 0;
@@ -130,38 +131,39 @@ export class DatosBasicosPage implements OnInit {
                 // this.notificacionService.pushAlert('comun.file_sobrepeso');
               }
             } else {
-              this.abrirModal(event);
+              this.resizeToWidth = 200;
+              this.resizeToHeight = 200;
+              this.abrirModal(event, this.resizeToWidth, this.resizeToHeight).then(r => {
+               if (r !== undefined) {
+                  const archivo = new ArchivoComunModel();
+                  archivo.nombre_archivo = r.nombre_archivo,
+                  archivo.archivo_64 = r.data;
+                  this.usuarioSistema.selfie = archivo;
+                }
+              }
+              );
             }
           };
         };
       }
     }
   }
-  async abrirModal(event) {
+  async abrirModal(evento, width, heigh) {
     const modal = await this.modalController.create({
-      component: ModalRecorteimagenPage,
+      component: RecorteImagenComponent,
       cssClass: 'my-custom-class',
       componentProps: {
-        eventoImagen: event,
-        width: 200,
-        height: 200,
+        imageChangedEvent: evento,
+        resizeToWidth: width,
+        resizeToHeight: heigh,
         IdInput: 'selfie'
       }
     });
     await modal.present();
-    const { data } = await modal.onDidDismiss();
-    if (data != null) {
-      this.guardarImagenRecortada(data.data, data.nombre_archivo);
+    const { data } = await modal.onDidDismiss().then(r => {
+      return r;
     }
-  }
-  guardarImagenRecortada(data, nombre_archivo) {
-    const file_name = nombre_archivo;
-    const file = data;
-    const archivo = new ArchivoComunModel();
-    if (file_name != null) {
-      archivo.nombre_archivo = file_name,
-        archivo.archivo_64 = file;
-    }
-    this.usuarioSistema.selfie = archivo;
+    );
+    return data;
   }
 }

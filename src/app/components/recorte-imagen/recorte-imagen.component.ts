@@ -16,16 +16,21 @@ export class RecorteImagenComponent implements OnInit {
   @Input() public imageChangedEvent: any;
   @Input() public resizeToWidth: number;
   @Input() public resizeToHeight: number;
+  @Input() IdInput: any;
   public croppedImage: any = '';
 
-  constructor( public modalController: ModalController,
-               private _utils_cls: UtilsCls 
-              ) { }
+  constructor(
+    public modalController: ModalController,
+    private _utils_cls: UtilsCls
+  ) { 
+  }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  dismiss() {
+  cerrar() {
     this.modalController.dismiss();
+    var inputElement = <HTMLInputElement>document.getElementById(this.IdInput);
+    inputElement.value = '';
   }
 
   imageCropped(image: any) {
@@ -40,7 +45,7 @@ export class RecorteImagenComponent implements OnInit {
     // show message
   }
 
-  guardarImagenRecortada(){
+  guardarImagenRecortada() {
     let name;
     for (const archivo of this.imageChangedEvent.target.files) {
       name = archivo.name;
