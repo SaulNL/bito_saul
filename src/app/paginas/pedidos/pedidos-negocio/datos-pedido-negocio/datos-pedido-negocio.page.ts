@@ -36,14 +36,18 @@ export class DatosPedidoNegocioPage implements OnInit {
     if(this.pedido.id_tipo_pedido === 2){
       this.loadMap();
     }
+    this.buscarNumeroRepartidor();
   }
 
   cancelar() {
     this.blnCancelar = true;
   }
+  setBlnCancelar(bandera:boolean){
+    this.blnCancelar=bandera;
+  }
 
   regresar(){
-    this.blnCancelar = false;
+    //this.blnCancelar = false;
     this.router.navigate(['/tabs/home/ventas'], { queryParams: {special: true}  });
     //this.admin.blnActivaDatosVariable = false;
     //this.admin.getVariables();
@@ -118,5 +122,13 @@ export class DatosPedidoNegocioPage implements OnInit {
     this.map = new Map("mapId").setView([lat, lng], 16);
     tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: ''}).addTo(this.map);
     marker([lat, lng]).addTo(this.map)
+  }
+  private buscarNumeroRepartidor() {
+    this.pedidosServicios.numero().subscribe(
+      respuesta => {
+        this.numeroSolicitud = respuesta.data.valor_cadena;
+      },
+      error => {
+      });
   }
 }

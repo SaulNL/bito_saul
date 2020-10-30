@@ -28,7 +28,7 @@ export class PedidosDialogPage implements OnInit {
     private active: ActivatedRoute
   ) {
     this.listaNegocioPedididos = [];
-    this.lstFiltroEstatus = [1, 2, 3];
+    this.lstFiltroEstatus = [1, 2, 3, 4, 5, 6];
     this.loaderBtn = false;
     this.blnCancelar = false;
    }
@@ -59,7 +59,7 @@ export class PedidosDialogPage implements OnInit {
         this.listaEstatus = res.data;
         this.listaEstatus.map(it => {
           it.seleccionado = false;
-          if (it.id_estatus > 0 && it.id_estatus < 4) {
+          if (it.id_estatus > 0 && it.id_estatus < 7) {
             it.seleccionado = true;
           }
         });

@@ -26,7 +26,7 @@ export class PedidosNegocioPage implements OnInit {
     public loadingController: LoadingController
   ) {
     this.listaNegocioPedididos = [];
-    this.lstFiltroEstatus = [1, 2, 3];
+    this.lstFiltroEstatus = [1, 2, 3, 4, 5, 6];
    }
 
   ngOnInit() {
@@ -56,14 +56,13 @@ export class PedidosNegocioPage implements OnInit {
         this.listaEstatus = res.data;
         this.listaEstatus.map(it => {
           it.seleccionado = false;
-          if (it.id_estatus > 0 && it.id_estatus < 4) {
+          if (it.id_estatus > 0 && it.id_estatus < 7) {
             it.seleccionado = true;
           }
         });
       },
       error => {
         //this.loader = false;
-        console.log(error);
         
       }
     );

@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="tolbar">
     <ion-buttons slot="start">
       <ion-button (click)="regresar()">
         <ion-icon name="arrow-back-outline"></ion-icon>
@@ -11,13 +11,31 @@
 
 <ion-content>
   <ion-card>
-    <div class="ion-text-end">
+    <!-- <div class="ion-text-end">
       <ion-badge slot="end" color="primary">{{pedido.tipo}}</ion-badge>
       <small class="d-block"><strong>{{pedido.fc_pedido}}</strong></small>
-      <!-- esto parte también es duda -->
-      <!-- <small class="d-block" *ngIf="pedido.id_estatus_pedido === 2 || pedido.id_estatus_pedido === 3">Tiempo estimado de entrega: <strong>{{negocio.tiempo}}</strong></small> -->
-      <!-- <small class="d-block" *ngIf="pedido.id_estatus_pedido === 2 || pedido.id_estatus_pedido === 3">Costo de entrega: <strong>{{negocio.precioEntrega}}</strong></small> -->
-    </div>
+
+      esto parte también es duda
+      <small class="d-block" *ngIf="pedido.id_estatus_pedido === 2 || pedido.id_estatus_pedido === 3">Tiempo estimado de entrega: <strong>{{negocio.tiempo}}</strong></small>
+      <small class="d-block" *ngIf="pedido.id_estatus_pedido === 2 || pedido.id_estatus_pedido === 3">Costo de entrega: <strong>{{negocio.precioEntrega}}</strong></small>
+    </div> -->
+
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div *ngIf="pedido.id_estatus_pedido === 4">
+            <ion-badge [style]="{'background': pedido.color}">
+              <ion-icon name="checkmark-circle-outline"></ion-icon>Pedido entregado
+            </ion-badge>
+          </div>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col>
+          <ion-badge color="primary">{{pedido.tipo}}</ion-badge>
+          <small class="d-block"><strong>{{pedido.fc_pedido}}</strong></small>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
     <ion-grid>
       <ion-row>
         <ion-col  class="ion-align-self-center"><h3>Artículos:</h3></ion-col>
@@ -51,9 +69,9 @@
 
     <div *ngIf="!blnCancelar">
       <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="cancelar()"  [disabled]="loaderBtn" color="light">Cancelar mi pedido</ion-button>
-      <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 4">
+      <!-- <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 4">
         <ion-icon name="checkmark-circle-outline" [style]="{'color': pedido.color}"></ion-icon><span> Tu pedido te fue entregado</span>
-      </div>
+      </div> -->
       <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 5 || pedido.id_estatus_pedido === 6">
         <ion-icon name="ban-outline" style="color: darkred"></ion-icon><span> {{pedido.estatus}}</span>
         <small class="d-block">{{pedido.motivo}}</small>
