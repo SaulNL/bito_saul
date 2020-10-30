@@ -4,6 +4,7 @@ import {LoadingController} from "@ionic/angular";
 import { FiltrosService } from '../../api/filtros.service';
 import { ProveedorServicioService } from '../../api/proveedor-servicio.service';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
+import { ActivatedRoute } from '@angular/router';
 /* Modelos */
 import { PromocionesModel } from '../../Modelos/PromocionesModel';
 import { FiltrosModel } from '../../Modelos/FiltrosModel';
@@ -31,7 +32,7 @@ export class PromocionesPage implements OnInit {
   public banner: string;
 
 
-  constructor(private _promociones: PromocionesService,  public loadingController: LoadingController,  private filtrosService: FiltrosService, private serviceProveedores: ProveedorServicioService, public _notificacionService: ToadNotificacionService ) {
+  constructor(private _promociones: PromocionesService,  public loadingController: LoadingController,  private filtrosService: FiltrosService, private serviceProveedores: ProveedorServicioService, public _notificacionService: ToadNotificacionService, private active: ActivatedRoute ) {
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.listaCategorias = [];
@@ -49,6 +50,19 @@ export class PromocionesPage implements OnInit {
     this.anyFiltros.idEstado = 29;
     this.lstCatTipoNegocio = new Array<any>();
     this.obtenerPromociones();
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          this.loader = true;
+          this.anyFiltros = new FiltrosModel();
+          this.lstPromociones = new Array<PromocionesModel>();
+          this.anyFiltros.kilometros = 1;
+          this.anyFiltros.idEstado = 29;
+          this.lstCatTipoNegocio = new Array<any>();
+          this.obtenerPromociones();
+        }
+      }
+    });
   }
 
   public obtenerPromociones() {

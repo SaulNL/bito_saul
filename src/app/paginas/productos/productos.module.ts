@@ -4,9 +4,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductosPage } from './productos.page';
 import { ExploreContainerComponentModule } from '../../explore-container/explore-container.module';
+import { TabsPageModule } from '../tabs/tabs.module';
 
 import { Tab1PageRoutingModule } from './productos-routing.module';
-import {ToolbarBusquedaComponent} from "../../componentes/toolbar-busqueda/toolbar-busqueda.component";
 
 @NgModule({
   imports: [
@@ -14,8 +14,9 @@ import {ToolbarBusquedaComponent} from "../../componentes/toolbar-busqueda/toolb
     CommonModule,
     FormsModule,
     ExploreContainerComponentModule,
-    Tab1PageRoutingModule
+    Tab1PageRoutingModule,
+    TabsPageModule
   ],
-  declarations: [ProductosPage, ToolbarBusquedaComponent]
+  declarations: [ProductosPage]
 })
 export class Tab1PageModule {}

@@ -1,7 +1,7 @@
 import {Component, EventEmitter} from '@angular/core';
 import {ProductoModel} from "../../Modelos/ProductoModel";
 import {LoadingController, ModalController, ToastController} from "@ionic/angular";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {BusquedaService} from "../../api/busqueda.service";
 import {ProductosService} from "../../api/productos.service";
 import {FiltrosModel} from "../../Modelos/FiltrosModel";
@@ -41,7 +41,8 @@ export class ProductosPage {
       private principalSercicio: BusquedaService,
       private servicioProductos: ProductosService,
       public modalController: ModalController,
-      private notificaciones: ToadNotificacionService
+      private notificaciones: ToadNotificacionService,
+      private active: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -56,6 +57,23 @@ export class ProductosPage {
     this.lstProductosBK = new Array<ProductoModel>();
     this.seleccionadoDetalleArray = new Array<ProductoModel>();
     this.obtenerProductos();
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          this.anyFiltros = new FiltrosModel();
+          this.anyFiltros.idEstado = 29;
+          this.producto = null;
+          this.loader = null;
+          this.motrarContacto = true;
+          this.loaderLike = false;
+          this.filtroCheckend = null;
+          this.lstProductos = new Array<ProductoModel>();
+          this.lstProductosBK = new Array<ProductoModel>();
+          this.seleccionadoDetalleArray = new Array<ProductoModel>();
+          this.obtenerProductos();
+        }
+      }
+    });
   }
   /**
    * Funcion para obtener promociones

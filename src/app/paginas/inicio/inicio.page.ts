@@ -43,14 +43,18 @@ export class InicioPage implements OnInit {
     }
 
     ngOnInit(): void {
+        this.buscarNegocios();
         this.route.queryParams.subscribe(params => {
-            console.log(params === {});
-                if (params && params.seleccionado) {
-                    this.buscarSeleccionado(JSON.parse(params.seleccionado));
+                if (params && params.special) {
+                    if (params.special){
+                        this.Filtros = new FiltrosModel();
+                        this.Filtros.idEstado = 29;
+                        this.listaCategorias = [];
+                        this.buscarNegocios();
+                    }
                 }
             }
         )
-        this.buscarNegocios();
     }
     buscarNegocios() {
         this.loader = true;

@@ -1,17 +1,17 @@
 <ion-tabs>
 
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="productos">
+    <ion-tab-button (click)="productos()">
       <ion-icon name="cube-outline"></ion-icon>
       <ion-label>Productos</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="promociones">
+    <ion-tab-button (click)="promociones()">
       <ion-icon name="pricetags-outline"></ion-icon>
       <ion-label>Promociones</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="inicio">
+    <ion-tab-button (click)="inicio()">
       <ion-icon name="home-outline"></ion-icon>
       <ion-label>Inicio</ion-label>
     </ion-tab-button>
