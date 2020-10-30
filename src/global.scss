@@ -40,11 +40,21 @@
   width: 100%;
 }
 
-
+ion-back-button{
+  --color: white;
+}
 
 .tolbar{
   --background: linear-gradient(90deg,#fa4f72,#a74eef) !important;
   --color: white !important;
+}
+
+ion-menu-button{
+ color: white;
+}
+
+.tolbar ion-button{
+  --color: white;
 }
 
 ion-content{
