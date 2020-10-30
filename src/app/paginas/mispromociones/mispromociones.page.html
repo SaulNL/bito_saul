@@ -58,9 +58,7 @@
 												<h4><strong>{{ promoPubli.fecha_inicio }}</strong> al <strong>{{ promoPubli.fecha_fin }}</strong></h4>
 											</ion-label>
 											<ion-buttons slot="end">
-												<ion-button type="button" class="btn btn-info" color="danger"  *ngIf="promoPubli.activo_public === 1"  (click)="dejar(promoPubli)">
-														<ion-icon name="trash-bin-outline"></ion-icon>
-												</ion-button>
+												<ion-toggle color="danger"  *ngIf="promoPubli.activo_public === 1"  (click)="dejar(promoPubli)"></ion-toggle>
 											</ion-buttons>
 										</ion-item>
 									</ion-list>
