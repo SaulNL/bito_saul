@@ -9,67 +9,72 @@
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content>
-
-	<ion-card>
-		<ion-card-content>
 			<div>
-
 				<div *ngIf="!agregarPromocion">
 					<div>
 						<div>
-							<ion-list>
-								<div *ngFor="let promocion of lstPromociones" >
-									<ion-item (click)="seleccionarPromocion(promocion)">
-										<ion-avatar slot="start">
-											<img  [src]="promocion.url_imagen" [alt]="promocion.promocion">
-										</ion-avatar>
-										<ion-label class="ion-text-wrap">
-											<p>{{promocion.promocion}}</p>
-										</ion-label>
-									</ion-item>
+							<div *ngFor="let promocion of lstPromociones" >
+								<ion-card>
+									<ion-card-content>
+										<div class="ion-text-center">
+									        <strong style="color: black;">Promociones creadas</strong>
+									     </div>
+										<ion-item (click)="seleccionarPromocion(promocion)">
+											<ion-avatar slot="start">
+												<img  [src]="promocion.url_imagen" [alt]="promocion.promocion">
+											</ion-avatar>
+											<ion-label class="ion-text-wrap">
+												<p>{{promocion.promocion}}</p>
+											</ion-label>
+											<ion-buttons slot="end">
+         										<ion-icon name="chevron-forward-outline"></ion-icon>
+        									</ion-buttons>
+										</ion-item>
+									</ion-card-content>										
+								</ion-card>
+							</div>
+						</div>
+						
+						<ion-card>
+							<ion-card-content>
+								<div class="ion-text-center" style="margin-top: 20px">
+									<strong style="color: black;">Publicaciones que has realizado</strong>
 								</div>
-							</ion-list>
-						</div>
 		
-						<div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
-							<h2>Publicaciones que has realizado</h2>
-						</div>
-		
-						<div style="display: flex; justify-content: center; align-items: center;">
-							<p>{{publicacionesHechas}} de {{publicacionesPermitidas}}</p>
-						</div>
-		
-						<ion-item>
-							<ion-label position="floating">Filtrar</ion-label>
-							<ion-input placeholder="Promocion o Negocio" (keyup)="btnBuscar()" [(ngModel)]="filtro"></ion-input>
-						</ion-item>
-						<div *ngIf="lstPromocionesPublicadas !== undefined" style="width: 100%;">
-							<ion-list>
-								<ion-item *ngFor="let promoPubli of lstPromocionesPublicadas">
-									<ion-avatar >
-										<img  [src]="promoPubli.url_imagen" [alt]="promoPubli.promocion">
-									</ion-avatar>
-									<ion-label class="ion-text-wrap" style="margin: 5px;">
-										<h2 style="text-align: center; color: black;">Usted publicó</h2>
-										<h3 style="text-align: center;">{{ promoPubli.promocion }}</h3>
-										<div style="display: flex; justify-content: center; align-items: center;">
-											<ion-button type="button" class="btn btn-info" color="warning" (click)="abrirModalDetalle(promoPubli.id_publicacion, promoPubli.activo_public)">
-												<ion-icon name="eye-outline"></ion-icon>
-											  </ion-button>
-											  <ion-button type="button" class="btn btn-info" color="danger"  *ngIf="promoPubli.activo_public === 1"  (click)="dejar(promoPubli)">
-												despublicar
-											  </ion-button>
-										</div>
-									</ion-label>
-								</ion-item>
-							</ion-list>
-						</div>
+								<div style="display: flex; justify-content: center; align-items: center;">
+									<p style="color: black;">{{publicacionesHechas}} de {{publicacionesPermitidas}}</p>
+								</div>
+								 <ion-searchbar (keyup)="btnBuscar()" [(ngModel)]="filtro" type="text"></ion-searchbar>
+								 <div *ngIf="lstPromocionesPublicadas !== undefined" style="width: 100%;">
+									<ion-list>
+										<ion-item *ngFor="let promoPubli of lstPromocionesPublicadas">
+											<ion-avatar >
+												<img  [src]="promoPubli.url_imagen" [alt]="promoPubli.promocion">
+											</ion-avatar>
+											<ion-label class="ion-text-wrap" style="margin: 5px;">
+												<h2 style="text-align: center; color: black;">Usted publicó</h2>
+												<h3 style="text-align: center;">{{ promoPubli.promocion }}</h3>
+												<div style="display: flex; justify-content: center; align-items: center;">
+													<ion-button type="button" class="btn btn-info " color="warning" (click)="abrirModalDetalle(promoPubli.id_publicacion, promoPubli.activo_public)">
+														<ion-icon name="eye-outline"></ion-icon>
+													  </ion-button>
+													  <ion-button type="button" class="btn btn-info" color="danger"  *ngIf="promoPubli.activo_public === 1"  (click)="dejar(promoPubli)">
+														despublicar
+													  </ion-button>
+												</div>
+											</ion-label>
+										</ion-item>
+									</ion-list>
+								</div>
+							</ion-card-content>
+						</ion-card>
+						
+						
 					</div>
 				</div>
 		
 			</div>
-		</ion-card-content>
-	</ion-card>
 
 </ion-content>
