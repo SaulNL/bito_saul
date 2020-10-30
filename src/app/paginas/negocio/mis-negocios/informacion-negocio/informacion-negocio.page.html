@@ -16,6 +16,12 @@
 </ion-header>
 
 <ion-content>
+  <ion-item lines="none" class="bg-gris">
+    <ion-title class="cent bgs-gris">Información del negocio</ion-title>
+  </ion-item>
+  
+  
+
   <ion-card>
     <ion-list lines="none">
       <ion-item>
@@ -131,6 +137,116 @@
         <ion-item>
           <ion-label class="cent" >Los campos con * son obligatorios</ion-label>
         </ion-item>
+    </ion-list>
+  </ion-card>
+<ion-item lines="none" class="bg-gris">
+  <ion-title class="cent bgs-gris">Datos de contacto </ion-title>
+</ion-item>
+  
+  <ion-card>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label position="floating">Teléfono oficina :</ion-label>
+        <ion-input ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Célular/Whatsapp :</ion-label>
+        <ion-input ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Correo :</ion-label>
+        <ion-input ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-toggle name="cherry" [(ngModel)]="variaf"  (ionChange)="notifyf()" color="danger"  ></ion-toggle>
+        <ion-avatar slot="start" >
+          <img src="./../../../../../assets/images/fb.png" alt="">
+        </ion-avatar>
+        <ion-input *ngIf="variaf" placeholder="Facebook :"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-toggle name="cherry" [(ngModel)]="variat"  (ionChange)="notifyt()" color="danger"  ></ion-toggle>
+        <ion-avatar slot="start" >
+          <img src="./../../../../../assets/images/tw.png" alt="">
+        </ion-avatar>
+        <ion-input *ngIf="variat" placeholder="Twitter :"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-toggle name="cherry" [(ngModel)]="variai"  (ionChange)="notifyi()" color="danger"  ></ion-toggle>
+        <ion-avatar slot="start" >
+          <img src="./../../../../../assets/images/insta.png" alt="">
+        </ion-avatar>
+        <ion-input *ngIf="variai" placeholder="Instagram :"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-toggle name="cherry" [(ngModel)]="variay"  (ionChange)="notifyy()" color="danger"  ></ion-toggle>
+        <ion-avatar slot="start" >
+          <img src="./../../../../../assets/images/yt.png" alt="">
+        </ion-avatar>
+        <ion-input *ngIf="variay" placeholder="Youtube :"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-toggle name="cherry" [(ngModel)]="variak"  (ionChange)="notifyk()" color="danger"  ></ion-toggle>
+        <ion-avatar slot="start" >
+          <img src="./../../../../../assets/images/tt.png" alt="">
+        </ion-avatar>
+        <ion-input *ngIf="variak" placeholder="TikTok :"></ion-input>
+      </ion-item>
+        <ion-item>
+          <ion-label >Los campos con * son obligatorios</ion-label>
+        </ion-item>
+        
+    </ion-list>
+  </ion-card>
+<ion-item lines="none" class="bg-gris">
+  <ion-title class="cent bgs-gris">Datos de domicilio </ion-title>
+</ion-item>
+
+  <ion-card>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label position="floating">Calle <span>*</span></ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Número Exterior <span>*</span></ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Número Interior <span>*</span></ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Estado <span>*</span></ion-label>
+        <ion-select interface="action-sheet">
+          <ion-select-option value="item1">item1</ion-select-option>
+          <ion-select-option value="item2">item2</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Municipio <span>*</span></ion-label>
+        <ion-select interface="action-sheet">
+          <ion-select-option value="item1">item1</ion-select-option>
+          <ion-select-option value="item2">item2</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Localidad <span>*</span></ion-label>
+        <ion-select interface="action-sheet">
+          <ion-select-option value="item1">item1</ion-select-option>
+          <ion-select-option value="item2">item2</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Colonia <span>*</span></ion-label>
+        <ion-select interface="action-sheet">
+          <ion-select-option value="item1">item1</ion-select-option>
+          <ion-select-option value="item2">item2</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label >Los campos con * son obligatorios</ion-label>
+      </ion-item>
     </ion-list>
   </ion-card>
   <ion-button *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>

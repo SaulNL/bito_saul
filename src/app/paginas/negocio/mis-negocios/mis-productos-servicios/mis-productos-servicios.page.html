@@ -1,9 +1,16 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    <ion-title>Productos</ion-title>
+    <ion-title> 
+      <span *ngIf="iden== 1">
+        Productos
+      </span>
+      <span *ngIf="iden== 2">
+        Servicios
+      </span>
+    </ion-title>
     <ion-buttons slot="end">
-      <ion-button *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" (click)="presentActionSheet()" class="blanco">
-        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      <ion-button *ngIf="negocioTO.id_negocio !== null || negocioTO.id_negocio !== undefined" (click)="datosProductosServicios(1)" class="blanco">
+        <ion-icon name="add-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="start">
@@ -12,13 +19,13 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  
 </ion-header>
 
 <ion-content>
   <ion-card>
     <ion-item lines="none">
-      <ion-title class="cent"> Carta de productos</ion-title>
+      <ion-title class="cent"> Carta de <span *ngIf="iden== 1">productos</span> <span *ngIf="iden== 2">servicios</span>
+        </ion-title>
     </ion-item>
     <ion-list lines="none">
       <ion-item>
@@ -27,19 +34,23 @@
         <ion-button type="submit" class="bg-rosa">Eliminar</ion-button>
       </ion-item>
       <ion-item>
-        <ion-label position="floating" >Escriba el nombre de sus productos:</ion-label>
+        <ion-label position="floating" >Escriba el nombre de sus 
+          <span *ngIf="iden== 1">productos:</span>
+          <span *ngIf="iden== 2">servicios:</span>
+          </ion-label>
         <ion-input placeholder="Use coma (,) para agregar otro nombre de otro producto"></ion-input>
       </ion-item> 
-
     </ion-list>
-    
   </ion-card>
   <ion-card>
     <ion-item lines="none">
-      <ion-title class="cent"> Clasificación Productos </ion-title>
+      <ion-title class="cent"> Clasificación 
+        <span *ngIf="iden== 1">Productos</span>
+          <span *ngIf="iden== 2">Servicios</span></ion-title>
     </ion-item>
+
     <ion-card-header>
-      <ion-item lines="none">
+      <ion-item (click)="datosProductosServicios(1)" lines="none">
         <ion-icon slot="start" name="add-circle"></ion-icon>
         <ion-label>
           <h3></h3>
@@ -48,14 +59,16 @@
         </ion-label>
       </ion-item>
     </ion-card-header>
+
     <ion-card-header>
-      <ion-item lines="full">
-        <ion-icon slot="start" name="add-circle"></ion-icon>
+      <ion-item lines="full" (click)="datosProductosServicios(2)">
+        <ion-icon slot="start" name="bag-handle-outline"></ion-icon>
         <ion-label>
           <h3></h3>
           <h2>Producto de software modalidad de servicio</h2>
           <p></p>
         </ion-label>
+        <ion-icon name="caret-forward-outline"></ion-icon>
       </ion-item>
     </ion-card-header>
   </ion-card>

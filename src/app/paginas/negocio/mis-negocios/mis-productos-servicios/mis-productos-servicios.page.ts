@@ -2,13 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NegocioModel } from "./../../../../Modelos/NegocioModel";
 import { ActionSheetController } from "@ionic/angular";
+
 @Component({
-  selector: 'app-productos',
-  templateUrl: './productos.page.html',
-  styleUrls: ['./productos.page.scss'],
+  selector: 'app-mis-productos-servicios',
+  templateUrl: './mis-productos-servicios.page.html',
+  styleUrls: ['./mis-productos-servicios.page.scss'],
 })
-export class ProductosPage implements OnInit {
+export class MisProductosServiciosPage implements OnInit {
   public negocioTO: NegocioModel;
+  public iden: number;
+  public datos: any;
   constructor(private router: Router,
     private active: ActivatedRoute,
     private actionSheetController: ActionSheetController) { }
@@ -16,7 +19,9 @@ export class ProductosPage implements OnInit {
   ngOnInit() {
     this.active.queryParams.subscribe(params => {
       if (params && params.special) {
-        this.negocioTO  = JSON.parse(params.special);
+        this.datos = JSON.parse(params.special);
+        this.iden = this.datos.inden;
+        this.negocioTO  = this.datos.info;
       }
     });
   }
@@ -56,4 +61,20 @@ export class ProductosPage implements OnInit {
       queryParams: { special: navigationExtras },
     });
   }
+
+  datosProductosServicios( tre){
+    this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
+    
+   let all = {
+     inden: this.iden,
+      info: this.negocioTO,
+       pys: tre
+      };
+
+    let navigationExtras = JSON.stringify(all);
+    this.router.navigate(["/tabs/home/negocio/mis-negocios/mis-productos-servicios/datos-productos-servicios"], {
+      queryParams: { special: navigationExtras },
+    });
+  }
+
 }

@@ -43,28 +43,14 @@
     </ion-item>
   </ion-card>
   <ion-card>
-    <ion-item (click)="datosContacto(negocioTO)" lines="none">
-      <ion-label >Datos de contacto</ion-label>
-      <ion-icon slot="end" name="ellipse-outline"></ion-icon>
-      <ion-icon slot="end" name="caret-forward-outline"></ion-icon>
-    </ion-item>
-  </ion-card>
-  <ion-card>
-    <ion-item (click)="datosDomicilio(negocioTO)" lines="none">
-      <ion-label >Datos de domicilio</ion-label>
-      <ion-icon slot="end" name="ellipse-outline"></ion-icon>
-      <ion-icon slot="end" name="caret-forward-outline"></ion-icon>
-    </ion-item>
-  </ion-card>
-  <ion-card>
-    <ion-item (click)="productos(negocioTO)" lines="none">
+    <ion-item (click)="productosServicios(negocioTO,1)" lines="none">
       <ion-label >Productos</ion-label>
-      <ion-icon slot="end" name="close-circle"></ion-icon>
+      <ion-icon slot="end" name="ellipse-outline"></ion-icon>
       <ion-icon slot="end" name="caret-forward-outline"></ion-icon>
     </ion-item>
   </ion-card>
   <ion-card>
-    <ion-item (click)="servicios(negocioTO)" lines="none">
+    <ion-item (click)="productosServicios(negocioTO,2)" lines="none">
       <ion-label >Servicios</ion-label>
       <ion-icon slot="end" name="close-circle"></ion-icon>
       <ion-icon slot="end" name="caret-forward-outline"></ion-icon>
