@@ -12,7 +12,7 @@
     </div>
     <ion-list>
       <ion-item *ngIf="!blnEnviarSms">
-        <ion-button size="small">
+        <ion-button size="small" (click)="obtenerCodigoSMS()">
           <ion-icon name="mail-outline"></ion-icon>
           Solicitar Código Nuevamente
         </ion-button>

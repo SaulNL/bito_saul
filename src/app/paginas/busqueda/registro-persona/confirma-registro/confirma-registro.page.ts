@@ -185,9 +185,9 @@ export class ConfirmaRegistroPage implements OnInit {
               this.loader.dismiss();
               this.notificaciones.exito('Bienvenido a Bitoo');
               this.router.navigate(['/tabs/inicio']);
-              //location.reload();
-            // this.sideBarService.publishSomeData('');
-            // this.navctrl.back();
+              setTimeout(() => {
+                 location.reload();
+               }, 1800);
             } else {
               this.notificaciones.alerta(data.message);
             }
