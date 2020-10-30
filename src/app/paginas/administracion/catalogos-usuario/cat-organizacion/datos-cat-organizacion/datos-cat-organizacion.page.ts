@@ -4,7 +4,7 @@ import { AdministracionService } from '../../../../../api/administracion-service
 import { FiltroCatOrgModel } from '../../../../../Modelos/catalogos/FiltroCatOrgModel';
 import {NgForm} from "@angular/forms";
 import {Router, ActivatedRoute} from '@angular/router';
-
+import { ToadNotificacionService } from "../../../../../api/toad-notificacion.service";
 
 @Component({
   selector: 'app-datos-cat-organizacion',
@@ -21,7 +21,8 @@ export class DatosCatOrganizacionPage implements OnInit {
     private actionSheetController: ActionSheetController,
     public alertController: AlertController,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private noti:  ToadNotificacionService,
   ) { 
     this.valida=false;
   }
@@ -37,50 +38,33 @@ export class DatosCatOrganizacionPage implements OnInit {
   
   
   eliminarOrganizacion() {
-    //this.loader = true;
     this.administracionService.eliminarOrganizacion(this.organizacionTO.id_organizacion).subscribe(
       response => {
         if (response.code === 200) {
           this.regresar();
-          this.borrado();
-          //this.loader = false;
-          //this.getOrganizaciones();
-          //this.cancelarConfirmado();
-          //this._notificacionService.pushInfo('se elimino correctamente');
+          this.noti.exito("se elimino correctamente");
         } else {
-          //this.loader = false;
-          //this.cancelarConfirmado();
-          //this._notificacionService.pushError(response.message);
+          this.noti.error(response.message);
         }
       },
       error => {
-        console.log(error);        
-        //this._notificacionService.pushError(error);
+        this.noti.error(error);
       }
     );
   }
 
   actualizarDatos(formBasicos: NgForm) {
-    //this.loader = true;
     this.administracionService.guardarCatOrganizacion(this.organizacionTO).subscribe(
       data => {
         if (data.code === 200) {        
           this.regresar();
-          this.guardados();
-          //this._notificacionService.pushInfo('Los datos se guardaron correctamente');
-          //this.loader = false;
-          //this.admin.getOrganizaciones();
-          //this.admin.blnActivaDatosOrganizacion = false;
-          //this.admin.activarTabla();
+          this.noti.exito("Los datos se guardaron correctamente");
         } else {
-          //this.loader = false;
-          //this._notificacionService.pushError(data.message);     
+          this.noti.error(data.message);  
         }
       },
       error => {
-        this.errorServidor();
-        //this._notificacionService.pushError(error);
-        //this.loader = false;       
+        this.noti.error(error);  
       }
     );
   }
@@ -97,7 +81,6 @@ export class DatosCatOrganizacionPage implements OnInit {
         text: 'Borrar',
         role: 'destructive',
         handler: () => {
-          //this.eliminarOrganizacion();
           this.presentAlertMultipleButtons();
         }
       },{
@@ -111,7 +94,6 @@ export class DatosCatOrganizacionPage implements OnInit {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          this.regresar();
         }
       }
     ]
@@ -145,29 +127,5 @@ export class DatosCatOrganizacionPage implements OnInit {
 
   editarorno(){
     this.valida= true;
-  }
-
-  async borrado() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Organizacion borrada"
-    });
-    await alert.present();
-  }
-
-  async errorServidor() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Error con el servidor"
-    });
-    await alert.present();
-  }
-  async guardados() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Organización Guardada"
-    });
-    await alert.present();
-    this.regresar();
   }
 }

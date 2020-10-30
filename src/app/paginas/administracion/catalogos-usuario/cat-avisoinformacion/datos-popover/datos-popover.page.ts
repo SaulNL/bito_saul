@@ -4,6 +4,7 @@ import { AdministracionService } from "../../../../../api/administracion-service
 import { NgForm } from '@angular/forms';
 import { ActionSheetController, AlertController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ToadNotificacionService } from "../../../../../api/toad-notificacion.service";
 
 @Component({
   selector: 'app-datos-popover',
@@ -26,6 +27,7 @@ export class DatosPopoverPage implements OnInit {
     private servicioAdminitracion: AdministracionService,
     private actionSheetController: ActionSheetController,
     public alertController: AlertController,
+    private noti:  ToadNotificacionService,
     private router: Router,
     private active: ActivatedRoute
   ) { 
@@ -43,52 +45,37 @@ export class DatosPopoverPage implements OnInit {
   }
 
   actualizarDatos(formBasicos: NgForm) {
-    //this.loader = true;
     this.servicioAdminitracion.guardarPopever(this.popoverTO).subscribe(
       data => {
         if (data.code === 200) {
           this.regresar();
-          this.guardados();
-          //this._notificacionService.pushInfo('Los datos se guardaron correctamente');
-          //this.loader = false;
-          //this.admin.activarTablaPopover();
+          this.noti.exito("Los datos se guardaron correctamente");
         } else {
-          //this.loader = false;
-          //this._notificacionService.pushError(data.message);
+          this.noti.error(data.message);
         }
       },
       error => {
-        //this._notificacionService.pushError(error);
-        //this.loader = false;
-        console.log(error);        
+        this.noti.error(error);    
       }
     );
   }
   eliminarAviso() {
-    //this.loader = true;
     this.servicioAdminitracion.eliminarAviso(this.popoverTO.id_aviso).subscribe(
       response => {
         if (response.code === 200) {
-          //this.loader = false;
           this.regresar();
-          this.borrado();
-          //this.cancelarConfirmado();
-          //this._notificacionService.pushInfo('se elimino correctamente');
+          this.noti.exito("se elimino correctamente");
         } else {
-          //this.loader = false;
-          //this.cancelarConfirmado();
-          //this._notificacionService.pushError(response.message);
+          this.noti.error(response.message);
         }
       },
       error => {
-        //this._notificacionService.pushError(error);
+        this.noti.error(error);
       }
     );
   }
   regresar() {
-    //window.scrollTo({ top: 0, behavior: 'smooth' });
     this.router.navigate(['/tabs/home/cat-avisos'], { queryParams: {special: true}  });
-    //this.admin.activarTablaPopover();
   }
 
   async presentActionSheet() {
@@ -99,7 +86,6 @@ export class DatosPopoverPage implements OnInit {
         text: 'Borrar',
         role: 'destructive',
         handler: () => {
-          //this.eliminarOrganizacion();
           this.presentAlertMultipleButtons();
         }
       },{
@@ -113,7 +99,6 @@ export class DatosPopoverPage implements OnInit {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          this.regresar();
         }
       }
     ]
@@ -148,29 +133,5 @@ export class DatosPopoverPage implements OnInit {
 
   editarorno(){
     this.valida= true;
-  }
-
-  async borrado() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Popover borrado"
-    });
-    await alert.present();
-  }
-
-  async errorServidor() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Error con el servidor"
-    });
-    await alert.present();
-  }
-  async guardados() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Popover Guardado"
-    });
-    await alert.present();
-    this.regresar();
   }
 }

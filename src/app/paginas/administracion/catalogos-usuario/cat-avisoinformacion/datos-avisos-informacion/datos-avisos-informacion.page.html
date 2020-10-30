@@ -6,15 +6,15 @@
       </ion-button>
     </ion-buttons>
     <ion-title>Banner</ion-title>
-    <ion-buttons slot="end" (click)="presentActionSheet()">
-      <ion-button>
+    <ion-buttons slot="end" *ngIf="avisoTO.id_aviso !null">
+      <ion-button (click)="presentActionSheet()">
         <ion-icon name="ellipsis-vertical-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content style="position: fixed;">
+<ion-content>
   <form #formBasicos="ngForm" (ngSubmit)="actualizarDatos(formBasicos)">
     <div style="height: 100%;">
       <ion-item>
