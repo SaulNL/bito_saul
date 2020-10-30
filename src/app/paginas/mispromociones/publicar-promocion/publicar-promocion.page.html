@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home/promociones"  icon="arrow-back-outline" text="" ></ion-back-button>
+    </ion-buttons>
+    <ion-title>Publicar promoción</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px;">
+        <label id="promo{{seleccionTo.id_promocion}}">{{seleccionTo.promocion}}</label>
+      </div>
+      <div style="display: flex; justify-content: center; align-items: center; margin: 10px;">
+        <div style="display: flex; justify-content: center; align-items: center; color: grey;" *ngIf="!seleccionTo.activo">
+          <p>
+            No publicado
+          </p>
+          <ion-icon name="earth-outline" style="margin-left: 10px; font-size: 30px;"></ion-icon>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center; color: blue;" *ngIf="seleccionTo.activo">
+          <p>
+            Publicado
+          </p>
+          <ion-icon name="earth-outline" style="margin-left: 10px; font-size: 30px;"></ion-icon>
+        </div>
+      </div>
+      <img src="{{ seleccionTo.url_imagen }}" alt="Falla al cargar imagen" style="width: 100%;">
+			<div>
+				<p style="text-align: center; color: black;">{{ seleccionTo.terminos }}</p>
+      </div>
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <ion-badge *ngFor="let item of seleccionTo.tags; let i = index" style="margin: 5px 3px;">
+          <p *ngIf="item !== undefined && item !== null && item !== ''">{{ item }}</p>
+        </ion-badge>
+      </div>
+      <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px">
+        <div style="width: 30%;"  *ngIf="publicacionesHechas<publicacionesPermitidas">
+          <ion-button type="button" color="success" expand="block" (click)="abrirModal(seleccionTo)">
+            <p style="font-size: 10px;">Publicar</p>
+          </ion-button>
+        </div>
+        <div style="width: 30%;">
+          <ion-button type="button" color="warning"  (click)="modificar(seleccionTo)" expand="block">
+              <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+        </div>
+        <div style="width: 25%;" (click)="preguntaEliminar(seleccionTo)" expand="full" >
+          <ion-button  type="button"  color="danger" expand="block">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
