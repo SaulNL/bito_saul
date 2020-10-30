@@ -1,11 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FiltroCatAvisosInfoModel } from '../../../../../Modelos/catalogos/FiltroCatAvisosInfoModel';
 import { AdministracionService } from "../../../../../api/administracion-service.service";
-import { ActionSheetController, AlertController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
 import { UtilsCls } from "../../../../../utils/UtilsCls";
 import { ArchivoComunModel } from "../../../../../Modelos/ArchivoComunModel";
 import { Router, ActivatedRoute } from '@angular/router';
+import { ToadNotificacionService } from "../../../../../api/toad-notificacion.service";
 
 @Component({
   selector: 'app-datos-avisos-informacion',
@@ -16,6 +17,7 @@ export class DatosAvisosInformacionPage implements OnInit {
   public actualTO: FiltroCatAvisosInfoModel;
   public avisoTO: FiltroCatAvisosInfoModel;
   private file_img_galeria: FileList;
+  btnCargarNuevaImagen:boolean;
   public activos = [
     { id: 0, activo: 'No' },
     { id: 1, activo: 'Si' },
@@ -30,11 +32,14 @@ export class DatosAvisosInformacionPage implements OnInit {
     private servicioAdminitracion: AdministracionService,
     private actionSheetController: ActionSheetController,
     public alertController: AlertController,
+    private noti:  ToadNotificacionService,
+    public loadingController: LoadingController,
     private _utils_cls: UtilsCls,
     private router: Router,
     private active: ActivatedRoute
   ) { 
     this.valida=false;
+    this.btnCargarNuevaImagen=false;
   }
 
   ngOnInit() {
@@ -48,37 +53,31 @@ export class DatosAvisosInformacionPage implements OnInit {
   }
 
   actualizarDatos(formBasicos: NgForm) {
-    //this.loader = true;
+    if(this.btnCargarNuevaImagen === true){
+      this.presentLoading(10500); 
+    }else{
+      this.presentLoading(500);
+    }
     this.servicioAdminitracion.guardarAviso(this.avisoTO).subscribe(
       data => {
         if (data.code === 200) {
-          
-          //this._notificacionService.pushInfo('Los datos se guardaron correctamente');
-          //this.loader = false;
           this.regresar();
-          this.guardados();
-          //this.admin.activarTabla();
+          this.noti.exito("Los datos se guardaron correctamente");
         } else {
-          //this.loader = false;
-          //this._notificacionService.pushError(data.message);
-          console.log("no se pudo");
-          
+          this.noti.error(data.message);
         }
       },
       error => {
-        //this._notificacionService.pushError(error);
-        //this.loader = false;
-        this.errorServidor();
+        this.noti.error(error);
       }
     );
   }
   regresar() {
-    //window.scrollTo({ top: 0, behavior: 'smooth' });
     this.router.navigate(['/tabs/home/cat-avisos'], { queryParams: {special: true}  });
-    //this.admin.activarTablaPopover();
   }
 
   public subirArchivo(event) {
+    this.btnCargarNuevaImagen=true;
     let height;
     let width;
     for (const archivo of event.target.files) {
@@ -109,7 +108,7 @@ export class DatosAvisosInformacionPage implements OnInit {
               }
             );
           } else {
-            //this._notificacionService.pushAlert('La imagen no cumple con el formato 1500 * 300');
+            this.noti.alerta('La imagen no cumple con el formato 1500 * 300');
           }
         };
       };
@@ -117,23 +116,17 @@ export class DatosAvisosInformacionPage implements OnInit {
   }
 
   eliminarAviso() {
-    //this.loader = true;
     this.servicioAdminitracion.eliminarAviso(this.avisoTO.id_aviso).subscribe(
       response => {
         if (response.code === 200) {
-          //this.loader = false;
           this.regresar();
-          this.borrado();
-          //this.cancelarConfirmado();
-          //this._notificacionService.pushInfo('se elimino correctamente');
+          this.noti.exito("se elimino correctamente");
         } else {
-          //this.loader = false;
-          //this.cancelarConfirmado();
-          //this._notificacionService.pushError(response.message);
+          this.noti.error(response.message);
         }
       },
       error => {
-        //this._notificacionService.pushError(error);
+        this.noti.error(error); 
       }
     );
   }
@@ -159,7 +152,6 @@ export class DatosAvisosInformacionPage implements OnInit {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          this.regresar();
         }
       }
     ]
@@ -192,33 +184,15 @@ export class DatosAvisosInformacionPage implements OnInit {
     await alert.present();
   }
 
+  async presentLoading(tiempo:number) {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      duration: tiempo
+    });
+    await loading.present();
+  }
+
   editarorno(){
     this.valida= true;
   }
-
-  async borrado() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Aviso borrado"
-    });
-    await alert.present();
-  }
-
-  async errorServidor() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Error con el servidor"
-    });
-    await alert.present();
-  }
-  async guardados() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Aviso Guardado"
-    });
-    await alert.present();
-    this.regresar();
-  }
-  
-
 }
