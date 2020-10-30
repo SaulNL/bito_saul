@@ -3,13 +3,13 @@
     <ion-content>
       <ion-list id="inbox-list">
         <ion-list-header> <strong>Bitoo</strong></ion-list-header>
-          <ion-note>{{ correnume }}</ion-note>
-        <ion-menu-toggle auto-hide="true" >
-          <ion-item [routerLink]="['/tabs/home/perfil']" routerDirection="root"  lines="none" detail="false">
+        <ion-note>{{ correnume }}</ion-note>
+        <ion-menu-toggle auto-hide="true">
+          <ion-item [routerLink]="['/tabs/home/perfil']" routerDirection="root" lines="none" detail="false">
             <ion-avatar slot="start">
               <img [src]="usuario.imagen !== null ? usuario.imagen: url_user">
             </ion-avatar>
-            <ion-label>{{usuario.nombre}}  {{usuario.paterno}}  {{usuario.materno}}</ion-label>
+            <ion-label>{{usuario.nombre}} {{usuario.paterno}} {{usuario.materno}}</ion-label>
           </ion-item>
 
           <ion-item [routerLink]="['/tabs/home/conocenos']">
@@ -17,69 +17,71 @@
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
-        <ion-list-header >Administracion</ion-list-header>
-        <ion-list id="labels-list">
-          <ion-menu-toggle auto-hide="false">
-            <ion-list lines="none">
-              <ion-item menuclose lines="none" [routerLink]="['/tabs/home/negocio']">
-                <ion-icon slot="start" ios="briefcase-outline" md="briefcase"></ion-icon>
-                Mis Negocios
-              </ion-item>
-            </ion-list>
-          </ion-menu-toggle>
-          <ion-item *ngIf="admin" lines="none" (click)="isRemainder === true ? isRemainder = false : isRemainder = true">
-            <ion-icon slot="start" ios="folder-open-outline" md="folder-open-sharp"></ion-icon>
-            Catalogos
-            <ion-icon slot="end" [name]="isRemainder? 'caret-down-outline' : 'caret-forward-outline'"></ion-icon>
-          </ion-item>
-          <ion-menu-toggle auto-hide="false">
-            <ion-list lines="none">
-              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-variable']"
-                [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
-                <ion-icon name="ellipse-sharp"></ion-icon>
-                <ion-list-header>Variables</ion-list-header>
-              </ion-item>
-              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-organizaciones']"
-                [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
-                <ion-icon name="ellipse-sharp"></ion-icon>
-                <ion-list-header>Organizacion</ion-list-header>
-              </ion-item>
-              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-rol']"
-                [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
-                <ion-icon name="ellipse-sharp"></ion-icon>
-                <ion-list-header>Rol</ion-list-header>
-              </ion-item>
-              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-tipo-venta']"
-                [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
-                <ion-icon name="ellipse-sharp"></ion-icon>
-                <ion-list-header>Tipo venta</ion-list-header>
-              </ion-item>
-              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-categoria']"
-                [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
-                <ion-icon name="ellipse-sharp"></ion-icon>
-                <ion-list-header>Categoria</ion-list-header>
-              </ion-item>
-              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-palabra-reservadas']"
-                [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
-                <ion-icon name="ellipse-sharp"></ion-icon>
-                <ion-list-header>Palabras Restringidas</ion-list-header>
-              </ion-item>
-              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-avisos']"
-                [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
-                <ion-icon name="ellipse-sharp"></ion-icon>
-                <ion-list-header>Avisos</ion-list-header>
-              </ion-item>
-              <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-denuncias-negocio']"
-                [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
-                <ion-icon name="ellipse-sharp"></ion-icon>
-                <ion-list-header>Denuncias</ion-list-header>
-              </ion-item>
-            </ion-list>
-            <ion-item lines="none" [routerLink]="['/tabs/home/solicitudes']">
-              <ion-icon slot="start" ios="document-text-outline" md="document-text-outline"></ion-icon>
-              Solicitudes
+      <ion-list-header>Administracion</ion-list-header>
+      <ion-list id="labels-list">
+        <ion-menu-toggle auto-hide="false">
+          <ion-list lines="none">
+            <ion-item menuclose lines="none" [routerLink]="['/tabs/home/negocio']">
+              <ion-icon slot="start" ios="briefcase-outline" md="briefcase"></ion-icon>
+              Mis Negocios
             </ion-item>
-          </ion-menu-toggle>  
+          </ion-list>
+        </ion-menu-toggle>
+        <ion-item *ngIf="admin" lines="none" (click)="isRemainder === true ? isRemainder = false : isRemainder = true">
+          <ion-icon slot="start" ios="folder-open-outline" md="folder-open-sharp"></ion-icon>
+          Catalogos
+          <ion-icon slot="end" [name]="isRemainder? 'caret-down-outline' : 'caret-forward-outline'"></ion-icon>
+        </ion-item>
+        <ion-menu-toggle auto-hide="false">
+          <ion-list lines="none">
+            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-variable']"
+              [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
+              <ion-icon name="ellipse-sharp"></ion-icon>
+              <ion-list-header>Variables</ion-list-header>
+            </ion-item>
+            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-organizaciones']"
+              [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
+              <ion-icon name="ellipse-sharp"></ion-icon>
+              <ion-list-header>Organizacion</ion-list-header>
+            </ion-item>
+            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-rol']"
+              [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
+              <ion-icon name="ellipse-sharp"></ion-icon>
+              <ion-list-header>Rol</ion-list-header>
+            </ion-item>
+            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-tipo-venta']"
+              [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
+              <ion-icon name="ellipse-sharp"></ion-icon>
+              <ion-list-header>Tipo venta</ion-list-header>
+            </ion-item>
+            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-categoria']"
+              [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
+              <ion-icon name="ellipse-sharp"></ion-icon>
+              <ion-list-header>Categoria</ion-list-header>
+            </ion-item>
+            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder"
+              [routerLink]="['/tabs/home/cat-palabra-reservadas']" [queryParams]="{ type: 'birthday' }" menuClose
+              class="sub-menu">
+              <ion-icon name="ellipse-sharp"></ion-icon>
+              <ion-list-header>Palabras Restringidas</ion-list-header>
+            </ion-item>
+            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-avisos']"
+              [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
+              <ion-icon name="ellipse-sharp"></ion-icon>
+              <ion-list-header>Avisos</ion-list-header>
+            </ion-item>
+            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder"
+              [routerLink]="['/tabs/home/cat-denuncias-negocio']" [queryParams]="{ type: 'birthday' }" menuClose
+              class="sub-menu">
+              <ion-icon name="ellipse-sharp"></ion-icon>
+              <ion-list-header>Denuncias</ion-list-header>
+            </ion-item>
+          </ion-list>
+          <ion-item lines="none" [routerLink]="['/tabs/home/solicitudes']">
+            <ion-icon slot="start" ios="document-text-outline" md="document-text-outline"></ion-icon>
+            Solicitudes
+          </ion-item>
+        </ion-menu-toggle>
       </ion-list>
     </ion-content>
   </ion-menu>
