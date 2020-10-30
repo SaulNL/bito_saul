@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title>Código de Seguridad</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+<ion-card>
+  <ion-card-header>
+    <div class="ion-text-center">
+      <h2>CÓDIGO DE SEGURIDAD</h2>
+      <label>Para finalizar debemos verificar tu número celular <strong>{{usuario_sistema.ms_persona.telefono_celular}}</strong>. <br> "Solicitar Código" te llegará un código de seguridad por mensaje de texto (sms)</label>
+    </div>
+    <ion-list>
+      <ion-item *ngIf="!blnEnviarSms">
+        <ion-button size="small">
+          <ion-icon name="mail-outline"></ion-icon>
+          Solicitar Código Nuevamente
+        </ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Código</ion-label>
+        <ion-input id="codigo" (keyup)="setBlnInput()" (change)="setBlnInput()" type="text" name="codigo" type="password" maxlength='5' #correo="ngModel" [(ngModel)]="usuario_sistema.codigo" placeholder="00000" required></ion-input>
+      </ion-item>
+      <div class="ion-text-center ion-margin-top">
+        <label>Ingresa el código que se te envio por sms a tu celular</label>
+      </div>
+      <div class="ion-text-center ion-margin-top" *ngIf="blnEnviarSms">
+        <label>Volver a solicitar código en <strong id="temporizador"></strong></label>
+      </div>
+    </ion-list>
+    <ion-button  expand="block" type="submit" class="bg-rosa" [disabled]="!blnGuardar" (click)="crear_cuenta_admin()">Guardar</ion-button>
+    <ion-button  expand="block" type="button" class="medium" (click)="regresarRegistro()">Regresar</ion-button>
+  </ion-card-header>
+</ion-card>
+</ion-content>

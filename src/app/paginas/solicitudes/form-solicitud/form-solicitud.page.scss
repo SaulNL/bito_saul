@@ -6,8 +6,9 @@
     border-width: 2px;
     text-align: center;
     position: relative;
-    left: 7vw;
-    margin-top: 2vh;
+  //  left: 7vw;
+  //  margin-top: 2vh;
+  margin: auto;
   }
   .avatar-upload {
     text-align: center;
@@ -19,7 +20,7 @@
     position: absolute;
     right: -32px;
     z-index: 1;
-    top: -80px;
+    top: -118px;
   }
   .avatar-upload > .avatar-edit > input {
     display: none;
@@ -37,3 +38,11 @@
     font-weight: normal;
     transition: all 0.2s ease-in-out;
   }
+  .image {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}

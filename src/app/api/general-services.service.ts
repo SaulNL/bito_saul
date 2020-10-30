@@ -61,4 +61,17 @@ export class GeneralServicesService {
       return data;
     }));
   }
+  
+  /**
+   * Servicio para obtener el tiempo de espera por sms
+   */
+  public obtenerTiempoTemporizador(): Observable<any> {
+    return this._http.post(
+      `${this.url}api/catalogo/tiempoTemporizador`,
+      {},
+      {headers: AppSettings.getHeaders()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
 }
