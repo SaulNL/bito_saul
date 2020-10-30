@@ -1,5 +1,5 @@
 <ion-header translucent>
-  <ion-toolbar>
+  <ion-toolbar class="tolbar">
     <ion-title>Información</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismiss()">Close</ion-button>
@@ -7,33 +7,34 @@
   </ion-toolbar>
 </ion-header>
 <ion-content fullscreen >
-  <div style="display: flex; justify-content: center; align-items: center;">
-    <h2>Quien vio tu publicación</h2>
-  </div>
-  <div *ngIf="lstQuienVioPublicacion.length == 0 && btnLoaderModal">
-    <div class="alert alert-warning alert-dismissible fade show" role="alert" style="display: flex; justify-content: center; align-items: center; color: red;">
-      <span *ngIf="lstQuienVioPublicacionActiva"><strong>Lo sentimos!</strong> Aún no ven tu publicación.</span>
-      <span *ngIf="!lstQuienVioPublicacionActiva"><strong>Lo sentimos!</strong> Tú publicación no fue vista.</span>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  </div>
-  <div *ngIf="btnLoaderModal">
-    <ion-list>
-      <ion-item *ngFor="let quien of lstQuienVioPublicacion; index as index">
-        <ion-label class="ion-text-wrap">
-          <p><strong>No.</strong> {{ index }}</p>
-          <p><strong>Nombre: </strong> {{ quien.nombre }}</p>
-          <p><strong>Última ubicación: </strong> {{(quien.ubicacion == null)?'Dato no proporcionado':quien.ubicacion[0].localidad + '. ' +quien.ubicacion[0].municipio}}</p>
-          <p><strong>Edad: </strong> {{(quien.edad == 0)?'Dato no proporcionado':quien.edad}}</p>
-          <p><strong>Visto: </strong> {{quien.cuantas_veces}}</p>
-          <p><strong>Última vista: </strong> {{quien.ultima_vista}}</p>
-        </ion-label>       
-      </ion-item>
-    </ion-list>
-    <div style="display:flex; justify-content: center;" *ngIf="numeroVisto !== undefined">
-      <p><strong>Visto: </strong> {{numeroVisto}} <strong>veces</strong> </p>
-    </div>
-  </div>
+  <ion-card>
+    <ion-card-content>
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <h2>Quien vio tu publicación</h2>
+      </div>
+      <div *ngIf="numeroVisto === 0">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" style="display: flex; justify-content: center; align-items: center; color: red;">
+          <span *ngIf="lstQuienVioPublicacionActiva"><strong>Lo sentimos!</strong> Aún no ven tu publicación.</span>
+          <span *ngIf="!lstQuienVioPublicacionActiva"><strong>Lo sentimos!</strong> Tú publicación no fue vista.</span>
+        </div>
+      </div>
+      <div *ngIf="!btnLoaderModal">
+        <ion-list>
+          <ion-item *ngFor="let quien of lstQuienVioPublicacion; index as index">
+            <ion-label class="ion-text-wrap">
+              <p><strong>No.</strong> {{ index + 1 }}</p>
+              <p><strong>Nombre: </strong> {{ quien.nombre }}</p>
+              <p><strong>Última ubicación: </strong> {{(quien.ubicacion == null)?'Dato no proporcionado':quien.ubicacion[0].localidad + '. ' +quien.ubicacion[0].municipio}}</p>
+              <p><strong>Edad: </strong> {{(quien.edad == 0)?'Dato no proporcionado':quien.edad}}</p>
+              <p><strong>Visto: </strong> {{quien.cuantas_veces}}</p>
+              <p><strong>Última vista: </strong> {{quien.ultima_vista}}</p>
+            </ion-label>       
+          </ion-item>
+        </ion-list>
+        <div style="display:flex; justify-content: center;" *ngIf="numeroVisto !== undefined">
+          <p><strong>Visto: </strong> {{numeroVisto}} <strong>veces</strong> </p>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
