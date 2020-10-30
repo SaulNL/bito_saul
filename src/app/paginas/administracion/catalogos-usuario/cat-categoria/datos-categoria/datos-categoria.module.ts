@@ -7,9 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { DatosCategoriaPageRoutingModule } from './datos-categoria-routing.module';
 
 import { DatosCategoriaPage } from './datos-categoria.page';
-import { CatCategoriaPage } from '../cat-categoria.page';
-import {CatSubcategoriaPage} from '../../cat-subcategoria/cat-subcategoria.page';
-import { DatosSubcategoriaPage} from '../../cat-subcategoria/datos-subcategoria/datos-subcategoria.page';
 
 @NgModule({
   imports: [
@@ -18,6 +15,6 @@ import { DatosSubcategoriaPage} from '../../cat-subcategoria/datos-subcategoria/
     IonicModule,
     DatosCategoriaPageRoutingModule
   ],
-  declarations: [DatosCategoriaPage, CatCategoriaPage, CatSubcategoriaPage, DatosSubcategoriaPage]
+  declarations: [DatosCategoriaPage]
 })
 export class DatosCategoriaPageModule {}

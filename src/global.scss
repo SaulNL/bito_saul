@@ -53,13 +53,18 @@ ion-content{
 .bg-gris{
   --background: #f2f2f2;
 }
-
+.bgs-gris{
+  background: #f2f2f2;
+}
 .backgroundgris{
   --background: #f2f2f2;
 }
 
 .searchbar-left-aligned.sc-ion-searchbar-ios-h .searchbar-input.sc-ion-searchbar-ios{
   background: white;
+}
+.blanco{
+  --color:white;
 }
 .bg-rosa{
   --background: linear-gradient(90deg,#fa4f72,#a74eef);

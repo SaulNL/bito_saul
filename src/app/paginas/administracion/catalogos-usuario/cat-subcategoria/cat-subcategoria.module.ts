@@ -1,4 +1,3 @@
-import { DatosSubcategoriaPage } from './datos-subcategoria/datos-subcategoria.page';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,7 +8,6 @@ import { CatSubcategoriaPageRoutingModule } from './cat-subcategoria-routing.mod
 
 import { CatSubcategoriaPage } from './cat-subcategoria.page';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -17,6 +15,6 @@ import { CatSubcategoriaPage } from './cat-subcategoria.page';
     IonicModule,
     CatSubcategoriaPageRoutingModule
   ],
-  declarations: [CatSubcategoriaPage, DatosSubcategoriaPage ]
+  declarations: [CatSubcategoriaPage]
 })
 export class CatSubcategoriaPageModule {}

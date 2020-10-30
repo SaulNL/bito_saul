@@ -3,6 +3,7 @@ import { AdministracionService } from '../../../../api/administracion-service.se
 import { FiltroCatCategoriasModel } from '../../../../Modelos/catalogos/FiltroCatCategoriasModel';
 import { LoadingController } from '@ionic/angular';
 import { ToadNotificacionService } from './../../../../api/toad-notificacion.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cat-categoria',
@@ -22,6 +23,8 @@ export class CatCategoriaPage implements OnInit {
     private servicioUsuarios: AdministracionService,
     public loadingController: LoadingController,
     private notificaciones: ToadNotificacionService,
+    private router: Router,
+    private active: ActivatedRoute
   ) {
     this.blnActivaDatosCategoria = true;
     this.lstCatCategoria = [];
@@ -31,6 +34,13 @@ export class CatCategoriaPage implements OnInit {
 
   ngOnInit() {
     this.getCategoria();
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          this.getCategoria();
+        }
+      }
+    });
   }
 
   async presentLoading() {
@@ -73,9 +83,11 @@ export class CatCategoriaPage implements OnInit {
     }
   }
   getCategoria() {
+    
     this.servicioUsuarios.listarCategoria().subscribe(
       response => {
         this.lstCatCategoria = response.data;
+        console.log(this.lstCatCategoria);
       },
       error => {
         this.notificaciones.error(error);
@@ -84,7 +96,8 @@ export class CatCategoriaPage implements OnInit {
   }
   datosCategoria(categoria: FiltroCatCategoriasModel) {
     this.selectTO = JSON.parse(JSON.stringify(categoria));
-    this.blnActivaDatosCategoria = false;
+    let navigationExtras = JSON.stringify(this.selectTO);
+    this.router.navigate(['/tabs/home/cat-categoria/datos-categoria'], { queryParams: {special: navigationExtras}  });
   }
   abrirFiltro() {
     if (this.blnActivaFitro) {
@@ -101,6 +114,7 @@ export class CatCategoriaPage implements OnInit {
   }
   agregarCategoria() {
     this.selectTO = new FiltroCatCategoriasModel();
-    this.blnActivaDatosCategoria = false;
+    let navigationExtras = JSON.stringify(this.selectTO);
+    this.router.navigate(['/tabs/home/cat-categoria/datos-categoria'], { queryParams: {special: navigationExtras}  });
   }
 }

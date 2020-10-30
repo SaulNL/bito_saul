@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title>Datos de domicilio</ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" (click)="presentActionSheet()" class="blanco">
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-button (click)="regresar()" class="blanco">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label position="floating">Calle <span>*</span></ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Número Exterior <span>*</span></ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Número Interior <span>*</span></ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Estado <span>*</span></ion-label>
+        <ion-select interface="action-sheet">
+          <ion-select-option value="item1">item1</ion-select-option>
+          <ion-select-option value="item2">item2</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Municipio <span>*</span></ion-label>
+        <ion-select interface="action-sheet">
+          <ion-select-option value="item1">item1</ion-select-option>
+          <ion-select-option value="item2">item2</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Localidad <span>*</span></ion-label>
+        <ion-select interface="action-sheet">
+          <ion-select-option value="item1">item1</ion-select-option>
+          <ion-select-option value="item2">item2</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Colonia <span>*</span></ion-label>
+        <ion-select interface="action-sheet">
+          <ion-select-option value="item1">item1</ion-select-option>
+          <ion-select-option value="item2">item2</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label >Los campos con * son obligatorios</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+  <ion-button *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>
+    <ion-button *ngIf="valido" type="submit" class="bg-rosa">Actualizar</ion-button>
+</ion-content>
+
+
+

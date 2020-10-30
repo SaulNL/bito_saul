@@ -63,6 +63,10 @@ const routes: Routes = [
       {
         path: 'compras',
         loadChildren: () => import('../../pedidos/pedidos-dialog/pedidos-dialog.module').then(m => m.PedidosDialogPageModule)
+      },
+      {
+        path: 'negocio',
+        loadChildren: () => import('./../../../paginas/negocio/negocio.module').then( m => m.NegocioPageModule)
       }
 
     ]

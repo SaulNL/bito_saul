@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title>
+      <span *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined" class="">Agregar </span>
+      <span *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" class="">Modificar </span>
+      Negocio
+    </ion-title>
+    <ion-buttons *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" slot="end">
+      <ion-button (click)="presentActionSheet()" class="blanco">
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-button (click)="regresar()" class="blanco">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+<ion-grid *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined">
+  <ion-row>
+    <ion-col>
+    </ion-col>
+    <ion-col>
+      <ion-item lines="none" class="bg-gris">
+        <ion-avatar>
+          <img src="{{ negocioTO.url_logo }}">
+        </ion-avatar>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+  <ion-card>
+    <ion-item lines="none" (click)="inforNegocio(negocioTO)">
+      <ion-label >Información del negocio</ion-label>
+      <ion-icon slot="end" name="checkmark-done-circle"></ion-icon>
+      <ion-icon slot="end" name="caret-forward-outline"></ion-icon>
+    </ion-item>
+  </ion-card>
+  <ion-card>
+    <ion-item (click)="datosContacto(negocioTO)" lines="none">
+      <ion-label >Datos de contacto</ion-label>
+      <ion-icon slot="end" name="ellipse-outline"></ion-icon>
+      <ion-icon slot="end" name="caret-forward-outline"></ion-icon>
+    </ion-item>
+  </ion-card>
+  <ion-card>
+    <ion-item (click)="datosDomicilio(negocioTO)" lines="none">
+      <ion-label >Datos de domicilio</ion-label>
+      <ion-icon slot="end" name="ellipse-outline"></ion-icon>
+      <ion-icon slot="end" name="caret-forward-outline"></ion-icon>
+    </ion-item>
+  </ion-card>
+  <ion-card>
+    <ion-item (click)="productos(negocioTO)" lines="none">
+      <ion-label >Productos</ion-label>
+      <ion-icon slot="end" name="close-circle"></ion-icon>
+      <ion-icon slot="end" name="caret-forward-outline"></ion-icon>
+    </ion-item>
+  </ion-card>
+  <ion-card>
+    <ion-item (click)="servicios(negocioTO)" lines="none">
+      <ion-label >Servicios</ion-label>
+      <ion-icon slot="end" name="close-circle"></ion-icon>
+      <ion-icon slot="end" name="caret-forward-outline"></ion-icon>
+    </ion-item>
+  </ion-card>
+</ion-content>

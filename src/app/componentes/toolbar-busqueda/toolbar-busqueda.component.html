@@ -2,10 +2,10 @@
   <ion-toolbar class="tolbar">
     <ion-searchbar [placeholder]="placeHolder" (keyup.enter)="buscar()" [(ngModel)]="strBuscar" (ionClear)="limpiar()"></ion-searchbar>
     <ion-buttons slot="end">
-      <ion-button [routerLink]="[ '/tabs/home/ventas' ]">
+      <ion-button  class="blanco" [routerLink]="[ '/tabs/home/ventas' ]">
         <ion-icon name="receipt-outline"></ion-icon>
       </ion-button>
-      <ion-button [routerLink]="[ '/tabs/home/compras' ]">
+      <ion-button  class="blanco" [routerLink]="[ '/tabs/home/compras' ]">
         <ion-icon name="bag-outline"></ion-icon>
       </ion-button>
     </ion-buttons>

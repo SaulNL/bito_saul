@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title>Información del negocio</ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" (click)="presentActionSheet()" class="blanco">
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-button (click)="regresar()" class="blanco">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-list lines="none">
+      <ion-item>
+        <div class="form-group">
+          <div class="avatar-upload">
+              <div class="avatar-edit">
+                  <input type='file' hidden id="imageUpload" accept="image/*"  />
+                  <!--(change)="subirArchivo($event,3)"-->
+                  <label for="imageUpload">
+                    <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
+                  </label>
+              </div>
+              <div class="avatar-preview">
+                <!--
+                <div *ngIf="negocioTO.url_logo === null || negocioTO.url_logo === undefined" id="imageUpload" [ngStyle]="negocioTO.url_logo !== null ?
+                  {'background-image': 'url('+negocioTO.url_logo+')'} : ''">
+                  </div>
+                  <div *ngIf="negocioTO.url_logo !== null && negocioTO.url_logo !== undefined" [ngStyle]="{
+               'background-image': 'url('+negocioTO.url_logo.archivo_64+')'}">
+                  </div>
+                  -->  
+              </div>
+              <label for="imageUpload"></label>
+          </div>
+      </div>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nombre del negocio <span>*</span></ion-label>
+        <ion-input  name="nombre" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Tipo de Negocio <span>*</span></ion-label>
+        <ion-select >
+          <ion-select-option value="item1">item</ion-select-option>
+          <ion-select-option value="tem2">item 2</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Categoría <span>*</span></ion-label>
+        <ion-select>
+          <ion-select-option value="item1">item</ion-select-option>
+          <ion-select-option value="tem2">item 2</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Subcategoría <span>*</span></ion-label>
+        <ion-select >
+          <ion-select-option value="item1">item</ion-select-option>
+          <ion-select-option value="tem2">item 2</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Descripción del Negocio <span>*</span></ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+        <ion-item>
+          <ion-label position="floating">Afiliado a</ion-label>
+          <ion-select multiple >
+            <ion-select-option value="item1">item</ion-select-option>
+          <ion-select-option value="tem2">item 2</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label class="urlnego" position="floating">Url del negocio <span>*</span></ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating" >Ayudanos a que la busqueda de tu negocio sea mas efectiva</ion-label>
+          <ion-input placeholder="Use coma (,) para crear un tag"></ion-input>
+        </ion-item>
+        <ion-item class="bg-gris">
+          <ion-title class="cent">Horario de atención</ion-title>
+        </ion-item>
+        <ion-item class="bg-gris">
+          <ion-label>Hora inicio</ion-label>
+          <ion-datetime display-format="h:mm A" picker-format="h:mm A" value="1990-02-19T07:43Z"></ion-datetime>
+        </ion-item>
+        <ion-item class="bg-gris">
+          <ion-label>Hora cierre</ion-label>
+          <ion-datetime display-format="h:mm A" picker-format="h:mm A" value="1990-02-19T07:43Z"></ion-datetime>
+        </ion-item>
+        <ion-item class="bg-gris">
+          <ion-label>Días de la semana</ion-label>
+          <ion-select interface="action-sheet">
+            <ion-select-option value="lunes">Lunes</ion-select-option>
+            <ion-select-option value="martes">Martes</ion-select-option>
+            <ion-select-option value="miercoles">Miercoles</ion-select-option>
+            <ion-select-option value="jueves">Jueves</ion-select-option>
+            <ion-select-option value="viernes">Viernes</ion-select-option>
+            <ion-select-option value="sabado">Sabado</ion-select-option>
+            <ion-select-option value="domingo">Domingo</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item class="bg-gris">
+          <ion-button type="submit" class="bg-rosa">Agregar</ion-button>   
+        </ion-item>
+        <ion-item class="bg-gris">
+          <ion-label>Día </ion-label>
+          <ion-label>Horarios</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Consumo en sitio <span>*</span></ion-label>
+          <ion-checkbox color="primary" checked slot="end"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label >Entregas en sitio <span>*</span></ion-label>
+          <ion-checkbox color="primary" checked slot="end"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label >Entregas a Domicilio <span>*</span> </ion-label>
+          <ion-checkbox color="primary" checked slot="end"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label class="cent" >Los campos con * son obligatorios</ion-label>
+        </ion-item>
+    </ion-list>
+  </ion-card>
+  <ion-button *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>
+    <ion-button *ngIf="valido" type="submit" class="bg-rosa">Actualizar</ion-button>
+</ion-content>
