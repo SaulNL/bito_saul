@@ -1,8 +1,8 @@
 <ion-header >
   <ion-toolbar class="tolbar">
     <ion-searchbar [placeholder]="placeHolder" (keyup.enter)="buscar()" [(ngModel)]="strBuscar" (ionClear)="limpiar()"></ion-searchbar>
-    <ion-buttons slot="end">
-      <ion-button  class="blanco" [routerLink]="[ '/tabs/home/ventas' ]">
+    <ion-buttons *ngIf="user.nombre" slot="end">
+      <ion-button *ngIf="permisos.includes('ver_negocio')" class="blanco" [routerLink]="[ '/tabs/home/ventas' ]">
         <ion-icon name="receipt-outline"></ion-icon>
       </ion-button>
       <ion-button  class="blanco" [routerLink]="[ '/tabs/home/compras' ]">
