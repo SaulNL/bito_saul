@@ -42,7 +42,6 @@ export class MisNegociosPage implements OnInit {
           icon: "close",
           role: "cancel",
           handler: () => {
-            this.regresar();
           },
         },
       ],

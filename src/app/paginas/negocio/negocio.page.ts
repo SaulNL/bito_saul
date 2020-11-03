@@ -3,6 +3,8 @@ import { ActionSheetController, AlertController } from "@ionic/angular";
 import { Router, ActivatedRoute } from "@angular/router";
 import { NegocioModel } from "./../../Modelos/NegocioModel";
 import { NegocioService } from "./../../api/negocio.service";
+import { ModalController } from "@ionic/angular";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 
 @Component({
   selector: "app-negocio",
@@ -21,7 +23,9 @@ export class NegocioPage implements OnInit {
     private servicioNegocios: NegocioService,
     private actionSheetController: ActionSheetController,
     private router: Router,
-    private active: ActivatedRoute
+    private active: ActivatedRoute,
+    private modal: ModalController,
+    private notifi: ToadNotificacionService
   ) {
     this.listaNegocios = [];
     this.usuario = JSON.parse(localStorage.getItem("u_data"));
@@ -88,6 +92,23 @@ export class NegocioPage implements OnInit {
       this.loader = false;
     }
   }
+  viewQr(negocio: NegocioModel){
+    this.selectTO = JSON.parse(JSON.stringify(negocio));
+    if (this.selectTO.url_negocio == null || this.selectTO.url_negocio == undefined){
+  this.notifi.error("Url de negocio no configurada");
+    } else {
+      let navigationExtras = JSON.stringify(this.selectTO);
+      this.router.navigate(["/tabs/home/negocio/view-qr"], {
+        queryParams: { special: navigationExtras },
+      });
+    }
+  }
+
+  downQr(negocio: NegocioModel){
+  this.selectTO = JSON.parse(JSON.stringify(negocio));
+      console.log(this.selectTO.url_negocio);
+  }
+  
   datosNegocio(negocio: NegocioModel) {
     this.selectTO = JSON.parse(JSON.stringify(negocio));
     let navigationExtras = JSON.stringify(this.selectTO);
