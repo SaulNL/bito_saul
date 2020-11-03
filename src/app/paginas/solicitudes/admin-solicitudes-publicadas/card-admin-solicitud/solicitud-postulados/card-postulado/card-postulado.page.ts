@@ -50,4 +50,7 @@ export class CardPostuladoPage implements OnInit {
       }
     );
   }
+  cerrar() {
+    this.router.navigate(['/tabs/home/solicitudes']);
+  }
 }

@@ -24,4 +24,13 @@ export class LoginService {
       return data;
     }));
   }
+  validateLogin(data_login): Observable<any> {
+    return this.http.post(
+      `${this.url}api/usr/login`,
+      data_login,
+      {headers: AppSettings.getHeaders()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
 }

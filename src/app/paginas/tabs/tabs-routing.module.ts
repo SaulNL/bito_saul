@@ -52,6 +52,10 @@ const routes: Routes = [
         loadChildren: () => import('../datos-complementarios/datos-complementarios.module').then( m => m.DatosComplementariosPageModule)
       },
       {
+        path: 'registro-persona',
+        loadChildren: () => import('../busqueda/registro-persona/registro-persona.module').then( m => m.RegistroPersonaPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/inicio',
         pathMatch: 'full'

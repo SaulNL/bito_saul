@@ -1,30 +1,31 @@
  <!--lista Cabezera-->
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar  class="tolbar">
     <ion-buttons slot="start">
       <ion-button>
       <ion-menu-button></ion-menu-button>
     </ion-button>
     </ion-buttons>
     <ion-title>Mis Solicitudes</ion-title>
-    <ion-buttons slot="end" (click)="agregar()">
-      <!--<ion-icon  name="ellipsis-vertical-outline"></ion-icon>-->
-      <ion-icon name="add-outline"></ion-icon>
+    <ion-buttons slot="end">
+      <ion-button (click)="agregar()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
  <!--lista Solicitudes-->
  <ion-content>
   <ion-card>
+    <div class="ion-text-center ion-margin-top">
+      <strong>Solicitudes Creadas</strong>
+    </div>
     <div *ngIf="numeroSolicitudes == 0">
       <ion-chip color="warning">
         <ion-label><strong>Lo sentimos!</strong> Aún no tiene ninguna solicitud creada.</ion-label>
       </ion-chip>
     </div>
-    <ion-card-header>
-      <div class="ion-text-center">
-        <strong>Solicitudes Creadas</strong>
-      </div>
+    <ion-card-header *ngIf="numeroSolicitudes > 0">
      <ion-list *ngFor="let solicitud of lstSolicitudes" >
       <ion-item (click)="seleccionarSolicitud(solicitud)">
         <img [src]="solicitud.url_imagen" style="border-radius: 100%;width: 35px;height: 35px;margin-right: 5px">
@@ -37,15 +38,15 @@
   </ion-card-header>
   </ion-card>
   <ion-card>
+    <div class="ion-text-center ion-margin-top">
+      <strong>Solicitudes Publicadas </strong>
+    </div>
     <div *ngIf="numeroPublicadas == 0">
       <ion-chip color="warning">
         <ion-label><strong>Lo sentimos!</strong> Aún no tiene ninguna solicitud publicada.</ion-label>
       </ion-chip>
     </div>
     <ion-card-header *ngIf="numeroPublicadas > 0">
-        <div class="ion-text-center">
-          <strong>Solicitudes Publicadas </strong>
-        </div>
     <ion-searchbar (ionInput)="btnBuscar($event)" [(ngModel)]="filtro" type="text"></ion-searchbar>
     <br>
     <ion-list *ngFor="let soliPubli of lstSolicitudesPublicadas; index as is">

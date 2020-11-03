@@ -27,11 +27,11 @@ export class SolicitudPostuladosPage implements OnInit {
       }
     });
     this.lstPostulados = new Array<PostuladosModel>();
-    this.obtenerPostulados(this.solicitudPostulado.id_solicitud);
+    this.obtenerPostulados();
   }
 
-  obtenerPostulados(idSolicitud) {
-    this.solicitudesService.obtenerPostulados(idSolicitud).subscribe(
+  obtenerPostulados() {
+    this.solicitudesService.obtenerPostulados(this.solicitudPostulado.id_solicitud).subscribe(
       response => {
         this.lstPostulados = response.data;
         this.numeroPostulados = this.lstPostulados.length;
@@ -41,8 +41,11 @@ export class SolicitudPostuladosPage implements OnInit {
     );
   }
  selePostulado(solicitud: any){
-  this.solicitudPostulado = JSON.parse(JSON.stringify(solicitud));
-  let navigationExtras = JSON.stringify(this.solicitudPostulado);
+  let navigationExtras = JSON.stringify(solicitud);
   this.router.navigate(['/tabs/home/solicitudes/admin-solicitudes-publicadas/card-admin-solicitud/solicitud-postulados/card-postulado'] , { queryParams: { special: navigationExtras } });
  }
+ regresar() {
+  let navigationExtras = JSON.stringify(this.solicitudPostulado);
+  this.router.navigate(['/tabs/home/solicitudes/admin-solicitudes-publicadas/card-admin-solicitud'], { queryParams: { special: navigationExtras } });
+}
 }

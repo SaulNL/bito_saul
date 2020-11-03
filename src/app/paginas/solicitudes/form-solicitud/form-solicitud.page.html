@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="tabs/home/solicitudes"></ion-back-button>
+  <ion-toolbar class="tolbar">
+    <ion-buttons slot="start" text="">
+      <ion-back-button defaultHref="tabs/home/solicitudes" text=''></ion-back-button>
     </ion-buttons>
     <ion-title>
       <span *ngIf="actualTO.id_persona_solicitud === null || actualTO.id_persona_solicitud === undefined">Agregar</span>
@@ -104,16 +104,14 @@
           </div>
         </div>
       </ion-item>
-      <ion-item *ngIf="!blnImgCuadrada">
-        <div style="margin-left: 0px; position: relative; left: 7vw;">
-          <div class="col-12" align="center">
+      <div *ngIf="!blnImgCuadrada">
+        <div style="display: flex; justify-content: center; align-items: center;">
             <div class="contenido">
               <img style="width: 200px;" class="image" *ngIf="actualTO.imagen !== undefined" src="{{actualTO.imagen.archivo_64}}" alt="Falla al cargar imagen" width="200" height="200">
               <img style="width: 200px;" class="image" *ngIf="actualTO.url_imagen !== undefined && actualTO.imagen === undefined" src="{{actualTO.url_imagen}}" alt="Falla al cargar imagen" width="200" height="200">
-            </div>
           </div>
         </div>
-      </ion-item>
+      </div>
       <div  class="avatar-upload">
         <div class="avatar-edit">
         <input #inputTarjeta id="cuadrado" type="file"  accept="image/*" name="img_promo" (change)="subir_imagen_cuadrada($event)"  required>
