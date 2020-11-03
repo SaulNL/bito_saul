@@ -62,7 +62,7 @@ export class MisProductosServiciosPage implements OnInit {
     });
   }
 
-  datosProductosServicios( tre){
+  datosProductosServicios(tre){
     this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
     
    let all = {

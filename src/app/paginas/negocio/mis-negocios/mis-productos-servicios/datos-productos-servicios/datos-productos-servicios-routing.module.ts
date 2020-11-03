@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: DatosProductosServiciosPage
+  },
+  {
+    path: 'datos-pys',
+    loadChildren: () => import('./datos-pys/datos-pys.module').then( m => m.DatosPysPageModule)
   }
 ];
 

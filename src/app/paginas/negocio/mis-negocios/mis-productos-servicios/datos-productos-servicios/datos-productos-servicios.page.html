@@ -8,11 +8,6 @@
         servicios
       </span>
     </ion-title>
-    <ion-buttons slot="end" >
-      <ion-button *ngIf="negocioTO.id_negocio !== null || negocioTO.id_negocio !== undefined" class="blanco">
-        <ion-icon name="add-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
     <ion-buttons slot="start">
       <ion-button (click)="regresar()" class="blanco">
         <ion-icon name="chevron-back-outline"></ion-icon>
@@ -27,19 +22,22 @@
       <ion-title class="cent"> Carta de <span *ngIf="iden== 1">productos</span> <span *ngIf="iden== 2">servicios</span>
         </ion-title>
     </ion-item>
-    <ion-list lines="none">
-      <ion-item>
-        <ion-label position="floating">Nombre de la Categoria</ion-label>
-        <ion-input></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Activo</ion-label>
-        <ion-toggle slot="start" name="blueberry" checked></ion-toggle>
-      </ion-item>
-    </ion-list>
+<ion-card-header>
+  <ion-list lines="none">
+    <ion-item>
+      <ion-label position="floating">Nombre de la Categoria</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Activo</ion-label>
+      <ion-toggle slot="start" name="blueberry" checked></ion-toggle>
+    </ion-item>
+  </ion-list>
+  <ion-button expand="block" type="submit" *ngIf="syp == 1" class="bg-rosa"> Guardar </ion-button>
+  <ion-button expand="block" type="submit" *ngIf="syp == 2" class="bg-rosa" >Actualizar</ion-button>
+</ion-card-header>
   </ion-card>
-  <ion-button  type="submit" *ngIf="syp == 1" class="bg-rosa"> Guardar </ion-button>
-  <ion-button  type="submit" *ngIf="syp == 2" class="bg-rosa" >Actualizar</ion-button>
+  
 
   <ion-card>
     <ion-item lines="none">
@@ -50,8 +48,10 @@
         </ion-title>
     </ion-item>
     <ion-card-header>
-      <ion-item lines="full">
-        
+      <ion-button (click)="datosProductosServicios(2)" expand="block" type="submit" class="bg-rosa"> Agregar </ion-button>
+    </ion-card-header>
+    <ion-card-header>
+      <ion-item (click)="datosProductosServicios(3)" lines="full">
         <ion-label>
           <h3></h3>
           <h2>Producto de software modalidad de servicio</h2>
@@ -61,4 +61,5 @@
       </ion-item>
     </ion-card-header>
   </ion-card>
+  
 </ion-content>
