@@ -1,0 +1,149 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home/promociones" icon="arrow-back-outline" text="">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Agregar promocion</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #formVariable="ngForm" (ngSubmit)="guardar(formVariable)">
+    <ion-card>
+      <ion-card-content>
+
+        <ion-item>
+          <ion-label>Promocion: </ion-label>
+          <ion-input #promocion="ngModel" required type="text" name="promocion" [(ngModel)]="seleccionTo.promocion"></ion-input>
+        </ion-item>
+        <div *ngIf="promocion.touched && promocion.invalid" style="color: red; display: flex; justify-content: center; align-items: center;">
+          El nombre de la promoción es requerido
+        </div>
+
+        <div>
+          <app-input-tags [tags]="this.seleccionTo.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
+        </div>
+
+        <ion-item>
+          <ion-label position="floating">Términos y condiciones: </ion-label>
+          <ion-input #terminos = "ngModel" required type="text" name="terminos" [(ngModel)]="seleccionTo.terminos"></ion-input>
+        </ion-item>
+        <div *ngIf="terminos.touched && terminos.invalid" style="color: red; display: flex; justify-content: center; align-items: center;">
+          los términos son necesarios
+        </div>
+
+        <ion-item *ngIf="false">
+          <ion-label>
+            Relacione su negocio:
+          </ion-label>
+          <ion-select [value]="seleccionTo.id_negocio" name="negocio" [(ngModel)]="seleccionTo.id_negocio">
+            <div *ngFor="let row of lstNegocios" (change)="decripcionSelect()">
+              <ion-select-option [value]="row.id_negocio">{{row.nombre_comercial}}</ion-select-option>
+            </div>
+          </ion-select>
+        </ion-item>
+
+        <!--? input de la imagen -->
+        <div  style="margin-top: 10px;">
+          <div style="display: flex; justify-content: center;">
+            <label>Imagen para la tarjeta de promoción:</label>
+          </div>
+        </div>
+        <div *ngIf="btnCambiarImagen">
+          <div>
+            <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
+              <p style="color: gray; text-align: justify;">Puedes subir tu imagen de tu promoción o crearla con nuestro editor. Recuerda que las medidas son 200 x 200 pixeles.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div>
+            <label *ngIf="blnImgCuadrada" style="display: flex; justify-content: center; align-items: center;">
+              <div class="punteado" style="display: flex; justify-content: center; align-items: center;">
+                <div>
+                  <label for="cuadrado">
+                    <ion-icon name="image-outline"></ion-icon>
+                  </label>
+                </div>
+              </div>
+            </label>
+            <div *ngIf="!blnImgCuadrada">
+              <div style="display: flex; justify-content: center; align-items: center;">
+                <div class="contenido">
+                  <img style="width: 200px;" class="image" *ngIf="seleccionTo.imagen !== '' && seleccionTo.imagen !== undefined" src="{{seleccionTo.imagen.archivo_64}}" alt="Falla al cargar imagen" width="200" height="200">
+                            <img style="width: 200px;" class="image" *ngIf="seleccionTo.url_imagen !== '' && seleccionTo.imagen === undefined" src="{{seleccionTo.url_imagen}}" alt="Falla al cargar imagen" width="200" height="200">
+                </div>
+              </div>
+            </div>
+          </div>
+          <input #inputTarjeta id="cuadrado" type="file" (change)="subir_imagen_cuadrada($event)"  accept="image/*" name="img_promo" required>
+        </div>
+        <div *ngIf="!blnImgCuadrada">
+          <div style="display: flex; justify-content: center; align-items: center;">
+            <ion-button color="warning" for="rectangulo">
+              <label for="cuadrado" style="display: flex; justify-content: center; align-items: center;"> Cambiar imagen<ion-icon name="image-outline" style="margin-left: 10px;"></ion-icon></label>
+            </ion-button>
+          </div>
+        </div>
+        <!--? input de la imagen -->
+
+        <!--? Input banner -->
+        <div style="margin-top: 10px;">
+          <div style="display: flex; justify-content: center;">
+            <label>
+              Imagen banner de la promoción
+            </label>
+          </div>
+        </div>
+        <div *ngIf="btnCambiarImagen">
+          <div>
+            <div>
+              <p style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
+                Aquí tu imagen más grande de tu promoción, si quieres puedes crearla con nuestro editor. Recuerda que las medidas son 1500 x 300 pixeles.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div>
+            <label *ngIf="blnImgRectangulo" style="display: flex; justify-content: center;align-items: center;">
+              <div class="punteado2" style="display: flex; justify-content: center;align-items: center; width: 100%;">
+                <div>
+                  <label for="rectangulo">
+                    <ion-icon name="image-outline"></ion-icon>
+                  </label>
+                </div>
+              </div>
+            </label>
+            <div *ngIf="!blnImgRectangulo">
+              <div>
+                <div class="contenido"  style="display: flex; justify-content: center;align-items: center;">
+                   <img style="height: 300px;" class="image" *ngIf="seleccionTo.imagenBanner !== '' && seleccionTo.imagenBanner !== undefined" src="{{seleccionTo.imagenBanner.archivo_64}}" alt="Falla al cargar imagen" width="200">
+                           <img style="height: 300px;"class="image" *ngIf="seleccionTo.url_imagen_banner !== '' && seleccionTo.imagenBanner === undefined" src="{{seleccionTo.url_imagen_banner}}" alt="Falla al cargar imagen" width="200">
+                </div>
+              </div>
+            </div>
+            <input #inputBanner id="rectangulo" type="file" type="file" (change)="subir_imagen_rectangulo($event)" accept="image/*" name="img_promo" required>
+          </div>
+        </div>
+        <div *ngIf="!blnImgRectangulo"  style="display: flex; justify-content: center;align-items: center;">
+          <div>
+            <ion-button color="warning" for="rectangulo">
+              <label for="rectangulo" style="display: flex; justify-content: center; align-items: center;"> Cambiar imagen<ion-icon name="image-outline" style="margin-left: 10px;"></ion-icon></label>
+            </ion-button>
+          </div>
+        </div>
+        <!--? Input banner -->
+        <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
+          <div style="width: 50%;">
+            <ion-button class="bg-rosa" type="submit" expand="full">Guardar</ion-button>
+          </div>
+          <div style="width: 50%;">
+            <ion-button color="medium" expand="full" (click)="cancelarEdicion()">Cancelar</ion-button>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </form>
+</ion-content>

@@ -8,7 +8,7 @@ import { ModalController } from '@ionic/angular';
 import { ModalPublicarComponent } from 'src/app/components/modal-publicar/modal-publicar.component';
 import { QuienVioModel } from '../../Modelos/QuienVioModel';
 import { ModalInfoPromoComponent } from '../../components/modal-info-promo/modal-info-promo.component';
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-mispromociones',
@@ -52,8 +52,11 @@ export class MispromocionesPage implements OnInit {
               public _notificacionService: ToadNotificacionService,
               private  alertController: AlertController,
               public modalController: ModalController,
-              private _router: Router
-            ) { }
+              private _router: Router,
+              private active: ActivatedRoute
+            ) { 
+
+            }
 
   ngOnInit() {
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
@@ -67,14 +70,19 @@ export class MispromocionesPage implements OnInit {
     this.promocion = new PromocionesModel();
     this.blnActivarFormularioEdicion = false;
     this.buscar();
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          this.buscar();
+        }
+      }
+    });
   }
 
   agregar() {
     this.seleccionTO = new PromocionesModel();
-    this.agregarPromocion = true;
-    this.btnDetallePromocion = false;
-    this.seleccionaPromocion = true;
-    this.accionFormulario = 'Agregar promocion';
+    let navigationExtras = JSON.stringify(this.seleccionTO);
+    this._router.navigate(['/tabs/home/promociones/agregar-promocion'], { queryParams: {special: navigationExtras}});
   }
 
   buscar() {
@@ -135,12 +143,9 @@ export class MispromocionesPage implements OnInit {
   }
 
   public seleccionarPromocion(promocion: PromocionesModel){
-    this.agregarPromocion = true;
-    this.btnDetallePromocion = true;
-    this.seleccionaPromocion = false;
-    this.accionFormulario = 'Detalle';
     this.promocion = promocion;
-    this.btnBuscar();
+    let navigation = JSON.stringify(this.promocion);
+    this._router.navigate(['/tabs/home/promociones/publicar-promocion'], { queryParams: {especial: navigation}});
   }
 
   btnBuscar() {
@@ -280,7 +285,6 @@ export class MispromocionesPage implements OnInit {
   public abrirModalDetalle(id_promocion, estatus) {
     this.lstQuienVioPublicacionActiva = estatus;
     this.quienVioPublicacion(id_promocion);
-    this.infoPromocion();
   }
 
   quienVioPublicacion(id_promocion){
@@ -300,6 +304,7 @@ export class MispromocionesPage implements OnInit {
         response => {
           this.numeroVisto = response.data;
           this.btnLoaderModal = false;
+          this.infoPromocion();
         },
         error => {
         }
