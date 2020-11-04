@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-buttons slot="end" (click)="cerrarModal()">
+      <ion-button>
+          <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+  </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+<div class="ion-text-center">
+  <h3>DENUNCIAR A ESTE PROVEEDOR</h3>
+</div>
+    <ion-card-header>
+    <form>
+<ion-list>
+  <ion-item>
+    <ion-checkbox color="danger" slot="start" id="pregunta1"></ion-checkbox>
+    <div>
+      <label>El negocio no existe</label>
+    </div>
+  </ion-item>
+  <ion-item>
+    <ion-checkbox color="danger" slot="start" id="pregunta2"></ion-checkbox>
+    <div>
+      <label>Se hace pasar por alguien más</label>
+    </div>
+  </ion-item>
+  <ion-item>
+    <ion-checkbox color="danger" slot="start" id="pregunta3"></ion-checkbox>
+    <div>
+      <label>Perfil sin contenido</label>
+    </div>
+  </ion-item>
+  <ion-item>
+    <ion-checkbox color="danger" slot="start" id="pregunta4"></ion-checkbox>
+    <div>
+      <label>Su oferta es distinta a lo que anuncia</label>
+    </div>
+  </ion-item>
+  <ion-item>
+    <ion-checkbox color="danger" slot="start" id="pregunta5"></ion-checkbox>
+    <div>
+      <label>No respeta sus promociones</label>
+    </div>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Otro</ion-label>
+  <ion-textarea  id="pregunta6"></ion-textarea>
+  </ion-item>
+  <ion-grid>
+    <ion-row class="ion-align-items-center">
+      <ion-col size="12" class="ion-text-center">
+        <ion-button  expand="block" class="bg-rosa" (click)="guardarDenuncia()">
+          <label>Enviar denuncia</label>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-list>
+    </form>
+    </ion-card-header>
+  </ion-card>
+</ion-content>

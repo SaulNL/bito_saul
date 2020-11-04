@@ -4,6 +4,11 @@
             <ion-back-button text="" defaultHref="/"></ion-back-button>
         </ion-buttons>
         <ion-title>Información del negocio</ion-title>
+        <ion-buttons slot="end" (click)="presentActionSheet()" *ngIf="existeSesion">
+            <ion-button>
+            <ion-icon  name="ellipsis-vertical-outline"></ion-icon>
+          </ion-button>
+          </ion-buttons>
     </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding" *ngIf="loader" fullscreen>

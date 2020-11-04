@@ -425,12 +425,10 @@ export class AdministracionService {
     /*GUARDAR DENUNCIA PARA NEGOCIO */
   guardarDenunciaNegocio(denuncia: DenunciaModel): Observable<any> {
     const body = JSON.stringify(denuncia);
-    console.log(body);
     return this._http.post(
       this.url + 'api/servicios/denunciar/enviar', body,
       {headers: AppSettings.getHeadersToken()}
     ).pipe(map(res => {
-      console.log(res);
       return res;
     }));
   }

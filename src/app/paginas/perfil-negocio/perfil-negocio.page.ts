@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Map, tileLayer, marker, icon} from 'leaflet';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ToastController} from "@ionic/angular";
 import {NegocioService} from "../../api/negocio.service";
 import {Geolocation} from "@capacitor/core";
@@ -8,6 +8,11 @@ import {ToadNotificacionService} from "../../api/toad-notificacion.service";
 import { Location } from "@angular/common";
 import {UtilsCls} from "../../utils/UtilsCls";
 import {SideBarService} from "../../api/busqueda/side-bar-service";
+import {ActionSheetController} from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
+import { DenunciaNegocioPage } from './denuncia-negocio/denuncia-negocio.page';
+
+
 
 @Component({
     selector: 'app-perfil-negocio',
@@ -25,6 +30,7 @@ export class PerfilNegocioPage implements OnInit {
     public permisoUbicacionCancelado: boolean;
     public existeSesion: boolean;
 
+
     constructor(
         private route: ActivatedRoute,
         private toadController: ToastController,
@@ -33,6 +39,9 @@ export class PerfilNegocioPage implements OnInit {
         private location: Location,
         private util: UtilsCls,
         private sideBarService: SideBarService,
+        private actionSheetController: ActionSheetController,
+        private _router: Router,
+        public modalController: ModalController
     ) {
         this.seccion = 'ubicacion';
         this.loader = true;
@@ -64,7 +73,6 @@ export class PerfilNegocioPage implements OnInit {
             }
         );
     }
-
     obtenerInformacionNegocio() {
         this.loader = true;
         this.negocioService.obteneretalleNegocio(this.negocio).subscribe(
@@ -211,5 +219,43 @@ export class PerfilNegocioPage implements OnInit {
 
     abrirVentana(ruta) {
         window.open(ruta, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400");
+    }
+    async presentActionSheet() {
+        const actionSheet = await this.actionSheetController.create({
+            header: 'Negocio',
+            buttons: [
+                {
+                    text: 'Denunciar',
+                    icon: 'receipt-outline',
+                    handler: () => {
+                    this.abrirModalDenuncia();
+                    }
+                },
+                {
+                    text: 'Compartir',
+                    icon: 'share-social-outline',
+                    handler: () => {
+                     //   this._router.navigate(['/tabs/cambio-contrasenia']);
+                    }
+                },
+                {
+                    text: 'Cancelar',
+                    icon: 'close',
+                    role: 'cancel',
+                    handler: () => {
+                    }
+                }]
+
+        });
+        await actionSheet.present();
+    }
+    async abrirModalDenuncia() {
+        const modal = await this.modalController.create({
+            component: DenunciaNegocioPage,
+            componentProps: {
+                idNegocio: this.informacionNegocio.id_negocio
+            }
+        });
+        await modal.present();
     }
 }

@@ -61,4 +61,18 @@ export class GeneralServicesService {
       return data;
     }));
   }
+    /**
+   * Servicio para obtener la lista de de negocios por id's
+   */
+  public obtenerNegocios(ids: any): Observable<any> {
+    const body = JSON.stringify({id_negocios: ids});
+    return this._http.post(
+      `${this.url}api/servicio/lista/mapaNegocios`,
+      body,
+      {headers: AppSettings.getHeaders()}
+    ).pipe(map(data => {
+      return data;
+    }));
+
+  }
 }
