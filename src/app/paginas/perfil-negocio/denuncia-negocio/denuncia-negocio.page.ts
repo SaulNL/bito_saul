@@ -45,36 +45,43 @@ export class DenunciaNegocioPage implements OnInit {
       this.denunciaTO.preguntas = Array<PreguntaModel>();
       this.denunciaTO.id_persona = this.user.id_persona;
       this.denunciaTO.id_negocio = this.idNegocio;
-      this.denunciaTO.preguntas.push(new PreguntaModel(1, 'El negocio no existe', document.getElementById('pregunta1').checked));
-      this.denunciaTO.preguntas.push(new PreguntaModel(2, 'Se hace pasar por alguien más', document.getElementById('pregunta2').checked));
-      this.denunciaTO.preguntas.push(new PreguntaModel(3, 'Perfil sin contenido', document.getElementById('pregunta3').checked));
-      // tslint:disable-next-line: max-line-length
-      this.denunciaTO.preguntas.push(new PreguntaModel(4, 'Su oferta es distinta a lo que anuncia', document.getElementById('pregunta4').checked));
-      this.denunciaTO.preguntas.push(new PreguntaModel(5, 'No respeta sus promociones', document.getElementById('pregunta5').checked));
-      this.denunciaTO.preguntas.push(new PreguntaModel(6, 'comentario', document.getElementById('pregunta6').value));
-      if (document.getElementById('pregunta1').checked === true ||
-        document.getElementById('pregunta2').checked === true ||
-        document.getElementById('pregunta3').checked === true ||
-        document.getElementById('pregunta4').checked === true ||
-        document.getElementById('pregunta5').checked === true ||
-        document.getElementById('pregunta6').value !== '') {
-          this.presentLoading();
+      let pregunta1 = <HTMLInputElement>document.getElementById('pregunta1');
+      let pregunta2 = <HTMLInputElement>document.getElementById('pregunta2');
+      let pregunta3 = <HTMLInputElement>document.getElementById('pregunta3');
+      let pregunta4 = <HTMLInputElement>document.getElementById('pregunta4');
+      let pregunta5 = <HTMLInputElement>document.getElementById('pregunta5');
+      let pregunta6 =  <any>document.getElementById('pregunta6');
+
+      this.denunciaTO.preguntas.push(new PreguntaModel(1, 'El negocio no existe', pregunta1.checked));
+      this.denunciaTO.preguntas.push(new PreguntaModel(2, 'Se hace pasar por alguien más', pregunta2.checked));
+      this.denunciaTO.preguntas.push(new PreguntaModel(3, 'Perfil sin contenido', pregunta3.checked));
+      this.denunciaTO.preguntas.push(new PreguntaModel(4, 'Su oferta es distinta a lo que anuncia', pregunta4.checked));
+      this.denunciaTO.preguntas.push(new PreguntaModel(5, 'No respeta sus promociones', pregunta5.checked));
+      this.denunciaTO.preguntas.push(new PreguntaModel(6, 'comentario', pregunta6.value));
+      if (
+        pregunta1.checked === true ||
+        pregunta2.checked === true ||
+        pregunta3.checked === true ||
+        pregunta4.checked === true ||
+        pregunta5.checked === true ||
+        pregunta6.value !== '') {
+        this.presentLoading();
         this._serviceAdministracion.guardarDenunciaNegocio(this.denunciaTO).subscribe(
-       data => {
-         if (data.code === 200) {
-           this.loader.dismiss();
-           this.notificaciones.exito('se guardo correctamente la denuncia');
-           this.cerrarModal();
-         } else {
-           this.loader.dismiss();
-           this.notificaciones.error(data.message);
-         }
-       },
-       error => {
-         this.notificaciones.error(error);
-         this.loader.dismiss();
-       }
-     );
+          data => {
+            if (data.code === 200) {
+              this.loader.dismiss();
+              this.notificaciones.exito('se guardo correctamente la denuncia');
+              this.cerrarModal();
+            } else {
+              this.loader.dismiss();
+              this.notificaciones.error(data.message);
+            }
+          },
+          error => {
+            this.notificaciones.error(error);
+            this.loader.dismiss();
+          }
+        );
       } else {
         this.notificaciones.alerta('Para poder denunciar este negocio, necesitas seleccionar una pregunta ó realizar un comentario');
       }

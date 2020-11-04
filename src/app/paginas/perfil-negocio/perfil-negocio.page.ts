@@ -1,17 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {Map, tileLayer, marker, icon} from 'leaflet';
-import {ActivatedRoute, Router} from "@angular/router";
-import {ToastController} from "@ionic/angular";
-import {NegocioService} from "../../api/negocio.service";
-import {Geolocation} from "@capacitor/core";
-import {ToadNotificacionService} from "../../api/toad-notificacion.service";
+import { AppSettings } from './../../AppSettings';
+import { Component, OnInit } from '@angular/core';
+import { Map, tileLayer, marker, icon } from 'leaflet';
+import { ActivatedRoute, Router } from "@angular/router";
+import { ToastController } from "@ionic/angular";
+import { NegocioService } from "../../api/negocio.service";
+import { Geolocation } from "@capacitor/core";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { Location } from "@angular/common";
-import {UtilsCls} from "../../utils/UtilsCls";
-import {SideBarService} from "../../api/busqueda/side-bar-service";
-import {ActionSheetController} from '@ionic/angular';
+import { UtilsCls } from "../../utils/UtilsCls";
+import { SideBarService } from "../../api/busqueda/side-bar-service";
+import { ActionSheetController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { DenunciaNegocioPage } from './denuncia-negocio/denuncia-negocio.page';
-
+import { Plugins } from '@capacitor/core';
+const { Share } = Plugins;
 
 
 @Component({
@@ -29,7 +31,8 @@ export class PerfilNegocioPage implements OnInit {
     public miLng: any;
     public permisoUbicacionCancelado: boolean;
     public existeSesion: boolean;
-
+    url = `${AppSettings.URL_FRONT}`;
+    public url_negocio: string;
 
     constructor(
         private route: ActivatedRoute,
@@ -57,20 +60,20 @@ export class PerfilNegocioPage implements OnInit {
         });
         if (this.negocio !== undefined && this.negocio !== null && this.negocio !== '') {
             this.obtenerInformacionNegocio();
-        }else {
+        } else {
             this.notificacionService.error('Ocurrio un error con este negocio');
             this.location.back();
         }
-        this.getCurrentPosition();
+        this.getCurrentPosition();     
     }
 
     async getCurrentPosition() {
         const coordinates = await Geolocation.getCurrentPosition().then(res => {
             this.miLat = res.coords.latitude;
-            this.miLng =  res.coords.longitude;
+            this.miLng = res.coords.longitude;
         }).catch(error => {
-                this.permisoUbicacionCancelado = true;
-            }
+            this.permisoUbicacionCancelado = true;
+        }
         );
     }
     obtenerInformacionNegocio() {
@@ -174,7 +177,7 @@ export class PerfilNegocioPage implements OnInit {
         const lat = this.informacionNegocio.det_domicilio.latitud;
         const lng = this.informacionNegocio.det_domicilio.longitud;
         this.map = new Map("mapId").setView([lat, lng], 16);
-        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: ''}).addTo(this.map);
+        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
 
         var myIcon = icon({
             iconUrl: 'https://ecoevents.blob.core.windows.net/comprandoando/marker.png',
@@ -183,7 +186,7 @@ export class PerfilNegocioPage implements OnInit {
         });
 
 
-        marker([lat, lng], {icon: myIcon}).addTo(this.map)
+        marker([lat, lng], { icon: myIcon }).addTo(this.map)
     }
 
 
@@ -228,14 +231,15 @@ export class PerfilNegocioPage implements OnInit {
                     text: 'Denunciar',
                     icon: 'receipt-outline',
                     handler: () => {
-                    this.abrirModalDenuncia();
+                        this.abrirModalDenuncia();
                     }
                 },
                 {
                     text: 'Compartir',
                     icon: 'share-social-outline',
                     handler: () => {
-                     //   this._router.navigate(['/tabs/cambio-contrasenia']);
+                        //   this._router.navigate(['/tabs/cambio-contrasenia']);
+                        this.compartir();
                     }
                 },
                 {
@@ -257,5 +261,16 @@ export class PerfilNegocioPage implements OnInit {
             }
         });
         await modal.present();
+    }
+    async compartir() {
+        this.url_negocio = this.url + this.informacionNegocio.url_negocio;
+        let shareRet = await Share.share({
+            title: 'Ver cosas interesantes',
+            text: 'Te recomiento este negocio'+ this.informacionNegocio.nombre_comercial,
+            url: this.url_negocio ,
+            dialogTitle: 'Compartir con Amigos'
+        })
+            .then(() => console.log('Successful share'))
+            .catch((error) => console.log('Error sharing', error));
     }
 }
