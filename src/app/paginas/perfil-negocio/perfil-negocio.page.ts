@@ -64,7 +64,7 @@ export class PerfilNegocioPage implements OnInit {
             this.notificacionService.error('Ocurrio un error con este negocio');
             this.location.back();
         }
-        this.getCurrentPosition();     
+        this.getCurrentPosition();
     }
 
     async getCurrentPosition() {
@@ -264,13 +264,13 @@ export class PerfilNegocioPage implements OnInit {
     }
     async compartir() {
         this.url_negocio = this.url + this.informacionNegocio.url_negocio;
-        let shareRet = await Share.share({
+        await Share.share({
             title: 'Ver cosas interesantes',
-            text: 'Te recomiento este negocio'+ this.informacionNegocio.nombre_comercial,
-            url: this.url_negocio ,
+            text: 'Te recomiento este negocio' + this.informacionNegocio.nombre_comercial,
+            url: this.url_negocio,
             dialogTitle: 'Compartir con Amigos'
         })
-            .then(() => console.log('Successful share'))
-            .catch((error) => console.log('Error sharing', error));
+            .then(() => this.notificacionService.exito('Se compartio exitosamente'))
+            .catch ((error) => this.notificacionService.error(error));
     }
 }
