@@ -81,6 +81,14 @@
             <ion-icon slot="start" ios="document-text-outline" md="document-text-outline"></ion-icon>
             Solicitudes
           </ion-item>
+          <ion-item lines="none" [routerLink]="['/tabs/home/promociones']">
+            <ion-icon slot="start"  ios="pricetags-outline" md="pricetags-outline" name="pricetags-outline"></ion-icon>
+            Promociones
+          </ion-item>
+          <ion-item  [routerLink]="['/tabs/home/ser-proveedor']"  *ngIf="!ver_negocio">
+            <ion-icon slot="start"  ios="cart-outline" md="cart-outline" name="pricetags-outline" name="cart-outline"></ion-icon>
+            Quiero vender
+          </ion-item>
         </ion-menu-toggle>
       </ion-list>
     </ion-content>

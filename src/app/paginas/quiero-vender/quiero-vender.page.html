@@ -1,0 +1,352 @@
+<ion-content>
+  <ion-card style="background-color:  #b3b3b3; color: white;">
+    <ion-card-content>
+      <h1 style="text-align: center;">¡Hola!</h1>
+      <h3 style="text-align: justify;">Antes que nada necesitamos conocerte un poco más</h3>
+    </ion-card-content>
+  </ion-card>
+  <form [formGroup]="firstFormGroup" (ngSubmit)="guardar()" *ngIf="formulario1">
+    <ion-card>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size='12'>
+              <div style="display: flex; justify-content: center; align-items: center;">
+               <div style="width: 40px; height: 40px; background-color: blue; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px; color: white; font-weight: bolder;">1</div><h2>Información general</h2>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size='12'>
+              <div class="contenedor">
+                <div class="foto" *ngIf="proveedorTO.selfie === null || proveedorTO.selfie === undefined" id="perfil" [ngStyle]="{'border': '2px solid grey', '
+                  background-position': 'center', 'background-size': 'cover'}">
+                  <label for="selfie" title="cargar imagen" class="cargar">
+                    <em>
+                      <ion-icon name="image-outline" style="font-size: 30px; color: black;"></ion-icon>
+                    </em>
+                  </label>
+               </div>
+               <div class="foto" *ngIf="proveedorTO.selfie !== null && proveedorTO.selfie !== undefined" [ngStyle]="{
+                  'background-image': 'url('+proveedorTO.selfie.archivo_64+')', 'border': '2px solid green', '
+                  background-position': 'center', 'background-size': 'cover'}">
+                  <label for="selfie" title="cargar imagen" class="cargar">
+                    <em>
+                      <ion-icon name="image-outline" style="font-size: 30px; color: black;"></ion-icon>
+                    </em>
+                  </label>
+               </div>
+                <label for="selfie" style="margin-top: 10px; color: black;">Foto de perfil</label>
+                <small *ngIf="!hImagen"  style="color: red;">La foto es requerida</small>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size='12'>
+              <input style="display: none;" #selfie id="selfie" type="file" (change)="subir_imagen_cuadrada($event)"  accept="image/*" name="selfie" required>
+            </ion-col>
+          </ion-row>
+          
+          <ion-row>
+            <ion-col size='12'>
+              <ion-item>
+                <ion-label position="floating">Nombre:</ion-label>
+                <ion-input formControlName="compNombre" [(ngModel)]="proveedorTO.nombre" required></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+
+            <ion-col size='12'>
+              <ion-item>
+                <ion-label position="floating">Apellido paterno:</ion-label>
+                <ion-input formControlName="compApellidos" [(ngModel)]="proveedorTO.paterno" required></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size='12'>
+              <ion-item>
+                <ion-label position="floating">Apellido materno:</ion-label>
+                <ion-input formControlName="compApellidoM" [(ngModel)]="proveedorTO.materno" required></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size='12'>
+              <ion-item>
+                <ion-label position="floating">Correo:</ion-label>
+                <ion-input formControlName="compCorreo" [(ngModel)]="proveedorTO.correo" required></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size='12'>
+              <ion-item>
+                <ion-label>Sexo</ion-label>
+                <ion-select name="sexo"  formControlName="compSexo" [(ngModel)]="proveedorTO.genero" required>
+                  <ion-select-option *ngFor="let s of sexos" [value]="s.id">
+                    {{s.sexo}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size='12'>
+              <ion-item>
+                <ion-label position="floating">Número de oficina:</ion-label>
+                <ion-input  formControlName="compTelefono" [(ngModel)]="proveedorTO.telefono" required></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size='12'>
+              <ion-item>
+                <ion-label position="floating">Celular / Whatsapp:</ion-label>
+                <ion-input formControlName="compCelular" [(ngModel)]="proveedorTO.celular" required></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size='12'>
+              <ion-item>
+                <ion-label>Fecha de nacimiento</ion-label>
+                <ion-datetime displayFormat="DD MM YYYY"  name="fecha" formControlName="compNacimiento"  [(ngModel)]="fechas" required></ion-datetime>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size='12'>
+              <div class="contenedor">
+
+                <div class="ine" *ngIf="!hIneFrente">
+                  <label for="ineFrente" class="cargar">
+                    <em>
+                      <ion-icon name="image-outline" style="font-size: 30px;"></ion-icon>
+                    </em>
+                  </label>
+                </div>
+                
+                <div class="ine" *ngIf="hIneFrente"  [ngStyle]="{'background-image': 'url('+proveedorTO.ine1.archivo_64+')', 'border': '2px solid green', '
+                background-position': 'center', 'background-size': 'cover'}">
+                  <label for="ineFrente" class="cargar">
+                    <em>
+                      <ion-icon name="image-outline" style="font-size: 30px;"></ion-icon>
+                    </em>
+                  </label>
+                </div>
+                <label for="ineFrente" style="margin-top: 10px;">INE (Frente)</label>
+                <small *ngIf="!hIneFrente"  style="color: red;">La INE es requerida</small>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size='12'>
+              <input type='file' id="ineFrente"  accept="image/*"
+              (change)="subirArchivo($event, 1)" formControlName="ineFrente" style="display: none;">
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size='12'>
+              <div class="contenedor">
+                <div class="ine" *ngIf="!hIneAtras">
+                  <label for="ineAtras" class="cargar">
+                    <em>
+                      <ion-icon name="image-outline" style="font-size: 30px;"></ion-icon>
+                    </em>
+                  </label>
+                </div>
+                <div class="ine" *ngIf="hIneAtras" [ngStyle]="{'background-image': 'url('+proveedorTO.ine2.archivo_64+')', 'border': '2px solid green', '
+                background-position': 'center', 'background-size': 'cover'}">
+                  <label for="ineAtras" class="cargar">
+                    <em>
+                      <ion-icon name="image-outline" style="font-size: 30px;"></ion-icon>
+                    </em>
+                  </label>
+                </div>
+                <label for="ineAtras" style="margin-top: 10px;">INE (Atras)</label>
+                <small *ngIf="!hIneAtras" style="color: red;">La INE es requerida</small>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size='12'>
+              <input type='file' id="ineAtras" accept="image/*"
+              formControlName="ineAtras" (change)="subirArchivo($event,2)" style="display: none;">
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <ion-button expand="full" type="submit">
+                Siguente
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </form>
+
+  <form *ngIf="formulario2" [formGroup]="secondFormGroup" (ngSubmit)="guardar2()">
+    <ion-card>
+      <ion-card-content>
+        <ion-grid>
+
+          <ion-row>
+            <ion-col size='12'>
+              <div style="display: flex; justify-content: center; align-items: center;">
+                <div style="width: 40px; height: 40px; background-color: blue; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px; color: white; font-weight: bolder;">2</div><h2>Dirección</h2>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label>Estado</ion-label>
+                <ion-select name="estado" formControlName="estado" required
+                [(ngModel)]="proveedorTO.det_domicilio.id_estado" (ionChange)="get_list_cat_municipio($event)">
+                  <ion-select-option *ngFor="let e of list_cat_estado" [value]="e.id_estado">
+                    {{ e.nombre }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label>Municipio</ion-label>
+                <ion-select name="municipio" formControlName="municipio" required
+                [(ngModel)]="proveedorTO.det_domicilio.id_municipio" [disabled]="!select_estado" (ionChange)="get_list_cat_localidad($event)">
+                  <ion-select-option *ngFor="let e of list_cat_municipio" [value]="e.id_municipio">
+                    {{e.nombre}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label>Localidad</ion-label>
+                <ion-select  name="localidad" [(ngModel)]="proveedorTO.det_domicilio.id_localidad" formControlName="localidad" required
+                [disabled]="!select_municipio">
+                  <ion-select-option *ngFor="let e of list_cat_localidad" [value]="e.id_localidad">
+                    {{e.nombre}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label position="floating">Colonia</ion-label>
+                <ion-input name="colonia" required formControlName="colonia" [(ngModel)]="proveedorTO.det_domicilio.colonia"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label position="floating">Calle</ion-label>
+                <ion-input name="calle"  required formControlName="calle" [(ngModel)]="proveedorTO.det_domicilio.calle"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label position="floating">Número exterior</ion-label>
+                <ion-input name="numero_ext" required formControlName="numeroExt" [(ngModel)]="proveedorTO.det_domicilio.numero_ext"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label position="floating">Número interior</ion-label>
+                <ion-input name="numero_int" formControlName="numeroInt" [(ngModel)]="proveedorTO.det_domicilio.numero_int" required></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label position="floating">Codigo postal</ion-label>
+                <ion-input formControlName="cp" name="codigo_postal" [(ngModel)]="proveedorTO.det_domicilio.codigo_postal" required></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <div style="display: flex; justify-content: center; align-items: center;">
+                <ion-button color="warning"  expand="full" (click)="regresar()">Anterior</ion-button>
+                <ion-button expand="full" type="submit">Siguiente</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </form>
+
+  <div *ngIf="finalizar">
+    <ion-card>
+      <ion-card-content>
+        <ion-grid>
+
+          <ion-row>
+            <ion-col size="12">
+              <div style="display: flex; justify-content: center; align-items: center;">
+                <div style="width: 40px; height: 40px; background-color: blue; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px; color: white; font-weight: bolder;">3</div><h2>Finalizar</h2>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size='12'>
+              <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                <h1>Casi estas listo</h1>
+                <p>Gracias por completar tu información, a partir de ahora podras agregar tus negocios y promociones.</p>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <div style="display: flex; justify-content: center; align-items: center;">
+                <ion-button color="warning"  expand="full" (click)="regresar2()">Anterior</ion-button>
+                <ion-button expand="full" (click)="guardarProveedor()">Finalizar</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+</ion-content>
