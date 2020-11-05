@@ -1,0 +1,32 @@
+.estrella {
+    width: 250px;
+    margin: 0 auto;
+    height: 50px;
+  }
+  
+  .estrella div {
+    text-align: center;
+  }
+  
+  .estrella label {
+    font-size: 20px;
+  }
+  
+  input[type="radio"] {
+    display: none;
+  }
+  
+  label {
+    color: grey;
+    font-size: 28px;
+    
+  }
+  
+  .clasificacion {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+  }
+  
+  input[type="radio"]:checked ~ label {
+    color: orange;
+  }

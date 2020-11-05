@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { PerfilNegocioPageRoutingModule } from './perfil-negocio-routing.module';
 
 import { PerfilNegocioPage } from './perfil-negocio.page';
+import { CalificarNegocioComponent } from '../../componentes/calificar-negocio/calificar-negocio.component';
+
 
 @NgModule({
   imports: [
@@ -15,6 +17,6 @@ import { PerfilNegocioPage } from './perfil-negocio.page';
     IonicModule,
     PerfilNegocioPageRoutingModule
   ],
-  declarations: [PerfilNegocioPage]
+  declarations: [PerfilNegocioPage, CalificarNegocioComponent ]
 })
 export class PerfilNegocioPageModule {}
