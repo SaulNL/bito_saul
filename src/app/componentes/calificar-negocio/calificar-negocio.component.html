@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+      <ion-title>Calificar Negocio</ion-title>
+      <ion-buttons slot="end" (click)="cerrarModal()">
+          <ion-button>
+              <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <div class="ion-text-center">
+      <h3>¿QUIERES CALIFICAR ESTE NEGOCIO?</h3>
+    </div>
+    <ion-card-header style="margin-bottom: 20px;">
+     <form>
+        <div class="clasificacion ion-text-center">
+          <input id="radi1" type="radio" name="estrella" value="5" >
+          <label for="radi1">★</label>
+          <input id="radi2" type="radio" name="estrella" value="4">
+          <label for="radi2">★</label>
+          <input id="radi3" type="radio" name="estrella" value="3" >
+          <label for="radi3">★</label>  
+          <input id="radi4" type="radio" name="estrella" value="2">
+          <label for="radi4">★</label>
+          <input id="radi5" type="radio" name="estrella" value="1">
+          <label for="radi5">★</label>
+        </div>
+          <div style="margin-bottom: 20px;">
+          <ion-label position="floating">Comentario</ion-label>
+          <ion-textarea  id="idComNegocio" name="idComNegocio" #comNegocio="ngModel" type="text" placeholder="Escribe un comentario" [(ngModel)]="comentarioCalificacion" ></ion-textarea>
+        </div>
+        <ion-button  expand="block" class="bg-rosa" (click)=" enviarCalificacion()">Aceptar</ion-button>
+      </form>
+    </ion-card-header>
+  </ion-card>
+</ion-content>
