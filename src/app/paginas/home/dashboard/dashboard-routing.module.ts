@@ -71,6 +71,10 @@ const routes: Routes = [
       {
         path: 'ser-proveedor',
         loadChildren: () => import('../../quiero-vender/quiero-vender.module').then(m => m.QuieroVenderPageModule)
+      },
+      {
+        path: 'solicitud',
+        loadChildren: () => import('../../solicitud/solicitud.module').then(m => m.SolicitudPageModule)
       }
 
     ]

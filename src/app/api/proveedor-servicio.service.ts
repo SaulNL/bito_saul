@@ -30,4 +30,15 @@ export class ProveedorServicioService {
     }));
   }
 
+  public obtenerMiUbicacion(latitud, longitud): Observable<any> {
+    const body = JSON.stringify({latitud, longitud});
+    return this._http.post(
+      `${this.url}api/proveedor/obtener/ubicacion`,
+      body,
+      {headers: AppSettings.getHeaders()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
+
 }
