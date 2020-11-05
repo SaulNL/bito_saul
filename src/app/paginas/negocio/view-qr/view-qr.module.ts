@@ -8,12 +8,15 @@ import { ViewQrPageRoutingModule } from './view-qr-routing.module';
 
 import { ViewQrPage } from './view-qr.page';
 
+import { QRCodeModule } from 'angularx-qrcode';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ViewQrPageRoutingModule
+    ViewQrPageRoutingModule,
+    QRCodeModule
   ],
   declarations: [ViewQrPage]
 })

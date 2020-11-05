@@ -5,6 +5,7 @@ import { NegocioModel } from "./../../Modelos/NegocioModel";
 import { NegocioService } from "./../../api/negocio.service";
 import { ModalController } from "@ionic/angular";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { AppSettings} from "../../AppSettings"; 
 
 @Component({
   selector: "app-negocio",
@@ -18,6 +19,13 @@ export class NegocioPage implements OnInit {
   loader: boolean;
   ruta: any;
   public rutaArray: string[];
+  public qrdata: string = null;
+  public elementType: "img" | "url" | "canvas" | "svg" = null;
+  public level: "L" | "M" | "Q" | "H";
+  public scale: number;
+  public width: number;
+  public colorLight: any; 
+  public colorDark: any;
 
   constructor(
     private servicioNegocios: NegocioService,
@@ -29,6 +37,7 @@ export class NegocioPage implements OnInit {
   ) {
     this.listaNegocios = [];
     this.usuario = JSON.parse(localStorage.getItem("u_data"));
+    this.qrdata = AppSettings.URL_MOVIL;
   }
 
   ngOnInit() {
@@ -106,7 +115,13 @@ export class NegocioPage implements OnInit {
 
   downQr(negocio: NegocioModel){
   this.selectTO = JSON.parse(JSON.stringify(negocio));
-      console.log(this.selectTO.url_negocio);
+      this.elementType = "img";
+      this.level = "H";
+      this.scale = 0.4;
+      this.width = 512;
+      this.colorLight = '#ffffff';
+      this.colorDark = '#f100db';
+      this.qrdata = AppSettings.URL_MOVIL+this.selectTO.url_negocio;
   }
   
   datosNegocio(negocio: NegocioModel) {
@@ -123,5 +138,42 @@ export class NegocioPage implements OnInit {
     this.router.navigate(["/tabs/home/negocio/mis-negocios"], {
       queryParams: { special: navigationExtras },
     });
+  }
+
+  public descargar(elemento) {
+    var youtubeimgsrc = document.querySelectorAll('.qrcode img')[0].src;
+
+    const parentElement = youtubeimgsrc;
+    let blobData = this.convertBase64ToBlob(parentElement);
+
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      //IE
+      window.navigator.msSaveOrOpenBlob(blobData, 'Qrcode');
+    } else {
+      // chrome
+      const blob = new Blob([blobData], { type: 'image/png' });
+      const url = window.URL.createObjectURL(blob);
+      // window.open(url);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'Qrcode.png';
+      link.click();
+    }
+  }
+  private convertBase64ToBlob(Base64Image: any) {
+    // SPLIT INTO TWO PARTS
+    const parts = Base64Image.split(';base64,');
+    // HOLD THE CONTENT TYPE
+    const imageType = parts[0].split(':')[1];
+    // DECODE BASE64 STRING
+    const decodedData = window.atob(parts[1]);
+    // CREATE UNIT8ARRAY OF SIZE SAME AS ROW DATA LENGTH
+    const uInt8Array = new Uint8Array(decodedData.length);
+    // INSERT ALL CHARACTER CODE INTO UINT8ARRAY
+    for (let i = 0; i < decodedData.length; ++i) {
+      uInt8Array[i] = decodedData.charCodeAt(i);
+    }
+    // RETURN BLOB IMAGE AFTER CONVERSION
+    return new Blob([uInt8Array], { type: imageType });
   }
 }
