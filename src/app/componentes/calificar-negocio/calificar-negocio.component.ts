@@ -44,7 +44,6 @@ export class CalificarNegocioComponent implements OnInit {
     let estrella = <any>document.getElementsByName('estrella');
     for (let i = 0; i < estrella.length; i++) {
       if (estrella[i].checked) {
-        console.log(estrella[i].value);
         this.numeroEstrellas = estrella[i].value;
       }
     }
@@ -55,6 +54,7 @@ export class CalificarNegocioComponent implements OnInit {
  */
   enviarCalificacion() {
     this.valorEstrella();
+    if(this.numeroEstrellas > 1 || this.comentarioCalificacion !== ''){
     this.presentLoading();
     this.actualTO.calificacion = this.numeroEstrellas;
     this.actualTO.comentario = this.comentarioCalificacion;
@@ -77,5 +77,8 @@ export class CalificarNegocioComponent implements OnInit {
         this.notificaciones.error(error);
         this.loader.dismiss();
       });
+    }else{
+      this.notificaciones.alerta('Para poder calificar este negocio, necesitas seleccionar una estrella ó realizar un comentario');
+    }
   }
 }
