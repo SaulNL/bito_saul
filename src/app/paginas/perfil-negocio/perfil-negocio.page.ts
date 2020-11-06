@@ -139,7 +139,7 @@ export class PerfilNegocioPage implements OnInit {
 
                         });
                         this.informacionNegocio.catProductos = cats;
-                        console.log(cats)
+
                     }
                 }
             },
@@ -311,7 +311,6 @@ export class PerfilNegocioPage implements OnInit {
                         this.estatusCalificacion = true;
                         this.valorEstrellas();
                     } else {
-                        console.log(response);
                         this.estatusCalificacion = false;
                         this.valorEstrellas();
                     }
