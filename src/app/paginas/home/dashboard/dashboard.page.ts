@@ -29,7 +29,6 @@ export class DashboardPage implements OnInit {
     this.obtenerPermisos();
     const ls = localStorage.getItem("nav");
     this.navBln = ls === "true";
-    console.log(this.navBln);
   }
   private validarPermiso(permisos) {
     for (const pe of permisos) {

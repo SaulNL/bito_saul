@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title class="cent">Mi Codigo QR</ion-title>
+    <ion-buttons slot="end" >
+      <ion-button class="blanco" (click)="regresar()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <qrcode #qrcode
+  [elementType]="elementType"
+  [level]="level"
+  [colorDark]="colorDark"
+  [colorlight]="colorLight"
+  [qrdata]="qrdata"
+  [scale]="scale"
+  [width]="width"
+  
+></qrcode>
+</ion-content>

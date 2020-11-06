@@ -74,7 +74,7 @@ export class DatosBasicosPage implements OnInit {
             this.notificaciones.alerta(data.data.mensaje);
           }
           //const resultado = this.sesionUtl.actualizarSesion();
-          this.router.navigate(['/tabs/ajustes']);
+          this.router.navigate(['/tabs/home/perfil']);
           this.loader.dismiss();
           this.notificaciones.exito(data.data.mensaje);
           //resolve(resultado);
@@ -89,6 +89,9 @@ export class DatosBasicosPage implements OnInit {
     });
     miPrimeraPromise.then((successMessage) => {
     });
+  }
+  regresar(){
+    this.router.navigate(['/tabs/home/perfil']);
   }
   convercionFechaNac(event) {
     let fecha = event.detail.value;

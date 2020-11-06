@@ -1,13 +1,15 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
     <ion-title>
      Perfil
     </ion-title>
+    <ion-buttons *ngIf="usuario !== null" slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-buttons slot="end" (click)="presentActionSheet()">
-    <ion-icon  name="ellipsis-vertical-outline"></ion-icon>
+      <ion-button>
+        <ion-icon  name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
   </ion-buttons>
   </ion-toolbar>
   </ion-header>

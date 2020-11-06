@@ -21,13 +21,10 @@ const routes: Routes = [
     loadChildren: () => import('./datos-domicilio/datos-domicilio.module').then( m => m.DatosDomicilioPageModule)
   },
   {
-    path: 'productos',
-    loadChildren: () => import('./productos/productos.module').then( m => m.ProductosPageModule)
-  },
-  {
-    path: 'servicios',
-    loadChildren: () => import('./servicios/servicios.module').then( m => m.ServiciosPageModule)
+    path: 'mis-productos-servicios',
+    loadChildren: () => import('./mis-productos-servicios/mis-productos-servicios.module').then( m => m.MisProductosServiciosPageModule)
   }
+
 ];
 
 @NgModule({

@@ -4,9 +4,9 @@
       <ion-menu-button class="blanco"></ion-menu-button>
     </ion-buttons>
     <ion-title>Mis Negocios</ion-title>
-    <ion-buttons slot="end" (click)="presentActionSheet()">
+    <ion-buttons slot="end" (click)="agregarNegocio()">
       <ion-button class="blanco">
-        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+        <ion-icon name="add-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -14,6 +14,7 @@
 
 <ion-content>
   <ion-list lines="none" class="bgs-gris">
+   <!-- 
     <ion-card>
       <ion-card-header>
         <ion-item lines="none" (click)="agregarNegocio()">
@@ -26,11 +27,36 @@
         </ion-item>
       </ion-card-header>
     </ion-card>
+-->
+<div class="to">
+  <qrcode #qrcode
+  [elementType]="elementType"
+  [level]="level"
+  [colorDark]="colorDark"
+  [colorlight]="colorLight"
+  [qrdata]="qrdata"
+  [scale]="scale"
+  [width]="width"
+  ></qrcode>
+</div>
   </ion-list>
-  <ion-list class="bgs-gris">
+  <ion-list *ngFor="let item of listaNegocios" class="bgs-gris">
+    <ion-fab horizontal="end" vertical="top" slot="fixed">
+      <ion-fab-button (click)="downQr(item)" color="light">
+        <ion-icon class="fond" md="qr-code-outline" ios="qr-code-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="start">
+        <ion-fab-button (click)="descargar(qrcode)" color="light">
+          <ion-icon class="fond" name="cloud-download-outline"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button (click)="viewQr(item)" color="light">
+          <ion-icon name="eye-outline" class="fond"></ion-icon>
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
     <ion-card>
-      <ion-card-header *ngFor="let item of listaNegocios">
-        <ion-item (click)="datosNegocio(item)">
+      <ion-card-header >
+        <ion-item lines="none" (click)="datosNegocio(item)">
           <ion-avatar slot="start">
             <img src="{{ item.url_logo }}" alt="{{ item.nombre_comercial }}">
           </ion-avatar>

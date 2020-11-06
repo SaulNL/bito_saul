@@ -41,7 +41,8 @@ export class MisNegociosPage implements OnInit {
           text: "Cancel",
           icon: "close",
           role: "cancel",
-          handler: () => {},
+          handler: () => {
+          },
         },
       ],
     });
@@ -59,31 +60,14 @@ export class MisNegociosPage implements OnInit {
       queryParams: { special: navigationExtras },
     });
   }
-  datosContacto(negocio: NegocioModel){
+    productosServicios(negocio: NegocioModel,inde){
     this.negocioTO = JSON.parse(JSON.stringify(negocio));
-    let navigationExtras = JSON.stringify(this.negocioTO);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios/datos-contacto"], {
-      queryParams: { special: navigationExtras },
-    });
-  }
-  datosDomicilio(negocio: NegocioModel){
-    this.negocioTO = JSON.parse(JSON.stringify(negocio));
-    let navigationExtras = JSON.stringify(this.negocioTO);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios/datos-domicilio"], {
-      queryParams: { special: navigationExtras },
-    });
-  }
-  productos(negocio: NegocioModel){
-    this.negocioTO = JSON.parse(JSON.stringify(negocio));
-    let navigationExtras = JSON.stringify(this.negocioTO);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios/productos"], {
-      queryParams: { special: navigationExtras },
-    });
-  }
-  servicios(negocio: NegocioModel){
-    this.negocioTO = JSON.parse(JSON.stringify(negocio));
-    let navigationExtras = JSON.stringify(this.negocioTO);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios/servicios"], {
+    let all = {
+      inden: inde,
+      info: this.negocioTO
+  };
+    let navigationExtras = JSON.stringify(all);
+    this.router.navigate(["/tabs/home/negocio/mis-negocios/mis-productos-servicios"], {
       queryParams: { special: navigationExtras },
     });
   }
