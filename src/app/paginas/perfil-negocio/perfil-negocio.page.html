@@ -33,6 +33,12 @@
             </ion-card>
         </ion-row>
     </ion-grid>
+    <ion-button shape="round"
+    *ngIf="informacionNegocio.catProductos.length > 0" (click)="abrirVentana(negocioDatos.cartaProducto)"
+    expand="full" class="bg-rosa">Ver carta de productos </ion-button>
+    <ion-button shape="round"
+    *ngIf="informacionNegocio.catServicos.length > 0" (click)="abrirVentana(negocioDatos.cartaServicio)"
+    expand="full" class="bg-rosa">Ver carta de servicios</ion-button>
     <ion-grid *ngIf="!existeSesion">
         <ion-row>
             <ion-card class="w-100">
