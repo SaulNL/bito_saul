@@ -141,7 +141,7 @@ export class NegocioPage implements OnInit {
   }
 
   public descargar(elemento) {
-    var youtubeimgsrc = document.querySelectorAll('.qrcode img')[0].src;
+    var youtubeimgsrc = (<HTMLImageElement><unknown>document.querySelectorAll(".qrcode img"))[0].src;
 
     const parentElement = youtubeimgsrc;
     let blobData = this.convertBase64ToBlob(parentElement);

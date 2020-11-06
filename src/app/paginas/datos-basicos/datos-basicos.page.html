@@ -1,11 +1,13 @@
 <ion-header>
   <ion-toolbar class="tolbar">
+    <ion-buttons (click)="regresar()" slot="start">
+      <ion-button>
+        <ion-icon class="ion-float-left " name="chevron-back-outline"  ></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>
       Datos Básicos
      </ion-title>
-     <ion-buttons slot="start">
-      <ion-icon class="ion-float-left " name="chevron-back-outline"[routerLink]="['/tabs/ajustes']"></ion-icon>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>

@@ -72,7 +72,7 @@ export class CambioContraseniaPage implements OnInit {
             this.loader.dismiss();
             this.notificaciones.exito('se guardo con éxito');
             this.iniciarForm();
-            this.router.navigate(['/tabs/ajustes']);
+            this.router.navigate(['/tabs/home/perfil']);
           }
           if (respuesta.code === 402){
             this.loader.dismiss();

@@ -6,6 +6,7 @@ import {Location} from '@angular/common';
 import {SessionUtil} from "../../utils/sessionUtil";
 import {SideBarService} from "../../api/busqueda/side-bar-service";
 import {NavController} from "@ionic/angular";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 
 @Component({
     selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginPage implements OnInit {
         private loginService: LoginService,
         private location: Location,
         private sessionUtil: SessionUtil,
-        private sideBarService: SideBarService
+        private sideBarService: SideBarService,
+        private notifi: ToadNotificacionService
     ) {
         this.loader = false;
         this.usuario = new Login();
@@ -38,12 +40,22 @@ export class LoginPage implements OnInit {
         this.loader = true;
         this.loginService.login(this.usuario).subscribe(
             respuesta => {
-                const actualizado = AppSettings.setTokenUser(respuesta);
-                // this.sideBarService.actualizarSide();
-                // this.loader = false;
-                this.sideBarService.publishSomeData('');
-                this.navctrl.back()
+                if (respuesta.code === 200) {
+                    const actualizado = AppSettings.setTokenUser(respuesta);
+                    console.log(respuesta.data);
+                    // this.sideBarService.actualizarSide();
+                    // this.loader = false;
+                    this.sideBarService.publishSomeData('');
+                    this.navctrl.back();
+                    this.notifi.exito(respuesta.message);
+                  } 
+                  if (respuesta.code === 402){
+                    this.notifi.alerta(respuesta.message);
+                  }
+                    
+                  
             }, error => {
+                this.notifi.error(error);
             }
         );
     }
