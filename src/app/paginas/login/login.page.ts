@@ -1,12 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {Login} from "../../Modelos/login";
-import {LoginService} from "../../api/login.service";
-import {AppSettings} from "../../AppSettings";
-import {Location} from '@angular/common';
-import {SessionUtil} from "../../utils/sessionUtil";
-import {SideBarService} from "../../api/busqueda/side-bar-service";
-import {NavController} from "@ionic/angular";
-import {Router} from "@angular/router";
+import { RecuperarContraseniaPage } from './recuperar-contrasenia/recuperar-contrasenia.page';
+import { Component, OnInit } from '@angular/core';
+import { Login } from "../../Modelos/login";
+import { LoginService } from "../../api/login.service";
+import { AppSettings } from "../../AppSettings";
+import { Location } from '@angular/common';
+import { SessionUtil } from "../../utils/sessionUtil";
+import { SideBarService } from "../../api/busqueda/side-bar-service";
+import { NavController, ModalController } from "@ionic/angular";
+import { Router } from "@angular/router";
+
 
 @Component({
     selector: 'app-login',
@@ -28,6 +30,7 @@ export class LoginPage implements OnInit {
         private sessionUtil: SessionUtil,
         private sideBarService: SideBarService,
         private _router: Router,
+        private modalController: ModalController,
     ) {
         this.loader = false;
         this.usuario = new Login();
@@ -50,8 +53,12 @@ export class LoginPage implements OnInit {
         );
     }
 
-    recuerarContrasenia(){
-      this._router.navigate(['/tabs/login/recuperar-contrasenia']);
+    async recuerarContrasenia() {
+        // this._router.navigate(['/tabs/login/recuperar-contrasenia']);
+        const modal = await this.modalController.create({
+            component: RecuperarContraseniaPage
+        });
+        await modal.present();
     }
 
 }

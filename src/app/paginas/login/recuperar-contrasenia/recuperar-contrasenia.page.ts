@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import { LoginService } from '../../../api/login.service';
 import { Router } from "@angular/router";
 import { LoadingController } from '@ionic/angular';
-
+import { ModalController } from '@ionic/angular';
 
 
 @Component({
@@ -19,11 +19,13 @@ export class RecuperarContraseniaPage implements OnInit {
     public notificaciones: ToadNotificacionService,
     public _Login: LoginService,
     public _router: Router,
-    public loadingController: LoadingController
-  ) { }
+    public loadingController: LoadingController,
+    public modalController: ModalController
+  ) {
+    this.correo = '';
+  }
 
   ngOnInit() {
-    this.correo = '';
   }
   async presentLoading() {
     this.loader = await this.loadingController.create({
@@ -32,15 +34,19 @@ export class RecuperarContraseniaPage implements OnInit {
     });
     return this.loader.present();
   }
+  cerrarModal() {
+    this.modalController.dismiss();
+  }
   public resetPass(form: NgForm) {
-    console.log('entro');
     if (form.valid) {
       this.presentLoading();
       this._Login.resetPassword(this.correo).subscribe(response => {
         this.loader.dismiss();
-        this.notificaciones.exito(response.message);
         if (response.code === 200) {
-          this._router.navigate(['/tabs/login']);
+          this.notificaciones.exito(response.message);
+          this.cerrarModal();
+        } else {
+          this.notificaciones.alerta(response.message);
         }
       },
         error => {

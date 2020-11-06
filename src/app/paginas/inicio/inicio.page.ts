@@ -30,6 +30,7 @@ export class InicioPage implements OnInit {
     public entregaDomicilio: boolean;
     private seleccionado: any;
     loader: any;
+    listaIdsMapa : any; 
     constructor(
         public loadingController: LoadingController,
         private toadController: ToastController,
@@ -41,6 +42,7 @@ export class InicioPage implements OnInit {
         this.Filtros = new FiltrosModel();
         this.Filtros.idEstado = 29;
         this.listaCategorias = [];
+        this.listaIdsMapa = [];
     }
 
     ngOnInit(): void {
@@ -62,6 +64,7 @@ export class InicioPage implements OnInit {
         this.principalSercicio.obtenerDatos(this.Filtros).subscribe(
             respuesta => {
                 this.listaCategorias = respuesta.data;
+                this.negociosIdMapa();
                 this.loader = false;
             },
             error => {
@@ -119,13 +122,27 @@ export class InicioPage implements OnInit {
     }
 
     async abrirModalMapa() {
-        let listaIds = [68, 95, 116, 52, 155, 20, 142];
+      //  let listaIds = [68, 95, 116, 52, 155, 20, 142];
         const modal = await this.modalController.create({
             component: MapaNegociosComponent,
             componentProps: {
-                listaIds: listaIds
+                listaIds: this.listaIdsMapa
             }
         });
         await modal.present();
+    }
+
+    negociosIdMapa() {
+        let listaIdNegocio = [];
+        let listaIds = [];
+        this.listaCategorias.map(l => {
+            l.negocios.map(n => {
+                listaIds.push(n);
+            });
+        });
+        for (let index = 0; index < listaIds.length; index++) {
+            listaIdNegocio.push(listaIds[index].id_negocio);
+        }
+        this.listaIdsMapa = listaIdNegocio;
     }
 }
