@@ -33,11 +33,34 @@
         <ion-row>
             <ion-card class="w-100">
                 <ion-card-content class="ion-text-center">
-                    {{informacionNegocio.descripcion}}s
+                    {{informacionNegocio.descripcion}}
                 </ion-card-content>
             </ion-card>
         </ion-row>
     </ion-grid>
+
+    <ion-grid>
+        <ion-row 
+        *ngIf="informacionNegocio.catProductos.length === 0 || informacionNegocio.catServicos.length === 0">
+            <ion-col size="12" style="color: #856404; background: #fff3cd; border-radius: 20px; padding: 10px; text-align: center;">
+                <strong>Lo sentimos!</strong> {{informacionNegocio.nombre_comercial}} aún no ha capturado los productos y/o servicios que
+        oferta.
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-button shape="round"
+                *ngIf="informacionNegocio.cartaProducto !== undefined && informacionNegocio.cartaProducto !== null && informacionNegocio.cartaProducto !== ''" 
+                (click)="abrirVentana(informacionNegocio.cartaProducto)"
+                expand="full" class="bg-rosa">Ver carta de productos </ion-button>
+                <ion-button shape="round"
+                *ngIf="informacionNegocio.cartaServicio !== undefined && informacionNegocio.cartaServicio !== null&& informacionNegocio.cartaServicio !== ''"
+                (click)="abrirVentana(informacionNegocio.cartaServicio)"
+                expand="full" class="bg-rosa">Ver carta de servicios</ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    
     <ion-grid *ngIf="!existeSesion">
         <ion-row>
             <ion-card class="w-100">
@@ -126,6 +149,16 @@
                     </ion-card>
                 </ion-col>
             </ion-row>
+            <ion-row *ngIf="informacionNegocio.tagsProductos !== undefined && informacionNegocio.tagsProductos.length > 0">
+                <ion-card>
+                    <ion-card-header>
+                      <ion-card-subtitle><strong>Etiquetas de búsqueda (Productos)</strong></ion-card-subtitle>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-badge *ngFor="let item of informacionNegocio.tagsProductos"> {{ item }} </ion-badge>
+                    </ion-card-content>
+                  </ion-card>
+            </ion-row>
         </ion-grid>
         <ion-grid *ngIf="seccion === 'servicios'">
             <ion-row *ngFor="let cat of informacionNegocio.catServicos">
@@ -145,6 +178,16 @@
                         </ion-card-content>
                     </ion-card>
                 </ion-col>
+            </ion-row>
+            <ion-row *ngIf="informacionNegocio.tagsServicios !== undefined && informacionNegocio.tagsServicios.length > 0">
+                <ion-card>
+                    <ion-card-header>
+                      <ion-card-subtitle><strong>Etiquetas de búsqueda (Servicios)</strong></ion-card-subtitle>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-badge *ngFor="let item of informacionNegocio.tagsServicios"> {{ item }} </ion-badge>
+                    </ion-card-content>
+                  </ion-card>
             </ion-row>
         </ion-grid>
     </div>

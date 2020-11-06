@@ -142,6 +142,12 @@ export class PerfilNegocioPage implements OnInit {
 
                     }
                 }
+                if (response.code === 200) {
+                    this.informacionNegocio.cartaProducto = response.data.cartaProducto;
+                    this.informacionNegocio.cartaServicio = response.data.cartaServicio;
+                    this.informacionNegocio.tagsProductos = response.data.productoTags;
+                    this.informacionNegocio.tagsServicios = response.data.serviciosTags;
+                }
             },
             error => {
                 confirm('Error al o¿btener los productos');
