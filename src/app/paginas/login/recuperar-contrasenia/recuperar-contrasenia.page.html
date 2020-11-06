@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <!--<ion-title>recuperar-contrasenia</ion-title>-->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-card>
+  <ion-card-header>
+    <form #formRecuContra="ngForm" class="form-horizontal" (ngSubmit)="resetPass(formRecuContra)">
+      <div class="ion-text-center">
+        <h4>RESTAURAR CONTRASEÑA</h4>
+      </div>
+    <ion-list>
+      <ion-item>
+    <ion-label position="stacked">Usuario</ion-label>
+    <ion-input id="idResetContra" name="idResetContra" #resetContra="ngModel" [(ngModel)]="correo" required placeholder="Correo o Número celular"></ion-input>
+  </ion-item>
+  </ion-list>
+    <div *ngIf="resetContra.touched  && resetContra.invalid" class="alert">
+      <div *ngIf="resetContra.errors.required">Agregue correo ó Número</div>
+    </div>
+    <ion-button type="submit" expand="block"class="bg-rosa" [disabled]="formRecuContra.invalid">Enviar</ion-button>
+  </form>
+  </ion-card-header>
+</ion-card>
+</ion-content>

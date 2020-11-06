@@ -20,5 +20,11 @@
     <ion-input type="password" [(ngModel)]="usuario.password"></ion-input>
   </ion-item>
   <ion-button class="ion-margin-top" expand="block" (click)="doLogin()">Iniciar sesión</ion-button>
-  
+  <ion-grid>
+    <ion-row class="ion-align-items-center">
+      <ion-col size="12" class="ion-text-center">
+        <a (click)="recuerarContrasenia()" >Olvidé mi contraseña</a>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

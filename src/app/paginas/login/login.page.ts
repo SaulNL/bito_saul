@@ -6,6 +6,7 @@ import {Location} from '@angular/common';
 import {SessionUtil} from "../../utils/sessionUtil";
 import {SideBarService} from "../../api/busqueda/side-bar-service";
 import {NavController} from "@ionic/angular";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginPage implements OnInit {
         private loginService: LoginService,
         private location: Location,
         private sessionUtil: SessionUtil,
-        private sideBarService: SideBarService
+        private sideBarService: SideBarService,
+        private _router: Router,
     ) {
         this.loader = false;
         this.usuario = new Login();
@@ -46,6 +48,10 @@ export class LoginPage implements OnInit {
             }, error => {
             }
         );
+    }
+
+    recuerarContrasenia(){
+      this._router.navigate(['/tabs/login/recuperar-contrasenia']);
     }
 
 }

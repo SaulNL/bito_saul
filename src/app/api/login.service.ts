@@ -24,4 +24,15 @@ export class LoginService {
       return data;
     }));
   }
+  resetPassword(correo: string): Observable<any> {
+    const body = JSON.stringify({'correo': correo});
+    return this.http.post(
+      `${this.url}api/usr/perfil/resetPassword`,
+      body,
+      {headers: AppSettings.getHeaders()}
+    ).pipe(map(data => {
+
+      return data;
+    }));
+  }
 }
