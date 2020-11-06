@@ -19,7 +19,19 @@
     <ion-label position="floating">Contraseña</ion-label>
     <ion-input type="password" [(ngModel)]="usuario.password"></ion-input>
   </ion-item>
-  <ion-button class="ion-margin-top" expand="block" (click)="doLogin()">Iniciar sesión</ion-button>
-  <ion-button class="ion-margin-top" expand="block" (click)="signInFacebook()">Facebook</ion-button>
-  
+  <ion-button color="success" expand="block" (click)="doLogin()">Iniciar sesión</ion-button>
+  <ion-button color="primary" expand="block" (click)="loginFacebook()">Facebook</ion-button>
+  <ion-button color="danger" expand="block" (click)="loginGoogle()">Google</ion-button>
+  <!--<ion-list>
+    <ion-item>
+      <ion-label>{{this.email}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{this.name}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{this.uid}}</ion-label>
+    </ion-item>
+  </ion-list>-->
+
 </ion-content>
