@@ -50,7 +50,7 @@
         </div>
         <ion-item>
           <ion-label position="stacked">Contraseña<span style="color: red;">*</span></ion-label>
-          <ion-input id="password_admin" type="password" name="password" placeholder="Contraseña" #password="ngModel" [(ngModel)]="usuario_sistema.password" required></ion-input>
+          <ion-input (keyup)="verificarContrasena()" id="password_admin" type="password" name="password" placeholder="Contraseña" #password="ngModel" [(ngModel)]="usuario_sistema.password" required></ion-input>
         </ion-item>
         <div *ngIf="password.touched  && password.invalid" class="alert">
           <div *ngIf="password.errors.required">La contraseña es requerido</div>
