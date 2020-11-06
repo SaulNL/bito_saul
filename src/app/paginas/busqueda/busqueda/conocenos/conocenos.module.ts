@@ -9,6 +9,7 @@ import { ConocenosPageRoutingModule } from './conocenos-routing.module';
 import { ConocenosPage } from './conocenos.page';
 import { ContactoPage } from '../../contacto/contacto.page';
 import { FooterPage } from '../../footer/footer.page';
+import {BotonTopComponent} from '../../../../componentes/boton-top/boton-top.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,11 @@ import { FooterPage } from '../../footer/footer.page';
   declarations: [
     ConocenosPage,
     ContactoPage,
-    FooterPage
+    FooterPage,
+    BotonTopComponent
+  ],
+  exports: [
+    BotonTopComponent
   ]
 })
 export class ConocenosPageModule {}
