@@ -214,8 +214,4 @@ export class PerfilNegocioPage implements OnInit {
     abrirVentana(ruta) {
         window.open(ruta, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400");
     }
-    info(){
-        console.log(this.negocioDatos.cartaProducto);
-        
-    }
 }
