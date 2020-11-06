@@ -24,6 +24,19 @@ export class PerfilNegocioPage implements OnInit {
     public miLng: any;
     public permisoUbicacionCancelado: boolean;
     public existeSesion: boolean;
+    public hoy: number;
+    public estatus: { tipo: number; mensaje: string };
+    public motrarContacto = true;
+
+    public diasArray = [
+        {id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null},
+        {id: 2, dia: 'Martes', horarios: [], hi: null, hf: null},
+        {id: 3, dia: 'Miércoles', horarios: [], hi: null, hf: null},
+        {id: 4, dia: 'Jueves', horarios: [], hi: null, hf: null},
+        {id: 5, dia: 'Viernes', horarios: [], hi: null, hf: null},
+        {id: 6, dia: 'Sábado', horarios: [], hi: null, hf: null},
+        {id: 7, dia: 'Domingo', horarios: [], hi: null, hf: null},
+      ];
 
     constructor(
         private route: ActivatedRoute,
@@ -76,7 +89,7 @@ export class PerfilNegocioPage implements OnInit {
                     // this.obtenerPromociones();
                     this.obtenerProductos();
                     this.obtenerServicios();
-
+                    this.horarios(this.informacionNegocio);
                 }
                 this.loader = false;
                 setTimeout(it => {
@@ -212,4 +225,99 @@ export class PerfilNegocioPage implements OnInit {
     abrirVentana(ruta) {
         window.open(ruta, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400");
     }
+
+    private horarios(negocio: any) {
+        
+        this.estatus = {tipo: 0, mensaje: 'No abre hoy'};
+    
+        const hros = negocio.horarios;
+        let hoy: any;
+        hoy = new Date();
+        this.hoy = hoy.getDay() !== 0 ? hoy.getDay() : 7;
+        const diasArray = JSON.parse(JSON.stringify(this.diasArray));
+        if (hros !== undefined) {
+          hros.forEach(horarioTmp => {
+    
+            diasArray.map(dia => {
+              if (horarioTmp.dias.includes(dia.dia) && horarioTmp.hora_inicio !== undefined && horarioTmp.hora_fin !== undefined) {
+                const dato = {
+                  texto: horarioTmp.hora_inicio + ' a ' + horarioTmp.hora_fin,
+                  hi: horarioTmp.hora_inicio,
+                  hf: horarioTmp.hora_fin
+                };
+                dia.horarios.push(dato);
+              }
+            });
+    
+          });
+    
+          diasArray.map((dia) => {
+    
+            if (dia.id === this.hoy) {
+              const now = new Date(1995, 11, 18, hoy.getHours(), hoy.getMinutes(), 0, 0);
+              let abieto = null;
+              let index = null;
+              const listaAux = [];
+              if (dia.horarios.length !== 0) {
+                dia.horarios.map((item, i) => {
+                  const inicio = item.hi.split(':');
+                  // tslint:disable-next-line:radix
+                  const fi = new Date(1995, 11, 18, parseInt(inicio[0]), parseInt(inicio[1]), 0, 0);
+                  const fin = item.hf.split(':');
+                  let aux = 18;
+                  // tslint:disable-next-line:radix
+                  if (parseInt(inicio[0]) > parseInt(fin[0])) {
+                    aux = 19;
+                  }
+                  // tslint:disable-next-line:radix
+                  const ff = new Date(1995, 11, aux, parseInt(fin[0]), parseInt(fin[1]), 0, 0);
+                  listaAux.push({valor: ((fi.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)), index: i});
+                  if (now >= fi && now <= ff) {
+                    abieto = true;
+                    index = i;
+                  }
+                });
+                if (abieto) {
+                  this.estatus = {tipo: 1, mensaje: 'Cierra a las ' + dia.horarios[index].hf};
+                } else {
+                  let listaValores: Array<number> = [];
+                  let siHay = false;
+                  listaAux.map(item => {
+                    listaValores.push(item.valor);
+                    if (item.valor > 0) {
+                      siHay = true;
+                    }
+                  });
+                  if (siHay) {
+                    listaValores = listaValores.filter(item => {
+                      return item >= 0;
+                    });
+                  }
+                  const valor = Math.min.apply(null, listaValores);
+                  const valorMax = Math.max.apply(null, listaValores);
+                  if (valor > 0) {
+                    listaAux.map(item => {
+                      if (item.valor === valor) {
+                        index = item.index;
+                      }
+                    });
+                    this.estatus = {tipo: 0, mensaje: 'Abre a las ' + dia.horarios[index].hi};
+                  } else {
+                    listaAux.map(item => {
+                      if (item.valor === valorMax) {
+                        index = item.index;
+                      }
+                    });
+                    this.estatus = {tipo: 0, mensaje: 'Cerró a las ' + dia.horarios[index].hf};
+                  }
+                }
+              } else {
+                this.estatus = {tipo: 0, mensaje: 'No abre hoy'};
+              }
+            }
+          });
+          this.diasArray = diasArray;
+          console.log(this.diasArray);
+        }
+      }
 }
