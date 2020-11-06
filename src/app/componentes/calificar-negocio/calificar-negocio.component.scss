@@ -1,14 +1,14 @@
-.estrella {
+#form {
     width: 250px;
     margin: 0 auto;
     height: 50px;
   }
   
-  .estrella div {
+  #form div {
     text-align: center;
   }
   
-  .estrella label {
+  #form label {
     font-size: 20px;
   }
   
@@ -19,12 +19,16 @@
   label {
     color: grey;
     font-size: 28px;
-    
   }
   
   .clasificacion {
     direction: rtl;
     unicode-bidi: bidi-override;
+  }
+  
+  label:hover,
+  label:hover ~ label {
+    color: orange;
   }
   
   input[type="radio"]:checked ~ label {

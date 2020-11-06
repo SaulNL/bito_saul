@@ -9,7 +9,7 @@ import { ExploreContainerComponentModule } from '../../explore-container/explore
 import { Tab3PageRoutingModule } from './inicio-routing.module'
 import {FiltrosBusquedaModule} from "../../componentes/filtros-busqueda/filtros-busqueda.module";
 import {TabsPageModule} from '../tabs/tabs.module';
-
+import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-negocios.component';
 
 @NgModule({
   imports: [
@@ -22,6 +22,6 @@ import {TabsPageModule} from '../tabs/tabs.module';
       FiltrosBusquedaModule,
       TabsPageModule
   ],
-    declarations: [InicioPage]
+    declarations: [InicioPage, MapaNegociosComponent]
 })
 export class Tab3PageModule {}

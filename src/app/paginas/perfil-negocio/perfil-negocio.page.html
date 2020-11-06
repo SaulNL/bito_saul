@@ -4,6 +4,11 @@
             <ion-back-button text="" defaultHref="/"></ion-back-button>
         </ion-buttons>
         <ion-title>Información del negocio</ion-title>
+        <ion-buttons slot="end" (click)="presentActionSheet()" *ngIf="existeSesion">
+            <ion-button>
+            <ion-icon  name="ellipsis-vertical-outline"></ion-icon>
+          </ion-button>
+          </ion-buttons>
     </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding" *ngIf="loader" fullscreen>
@@ -67,6 +72,40 @@
                     <div id="mapId" style="height:200px"></div>
                 </ion-col>
             </ion-row>
+        </ion-grid>
+        <ion-grid *ngIf="existeSesion">
+            <ion-row>
+                <ion-col>
+                    <div class="estrella">
+                        <h3 class="text-rosa ion-text-center">Calificación del negocio</h3>
+                        <div class="clasificacion ion-text-center">
+                            {{informacionNegocio.numCalificaciones}}  <ion-icon name="person-outline"></ion-icon>
+                            <input disabled id="radio1" type="radio" name="estrellas" value="5" >
+                            <label for="radio1">★</label>
+                            <input disabled id="radio2" type="radio" name="estrellas" value="4">
+                            <label for="radio2">★</label>
+                            <input disabled id="radio3" type="radio" name="estrellas" value="3" >
+                            <label for="radio3">★</label>  
+                            <input disabled id="radio4" type="radio" name="estrellas" value="2">
+                            <label for="radio4">★</label>
+                            <input disabled id="radio5" type="radio" name="estrellas" value="1" >
+                            <label for="radio5">★</label>
+                          </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <div>
+                        <div *ngIf="!estatusCalificacion" class="ion-text-center" (click)="abrirModalCalifica()">
+                            <ion-button expand="block" size="small" type="submit" class="bg-rosa">Calificar</ion-button>
+                        </div>
+                        <div *ngIf="estatusCalificacion" class="ion-text-center">
+                            <ion-label>Gracias, ya calificaste este negocio</ion-label>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row> 
         </ion-grid>
         <ion-grid *ngIf="seccion === 'productos'">
             <ion-row *ngFor="let cat of informacionNegocio.catProductos">

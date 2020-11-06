@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: PerfilNegocioPage
+  },  {
+    path: 'denuncia-negocio',
+    loadChildren: () => import('./denuncia-negocio/denuncia-negocio.module').then( m => m.DenunciaNegocioPageModule)
   }
+
 ];
 
 @NgModule({

@@ -5,7 +5,8 @@ import { FiltrosModel } from '../../Modelos/FiltrosModel';
 import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/filtros-busqueda.component";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { FormControl } from '@angular/forms';
-import {ActivatedRoute} from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
+import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-negocios.component';
 
 
 
@@ -45,15 +46,15 @@ export class InicioPage implements OnInit {
     ngOnInit(): void {
         this.buscarNegocios();
         this.route.queryParams.subscribe(params => {
-                if (params && params.special) {
-                    if (params.special){
-                        this.Filtros = new FiltrosModel();
-                        this.Filtros.idEstado = 29;
-                        this.listaCategorias = [];
-                        this.buscarNegocios();
-                    }
+            if (params && params.special) {
+                if (params.special) {
+                    this.Filtros = new FiltrosModel();
+                    this.Filtros.idEstado = 29;
+                    this.listaCategorias = [];
+                    this.buscarNegocios();
                 }
             }
+        }
         )
     }
     buscarNegocios() {
@@ -115,5 +116,16 @@ export class InicioPage implements OnInit {
         this.Filtros.idCategoriaNegocio = [seleccionado.id_categoria];
         this.Filtros.idGiro = [seleccionado.idGiro];
         this.buscarNegocios();
+    }
+
+    async abrirModalMapa() {
+        let listaIds = [68, 95, 116, 52, 155, 20, 142];
+        const modal = await this.modalController.create({
+            component: MapaNegociosComponent,
+            componentProps: {
+                listaIds: listaIds
+            }
+        });
+        await modal.present();
     }
 }

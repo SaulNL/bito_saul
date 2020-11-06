@@ -6,7 +6,8 @@ import {Location} from '@angular/common';
 import {SessionUtil} from "../../utils/sessionUtil";
 import {SideBarService} from "../../api/busqueda/side-bar-service";
 import {NavController} from "@ionic/angular";
-import { Router, ActivatedRoute } from '@angular/router';
+import {Router} from "@angular/router";
+
 @Component({
     selector: 'app-login',
     templateUrl: './login.page.html',
@@ -26,8 +27,7 @@ export class LoginPage implements OnInit {
         private location: Location,
         private sessionUtil: SessionUtil,
         private sideBarService: SideBarService,
-        private router: Router,
-        private active: ActivatedRoute
+        private _router: Router,
     ) {
         this.loader = false;
         this.usuario = new Login();
@@ -49,7 +49,9 @@ export class LoginPage implements OnInit {
             }
         );
     }
-     registratePersona(){
-        this.router.navigate(['/tabs/registro-persona']);
-     }
+
+    recuerarContrasenia(){
+      this._router.navigate(['/tabs/login/recuperar-contrasenia']);
+    }
+
 }

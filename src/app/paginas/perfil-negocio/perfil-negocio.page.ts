@@ -1,13 +1,25 @@
-import {Component, OnInit} from '@angular/core';
-import {Map, tileLayer, marker, icon} from 'leaflet';
-import {ActivatedRoute} from "@angular/router";
-import {ToastController} from "@ionic/angular";
-import {NegocioService} from "../../api/negocio.service";
-import {Geolocation} from "@capacitor/core";
-import {ToadNotificacionService} from "../../api/toad-notificacion.service";
+import { AppSettings } from './../../AppSettings';
+import { Component, OnInit } from '@angular/core';
+import { Map, tileLayer, marker, icon } from 'leaflet';
+import { ActivatedRoute, Router } from "@angular/router";
+import { ToastController } from "@ionic/angular";
+import { NegocioService } from "../../api/negocio.service";
+import { Geolocation } from "@capacitor/core";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { Location } from "@angular/common";
-import {UtilsCls} from "../../utils/UtilsCls";
-import {SideBarService} from "../../api/busqueda/side-bar-service";
+import { UtilsCls } from '../../utils/UtilsCls';
+import { SideBarService } from "../../api/busqueda/side-bar-service";
+import { ActionSheetController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
+import { DenunciaNegocioPage } from './denuncia-negocio/denuncia-negocio.page';
+import { Plugins } from '@capacitor/core';
+import { CalificarNegocioComponent } from '../../componentes/calificar-negocio/calificar-negocio.component';
+import { ProveedorServicioService } from '../../api/busqueda/proveedores/proveedor-servicio.service';
+const { Share } = Plugins;
+
+
+
+
 
 @Component({
     selector: 'app-perfil-negocio',
@@ -24,6 +36,9 @@ export class PerfilNegocioPage implements OnInit {
     public miLng: any;
     public permisoUbicacionCancelado: boolean;
     public existeSesion: boolean;
+    url = `${AppSettings.URL_FRONT}`;
+    public url_negocio: string;
+    public estatusCalificacion: boolean;
 
     constructor(
         private route: ActivatedRoute,
@@ -33,10 +48,15 @@ export class PerfilNegocioPage implements OnInit {
         private location: Location,
         private util: UtilsCls,
         private sideBarService: SideBarService,
+        private actionSheetController: ActionSheetController,
+        private _router: Router,
+        public modalController: ModalController,
+        private serviceProveedores: ProveedorServicioService
     ) {
         this.seccion = 'ubicacion';
         this.loader = true;
         this.existeSesion = util.existe_sesion();
+        this.estatusCalificacion = true;
     }
 
     ngOnInit() {
@@ -48,23 +68,23 @@ export class PerfilNegocioPage implements OnInit {
         });
         if (this.negocio !== undefined && this.negocio !== null && this.negocio !== '') {
             this.obtenerInformacionNegocio();
-        }else {
+        } else {
             this.notificacionService.error('Ocurrio un error con este negocio');
             this.location.back();
         }
         this.getCurrentPosition();
+
     }
 
     async getCurrentPosition() {
         const coordinates = await Geolocation.getCurrentPosition().then(res => {
             this.miLat = res.coords.latitude;
-            this.miLng =  res.coords.longitude;
+            this.miLng = res.coords.longitude;
         }).catch(error => {
-                this.permisoUbicacionCancelado = true;
-            }
+            this.permisoUbicacionCancelado = true;
+        }
         );
     }
-
     obtenerInformacionNegocio() {
         this.loader = true;
         this.negocioService.obteneretalleNegocio(this.negocio).subscribe(
@@ -76,6 +96,7 @@ export class PerfilNegocioPage implements OnInit {
                     // this.obtenerPromociones();
                     this.obtenerProductos();
                     this.obtenerServicios();
+                    this.obtenerEstatusCalificacion();
 
                 }
                 this.loader = false;
@@ -118,7 +139,7 @@ export class PerfilNegocioPage implements OnInit {
 
                         });
                         this.informacionNegocio.catProductos = cats;
-                        console.log(cats)
+
                     }
                 }
             },
@@ -166,7 +187,7 @@ export class PerfilNegocioPage implements OnInit {
         const lat = this.informacionNegocio.det_domicilio.latitud;
         const lng = this.informacionNegocio.det_domicilio.longitud;
         this.map = new Map("mapId").setView([lat, lng], 16);
-        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: ''}).addTo(this.map);
+        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
 
         var myIcon = icon({
             iconUrl: 'https://ecoevents.blob.core.windows.net/comprandoando/marker.png',
@@ -175,7 +196,7 @@ export class PerfilNegocioPage implements OnInit {
         });
 
 
-        marker([lat, lng], {icon: myIcon}).addTo(this.map)
+        marker([lat, lng], { icon: myIcon }).addTo(this.map)
     }
 
 
@@ -211,5 +232,109 @@ export class PerfilNegocioPage implements OnInit {
 
     abrirVentana(ruta) {
         window.open(ruta, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400");
+    }
+    async presentActionSheet() {
+        const actionSheet = await this.actionSheetController.create({
+            header: 'Negocio',
+            buttons: [
+                {
+                    text: 'Denunciar',
+                    icon: 'receipt-outline',
+                    handler: () => {
+                        this.abrirModalDenuncia();
+                    }
+                },
+                {
+                    text: 'Compartir',
+                    icon: 'share-social-outline',
+                    handler: () => {
+                        this.compartir();
+                    }
+                },
+                {
+                    text: 'Cancelar',
+                    icon: 'close',
+                    role: 'cancel',
+                    handler: () => {
+                    }
+                }]
+
+        });
+        await actionSheet.present();
+    }
+    async abrirModalDenuncia() {
+        const modal = await this.modalController.create({
+            component: DenunciaNegocioPage,
+            componentProps: {
+                idNegocio: this.informacionNegocio.id_negocio
+            }
+        });
+        await modal.present();
+    }
+    async compartir() {
+        this.url_negocio = this.url + this.informacionNegocio.url_negocio;
+        await Share.share({
+            title: 'Ver cosas interesantes',
+            text: 'Te recomiento este negocio' + this.informacionNegocio.nombre_comercial,
+            url: this.url_negocio,
+            dialogTitle: 'Compartir con Amigos'
+        })
+            .then(() => this.notificacionService.exito('Se compartio exitosamente'))
+            .catch((error) => this.notificacionService.error(error));
+    }
+
+    async abrirModalCalifica() {
+        const modal = await this.modalController.create({
+            component: CalificarNegocioComponent,
+            componentProps: {
+                actualTO: this.informacionNegocio
+            }
+        });
+        await modal.present();
+        const { data } = await modal.onDidDismiss();
+        if(data !== undefined){
+        this.informacionNegocio.numCalificaciones = data.numCalificaciones;
+        this.informacionNegocio.promedio = data.promedio;
+        location.reload();
+        }
+    }
+    /**
+ * funcion para obtener el estatus de la calificacion
+ * @author Omar
+ */
+    obtenerEstatusCalificacion() {
+        //  this.loaderEstatusCalifi = true;
+        if (this.existeSesion) {
+            this.serviceProveedores.obtenerEstatusCalificacionUsuario(this.informacionNegocio).subscribe(
+                response => {
+                    if (response.code === 200) {
+                        this.estatusCalificacion = true;
+                        this.valorEstrellas();
+                    } else {
+                        this.estatusCalificacion = false;
+                        this.valorEstrellas();
+                    }
+                },
+                error => {
+                    //      this.loaderEstatusCalifi = false;
+                }, () => {
+                    //     this.loaderEstatusCalifi = false;
+                });
+        } else {
+            this.estatusCalificacion = false;
+            //   this.loaderEstatusCalifi = false;
+        }
+    }
+    valorEstrellas() {
+        setTimeout(it => {
+            let numeroEstrella = this.informacionNegocio.promedio.toString();
+            let estrellas = <any>document.getElementsByName('estrellas');
+            for (let i = 0; i < estrellas.length; i++) {
+                if (estrellas[i].value === numeroEstrella) {
+                    let estrellaValor = estrellas[i];
+                    estrellaValor.setAttribute('checked', true);
+                }
+            }
+        }, 500);
     }
 }
