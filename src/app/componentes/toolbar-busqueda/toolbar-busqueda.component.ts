@@ -31,6 +31,10 @@ export class ToolbarBusquedaComponent implements OnInit {
         //this.notificacionesVentas();
       }, 300000);
     }
+    this.sideBarService.getObservable().subscribe((data) => {
+      this.user = this._auth0.getUserData();
+      this.permisosList();
+    });
     this.user = this._auth0.getUserData();
     this.navBarServiceService.change.subscribe(respuesta => {
       this.user = respuesta;
