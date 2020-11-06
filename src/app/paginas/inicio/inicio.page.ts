@@ -58,12 +58,12 @@ export class InicioPage implements OnInit {
         this.route.queryParams.subscribe(params => {
             if (params && params.spe) {
                 if (params.spe){
-                    sessionStorage.setItem('isRedirected', 'false');
                 }
             }
         }
-    )
+    );
     }
+
     buscarNegocios() {
         this.loader = true;
         this.principalSercicio.obtenerDatos(this.Filtros).subscribe(

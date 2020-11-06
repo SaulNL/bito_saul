@@ -31,12 +31,9 @@ export class AjustesPage implements OnInit {
     this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
         if (params.special) {
-          let simple = sessionStorage.getItem("isRedirected");
-          console.log(sessionStorage.getItem("isRedirected"));
-          if (simple === "false") {
-            console.log("hola");
-            sessionStorage.setItem("isRedirected", "true");
-            console.log(sessionStorage.getItem("isRedirected"));
+          if (localStorage.getItem("isRedirected") === "false") {
+            localStorage.setItem("isRedirected", "true");
+            console.log(localStorage.getItem("isRedirected"));
             location.reload();
           }
         }
@@ -85,6 +82,7 @@ export class AjustesPage implements OnInit {
                 queryParams: { spe: true },
               });
               location.reload();
+              localStorage.clear();
               console.log(this.usuario);
             }
           },

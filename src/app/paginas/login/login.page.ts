@@ -46,6 +46,7 @@ export class LoginPage implements OnInit {
                     // this.sideBarService.actualizarSide();
                     // this.loader = false;
                     this.sideBarService.publishSomeData('');
+                    localStorage.setItem("isRedirected", "false");
                     this.navctrl.back();
                     this.notifi.exito(respuesta.message);
                   } 
