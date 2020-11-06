@@ -22,8 +22,8 @@
 <!--<ion-card-header>-->
 <form #formBasicos="ngForm" (ngSubmit)="actualizarDatos(formBasicos)">
 <ion-list>
-  <ion-item>
-    <div class="form-group">
+ <!--- <ion-item>-->
+    <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
       <div class="avatar-upload">
           <div class="avatar-edit">
               <input type='file' hidden id="imageUpload" accept="image/*" (change)="subirArchivo($event,3)" />
@@ -42,16 +42,17 @@
           <label for="imageUpload">Icono</label>
       </div>
   </div>
-  </ion-item>
-  <ion-item>
+ <!-- </ion-item>-->
+  <!--<ion-item>-->
+    <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
     <div class="avatar-upload">
-      <div id="giroEdit" class="avatar-edit">
+      <div id="giroBanner" class="avatar-edit">
           <input type='file' id="imageUploadLo" accept="image/*" (change)="subirArchivo($event,2)"/>
           <label for="imageUploadLo">
             <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
           </label>
       </div>
-      <div id="giro" class="avatar-preview">
+      <div class="avatar-preview-separador-movil">
           <div *ngIf="categoriaTO.imagen_movil === null || categoriaTO.imagen_movil === undefined" id="imageUploadLo" [ngStyle]="categoriaTO.imagen_movil !== null ?
           {'background-image': 'url('+categoriaTO.url_imagen_movil+')'} : ''">
           </div>
@@ -61,8 +62,10 @@
       </div>
       <label for="imageUploadLo">Separador Móvil</label>
   </div>
-  </ion-item>
-  <ion-item>
+</div>
+ <!--</ion-item>-->
+  <!--<ion-item>-->
+    <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
     <div class="avatar-upload">
       <div id="giroBanner" class="avatar-edit">
           <input type='file' id="imageUploadBanner" accept="image/*" (change)="subirArchivo($event,4)">
@@ -70,7 +73,7 @@
             <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
           </label>
       </div>
-      <div id="banner" class="avatar-preview">
+      <div class="avatar-preview-separador-movil">
           <div *ngIf="categoriaTO.banner === null || categoriaTO.banner === undefined" id="imageUploadBanners" [ngStyle]="categoriaTO.imagen_movil !== null ?
           {'background-image': 'url('+categoriaTO.url_banner+')'} : ''">
           </div>
@@ -80,8 +83,10 @@
       </div>
       <label for="imageUploadBanner" >Banner</label>
   </div>
-  </ion-item>
-  <ion-item>
+</div>
+<!--</ion-item>-->
+  <!--<ion-item>-->
+    <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
     <div class="avatar-upload">
       <div id="giroImagenEdit" class="avatar-edit">
           <input type='file' id="imageUploadLocal" accept="image/*" (change)="subirArchivo($event,1)" />
@@ -89,7 +94,7 @@
             <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
           </label>
       </div>
-      <div id="giroImagen" class="avatar-preview">
+      <div  class="avatar-preview-separador">
           <div *ngIf="categoriaTO.imagen === null || categoriaTO.imagen === undefined" id="imageUploadLocal" [ngStyle]="categoriaTO.imagen !== null ?
           {'background-image': 'url('+categoriaTO.url_imagen+')'} : ''">
           </div>
@@ -99,8 +104,10 @@
       </div>
       <label for="imageUploadLocal">Separador</label>
   </div>
-  </ion-item>
-  <ion-item>
+</div>
+ <!--</ion-item>-->
+  <!--<ion-item>-->
+    <div class="form-group" style="display: flex; justify-content: center; align-items: center;"> 
     <div class="avatar-upload">
       <div id="giroEdit" class="avatar-edit">
         <input type='file' id="imageSepaUploadLocal" accept="image/*" (change)="subirArchivo($event, 5)" />
@@ -108,7 +115,7 @@
           <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
         </label>
       </div>
-      <div id="giro" class="avatar-preview">
+      <div class="avatar-preview-separador-movil">
         <div *ngIf="categoriaTO.imagen_separador === null || categoriaTO.imagen_separador === undefined" id="imageUploadLo" [ngStyle]="categoriaTO.imagen_separador !== null ?
                     {'background-image': 'url('+categoriaTO.url_imagen_separador+')'} : ''">
         </div>
@@ -118,7 +125,8 @@
       </div>
       <label for="imageUploadLo" >Separador categoría</label>
     </div>
-  </ion-item>
+  </div>
+  <!--</ion-item>-->
   <ion-item>
     <ion-label position="stacked">Nombre</ion-label>
     <ion-input  #nombre="ngModel" required  name="nombre" [(ngModel)]="categoriaTO.nombre"></ion-input>

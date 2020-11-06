@@ -6,8 +6,8 @@
   }
   .avatar-edit {
     position: relative;
-    right: -37vw;
-    top: 5vh;
+    right: auto;
+    top: 3vh;
     z-index: 1;
   }
   .avatar-upload > .avatar-edit > input {
@@ -47,11 +47,9 @@
   .avatar-preview {
     width: 150px;
     height: 150px;
-    position: relative;
     border-radius: 100%;
     border: 3px solid #a1a1a1;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
-    right: -12vh;
   }
   .avatar-preview > div {
     width: 100% !important;
@@ -62,6 +60,50 @@
     background-repeat: no-repeat !important;
     background-position: center !important;
   }
+  .avatar-preview-separador-movil  {
+    width: 285px;
+    height: 100px;
+    border-radius: 0%;
+    border: 3px solid #a1a1a1;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+   position: relative;
+   left: -55px;
+  }
+
+  .avatar-preview-separador-movil > div {
+    width: 100% !important;
+    height: 35% !important;
+    border-radius: 0% !important;
+    background-size: cover !important;
+    background-image: url('https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg');
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    position: relative;
+    top: 5vh;
+  }
+
+  .avatar-preview-separador{
+    width: 340px;
+    height: 100px;
+    border-radius: 0%;
+    border: 3px solid #a1a1a1;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+   position: relative;
+   left: -86px;
+  }
+
+  .avatar-preview-separador > div {
+    width: 100% !important;
+    height: 14% !important;
+    border-radius: 0% !important;
+    background-size: cover !important;
+    background-image: url('https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg');
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    position: relative;
+    top: 6vh;
+  }
+
   #giro {
     width: 71vw;
     height: 8vh;
@@ -79,7 +121,7 @@
 }
 
 #giroEdit, #giroBanner , #giroImagenEdit {
-  right: -28vw !important;
+  right: auto !important;
   top: 3vh !important;
 }
 
@@ -98,99 +140,3 @@
     position: absolute;
     top: 3.1vh;
 }
-
-/*@media only screen and (min-width: 1024px) and (orientation: landscape) { 
-  #giro, #giroImagen, #banner  {
-    width: 52vw;
-    height: 10vh;
-    left: -18vw;
-  }
-  #giro>div {
-    max-height: 8vh !important;
-  }
-  #giroEdit, #giroBanner , #giroImagenEdit {
-    right: -20vw !important;
-    top: 2vh !important;
-  }
-  #giroImagen>div, #banner>div {
-    max-height: 2vh;
-  }
-  .avatar-preview {
-    right: -37vh;
-  }
-  .avatar-edit {
-    right: -32vw !important;
-  }
- }*/
-/*@media only screen and (min-width: 768px) and (orientation: landscape) { 
-  #giro, #giroImagen, #banner  {
-    width: 54vw;
-    height: 9vh;
-    border-radius: 0%;
-    left: -22vw;
-  }
-  #giro>div {
-    max-height: 71px;
-  }
-  #giroEdit, #giroBanner , #giroImagenEdit {
-    right: -20vw !important;
-    top: 2vh !important;
-  }
-  #giroImagen>div, #banner>div {
-    max-height: 28px;
-  }
-  .avatar-preview {
-    right: -23vw;
-  }
-  .avatar-edit {
-    right: -32vw !important;
-  }
- }*/
-/* @media only screen and (min-device-width: 1024px) and (orientation: portrait) { 
-  #giro, #giroImagen, #banner {
-    width: 60vw !important;
-    height: 7vh !important;
-    left: -22vw !important;
-   }
-   #giro>div {
-    max-height: 5vh !important;
-  }
-  #giroImagen>div, #banner>div {
-    max-height: 1vh !important;
-  }
-  #giroEdit, #giroBanner , #giroImagenEdit {
-    right: -23vw !important;
-    top: 1vh !important;
-  }
- .avatar-preview {
-    right: -26vw;
-  }
-  .avatar-edit {
-    right: -32vw !important;
-  }
- }*/
- /*@media only screen and (min-device-width: 768px) and (orientation: portrait) { 
-  #giro, #giroImagen, #banner {
-    width: 60vw !important;
-    height: 7vh !important;
-    left: -22vw !important;
-   }
-   #giro>div {
-    max-height: 5vh !important;
-  }
-  #giroImagen>div, #banner>div {
-    max-height: 3vh !important;
-    top: 2vh;
-  }
-  #giroEdit, #giroBanner , #giroImagenEdit {
-    right: -23vw !important;
-    top: 1vh !important;
-  }
-  .avatar-preview {
-    right: -25vw;
-  }
-  .avatar-edit {
-    right: -40vw !important;
-    top: 4vh !important;
-  }
- }*/

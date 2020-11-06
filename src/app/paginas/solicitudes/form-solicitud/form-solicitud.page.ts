@@ -180,6 +180,7 @@ export class FormSolicitudPage implements OnInit {
   * Funcion para obtener los municipios
   */
   public get_list_cat_municipio(evento) {
+    this.actualTO.det_domicilio.id_municipio = [];
     let idE;
     if (evento.type === 'ionChange') {
       idE = evento.detail.value;
@@ -214,6 +215,7 @@ export class FormSolicitudPage implements OnInit {
    * Obtener localidad
    */
   public get_list_cat_localidad(evento) {
+    this.actualTO.det_domicilio.id_localidad = [];
     let idE;
     if (evento.type === 'ionChange') {
       idE = evento.detail.value;
@@ -320,13 +322,13 @@ export class FormSolicitudPage implements OnInit {
               this.resizeToWidth = 200;
               this.resizeToHeight = 200;
               this.abrirModal(event, this.resizeToWidth, this.resizeToHeight).then(r => {
-                if(r !== undefined ){
-                const archivo = new ArchivoComunModel();
-                archivo.nombre_archivo = r.nombre_archivo,
-                archivo.archivo_64 = r.data;
-                this.actualTO.imagen = archivo;
-                this.blnImgCuadrada = false;
-              }
+                if (r !== undefined) {
+                  const archivo = new ArchivoComunModel();
+                  archivo.nombre_archivo = r.nombre_archivo,
+                    archivo.archivo_64 = r.data;
+                  this.actualTO.imagen = archivo;
+                  this.blnImgCuadrada = false;
+                }
               }
               );
             }

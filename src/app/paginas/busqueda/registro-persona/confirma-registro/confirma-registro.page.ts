@@ -187,20 +187,24 @@ export class ConfirmaRegistroPage implements OnInit {
               this.router.navigate(['/tabs/inicio']);
               setTimeout(() => {
                  location.reload();
-               }, 1800);
+               }, 1300);
             } else {
+              this.loader.dismiss();
               this.notificaciones.alerta(data.message);
             }
           }, error => {
+            this.loader.dismiss();
             this.notificaciones.error(error);
           });
         } else {
+          this.loader.dismiss();
           this.notificaciones.alerta(response.message);
         }
         // this.procesando = false;
         // this.btnloader = false;
       },
       error => {
+        this.loader.dismiss();
         this.notificaciones.error(error);
         //  this.status_save = 'error';
         //  this._notificacionService.pushError(error);

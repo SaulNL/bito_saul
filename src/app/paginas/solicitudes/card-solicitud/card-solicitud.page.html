@@ -11,7 +11,7 @@
   <ion-card style="margin-bottom: 3%;" >
     <ion-card-header>
       <ion-grid>
-            <div class="ion-text-start">
+            <div class="ion-text-end">
               <label *ngIf="solicitud.activo_public !== 1">Sin Publicar</label>
               <label *ngIf="solicitud.activo_public === 1"
                      [ngClass]="{'colorMun': solicitud.activo_public === 1}">Publicado</label>
@@ -19,15 +19,17 @@
             </div>
             <h2 class="ion-text-center" id="soli{{solicitud.id_solicitud}}">{{solicitud.solicitud}}</h2>
         <ion-row class="ion-text-center">
-          <ion-col size="4" >
+          <ion-col size="12" >
             <div>
-              <img src="{{solicitud.url_imagen}}" alt="Falla al cargar imagen" height="100">
+              <img src="{{solicitud.url_imagen}}" alt="Falla al cargar imagen" height="250">
             </div>
           </ion-col>
-          <ion-col size="8">
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" class="ion-text-center">
             <ion-label class="ion-text-center">{{solicitud.descripcion}}</ion-label>
             <ion-row class="ion-margin-top">
-              <ion-badge style="margin:1px;" color="medium"  *ngFor="let item of solicitud.tags; let i = index">
+              <ion-badge style="margin:1px;" color="primary"  *ngFor="let item of solicitud.tags; let i = index">
                 <span  style="display: inline-block" *ngIf="item !== undefined && item !== null && item !== ''" >
                   {{item}}
                 </span>
@@ -36,12 +38,26 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-     <ion-button (click)="abrirModal()" type="submit" class="bg-rosa" expand="block">Publicar
+    <ion-grid>
+      <ion-row class="ion-text-center">
+        <ion-col size="6">
+          <ion-button (click)="abrirModal()" color="success" expand="block">Publicar
+            <ion-icon name="globe-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button (click)="modificar()" color="warning" expand="block">Editar 
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+     <!--<ion-button (click)="abrirModal()" type="submit" class="bg-rosa" expand="block">Publicar
         <ion-icon name="globe-outline"></ion-icon>
       </ion-button>
       <ion-button (click)="modificar()" type="button" class="bg-rosa" expand="block">Editar 
         <ion-icon name="create-outline"></ion-icon>
-      </ion-button>
+      </ion-button>-->
     </ion-card-header>
   </ion-card>
 </ion-content>

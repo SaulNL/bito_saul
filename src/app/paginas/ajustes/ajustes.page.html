@@ -14,7 +14,8 @@
 <ion-content fullscreen *ngIf="usuario !== null">
   <ion-card style="height: 100%;">
     <div class="ion-text-center ion-margin-top">
-    <img  class="rounded-circle" [src]="usuario.imagen !== null ? usuario.imagen: url_user" alt="">
+    <img *ngIf="usuario.imagen !== ''"  class="rounded-circle" [src]="usuario.imagen"   alt="">
+    <img *ngIf="usuario.imagen === ''" class="imagen" alt="" >
   </div>
     <ion-card-header class="ion-text-center">
       <ion-card-title>
