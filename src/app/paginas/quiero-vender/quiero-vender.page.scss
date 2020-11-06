@@ -1,0 +1,32 @@
+.contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.foto {
+    width: 200px;
+    height: 200px;
+    border: 2px solid grey;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cargar {
+    position: absolute;
+    z-index: 1;
+}
+
+.ine {
+    width: 150px;
+    height: 100px;
+    border: 2px solid grey;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
