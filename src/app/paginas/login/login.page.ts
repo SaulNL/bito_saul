@@ -62,6 +62,9 @@ export class LoginPage implements OnInit {
             }
         );
     }
+    registratePersona(){
+        this._router.navigate(['/tabs/registro-persona']);
+    }
 
     recuerarContrasenia(){
       this._router.navigate(['/tabs/login/recuperar-contrasenia']);
