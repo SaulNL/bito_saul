@@ -24,7 +24,6 @@ export class PerfilNegocioPage implements OnInit {
     public miLng: any;
     public permisoUbicacionCancelado: boolean;
     public existeSesion: boolean;
-    public negocioDatos:any;
 
     constructor(
         private route: ActivatedRoute,
@@ -97,7 +96,6 @@ export class PerfilNegocioPage implements OnInit {
             response => {
                 if (response.code === 200 && response.agrupados != null) {
                     const productos = response.agrupados;
-                    this.negocioDatos = response.data;
                     const cats = [];
 
                     if (productos !== undefined) {
@@ -122,6 +120,12 @@ export class PerfilNegocioPage implements OnInit {
                         this.informacionNegocio.catProductos = cats;
                         console.log(cats)
                     }
+                }
+                if (response.code === 200) {
+                    this.informacionNegocio.cartaProducto = response.data.cartaProducto;
+                    this.informacionNegocio.cartaServicio = response.data.cartaServicio;
+                    this.informacionNegocio.tagsProductos = response.data.productoTags;
+                    this.informacionNegocio.tagsServicios = response.data.serviciosTags;
                 }
             },
             error => {

@@ -28,16 +28,18 @@
         <ion-row>
             <ion-card class="w-100">
                 <ion-card-content class="ion-text-center">
-                    {{informacionNegocio.descripcion}}s
+                    {{informacionNegocio.descripcion}}
                 </ion-card-content>
             </ion-card>
         </ion-row>
     </ion-grid>
     <ion-button shape="round"
-    *ngIf="informacionNegocio.catProductos.length > 0" (click)="abrirVentana(negocioDatos.cartaProducto)"
+    *ngIf="informacionNegocio.cartaProducto !== undefined && informacionNegocio.cartaProducto !== null && informacionNegocio.cartaProducto !== ''" 
+    (click)="abrirVentana(informacionNegocio.cartaProducto)"
     expand="full" class="bg-rosa">Ver carta de productos </ion-button>
     <ion-button shape="round"
-    *ngIf="informacionNegocio.catServicos.length > 0" (click)="abrirVentana(negocioDatos.cartaServicio)"
+    *ngIf="informacionNegocio.cartaServicio !== undefined && informacionNegocio.cartaServicio !== null&& informacionNegocio.cartaServicio !== ''"
+    (click)="abrirVentana(informacionNegocio.cartaServicio)"
     expand="full" class="bg-rosa">Ver carta de servicios</ion-button>
     <ion-grid *ngIf="!existeSesion">
         <ion-row>
@@ -93,6 +95,16 @@
                     </ion-card>
                 </ion-col>
             </ion-row>
+            <ion-row *ngIf="informacionNegocio.tagsProductos !== undefined && informacionNegocio.tagsProductos.length > 0">
+                <ion-card>
+                    <ion-card-header>
+                      <ion-card-subtitle><strong>Etiquetas de búsqueda (Productos)</strong></ion-card-subtitle>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-badge *ngFor="let item of informacionNegocio.tagsProductos"> {{ item }} </ion-badge>
+                    </ion-card-content>
+                  </ion-card>
+            </ion-row>
         </ion-grid>
         <ion-grid *ngIf="seccion === 'servicios'">
             <ion-row *ngFor="let cat of informacionNegocio.catServicos">
@@ -112,6 +124,16 @@
                         </ion-card-content>
                     </ion-card>
                 </ion-col>
+            </ion-row>
+            <ion-row *ngIf="informacionNegocio.tagsServicios !== undefined && informacionNegocio.tagsServicios.length > 0">
+                <ion-card>
+                    <ion-card-header>
+                      <ion-card-subtitle><strong>Etiquetas de búsqueda (Servicios)</strong></ion-card-subtitle>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-badge *ngFor="let item of informacionNegocio.tagsServicios"> {{ item }} </ion-badge>
+                    </ion-card-content>
+                  </ion-card>
             </ion-row>
         </ion-grid>
     </div>
