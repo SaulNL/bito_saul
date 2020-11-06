@@ -53,7 +53,7 @@ export class LoginPage implements OnInit {
                     this.notifi.exito(respuesta.message);
                   }
                   if (respuesta.code === 402){
-                    this.notifi.alerta(respuesta.message);
+                    this.notifi.alerta("Usuario y/o contraseña incorrectos");
                   }
 
 
