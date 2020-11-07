@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PromocionesModel } from '../../Modelos/PromocionesModel';
 import { PromocionesService } from '../../api/promociones.service';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonContent } from '@ionic/angular';
 import { PublicacionesModel } from '../../Modelos/PublicacionesModel';
 import { ModalController } from '@ionic/angular';
 import { ModalPublicarComponent } from 'src/app/components/modal-publicar/modal-publicar.component';
@@ -16,7 +16,8 @@ import {Router, ActivatedRoute} from "@angular/router";
   styleUrls: ['./mispromociones.page.scss'],
 })
 export class MispromocionesPage implements OnInit {
-
+  @ViewChild(IonContent) content: IonContent;
+  public cordenada: number;
   public seleccionTO: PromocionesModel;
   public agregarPromocion: boolean;
   public seleccionaPromocion: boolean;

@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" [scrollEvents]="true"  (ionScroll)="cordenada = $event.detail.scrollTop">
+<ion-content  [fullscreen]="true" [scrollEvents]="true"  (ionScroll)="cordenada = $event.detail.scrollTop">
   <app-boton-top [content]="content" [cordenada]="cordenada" ></app-boton-top>
 <section class="portada-fondo">
   <div class="container-fluid espacio_top">
@@ -51,7 +51,7 @@
   </div>
 </section>
   <!-- seccion 2 -->
-  <ion-grid>
+  <ion-grid class="ion-padding">
     <ion-row>
       <ion-col>
         <div class="ion-text-center">
@@ -84,7 +84,7 @@
     </ion-row>
   </ion-grid>
     <!-- seccion 3 -->
-    <ion-grid class="fondos">
+    <ion-grid  class="fondos ion-padding">
       <ion-row>
         <ion-col>
           <div class="ion-text-center">
@@ -117,7 +117,7 @@
       </ion-row>
     </ion-grid>
     <!-- seccion 4 -->
-    <ion-grid>
+    <ion-grid class="ion-padding">
       <ion-row>
         <ion-col>
           <div class="ion-text-center">
@@ -138,7 +138,7 @@
     </ion-grid>
     <!-- seccion 5 -->
 
-    <ion-grid class="fondos">
+    <ion-grid class="fondos ion-padding">
       <ion-row>
         <ion-col>
           <div class="ion-text-center">
@@ -170,7 +170,7 @@
       </ion-row>
     </ion-grid>
 <!-- seccion 6 -->
-    <ion-grid>
+    <ion-grid class="ion-padding">
       <ion-row>
         <ion-col>
           <div class="ion-text-center">
@@ -194,9 +194,9 @@
       </ion-row>
     </ion-grid>
 <!-- seccion 7 -->
-    <ion-grid class="fondos">
+    <ion-grid class="fondos ion-padding">
       <ion-row>
-        <ion-col size="12" size-sm>
+        <ion-col size="12" size-md>
           <div class="ion-text-center">
             <h2>CONOCE A NUESTROS </h2>
             <h2><span>REPRESENTANTES OFICIALES</span></h2>
@@ -223,7 +223,7 @@
             </div>
           </div>
         </ion-col>
-        <ion-col size="12" size-sm>
+        <ion-col size="12" size-md>
         <div class="cruz" align="center">
           <div class="container-fluid">
             <div class="row justify-content-center">
@@ -246,7 +246,7 @@
       </ion-row>
     </ion-grid>
 <!-- seccion 8 -->
-    <ion-grid>
+    <ion-grid class="ion-padding">
       <ion-row>
         <ion-col>
           <div class="ion-text-center">
@@ -311,7 +311,7 @@
       </ion-row>
     </ion-grid>
 <!-- seccion 9 -->
-    <ion-grid class="fondos">
+    <ion-grid class="fondos ion-padding">
       <ion-row>
         <ion-col>
           <div class="ion-text-center">

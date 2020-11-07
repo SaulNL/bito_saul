@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { BusquedaService } from '../../api/busqueda.service';
 import {Router} from '@angular/router';
 import { FiltrosModel } from '../../Modelos/FiltrosModel';
 import { HostListener } from '@angular/core';
-import {NavController} from "@ionic/angular";
+import {IonContent, NavController} from "@ionic/angular";
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.page.html',
   styleUrls: ['./categorias.page.scss'],
 })
 export class CategoriasPage implements OnInit {
+  @ViewChild(IonContent) content: IonContent;
+  public cordenada: number;
 
   public listaCategorias: Array<any>;
   private Filtros: FiltrosModel;

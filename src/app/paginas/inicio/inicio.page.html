@@ -6,7 +6,8 @@
 <!--    </ion-toolbar>-->
 <!--</ion-header>-->
 <app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" [scrollEvents]="true"  (ionScroll)="cordenada = $event.detail.scrollTop">
+    <app-boton-top [content]="content" [cordenada]="cordenada" ></app-boton-top>
     <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
     <ion-content class="ion-padding" *ngIf="loader" fullscreen>
         <div class="spin" >
