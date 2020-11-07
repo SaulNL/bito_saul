@@ -8,6 +8,7 @@ import { CardPostuladoPageRoutingModule } from './card-postulado-routing.module'
 
 import { CardPostuladoPage } from './card-postulado.page';
 
+
 @NgModule({
   imports: [
     CommonModule,
