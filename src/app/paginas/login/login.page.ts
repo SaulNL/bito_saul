@@ -5,9 +5,10 @@ import {AppSettings} from "../../AppSettings";
 import {Location} from '@angular/common';
 import {SessionUtil} from "../../utils/sessionUtil";
 import {SideBarService} from "../../api/busqueda/side-bar-service";
-import {NavController} from "@ionic/angular";
-import {Router, ModalController} from "@angular/router";
+import {ModalController, NavController} from "@ionic/angular";
+import {Router} from "@angular/router";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import {RecuperarContraseniaPage} from "./recuperar-contrasenia/recuperar-contrasenia.page";
 
 @Component({
     selector: 'app-login',
@@ -29,7 +30,7 @@ export class LoginPage implements OnInit {
         private sessionUtil: SessionUtil,
         private sideBarService: SideBarService,
         private _router: Router,
-        private notifi: ToadNotificacionService
+        private notifi: ToadNotificacionService,
         private modalController: ModalController,
     ) {
         this.loader = false;
