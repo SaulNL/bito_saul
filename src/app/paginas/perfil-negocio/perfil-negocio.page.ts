@@ -315,7 +315,7 @@ export class PerfilNegocioPage implements OnInit {
         if(data !== undefined){
         this.informacionNegocio.numCalificaciones = data.numCalificaciones;
         this.informacionNegocio.promedio = data.promedio;
-        location.reload();
+        this.obtenerEstatusCalificacion();
         }
     }
     /**
