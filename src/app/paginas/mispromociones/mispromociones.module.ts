@@ -8,6 +8,7 @@ import { RecorteImagenComponent } from '../../components/recorte-imagen/recorte-
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ModalPublicarComponent } from '../../components/modal-publicar/modal-publicar.component';
 import { ModalInfoPromoComponent } from '../../components/modal-info-promo/modal-info-promo.component';
+import { TabsPageModule } from '../tabs/tabs.module';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { ModalInfoPromoComponent } from '../../components/modal-info-promo/modal
     FormsModule,
     IonicModule,
     MispromocionesPageRoutingModule,
-    ImageCropperModule
+    ImageCropperModule,
+    TabsPageModule
   ],
   declarations: [
   	MispromocionesPage,

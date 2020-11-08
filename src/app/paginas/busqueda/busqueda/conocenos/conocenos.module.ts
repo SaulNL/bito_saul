@@ -9,23 +9,20 @@ import { ConocenosPageRoutingModule } from './conocenos-routing.module';
 import { ConocenosPage } from './conocenos.page';
 import { ContactoPage } from '../../contacto/contacto.page';
 import { FooterPage } from '../../footer/footer.page';
-import {BotonTopComponent} from '../../../../componentes/boton-top/boton-top.component';
+import { TabsPageModule } from 'src/app/paginas/tabs/tabs.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ConocenosPageRoutingModule
+    ConocenosPageRoutingModule,
+    TabsPageModule
   ],
   declarations: [
     ConocenosPage,
     ContactoPage,
-    FooterPage,
-    BotonTopComponent
-  ],
-  exports: [
-    BotonTopComponent
+    FooterPage
   ]
 })
 export class ConocenosPageModule {}

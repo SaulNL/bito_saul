@@ -8,6 +8,7 @@ import { ToolbarBusquedaComponent } from '../../componentes/toolbar-busqueda/too
 import { TabsPageRoutingModule } from './tabs-routing.module';
 
 import { TabsPage } from './tabs.page';
+import { BotonTopComponent } from 'src/app/componentes/boton-top/boton-top.component';
 
 
 @NgModule({
@@ -20,11 +21,13 @@ import { TabsPage } from './tabs.page';
   declarations: [
     TabsPage,
     BannerPromocionesComponent,
-    ToolbarBusquedaComponent 
+    ToolbarBusquedaComponent,
+    BotonTopComponent
   ],
   exports: [
     BannerPromocionesComponent,
-    ToolbarBusquedaComponent 
+    ToolbarBusquedaComponent ,
+    BotonTopComponent
   ]
 })
 export class TabsPageModule {}

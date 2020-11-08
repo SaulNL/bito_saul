@@ -210,16 +210,18 @@ samp {
         background-size: 19vw;
         padding-bottom: 15vw;
         left: 22vw;
+        top: 3vw;
     }
     .alexis h3 {
         top: 0vw;
-        right: 20.6vw;
+        right: 68.6vw;
     }
     .raymundo {
         background-size: 20vw;
         padding-bottom: 15vw;
-        left: 2vw;
-        top: -6vw;
+        left: 49vw;
+        top: 16vw;
+        margin-top: -45vw;
     }
     .raymundo h3 {
         top: 20vw;
@@ -230,7 +232,7 @@ samp {
         background-size: 20vw;
         padding-bottom: 15vw;
         left: 29vw;
-        bottom: -6vw;
+        bottom: -28vw;
     }
     .nelly h3 {
         left: -5vw;
@@ -239,7 +241,8 @@ samp {
     .Carla {
         background-size: 20vw;
         padding-bottom: 15vw;
-        top: 8vw;
+        top: 5vw;
+        right: -51vw;
     }
     .Carla h3 {
         top: -7vw;
@@ -300,12 +303,12 @@ samp {
     }
     .alexis h3 {
         top: 0vw;
-        right: 23.6vw;
+        right: 22.6vw;
     }
     .raymundo {
         background-size: 20vw;
         padding-bottom: 15vw;
-        left: 26vw;
+        left: 23vw;
         top: 19vw;
     }
     .raymundo h3 {
@@ -327,7 +330,7 @@ samp {
         background-size: 20vw;
         padding-bottom: 15vw;
         top: 6vw;
-        left: 26vw;
+        left: 23vw;
     }
     .Carla h3 {
         top: -5vw;
@@ -375,47 +378,49 @@ samp {
 @media screen and (min-width: 992px) and (max-width: 1199.98px) {
     .cruz {
         margin-top: 1.5vw;
-        margin-bottom: 4vw;
+        margin-bottom: -2vw;
         right: 2vw;
     }
     .alexis {
-        background-size: 19vw;
-        padding-bottom: 15vw;
-        left: -3vw;
-        bottom: 1vw;
+        background-size: 15vw;
+        padding-bottom: 11vw;
+        left: 1vw;
+        bottom: -3vw;
+        margin-bottom: -33vw;
     }
     .alexis h3 {
-        top: 0vw;
-        right: 23.6vw;
+        top: -4vw;
+        right: 20.6vw;
     }
     .raymundo {
-        background-size: 20vw;
-        padding-bottom: 15vw;
-        left: 26vw;
-        top: 19vw;
+        background-size: 16vw;
+        padding-bottom: 11vw;
+        left: 18vw;
+        top: 11vw;
     }
     .raymundo h3 {
-        top: 20vw;
+        top: 17vw;
         left: 8vw;
         margin-right: 7vw !important;
     }
     .nelly {
-        background-size: 20vw;
-        padding-bottom: 15vw;
+        background-size: 16vw;
+        padding-bottom: 11vw;
         left: 2vw;
-        bottom: -24vw;
+        bottom: -16vw;
     }
     .nelly h3 {
         left: -3vw;
         top: 0vw;
     }
     .Carla {
-        background-size: 20vw;
-        padding-bottom: 6vw;
-        right: 26vw;
+        background-size: 16vw;
+        padding-bottom: 10vw;
+        right: -21vw;
+        top: -3vw;
     }
     .Carla h3 {
-        top: 19vw;
+        top: 13vw;
         left: -2vw;
     }
     h2 {
@@ -447,54 +452,56 @@ samp {
 @media screen and (min-width: 1200px) {
     .cruz {
         margin-top: 1.5vw;
-        margin-bottom: 4vw;
-        right: 2vw;
+        margin-bottom: -15vw;
+        right: 0vw;
     }
     .alexis {
-        background-size: 19vw;
-        padding-bottom: 15vw;
-        left: -3vw;
-        bottom: 1vw;
+        background-size: 16vw;
+        padding-bottom: 11vw;
+        left: -1vw;
+        bottom: -18vw;
+        margin-top: -17vw;
     }
     .alexis h3 {
-        top: 2vw;
-        right: -5.4vw;
+        top: -4vw;
+        right: 19.6vw;
     }
     .raymundo {
-        background-size: 20vw;
-        padding-bottom: 15vw;
-        left: 1vw;
+        background-size: 16vw;
+        padding-bottom: 11vw;
+        left: 17vw;
         top: -6vw;
     }
     .raymundo h3 {
-        top: 20vw;
-        left: 8vw;
+        top: 16vw;
+        left: 7vw;
         margin-right: 7vw !important;
     }
     .nelly {
-        background-size: 20vw;
-        padding-bottom: 15vw;
+        background-size: 16vw;
+        padding-bottom: 11vw;
         left: 1vw;
-        bottom: -1vw;
+        bottom: -3vw;
     }
     .nelly h3 {
-        left: -4vw;
-        top: 1vw;
+        left: -1vw;
+        top: -2vw;
     }
     .Carla {
-        background-size: 20vw;
-        padding-bottom: 15vw;
-        right: -3vw;
+        background-size: 16vw;
+        padding-bottom: 11vw;
+        right: -20vw;
+        top: -17vw;
     }
     .Carla h3 {
-        top: 19vw;
-        left: -2vw;
+        top: 14vw;
+        left: -1vw;
     }
     h2 {
         font-size: 3vw !important;
     }
     h3 {
-        font-size: 2.5vw !important;
+        font-size: 2vw !important;
     }
     p {
         font-size: 1.5vw !important;

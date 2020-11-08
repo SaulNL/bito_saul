@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
-import { LoadingController, MenuController, ModalController, ToastController } from "@ionic/angular";
+import { IonContent, LoadingController, MenuController, ModalController, ToastController } from "@ionic/angular";
 import { BusquedaService } from "../../api/busqueda.service";
 import { FiltrosModel } from '../../Modelos/FiltrosModel';
 import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/filtros-busqueda.component";
@@ -16,6 +16,8 @@ import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-nego
     styleUrls: ['inicio.page.scss']
 })
 export class InicioPage implements OnInit {
+    @ViewChild(IonContent) content: IonContent;
+    public cordenada: number;
     private Filtros: FiltrosModel;
     public listaCategorias: any;
     private modal: any;

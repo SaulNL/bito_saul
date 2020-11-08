@@ -1,6 +1,6 @@
-import {Component, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, ViewChild} from '@angular/core';
 import {ProductoModel} from "../../Modelos/ProductoModel";
-import {LoadingController, ModalController, ToastController} from "@ionic/angular";
+import {IonContent, LoadingController, ModalController, ToastController} from "@ionic/angular";
 import {Router, ActivatedRoute} from "@angular/router";
 import {BusquedaService} from "../../api/busqueda.service";
 import {ProductosService} from "../../api/productos.service";
@@ -16,6 +16,8 @@ import {FiltrosBusquedaComponent} from "../../componentes/filtros-busqueda/filtr
   styleUrls: ['productos.page.scss']
 })
 export class ProductosPage {
+  @ViewChild(IonContent) content: IonContent;
+  public cordenada: number;
   public anyFiltros: FiltrosModel;
   public lstProductos: Array<ProductoModel>;
   public lstProductosBK: Array<ProductoModel>;

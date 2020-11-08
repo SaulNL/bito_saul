@@ -40,13 +40,6 @@
     </ion-grid>
 
     <ion-grid>
-        <ion-row 
-        *ngIf="informacionNegocio.catProductos.length === 0 || informacionNegocio.catServicos.length === 0">
-            <ion-col size="12" style="color: #856404; background: #fff3cd; border-radius: 20px; padding: 10px; text-align: center;">
-                <strong>Lo sentimos!</strong> {{informacionNegocio.nombre_comercial}} aún no ha capturado los productos y/o servicios que
-        oferta.
-            </ion-col>
-        </ion-row>
         <ion-row>
             <ion-col>
                 <ion-button shape="round"
