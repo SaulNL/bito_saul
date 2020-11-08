@@ -4,6 +4,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SolicitudesService } from '../../../../../../api/solicitudes.service';
 import { PostuladosModel } from 'src/app/Modelos/PostuladosModel';
 import { LoadingController } from '@ionic/angular';
+import { Downloader, DownloadRequest, NotificationVisibility} from '@ionic-native/downloader/ngx';
+import { ToadNotificacionService } from '../../../../../../api/toad-notificacion.service';
+
+
 @Component({
   selector: 'app-card-postulado',
   templateUrl: './card-postulado.page.html',
@@ -18,6 +22,8 @@ export class CardPostuladoPage implements OnInit {
     private router: Router,
     private solicitudesService: SolicitudesService,
     public loadingController: LoadingController,
+    private downloader: Downloader,
+    public notificaciones: ToadNotificacionService
   ) { }
 
   ngOnInit() {
@@ -53,4 +59,23 @@ export class CardPostuladoPage implements OnInit {
   cerrar() {
     this.router.navigate(['/tabs/home/solicitudes']);
   }
+  descargarArchivo() {
+    var request: DownloadRequest = {
+      uri: this.solicitudPostulado.url_archivo,
+      title: 'Archivo_Solicitud_Postulado',
+      description: 'Archivo que contiene una solicitud de un postulado',
+      mimeType: '',
+      visibleInDownloadsUi: true,
+      notificationVisibility: NotificationVisibility.VisibleNotifyCompleted,
+      destinationInExternalFilesDir: {
+        dirType: 'Downloads',
+        subPath: 'MyFile.apk'
+      }
+    };
+
+    this.downloader.download(request)
+      .then((location: string) => this.notificaciones.exito('Archivo descargado en:' + location))
+      .catch((error: any) =>  this.notificaciones.error(error));
+  }
+
 }

@@ -12,6 +12,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { FormsModule } from '@angular/forms';
 
 import { HaversineService } from "ng2-haversine";
+import { Downloader} from '@ionic-native/downloader/ngx';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { HaversineService } from "ng2-haversine";
     StatusBar,
     SplashScreen,
     HaversineService,
-    { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy }
+    { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy },
+    Downloader
   ],
   bootstrap: [AppComponent]
 })

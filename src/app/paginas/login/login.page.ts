@@ -6,7 +6,7 @@ import {Location} from '@angular/common';
 import {SessionUtil} from "../../utils/sessionUtil";
 import {SideBarService} from "../../api/busqueda/side-bar-service";
 import {NavController} from "@ionic/angular";
-import {Router} from "@angular/router";
+import {Router, ModalController} from "@angular/router";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 
 @Component({
@@ -30,6 +30,7 @@ export class LoginPage implements OnInit {
         private sideBarService: SideBarService,
         private _router: Router,
         private notifi: ToadNotificacionService
+        private modalController: ModalController,
     ) {
         this.loader = false;
         this.usuario = new Login();
@@ -66,8 +67,12 @@ export class LoginPage implements OnInit {
         this._router.navigate(['/tabs/registro-persona']);
     }
 
-    recuerarContrasenia(){
-      this._router.navigate(['/tabs/login/recuperar-contrasenia']);
+    async recuerarContrasenia() {
+        // this._router.navigate(['/tabs/login/recuperar-contrasenia']);
+        const modal = await this.modalController.create({
+            component: RecuperarContraseniaPage
+        });
+        await modal.present();
     }
 
 }

@@ -19,7 +19,8 @@
       <br>
       <br>
       <ion-label><strong>Archivo Adjunto: </strong>
-        <a *ngIf="solicitudPostulado.url_archivo !== ''" href="{{solicitudPostulado.url_archivo}}" download> Descargar </a>
+        <ion-button size="small" class="bg-rosa" *ngIf="solicitudPostulado.url_archivo !== ''" (click)="descargarArchivo()">Descargar</ion-button>
+        <!--<a *ngIf="solicitudPostulado.url_archivo !== ''" href="{{solicitudPostulado.url_archivo}}" download> Descargar </a>-->
         <label *ngIf="solicitudPostulado.url_archivo === ''">Sin archivo adjunto</label>
       </ion-label>
       <br>
