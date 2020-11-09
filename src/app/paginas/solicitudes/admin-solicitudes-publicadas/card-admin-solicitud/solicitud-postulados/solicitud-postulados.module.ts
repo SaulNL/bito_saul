@@ -8,6 +8,7 @@ import { SolicitudPostuladosPageRoutingModule } from './solicitud-postulados-rou
 
 import { SolicitudPostuladosPage } from './solicitud-postulados.page';
 
+
 @NgModule({
   imports: [
     CommonModule,

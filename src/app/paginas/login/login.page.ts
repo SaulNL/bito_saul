@@ -5,9 +5,10 @@ import {AppSettings} from "../../AppSettings";
 import {Location} from '@angular/common';
 import {SessionUtil} from "../../utils/sessionUtil";
 import {SideBarService} from "../../api/busqueda/side-bar-service";
-import {NavController} from "@ionic/angular";
+import {ModalController, NavController} from "@ionic/angular";
 import {Router} from "@angular/router";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import {RecuperarContraseniaPage} from "./recuperar-contrasenia/recuperar-contrasenia.page";
 
 @Component({
     selector: 'app-login',
@@ -29,7 +30,8 @@ export class LoginPage implements OnInit {
         private sessionUtil: SessionUtil,
         private sideBarService: SideBarService,
         private _router: Router,
-        private notifi: ToadNotificacionService
+        private notifi: ToadNotificacionService,
+        private modalController: ModalController,
     ) {
         this.loader = false;
         this.usuario = new Login();
@@ -53,7 +55,7 @@ export class LoginPage implements OnInit {
                     this.notifi.exito(respuesta.message);
                   }
                   if (respuesta.code === 402){
-                    this.notifi.alerta(respuesta.message);
+                    this.notifi.alerta("Usuario y/o contraseña incorrectos");
                   }
 
 
@@ -62,9 +64,16 @@ export class LoginPage implements OnInit {
             }
         );
     }
+    registratePersona(){
+        this._router.navigate(['/tabs/registro-persona']);
+    }
 
-    recuerarContrasenia(){
-      this._router.navigate(['/tabs/login/recuperar-contrasenia']);
+    async recuerarContrasenia() {
+        // this._router.navigate(['/tabs/login/recuperar-contrasenia']);
+        const modal = await this.modalController.create({
+            component: RecuperarContraseniaPage
+        });
+        await modal.present();
     }
 
 }

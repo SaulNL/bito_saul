@@ -9,6 +9,8 @@ import { LoginPageRoutingModule } from './login-routing.module';
 import { LoginPage } from './login.page';
 import {SideBarService} from "../../api/busqueda/side-bar-service";
 import {UtilsCls} from "../../utils/UtilsCls";
+import { RecuperarContraseniaPage } from './recuperar-contrasenia/recuperar-contrasenia.page';
+
 
 @NgModule({
   imports: [
@@ -17,7 +19,7 @@ import {UtilsCls} from "../../utils/UtilsCls";
     IonicModule,
     LoginPageRoutingModule
   ],
-  declarations: [LoginPage],
+  declarations: [LoginPage, RecuperarContraseniaPage],
   providers:[SideBarService,UtilsCls]
 })
 export class LoginPageModule {}
