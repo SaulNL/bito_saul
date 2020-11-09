@@ -76,8 +76,8 @@ export class DatosContactoPage implements OnInit {
         {
           text: "Cancel",
           icon: "close",
-          role: "cancel",
-          handler: () => {},
+          
+          handler: () => {this.valido=false;  },
         },
       ],
     });
@@ -86,7 +86,22 @@ export class DatosContactoPage implements OnInit {
 
   regresar() {
     let navigationExtras = JSON.stringify(this.negocioTO);
+    this.router.navigate(["/tabs/home/negocio/mis-negocios/informacion-negocio"], {
+      queryParams: { special: navigationExtras },
+    });
+  }
+
+  regresarMis() {
+    let navigationExtras = JSON.stringify(this.negocioTO);
     this.router.navigate(["/tabs/home/negocio/mis-negocios"], {
+      queryParams: { special: navigationExtras },
+    });
+  }
+  
+  datosDomicilio(negocio: NegocioModel) {
+    this.negocioTO = JSON.parse(JSON.stringify(negocio));
+    let navigationExtras = JSON.stringify(this.negocioTO);
+    this.router.navigate(["/tabs/home/negocio/mis-negocios/datos-domicilio"], {
       queryParams: { special: navigationExtras },
     });
   }

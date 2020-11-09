@@ -88,15 +88,14 @@ export class InformacionNegocioPage implements OnInit {
           role: "save",
           handler: () => {
             this.valido=true;
-            //
-          },
+          }
         },
         {
-          text: "Cancel",
+          text: "Cancelar",
           icon: "close",
-          role: "cancel",
           handler: () => {
-          },
+            this.valido=false;  
+          }
         },
       ],
     });
@@ -109,8 +108,14 @@ export class InformacionNegocioPage implements OnInit {
       queryParams: { special: navigationExtras },
     });
   }
-
-
+  
+  datosContacto(negocio: NegocioModel) {
+    this.negocioTO = JSON.parse(JSON.stringify(negocio));
+    let navigationExtras = JSON.stringify(this.negocioTO);
+    this.router.navigate(["/tabs/home/negocio/mis-negocios/datos-contacto"], {
+      queryParams: { special: navigationExtras },
+    });
+  }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   public buscarNegocio(id) {
     this.negocioServico.buscarNegocio(id).subscribe(

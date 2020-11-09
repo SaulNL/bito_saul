@@ -7,7 +7,7 @@
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="start">
-      <ion-button (click)="regresar()" class="blanco">
+      <ion-button (click)="regresarMis()" class="blanco">
         <ion-icon name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -70,9 +70,25 @@
         </ion-item>
         
     </ion-list>
-  </ion-card>
-  <ion-button *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>
+    <ion-button *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>
     <ion-button *ngIf="valido" type="submit" class="bg-rosa">Actualizar</ion-button>
+  </ion-card>
+  
+
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div>
+            <ion-button expand="block" (click)="regresar()" type="submit" class="bg-rosa">Atras</ion-button>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div>
+            <ion-button expand="block" (click)="datosDomicilio(negocioTO)" type="submit" class="bg-rosa">Siguiente</ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 </ion-content>
 
 

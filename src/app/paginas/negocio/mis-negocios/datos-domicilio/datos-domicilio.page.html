@@ -7,7 +7,7 @@
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="start">
-      <ion-button (click)="regresar()" class="blanco">
+      <ion-button (click)="regresarMis()" class="blanco">
         <ion-icon name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -62,9 +62,10 @@
         <ion-label >Los campos con * son obligatorios</ion-label>
       </ion-item>
     </ion-list>
-  </ion-card>
-  <ion-button *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>
+    <ion-button *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>
     <ion-button *ngIf="valido" type="submit" class="bg-rosa">Actualizar</ion-button>
+  </ion-card>
+    <ion-button expand="block" (click)="regresar()" type="submit" class="bg-rosa">Atras</ion-button>
 </ion-content>
 
 

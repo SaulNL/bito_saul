@@ -39,17 +39,23 @@ export class DatosDomicilioPage implements OnInit {
         {
           text: "Cancel",
           icon: "close",
-          role: "cancel",
-          handler: () => {},
+          
+          handler: () => {this.valido=false;  },
         },
       ],
     });
     await actionSheet.present();
   }
+  regresarMis() {
+    let navigationExtras = JSON.stringify(this.negocioTO);
+    this.router.navigate(["/tabs/home/negocio/mis-negocios"], {
+      queryParams: { special: navigationExtras },
+    });
+  }
 
   regresar() {
     let navigationExtras = JSON.stringify(this.negocioTO);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios"], {
+    this.router.navigate(["/tabs/home/negocio/mis-negocios/datos-contacto"], {
       queryParams: { special: navigationExtras },
     });
   }

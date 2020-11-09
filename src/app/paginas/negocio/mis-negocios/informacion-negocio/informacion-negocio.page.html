@@ -133,11 +133,14 @@
           <ion-label class="cent" >Los campos con * son obligatorios</ion-label>
         </ion-item>
     </ion-list>
+    <ion-button *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>
+    <ion-button *ngIf="valido" type="submit" class="bg-rosa">Actualizar</ion-button>
   </ion-card>
+
+<!--
 <ion-item lines="none" class="bg-gris">
   <ion-title class="cent bgs-gris">Datos de contacto </ion-title>
 </ion-item>
-  
   <ion-card>
     <ion-list lines="none">
       <ion-item>
@@ -196,7 +199,6 @@
 <ion-item lines="none" class="bg-gris">
   <ion-title class="cent bgs-gris">Datos de domicilio </ion-title>
 </ion-item>
-
   <ion-card>
     <ion-list lines="none">
       <ion-item>
@@ -241,6 +243,7 @@
       </ion-item>
     </ion-list>
   </ion-card>
-  <ion-button *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>
-    <ion-button *ngIf="valido" type="submit" class="bg-rosa">Actualizar</ion-button>
+-->
+    <ion-button expand="block" (click)="datosContacto(negocioTO)" type="submit" class="bg-rosa">Siguiente</ion-button>
+
 </ion-content>
