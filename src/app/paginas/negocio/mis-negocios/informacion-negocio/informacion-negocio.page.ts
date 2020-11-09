@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NegocioModel } from "./../../../../Modelos/NegocioModel";
 import { ActionSheetController } from "@ionic/angular";
+import {NegocioService} from "../../../../api/negocio.service";
+import {DetDomicilioModel} from "../../../../Modelos/DetDomicilioModel";
 
 @Component({
   selector: 'app-informacion-negocio',
@@ -18,7 +20,13 @@ export class InformacionNegocioPage implements OnInit {
   public variay: boolean;
   public variai: boolean;
   public variak: boolean;
+  public listTipoNegocio: any;
+  public loaderGiro: boolean;
+  public listCategorias: any;
+  public loaderCategoria: boolean;
+  private listaSubCategorias: any;
   constructor(private router: Router,
+    private negocioServico: NegocioService,
     private active: ActivatedRoute,
     private actionSheetController: ActionSheetController) {
       this.valido=false;
@@ -27,14 +35,23 @@ export class InformacionNegocioPage implements OnInit {
     this.variay = false;
     this.variai = false;
     this.variak = false;
+
+    this.listCategorias = [];
+    this.listTipoNegocio = [];
+
      }
 
   ngOnInit() {
     this.active.queryParams.subscribe(params => {
       if (params && params.special) {
         this.negocioTO  = JSON.parse(params.special);
+        this.negocioTO.det_domicilio =  new DetDomicilioModel()
       }
     });
+
+    this.buscarNegocio(this.negocioTO.id_negocio)
+
+    this.obtenerTipoNegocio();
   }
   notifyf() {
     if (this.variaf === undefined) {
@@ -91,5 +108,65 @@ export class InformacionNegocioPage implements OnInit {
     this.router.navigate(["/tabs/home/negocio/mis-negocios"], {
       queryParams: { special: navigationExtras },
     });
+  }
+
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  public buscarNegocio(id) {
+    this.negocioServico.buscarNegocio(id).subscribe(
+        response => {
+          this.negocioTO = response.data;
+          this.categoriaPrincipal();
+          this.subcategorias();
+        },
+        error => {
+          console.log(error);
+        }
+    );
+  }
+  public obtenerTipoNegocio() {
+    this.negocioServico.obtnerTipoNegocio().subscribe(
+        response => {
+          this.listTipoNegocio = response.data;
+        },
+        error => {
+          this.listTipoNegocio = [];
+          console.log(error);
+        }
+    );
+  }
+
+  categoriaPrincipal() {
+    this.loaderGiro =  true;
+    this.negocioTO.id_giro =  null;
+    this.listCategorias = [];
+    this.negocioServico.categoriaPrincipal(this.negocioTO.id_tipo_negocio).subscribe(
+        respuesta => {
+          this.listCategorias = respuesta.data;
+        },
+        error => {
+        },
+        () => {
+          this.loaderGiro = false;
+        }
+    );
+  }
+  subcategorias() {
+    this.loaderGiro =  true;
+    this.listCategorias = [];
+    console.log(this.negocioTO, 'sadsadasd')
+    this.negocioServico.obtenerCategorias(this.negocioTO.id_giro).subscribe(
+        respuesta => {
+          this.listaSubCategorias = Array();
+          if (respuesta.code === 200) {
+            this.listaSubCategorias = respuesta.data;
+          }
+        },
+        error => {
+        },
+        () => {
+          this.loaderCategoria = false;
+        }
+    );
   }
 }

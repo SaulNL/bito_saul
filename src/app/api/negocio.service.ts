@@ -47,4 +47,48 @@ export class NegocioService {
     }));
   }
 
+  public obtnerTipoNegocio(): Observable<any> {
+    return this.http.post(
+        this.url+'api/servicio/lista/negocios',
+        {},
+        {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+
+      return data;
+    }));
+  }
+
+  buscarNegocio(idNegocio: any): Observable<any>{
+    const body = JSON.stringify({id: idNegocio});
+    return this.http.post(
+        this.url + 'api/buscar/negocio', body,
+        {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  categoriaPrincipal(id: number): Observable<any> {
+    const body = JSON.stringify({id_tipo_negocio: id});
+    return this.http.post(
+        this.url+'api/servicio/tipoProductoServicio',
+        body,
+        {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+
+      return data;
+    }));
+  }
+
+  obtenerCategorias(id: any): Observable<any> {
+    const body = JSON.stringify({id_giro: id});
+    return this.http.post(
+        this.url+'buscar/giro/categorias',
+        body,
+        {headers: AppSettings.getHeaders()}
+    ).pipe(map(data => {
+
+      return data;
+    }));
+  }
 }
