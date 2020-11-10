@@ -131,7 +131,13 @@ export class NegocioPage implements OnInit {
       queryParams: { special: navigationExtras },
     });
   }
-
+  datosNegocios(negocio: NegocioModel) {
+    this.selectTO = JSON.parse(JSON.stringify(negocio));
+    let navigationExtras = JSON.stringify(this.selectTO);
+    this.router.navigate(["/tabs/home/negocio/mis-negocios"], {
+      queryParams: { special: navigationExtras },
+    });
+  }
   agregarNegocio() {
     this.selectTO = new NegocioModel();
     this.selectTO.det_domicilio = new DetDomicilioModel();

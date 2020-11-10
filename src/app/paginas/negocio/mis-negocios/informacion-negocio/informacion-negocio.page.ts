@@ -59,12 +59,14 @@ export class InformacionNegocioPage implements OnInit {
   }
 
   ngOnInit() {
-    /*this.active.queryParams.subscribe(params => {
+    this.active.queryParams.subscribe(params => {
       if (params && params.special) {
         this.negocioTO = JSON.parse(params.special);
+        console.log(this.negocioTO);
+        
         this.negocioTO.det_domicilio = new DetDomicilioModel();
       }
-    });*/
+    });
     this.buscarNegocio(this.negocioTO.id_negocio);
     this.obtenerTipoNegocio();
   }

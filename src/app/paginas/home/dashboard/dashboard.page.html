@@ -90,7 +90,7 @@
         </ion-menu-toggle>
         <ion-menu-toggle auto-hide="false">
           <ion-list lines="none">
-            <ion-item menuclose lines="none" [routerLink]="['/tabs/home/cat-denuncias-negocio']">
+            <ion-item *ngIf="admin" menuclose lines="none" [routerLink]="['/tabs/home/cat-denuncias-negocio']">
               <ion-icon slot="start" ios="alert-circle-outline" md="alert-circle"></ion-icon>
               Denuncias
             </ion-item>
