@@ -19,6 +19,7 @@ import * as moment from 'moment';
 })
 export class InfoNegocioPage implements OnInit {
   public negocioTO: NegocioModel;
+  public negtag: boolean;
   public listTipoNegocio: any;
   public listCategorias: any;
   private listaSubCategorias: any;
@@ -29,7 +30,7 @@ export class InfoNegocioPage implements OnInit {
     { id: true, respuesta: 'Si' },
     { id: false, respuesta: 'No' }
   ];
-  public tags = [];
+  public tags : string;
   public lstOrganizaciones: Array<CatOrganizacionesModel>;
   public urlNegocioLibre = true;
   public controladorTiempo: any;
@@ -58,6 +59,7 @@ export class InfoNegocioPage implements OnInit {
     this.listCategorias = [];
     this.listTipoNegocio = [];
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
+    this.negtag = false;
   }
 
   ngOnInit() {
@@ -66,7 +68,8 @@ export class InfoNegocioPage implements OnInit {
         this.negocioTO = JSON.parse(params.special);
       }
     });
-    console.log(this.negocioTO);
+    
+
     
     this.buscarNegocio(this.negocioTO.id_negocio);
     this.obtenerTipoNegocio();
@@ -219,8 +222,9 @@ export class InfoNegocioPage implements OnInit {
     return data;
   }
   agregarTags(tags: string[]) {
-    this.tags = tags;
-  this.negocioTO.tags = this.tags.join();
+    this.negtag = true;
+    this.tags = tags.join();
+    
   }
   public obtenerCatOrganizaciones() {
     this.negocioServico.obtenerCatOrganizaciones().subscribe(
@@ -288,8 +292,15 @@ export class InfoNegocioPage implements OnInit {
     if (negocioGuardar.organizaciones !== undefined && negocioGuardar.organizaciones.length > 0) {
       negocioGuardar.nombre_organizacion = this.negocioTO.nombre_organizacion;
     }
-    
-    negocioGuardar.tags = this.negocioTO.tags.join();
+    if (this.negtag == true){
+      negocioGuardar.tags = this.tags;
+    } else{
+      let convertir;
+      convertir =JSON.parse(JSON.stringify(this.negocioTO));
+      negocioGuardar.tags = convertir.tags.join();
+      
+      
+    }
 
     negocioGuardar.descripcion = this.negocioTO.descripcion;
     negocioGuardar.entrega_domicilio = this.negocioTO.entrega_domicilio;
@@ -345,11 +356,11 @@ export class InfoNegocioPage implements OnInit {
     console.info(negocioGuardar);
 
 
-    console.log(this.negocioTO);
+    
     
     this.negocioServico.guardar(negocioGuardar).subscribe(
       response => {
-        console.log(response);
+        
         if (response.code === 200) {
           
           this.notificaciones.exito('Tu negocio se guardo exitosamente');
