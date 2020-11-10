@@ -19,6 +19,7 @@ export class MisNegociosPage implements OnInit {
     
   }
   ngOnInit() {
+    this.router.navigate(['/tabs/home/negocio/card-negocio']);
     this.active.queryParams.subscribe(params => {
       if (params && params.special) {
         this.negocioTO  = JSON.parse(params.special);

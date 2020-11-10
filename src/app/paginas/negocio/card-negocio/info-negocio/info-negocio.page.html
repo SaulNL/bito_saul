@@ -135,7 +135,7 @@
       </ion-item>
     </ion-list>
     <ion-button  expand="block" (click)="guardar()" class="bg-rosa" *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</ion-button>
-    <ion-button  expand="block" type="submit" class="bg-rosa">Siguiente</ion-button>
+    <ion-button (click)="next()" expand="block" type="submit" class="bg-rosa">Siguiente</ion-button>
   </form>
     </ion-card-content>
   </ion-card>

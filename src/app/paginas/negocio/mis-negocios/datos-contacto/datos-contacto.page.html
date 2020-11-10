@@ -31,39 +31,37 @@
         <ion-input [(ngModel)]="negocioTO.correo" ></ion-input>
       </ion-item>
       <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variaf"  (ionChange)="notifyf()" color="danger"  ></ion-toggle>
         <ion-avatar slot="start" >
           <img src="./../../../../../assets/images/fb.png" alt="">
         </ion-avatar>
-        <ion-input *ngIf="variaf" [(ngModel)]="negocioTO.id_facebook" placeholder="Facebook :"></ion-input>
+        <ion-input  [(ngModel)]="negocioTO.id_facebook" placeholder="Facebook :"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variat"  (ionChange)="notifyt()" color="danger"  ></ion-toggle>
         <ion-avatar slot="start" >
           <img src="./../../../../../assets/images/tw.png" alt="">
         </ion-avatar>
-        <ion-input *ngIf="variat" [(ngModel)]="negocioTO.twitter" placeholder="Twitter :"></ion-input>
+        <ion-input  [(ngModel)]="negocioTO.twitter" placeholder="Twitter :"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variai"  (ionChange)="notifyi()" color="danger"  ></ion-toggle>
+        
         <ion-avatar slot="start" >
           <img src="./../../../../../assets/images/insta.png" alt="">
         </ion-avatar>
-        <ion-input *ngIf="variai" [(ngModel)]="negocioTO.instagram" placeholder="Instagram :"></ion-input>
+        <ion-input  [(ngModel)]="negocioTO.instagram" placeholder="Instagram :"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variay"  (ionChange)="notifyy()" color="danger"  ></ion-toggle>
+        
         <ion-avatar slot="start" >
           <img src="./../../../../../assets/images/yt.png" alt="">
         </ion-avatar>
-        <ion-input *ngIf="variay" [(ngModel)]="negocioTO.youtube" placeholder="Youtube :"></ion-input>
+        <ion-input  [(ngModel)]="negocioTO.youtube" placeholder="Youtube :"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variak"  (ionChange)="notifyk()" color="danger"  ></ion-toggle>
+        
         <ion-avatar slot="start" >
           <img src="./../../../../../assets/images/tt.png" alt="">
         </ion-avatar>
-        <ion-input *ngIf="variak" [(ngModel)]="negocioTO.tiktok" placeholder="TikTok :"></ion-input>
+        <ion-input  [(ngModel)]="negocioTO.tiktok" placeholder="TikTok :"></ion-input>
       </ion-item>
         <ion-item>
           <ion-label >Los campos con * son obligatorios</ion-label>

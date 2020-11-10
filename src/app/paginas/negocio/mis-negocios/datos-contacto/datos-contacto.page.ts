@@ -16,6 +16,10 @@ export class DatosContactoPage implements OnInit {
   public variay: boolean;
   public variai: boolean;
   public variak: boolean;
+  public datos: any;
+  public iden: any;
+  public syp: any;
+  public nuevoPS: any;
   constructor(
     private router: Router,
     private active: ActivatedRoute,
@@ -32,35 +36,13 @@ export class DatosContactoPage implements OnInit {
   ngOnInit() {
     this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
-        this.negocioTO = JSON.parse(params.special);
+
+        this.datos = JSON.parse(params.special);
+        this.negocioTO = this.datos.info;
+        this.syp = this.datos.pys;
         console.log(this.negocioTO);
       }
     });
-  }
-  notifyf() {
-    if ((this.variaf === undefined)||(this.variaf === undefined && (this.negocioTO.id_facebook==null || this.negocioTO.id_facebook==""))) {
-      this.variaf = false;
-    }
-  }
-  notifyy() {
-    if (this.variay === undefined) {
-      this.variay = false;
-    }
-  }
-  notifyt() {
-    if (this.variat === undefined) {
-      this.variat = false;
-    }
-  }
-  notifyk() {
-    if (this.variak === undefined) {
-      this.variak = false;
-    }
-  }
-  notifyi() {
-    if (this.variai === undefined) {
-      this.variai = false;
-    }
   }
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
@@ -87,14 +69,14 @@ export class DatosContactoPage implements OnInit {
 
   regresar() {
     let navigationExtras = JSON.stringify(this.negocioTO);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios/informacion-negocio"], {
+    this.router.navigate(["/tabs/home/negocio/card-negocio/info-negocio"], {
       queryParams: { special: navigationExtras },
     });
   }
 
   regresarMis() {
     let navigationExtras = JSON.stringify(this.negocioTO);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios"], {
+    this.router.navigate(["/tabs/home/negocio/card-negocio"], {
       queryParams: { special: navigationExtras },
     });
   }
