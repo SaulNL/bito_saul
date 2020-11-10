@@ -62,6 +62,35 @@
       <ion-item>
          <app-input-tags [tags]="negocioTO.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
         </ion-item>
+        <ion-item>
+          <ion-label stacked>
+            Horario Inicial
+          </ion-label>
+          <ion-datetime display-format="HH:mm"  picker-format="HH:mm" name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="horarioini" required ></ion-datetime>
+        </ion-item>
+        <ion-label>Horiario de antención</ion-label>
+        <ion-item>
+          <ion-label stacked>
+            Horario Final
+          </ion-label>
+          <ion-datetime display-format="HH:mm"  picker-format="HH:mm" name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="horariofin" required ></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Dias de la Semana</ion-label>
+          <ion-select  ok-text="Ok" cancel-text="Cancelar" multiple (ionChange)="diasSeleccionado($event)">
+            <ion-select-option  *ngFor="let dia of diasArray" [value]="dia.dia">{{dia.dia}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+              <ion-col size="12" class="ion-text-center">
+                  <ion-button size="small" class="bg-rosa" type="button">
+                      <ion-icon name="add-outline"></ion-icon>
+                      Agrega otro horario
+                    </ion-button>
+              </ion-col>
+          </ion-row>
+      </ion-grid>
       <ion-item>
         <ion-label class="urlnego" position="stacked">Url del negocio: <span style="color: red">*</span></ion-label>
         <ion-input id="idNegocioUrl" name="idNegocioUrl" #urlNegocio="ngModel" required [(ngModel)]="negocioTO.url_negocio" (keyup)="confirmarUrlNegocio($event, 2)"></ion-input>

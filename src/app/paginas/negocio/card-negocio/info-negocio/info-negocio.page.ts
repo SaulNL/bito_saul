@@ -9,6 +9,7 @@ import { ToadNotificacionService } from '../../../../api/toad-notificacion.servi
 import { ModalController } from '@ionic/angular';
 import { RecorteImagenComponent } from "../../../../components/recorte-imagen/recorte-imagen.component";
 import { ActionSheetController } from "@ionic/angular";
+import { HorarioNegocioModel } from '../../../../Modelos/HorarioNegocioModel';
 
 
 @Component({
@@ -32,6 +33,17 @@ export class InfoNegocioPage implements OnInit {
   public urlNegocioLibre = true;
   public controladorTiempo: any;
   public blnActivaEntregas: boolean;
+  public diasArray = [
+    {id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null},
+    {id: 2, dia: 'Martes', horarios: [], hi: null, hf: null},
+    {id: 3, dia: 'Miércoles', horarios: [], hi: null, hf: null},
+    {id: 4, dia: 'Jueves', horarios: [], hi: null, hf: null},
+    {id: 5, dia: 'Viernes', horarios: [], hi: null, hf: null},
+    {id: 6, dia: 'Sábado', horarios: [], hi: null, hf: null},
+    {id: 7, dia: 'Domingo', horarios: [], hi: null, hf: null},
+  ];
+  public horarioini: any;
+  public horariofin: any;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -244,5 +256,13 @@ export class InfoNegocioPage implements OnInit {
   }
   entregasDomicilio(evento){
     this.blnActivaEntregas = evento.detail.value;
+  }
+  diasSeleccionado(evento){
+     //this.negocioTO.dias = evento.detail.value;
+     let nuevoHorario = new HorarioNegocioModel;
+     nuevoHorario.dias = evento.detail.value ;
+     nuevoHorario.hora_inicio = this.horarioini;
+     nuevoHorario.hora_fin = this.horariofin;
+     console.log(nuevoHorario);
   }
 }
