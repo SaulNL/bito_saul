@@ -265,6 +265,6 @@ export class InformacionNegocioPage implements OnInit {
   }
   agregarTags(tags: string[]) {
     this.tags = tags;
-    this.negocioTO.tags = this.tags;
+    //this.negocioTO.tags = this.tags;
   }
 }
