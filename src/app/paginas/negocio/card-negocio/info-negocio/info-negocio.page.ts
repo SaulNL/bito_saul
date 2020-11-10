@@ -10,7 +10,7 @@ import { ModalController } from '@ionic/angular';
 import { RecorteImagenComponent } from "../../../../components/recorte-imagen/recorte-imagen.component";
 import { ActionSheetController } from "@ionic/angular";
 import { HorarioNegocioModel } from '../../../../Modelos/HorarioNegocioModel';
-
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-info-negocio',
@@ -44,9 +44,11 @@ export class InfoNegocioPage implements OnInit {
     {id: 6, dia: 'Sábado', horarios: [], hi: null, hf: null},
     {id: 7, dia: 'Domingo', horarios: [], hi: null, hf: null},
   ];
-  public horarioini: any;
-  public horariofin: any;
+
   public negocioGuardar: any;
+  public horarioini: string;
+  public horariofin: string;
+  public nuevoHorario = new HorarioNegocioModel;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -79,9 +81,9 @@ export class InfoNegocioPage implements OnInit {
   }
   public buscarNegocio(id) {
 
-    if( this.negocioTO.id_negocio=== null || this.negocioTO.id_negocio === undefined){
+    if( this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined){
       this.negocioTO = new NegocioModel();
-      this.negocioTO.tags = ""; 
+     // this.negocioTO.tags = ""; 
       this.categoriaPrincipal();
       this.subcategorias();
     } else {
@@ -351,12 +353,15 @@ export class InfoNegocioPage implements OnInit {
     this.blnActivaEntregas = evento.detail.value;
   }
   diasSeleccionado(evento){
-     //this.negocioTO.dias = evento.detail.value;
-     let nuevoHorario = new HorarioNegocioModel;
-     nuevoHorario.dias = evento.detail.value ;
-     nuevoHorario.hora_inicio = this.horarioini;
-     nuevoHorario.hora_fin = this.horariofin;
-     console.log(nuevoHorario);
+     this.nuevoHorario.dias = evento.detail.value ;
+  }
+  agregarHorario(){
+  this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
+   this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
+   this.negocioTO.dias.push(this.nuevoHorario); 
+   this.horarioini = '';
+   this.horariofin = '';
+   this.nuevoHorario.dias = [];
   }
   next(){
     this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));

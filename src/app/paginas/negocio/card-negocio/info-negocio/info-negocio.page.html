@@ -66,14 +66,14 @@
           <ion-label stacked>
             Horario Inicial
           </ion-label>
-          <ion-datetime display-format="HH:mm"  picker-format="HH:mm" name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="horarioini" required ></ion-datetime>
+          <ion-datetime display-format="HH:mm"  name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="horarioini" required ></ion-datetime>
         </ion-item>
         <ion-label>Horiario de antención</ion-label>
         <ion-item>
           <ion-label stacked>
             Horario Final
           </ion-label>
-          <ion-datetime display-format="HH:mm"  picker-format="HH:mm" name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="horariofin" required ></ion-datetime>
+          <ion-datetime display-format="HH:mm" name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="horariofin" required ></ion-datetime>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Dias de la Semana</ion-label>
@@ -84,9 +84,9 @@
         <ion-grid>
           <ion-row class="ion-align-items-center">
               <ion-col size="12" class="ion-text-center">
-                  <ion-button size="small" class="bg-rosa" type="button">
+                  <ion-button size="small" class="bg-rosa" type="button" (click)="agregarHorario()">
                       <ion-icon name="add-outline"></ion-icon>
-                      Agrega otro horario
+                      Agrega Horario
                     </ion-button>
               </ion-col>
           </ion-row>
