@@ -31,6 +31,7 @@ export class InfoNegocioPage implements OnInit {
   public lstOrganizaciones: Array<CatOrganizacionesModel>;
   public urlNegocioLibre = true;
   public controladorTiempo: any;
+  public blnActivaEntregas: boolean;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -53,6 +54,7 @@ export class InfoNegocioPage implements OnInit {
     this.buscarNegocio(this.negocioTO.id_negocio);
     this.obtenerTipoNegocio();
     this.obtenerCatOrganizaciones();
+    this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
   }
   public buscarNegocio(id) {
     this.negocioServico.buscarNegocio(id).subscribe(
@@ -239,5 +241,8 @@ export class InfoNegocioPage implements OnInit {
         //  this.loaderGuardar = false;
       }
     );
+  }
+  entregasDomicilio(evento){
+    this.blnActivaEntregas = evento.detail.value;
   }
 }

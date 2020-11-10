@@ -54,7 +54,7 @@
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Afiliado a</ion-label>
-        <ion-select ok-text="Ok" cancel-text="Cancelar"  required  >
+        <ion-select ok-text="Ok" cancel-text="Cancelar" multiple  required  >
           <ion-select-option *ngFor="let org of lstOrganizaciones" [value]="org.id_organizacion">{{org.nombre}}</ion-select-option>
         </ion-select>
       </ion-item>
@@ -82,23 +82,23 @@
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Entregas a Domicilio: <span style="color: red">*</span></ion-label>
-        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idConsumoNegocio" required  #consuNegocio="ngModel" [(ngModel)]="negocioTO.entrega_domicilio">
+        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idConsumoNegocio" required  #consuNegocio="ngModel"  (ionChange)="entregasDomicilio($event)" [(ngModel)]="negocioTO.entrega_domicilio">
           <ion-select-option *ngFor="let ent of entregas" [value]="ent.id">{{ent.respuesta}}</ion-select-option>
         </ion-select>
       </ion-item>
-      <div>
+      <div *ngIf="blnActivaEntregas">
       <ion-item>
         <ion-label position="stacked" >Alcance de la Entrega</ion-label>
-        <ion-input></ion-input>
+        <ion-input  id="idNegoAlcEntrega" name="idNegoAlcEntrega" #negoAlcEntrega="ngModel" required [(ngModel)]="negocioTO.alcance_entrega"></ion-input>
       </ion-item>
       <span style="font-size: 11px; margin-left: 11px;">Km</span>
       <ion-item>
         <ion-label position="stacked" >Tiempo de Entrega</ion-label>
-        <ion-input></ion-input>
+        <ion-input  id="idNegoTiempoEntrega" name="idNegoTiempoEntrega" #negoTiempoEntrega="ngModel" required [(ngModel)]="negocioTO.tiempo_entrega_kilometro"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Costo de Entrega</ion-label>
-        <ion-input placeholder="$0.00"></ion-input>
+        <ion-input placeholder="$0.00" id="idNegoCostoEntrega" name="idNegoCostoEntrega" #negoCostoEntrega="ngModel" required [(ngModel)]="negocioTO.costo_entrega"></ion-input>
       </ion-item>
     </div>
       <ion-item>
