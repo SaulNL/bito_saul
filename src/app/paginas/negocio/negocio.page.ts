@@ -6,7 +6,7 @@ import { NegocioService } from "./../../api/negocio.service";
 import { ModalController } from "@ionic/angular";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { AppSettings} from "../../AppSettings"; 
-
+import { DetDomicilioModel } from 'src/app/Modelos/busqueda/DetDomicilioModel'
 @Component({
   selector: "app-negocio",
   templateUrl: "./negocio.page.html",
@@ -127,15 +127,16 @@ export class NegocioPage implements OnInit {
   datosNegocio(negocio: NegocioModel) {
     this.selectTO = JSON.parse(JSON.stringify(negocio));
     let navigationExtras = JSON.stringify(this.selectTO);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios"], {
+    this.router.navigate(["/tabs/home/negocio/card-negocio"], {
       queryParams: { special: navigationExtras },
     });
   }
 
   agregarNegocio() {
     this.selectTO = new NegocioModel();
+    this.selectTO.det_domicilio = new DetDomicilioModel();
     let navigationExtras = JSON.stringify(this.selectTO);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios"], {
+    this.router.navigate(['/tabs/home/negocio/card-negocio/info-negocio'], {
       queryParams: { special: navigationExtras },
     });
   }

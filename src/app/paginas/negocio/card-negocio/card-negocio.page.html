@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar  class="tolbar">
+    <ion-buttons slot="start" >
+      <ion-back-button defaultHref="tabs/home/negocio" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>card-negocio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card style="margin-bottom: 15%;">
+    <div class="ion-text-center ion-margin-top">
+      <img *ngIf="negocioTO.url_logo !== ''"  class="rounded-circle" [src]="negocioTO.url_logo"   alt="">
+      <img *ngIf="negocioTO.url_logo === ''" class="imagen" alt="" >
+    </div>
+    <div  class="ion-text-center ion-margin-top">
+      <ion-label>{{negocioTO.nombre_comercial}}</ion-label>
+    </div>
+    <ion-card-content>
+<ion-list>
+  <ion-item (click)="inforNegocio(negocioTO)">
+    <ion-icon style="margin: 3px;"  name="clipboard-outline"></ion-icon>
+    <ion-label >Información del negocio</ion-label>
+    <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+  </ion-item>
+  <ion-item>
+<ion-icon  style="margin: 3px;" name="pricetags-outline"></ion-icon>
+    <ion-label >Productos</ion-label>
+    <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+  </ion-item>
+  <ion-item>
+    <ion-icon  style="margin: 3px;" name="hammer-outline"></ion-icon>
+    <ion-label >Servicios</ion-label>
+    <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+  </ion-item>
+</ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

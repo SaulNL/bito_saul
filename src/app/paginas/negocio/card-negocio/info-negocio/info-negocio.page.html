@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title>
+      <span *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined" class="">Agregar</span>
+      <span *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" class="">Modificar</span>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card style="margin-bottom: 15%;">
+    <ion-card-content>
+      <form>
+      <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
+        <div class="avatar-upload">
+            <div class="avatar-edit">
+                <input type='file' hidden id="imageUpload" accept="image/*" (change)="subir_imagen_cuadrada($event)" />
+                <label for="imageUpload">
+                  <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
+                </label>
+            </div>
+           <div class="avatar-preview">
+              <div *ngIf="negocioTO.logo === null || negocioTO.logo === undefined" id="imageUpload" [ngStyle]="negocioTO.logo !== null ?
+                {'background-image': 'url('+negocioTO.url_logo+')'} : ''">
+                </div>
+                <div *ngIf="negocioTO.logo !== null && negocioTO.logo !== undefined" [ngStyle]="{
+             'background-image': 'url('+negocioTO.logo.archivo_64+')'}">
+                </div>
+            </div>
+            <label for="imageUpload"></label>
+        </div>
+    </div>
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Nombre del negocio: <span style="color: red">*</span></ion-label>
+        <ion-input id="idNegocioNombre" name="idNegocioNombre" #nombreNegocio="ngModel"  [(ngModel)]="negocioTO.nombre_comercial"  required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Tipo de Negocio</ion-label>
+        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idtipoNegocio" required  #tipoNegocio="ngModel" [(ngModel)]="negocioTO.id_tipo_negocio" (ionChange)="categoriaPrincipal()">
+          <ion-select-option *ngFor="let item of listTipoNegocio" [value]="item.id_tipo_negocio">{{item.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Subcategoría</ion-label>
+        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idtipoGiro" required  #tipoGiro="ngModel"  [(ngModel)]="negocioTO.id_giro" >
+          <ion-select-option *ngFor="let sub of listaSubCategorias" [value]="sub.id_categoria">{{sub.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Descripción del Negocio <span style="color: red">*</span></ion-label>
+        <ion-input id="idNegocioDesc" name="idNegocioDesc" #descNegocio="ngModel" required [(ngModel)]="negocioTO.descripcion"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Afiliado a</ion-label>
+        <ion-select ok-text="Ok" cancel-text="Cancelar"  required  >
+          <ion-select-option *ngFor="let org of lstOrganizaciones" [value]="org.id_organizacion">{{org.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-label>Ayudanos a que la busqueda de tu negocio sea mas efectiva</ion-label>
+      <ion-item>
+         <app-input-tags [tags]="negocioTO.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
+        </ion-item>
+      <ion-item>
+        <ion-label class="urlnego" position="stacked">Url del negocio: <span style="color: red">*</span></ion-label>
+        <ion-input id="idNegocioUrl" name="idNegocioUrl" #urlNegocio="ngModel" required [(ngModel)]="negocioTO.url_negocio" (keyup)="confirmarUrlNegocio($event, 2)"></ion-input>
+      </ion-item>
+      <span *ngIf="urlNegocioLibre === true" style="font-size: 11px; margin-left: 11px;">https://www.bitoo.com.mx/@</span>
+      <span *ngIf="urlNegocioLibre === false" style="font-size: 11px; margin-left: 11px;">Url ya existe, sugerencia: https://www.bitoo.com.mx/@{{negocioTO.url_negocio}}</span>
+      <ion-item>
+        <ion-label position="stacked">Consumo en sitio<span style="color: red">*</span></ion-label>
+        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idConsumoNegocio" required  #consuNegocio="ngModel" [(ngModel)]="negocioTO.consumo_sitio" >
+          <ion-select-option *ngFor="let ent of entregas" [value]="ent.id">{{ent.respuesta}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked" >Entregas en sitio: <span style="color: red">*</span></ion-label>
+        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idConsumoNegocio" required  #consuNegocio="ngModel" [(ngModel)]="negocioTO.entrega_sitio">
+          <ion-select-option *ngFor="let ent of entregas" [value]="ent.id">{{ent.respuesta}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Entregas a Domicilio: <span style="color: red">*</span></ion-label>
+        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idConsumoNegocio" required  #consuNegocio="ngModel" [(ngModel)]="negocioTO.entrega_domicilio">
+          <ion-select-option *ngFor="let ent of entregas" [value]="ent.id">{{ent.respuesta}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div>
+      <ion-item>
+        <ion-label position="stacked" >Alcance de la Entrega</ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+      <span style="font-size: 11px; margin-left: 11px;">Km</span>
+      <ion-item>
+        <ion-label position="stacked" >Tiempo de Entrega</ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Costo de Entrega</ion-label>
+        <ion-input placeholder="$0.00"></ion-input>
+      </ion-item>
+    </div>
+      <ion-item>
+        <ion-label>Los campos con <span style="color: red">*</span>son obligatorios</ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-button  expand="block" (click)="guardar()" class="bg-rosa" *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</ion-button>
+    <ion-button  expand="block" type="submit" class="bg-rosa">Siguiente</ion-button>
+  </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

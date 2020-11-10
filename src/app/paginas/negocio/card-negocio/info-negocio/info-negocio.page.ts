@@ -1,134 +1,58 @@
+import { CatOrganizacionesModel } from './../../../../Modelos/CatOrganizacionesModel';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NegocioModel } from "./../../../../Modelos/NegocioModel";
-import { ActionSheetController } from "@ionic/angular";
 import { NegocioService } from "../../../../api/negocio.service";
-import { DetDomicilioModel } from "../../../../Modelos/DetDomicilioModel";
 import { UtilsCls } from './../../../../utils/UtilsCls';
 import { ArchivoComunModel } from 'src/app/Modelos/ArchivoComunModel';
 import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
 import { ModalController } from '@ionic/angular';
 import { RecorteImagenComponent } from "../../../../components/recorte-imagen/recorte-imagen.component";
+import { ActionSheetController } from "@ionic/angular";
+
 
 @Component({
-  selector: 'app-informacion-negocio',
-  templateUrl: './informacion-negocio.page.html',
-  styleUrls: ['./informacion-negocio.page.scss'],
+  selector: 'app-info-negocio',
+  templateUrl: './info-negocio.page.html',
+  styleUrls: ['./info-negocio.page.scss'],
 })
-export class InformacionNegocioPage implements OnInit {
+export class InfoNegocioPage implements OnInit {
   public negocioTO: NegocioModel;
-  public valido: boolean;
-  public negocio: NegocioModel;
-
-
-  public variaf: boolean;
-  public variat: boolean;
-  public variay: boolean;
-  public variai: boolean;
-  public variak: boolean;
   public listTipoNegocio: any;
-  public loaderGiro: boolean;
   public listCategorias: any;
-  public loaderCategoria: boolean;
   private listaSubCategorias: any;
   public resizeToWidth: number = 0;
   public resizeToHeight: number = 0;
   public entregas = [
-    {id: true, respuesta: 'Si'},
-    {id: false, respuesta: 'No'}
+    { id: true, respuesta: 'Si' },
+    { id: false, respuesta: 'No' }
   ];
   public tags = [];
+  public lstOrganizaciones: Array<CatOrganizacionesModel>;
+  public urlNegocioLibre = true;
+  public controladorTiempo: any;
   constructor(
+    private activatedRoute: ActivatedRoute,
     private router: Router,
     private negocioServico: NegocioService,
-    private active: ActivatedRoute,
     private actionSheetController: ActionSheetController,
     private _utils_cls: UtilsCls,
     private notificaciones: ToadNotificacionService,
-    public modalController: ModalController) {
-    this.valido = false;
-    this.variaf = false;
-    this.variat = false;
-    this.variay = false;
-    this.variai = false;
-    this.variak = false;
-
+    public modalController: ModalController
+  ) {
     this.listCategorias = [];
     this.listTipoNegocio = [];
-
   }
 
   ngOnInit() {
-    /*this.active.queryParams.subscribe(params => {
+    this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.special) {
         this.negocioTO = JSON.parse(params.special);
-        this.negocioTO.det_domicilio = new DetDomicilioModel();
       }
-    });*/
+    });
     this.buscarNegocio(this.negocioTO.id_negocio);
     this.obtenerTipoNegocio();
-  }
-  notifyf() {
-    if (this.variaf === undefined) {
-      this.variaf = false;
-    }
-  }
-  notifyy() {
-    if (this.variay === undefined) {
-      this.variay = false;
-    }
-  }
-  notifyt() {
-    if (this.variat === undefined) {
-      this.variat = false;
-    }
-  }
-  notifyk() {
-    if (this.variak === undefined) {
-      this.variak = false;
-    }
-  }
-  notifyi() {
-    if (this.variai === undefined) {
-      this.variai = false;
-    }
-  }
-  async presentActionSheet() {
-    const actionSheet = await this.actionSheetController.create({
-      header: "Opciones",
-      cssClass: "my-custom-class",
-      buttons: [
-        {
-          text: "Editar",
-          role: "save",
-          handler: () => {
-            this.valido = true;
-          }
-        },
-        {
-          text: "Cancelar",
-          icon: "close",
-          handler: () => {
-            this.valido = false;
-          }
-        },
-      ],
-    });
-    await actionSheet.present();
-  }
-  regresar() {
-    let navigationExtras = JSON.stringify(this.negocioTO);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios"], {
-      queryParams: { special: navigationExtras },
-    });
-  }
-
-  datosContacto(negocio: NegocioModel) {
-    this.negocioTO = JSON.parse(JSON.stringify(negocio));
-    let navigationExtras = JSON.stringify(this.negocioTO);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios/datos-contacto"], {
-      queryParams: { special: navigationExtras },
-    });
+    this.obtenerCatOrganizaciones();
   }
   public buscarNegocio(id) {
     this.negocioServico.buscarNegocio(id).subscribe(
@@ -153,10 +77,9 @@ export class InformacionNegocioPage implements OnInit {
       }
     );
   }
-
   categoriaPrincipal() {
-    this.loaderGiro = true;
-    this.negocioTO.id_giro = null;
+    // this.loaderGiro = true;
+    //   this.negocioTO.id_giro = null;
     this.listCategorias = [];
     this.negocioServico.categoriaPrincipal(this.negocioTO.id_tipo_negocio).subscribe(
       respuesta => {
@@ -165,12 +88,12 @@ export class InformacionNegocioPage implements OnInit {
       error => {
       },
       () => {
-        this.loaderGiro = false;
+        // this.loaderGiro = false;
       }
     );
   }
   subcategorias() {
-    this.loaderGiro = true;
+    //this.loaderGiro = true;
     this.listCategorias = [];
     this.negocioServico.obtenerCategorias(this.negocioTO.id_giro).subscribe(
       respuesta => {
@@ -182,7 +105,7 @@ export class InformacionNegocioPage implements OnInit {
       error => {
       },
       () => {
-        this.loaderCategoria = false;
+        //   this.loaderCategoria = false;
       }
     );
   }
@@ -215,9 +138,9 @@ export class InformacionNegocioPage implements OnInit {
                     this.negocioTO.logo = archivo;
                     this.negocioTO.local = archivo;
 
-                  /*  this.formGroup1.patchValue({
-                      archivo: archivo
-                    });*/
+                    /*  this.formGroup1.patchValue({
+                        archivo: archivo
+                      });*/
                   }
                 );
               } else {
@@ -264,5 +187,57 @@ export class InformacionNegocioPage implements OnInit {
   agregarTags(tags: string[]) {
     this.tags = tags;
     this.negocioTO.tags = this.tags;
+  }
+  public obtenerCatOrganizaciones() {
+    this.negocioServico.obtenerCatOrganizaciones().subscribe(
+      response => {
+        this.lstOrganizaciones = Object.values(response.data);
+        // console.info(this.lstOrganizaciones);
+      });
+  }
+
+  /**
+     * Funcion para enviar a validar la url del negocio
+     * @param evento
+     * @author Omar
+     */
+  confirmarUrlNegocio(evento, entrada = 1) {
+    let cadena = '';
+    if (entrada === 2) {
+      cadena = evento.target.value;
+    }
+    else {
+      cadena = evento;
+    }
+    clearTimeout(this.controladorTiempo);
+    this.controladorTiempo = setTimeout(() => {
+      let tem = cadena.replace(/[^a-zA-Z0-9 ]/g, "");
+      this.negocioServico.verificarUrlNegocio(tem).subscribe(
+        repuesta => {
+          if (repuesta.code === 200) {
+            this.negocioTO.url_negocio = repuesta.data.url_negocio;
+            this.urlNegocioLibre = repuesta.data.url_libre;
+          }
+        }
+      );
+      clearTimeout(this.controladorTiempo);
+    }, 1000);
+  }
+  guardar() {
+    this.negocioServico.guardar(this.negocioTO).subscribe(
+      response => {
+        if (response.code === 200) {
+          this.notificaciones.exito('Tu negocio se guardo exitosamente');
+        } else {
+          this.notificaciones.alerta('Error al guardar, intente nuevamente');
+          //   this._notificacionService.pushAlert('Error al guardar, intente nuevamente');
+          //  this.loaderGuardar = false;
+        }
+      },
+      error => {
+        this.notificaciones.error(error);
+        //  this.loaderGuardar = false;
+      }
+    );
   }
 }

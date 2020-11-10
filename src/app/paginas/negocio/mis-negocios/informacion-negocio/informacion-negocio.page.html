@@ -2,7 +2,7 @@
   <ion-toolbar class="tolbar">
     <ion-title>Información del negocio</ion-title>
     <ion-buttons slot="end">
-      <ion-button *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" (click)="presentActionSheet()" class="blanco">
+      <ion-button  (click)="presentActionSheet()" class="blanco">
         <ion-icon name="ellipsis-vertical-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -16,20 +16,14 @@
 </ion-header>
 
 <ion-content>
-  <ion-item lines="none" class="bg-gris">
-    <ion-title class="cent bgs-gris">Información del negocio</ion-title>
-  </ion-item>
-  
-  
 
-  <ion-card>
+  <!--<ion-card>
     <ion-list lines="none">
       <ion-item>
         <div class="form-group">
           <div class="avatar-upload">
               <div class="avatar-edit">
                   <input type='file' hidden id="imageUpload" accept="image/*"  />
-                  <!--(change)="subirArchivo($event,3)"-->
                   <label for="imageUpload">
                     <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
                   </label>
@@ -45,10 +39,6 @@
               <label for="imageUpload"></label>
           </div>
       </div>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Nombre del negocio <span>*</span></ion-label>
-        <ion-input  [(ngModel)]="negocioTO.nombre_comercial" name="nombre" ></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Tipo de Negocio <span>*</span></ion-label>
@@ -133,117 +123,112 @@
           <ion-label class="cent" >Los campos con * son obligatorios</ion-label>
         </ion-item>
     </ion-list>
-    <ion-button *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>
+    <ion-button *ngIf="negocioTOs.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>
     <ion-button *ngIf="valido" type="submit" class="bg-rosa">Actualizar</ion-button>
   </ion-card>
 
-<!--
-<ion-item lines="none" class="bg-gris">
-  <ion-title class="cent bgs-gris">Datos de contacto </ion-title>
-</ion-item>
-  <ion-card>
-    <ion-list lines="none">
-      <ion-item>
-        <ion-label position="floating">Teléfono oficina :</ion-label>
-        <ion-input [(ngModel)]="negocioTO.telefono" ></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Célular/Whatsapp :</ion-label>
-        <ion-input [(ngModel)]="negocioTO.celular"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Correo :</ion-label>
-        <ion-input [(ngModel)]="negocioTO.correo" ></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variaf"  (ionChange)="notifyf()" color="danger"  ></ion-toggle>
-        <ion-avatar slot="start" >
-          <img src="./../../../../../assets/images/fb.png" alt="">
-        </ion-avatar>
-        <ion-input *ngIf="variaf" [(ngModel)]="negocioTO.id_facebook" placeholder="Facebook :"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variat"  (ionChange)="notifyt()" color="danger"  ></ion-toggle>
-        <ion-avatar slot="start" >
-          <img src="./../../../../../assets/images/tw.png" alt="">
-        </ion-avatar>
-        <ion-input *ngIf="variat" [(ngModel)]="negocioTO.twitter" placeholder="Twitter :"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variai"  (ionChange)="notifyi()" color="danger"  ></ion-toggle>
-        <ion-avatar slot="start" >
-          <img src="./../../../../../assets/images/insta.png" alt="">
-        </ion-avatar>
-        <ion-input *ngIf="variai" [(ngModel)]="negocioTO.instagram" placeholder="Instagram :"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variay"  (ionChange)="notifyy()" color="danger"  ></ion-toggle>
-        <ion-avatar slot="start" >
-          <img src="./../../../../../assets/images/yt.png" alt="">
-        </ion-avatar>
-        <ion-input *ngIf="variay" [(ngModel)]="negocioTO.youtube" placeholder="Youtube :"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variak"  (ionChange)="notifyk()" color="danger"  ></ion-toggle>
-        <ion-avatar slot="start" >
-          <img src="./../../../../../assets/images/tt.png" alt="">
-        </ion-avatar>
-        <ion-input *ngIf="variak" [(ngModel)]="negocioTO.tiktok" placeholder="TikTok :"></ion-input>
-      </ion-item>
-        <ion-item>
-          <ion-label >Los campos con * son obligatorios</ion-label>
-        </ion-item>
-        
-    </ion-list>
-  </ion-card>
-<ion-item lines="none" class="bg-gris">
-  <ion-title class="cent bgs-gris">Datos de domicilio </ion-title>
-</ion-item>
-  <ion-card>
-    <ion-list lines="none">
-      <ion-item>
-        <ion-label position="floating">Calle <span>*</span></ion-label>
-        <ion-input [(ngModel)]="negocioTO.det_domicilio.calle"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Número Exterior <span>*</span></ion-label>
-        <ion-input  [(ngModel)]="negocioTO.det_domicilio.numero_ext"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Número Interior <span>*</span></ion-label>
-        <ion-input  [(ngModel)]="negocioTO.det_domicilio.numero_int"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Estado <span>*</span></ion-label>
-        <ion-select interface="action-sheet">
-          <ion-select-option value="item1">item1</ion-select-option>
-          <ion-select-option value="item2">item2</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Municipio <span>*</span></ion-label>
-        <ion-select interface="action-sheet">
-          <ion-select-option value="item1">item1</ion-select-option>
-          <ion-select-option value="item2">item2</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Localidad <span>*</span></ion-label>
-        <ion-select interface="action-sheet">
-          <ion-select-option value="item1">item1</ion-select-option>
-          <ion-select-option value="item2">item2</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Colonia <span>*</span></ion-label>
-          <ion-input [(ngModel)]="negocioTO.det_domicilio.colonia"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label >Los campos con * son obligatorios</ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-card>
--->
-    <ion-button expand="block" (click)="datosContacto(negocioTO)" type="submit" class="bg-rosa">Siguiente</ion-button>
 
+    <ion-button expand="block" (click)="datosContacto(negocioTO)" type="submit" class="bg-rosa">Siguiente</ion-button>
+  -->
+<ion-card style="margin-bottom: 15%;">
+  <ion-card-content>
+    <form>
+    <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
+      <div class="avatar-upload">
+          <div class="avatar-edit">
+              <input type='file' hidden id="imageUpload" accept="image/*" (change)="subir_imagen_cuadrada($event)" />
+              <label for="imageUpload">
+                <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
+              </label>
+          </div>
+          <div class="avatar-preview">
+            <div *ngIf="negocioTO.logo === null || negocioTO.logo === undefined" id="imageUpload" [ngStyle]="negocioTO.logo !== null ?
+              {'background-image': 'url('+negocioTO.url_logo+')'} : ''">
+              </div>
+              <div *ngIf="negocioTO.logo !== null && negocioTO.logo !== undefined" [ngStyle]="{
+           'background-image': 'url('+negocioTO.logo.archivo_64+')'}">
+              </div>
+          </div>
+          <label for="imageUpload"></label>
+      </div>
+  </div>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Nombre del negocio: <span style="color: red">*</span></ion-label>
+      <ion-input id="idNegocioNombre" name="idNegocioNombre" #nombreNegocio="ngModel"  [(ngModel)]="negocioTO.nombre_comercial"  required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Tipo de Negocio</ion-label>
+      <ion-select ok-text="Ok" cancel-text="Cancelar" name="idtipoNegocio" required  #tipoNegocio="ngModel" [(ngModel)]="negocioTO.id_tipo_negocio" (ionChange)="categoriaPrincipal()">
+        <ion-select-option *ngFor="let item of listTipoNegocio" [value]="item.id_tipo_negocio">{{item.nombre}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Subcategoría</ion-label>
+      <ion-select ok-text="Ok" cancel-text="Cancelar" name="idtipoGiro" required  #tipoGiro="ngModel"  [(ngModel)]="negocioTO.id_giro" >
+        <ion-select-option *ngFor="let sub of listaSubCategorias" [value]="sub.id_categoria">{{sub.nombre}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Descripción del Negocio <span style="color: red">*</span></ion-label>
+      <ion-input id="idNegocioDesc" name="idNegocioDesc" #descNegocio="ngModel" required [(ngModel)]="negocioTO.descripcion"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Afiliado a</ion-label>
+      <ion-select >
+        <ion-select-option value="item1">item</ion-select-option>
+      <ion-select-option value="tem2">item 2</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+       <app-input-tags [tags]="negocioTO.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
+      </ion-item>
+    <ion-item>
+      <ion-label class="urlnego" position="stacked">Url del negocio: <span style="color: red">*</span></ion-label>
+      <ion-input id="idNegocioUrl" name="idNegocioUrl" #urlNegocio="ngModel" required [(ngModel)]="negocioTO.url_negocio"></ion-input>
+    </ion-item>
+    <span style="font-size: 11px; margin-left: 11px;">https://www.bitoo.com.mx/@</span>
+    <ion-item>
+      <ion-label position="stacked">Consumo en sitio<span style="color: red">*</span></ion-label>
+      <ion-select ok-text="Ok" cancel-text="Cancelar" name="idConsumoNegocio" required  #consuNegocio="ngModel" [(ngModel)]="negocioTO.consumo_sitio" >
+        <ion-select-option *ngFor="let ent of entregas" [value]="ent.id">{{ent.respuesta}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked" >Entregas en sitio: <span style="color: red">*</span></ion-label>
+      <ion-select ok-text="Ok" cancel-text="Cancelar" name="idConsumoNegocio" required  #consuNegocio="ngModel" [(ngModel)]="negocioTO.entrega_sitio">
+        <ion-select-option *ngFor="let ent of entregas" [value]="ent.id">{{ent.respuesta}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Entregas a Domicilio: <span style="color: red">*</span></ion-label>
+      <ion-select ok-text="Ok" cancel-text="Cancelar" name="idConsumoNegocio" required  #consuNegocio="ngModel" [(ngModel)]="negocioTO.entrega_domicilio">
+        <ion-select-option *ngFor="let ent of entregas" [value]="ent.id">{{ent.respuesta}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div>
+    <ion-item>
+      <ion-label position="stacked" >Alcance de la Entrega</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+    <span style="font-size: 11px; margin-left: 11px;">Km</span>
+    <ion-item>
+      <ion-label position="stacked" >Tiempo de Entrega</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Costo de Entrega</ion-label>
+      <ion-input placeholder="$"></ion-input>
+      <span style="top: 32px; position: absolute; left: 242px;">.00</span>
+    </ion-item>
+  </div>
+    <ion-item>
+      <ion-label>Los campos con <span style="color: red">*</span>son obligatorios</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-button  expand="block" type="submit" class="bg-rosa">Actualizar</ion-button>
+  <ion-button  expand="block" type="submit" class="bg-rosa">Siguiente</ion-button>
+</form>
+  </ion-card-content>
+</ion-card>
 </ion-content>
