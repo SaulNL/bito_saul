@@ -33,11 +33,12 @@ export class DatosContactoPage implements OnInit {
     this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.negocioTO = JSON.parse(params.special);
+        console.log(this.negocioTO);
       }
     });
   }
   notifyf() {
-    if (this.variaf === undefined) {
+    if ((this.variaf === undefined)||(this.variaf === undefined && (this.negocioTO.id_facebook==null || this.negocioTO.id_facebook==""))) {
       this.variaf = false;
     }
   }

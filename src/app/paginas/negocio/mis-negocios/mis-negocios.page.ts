@@ -54,11 +54,11 @@ export class MisNegociosPage implements OnInit {
     //this.admin.blnActivaDatosCategoria = true;
   }
   inforNegocio(negocio: NegocioModel){
-   // this.negocioTO = JSON.parse(JSON.stringify(negocio));
-   // let navigationExtras = JSON.stringify(this.negocioTO);
-   /* this.router.navigate(["/tabs/home/negocio/mis-negocios/informacion-negocio"], {
+   this.negocioTO = JSON.parse(JSON.stringify(negocio));
+    let navigationExtras = JSON.stringify(this.negocioTO);
+    this.router.navigate(["/tabs/home/negocio/mis-negocios/informacion-negocio"], {
       queryParams: { special: navigationExtras },
-    });*/
+    });
   }
     productosServicios(negocio: NegocioModel,inde){
     this.negocioTO = JSON.parse(JSON.stringify(negocio));
