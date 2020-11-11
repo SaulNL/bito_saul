@@ -4,12 +4,17 @@
       <span *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined" class="">Agregar</span>
       <span *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" class="">Modificar</span>
     </ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="regresar()" class="blanco">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-card style="margin-bottom: 15%;">
+  <ion-card>
     <ion-card-content>
       <form>
       <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
@@ -164,7 +169,19 @@
       </ion-item>
     </ion-list>
     <ion-button  expand="block" (click)="guardar()" class="bg-rosa" *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</ion-button>
-    <ion-button (click)="next()" expand="block" type="submit" class="bg-rosa">Siguiente</ion-button>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div>
+            <ion-button (click)="next()" expand="block" type="submit" class="bg-rosa">Siguiente</ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </form>
     </ion-card-content>
   </ion-card>

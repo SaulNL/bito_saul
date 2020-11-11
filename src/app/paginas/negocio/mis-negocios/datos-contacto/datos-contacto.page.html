@@ -67,25 +67,22 @@
           <ion-label >Los campos con * son obligatorios</ion-label>
         </ion-item>
     </ion-list>
-    <ion-button *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>
-    <ion-button *ngIf="valido" type="submit" class="bg-rosa">Actualizar</ion-button>
-  </ion-card>
-  
-
+    <ion-button  expand="block" (click)="guardar()" class="bg-rosa" *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</ion-button>
     <ion-grid>
       <ion-row>
         <ion-col>
           <div>
-            <ion-button expand="block" (click)="regresar(negocioTO)" type="submit" class="bg-rosa">Atras</ion-button>
+            <ion-button expand="block" (click)="regresar(negocioTO)"  class="bg-rosa">Atras</ion-button>
           </div>
         </ion-col>
         <ion-col>
           <div>
-            <ion-button expand="block" (click)="datosDomicilio(negocioTO)" type="submit" class="bg-rosa">Siguiente</ion-button>
+            <ion-button expand="block" (click)="datosDomicilio(negocioTO)"  class="bg-rosa">Siguiente</ion-button>
           </div>
         </ion-col>
       </ion-row>
     </ion-grid>
+  </ion-card>
 </ion-content>
 
 
