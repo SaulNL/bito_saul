@@ -64,4 +64,15 @@ export class CardNegocioPage implements OnInit {
   regresar(){
     this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}  });
   }
+  productosServicios(negocio: NegocioModel,inde){
+    this.negocioTO = JSON.parse(JSON.stringify(negocio));
+    let all = {
+      inden: inde,
+      info: this.negocioTO
+  };
+    let navigationExtras = JSON.stringify(all);
+    this.router.navigate(["/tabs/home/negocio/mis-negocios/mis-productos-servicios"], {
+      queryParams: { special: navigationExtras },
+    });
+  }
 }

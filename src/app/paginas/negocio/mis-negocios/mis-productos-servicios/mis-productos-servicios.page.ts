@@ -57,7 +57,7 @@ export class MisProductosServiciosPage implements OnInit {
 
   regresar() {
     let navigationExtras = JSON.stringify(this.negocioTO);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios"], {
+    this.router.navigate(["/tabs/home/negocio/card-negocio"], {
       queryParams: { special: navigationExtras },
     });
   }

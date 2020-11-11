@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { NegocioModel } from "./../../../../Modelos/NegocioModel";
 import { ActionSheetController } from "@ionic/angular";
+import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
+import { NegocioService } from "../../../../api/negocio.service";
 
 @Component({
   selector: "app-datos-contacto",
@@ -23,7 +25,9 @@ export class DatosContactoPage implements OnInit {
   constructor(
     private router: Router,
     private active: ActivatedRoute,
-    private actionSheetController: ActionSheetController
+    private actionSheetController: ActionSheetController,
+    private negocioServico: NegocioService,
+    private notificaciones: ToadNotificacionService
   ) {
     this.valido = false;
     this.variaf = false;
@@ -31,17 +35,14 @@ export class DatosContactoPage implements OnInit {
     this.variay = false;
     this.variai = false;
     this.variak = false;
-    this.negocioGuardar = new NegocioModel();
   }
 
   ngOnInit() {
     this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
-
         this.datos = JSON.parse(params.special);
         this.negocioTO = this.datos.info;
         this.negocioGuardar = this.datos.pys;
-        console.log(this.negocioTO);
       }
     });
   }
@@ -69,8 +70,9 @@ export class DatosContactoPage implements OnInit {
   }
 
   regresar() {
+    this.datosC();
     this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
-    this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
+    this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));    
     let all = {
       info: this.negocioTO,
       pys: this.negocioGuardar
@@ -90,6 +92,7 @@ export class DatosContactoPage implements OnInit {
   }
   
   datosDomicilio(negocio: NegocioModel) {
+    this.datosC();
     this.negocioTO = JSON.parse(JSON.stringify(negocio));
     this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
     let all = {
@@ -100,5 +103,34 @@ export class DatosContactoPage implements OnInit {
     this.router.navigate(["/tabs/home/negocio/mis-negocios/datos-domicilio"], {
       queryParams: { special: navigationExtras },
     });
+  }
+  
+  guardar() {
+    this.datosC();
+    this.negocioServico.guardar(this.negocioGuardar).subscribe(
+      response => {        
+        if (response.code === 200) {
+          this.notificaciones.exito('Tu negocio se guardo exitosamente');
+        } else {
+          this.notificaciones.alerta('Error al guardar, intente nuevamente');
+          //   this._notificacionService.pushAlert('Error al guardar, intente nuevamente');
+          //  this.loaderGuardar = false;
+        }
+      },
+      error => {
+        this.notificaciones.error(error);
+        //  this.loaderGuardar = false;
+      }
+    );
+  }
+  datosC(){
+    this.negocioGuardar.telefono = this.negocioTO.telefono;
+    this.negocioGuardar.celular = this.negocioTO.celular;
+    this.negocioGuardar.correo = this.negocioTO.correo;
+    this.negocioGuardar.id_facebook = this.negocioTO.id_facebook;
+    this.negocioGuardar.twitter = this.negocioTO.twitter;
+    this.negocioGuardar.instagram = this.negocioTO.instagram;
+    this.negocioGuardar.youtube = this.negocioTO.youtube;
+    this.negocioGuardar.tiktok = this.negocioTO.tiktok;
   }
 }
