@@ -11,6 +11,7 @@ import { RecorteImagenComponent } from "../../../../components/recorte-imagen/re
 import { ActionSheetController } from "@ionic/angular";
 import { HorarioNegocioModel } from '../../../../Modelos/HorarioNegocioModel';
 import * as moment from 'moment';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-info-negocio',
@@ -30,25 +31,29 @@ export class InfoNegocioPage implements OnInit {
     { id: true, respuesta: 'Si' },
     { id: false, respuesta: 'No' }
   ];
-  public tags : string;
+  public tags: string;
   public lstOrganizaciones: Array<CatOrganizacionesModel>;
   public urlNegocioLibre = true;
   public controladorTiempo: any;
   public blnActivaEntregas: boolean;
   public diasArray = [
-    {id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null},
-    {id: 2, dia: 'Martes', horarios: [], hi: null, hf: null},
-    {id: 3, dia: 'Miércoles', horarios: [], hi: null, hf: null},
-    {id: 4, dia: 'Jueves', horarios: [], hi: null, hf: null},
-    {id: 5, dia: 'Viernes', horarios: [], hi: null, hf: null},
-    {id: 6, dia: 'Sábado', horarios: [], hi: null, hf: null},
-    {id: 7, dia: 'Domingo', horarios: [], hi: null, hf: null},
+    { id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null },
+    { id: 2, dia: 'Martes', horarios: [], hi: null, hf: null },
+    { id: 3, dia: 'Miércoles', horarios: [], hi: null, hf: null },
+    { id: 4, dia: 'Jueves', horarios: [], hi: null, hf: null },
+    { id: 5, dia: 'Viernes', horarios: [], hi: null, hf: null },
+    { id: 6, dia: 'Sábado', horarios: [], hi: null, hf: null },
+    { id: 7, dia: 'Domingo', horarios: [], hi: null, hf: null },
   ];
 
   public negocioGuardar: any;
   public horarioini: string;
   public horariofin: string;
-  public nuevoHorario = new HorarioNegocioModel;
+  public nuevoHorario: HorarioNegocioModel;
+  public posicionHorario: number;
+  public blnActivaHoraF: boolean;
+  public blnActivaDias: boolean;
+  public blnActivaHorario: boolean;
   public tipoNegoAux: any;
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -57,13 +62,18 @@ export class InfoNegocioPage implements OnInit {
     private actionSheetController: ActionSheetController,
     private _utils_cls: UtilsCls,
     private notificaciones: ToadNotificacionService,
-    public modalController: ModalController
+    public modalController: ModalController,
+    public alertController: AlertController
   ) {
     this.listCategorias = [];
     this.listTipoNegocio = [];
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
     this.negtag = false;
-    
+    this.negocioGuardar = new NegocioModel();
+    this.nuevoHorario = new HorarioNegocioModel();
+    this.blnActivaHoraF = true;
+    this.blnActivaDias = true;
+    this.blnActivaHorario = true;
   }
 
   ngOnInit() {
@@ -86,7 +96,7 @@ export class InfoNegocioPage implements OnInit {
   }
   public buscarNegocio(id) {
 
-    if( this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined){
+    if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
       this.negocioTO = new NegocioModel();
       this.negocioTO.tags = ""; 
       this.categoriaPrincipal();
@@ -95,12 +105,12 @@ export class InfoNegocioPage implements OnInit {
       this.negocioServico.buscarNegocio(id).subscribe(
         response => {
           this.negocioTO = response.data;
-  
+
           const archivo = new ArchivoComunModel();
-              archivo.archivo_64 = this.negocioTO.url_logo;
-              archivo.nombre_archivo = this.negocioTO.id_negocio.toString();
-              this.negocioTO.logo = archivo;
-              this.negocioTO.local = archivo;
+          archivo.archivo_64 = this.negocioTO.url_logo;
+          archivo.nombre_archivo = this.negocioTO.id_negocio.toString();
+          this.negocioTO.logo = archivo;
+          this.negocioTO.local = archivo;
           this.categoriaPrincipal();
           this.subcategorias();
         },
@@ -109,7 +119,7 @@ export class InfoNegocioPage implements OnInit {
         }
       );
     }
-    
+
   }
   public obtenerTipoNegocio() {
     this.negocioServico.obtnerTipoNegocio().subscribe(
@@ -240,7 +250,7 @@ export class InfoNegocioPage implements OnInit {
   agregarTags(tags: string[]) {
     this.negtag = true;
     this.tags = tags.join();
-    
+
   }
   public obtenerCatOrganizaciones() {
     this.negocioServico.obtenerCatOrganizaciones().subscribe(
@@ -298,17 +308,41 @@ export class InfoNegocioPage implements OnInit {
   entregasDomicilio(evento){
     this.blnActivaEntregas = evento.detail.value;
   }
-  diasSeleccionado(evento){
-     this.nuevoHorario.dias = evento.detail.value ;
+  diasSeleccionado(evento) {
+    if(evento.detail.value.length > 0){
+      this.nuevoHorario.dias = evento.detail.value;
+      this.blnActivaHorario = false;
+    }else{
+      this.blnActivaHorario = true;
+    }
   }
-  agregarHorario(){
-  this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
-   this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
-   this.negocioTO.dias.push(this.nuevoHorario); 
-   this.horarioini = '';
-   this.horariofin = '';
-   this.nuevoHorario.dias = [];
+
+agregarHorario() {
+    if (this.nuevoHorario.id_horario === null || this.nuevoHorario.id_horario === undefined) {
+      this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
+      this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
+      this.nuevoHorario.activo = true;
+      this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
+      this.nuevoHorario.id_horario = null;
+      this.negocioTO.dias.push(this.nuevoHorario);
+      this.guardar();
+      this.horarioini = '';
+      this.horariofin = '';
+      this.nuevoHorario = new HorarioNegocioModel;
+    } else {
+      this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
+      this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
+      this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
+      this.nuevoHorario.dias = this.nuevoHorario.dias;
+      this.nuevoHorario.activo = true;
+      this.negocioTO.dias[this.posicionHorario] = this.nuevoHorario;
+      this.guardar();
+      this.horarioini = '';
+      this.horariofin = '';
+      this.nuevoHorario = new HorarioNegocioModel;
+    }
   }
+
   next(){
     this.datos();    
     this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
@@ -360,9 +394,9 @@ export class InfoNegocioPage implements OnInit {
     if (this.negocioGuardar.organizaciones !== undefined && this.negocioGuardar.organizaciones.length > 0) {
       this.negocioGuardar.nombre_organizacion = this.negocioTO.nombre_organizacion;
     }
-    if (this.negtag == true){
+    if (this.negtag == true) {
       this.negocioGuardar.tags = this.tags;
-    } else{
+    } else {
       let convertir;
       convertir =JSON.parse(JSON.stringify(this.negocioTO));
       this.negocioGuardar.tags = convertir.tags.join(); 
@@ -389,9 +423,64 @@ export class InfoNegocioPage implements OnInit {
     this.negocioGuardar.det_domicilio.id_municipio = this.negocioTO.det_domicilio.id_municipio;
     this.negocioGuardar.det_domicilio.id_localidad = this.negocioTO.det_domicilio.id_localidad;
     this.negocioGuardar.det_domicilio.colonia = this.negocioTO.det_domicilio.colonia;
-    if(this.negocioTO.det_domicilio.id_domicilio != null){
+    if (this.negocioTO.det_domicilio.id_domicilio != null) {
       this.negocioGuardar.det_domicilio.id_domicilio = this.negocioTO.det_domicilio.id_domicilio;
     }
     this.negocioGuardar.dias = this.negocioTO.dias;
+  }
+
+  eliminarHorario(i) {
+    this.negocioTO.dias.splice(i);
+    this.guardar();
+  }
+  editarHorario(horario, i) {
+    let objFecha = new Date();
+    this.posicionHorario = i;
+    this.horarioini = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_inicio + ":ssZ");
+    this.horariofin = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_fin + ":ssZ");
+    this.nuevoHorario.dias = horario.dias;
+    this.nuevoHorario.id_horario = horario.id_horario;
+  }
+  validarHoraInicio(evento) {
+    if (evento.detail.value !== '' ||
+      evento.detail.value !== undefined ||
+      evento.detail.value !== null) {
+      this.blnActivaHoraF = false;
+    }
+  }
+  validarHoraFinal(evento) {
+    if (evento.detail.value !== '' ||
+      evento.detail.value !== undefined ||
+      evento.detail.value !== null) {
+      this.blnActivaDias = false;
+    }
+  }
+  cancelarHorario(){
+    this.horarioini = '';
+    this.horariofin = '';
+    this.nuevoHorario = new HorarioNegocioModel;
+  }
+  async presentAlertEliminar(i) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '¿Esta seguro que desa Eliminar el registro?',
+      message: 'Recuerde que la acción es ireversible',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          }
+        }, {
+          role: 'destructive',
+          text: 'Confirmar',
+          handler: () => {
+            this.eliminarHorario(i);
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 }
