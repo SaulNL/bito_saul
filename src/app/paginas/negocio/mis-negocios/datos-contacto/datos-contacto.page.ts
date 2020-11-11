@@ -18,7 +18,7 @@ export class DatosContactoPage implements OnInit {
   public variak: boolean;
   public datos: any;
   public iden: any;
-  public syp: any;
+  public negocioGuardar: any;
   public nuevoPS: any;
   constructor(
     private router: Router,
@@ -31,6 +31,7 @@ export class DatosContactoPage implements OnInit {
     this.variay = false;
     this.variai = false;
     this.variak = false;
+    this.negocioGuardar = new NegocioModel();
   }
 
   ngOnInit() {
@@ -39,7 +40,7 @@ export class DatosContactoPage implements OnInit {
 
         this.datos = JSON.parse(params.special);
         this.negocioTO = this.datos.info;
-        this.syp = this.datos.pys;
+        this.negocioGuardar = this.datos.pys;
         console.log(this.negocioTO);
       }
     });
@@ -68,13 +69,20 @@ export class DatosContactoPage implements OnInit {
   }
 
   regresar() {
-    let navigationExtras = JSON.stringify(this.negocioTO);
+    this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
+    this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
+    let all = {
+      info: this.negocioTO,
+      pys: this.negocioGuardar
+    };
+    let navigationExtras = JSON.stringify(all);
     this.router.navigate(["/tabs/home/negocio/card-negocio/info-negocio"], {
       queryParams: { special: navigationExtras },
     });
   }
 
   regresarMis() {
+    this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
     let navigationExtras = JSON.stringify(this.negocioTO);
     this.router.navigate(["/tabs/home/negocio/card-negocio"], {
       queryParams: { special: navigationExtras },
@@ -83,7 +91,12 @@ export class DatosContactoPage implements OnInit {
   
   datosDomicilio(negocio: NegocioModel) {
     this.negocioTO = JSON.parse(JSON.stringify(negocio));
-    let navigationExtras = JSON.stringify(this.negocioTO);
+    this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
+    let all = {
+      info: this.negocioTO,
+      pys: this.negocioGuardar
+    };
+    let navigationExtras = JSON.stringify(all);
     this.router.navigate(["/tabs/home/negocio/mis-negocios/datos-domicilio"], {
       queryParams: { special: navigationExtras },
     });

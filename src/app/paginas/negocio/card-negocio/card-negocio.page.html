@@ -1,9 +1,15 @@
 <ion-header>
   <ion-toolbar  class="tolbar">
-    <ion-buttons slot="start" >
-      <ion-back-button defaultHref="tabs/home/negocio" text=""></ion-back-button>
+    <ion-buttons slot="start">
+      <ion-button (click)="regresar()" class="blanco">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>card-negocio</ion-title>
+    <ion-title>
+      <span *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined" class="">Agregar </span>
+      <span *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" class="">Modificar </span>
+      Negocio
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 

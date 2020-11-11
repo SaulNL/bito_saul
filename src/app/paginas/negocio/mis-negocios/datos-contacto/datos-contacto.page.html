@@ -67,11 +67,7 @@
           <ion-label >Los campos con * son obligatorios</ion-label>
         </ion-item>
     </ion-list>
-    <ion-button *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>
-    <ion-button *ngIf="valido" type="submit" class="bg-rosa">Actualizar</ion-button>
-  </ion-card>
-  
-
+    <ion-button expand="block" *ngIf="negocioTO.id_negocio != null || negocioTO.id_negocio != undefined" type="submit" class="bg-rosa">Actualizar</ion-button>
     <ion-grid>
       <ion-row>
         <ion-col>
@@ -86,6 +82,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+  </ion-card>
 </ion-content>
 
 

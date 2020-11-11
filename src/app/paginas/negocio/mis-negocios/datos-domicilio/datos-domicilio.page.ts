@@ -11,16 +11,20 @@ import { ActionSheetController } from "@ionic/angular";
 export class DatosDomicilioPage implements OnInit {
   public negocioTO: NegocioModel;
   public valido: boolean;
+  public negocioGuardar:any;
   constructor(private router: Router,
     private active: ActivatedRoute,
     private actionSheetController: ActionSheetController) {
       this.valido = false;
+      this.negocioGuardar = new NegocioModel();
      }
 
   ngOnInit() {
     this.active.queryParams.subscribe(params => {
       if (params && params.special) {
-        this.negocioTO  = JSON.parse(params.special);
+        let datos = JSON.parse(params.special);
+        this.negocioTO = datos.info;
+        this.negocioGuardar = datos.pys;
       }
     });
   }
@@ -47,14 +51,21 @@ export class DatosDomicilioPage implements OnInit {
     await actionSheet.present();
   }
   regresarMis() {
+    this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
     let navigationExtras = JSON.stringify(this.negocioTO);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios"], {
+    this.router.navigate(["/tabs/home/negocio/card-negocio"], {
       queryParams: { special: navigationExtras },
     });
   }
 
   regresar() {
-    let navigationExtras = JSON.stringify(this.negocioTO);
+    this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
+    this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
+    let all = {
+      info: this.negocioTO,
+      pys: this.negocioGuardar
+    };
+    let navigationExtras = JSON.stringify(all);
     this.router.navigate(["/tabs/home/negocio/mis-negocios/datos-contacto"], {
       queryParams: { special: navigationExtras },
     });

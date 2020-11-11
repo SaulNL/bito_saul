@@ -67,13 +67,18 @@ export class InfoNegocioPage implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
-      if (params && params.special) {
-        this.negocioTO = JSON.parse(params.special);
+      if (params && params.specialune) {
+        //this.negocioTO = JSON.parse(params.specialune);
+        this.negocioTO = new NegocioModel();
       }
     });
-    
-
-    
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params && params.special) {
+        let datos = JSON.parse(params.special);
+        this.negocioTO = datos.info;
+        this.negocioGuardar = datos.pys;
+      }
+    });
     this.buscarNegocio(this.negocioTO.id_negocio);
     this.obtenerTipoNegocio();
     this.obtenerCatOrganizaciones();
@@ -83,7 +88,7 @@ export class InfoNegocioPage implements OnInit {
 
     if( this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined){
       this.negocioTO = new NegocioModel();
-     // this.negocioTO.tags = ""; 
+      this.negocioTO.tags = ""; 
       this.categoriaPrincipal();
       this.subcategorias();
     } else {
@@ -375,5 +380,12 @@ export class InfoNegocioPage implements OnInit {
         queryParams: { special: navigationExtras },
       }
     );
+  }
+  regresar(){
+     this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
+    let navigationExtras = JSON.stringify(this.negocioTO);
+    this.router.navigate(["/tabs/home/negocio/card-negocio"], {
+      queryParams: { special: navigationExtras },
+    });
   }
 }
