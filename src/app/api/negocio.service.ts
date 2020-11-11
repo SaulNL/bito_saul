@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {AppSettings} from "../AppSettings";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
+import {DatosNegocios} from '../Modelos/DatosNegocios';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,66 @@ export class NegocioService {
     const body = JSON.stringify({id_proveedor: id});
     return this.http.post(
       this.url + 'api/buscar/mis-negocios', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  buscarProductosServios(id: number, tipo: number): Observable<any> {
+    const body = JSON.stringify({id_negocio: id, tipo : tipo});
+    return this.http.post(
+      this.url + 'api/lista/producto/negocio', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  guardarProductoServio(datosNegocio: DatosNegocios): Observable<any> {
+    const body = JSON.stringify(datosNegocio);
+    return this.http.post(
+      this.url + 'api/guardarProductosServicios', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  obtenerNumMaxProductos(idNegocio): Observable<any> {
+    const body = JSON.stringify({id: idNegocio});
+    return this.http.post(
+      this.url + 'api/negocio/numero/max/productos', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  modificarCategoria(enviar:any): Observable<any> {
+    const body = JSON.stringify(enviar);
+    return this.http.post(
+      this.url + 'api/negocio/modificar/categoria', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  eliminarCategoria(enviar:any): Observable<any> {
+    const body = JSON.stringify(enviar);
+    return this.http.post(
+      this.url + 'api/negocio/eliminar/categoria', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  agregarCategoria(enviar:any): Observable<any> {
+    const body = JSON.stringify(enviar);
+    return this.http.post(
+      this.url + 'api/negocio/guardar/categoria', body,
       {headers: AppSettings.getHeadersToken()}
     ).pipe(map(res => {
       return res;
