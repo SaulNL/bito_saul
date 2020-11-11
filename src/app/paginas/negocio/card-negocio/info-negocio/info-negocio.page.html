@@ -43,7 +43,7 @@
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Tipo de Negocio</ion-label>
-        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idtipoNegocio" required  #tipoNegocio="ngModel" [(ngModel)]="negocioTO.id_tipo_negocio" (ionChange)="categoriaPrincipal()">
+        <ion-select name="idtipoNegocio" required  #tipoNegocio="ngModel" [(ngModel)]="negocioTO.id_tipo_negocio" (change)="categoriaPrincipal()" interface="action-sheet" value="{{ tipoNegoAux }}">
           <ion-select-option *ngFor="let item of listTipoNegocio" [value]="item.id_tipo_negocio">{{item.nombre}}</ion-select-option>
         </ion-select>
       </ion-item>

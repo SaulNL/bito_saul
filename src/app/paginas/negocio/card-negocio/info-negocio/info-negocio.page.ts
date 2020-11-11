@@ -49,6 +49,7 @@ export class InfoNegocioPage implements OnInit {
   public horarioini: string;
   public horariofin: string;
   public nuevoHorario = new HorarioNegocioModel;
+  public tipoNegoAux: any;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -79,9 +80,9 @@ export class InfoNegocioPage implements OnInit {
         this.negocioGuardar = datos.pys;
       }
     });
-    this.buscarNegocio(this.negocioTO.id_negocio);
     this.obtenerTipoNegocio();
     this.obtenerCatOrganizaciones();
+    this.buscarNegocio(this.negocioTO.id_negocio);
   }
   public buscarNegocio(id) {
 
@@ -114,12 +115,20 @@ export class InfoNegocioPage implements OnInit {
     this.negocioServico.obtnerTipoNegocio().subscribe(
       response => {
         this.listTipoNegocio = response.data;
+        console.log(this.listTipoNegocio);
       },
       error => {
         this.listTipoNegocio = [];
         console.log(error);
       }
     );
+    this.listTipoNegocio.forEach(element => {
+      
+      if (this.listTipoNegocio.id_tipo_negocio == this.negocioTO.id_tipo_negocio) {
+        this.tipoNegoAux = this.listTipoNegocio.nombre;
+        console.log(this.tipoNegoAux);    
+      }
+    });
   }
   categoriaPrincipal() {
     // this.loaderGiro = true;
