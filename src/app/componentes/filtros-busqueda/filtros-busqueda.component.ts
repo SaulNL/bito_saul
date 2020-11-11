@@ -5,6 +5,7 @@ import {Plugins} from '@capacitor/core';
 import {FiltrosService} from "../../api/filtros.service";
 
 const {Geolocation} = Plugins;
+declare var google: any;
 
 @Component({
     selector: 'app-filtros-busqueda',
@@ -27,6 +28,11 @@ export class FiltrosBusquedaComponent implements OnInit {
     lstCatTipoProducto: any;
     listaCategorias: any;
     subCategoria: any;
+    blnUbicacion: boolean;
+    miUbicacionlongitud: number;
+    miUbicacionlatitud: number;
+    estasUbicacion: string;
+    kilometrosSlider: number;
 
 
     constructor(
@@ -43,20 +49,35 @@ export class FiltrosBusquedaComponent implements OnInit {
         this.obtenerCatalogos();
         this.getCurrentPosition();
         this.obtenerCatEstados();
-        this.obtenergiros()
+        this.obtenergiros();
     }
 
     async getCurrentPosition() {
         const coordinates = await Geolocation.getCurrentPosition().then(res => {
-            console.log(res)
+            //console.log(res);
+            this.blnUbicacion=true;
+            this.miUbicacionlatitud = res.coords.latitude;
+            this.miUbicacionlongitud = res.coords.longitude;
+            this.filtros.latitud = this.miUbicacionlatitud;
+            this.filtros.longitud = this.miUbicacionlongitud;
+            try {
+                this.geocodeLatLng();
+              } catch (e) {
+                console.error(e);
+              }
         }).catch(error => {
-            console.log(error, 'asdasdsad')
+            console.log(error, 'asdasdsad');
+            this.blnUbicacion=false;
             }
         );
     }
 
     ngOnInit() {
-
+        this.miUbicacionlongitud = 0;
+        this.miUbicacionlatitud = 0;
+        this.kilometrosSlider=1;
+        this.filtros.kilometros=1;
+        this.filtros.tipoBusqueda=0;        
     }
 
     public obtenergiros() {
@@ -98,7 +119,12 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     buscar() {
-        this.buscarPorFiltros.emit(this.filtros)
+        if (this.filtros.tipoBusqueda === 1) {
+            this.filtros.idEstado = null;
+            this.filtros.idMunicipio = null;
+            this.filtros.idLocalidad = null;
+        }
+        this.buscarPorFiltros.emit(this.filtros)        
     }
 
     selectEstado() {
@@ -127,6 +153,32 @@ export class FiltrosBusquedaComponent implements OnInit {
             }
         );
     }
+
+    public geocodeLatLng() {
+        // @ts-ignore
+        const geocoder = new google.maps.Geocoder;
+        const latlng = {
+          lat: parseFloat(String(this.miUbicacionlatitud)),
+          lng: parseFloat(String(this.miUbicacionlongitud))
+        };
+        geocoder.geocode({location: latlng}, (results, status) => {
+          if (status === 'OK') {
+            if (results[0]) {
+              //this.loader = false;
+    
+              let posicion = results[0].address_components.length;
+              posicion = posicion - 4;
+              this.estasUbicacion = results[0].formatted_address;
+              this.filtros.strMunicipio = results[0].address_components[posicion].long_name;
+            } else {
+              //console.log('No results found');
+            }
+          } else {
+            //console.log('Geocoder failed due to: ' + status);
+            //this.loader = false;
+          }
+        });
+      }
 
 
     selectMunicipio() {
@@ -160,5 +212,37 @@ export class FiltrosBusquedaComponent implements OnInit {
     selectSubCategoria() {
         console.log(this.subCategoria)
         this.filtros.idCategoriaNegocio = [this.subCategoria]
+    }
+
+    setIonradiogroupEntregaDomicilio(opcion:number){
+        if(opcion === 1){
+            this.filtros.blnEntrega=true;
+        }else if(opcion===0){
+            this.filtros.blnEntrega=false;
+        }
+    }
+    setIonradiogroupAbiertoCerrado(opcion:number){
+        if(opcion === 1){
+            this.filtros.abierto=true;
+        }else if(opcion === 0){
+            this.filtros.abierto=false;
+        }
+    }
+    obtenerKilometrosRango(event) {
+        this.kilometrosSlider = event.detail.value;
+        this.filtros.kilometros = this.kilometrosSlider;        
+    }
+
+    setTipo(tipo:string){
+        if(tipo === 'localidad'){
+            this.filtros.tipoBusqueda=0;
+        }else if(tipo === 'ubicacion'){
+            this.filtros.tipoBusqueda=1;
+        }
+    }
+
+    borrarFiltros(){
+        this.filtros=new FiltrosModel();
+        this.buscar();
     }
 }
