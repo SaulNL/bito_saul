@@ -85,7 +85,7 @@
       </div>
       <ion-item>
         <ion-label position="stacked">Afiliado a</ion-label>
-        <ion-select ok-text="Ok" cancel-text="Cancelar" multiple  required [value]="negocioTO.organizaciones">
+        <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idOrganiza" name="idOrganiza" #organizaciones="ngModel" [(ngModel)]="negocioTO.organizaciones" required [value]="negocioTO.organizaciones">
           <ion-select-option *ngFor="let org of lstOrganizaciones" [value]="org.id_organizacion">{{org.nombre}}</ion-select-option>
         </ion-select>
       </ion-item>
@@ -208,6 +208,7 @@
       </ion-item>
     <ion-button  expand="block" type="submit" class="bg-rosa" [disabled]="formNegocio.invalid" *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</ion-button>
   </ion-list>
+</form>
     <ion-grid>
       <ion-row>
         <ion-col>
@@ -221,7 +222,7 @@
         </ion-col>
         </ion-row>
         </ion-grid>
-      </form>
+      
     </ion-card-content>
   </ion-card>
 </ion-content>
