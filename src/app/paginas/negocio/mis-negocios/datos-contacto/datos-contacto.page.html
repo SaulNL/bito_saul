@@ -1,11 +1,6 @@
 <ion-header>
   <ion-toolbar class="tolbar">
     <ion-title>Datos de contacto</ion-title>
-    <ion-buttons slot="end">
-      <ion-button *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" (click)="presentActionSheet()" class="blanco">
-        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
     <ion-buttons slot="start">
       <ion-button (click)="regresarMis()" class="blanco">
         <ion-icon name="chevron-back-outline"></ion-icon>

@@ -1,11 +1,6 @@
 <ion-header>
   <ion-toolbar class="tolbar">
     <ion-title>Datos de domicilio</ion-title>
-    <ion-buttons slot="end">
-      <ion-button *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" (click)="presentActionSheet()" class="blanco">
-        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
     <ion-buttons slot="start">
       <ion-button (click)="regresarMis()" class="blanco">
         <ion-icon name="chevron-back-outline"></ion-icon>
@@ -101,22 +96,22 @@
             <span *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined">Guardar</span>
             <span *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined">Actualizar</span>
           </ion-button>
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                <div>
-                  <ion-button expand="block" (click)="regresar()" type="submit" class="bg-rosa">Atras</ion-button>
-                </div>
-              </ion-col>
-              <ion-col>
-                <div>
-                  
-                </div>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
         </ion-list>
       </form>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>
+              <ion-button expand="block" (click)="regresar()" type="submit" class="bg-rosa">Atras</ion-button>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-card-content>
   </ion-card>
     

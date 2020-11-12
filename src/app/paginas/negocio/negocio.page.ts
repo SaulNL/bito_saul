@@ -140,7 +140,6 @@ export class NegocioPage implements OnInit {
   }
   agregarNegocio() {
     this.selectTO = new NegocioModel();
-    console.log(this.selectTO);
     this.selectTO.det_domicilio = new DetDomicilioModel();
     let navigationExtras = JSON.stringify(this.selectTO);
     this.router.navigate(['/tabs/home/negocio/card-negocio/info-negocio'], {
