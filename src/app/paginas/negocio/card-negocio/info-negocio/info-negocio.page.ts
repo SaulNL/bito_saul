@@ -288,7 +288,7 @@ export class InfoNegocioPage implements OnInit {
   confirmarUrlNegocio(evento, entrada = 1) {
     let cadena = '';
     if (entrada === 2) {
-      cadena = evento.target.value;
+      cadena = evento.detail.value;
     }
     else {
       cadena = evento;
