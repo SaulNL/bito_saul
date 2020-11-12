@@ -13,6 +13,7 @@ import { AlertController } from '@ionic/angular';
 export class CardNegocioPage implements OnInit {
   public negocioTO: NegocioModel;
   public negocioGuardar: any;
+  public btload: boolean;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -21,6 +22,7 @@ export class CardNegocioPage implements OnInit {
     public alertController: AlertController
   ) { 
     this.negocioGuardar = new NegocioModel();
+    this.btload= false;
   }
 
   ngOnInit() {
@@ -40,10 +42,13 @@ export class CardNegocioPage implements OnInit {
   }
 
   public buscarNegocio() {
-    
+    this.btload=false;
     this.negocioServico.buscarNegocio(this.negocioTO.id_negocio).subscribe(
       response => {
         this.negocioTO = response.data;
+        this.btload=true;
+        console.log(this.btload);
+        
       },
       error => {
         console.log(error);

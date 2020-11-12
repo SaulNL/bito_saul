@@ -24,7 +24,7 @@
     </div>
     <ion-card-content>
 <ion-list>
-  <ion-item (click)="inforNegocio(negocioTO)">
+  <ion-item [disabled]="false==btload" (click)="inforNegocio(negocioTO)">
     <ion-icon style="margin: 3px;"  name="clipboard-outline"></ion-icon>
     <ion-label >Información del negocio</ion-label>
     <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
