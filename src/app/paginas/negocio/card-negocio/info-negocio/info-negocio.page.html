@@ -20,22 +20,22 @@
       <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
         <div class="avatar-upload">
             <div class="avatar-edit">
-                <input type='file' hidden id="imageUpload" accept="image/*" (change)="subir_imagen_cuadrada($event)" />
-                <label for="imageUpload">
-                  <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
-                </label>
+              <input type='file' hidden id="imageUpload" accept="image/*" (change)="subir_imagen_cuadrada($event)" />
+              <label for="imageUpload">
+                <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
+              </label>
             </div>
-           <div class="avatar-preview">
+            <div class="avatar-preview">
               <div *ngIf="negocioTO.logo === null || negocioTO.logo === undefined" id="imageUpload" [ngStyle]="negocioTO.logo !== null ?
                 {'background-image': 'url('+negocioTO.url_logo+')'} : ''">
-                </div>
-                <div *ngIf="negocioTO.logo !== null && negocioTO.logo !== undefined" [ngStyle]="{
+              </div>
+              <div *ngIf="negocioTO.logo !== null && negocioTO.logo !== undefined" [ngStyle]="{
              'background-image': 'url('+negocioTO.logo.archivo_64+')'}">
-                </div>
+              </div>
             </div>
             <label for="imageUpload"></label>
+          </div>
         </div>
-    </div>
     <ion-list>
       <ion-item>
         <ion-label position="stacked">Nombre del negocio: <span style="color: red">*</span></ion-label>
@@ -46,22 +46,34 @@
       </div>
       <ion-item>
         <ion-label position="stacked">Tipo de Negocio</ion-label>
-        <ion-select name="idtipoNegocio" required  #tipoNegocio="ngModel" [(ngModel)]="negocioTO.id_tipo_negocio" (change)="categoriaPrincipal()" interface="action-sheet" value="{{ tipoNegoAux }}">
-          <ion-select-option *ngFor="let item of listTipoNegocio" [value]="item.id_tipo_negocio">{{item.nombre}}</ion-select-option>
+        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idtipoNegocio" required #tipoNegocio="ngModel" [(ngModel)]="negocioTO.id_tipo_negocio"
+        ok-text="Ok" cancel-text="Cancelar" [value]="tipoNegoAux">
+          <ion-select-option *ngFor="let item of listTipoNegocio" (ionChange)="categoriaPrincipal(item.id_tipo_negocio)" [value]="item.id_tipo_negocio">{{item.nombre}}
+          </ion-select-option>
         </ion-select>
       </ion-item>
       <div *ngIf="tipoNegocio.invalid" class="alert">
         <div>Seleccione un tipo negocio</div>
       </div>
       <ion-item>
-        <ion-label position="stacked">Subcategoría</ion-label>
-        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idtipoGiro" required  #tipoGiro="ngModel"  [(ngModel)]="negocioTO.id_giro" >
-          <ion-select-option *ngFor="let sub of listaSubCategorias" [value]="sub.id_categoria">{{sub.nombre}}</ion-select-option>
+        <ion-label position="stacked">Categoría</ion-label>
+        <ion-select name="idtipoGiro" required #tipoGiro="ngModel" ok-text="Ok" cancel-text="Cancelar"
+          [(ngModel)]="negocioTO.id_giro" (ionChange)="subcategorias()" [value]="tipoGiroAux">
+          <ion-select-option *ngFor="let item of listCategorias" [value]="item.id_giro">{{item.nombre}}
+          </ion-select-option>
         </ion-select>
       </ion-item>
       <div *ngIf="tipoGiro.invalid" class="alert">
-        <div>Seleccione un tipo subcategoria</div>
+        <div>Seleccione un tipo Categoria</div>
       </div>
+      <ion-item>
+        <ion-label position="stacked">SubCategoría</ion-label>
+        <ion-select name="idtipoSubCategorias" required #tipoSubCategoria="ngModel" ok-text="Ok" cancel-text="Cancelar"
+          [(ngModel)]="negocioTO.id_categoria_negocio" [value]="tipoSubAux">
+          <ion-select-option *ngFor="let item of listaSubCategorias" [value]="item.id_categoria">{{item.nombre}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
       <ion-item>
         <ion-label position="stacked">Descripción del Negocio <span style="color: red">*</span></ion-label>
         <ion-input id="idNegocioDesc" name="idNegocioDesc" #descNegocio="ngModel" required [(ngModel)]="negocioTO.descripcion"></ion-input>
@@ -71,7 +83,7 @@
       </div>
       <ion-item>
         <ion-label position="stacked">Afiliado a</ion-label>
-        <ion-select ok-text="Ok" cancel-text="Cancelar" multiple  required  >
+        <ion-select ok-text="Ok" cancel-text="Cancelar" multiple  required [value]="negocioTO.organizaciones">
           <ion-select-option *ngFor="let org of lstOrganizaciones" [value]="org.id_organizacion">{{org.nombre}}</ion-select-option>
         </ion-select>
       </ion-item>
@@ -101,42 +113,91 @@
         <ion-grid>
           <ion-row class="ion-align-items-center">
               <ion-col size="12" class="ion-text-center">
-                  <ion-button [disabled]="blnActivaHorario" size="small" class="bg-rosa" type="button" (click)="agregarHorario()">
-                      <ion-icon name="add-outline"></ion-icon>
-                      Agrega Horario
-                    </ion-button>
-                    <ion-button size="small" color="medium" type="button" (click)="cancelarHorario()">
-                    Limpiar
-                  </ion-button>
+                <ion-button [disabled]="blnActivaHorario" size="small" class="bg-rosa" type="button"
+                  (click)="agregarHorario()">
+                  <ion-icon name="add-outline"></ion-icon>
+                  Agrega Horario
+                </ion-button>
+                <ion-button size="small" color="medium" type="button" (click)="cancelarHorario()">
+                  Limpiar
+                </ion-button>
               </ion-col>
-          </ion-row>
-      </ion-grid>
-      <ion-card>
-        <div class="ion-text-center">
-          <h5>Horarios</h5>
-        </div>
-       <ion-list *ngFor="let dia of negocioTO.dias; index as i">
-        <span style="margin: 10px;">Días</span>
-         <ion-item>
-           <ion-label>{{dia.dias}}</ion-label>
+            </ion-row>
+          </ion-grid>
+          <ion-card>
+            <div class="ion-text-center">
+              <h5>Horarios</h5>
+            </div>
+            <ion-list *ngFor="let dia of negocioTO.dias; index as i">
+              <span style="margin: 10px;">Días</span>
+              <ion-item>
+                <ion-label>{{dia.dias}}</ion-label>
+              </ion-item>
+              <span style="margin: 10px;">Horario</span>
+              <ion-item class="ion-align-items-center">
+                <ion-chip color="tertiary" class="ion-text-center">
+                  <ion-label>{{dia.hora_inicio}}</ion-label>
+                </ion-chip>
+                <ion-chip color="tertiary" class="ion-text-center">
+                  <ion-label>{{dia.hora_fin}}</ion-label>
+                </ion-chip>
+                <ion-button (click)="editarHorario(dia,i)" color="success" size="small" class="ion-text-center">
+                  <ion-icon name="create-outline"></ion-icon>
+                </ion-button>
+                <ion-button (click)="presentAlertEliminar(i)" color="medium" size="small" class="ion-text-center">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-list>
+          </ion-card>
+          <ion-item>
+            <ion-label class="urlnego" position="stacked">Url del negocio: <span style="color: red">*</span></ion-label>
+            <ion-input id="idNegocioUrl" name="idNegocioUrl" #urlNegocio="ngModel" required
+              [(ngModel)]="negocioTO.url_negocio" (keyup)="confirmarUrlNegocio($event, 2)"></ion-input>
           </ion-item>
-          <span style="margin: 10px;">Horario</span>
-            <ion-item class="ion-align-items-center">
-              <ion-chip color="tertiary" class="ion-text-center">
-                <ion-label>{{dia.hora_inicio}}</ion-label>
-              </ion-chip>
-              <ion-chip color="tertiary" class="ion-text-center">
-                <ion-label>{{dia.hora_fin}}</ion-label>
-              </ion-chip>
-              <ion-button (click)="editarHorario(dia,i)" color="success" size="small" class="ion-text-center">
-                <ion-icon name="create-outline"></ion-icon>
-              </ion-button>
-              <ion-button (click)="presentAlertEliminar(i)" color="medium" size="small" class="ion-text-center">
-              <ion-icon name="trash-outline"></ion-icon>
-            </ion-button>
+          <span *ngIf="urlNegocioLibre === true"
+            style="font-size: 11px; margin-left: 11px;">https://www.bitoo.com.mx/@</span>
+          <span *ngIf="urlNegocioLibre === false" style="font-size: 11px; margin-left: 11px;">Url ya existe, sugerencia:
+            https://www.bitoo.com.mx/@{{negocioTO.url_negocio}}</span>
+          <ion-item>
+            <ion-label position="stacked">Consumo en sitio<span style="color: red">*</span></ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" name="idConsumoNegocio" required #consuNegocio="ngModel"
+              [(ngModel)]="negocioTO.consumo_sitio">
+              <ion-select-option *ngFor="let ent of entregas" [value]="ent.id">{{ent.respuesta}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Entregas en sitio: <span style="color: red">*</span></ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" name="idConsumoNegocio" required #consuNegocio="ngModel"
+              [(ngModel)]="negocioTO.entrega_sitio">
+              <ion-select-option *ngFor="let ent of entregas" [value]="ent.id">{{ent.respuesta}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Entregas a Domicilio: <span style="color: red">*</span></ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" name="idConsumoNegocio" required #consuNegocio="ngModel"
+              (ionChange)="entregasDomicilio($event)" [(ngModel)]="negocioTO.entrega_domicilio">
+              <ion-select-option *ngFor="let ent of entregas" [value]="ent.id">{{ent.respuesta}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div *ngIf="blnActivaEntregas">
+            <ion-item>
+              <ion-label position="stacked">Alcance de la Entrega</ion-label>
+              <ion-input id="idNegoAlcEntrega" name="idNegoAlcEntrega" #negoAlcEntrega="ngModel" required
+                [(ngModel)]="negocioTO.alcance_entrega"></ion-input>
             </ion-item>
-       </ion-list> 
-      </ion-card>
+            <span style="font-size: 11px; margin-left: 11px;">Km</span>
+            <ion-item>
+              <ion-label position="stacked">Tiempo de Entrega</ion-label>
+              <ion-input id="idNegoTiempoEntrega" name="idNegoTiempoEntrega" #negoTiempoEntrega="ngModel" required
+                [(ngModel)]="negocioTO.tiempo_entrega_kilometro"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Costo de Entrega</ion-label>
+              <ion-input placeholder="$0.00" id="idNegoCostoEntrega" name="idNegoCostoEntrega"
+                #negoCostoEntrega="ngModel" required [(ngModel)]="negocioTO.costo_entrega"></ion-input>
+            </ion-item>
+          </div>
       <ion-item>
         <ion-label class="urlnego" position="stacked">Url del negocio: <span style="color: red">*</span></ion-label>
         <ion-input id="idNegocioUrl" name="idNegocioUrl" #urlNegocio="ngModel" required [(ngModel)]="negocioTO.url_negocio" (keyup)="confirmarUrlNegocio($event, 2)"></ion-input>
@@ -191,8 +252,8 @@
       <ion-item>
         <ion-label>Los campos con <span style="color: red">*</span>son obligatorios</ion-label>
       </ion-item>
-    </ion-list>
     <ion-button  expand="block" type="submit" class="bg-rosa" [disabled]="formNegocio.invalid" *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</ion-button>
+  </ion-list>
     <ion-grid>
       <ion-row>
         <ion-col>
@@ -203,10 +264,13 @@
           <div>
             <ion-button (click)="next()" [disabled]="formNegocio.invalid" expand="block" type="submit" class="bg-rosa">Siguiente</ion-button>
           </div>
+          <ion-item>
+            <ion-label>Los campos con <span style="color: red">*</span>son obligatorios</ion-label>
+          </ion-item>
         </ion-col>
-      </ion-row>
-    </ion-grid>
-  </form>
+        </ion-row>
+        </ion-grid>
+      </form>
     </ion-card-content>
   </ion-card>
 </ion-content>

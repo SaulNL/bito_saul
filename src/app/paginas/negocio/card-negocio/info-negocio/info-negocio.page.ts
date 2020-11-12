@@ -23,7 +23,7 @@ export class InfoNegocioPage implements OnInit {
   public negtag: boolean;
   public listTipoNegocio: any;
   public listCategorias: any;
-  private listaSubCategorias: any;
+  public listaSubCategorias: any;
   public resizeToWidth: number = 0;
   public resizeToHeight: number = 0;
   private usuario: any;
@@ -55,6 +55,8 @@ export class InfoNegocioPage implements OnInit {
   public blnActivaDias: boolean;
   public blnActivaHorario: boolean;
   public tipoNegoAux: any;
+  public tipoGiroAux: any;
+  public tipoSubAux: any;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -125,20 +127,19 @@ export class InfoNegocioPage implements OnInit {
     this.negocioServico.obtnerTipoNegocio().subscribe(
       response => {
         this.listTipoNegocio = response.data;
-        console.log(this.listTipoNegocio);
+        this.listTipoNegocio.forEach(element => {
+          if (element.id_tipo_negocio == this.negocioTO.id_tipo_negocio) {
+            this.tipoNegoAux = element.id_tipo_negocio;
+            console.log(this.tipoNegoAux);
+          }
+        });
       },
       error => {
         this.listTipoNegocio = [];
         console.log(error);
       }
     );
-    this.listTipoNegocio.forEach(element => {
-      
-      if (this.listTipoNegocio.id_tipo_negocio == this.negocioTO.id_tipo_negocio) {
-        this.tipoNegoAux = this.listTipoNegocio.nombre;
-        console.log(this.tipoNegoAux);    
-      }
-    });
+    
   }
   categoriaPrincipal() {
     // this.loaderGiro = true;
@@ -147,6 +148,13 @@ export class InfoNegocioPage implements OnInit {
     this.negocioServico.categoriaPrincipal(this.negocioTO.id_tipo_negocio).subscribe(
       respuesta => {
         this.listCategorias = respuesta.data;
+        this.listCategorias.forEach(element => {
+          if (element.id_giro == this.negocioTO.id_giro) {
+            this.tipoGiroAux = element.id_giro;
+            console.log(this.tipoGiroAux);
+          }
+        });
+
       },
       error => {
       },
@@ -163,6 +171,12 @@ export class InfoNegocioPage implements OnInit {
         this.listaSubCategorias = Array();
         if (respuesta.code === 200) {
           this.listaSubCategorias = respuesta.data;
+          this.listaSubCategorias.forEach(element => {
+            if (element.id_categoria == this.negocioTO.id_categoria_negocio) {
+              this.tipoSubAux = element.id_categoria;
+              console.log(this.tipoSubAux);
+            }
+          });
         }
       },
       error => {
@@ -488,4 +502,5 @@ agregarHorario() {
     });
     await alert.present();
   }
+  
 }
