@@ -455,7 +455,6 @@ agregarHorario() {
 
   eliminarHorario(i) {
     this.negocioTO.dias.splice(i);
-    this.guardar();
   }
   editarHorario(horario, i) {
     let objFecha = new Date();
