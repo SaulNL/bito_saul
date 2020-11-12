@@ -45,7 +45,7 @@ export class NegocioModel {
 
   organizaciones: string;
   nombre_organizacion: string;
-  tags: string;
+  tags: any;
 
   public horarios: Array<HorarioNegocioModel>;
   suspendido: boolean;
