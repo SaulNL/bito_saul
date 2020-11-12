@@ -218,9 +218,9 @@ export class DatosDomicilioPage implements OnInit {
   * Funcion para obtener los municipios
   */
   public get_list_cat_municipio(evento) {
-    this.negocioTO.det_domicilio.id_municipio = [];
     let idE;
     if (evento.type === 'ionChange') {
+      this.negocioTO.det_domicilio.id_municipio = [];
       idE = evento.detail.value;
     } else {
       idE = evento.value;
@@ -231,7 +231,7 @@ export class DatosDomicilioPage implements OnInit {
         response => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_municipio = response.data.list_cat_municipio;
-           // this.btnMuncipio = false;
+            this.btnMuncipio = false;
             if (this.negocioTO.det_domicilio.id_municipio > 0) {
               this.btnMuncipio = false;
               this.get_list_cat_localidad({ value: this.negocioTO.det_domicilio.id_municipio });
@@ -253,9 +253,9 @@ export class DatosDomicilioPage implements OnInit {
    * Obtener localidad
    */
   public get_list_cat_localidad(evento) {
-    this.negocioTO.det_domicilio.id_localidad = [];
     let idE;
     if (evento.type === 'ionChange') {
+      this.negocioTO.det_domicilio.id_localidad = [];
       idE = evento.detail.value;
     } else {
       idE = evento.value;

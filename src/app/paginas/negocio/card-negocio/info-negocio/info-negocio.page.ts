@@ -324,11 +324,15 @@ agregarHorario() {
       this.nuevoHorario.activo = true;
       this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
       this.nuevoHorario.id_horario = null;
-      this.negocioTO.dias.push(this.nuevoHorario);
-      this.guardar();
+      if(this.posicionHorario >=  0){
+        this.negocioTO.dias[this.posicionHorario] = this.nuevoHorario;
+      }else{
+        this.negocioTO.dias.push(this.nuevoHorario);
+      }
       this.horarioini = '';
       this.horariofin = '';
       this.nuevoHorario = new HorarioNegocioModel;
+      this.posicionHorario = -1;
     } else {
       this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
       this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
@@ -339,6 +343,7 @@ agregarHorario() {
       this.horarioini = '';
       this.horariofin = '';
       this.nuevoHorario = new HorarioNegocioModel;
+      this.posicionHorario = -1;
     }
   }
 
@@ -435,6 +440,7 @@ agregarHorario() {
   editarHorario(horario, i) {
     let objFecha = new Date();
     this.posicionHorario = i;
+    console.log(this.posicionHorario);
     this.horarioini = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_inicio + ":ssZ");
     this.horariofin = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_fin + ":ssZ");
     this.nuevoHorario.dias = horario.dias;

@@ -84,13 +84,13 @@
           <ion-label stacked>
             Horario Inicial
           </ion-label>
-          <ion-datetime display-format="H:mm"  name="feInicio" #feInicio="ngModel" [(ngModel)]="horarioini" required (ionChange)="validarHoraInicio($event)"></ion-datetime>
+          <ion-datetime display-format="H:mm"  name="feInicio" #feInicio="ngModel" [(ngModel)]="horarioini" (ionChange)="validarHoraInicio($event)"></ion-datetime>
         </ion-item>
         <ion-item>
           <ion-label stacked>
             Horario Final
           </ion-label>
-          <ion-datetime [disabled]="blnActivaHoraF" display-format="H:mm" name="fechaFinal" #fechaFinal="ngModel" [(ngModel)]="horariofin" required (ionChange)="validarHoraFinal($event)"></ion-datetime>
+          <ion-datetime [disabled]="blnActivaHoraF" display-format="H:mm" name="fechaFinal" #fechaFinal="ngModel" [(ngModel)]="horariofin"  (ionChange)="validarHoraFinal($event)"></ion-datetime>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Dias de la Semana</ion-label>
@@ -201,7 +201,7 @@
         </ion-col>
         <ion-col>
           <div>
-            <ion-button (click)="next()" expand="block" type="submit" class="bg-rosa">Siguiente</ion-button>
+            <ion-button (click)="next()" [disabled]="formNegocio.invalid" expand="block" type="submit" class="bg-rosa">Siguiente</ion-button>
           </div>
         </ion-col>
       </ion-row>
