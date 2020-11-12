@@ -101,8 +101,8 @@ export class InfoNegocioPage implements OnInit {
     if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
       this.negocioTO = new NegocioModel();
       this.negocioTO.tags = ""; 
-      this.categoriaPrincipal();
-      this.subcategorias();
+      this.categoriaPrincipal({ value: 0 });
+      this.subcategorias({ value: 0 });
     } else {
       this.negocioServico.buscarNegocio(id).subscribe(
         response => {
@@ -113,8 +113,8 @@ export class InfoNegocioPage implements OnInit {
           archivo.nombre_archivo = this.negocioTO.id_negocio.toString();
           this.negocioTO.logo = archivo;
           this.negocioTO.local = archivo;
-          this.categoriaPrincipal();
-          this.subcategorias();
+          this.categoriaPrincipal({ value: this.negocioTO.id_tipo_negocio });
+          this.subcategorias({ value: this.negocioTO.id_giro });
         },
         error => {
           console.log(error);
@@ -130,7 +130,6 @@ export class InfoNegocioPage implements OnInit {
         this.listTipoNegocio.forEach(element => {
           if (element.id_tipo_negocio == this.negocioTO.id_tipo_negocio) {
             this.tipoNegoAux = element.id_tipo_negocio;
-            console.log(this.tipoNegoAux);
           }
         });
       },
@@ -141,17 +140,22 @@ export class InfoNegocioPage implements OnInit {
     );
     
   }
-  categoriaPrincipal() {
+  categoriaPrincipal(evento) {
     // this.loaderGiro = true;
     //   this.negocioTO.id_giro = null;
-    this.listCategorias = [];
-    this.negocioServico.categoriaPrincipal(this.negocioTO.id_tipo_negocio).subscribe(
+    let idE;
+    if (evento.type === 'ionChange') {
+      this.negocioTO.id_giro = [];
+      idE = evento.detail.value;
+    } else {
+      idE = evento.value;
+    }
+    this.negocioServico.categoriaPrincipal(idE).subscribe(
       respuesta => {
         this.listCategorias = respuesta.data;
         this.listCategorias.forEach(element => {
           if (element.id_giro == this.negocioTO.id_giro) {
             this.tipoGiroAux = element.id_giro;
-            console.log(this.tipoGiroAux);
           }
         });
 
@@ -163,10 +167,15 @@ export class InfoNegocioPage implements OnInit {
       }
     );
   }
-  subcategorias() {
-    //this.loaderGiro = true;
-    this.listCategorias = [];
-    this.negocioServico.obtenerCategorias(this.negocioTO.id_giro).subscribe(
+  subcategorias(evento) {
+    let idE;
+    if (evento.type === 'ionChange') {
+      this.negocioTO.id_categoria_negocio = [];
+      idE = evento.detail.value;
+    } else {
+      idE = evento.value;
+    }
+    this.negocioServico.obtenerCategorias(idE).subscribe(
       respuesta => {
         this.listaSubCategorias = Array();
         if (respuesta.code === 200) {
@@ -174,7 +183,6 @@ export class InfoNegocioPage implements OnInit {
           this.listaSubCategorias.forEach(element => {
             if (element.id_categoria == this.negocioTO.id_categoria_negocio) {
               this.tipoSubAux = element.id_categoria;
-              console.log(this.tipoSubAux);
             }
           });
         }
