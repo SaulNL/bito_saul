@@ -272,13 +272,11 @@ export class InfoNegocioPage implements OnInit {
   agregarTags(tags: string[]) {
     this.negtag = true;
     this.tags = tags.join();
-
   }
   public obtenerCatOrganizaciones() {
     this.negocioServico.obtenerCatOrganizaciones().subscribe(
       response => {
         this.lstOrganizaciones = Object.values(response.data);
-        // console.info(this.lstOrganizaciones);
       });
   }
 
@@ -462,7 +460,6 @@ agregarHorario() {
   editarHorario(horario, i) {
     let objFecha = new Date();
     this.posicionHorario = i;
-    console.log(this.posicionHorario);
     this.horarioini = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_inicio + ":ssZ");
     this.horariofin = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_fin + ":ssZ");
     this.nuevoHorario.dias = horario.dias;
