@@ -39,6 +39,18 @@
     <ion-label >Servicios</ion-label>
     <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
   </ion-item>
+  <ion-grid>
+    <ion-row class="ion-align-items-center">
+        <ion-col size="12" class="ion-text-center">
+            <ion-button *ngIf="(negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined) && (!negocioTO.activo)" size="small"  color="success" type="button" (click)="activarConfirmado()">
+              Activar
+            </ion-button>
+            <ion-button *ngIf="(negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined) && (negocioTO.activo)" size="small"  color="danger" type="button" (click)="presentAlertADesactivar()">
+              Desactivar
+            </ion-button>
+        </ion-col>
+    </ion-row>
+</ion-grid>
 </ion-list>
     </ion-card-content>
   </ion-card>

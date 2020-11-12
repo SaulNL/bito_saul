@@ -130,4 +130,13 @@ export class NegocioService {
       return res;
     }));
   }
+  activarDesactivar(id_negocio: number, cambio: boolean): Observable<any> {
+    const body = JSON.stringify({negocio: id_negocio, valor : cambio});
+    return this.http.post(
+      this.url + 'api/negocio/activar-desactivar', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
 }
