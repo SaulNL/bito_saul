@@ -336,7 +336,6 @@ agregarHorario() {
       this.nuevoHorario.dias = this.nuevoHorario.dias;
       this.nuevoHorario.activo = true;
       this.negocioTO.dias[this.posicionHorario] = this.nuevoHorario;
-      this.guardar();
       this.horarioini = '';
       this.horariofin = '';
       this.nuevoHorario = new HorarioNegocioModel;
