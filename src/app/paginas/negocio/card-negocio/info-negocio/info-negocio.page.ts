@@ -129,11 +129,6 @@ export class InfoNegocioPage implements OnInit {
     this.negocioServico.obtnerTipoNegocio().subscribe(
       response => {
         this.listTipoNegocio = response.data;
-        this.listTipoNegocio.forEach(element => {
-          if (element.id_tipo_negocio == this.negocioTO.id_tipo_negocio) {
-            this.tipoNegoAux = element.id_tipo_negocio;
-          }
-        });
       },
       error => {
         this.listTipoNegocio = [];
@@ -143,29 +138,17 @@ export class InfoNegocioPage implements OnInit {
     
   }
   categoriaPrincipal(evento) {
-    // this.loaderGiro = true;
-    //   this.negocioTO.id_giro = null;
     let idE;
     if (evento.type === 'ionChange') {
       this.negocioTO.id_giro = [];
       idE = evento.detail.value;
+      console.log(idE);
     } else {
       idE = evento.value;
     }
     this.negocioServico.categoriaPrincipal(idE).subscribe(
       respuesta => {
         this.listCategorias = respuesta.data;
-        this.listCategorias.forEach(element => {
-          if (element.id_giro == this.negocioTO.id_giro) {
-            this.tipoGiroAux = element.id_giro;
-          }
-        });
-
-      },
-      error => {
-      },
-      () => {
-        // this.loaderGiro = false;
       }
     );
   }
@@ -182,17 +165,7 @@ export class InfoNegocioPage implements OnInit {
         this.listaSubCategorias = Array();
         if (respuesta.code === 200) {
           this.listaSubCategorias = respuesta.data;
-          this.listaSubCategorias.forEach(element => {
-            if (element.id_categoria == this.negocioTO.id_categoria_negocio) {
-              this.tipoSubAux = element.id_categoria;
-            }
-          });
         }
-      },
-      error => {
-      },
-      () => {
-        //   this.loaderCategoria = false;
       }
     );
   }
@@ -402,7 +375,7 @@ agregarHorario() {
     this.negocioGuardar.logo = this.negocioTO.logo;
     this.negocioGuardar.local = this.negocioTO.local;
     this.negocioGuardar.nombre_comercial = this.negocioTO.nombre_comercial;
-    this.negocioGuardar.id_tipo_negocio = this.negocioTO.id_negocio;
+    this.negocioGuardar.id_tipo_negocio = this.negocioTO.id_tipo_negocio;
     this.negocioGuardar.id_giro = this.negocioTO.id_giro;
     this.negocioGuardar.otra_categoria = this.negocioTO.otra_categoria;
     let tem = this.negocioTO.url_negocio;

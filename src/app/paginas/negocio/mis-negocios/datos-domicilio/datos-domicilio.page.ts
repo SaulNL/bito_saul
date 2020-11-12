@@ -124,6 +124,7 @@ export class DatosDomicilioPage implements OnInit {
   }
   guardar() {
     this.datosD();
+    console.log(this.negocioGuardar);
     this.negocioServico.guardar(this.negocioGuardar).subscribe(
       response => {
         if (response.code === 200) {
