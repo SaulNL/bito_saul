@@ -3,6 +3,7 @@ import { NegocioModel } from "./../../../Modelos/NegocioModel";
 import { Router, ActivatedRoute } from '@angular/router';
 import { NegocioService } from "../../../api/negocio.service";
 import { ToadNotificacionService } from "./../../../api/toad-notificacion.service";
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-card-negocio',
@@ -16,7 +17,8 @@ export class CardNegocioPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private negocioServico: NegocioService,
-    private notification: ToadNotificacionService
+    private notification: ToadNotificacionService,
+    public alertController: AlertController
   ) { 
     this.negocioGuardar = new NegocioModel();
   }
@@ -74,5 +76,59 @@ export class CardNegocioPage implements OnInit {
     this.router.navigate(["/tabs/home/negocio/mis-negocios/mis-productos-servicios"], {
       queryParams: { special: navigationExtras },
     });
+  }
+  async presentAlertADesactivar() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '¿Está seguro de desactivar este negocio?',
+      message: 'Al desactivar este negocio, no se visalizará en las busquedas, y nadie podrá ver la infomación del mismo',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          }
+        }, {
+          role: 'destructive',
+          text: 'Confirmar',
+          handler: () => {
+           this.desactivarConfirmado();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+  desactivarConfirmado() {
+    this.negocioServico.activarDesactivar(this.negocioTO.id_negocio, false).subscribe(
+      repuesta => {
+        if (repuesta.data){
+          this.notification.exito('Se actualizó el estatus del negocio con éxito');
+          this.router.navigate(['/tabs/home/negocio']);
+        }else {
+          this.notification.error('Ocurrio un error al actualizar el estatus del negocio');
+        }
+      },
+      error => {
+        this.notification.error('Ocurrio un error al actualizar el estatus del negocio');
+      }
+    );
+  }
+
+  activarConfirmado() {
+    this.negocioServico.activarDesactivar(this.negocioTO.id_negocio, true).subscribe(
+      repuesta => {
+        if (repuesta.data){
+          this.notification.exito('Se actualizó el estatus del negocio con éxito');
+          this.router.navigate(['/tabs/home/negocio']);
+        }else {
+          this.notification.error('Ocurrio un error al actualizar el estatus del negocio');
+        }
+      },
+      error => {
+        this.notification.error('Ocurrio un error al actualizar el estatus del negocio');
+      }
+    );
   }
 }

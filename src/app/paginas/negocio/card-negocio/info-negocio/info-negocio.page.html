@@ -38,7 +38,7 @@
     <ion-list>
       <ion-item>
         <ion-label position="stacked">Nombre del negocio: <span style="color: red">*</span></ion-label>
-        <ion-input id="idNegocioNombre" name="idNegocioNombre" #nombreNegocio="ngModel"  [(ngModel)]="negocioTO.nombre_comercial"  required></ion-input>
+        <ion-input id="idNegocioNombre" name="idNegocioNombre" #nombreNegocio="ngModel"  [(ngModel)]="negocioTO.nombre_comercial"  required (ngModelChange)="confirmarUrlNegocio($event)"></ion-input>
       </ion-item>
       <div *ngIf="nombreNegocio.touched  && nombreNegocio.invalid" class="alert">
         <div *ngIf="nombreNegocio.errors.required">el nombre es requerido</div>
@@ -154,12 +154,12 @@
           </ion-card>
       <ion-item>
         <ion-label class="urlnego" position="stacked">Url del negocio: <span style="color: red">*</span></ion-label>
-        <ion-input id="idNegocioUrl" name="idNegocioUrl" #urlNegocio="ngModel" required [(ngModel)]="negocioTO.url_negocio" (keyup)="confirmarUrlNegocio($event, 2)"></ion-input>
+        <ion-input id="idNegocioUrl" name="idNegocioUrl" #urlNegocio="ngModel" required [(ngModel)]="negocioTO.url_negocio" (ionChange)="confirmarUrlNegocio($event, 2)"></ion-input>
       </ion-item>
       <div *ngIf="urlNegocio.touched  && urlNegocio.invalid" class="alert">
         <div *ngIf="urlNegocio.errors.required">el url es requerido</div>
       </div>
-      <span *ngIf="urlNegocioLibre === true" style="font-size: 11px; margin-left: 11px;">https://www.bitoo.com.mx/@</span>
+      <span *ngIf="urlNegocioLibre === true" style="font-size: 11px; margin-left: 11px;">https://www.bitoo.com.mx/@{{negocioTO.url_negocio}}</span>
       <span *ngIf="urlNegocioLibre === false" style="font-size: 11px; margin-left: 11px;">Url ya existe, sugerencia: https://www.bitoo.com.mx/@{{negocioTO.url_negocio}}</span>
       <ion-item>
         <ion-label position="stacked">Consumo en sitio<span style="color: red">*</span></ion-label>
