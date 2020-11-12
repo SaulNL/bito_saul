@@ -19,7 +19,7 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./info-negocio.page.scss'],
 })
 export class InfoNegocioPage implements OnInit {
-  public negocioTO: NegocioModel;
+  public negocioTO: any;
   public negtag: boolean;
   public listTipoNegocio: any;
   public listCategorias: any;
@@ -83,6 +83,8 @@ export class InfoNegocioPage implements OnInit {
       if (params && params.specialune) {
         //this.negocioTO = JSON.parse(params.specialune);
         this.negocioTO = new NegocioModel();
+        this.negocioTO.tags = [];
+        this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
       }
     });
     this.activatedRoute.queryParams.subscribe(params => {
@@ -99,8 +101,8 @@ export class InfoNegocioPage implements OnInit {
   public buscarNegocio(id) {
 
     if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
-      this.negocioTO = new NegocioModel();
-      this.negocioTO.tags = ""; 
+      //this.negocioTO = new NegocioModel();
+      //this.negocioTO.tags = ""; 
       this.categoriaPrincipal({ value: 0 });
       this.subcategorias({ value: 0 });
     } else {
