@@ -111,6 +111,7 @@ export class DatosContactoPage implements OnInit {
       response => {        
         if (response.code === 200) {
           this.notificaciones.exito('Tu negocio se guardo exitosamente');
+          this.router.navigate(["/tabs/home/negocio"]);
         } else {
           this.notificaciones.alerta('Error al guardar, intente nuevamente');
           //   this._notificacionService.pushAlert('Error al guardar, intente nuevamente');

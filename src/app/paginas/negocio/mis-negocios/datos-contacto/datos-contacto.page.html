@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar class="tolbar">
     <ion-title>Datos de contacto</ion-title>
-    <ion-buttons slot="start">
+    <ion-buttons *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" slot="start">
       <ion-button (click)="regresarMis()" class="blanco">
         <ion-icon name="chevron-back-outline"></ion-icon>
       </ion-button>
