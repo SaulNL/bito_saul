@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ModalController} from "@ionic/angular";
-import {FiltrosModel} from "../../Modelos/FiltrosModel";
-import {Plugins} from '@capacitor/core';
-import {FiltrosService} from "../../api/filtros.service";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ModalController } from "@ionic/angular";
+import { FiltrosModel } from "../../Modelos/FiltrosModel";
+import { Plugins } from '@capacitor/core';
+import { FiltrosService } from "../../api/filtros.service";
 import { CatTipoNegocioModel } from 'src/app/Modelos/CatTipoNegocioModel';
 
-const {Geolocation} = Plugins;
+const { Geolocation } = Plugins;
 declare var google: any;
 
 @Component({
@@ -34,9 +34,10 @@ export class FiltrosBusquedaComponent implements OnInit {
     miUbicacionlatitud: number;
     estasUbicacion: string;
     kilometrosSlider: number;
-    tipoNegocio:number;
+    tipoNegocio: number;
 
-    
+
+
 
     constructor(
         private modalCtrl: ModalController,
@@ -58,50 +59,50 @@ export class FiltrosBusquedaComponent implements OnInit {
     async getCurrentPosition() {
         const coordinates = await Geolocation.getCurrentPosition().then(res => {
             //console.log(res);
-            this.blnUbicacion=true;
+            this.blnUbicacion = true;
             this.miUbicacionlatitud = res.coords.latitude;
             this.miUbicacionlongitud = res.coords.longitude;
             this.filtros.latitud = this.miUbicacionlatitud;
             this.filtros.longitud = this.miUbicacionlongitud;
             try {
                 this.geocodeLatLng();
-              } catch (e) {
+            } catch (e) {
                 console.error(e);
-              }
+            }
         }).catch(error => {
             console.log(error, 'asdasdsad');
-            this.blnUbicacion=false;
-            }
+            this.blnUbicacion = false;
+        }
         );
     }
 
     ngOnInit() {
         this.miUbicacionlongitud = 0;
         this.miUbicacionlatitud = 0;
-        this.kilometrosSlider=1;
-        this.filtros.kilometros=1;
-        this.filtros.tipoBusqueda=0;
-        this.tipoNegocio=0;
-        if(this.filtros.idEstado !== null){
-            this.estado=this.filtros.idEstado;
-            console.log(this.estado);            
+        this.kilometrosSlider = 1;
+        this.filtros.kilometros = 1;
+        this.filtros.tipoBusqueda = 0;
+        this.tipoNegocio = 0;
+        if (this.filtros.idEstado !== null) {
+            this.estado = this.filtros.idEstado;
+            console.log(this.estado);
             this.obtenerCatMunicipio();
-        }else if(this.filtros.idEstado === null){
-            this.filtros.idEstado=29;
-            this.estado=this.filtros.idEstado;
+        } else if (this.filtros.idEstado === null) {
+            this.filtros.idEstado = 29;
+            this.estado = this.filtros.idEstado;
         }
-        if(this.filtros.idMunicipio !== null){
-            this.municipio=this.filtros.idMunicipio;
+        if (this.filtros.idMunicipio !== null) {
+            this.municipio = this.filtros.idMunicipio;
             this.obtenerCatLocalidad();
         }
-        if(this.filtros.idLocalidad !== null){
-            this.localidad=this.filtros.idLocalidad;
+        if (this.filtros.idLocalidad !== null) {
+            this.localidad = this.filtros.idLocalidad;
         }
-        if(this.filtros.idGiro != null){
-            this.categoria=this.filtros.idGiro;
+        if (this.filtros.idGiro != null) {
+            this.categoria = this.filtros.idGiro;
             this.subCategorias();
         }
-        
+
         /* var x = document.getElementsByTagName("ion-checkbox");
         console.log(x);
         
@@ -139,7 +140,7 @@ export class FiltrosBusquedaComponent implements OnInit {
             
         } */
         console.log("filtros page");
-        console.log(this.filtros);        
+        console.log(this.filtros);
     }
 
     public obtenergiros() {
@@ -156,6 +157,7 @@ export class FiltrosBusquedaComponent implements OnInit {
         this.filtroServicio.obtenerEstados().subscribe(
             response => {
                 this.lstCatEstados = response.data.lst_estado_proveedor;
+                this.validarCheckbox();
             },
             error => {
                 console.error(error);
@@ -167,7 +169,7 @@ export class FiltrosBusquedaComponent implements OnInit {
     public obtenerCatalogos() {
         this.filtroServicio.tipoNegocios().subscribe(
             response => {
-                this.lstCatTipoNegocio = response.data.catTipoNegocio;                
+                this.lstCatTipoNegocio = response.data.catTipoNegocio;
             },
             error => {
             }
@@ -186,7 +188,7 @@ export class FiltrosBusquedaComponent implements OnInit {
             this.filtros.idMunicipio = null;
             this.filtros.idLocalidad = null;
         }
-        this.buscarPorFiltros.emit(this.filtros)        
+        this.buscarPorFiltros.emit(this.filtros)
     }
 
     selectEstado(event) {
@@ -222,27 +224,27 @@ export class FiltrosBusquedaComponent implements OnInit {
         // @ts-ignore
         const geocoder = new google.maps.Geocoder;
         const latlng = {
-          lat: parseFloat(String(this.miUbicacionlatitud)),
-          lng: parseFloat(String(this.miUbicacionlongitud))
+            lat: parseFloat(String(this.miUbicacionlatitud)),
+            lng: parseFloat(String(this.miUbicacionlongitud))
         };
-        geocoder.geocode({location: latlng}, (results, status) => {
-          if (status === 'OK') {
-            if (results[0]) {
-              //this.loader = false;
-    
-              let posicion = results[0].address_components.length;
-              posicion = posicion - 4;
-              this.estasUbicacion = results[0].formatted_address;
-              this.filtros.strMunicipio = results[0].address_components[posicion].long_name;
+        geocoder.geocode({ location: latlng }, (results, status) => {
+            if (status === 'OK') {
+                if (results[0]) {
+                    //this.loader = false;
+
+                    let posicion = results[0].address_components.length;
+                    posicion = posicion - 4;
+                    this.estasUbicacion = results[0].formatted_address;
+                    this.filtros.strMunicipio = results[0].address_components[posicion].long_name;
+                } else {
+                    //console.log('No results found');
+                }
             } else {
-              //console.log('No results found');
+                //console.log('Geocoder failed due to: ' + status);
+                //this.loader = false;
             }
-          } else {
-            //console.log('Geocoder failed due to: ' + status);
-            //this.loader = false;
-          }
         });
-      }
+    }
 
 
     selectMunicipio() {
@@ -259,7 +261,7 @@ export class FiltrosBusquedaComponent implements OnInit {
         this.subCategorias();
     }
 
-    subCategorias(){
+    subCategorias() {
         this.filtroServicio.obtenerCategoriasGiro(this.categoria).subscribe(
             response => {
                 this.listaCategorias = response.data;
@@ -282,7 +284,7 @@ export class FiltrosBusquedaComponent implements OnInit {
         // var x = document.getElementsByTagName("ion-checkbox");
         // let negocio;
         // console.log(x);
-        
+
         // for(let i=0; i<x.length;i++){
         //     if(x[i].value === "3"){
         //         //this.filtros.idTipoNegocio=[];
@@ -311,52 +313,66 @@ export class FiltrosBusquedaComponent implements OnInit {
         // }
         this.filtros.idTipoNegocio = [];
         if (tipo.id_tipo_negocio === 3) {
-          this.lstCatTipoNegocio.map(item => {
-            if (tipo.estaSeleccionado) {
-              this.filtros.idTipoNegocio.push(item.id_tipo_negocio);
-              item.estaSeleccionado = true;
-            } else {
-              tipo.estaSeleccionado = false;
-            }
-          });
+            this.lstCatTipoNegocio.map(item => {
+                if (tipo.estaSeleccionado) {
+                    this.filtros.idTipoNegocio.push(item.id_tipo_negocio);
+                    item.estaSeleccionado = true;
+                } else {
+                    tipo.estaSeleccionado = false;
+                }
+            });
         }
         this.lstCatTipoNegocio.map(item => {
-          if (item.estaSeleccionado) {
-            this.filtros.idTipoNegocio.push(item.id_tipo_negocio);
-          }
+            if (item.estaSeleccionado) {
+                this.filtros.idTipoNegocio.push(item.id_tipo_negocio);
+            }
         });
         if (!(this.filtros.idTipoNegocio.length > 0)) {
-          this.filtros.idTipoNegocio = null;
-        }        
-    }
-
-    setIonradiogroupEntregaDomicilio(opcion:number){
-        if(opcion === 1){
-            this.filtros.blnEntrega=true;
-        }else if(opcion===0){
-            this.filtros.blnEntrega=false;
+            this.filtros.idTipoNegocio = null;
         }
     }
-    setIonradiogroupAbiertoCerrado(opcion:number){
-        if(opcion === 1){
-            this.filtros.abierto=true;
-        }else if(opcion === 0){
-            this.filtros.abierto=false;
+
+    setIonradiogroupEntregaDomicilio(opcion: number) {
+        if (opcion === 1) {
+            this.filtros.blnEntrega = true;
+        } else if (opcion === 0) {
+            this.filtros.blnEntrega = false;
+        }
+    }
+    setIonradiogroupAbiertoCerrado(opcion: number) {
+        if (opcion === 1) {
+            this.filtros.abierto = true;
+        } else if (opcion === 0) {
+            this.filtros.abierto = false;
         }
     }
     obtenerKilometrosRango(event) {
         this.kilometrosSlider = event.detail.value;
-        this.filtros.kilometros = this.kilometrosSlider;        
+        this.filtros.kilometros = this.kilometrosSlider;
     }
-    setTipo(tipo:string){
-        if(tipo === 'localidad'){
-            this.filtros.tipoBusqueda=0;
-        }else if(tipo === 'ubicacion'){
-            this.filtros.tipoBusqueda=1;
+    setTipo(tipo: string) {
+        if (tipo === 'localidad') {
+            this.filtros.tipoBusqueda = 0;
+        } else if (tipo === 'ubicacion') {
+            this.filtros.tipoBusqueda = 1;
         }
     }
-    borrarFiltros(){
-        this.filtros=new FiltrosModel();
+    borrarFiltros() {
+        this.filtros = new FiltrosModel();
         this.buscar();
+    }
+    validarCheckbox() {
+        setTimeout(it => {
+            var checkboxs = document.getElementsByTagName("ion-checkbox");
+            if (this.filtros.idTipoNegocio !== null) {
+                for (let i = 0; i < this.filtros.idTipoNegocio.length; i++) {
+                    for (let j = 0; j < checkboxs.length; j++) {
+                         if(this.filtros.idTipoNegocio[i] === parseInt(checkboxs[j].value)){
+                               checkboxs[j].setAttribute('checked', 'true');
+                         }
+                    }
+                }
+            }
+        }, 700);
     }
 }
