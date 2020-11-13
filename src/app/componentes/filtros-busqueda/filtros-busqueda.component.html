@@ -30,10 +30,15 @@
     <div *ngIf="ubicacion === 'localidad'">
         <ion-item>
             <ion-label>Estados</ion-label>
-            <ion-select placeholder="Seleccionar" (ionChange)="selectEstado()" [(ngModel)]="estado">
+            <ion-select placeholder="Seleccionar" (ionChange)="selectEstado($event)" [(ngModel)]="estado">
                 <ion-select-option *ngFor="let estado of lstCatEstados"
                                    [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
             </ion-select>
+            <!-- <ion-select [value]="this.estado" (ionChange)="selectEstado($event)">
+                <ion-select-option *ngFor="let estado of lstCatEstados" 
+                                   [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
+            </ion-select> -->
+
         </ion-item>
         <ion-item>
             <ion-label>Municipios</ion-label>
@@ -73,8 +78,8 @@
     <div *ngFor="let tipo of lstCatTipoNegocio">
         <ion-item>
             <ion-label>{{tipo.nombre}}</ion-label>
-            <ion-checkbox [value]="tipo.id_tipo_negocio" color="primary" [(ngModel)]="tipo.estaSeleccionado"
-                          slot="start"></ion-checkbox>
+            <ion-checkbox value="{{tipo.id_tipo_negocio}}" [(ngModel)]="tipo.estaSeleccionado" color="primary" 
+                    (ionChange)="selectTipoNegocio(tipo)"  slot="start"></ion-checkbox>
         </ion-item>
     </div>
     <ion-item-divider>
@@ -86,7 +91,7 @@
         <ion-label>Categorias</ion-label>
         <ion-select placeholder="Seleccionar" [(ngModel)]="categoria" (ionChange)="selectCategoria()">
             <ion-select-option *ngFor="let giro of lstCatTipoProducto;"
-                               [value]="giro.id_giro">{{giro.nombre}}</ion-select-option>
+                             [value]="giro.id_giro">{{giro.nombre}}</ion-select-option>
         </ion-select>
     </ion-item>
     <ion-item-divider>
@@ -120,14 +125,14 @@
         <ion-list-header>
             <ion-label>Entega a domicilio</ion-label>
         </ion-list-header>
-        <ion-radio-group>
+        <ion-radio-group [value]="filtros.blnEntrega+''">
             <ion-item>
                 <ion-label>Si</ion-label>
-                <ion-radio color="danger" slot="start" (click)="setIonradiogroupEntregaDomicilio(1)" ></ion-radio>
+                <ion-radio value="true" color="danger" slot="start" (click)="setIonradiogroupEntregaDomicilio(1)" ></ion-radio>
             </ion-item>
             <ion-item>
                 <ion-label>No</ion-label>
-                <ion-radio color="danger" slot="start" (click)="setIonradiogroupEntregaDomicilio(0)"></ion-radio>
+                <ion-radio value="false" color="danger" slot="start" (click)="setIonradiogroupEntregaDomicilio(0)"></ion-radio>
             </ion-item>
         </ion-radio-group>
     </ion-list>
@@ -149,14 +154,14 @@
         <ion-list-header>
             <ion-label>Abierto/Cerrado</ion-label>
         </ion-list-header>
-        <ion-radio-group>
+        <ion-radio-group [value]="filtros.abierto+''">
             <ion-item>
                 <ion-label>Si</ion-label>
-                <ion-radio color="danger" slot="start" (click)="setIonradiogroupAbiertoCerrado(1)" ></ion-radio>
+                <ion-radio value="true" color="danger" slot="start" (click)="setIonradiogroupAbiertoCerrado(1)" ></ion-radio>
             </ion-item>
             <ion-item>
                 <ion-label>No</ion-label>
-                <ion-radio color="danger" slot="start" (click)="setIonradiogroupAbiertoCerrado(0)"></ion-radio>
+                <ion-radio value="false" color="danger" slot="start" (click)="setIonradiogroupAbiertoCerrado(0)"></ion-radio>
             </ion-item>
         </ion-radio-group>
     </ion-list>
