@@ -78,8 +78,8 @@
     <div *ngFor="let tipo of lstCatTipoNegocio">
         <ion-item>
             <ion-label>{{tipo.nombre}}</ion-label>
-            <ion-checkbox value="{{tipo.id_tipo_negocio}}" [(ngModel)]="tipo.estaSeleccionado" color="primary" 
-                    (ionChange)="selectTipoNegocio(tipo)"  slot="start"></ion-checkbox>
+            <ion-checkbox value="{{tipo.id_tipo_negocio}}"  color="primary" 
+                    (ionChange)="selectTipoNegocio($event)"  slot="start"></ion-checkbox>
         </ion-item>
     </div>
     <ion-item-divider>
