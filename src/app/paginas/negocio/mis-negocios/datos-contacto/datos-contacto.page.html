@@ -1,13 +1,8 @@
 <ion-header>
   <ion-toolbar class="tolbar">
     <ion-title>Datos de contacto</ion-title>
-    <ion-buttons slot="end">
-      <ion-button *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" (click)="presentActionSheet()" class="blanco">
-        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="start">
-      <ion-button (click)="regresar()" class="blanco">
+    <ion-buttons *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" slot="start">
+      <ion-button (click)="regresarMis()" class="blanco">
         <ion-icon name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -17,62 +12,79 @@
 
 <ion-content>
   <ion-card>
+    <ion-card-content>
+      <form #formNegoContacto="ngForm" (ngSubmit)="guardar(formNegoContacto)"> 
     <ion-list lines="none">
       <ion-item>
         <ion-label position="floating">Teléfono oficina :</ion-label>
-        <ion-input ></ion-input>
+        <ion-input id="idTelefonoNegocio" name="idTelefonoNegocio" #telefonoNegocio="ngModel" [(ngModel)]="negocioTO.telefono" ></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Célular/Whatsapp :</ion-label>
-        <ion-input ></ion-input>
+        <ion-input id="idCelularNegocio" name="idCelularNegocio" #celularNegocio="ngModel" required [(ngModel)]="negocioTO.celular" required ></ion-input>
       </ion-item>
+      <div *ngIf="celularNegocio.touched  && celularNegocio.invalid" class="alert">
+        <div *ngIf="celularNegocio.errors.required">el Celular/Whatsapp es requerido</div>
+      </div>
       <ion-item>
         <ion-label position="floating">Correo :</ion-label>
-        <ion-input ></ion-input>
+        <ion-input id="idCorreoNegocio" name="idCorreoNegocio" #correoNegocio="ngModel" [(ngModel)]="negocioTO.correo" ></ion-input>
       </ion-item>
       <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variaf"  (ionChange)="notifyf()" color="danger"  ></ion-toggle>
         <ion-avatar slot="start" >
           <img src="./../../../../../assets/images/fb.png" alt="">
         </ion-avatar>
-        <ion-input *ngIf="variaf" placeholder="Facebook :"></ion-input>
+        <ion-input id="idFaceNegocio" name="idFaceNegocio" #faceNegocio="ngModel"  [(ngModel)]="negocioTO.id_facebook" placeholder="Facebook :"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variat"  (ionChange)="notifyt()" color="danger"  ></ion-toggle>
         <ion-avatar slot="start" >
           <img src="./../../../../../assets/images/tw.png" alt="">
         </ion-avatar>
-        <ion-input *ngIf="variat" placeholder="Twitter :"></ion-input>
+        <ion-input id="idTwiNegocio" name="idTwiNegocio" #twiNegocio="ngModel" [(ngModel)]="negocioTO.twitter" placeholder="Twitter :"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variai"  (ionChange)="notifyi()" color="danger"  ></ion-toggle>
+        
         <ion-avatar slot="start" >
           <img src="./../../../../../assets/images/insta.png" alt="">
         </ion-avatar>
-        <ion-input *ngIf="variai" placeholder="Instagram :"></ion-input>
+        <ion-input id="idInstNegocio" name="idInstNegocio" #instNegocio="ngModel" [(ngModel)]="negocioTO.instagram" placeholder="Instagram :"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variay"  (ionChange)="notifyy()" color="danger"  ></ion-toggle>
+        
         <ion-avatar slot="start" >
           <img src="./../../../../../assets/images/yt.png" alt="">
         </ion-avatar>
-        <ion-input *ngIf="variay" placeholder="Youtube :"></ion-input>
+        <ion-input id="idYouNegocio" name="idYouNegocio" #youNegocio="ngModel"   [(ngModel)]="negocioTO.youtube" placeholder="Youtube :"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-toggle name="cherry" [(ngModel)]="variak"  (ionChange)="notifyk()" color="danger"  ></ion-toggle>
+        
         <ion-avatar slot="start" >
           <img src="./../../../../../assets/images/tt.png" alt="">
         </ion-avatar>
-        <ion-input *ngIf="variak" placeholder="TikTok :"></ion-input>
+        <ion-input id="idTikNegocio" name="idTikNegocio" #tikNegocio="ngModel"  [(ngModel)]="negocioTO.tiktok" placeholder="TikTok :"></ion-input>
       </ion-item>
         <ion-item>
           <ion-label >Los campos con * son obligatorios</ion-label>
         </ion-item>
-        
     </ion-list>
+    <ion-button [disabled]="formNegoContacto.invalid"  expand="block" type="submit" class="bg-rosa" *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</ion-button>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div>
+            <ion-button expand="block" (click)="regresar(negocioTO)"  class="bg-rosa">Atras</ion-button>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div>
+            <ion-button [disabled]="formNegoContacto.invalid"  expand="block"  (click)="datosDomicilio(negocioTO)"  class="bg-rosa">Siguiente</ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+  </ion-card-content>
   </ion-card>
-  <ion-button *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined && !valido" type="submit" class="bg-rosa">Guardar</ion-button>
-    <ion-button *ngIf="valido" type="submit" class="bg-rosa">Actualizar</ion-button>
 </ion-content>
 
 

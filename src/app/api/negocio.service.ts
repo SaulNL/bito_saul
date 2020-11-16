@@ -1,9 +1,11 @@
+import { NegocioModel } from './../Modelos/NegocioModel';
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppSettings} from "../AppSettings";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {DatosNegocios} from '../Modelos/DatosNegocios';
+
 
 @Injectable({
   providedIn: 'root'
@@ -150,6 +152,52 @@ export class NegocioService {
     ).pipe(map(data => {
 
       return data;
+    }));
+  }
+    /**
+   * Funcion para obtener el catalogo de organizaciones
+   * @param id
+   * @author Omar
+   */
+  obtenerCatOrganizaciones(): Observable<any> {
+    return this.http.post(
+      `${this.url}api/catalogo/organizaciones/obtener`,
+      {},
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
+   /**
+   * Servicio para validar disponivilidad de url del negocio
+   * @param url_negocio
+   * @author Omar
+   */
+  verificarUrlNegocio(url_negocio: string): Observable<any> {
+    const body = JSON.stringify({url_negocio: url_negocio});
+    return this.http.post(
+      this.url + 'api/negocio/verificar_url', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+  guardar(negocio: NegocioModel): Observable<any> {
+    const body = JSON.stringify(negocio);
+    return this.http.post(
+      this.url + 'api/proveedor/guardar_negocio', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+  activarDesactivar(id_negocio: number, cambio: boolean): Observable<any> {
+    const body = JSON.stringify({negocio: id_negocio, valor : cambio});
+    return this.http.post(
+      this.url + 'api/negocio/activar-desactivar', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
     }));
   }
 }
