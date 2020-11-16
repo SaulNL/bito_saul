@@ -60,6 +60,8 @@ export class InicioPage implements OnInit {
             }
         }
         )
+        console.log("inicio pagina");                 
+        console.log(this.Filtros);
     }
     buscarNegocios() {
         this.loader = true;
@@ -92,7 +94,7 @@ export class InicioPage implements OnInit {
     }
 
     abrirFiltros() {
-        this.presentModal();
+        this.presentModal();    
     }
 
     async presentModal() {
@@ -102,9 +104,10 @@ export class InicioPage implements OnInit {
                 'dismissed': true
             });
             this.Filtros = res;
+            console.log("inicio pagina");                 
             console.log(res);
             this.buscarNegocios();
-        });
+        });        
         this.modal = await this.modalController.create({
             component: FiltrosBusquedaComponent,
             componentProps: {

@@ -1,3 +1,21 @@
-ion-fab {
+.flotante {
     position: fixed;
-}
+    bottom: 1em;
+    height: 40px;
+    width: 40px;
+    right: 3vw;
+    z-index: 1;
+    animation-name: slidein;
+    animation-duration: 0.3s;
+  }
+
+  @keyframes slidein {
+    from {
+      transform: translateX(100%);
+    }
+  
+    to {
+      transform: translateX(0%);
+    }
+  }
+  

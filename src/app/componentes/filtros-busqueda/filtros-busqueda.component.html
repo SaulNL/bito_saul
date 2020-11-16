@@ -17,17 +17,28 @@
 <ion-content fullscreen>
     <ion-toolbar>
         <ion-segment value="localidad" [(ngModel)]="ubicacion">
-            <ion-segment-button value="localidad">Localidad</ion-segment-button>
-            <ion-segment-button value="ubicacion">Ubicación</ion-segment-button>
+            <ion-segment-button (click)="setTipo('localidad')" value="localidad">Localidad</ion-segment-button>
+            <ion-segment-button (click)="setTipo('ubicacion')" [disabled]="!blnUbicacion" value="ubicacion">Ubicación</ion-segment-button>
         </ion-segment>
     </ion-toolbar>
+    <ion-list>
+        <ion-chip (click)="borrarFiltros()" color="danger">
+            <ion-icon name="trash-outline" color="danger"></ion-icon>
+            <ion-label>Borrar Filtros</ion-label>
+        </ion-chip>
+    </ion-list>
     <div *ngIf="ubicacion === 'localidad'">
         <ion-item>
             <ion-label>Estados</ion-label>
-            <ion-select placeholder="Seleccionar" (ionChange)="selectEstado()" [(ngModel)]="estado">
+            <ion-select placeholder="Seleccionar" (ionChange)="selectEstado($event)" [(ngModel)]="estado">
                 <ion-select-option *ngFor="let estado of lstCatEstados"
                                    [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
             </ion-select>
+            <!-- <ion-select [value]="this.estado" (ionChange)="selectEstado($event)">
+                <ion-select-option *ngFor="let estado of lstCatEstados" 
+                                   [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
+            </ion-select> -->
+
         </ion-item>
         <ion-item>
             <ion-label>Municipios</ion-label>
@@ -47,7 +58,16 @@
         </ion-item>
     </div>
     <div *ngIf="ubicacion === 'ubicacion'">
-        ubicacion
+        <ion-item>
+            <div>
+                <h2>Te encuentras en:</h2>
+                <p>{{estasUbicacion}}</p>
+                <h5>Radio de busqueda:</h5>
+                <h5>Kilometros a la redonda: </h5>
+                <ion-range (ionChange)="obtenerKilometrosRango($event)" min="1" max="10" 
+                step="1" snaps="true" color="danger" pin="true"></ion-range>
+            </div>
+        </ion-item>
     </div>
 
     <ion-item-divider>
@@ -58,8 +78,8 @@
     <div *ngFor="let tipo of lstCatTipoNegocio">
         <ion-item>
             <ion-label>{{tipo.nombre}}</ion-label>
-            <ion-checkbox [value]="tipo.id_tipo_negocio" color="primary" [(ngModel)]="tipo.estaSeleccionado"
-                          slot="start"></ion-checkbox>
+            <ion-checkbox value="{{tipo.id_tipo_negocio}}"  color="primary" 
+                    (ionChange)="selectTipoNegocio($event)"  slot="start"></ion-checkbox>
         </ion-item>
     </div>
     <ion-item-divider>
@@ -71,7 +91,7 @@
         <ion-label>Categorias</ion-label>
         <ion-select placeholder="Seleccionar" [(ngModel)]="categoria" (ionChange)="selectCategoria()">
             <ion-select-option *ngFor="let giro of lstCatTipoProducto;"
-                               [value]="giro.id_giro">{{giro.nombre}}</ion-select-option>
+                             [value]="giro.id_giro">{{giro.nombre}}</ion-select-option>
         </ion-select>
     </ion-item>
     <ion-item-divider>
@@ -86,35 +106,36 @@
                                [value]="sub.id_categoria">{{sub.nombre}}</ion-select-option>
         </ion-select>
     </ion-item>
-    <ion-item-divider>
-        <ion-label>
-            Entega a domicilio
-        </ion-label>
-    </ion-item-divider>
-    <ion-item>
-        <ion-label>Si</ion-label>
-        <ion-checkbox [value]="1" [(ngModel)]="filtros.blnEntrega" [checked]="filtros.blnEntrega === 1" color="primary"
-                      slot="start"></ion-checkbox>
-    </ion-item>
-    <ion-item>
-        <ion-label>No</ion-label>
-        <ion-checkbox [value]="0" [(ngModel)]="filtros.blnEntrega" [checked]="filtros.blnEntrega === 0" color="primary"
-                      slot="start"></ion-checkbox>
-    </ion-item>
-
-    <ion-item-divider>
-        <ion-label>
-            Abierto/Cerrado
-        </ion-label>
-    </ion-item-divider>
-    <ion-item>
-        <ion-label>Abierto</ion-label>
-        <ion-checkbox value="1" [(ngModel)]="filtros.abierto" color="primary" slot="start"></ion-checkbox>
-    </ion-item>
-    <ion-item>
-        <ion-label>Cerrado</ion-label>
-        <ion-checkbox value="0" [(ngModel)]="filtros.abierto" color="primary" slot="start"></ion-checkbox>
-    </ion-item>
+    <ion-list>
+        <ion-list-header>
+            <ion-label>Entega a domicilio</ion-label>
+        </ion-list-header>
+        <ion-radio-group [value]="filtros.blnEntrega+''">
+            <ion-item>
+                <ion-label>Si</ion-label>
+                <ion-radio value="true" color="danger" slot="start" (click)="setIonradiogroupEntregaDomicilio(1)" ></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label>No</ion-label>
+                <ion-radio value="false" color="danger" slot="start" (click)="setIonradiogroupEntregaDomicilio(0)"></ion-radio>
+            </ion-item>
+        </ion-radio-group>
+    </ion-list>
+    <ion-list>
+        <ion-list-header>
+            <ion-label>Abierto/Cerrado</ion-label>
+        </ion-list-header>
+        <ion-radio-group [value]="filtros.abierto+''">
+            <ion-item>
+                <ion-label>Si</ion-label>
+                <ion-radio value="true" color="danger" slot="start" (click)="setIonradiogroupAbiertoCerrado(1)" ></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label>No</ion-label>
+                <ion-radio value="false" color="danger" slot="start" (click)="setIonradiogroupAbiertoCerrado(0)"></ion-radio>
+            </ion-item>
+        </ion-radio-group>
+    </ion-list>
 
 
 </ion-content>

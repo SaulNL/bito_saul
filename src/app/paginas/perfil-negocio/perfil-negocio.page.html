@@ -132,6 +132,16 @@
             </ion-row>
         </ion-grid>
         <ion-grid *ngIf="seccion === 'productos'">
+            <ion-row *ngIf="informacionNegocio.tagsProductos !== undefined && informacionNegocio.tagsProductos.length > 0">
+                <ion-col>
+                  <div id="abcedario" class="scrolling-wrapper-flexbox">
+                    <div class="item" *ngFor="let item of informacionNegocio.tagsProductos">
+                      <ion-button size="small" color="primary">{{item}}</ion-button>
+                    </div>
+                  </div>
+                  <p><br></p>
+                </ion-col>
+              </ion-row>
             <ion-row *ngFor="let cat of informacionNegocio.catProductos">
                 <ion-text class="w-100">
                     <h2>{{cat.nombre}}</h2>
@@ -150,19 +160,19 @@
                     </ion-card>
                 </ion-col>
             </ion-row>
-            <ion-row *ngIf="informacionNegocio.tagsProductos !== undefined && informacionNegocio.tagsProductos.length > 0">
-                <ion-card>
-                    <ion-card-header>
-                      <ion-card-subtitle><strong>Etiquetas de búsqueda (Productos)</strong></ion-card-subtitle>
-                    </ion-card-header>
-                    <ion-card-content>
-                        <ion-badge *ngFor="let item of informacionNegocio.tagsProductos"> {{ item }} </ion-badge>
-                    </ion-card-content>
-                  </ion-card>
-            </ion-row>
         </ion-grid>
         
         <ion-grid *ngIf="seccion === 'servicios'">
+            <ion-row *ngIf="informacionNegocio.tagsServicios !== undefined && informacionNegocio.tagsServicios.length > 0">
+                <ion-col>
+                  <div id="abcedario" class="scrolling-wrapper-flexbox">
+                    <div *ngFor="let item of informacionNegocio.tagsServicios">
+                      <ion-button size="small" color="primary">{{item}}</ion-button>
+                    </div>
+                  </div>
+                  <p><br></p>
+                </ion-col>
+            </ion-row>
             <ion-row *ngFor="let cat of informacionNegocio.catServicos">
                 <ion-text class="w-100">
                     <h2>{{cat.nombre}}</h2>
@@ -180,16 +190,6 @@
                         </ion-card-content>
                     </ion-card>
                 </ion-col>
-            </ion-row>
-            <ion-row *ngIf="informacionNegocio.tagsServicios !== undefined && informacionNegocio.tagsServicios.length > 0">
-                <ion-card>
-                    <ion-card-header>
-                      <ion-card-subtitle><strong>Etiquetas de búsqueda (Servicios)</strong></ion-card-subtitle>
-                    </ion-card-header>
-                    <ion-card-content>
-                        <ion-badge *ngFor="let item of informacionNegocio.tagsServicios"> {{ item }} </ion-badge>
-                    </ion-card-content>
-                  </ion-card>
             </ion-row>
         </ion-grid>
         <ion-grid *ngIf="existeSesion">
