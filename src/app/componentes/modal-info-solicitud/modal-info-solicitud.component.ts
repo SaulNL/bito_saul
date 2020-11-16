@@ -30,6 +30,8 @@ export class ModalInfoSolicitudComponent implements OnInit {
   public uploadedFiles: File;
   public user: any;
   public seleccionTO: SolicitudesModel;
+  public nombreArchivo = '';
+  public pesado: boolean = false;
 
   constructor(
     public modalController: ModalController,
@@ -46,7 +48,6 @@ export class ModalInfoSolicitudComponent implements OnInit {
     this.numeroVistas = 0;
     this.quienNumeroVioPublicacion(this.solicitud.id_solicitud);
     this.btnPostular = false;
-    
   }
 
   dismiss() {
@@ -110,7 +111,8 @@ export class ModalInfoSolicitudComponent implements OnInit {
     this.servicioSolicitudes.enviarPostulacion(this.postulacionModel).subscribe(
       response => {
         this.loaderPostular = false;
-        this._notificacionService.alerta(response.message);
+        this._notificacionService.exito(response.message);
+        this.dismiss();
       },
       error => {
       },
@@ -126,8 +128,15 @@ export class ModalInfoSolicitudComponent implements OnInit {
   }
 
   subir_archivo($event) {
-    this.uploadedFiles = $event.target.files[0];
-    console.log(this.uploadedFiles);
+    if ( $event.target.files[0].size < 100000) {
+      this.uploadedFiles = $event.target.files[0];
+      this.pesado = false;
+      this.nombreArchivo = $event.target.files[0].name;
+    } else {
+      this.uploadedFiles = undefined;
+      this.nombreArchivo = '';
+      this.pesado = true;
+    }
   }
 
 }

@@ -71,15 +71,15 @@
               <ion-col size=12>
                 <div (click)="motrarContacto = !motrarContacto;" class="list">
                   <ul>
-                    <li>{{ estatus.tipo === 1 ? 'Abierto' : 'Cerrado'}}</li>
+                    <li style="display: flex; justify-content: center; align-items: center;">{{ estatus.tipo === 1 ? 'Abierto' : 'Cerrado'}}</li>
                     <li class="lista">
                       <div>
                         {{ estatus.mensaje }}
                       </div>
-                      <div style="margin: 0px 5px" *ngIf="!motrarContacto" >
+                      <div style="margin: 2px 5px" *ngIf="!motrarContacto" >
                           <ion-icon name="arrow-up-outline"></ion-icon>
                       </div>
-                      <div style="margin: 0px 5px" *ngIf="motrarContacto">
+                      <div style="margin: 2px 5px" *ngIf="motrarContacto">
                         <ion-icon name="arrow-down-outline"></ion-icon>
                       </div>
                     </li>

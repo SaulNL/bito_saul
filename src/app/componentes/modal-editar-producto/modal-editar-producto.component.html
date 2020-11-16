@@ -1,0 +1,65 @@
+<ion-header translucent>
+  <ion-toolbar class="tolbar">
+    <ion-title>Producto: {{ nombreActual }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <form #formProducto="ngForm" (ngSubmit)="guardar(formProducto)" >
+
+        <div style="display: flex; justify-content: center; align-items: center;">
+
+          <div style="border: 2px solid purple; border-radius: 50%; width: 200px; height: 200px; margin-top: 20px; position: relative; display: flex; justify-content: center; align-items: center;" *ngIf="lista.imagen.archivo_64!== undefined && lista.imagen.archivo_64 !== null" [ngStyle]="{ 'background-image': 'url('+lista.imagen.archivo_64+')','background-size': 'cover', 'background-position': 'center'}">
+            <label for="imagenProducto" style="display: flex; justify-content: center; align-items: center;">
+              <div style="position: absolute;">
+                <ion-icon name="image-outline" style="font-size: 30px; color: black;"></ion-icon>
+              </div>
+            </label>
+          </div>
+
+          <div style="border: 2px solid purple; border-radius: 50%; width: 200px; height: 200px; margin-top: 20px; position: relative; display: flex; justify-content: center; align-items: center;" *ngIf="lista.imagen.archivo_64 === undefined || lista.imagen.archivo_64 === null" [ngStyle]="{'background-image': 'url('+lista.imagen+')','background-size': 'cover', 'background-position': 'center'}">
+            <label for="imagenProducto" style="display: flex; justify-content: center; align-items: center;">
+              <div style="position: absolute;">
+                <ion-icon name="image-outline" style="font-size: 30px; color: black;"></ion-icon>
+              </div>
+            </label>
+          </div>
+
+        </div>
+
+        <input type='file' id="imagenProducto" accept="image/*" (change)="subirArchivo($event)" hidden>
+
+        <ion-item>
+          <ion-label position="floating">Nombre:</ion-label>
+          <ion-input name="nombre" [(ngModel)]="lista.nombre" #nombre="ngModel" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Precio:</ion-label>
+          <ion-input name="precio" type="number" [(ngModel)]="lista.precio" #precio="ngModel" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Existencia</ion-label>
+          <ion-toggle color="danger" slot="end" [checked]="lista.existencia"
+          (ionChange)="lista.existencia = !lista.existencia"></ion-toggle>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Descripción:</ion-label>
+          <ion-textarea name="descripcion"  [(ngModel)]="lista.descripcion" #descripcion="ngModel" required></ion-textarea>
+        </ion-item>
+
+        <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
+          <ion-button class="bg-rosa" type="submit">Guardar <ion-spinner name="dots" *ngIf="banderaGuardar"></ion-spinner></ion-button>
+          <ion-button color="warning" (click)="dismiss()">Cancelar</ion-button>
+        </div>
+
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

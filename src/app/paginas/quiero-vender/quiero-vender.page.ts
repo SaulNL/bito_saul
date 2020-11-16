@@ -75,6 +75,11 @@ export class QuieroVenderPage implements OnInit {
     this.proveedorTO = JSON.parse(localStorage.getItem('u_data'));
     this.proveedorTO.fecha_nacimiento = this.proveedorTO.fecha_nacimiento !== null ? new Date(this.proveedorTO.fecha_nacimiento) : null;
     this.proveedorTO.det_domicilio = JSON.parse(localStorage.getItem('u_data')).domicilio !== null && undefined ? JSON.parse(localStorage.getItem('u_data')).domicilio : new DetDomicilioModel();
+    if (this.proveedorTO.fecha_nacimiento !== null || this.proveedorTO.fecha_nacimiento !== undefined ) {
+      this.fechas = this.proveedorTO.fecha_nacimiento.toISOString();
+    } else {
+      this.fechas = '';
+    }
     this.fechas = this.proveedorTO.fecha_nacimiento.toISOString();
     this.select_estado = false;
     this.list_cat_estado = [];

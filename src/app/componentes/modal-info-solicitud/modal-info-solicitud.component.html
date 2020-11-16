@@ -56,13 +56,15 @@
           <ion-textarea name="describe" #describe="ngModel" [(ngModel)]="postulacionModel.descripcion" required></ion-textarea>
         </ion-item>
 
-        <label for="archivo" style="display: flex; justify-content: center; align-items: center;">
+        <label for="archivo" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+          <small *ngIf="!pesado && nombreArchivo !== ''" style="margin-top: 10px; color: blue;">{{ nombreArchivo }}</small>
+          <small *ngIf="pesado && nombreArchivo === ''" style="margin-top: 10px; color: red;">Archivo pesado</small>
           <div style="display: flex; justify-content: center; align-items: center; background-color: greenyellow; border-radius: 20px; padding: 10px; margin-top: 20px; width: 50%;">
             Subir Archivo <ion-icon name="folder-outline" style="margin-left: 10px;"></ion-icon>
           </div>
         </label>
         
-        <input type="file" id="archivo" name="archivo" (change)="subir_archivo($event)" hidden>
+        <input type="file" id="archivo" name="archivo" (change)="subir_archivo($event)" maxsize=10 hidden>
 
         <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
           <div style="width: 50%;">

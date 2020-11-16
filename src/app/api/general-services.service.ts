@@ -88,4 +88,16 @@ export class GeneralServicesService {
       return data;
     }));
   }
+
+  obtenerListaCategopriasProducto(id: any, tipo: number): Observable<any> {
+    const body = JSON.stringify({id_categoria_negocio: id, tipo: tipo});
+    return this._http.post(
+      `${this.url}api/buscar/categorias/producto`,
+      body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+
+      return data;
+    }));
+  }
 }
