@@ -8,6 +8,8 @@ import { PerfilNegocioPageRoutingModule } from './perfil-negocio-routing.module'
 
 import { PerfilNegocioPage } from './perfil-negocio.page';
 import { CalificarNegocioComponent } from '../../componentes/calificar-negocio/calificar-negocio.component';
+import {DetalleProductoComponent} from "../../componentes/detalle-producto/detalle-producto.component";
+import {PedidoNegocioComponent} from "../../componentes/pedido-negocio/pedido-negocio.component";
 
 
 @NgModule({
@@ -17,6 +19,6 @@ import { CalificarNegocioComponent } from '../../componentes/calificar-negocio/c
     IonicModule,
     PerfilNegocioPageRoutingModule
   ],
-  declarations: [PerfilNegocioPage, CalificarNegocioComponent ]
+  declarations: [PerfilNegocioPage, CalificarNegocioComponent, DetalleProductoComponent, PedidoNegocioComponent ]
 })
 export class PerfilNegocioPageModule {}

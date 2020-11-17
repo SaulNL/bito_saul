@@ -200,4 +200,14 @@ export class NegocioService {
       return res;
     }));
   }
+
+  registrarPedido(datos): Observable<any> {
+    const body = JSON.stringify(datos);
+    return this.http.post(
+        this.url + 'api/pedios/registrar', body,
+        {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
 }

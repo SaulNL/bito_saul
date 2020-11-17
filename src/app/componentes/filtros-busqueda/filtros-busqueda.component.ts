@@ -103,7 +103,6 @@ export class FiltrosBusquedaComponent implements OnInit {
             this.categoria = this.filtros.idGiro;
             this.subCategorias();
         }
-        console.log(this.filtros);
     }
 
     public obtenergiros() {
