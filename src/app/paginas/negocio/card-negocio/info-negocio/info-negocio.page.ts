@@ -57,6 +57,7 @@ export class InfoNegocioPage implements OnInit {
   public tipoNegoAux: any;
   public tipoGiroAux: any;
   public tipoSubAux: any;
+  public tipoOrgAux: any;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -79,12 +80,14 @@ export class InfoNegocioPage implements OnInit {
   }
 
   ngOnInit() {
+    this.obtenerTipoNegocio();
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.specialune) {
         //this.negocioTO = JSON.parse(params.specialune);
         this.negocioTO = new NegocioModel();
         this.negocioTO.tags = [];
         this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
+        this.obtenerTipoNegocio();
       }
     });
     this.activatedRoute.queryParams.subscribe(params => {
@@ -92,9 +95,9 @@ export class InfoNegocioPage implements OnInit {
         let datos = JSON.parse(params.special);
         this.negocioTO = datos.info;
         this.negocioGuardar = datos.pys;
+        this.obtenerTipoNegocio();
       }
     });
-    this.obtenerTipoNegocio();
     this.obtenerCatOrganizaciones();
     this.buscarNegocio(this.negocioTO.id_negocio);
   }
@@ -129,6 +132,12 @@ export class InfoNegocioPage implements OnInit {
     this.negocioServico.obtnerTipoNegocio().subscribe(
       response => {
         this.listTipoNegocio = response.data;
+        this.listTipoNegocio.forEach(element => {
+          if (element.id_tipo_negocio==this.negocioTO.id_tipo_negocio) {
+            this.tipoNegoAux = element.nombre;
+            
+          }
+        });
       },
       error => {
         this.listTipoNegocio = [];
@@ -142,13 +151,20 @@ export class InfoNegocioPage implements OnInit {
     if (evento.type === 'ionChange') {
       this.negocioTO.id_giro = [];
       idE = evento.detail.value;
-      console.log(idE);
+      
     } else {
       idE = evento.value;
     }
     this.negocioServico.categoriaPrincipal(idE).subscribe(
       respuesta => {
         this.listCategorias = respuesta.data;
+        this.listCategorias.forEach(element => {
+          if (element.id_giro==this.negocioTO.id_giro) {
+            this.tipoGiroAux = element.nombre;
+            
+          }
+        });
+        
       }
     );
   }
@@ -165,6 +181,12 @@ export class InfoNegocioPage implements OnInit {
         this.listaSubCategorias = Array();
         if (respuesta.code === 200) {
           this.listaSubCategorias = respuesta.data;
+          this.listaSubCategorias.forEach(element => {
+            if (element.id_categoria==this.negocioTO.id_categoria_negocio) {
+              this.tipoSubAux = element.nombre;
+              
+            }
+          });
         }
       }
     );
@@ -249,9 +271,18 @@ export class InfoNegocioPage implements OnInit {
     this.tags = tags.join();
   }
   public obtenerCatOrganizaciones() {
+    
     this.negocioServico.obtenerCatOrganizaciones().subscribe(
       response => {
         this.lstOrganizaciones = Object.values(response.data);
+        this.lstOrganizaciones.forEach(element => {
+          this.negocioTO.organizaciones.forEach(elements => {
+            if (element.id_organizacion==elements) {
+              this.tipoOrgAux = element.nombre;
+                       
+            }
+          });  
+          });
       });
   }
 

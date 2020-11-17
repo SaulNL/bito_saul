@@ -45,10 +45,11 @@
       </div>
       <ion-item>
         <ion-label position="stacked">Tipo de Negocio</ion-label>
-        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idtipoNegocio" required #tipoNegocio="ngModel" [(ngModel)]="negocioTO.id_tipo_negocio"
+        <ion-select placeholder="{{ tipoNegoAux }}" name="idtipoNegocio" required #tipoNegocio="ngModel" [(ngModel)]="negocioTO.id_tipo_negocio"
         ok-text="Ok" cancel-text="Cancelar"  (ionChange)="categoriaPrincipal($event)">
-          <ion-select-option *ngFor="let item of listTipoNegocio"  [value]="item.id_tipo_negocio">{{item.nombre}}
-          </ion-select-option>
+        <ng-container *ngFor="let item of listTipoNegocio">
+          <ion-select-option [value]="item.id_tipo_negocio">{{item.nombre}}</ion-select-option>
+        </ng-container>
         </ion-select>
       </ion-item>
       <div *ngIf="tipoNegocio.invalid" class="alert">
@@ -56,10 +57,12 @@
       </div>
       <ion-item>
         <ion-label position="stacked">Categoría</ion-label>
-        <ion-select name="idtipoGiro" required #tipoGiro="ngModel" ok-text="Ok" cancel-text="Cancelar"
-          [(ngModel)]="negocioTO.id_giro" (ionChange)="subcategorias($event)" [value]="tipoGiroAux">
-          <ion-select-option *ngFor="let item of listCategorias" [value]="item.id_giro">{{item.nombre}}
-          </ion-select-option>
+        <ion-select placeholder="{{ tipoGiroAux }}" name="idtipoGiro" required #tipoGiro="ngModel" ok-text="Ok" cancel-text="Cancelar"
+          [(ngModel)]="negocioTO.id_giro" (ionChange)="subcategorias($event)">
+          <ng-container *ngFor="let item of listCategorias">
+            <ion-select-option  [value]="item.id_giro">{{item.nombre}}
+            </ion-select-option>
+          </ng-container>
         </ion-select>
       </ion-item>
       <div *ngIf="tipoGiro.invalid" class="alert">
@@ -67,10 +70,12 @@
       </div>
       <ion-item>
         <ion-label position="stacked">SubCategoría</ion-label>
-        <ion-select name="idtipoSubCategorias" required #tipoSubCategoria="ngModel" ok-text="Ok" cancel-text="Cancelar"
-          [(ngModel)]="negocioTO.id_categoria_negocio" [value]="tipoSubAux">
-          <ion-select-option *ngFor="let item of listaSubCategorias" [value]="item.id_categoria">{{item.nombre}}
-          </ion-select-option>
+        <ion-select placeholder="{{ tipoSubAux }}" name="idtipoSubCategorias" required #tipoSubCategoria="ngModel" ok-text="Ok" cancel-text="Cancelar"
+          [(ngModel)]="negocioTO.id_categoria_negocio">
+          <ng-container *ngFor="let item of listaSubCategorias">
+            <ion-select-option [value]="item.id_categoria">{{item.nombre}}
+            </ion-select-option>
+          </ng-container>
         </ion-select>
       </ion-item>
       <div *ngIf="tipoSubCategoria.invalid" class="alert">
@@ -85,7 +90,7 @@
       </div>
       <ion-item>
         <ion-label position="stacked">Afiliado a</ion-label>
-        <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idOrganiza" name="idOrganiza" #organizaciones="ngModel" [(ngModel)]="negocioTO.organizaciones" required [value]="negocioTO.organizaciones">
+        <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idOrganiza" name="idOrganiza" #organizaciones="ngModel" [(ngModel)]="negocioTO.organizaciones" required  placeholder="{{ tipoOrgAux }}">
           <ion-select-option *ngFor="let org of lstOrganizaciones" [value]="org.id_organizacion">{{org.nombre}}</ion-select-option>
         </ion-select>
       </ion-item>
