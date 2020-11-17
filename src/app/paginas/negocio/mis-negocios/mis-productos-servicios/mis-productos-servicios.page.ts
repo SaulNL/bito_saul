@@ -102,7 +102,15 @@ export class MisProductosServiciosPage implements OnInit {
         this.iden = this.datos.inden;
         this.negocioTO  = this.datos.info;
         this.blnImgCuadrada = true;
+        this.nuevaCategoria = {
+          activo: 1,
+          nombre: '',
+          id_categoria: null,
+          id_categoria_negocio: null,
+          tipo_categoria: 0
+        }
         this.buscarDatos();
+        this.buscarCategoriasProductos();
         this.sercicioNegocio.obtenerNumMaxProductos(this.negocioTO.id_negocio).subscribe(
           respuesta => {
             this.maximoProductos = respuesta.data;
@@ -335,7 +343,7 @@ export class MisProductosServiciosPage implements OnInit {
         {
           text: 'Aceptar',
           handler: () => {
-            this.eliminarCategoria()
+            this.eliminarCategoria();
           }
         }
       ]
@@ -379,44 +387,43 @@ export class MisProductosServiciosPage implements OnInit {
         }
       });
     } else {
-      if (this.nuevaCategoria !== undefined) {
-        let exist = false;
-        this.listaVista.map(item => {
-          if (item.id_categoria === this.nuevaCategoria.id_categoria) {
-            exist = true;
-          }
-        });
-        if (!exist) {
-          const cat = {
-            id_categoria: null,
-            nombre: this.nuevaCategoria,
-            id_categoria_negocio: this.negocioTO.id_categoria_negocio,
-            tipo_categoria: 0
-          }
-          const enviar = {
-            id_negocio: this.negocioTO.id_negocio,
-            id_proveedor: this.datosUsuario.proveedor.id_proveedor,
-            categoria: cat
-          };
-          this.sercicioNegocio.agregarCategoria(enviar).subscribe(
-            respuesta => {
-              const cat = respuesta;
-              cat.productos = [];
-              this.listaVista.push(cat);
-              this.nuevaCategoria = undefined;
-              this.blnNuevaCategoria = false;
-            },
-            error => {
-              console.error(error);
-            }, () => {
-              this.notificacionService.exito('Se agrego correctamente la categoria');
-            }
-          );
-        } else {
-          this.notificacionService.alerta('Usted ya cuenta con esta clasificación');
+      let exist = false;
+      this.listaVista.map(item => {
+        if (item.nombre === this.nuevaCategoria.nombre) {
+          exist = true;
+          this.notificacionService.alerta('La categoría ya existe');
         }
-      } else {
-        this.notificacionService.alerta('No a seleccionado una clasificación');
+      });
+      if( !exist ) {
+        this.nuevaCategoria.id_categoria = null;
+        this.nuevaCategoria.id_categoria_negocio = null;
+        this.nuevaCategoria.tipo_categoria = 0;
+        const enviar = {
+          id_negocio: this.negocioTO.id_negocio,
+          id_proveedor: this.datosUsuario.proveedor.id_proveedor,
+          categoria: this.nuevaCategoria
+        };
+        this.sercicioNegocio.agregarCategoria(enviar).subscribe(
+          response => {
+            const cat = response;
+            cat.productos = [];
+            this.listaVista.push(cat);
+            this.nuevaCategoria = {
+              activo: 1,
+              nombre: '',
+              id_categoria: null,
+              id_categoria_negocio: null,
+              tipo_categoria: 0
+            }
+            this.agregarClas = false;
+            this.blnNuevaCategoria = false;
+          },
+          error => {
+            console.error(error);
+          }, () => {
+            this.notificacionService.exito('Se agrego la categoría con éxito');
+          }
+        );
       }
     }
   }
@@ -633,6 +640,8 @@ export class MisProductosServiciosPage implements OnInit {
     this.generalServicio.obtenerListaCategopriasProducto(this.negocioTO.id_categoria_negocio, 0).subscribe(
       respuesta => {
         this.listaCategorias = respuesta.data;
+        this.nuevaCategoria.nombre = '';
+        this.nuevaCategoria.id_categoria = null;
         // console.info(this.listaCategorias);
       },
       error => {

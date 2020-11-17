@@ -103,7 +103,7 @@
               <div>
                 <ion-item>
                   <ion-label position="floating">Nueva clasificación</ion-label>
-                  <ion-input  [(ngModel)]="nuevaCategoria"  name="nuevaCategoria" #nueva="ngModel" required></ion-input>
+                  <ion-input  [(ngModel)]="nuevaCategoria.nombre"  name="nuevaCategoria" #nueva="ngModel" required></ion-input>
                 </ion-item>
                 <div *ngIf="nueva.touched && nueva.invalid" style="display: flex; justify-content: center; align-items: center;">
                   <small style="color: red;">El nombre de la categoría del producto es requerida</small>
