@@ -63,8 +63,8 @@
                 <h2>Te encuentras en:</h2>
                 <p>{{estasUbicacion}}</p>
                 <h5>Radio de busqueda:</h5>
-                <h5>Kilometros a la redonda: </h5>
-                <ion-range (ionChange)="obtenerKilometrosRango($event)" min="1" max="10" 
+                <h5>Kilometros a la redonda: <ion-badge color="medium">{{kilometrosSlider}} Km</ion-badge></h5>
+                <ion-range [value]="kilometrosSlider" (ionChange)="obtenerKilometrosRango($event)" min="1" max="10" 
                 step="1" snaps="true" color="danger" pin="true"></ion-range>
             </div>
         </ion-item>
