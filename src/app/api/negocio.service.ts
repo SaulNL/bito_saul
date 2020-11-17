@@ -1,8 +1,11 @@
+import { NegocioModel } from './../Modelos/NegocioModel';
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppSettings} from "../AppSettings";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
+import {DatosNegocios} from '../Modelos/DatosNegocios';
+
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +44,66 @@ export class NegocioService {
     const body = JSON.stringify({id_proveedor: id});
     return this.http.post(
       this.url + 'api/buscar/mis-negocios', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  buscarProductosServios(id: number, tipo: number): Observable<any> {
+    const body = JSON.stringify({id_negocio: id, tipo : tipo});
+    return this.http.post(
+      this.url + 'api/lista/producto/negocio', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  guardarProductoServio(datosNegocio: DatosNegocios): Observable<any> {
+    const body = JSON.stringify(datosNegocio);
+    return this.http.post(
+      this.url + 'api/guardarProductosServicios', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  obtenerNumMaxProductos(idNegocio): Observable<any> {
+    const body = JSON.stringify({id: idNegocio});
+    return this.http.post(
+      this.url + 'api/negocio/numero/max/productos', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  modificarCategoria(enviar:any): Observable<any> {
+    const body = JSON.stringify(enviar);
+    return this.http.post(
+      this.url + 'api/negocio/modificar/categoria', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  eliminarCategoria(enviar:any): Observable<any> {
+    const body = JSON.stringify(enviar);
+    return this.http.post(
+      this.url + 'api/negocio/eliminar/categoria', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  agregarCategoria(enviar:any): Observable<any> {
+    const body = JSON.stringify(enviar);
+    return this.http.post(
+      this.url + 'api/negocio/guardar/categoria', body,
       {headers: AppSettings.getHeadersToken()}
     ).pipe(map(res => {
       return res;
@@ -89,6 +152,62 @@ export class NegocioService {
     ).pipe(map(data => {
 
       return data;
+    }));
+  }
+    /**
+   * Funcion para obtener el catalogo de organizaciones
+   * @param id
+   * @author Omar
+   */
+  obtenerCatOrganizaciones(): Observable<any> {
+    return this.http.post(
+      `${this.url}api/catalogo/organizaciones/obtener`,
+      {},
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(data => {
+      return data;
+    }));
+  }
+   /**
+   * Servicio para validar disponivilidad de url del negocio
+   * @param url_negocio
+   * @author Omar
+   */
+  verificarUrlNegocio(url_negocio: string): Observable<any> {
+    const body = JSON.stringify({url_negocio: url_negocio});
+    return this.http.post(
+      this.url + 'api/negocio/verificar_url', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+  guardar(negocio: NegocioModel): Observable<any> {
+    const body = JSON.stringify(negocio);
+    return this.http.post(
+      this.url + 'api/proveedor/guardar_negocio', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+  activarDesactivar(id_negocio: number, cambio: boolean): Observable<any> {
+    const body = JSON.stringify({negocio: id_negocio, valor : cambio});
+    return this.http.post(
+      this.url + 'api/negocio/activar-desactivar', body,
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
+  registrarPedido(datos): Observable<any> {
+    const body = JSON.stringify(datos);
+    return this.http.post(
+        this.url + 'api/pedios/registrar', body,
+        {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
     }));
   }
 }

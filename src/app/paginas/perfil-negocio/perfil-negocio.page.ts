@@ -1,24 +1,24 @@
-import { AppSettings } from './../../AppSettings';
-import { Component, OnInit } from '@angular/core';
-import { Map, tileLayer, marker, icon } from 'leaflet';
-import { ActivatedRoute, Router } from "@angular/router";
-import { ToastController } from "@ionic/angular";
-import { NegocioService } from "../../api/negocio.service";
-import { Geolocation } from "@capacitor/core";
-import { ToadNotificacionService } from "../../api/toad-notificacion.service";
-import { Location } from "@angular/common";
-import { UtilsCls } from '../../utils/UtilsCls';
-import { SideBarService } from "../../api/busqueda/side-bar-service";
-import { ActionSheetController } from '@ionic/angular';
-import { ModalController } from '@ionic/angular';
-import { DenunciaNegocioPage } from './denuncia-negocio/denuncia-negocio.page';
-import { Plugins } from '@capacitor/core';
-import { CalificarNegocioComponent } from '../../componentes/calificar-negocio/calificar-negocio.component';
-import { ProveedorServicioService } from '../../api/busqueda/proveedores/proveedor-servicio.service';
-const { Share } = Plugins;
+import {AppSettings} from './../../AppSettings';
+import {Component, EventEmitter, OnInit} from '@angular/core';
+import {Map, tileLayer, marker, icon} from 'leaflet';
+import {ActivatedRoute, Router} from "@angular/router";
+import {AlertController, NavController, ToastController} from "@ionic/angular";
+import {NegocioService} from "../../api/negocio.service";
+import {Geolocation} from "@capacitor/core";
+import {ToadNotificacionService} from "../../api/toad-notificacion.service";
+import {Location} from "@angular/common";
+import {UtilsCls} from '../../utils/UtilsCls';
+import {SideBarService} from "../../api/busqueda/side-bar-service";
+import {ActionSheetController} from '@ionic/angular';
+import {ModalController} from '@ionic/angular';
+import {DenunciaNegocioPage} from './denuncia-negocio/denuncia-negocio.page';
+import {Plugins} from '@capacitor/core';
+import {CalificarNegocioComponent} from '../../componentes/calificar-negocio/calificar-negocio.component';
+import {ProveedorServicioService} from '../../api/busqueda/proveedores/proveedor-servicio.service';
+import {DetalleProductoComponent} from "../../componentes/detalle-producto/detalle-producto.component";
+import {PedidoNegocioComponent} from "../../componentes/pedido-negocio/pedido-negocio.component";
 
-
-
+const {Share} = Plugins;
 
 
 @Component({
@@ -51,9 +51,12 @@ export class PerfilNegocioPage implements OnInit {
         {id: 5, dia: 'Viernes', horarios: [], hi: null, hf: null},
         {id: 6, dia: 'Sábado', horarios: [], hi: null, hf: null},
         {id: 7, dia: 'Domingo', horarios: [], hi: null, hf: null},
-      ];
+    ];
+    private detalle: any;
+    private bolsa: Array<any>;
 
     constructor(
+        private navctrl: NavController,
         private route: ActivatedRoute,
         private toadController: ToastController,
         private negocioService: NegocioService,
@@ -64,12 +67,14 @@ export class PerfilNegocioPage implements OnInit {
         private actionSheetController: ActionSheetController,
         private _router: Router,
         public modalController: ModalController,
-        private serviceProveedores: ProveedorServicioService
+        private serviceProveedores: ProveedorServicioService,
+        public alertController: AlertController
     ) {
         this.seccion = 'ubicacion';
         this.loader = true;
         this.existeSesion = util.existe_sesion();
         this.estatusCalificacion = true;
+        this.bolsa = [];
     }
 
     ngOnInit() {
@@ -94,10 +99,11 @@ export class PerfilNegocioPage implements OnInit {
             this.miLat = res.coords.latitude;
             this.miLng = res.coords.longitude;
         }).catch(error => {
-            this.permisoUbicacionCancelado = true;
-        }
+                this.permisoUbicacionCancelado = true;
+            }
         );
     }
+
     obtenerInformacionNegocio() {
         this.loader = true;
         this.negocioService.obteneretalleNegocio(this.negocio).subscribe(
@@ -207,7 +213,7 @@ export class PerfilNegocioPage implements OnInit {
         const lat = this.informacionNegocio.det_domicilio.latitud;
         const lng = this.informacionNegocio.det_domicilio.longitud;
         this.map = new Map("mapId").setView([lat, lng], 16);
-        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
+        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: ''}).addTo(this.map);
 
         var myIcon = icon({
             iconUrl: 'https://ecoevents.blob.core.windows.net/comprandoando/marker.png',
@@ -216,7 +222,7 @@ export class PerfilNegocioPage implements OnInit {
         });
 
 
-        marker([lat, lng], { icon: myIcon }).addTo(this.map)
+        marker([lat, lng], {icon: myIcon}).addTo(this.map)
     }
 
 
@@ -239,7 +245,8 @@ export class PerfilNegocioPage implements OnInit {
     }
 
     irAlDetalle(producto: any) {
-
+        this.detalle = producto;
+        this.abrirModaldetalle()
     }
 
     enviarWhasapp(celular: any) {
@@ -253,6 +260,7 @@ export class PerfilNegocioPage implements OnInit {
     abrirVentana(ruta) {
         window.open(ruta, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400");
     }
+
     async presentActionSheet() {
         const actionSheet = await this.actionSheetController.create({
             header: 'Negocio',
@@ -282,6 +290,7 @@ export class PerfilNegocioPage implements OnInit {
         });
         await actionSheet.present();
     }
+
     async abrirModalDenuncia() {
         const modal = await this.modalController.create({
             component: DenunciaNegocioPage,
@@ -291,6 +300,44 @@ export class PerfilNegocioPage implements OnInit {
         });
         await modal.present();
     }
+
+    async abrirModaldetalle() {
+        const modal = await this.modalController.create({
+            component: DetalleProductoComponent,
+            componentProps: {
+                datos: this.detalle,
+                _entregaDomicilio: this.informacionNegocio.entrega_domicilio,
+                _entregaSitio: this.informacionNegocio.entrega_sitio,
+                _consumoSitio: this.informacionNegocio.consumo_sitio
+            }
+        });
+        await modal.present()
+        await modal.onDidDismiss().then(r => {
+            if (r.data.data !== undefined) {
+                this.llenarBolsa(r.data.data);
+            }
+        });
+
+    }
+
+    async abrirModalpedido() {
+        const modal = await this.modalController.create({
+            component: PedidoNegocioComponent,
+            componentProps: {
+                lista: this.bolsa,
+                _entregaDomicilio: this.informacionNegocio.entrega_domicilio,
+                _entregaSitio: this.informacionNegocio.entrega_sitio,
+                _consumoSitio: this.informacionNegocio.consumo_sitio
+            }
+        });
+        await modal.present()
+        await modal.onDidDismiss().then(r => {
+            if (r.data.data !== undefined) {
+                this.bolsa = r.data.data
+            }
+        });
+    }
+
     async compartir() {
         this.url_negocio = this.url + this.informacionNegocio.url_negocio;
         await Share.share({
@@ -311,17 +358,18 @@ export class PerfilNegocioPage implements OnInit {
             }
         });
         await modal.present();
-        const { data } = await modal.onDidDismiss();
-        if(data !== undefined){
-        this.informacionNegocio.numCalificaciones = data.numCalificaciones;
-        this.informacionNegocio.promedio = data.promedio;
-        this.obtenerEstatusCalificacion();
+        const {data} = await modal.onDidDismiss();
+        if (data !== undefined) {
+            this.informacionNegocio.numCalificaciones = data.numCalificaciones;
+            this.informacionNegocio.promedio = data.promedio;
+            this.obtenerEstatusCalificacion();
         }
     }
+
     /**
- * funcion para obtener el estatus de la calificacion
- * @author Omar
- */
+     * funcion para obtener el estatus de la calificacion
+     * @author Omar
+     */
     obtenerEstatusCalificacion() {
         //  this.loaderEstatusCalifi = true;
         if (this.existeSesion) {
@@ -345,6 +393,7 @@ export class PerfilNegocioPage implements OnInit {
             //   this.loaderEstatusCalifi = false;
         }
     }
+
     valorEstrellas() {
         setTimeout(it => {
             let numeroEstrella = this.informacionNegocio.promedio.toString();
@@ -368,88 +417,130 @@ export class PerfilNegocioPage implements OnInit {
         this.hoy = hoy.getDay() !== 0 ? hoy.getDay() : 7;
         const diasArray = JSON.parse(JSON.stringify(this.diasArray));
         if (hros !== undefined) {
-          hros.forEach(horarioTmp => {
+            hros.forEach(horarioTmp => {
 
-            diasArray.map(dia => {
-              if (horarioTmp.dias.includes(dia.dia) && horarioTmp.hora_inicio !== undefined && horarioTmp.hora_fin !== undefined) {
-                const dato = {
-                  texto: horarioTmp.hora_inicio + ' a ' + horarioTmp.hora_fin,
-                  hi: horarioTmp.hora_inicio,
-                  hf: horarioTmp.hora_fin
-                };
-                dia.horarios.push(dato);
-              }
+                diasArray.map(dia => {
+                    if (horarioTmp.dias.includes(dia.dia) && horarioTmp.hora_inicio !== undefined && horarioTmp.hora_fin !== undefined) {
+                        const dato = {
+                            texto: horarioTmp.hora_inicio + ' a ' + horarioTmp.hora_fin,
+                            hi: horarioTmp.hora_inicio,
+                            hf: horarioTmp.hora_fin
+                        };
+                        dia.horarios.push(dato);
+                    }
+                });
+
             });
 
-          });
+            diasArray.map((dia) => {
 
-          diasArray.map((dia) => {
-
-            if (dia.id === this.hoy) {
-              const now = new Date(1995, 11, 18, hoy.getHours(), hoy.getMinutes(), 0, 0);
-              let abieto = null;
-              let index = null;
-              const listaAux = [];
-              if (dia.horarios.length !== 0) {
-                dia.horarios.map((item, i) => {
-                  const inicio = item.hi.split(':');
-                  // tslint:disable-next-line:radix
-                  const fi = new Date(1995, 11, 18, parseInt(inicio[0]), parseInt(inicio[1]), 0, 0);
-                  const fin = item.hf.split(':');
-                  let aux = 18;
-                  // tslint:disable-next-line:radix
-                  if (parseInt(inicio[0]) > parseInt(fin[0])) {
-                    aux = 19;
-                  }
-                  // tslint:disable-next-line:radix
-                  const ff = new Date(1995, 11, aux, parseInt(fin[0]), parseInt(fin[1]), 0, 0);
-                  listaAux.push({valor: ((fi.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)), index: i});
-                  if (now >= fi && now <= ff) {
-                    abieto = true;
-                    index = i;
-                  }
-                });
-                if (abieto) {
-                  this.estatus = {tipo: 1, mensaje: 'Cierra a las ' + dia.horarios[index].hf};
-                } else {
-                  let listaValores: Array<number> = [];
-                  let siHay = false;
-                  listaAux.map(item => {
-                    listaValores.push(item.valor);
-                    if (item.valor > 0) {
-                      siHay = true;
+                if (dia.id === this.hoy) {
+                    const now = new Date(1995, 11, 18, hoy.getHours(), hoy.getMinutes(), 0, 0);
+                    let abieto = null;
+                    let index = null;
+                    const listaAux = [];
+                    if (dia.horarios.length !== 0) {
+                        dia.horarios.map((item, i) => {
+                            const inicio = item.hi.split(':');
+                            // tslint:disable-next-line:radix
+                            const fi = new Date(1995, 11, 18, parseInt(inicio[0]), parseInt(inicio[1]), 0, 0);
+                            const fin = item.hf.split(':');
+                            let aux = 18;
+                            // tslint:disable-next-line:radix
+                            if (parseInt(inicio[0]) > parseInt(fin[0])) {
+                                aux = 19;
+                            }
+                            // tslint:disable-next-line:radix
+                            const ff = new Date(1995, 11, aux, parseInt(fin[0]), parseInt(fin[1]), 0, 0);
+                            listaAux.push({valor: ((fi.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)), index: i});
+                            if (now >= fi && now <= ff) {
+                                abieto = true;
+                                index = i;
+                            }
+                        });
+                        if (abieto) {
+                            this.estatus = {tipo: 1, mensaje: 'Cierra a las ' + dia.horarios[index].hf};
+                        } else {
+                            let listaValores: Array<number> = [];
+                            let siHay = false;
+                            listaAux.map(item => {
+                                listaValores.push(item.valor);
+                                if (item.valor > 0) {
+                                    siHay = true;
+                                }
+                            });
+                            if (siHay) {
+                                listaValores = listaValores.filter(item => {
+                                    return item >= 0;
+                                });
+                            }
+                            const valor = Math.min.apply(null, listaValores);
+                            const valorMax = Math.max.apply(null, listaValores);
+                            if (valor > 0) {
+                                listaAux.map(item => {
+                                    if (item.valor === valor) {
+                                        index = item.index;
+                                    }
+                                });
+                                this.estatus = {tipo: 0, mensaje: 'Abre a las ' + dia.horarios[index].hi};
+                            } else {
+                                listaAux.map(item => {
+                                    if (item.valor === valorMax) {
+                                        index = item.index;
+                                    }
+                                });
+                                this.estatus = {tipo: 0, mensaje: 'Cerró a las ' + dia.horarios[index].hf};
+                            }
+                        }
+                    } else {
+                        this.estatus = {tipo: 0, mensaje: 'No abre hoy'};
                     }
-                  });
-                  if (siHay) {
-                    listaValores = listaValores.filter(item => {
-                      return item >= 0;
-                    });
-                  }
-                  const valor = Math.min.apply(null, listaValores);
-                  const valorMax = Math.max.apply(null, listaValores);
-                  if (valor > 0) {
-                    listaAux.map(item => {
-                      if (item.valor === valor) {
-                        index = item.index;
-                      }
-                    });
-                    this.estatus = {tipo: 0, mensaje: 'Abre a las ' + dia.horarios[index].hi};
-                  } else {
-                    listaAux.map(item => {
-                      if (item.valor === valorMax) {
-                        index = item.index;
-                      }
-                    });
-                    this.estatus = {tipo: 0, mensaje: 'Cerró a las ' + dia.horarios[index].hf};
-                  }
                 }
-              } else {
-                this.estatus = {tipo: 0, mensaje: 'No abre hoy'};
-              }
-            }
-          });
-          this.diasArray = diasArray;
-          console.log(this.diasArray);
+            });
+            this.diasArray = diasArray;
+            console.log(this.diasArray);
         }
-      }
+    }
+
+    private llenarBolsa(dato) {
+        let existe = false;
+        this.bolsa.map(it => {
+            if (it.idProducto === dato.idProducto) {
+                existe = true;
+                it.cantidad ++;
+            }
+        });
+
+        if (!existe) {
+            this.bolsa.push(dato);
+        }
+    }
+
+    salir() {
+        if (this.bolsa.length > 0) {
+            this.mensajeBolsa()
+        } else {
+            this.navctrl.back();
+        }
+    }
+
+    async mensajeBolsa() {
+        const alert = await this.alertController.create({
+            header: 'Advertencia',
+            message: 'Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!',
+            buttons: [
+                {
+                    text: 'Cancelar',
+                }, {
+                    text: 'Salir',
+                    handler: () => {
+                        this.bolsa = [];
+                        this.navctrl.back();
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
 }

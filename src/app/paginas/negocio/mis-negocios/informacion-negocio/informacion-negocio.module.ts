@@ -8,13 +8,20 @@ import { InformacionNegocioPageRoutingModule } from './informacion-negocio-routi
 
 import { InformacionNegocioPage } from './informacion-negocio.page';
 
+import { ImageCropperModule } from 'ngx-image-cropper';
+import {RecorteImagenComponent} from "../../../../components/recorte-imagen/recorte-imagen.component";
+
+import { InputTagsComponent } from '../../../../components/input-tags/input-tags.component';
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    InformacionNegocioPageRoutingModule
+    InformacionNegocioPageRoutingModule,
+    ImageCropperModule
   ],
-  declarations: [InformacionNegocioPage]
+  declarations: [InformacionNegocioPage, RecorteImagenComponent, InputTagsComponent]
 })
 export class InformacionNegocioPageModule {}

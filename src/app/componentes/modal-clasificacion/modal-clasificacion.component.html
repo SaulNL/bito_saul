@@ -1,0 +1,40 @@
+<ion-header translucent>
+  <ion-toolbar class="tolbar">
+    <ion-title>Modificar categoría: {{ nombreActual }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <form #formVariable="ngForm" (ngSubmit)="guardar(formVariable)">
+        <ion-item>
+          <ion-label position="floating" class="ion-text-wrap">Nombre de la categoria del producto</ion-label>
+          <ion-input [(ngModel)]="modalEditarCat.nombre" name="id" #id="ngModel" required></ion-input>
+        </ion-item>
+        <div *ngIf="id.touched && id.invalid">
+          <small style="color: red;">El nombre de la categoría del producto es requerida</small>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center; margin: 10px 0;">
+          <ion-item>
+            <ion-label>Activo</ion-label>
+            <ion-toggle slot="start" name="cherry" color="danger" [checked]="modalEditarCat.activo"
+            (ionChange)="modalEditarCat.activo = !modalEditarCat.activo" ></ion-toggle>
+          </ion-item>   
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <ion-button class="bg-rosa" type="submit">
+            Guardar
+            <ion-spinner name="dots" *ngIf="banderaGuardar"></ion-spinner>
+          </ion-button>
+          <ion-button color="danger" (click)="dismiss()">Cancelar</ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+

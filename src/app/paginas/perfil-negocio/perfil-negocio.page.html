@@ -1,33 +1,40 @@
 <ion-header>
     <ion-toolbar class="tolbar">
         <ion-buttons slot="start">
-            <ion-back-button text="" defaultHref="/"></ion-back-button>
+            <ion-button (click)="salir()">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </ion-button>
         </ion-buttons>
         <ion-title>Información del negocio</ion-title>
-        <ion-buttons slot="end" (click)="presentActionSheet()" *ngIf="existeSesion">
-            <ion-button>
-            <ion-icon  name="ellipsis-vertical-outline"></ion-icon>
-          </ion-button>
-          </ion-buttons>
+        <ion-buttons slot="end" >
+            <ion-button (click)="abrirModalpedido()" *ngIf="bolsa.length > 0">
+                <ion-icon name="bag-handle-outline"></ion-icon>
+                <ion-badge>{{bolsa.length}}</ion-badge>
+            </ion-button>
+            <ion-button (click)="presentActionSheet()" *ngIf="existeSesion">
+                <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding" *ngIf="loader" fullscreen>
-    <div class="spin" >
+    <div class="spin">
         <ion-spinner></ion-spinner>
     </div>
-</ion-content >
+</ion-content>
 <ion-content class="ion-padding" *ngIf="!loader" fullscreen>
     <ion-grid>
         <ion-row>
             <ion-col class="ion-align-items-center ion-justify-content-center" size="12">
                 <ion-avatar style="height: auto; width: 150px; margin: auto">
-                    <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" [srcset]="informacionNegocio.url_logo">
+                    <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+                         [srcset]="informacionNegocio.url_logo">
                 </ion-avatar>
             </ion-col>
-            <ion-col  size="12">
-                    <ion-text class="ion-align-items-center ion-text-center ion-justify-content-center">
-                        <h1>{{informacionNegocio.nombre_comercial}}</h1>
-                    </ion-text>
+            <ion-col size="12">
+                <ion-text class="ion-align-items-center ion-text-center ion-justify-content-center">
+                    <h1>{{informacionNegocio.nombre_comercial}}</h1>
+                </ion-text>
             </ion-col>
         </ion-row>
         <ion-row>
@@ -43,23 +50,25 @@
         <ion-row>
             <ion-col>
                 <ion-button shape="round"
-                *ngIf="informacionNegocio.cartaProducto !== undefined && informacionNegocio.cartaProducto !== null && informacionNegocio.cartaProducto !== ''" 
-                (click)="abrirVentana(informacionNegocio.cartaProducto)"
-                expand="full" class="bg-rosa">Ver carta de productos </ion-button>
+                            *ngIf="informacionNegocio.cartaProducto !== undefined && informacionNegocio.cartaProducto !== null && informacionNegocio.cartaProducto !== ''"
+                            (click)="abrirVentana(informacionNegocio.cartaProducto)"
+                            expand="full" class="bg-rosa">Ver carta de productos
+                </ion-button>
                 <ion-button shape="round"
-                *ngIf="informacionNegocio.cartaServicio !== undefined && informacionNegocio.cartaServicio !== null&& informacionNegocio.cartaServicio !== ''"
-                (click)="abrirVentana(informacionNegocio.cartaServicio)"
-                expand="full" class="bg-rosa">Ver carta de servicios</ion-button>
+                            *ngIf="informacionNegocio.cartaServicio !== undefined && informacionNegocio.cartaServicio !== null&& informacionNegocio.cartaServicio !== ''"
+                            (click)="abrirVentana(informacionNegocio.cartaServicio)"
+                            expand="full" class="bg-rosa">Ver carta de servicios
+                </ion-button>
             </ion-col>
         </ion-row>
     </ion-grid>
-    
+
     <ion-grid *ngIf="!existeSesion">
         <ion-row>
             <ion-card class="w-100">
                 <ion-card-content class="ion-text-center">
                     Inicia sesión para poder ver la información de este negocio
-                    <ion-button expand="block" [routerLink]="['/tabs/login']"> Iniciar Sesión </ion-button>
+                    <ion-button expand="block" [routerLink]="['/tabs/login']"> Iniciar Sesión</ion-button>
                 </ion-card-content>
             </ion-card>
         </ion-row>
@@ -68,62 +77,72 @@
     <div>
         <ion-grid>
             <ion-row>
-              <ion-col size=12>
-                <div (click)="motrarContacto = !motrarContacto;" class="list">
-                  <ul>
-                    <li>{{ estatus.tipo === 1 ? 'Abierto' : 'Cerrado'}}</li>
-                    <li class="lista">
-                      <div>
-                        {{ estatus.mensaje }}
-                      </div>
-                      <div style="margin: 0px 5px" *ngIf="!motrarContacto" >
-                          <ion-icon name="arrow-up-outline"></ion-icon>
-                      </div>
-                      <div style="margin: 0px 5px" *ngIf="motrarContacto">
-                        <ion-icon name="arrow-down-outline"></ion-icon>
-                      </div>
-                    </li>
-                  </ul>
-                  <div style="margin: 0px 5px" *ngIf="!motrarContacto && estatus!==undefined">
-                    <ion-list>
-                      <ion-item *ngFor="let dia of diasArray">
-                        <ion-grid>
-                          <ion-row class="lista">
-                            <ion-col><p [ngClass]="{'negritas':dia.id === hoy}">{{ dia.dia }}</p></ion-col>
-                            <ion-col *ngIf="dia.horarios.length > 0">
-                              <span *ngFor="let h of dia.horarios "><p class="negritas">{{h.texto}}</p></span>
-                            </ion-col>
-                            <ion-col *ngIf="dia.horarios.length === 0" style="display: flex; justify-content: center; align-items: center;">
-                              <ion-badge color="danger">Cerrado</ion-badge>
-                            </ion-col>
-                          </ion-row>
-                        </ion-grid>
-                      </ion-item>
-                    </ion-list>
-                  </div>
-                </div>
-              </ion-col>
+                <ion-col size=12>
+                    <div (click)="motrarContacto = !motrarContacto;" class="list">
+                        <ul>
+                            <li style="display: flex; justify-content: center; align-items: center;">{{ estatus.tipo === 1 ? 'Abierto' : 'Cerrado'}}</li>
+                            <li class="lista">
+                                <div>
+                                    {{ estatus.mensaje }}
+                                </div>
+                                <div style="margin: 2px 5px" *ngIf="!motrarContacto">
+                                    <ion-icon name="arrow-up-outline"></ion-icon>
+                                </div>
+                                <div style="margin: 2px 5px" *ngIf="motrarContacto">
+                                    <ion-icon name="arrow-down-outline"></ion-icon>
+                                </div>
+                            </li>
+                        </ul>
+                        <div style="margin: 0px 5px" *ngIf="!motrarContacto && estatus!==undefined">
+                            <ion-list>
+                                <ion-item *ngFor="let dia of diasArray">
+                                    <ion-grid>
+                                        <ion-row class="lista">
+                                            <ion-col><p [ngClass]="{'negritas':dia.id === hoy}">{{ dia.dia }}</p>
+                                            </ion-col>
+                                            <ion-col *ngIf="dia.horarios.length > 0">
+                                                <span *ngFor="let h of dia.horarios "><p
+                                                        class="negritas">{{h.texto}}</p></span>
+                                            </ion-col>
+                                            <ion-col *ngIf="dia.horarios.length === 0"
+                                                     style="display: flex; justify-content: center; align-items: center;">
+                                                <ion-badge color="danger">Cerrado</ion-badge>
+                                            </ion-col>
+                                        </ion-row>
+                                    </ion-grid>
+                                </ion-item>
+                            </ion-list>
+                        </div>
+                    </div>
+                </ion-col>
             </ion-row>
-          </ion-grid>
+        </ion-grid>
     </div>
 
     <div *ngIf="existeSesion">
         <ion-toolbar>
             <ion-segment [(ngModel)]="seccion" (ionChange)="cambio()">
                 <ion-segment-button value="ubicacion">Ubicación</ion-segment-button>
-                <ion-segment-button value="productos" *ngIf="informacionNegocio.catProductos.length > 0">Productos</ion-segment-button>
-                <ion-segment-button value="servicios" *ngIf="informacionNegocio.catServicos.length > 0">Servicios</ion-segment-button>
+                <ion-segment-button value="productos" *ngIf="informacionNegocio.catProductos.length > 0">Productos
+                </ion-segment-button>
+                <ion-segment-button value="servicios" *ngIf="informacionNegocio.catServicos.length > 0">Servicios
+                </ion-segment-button>
             </ion-segment>
         </ion-toolbar>
 
         <ion-grid *ngIf="seccion === 'ubicacion'">
             <ion-row>
                 <ion-col size="12">
-                    <p> Dirección: {{informacionNegocio.det_domicilio.calle}} {{informacionNegocio.det_domicilio.numero_ext}} {{informacionNegocio.det_domicilio.colonia}}, {{informacionNegocio.det_domicilio.nombre_localidad !== undefined ? informacionNegocio.det_domicilio.nombre_localidad + ', ': ''}}{{informacionNegocio.det_domicilio.nombre_municipio}},
+                    <p>
+                        Dirección: {{informacionNegocio.det_domicilio.calle}} {{informacionNegocio.det_domicilio.numero_ext}} {{informacionNegocio.det_domicilio.colonia}}
+                        , {{informacionNegocio.det_domicilio.nombre_localidad !== undefined ? informacionNegocio.det_domicilio.nombre_localidad + ', ' : ''}}{{informacionNegocio.det_domicilio.nombre_municipio}}
+                        ,
                         {{informacionNegocio.det_domicilio.nombre_estado}}</p>
                 </ion-col>
                 <ion-col>
-                    <ion-button  expand="block" size="small" href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}" target="_blank">
+                    <ion-button expand="block" size="small"
+                                href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
+                                target="_blank">
                         Ir al lugar
                         <ion-icon name="navigate-outline"></ion-icon>
                     </ion-button>
@@ -132,27 +151,29 @@
             </ion-row>
         </ion-grid>
         <ion-grid *ngIf="seccion === 'productos'">
-            <ion-row *ngIf="informacionNegocio.tagsProductos !== undefined && informacionNegocio.tagsProductos.length > 0">
+            <ion-row
+                    *ngIf="informacionNegocio.tagsProductos !== undefined && informacionNegocio.tagsProductos.length > 0">
                 <ion-col>
-                  <div id="abcedario" class="scrolling-wrapper-flexbox">
-                    <div class="item" *ngFor="let item of informacionNegocio.tagsProductos">
-                      <ion-button size="small" color="primary">{{item}}</ion-button>
+                    <div id="abcedario" class="scrolling-wrapper-flexbox">
+                        <div class="item" *ngFor="let item of informacionNegocio.tagsProductos">
+                            <ion-button size="small" color="primary">{{item}}</ion-button>
+                        </div>
                     </div>
-                  </div>
-                  <p><br></p>
+                    <p><br></p>
                 </ion-col>
-              </ion-row>
+            </ion-row>
             <ion-row *ngFor="let cat of informacionNegocio.catProductos">
                 <ion-text class="w-100">
                     <h2>{{cat.nombre}}</h2>
                 </ion-text>
                 <ion-col size="6" *ngFor="let producto of cat.productos">
                     <ion-card (click)="irAlDetalle(producto)" class="m-0 fixed">
-                        <img class="img-card-w"  [src]="producto.imagen"
+                        <img class="img-card-w" [src]="producto.imagen"
                              alt="Falla al cargar la imagen">
                         <ion-card-header>
                             <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
-                            <ion-badge *ngIf="producto.precio !== null" color="success">$ {{producto.precio}}</ion-badge>
+                            <ion-badge *ngIf="producto.precio !== null" color="success">
+                                $ {{producto.precio}}</ion-badge>
                         </ion-card-header>
                         <ion-card-content>
                             {{producto.descripcion}}
@@ -161,16 +182,17 @@
                 </ion-col>
             </ion-row>
         </ion-grid>
-        
+
         <ion-grid *ngIf="seccion === 'servicios'">
-            <ion-row *ngIf="informacionNegocio.tagsServicios !== undefined && informacionNegocio.tagsServicios.length > 0">
+            <ion-row
+                    *ngIf="informacionNegocio.tagsServicios !== undefined && informacionNegocio.tagsServicios.length > 0">
                 <ion-col>
-                  <div id="abcedario" class="scrolling-wrapper-flexbox">
-                    <div *ngFor="let item of informacionNegocio.tagsServicios">
-                      <ion-button size="small" color="primary">{{item}}</ion-button>
+                    <div id="abcedario" class="scrolling-wrapper-flexbox">
+                        <div *ngFor="let item of informacionNegocio.tagsServicios">
+                            <ion-button size="small" color="primary">{{item}}</ion-button>
+                        </div>
                     </div>
-                  </div>
-                  <p><br></p>
+                    <p><br></p>
                 </ion-col>
             </ion-row>
             <ion-row *ngFor="let cat of informacionNegocio.catServicos">
@@ -179,11 +201,12 @@
                 </ion-text>
                 <ion-col size="6" *ngFor="let producto of cat.servicios">
                     <ion-card (click)="irAlDetalle(producto)" class="m-0 fixed">
-                        <img class="img-card-w"  [src]="producto.imagen"
+                        <img class="img-card-w" [src]="producto.imagen"
                              alt="Falla al cargar la imagen">
                         <ion-card-header>
                             <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
-                            <ion-badge *ngIf="producto.precio !== null" color="success">$ {{producto.precio}}</ion-badge>
+                            <ion-badge *ngIf="producto.precio !== null" color="success">
+                                $ {{producto.precio}}</ion-badge>
                         </ion-card-header>
                         <ion-card-content>
                             {{producto.descripcion}}
@@ -198,18 +221,19 @@
                     <div class="estrella">
                         <h3 class="text-rosa ion-text-center">Calificación del negocio</h3>
                         <div class="clasificacion ion-text-center">
-                            {{informacionNegocio.numCalificaciones}}  <ion-icon name="person-outline"></ion-icon>
-                            <input disabled id="radio1" type="radio" name="estrellas" value="5" >
+                            {{informacionNegocio.numCalificaciones}}
+                            <ion-icon name="person-outline"></ion-icon>
+                            <input disabled id="radio1" type="radio" name="estrellas" value="5">
                             <label for="radio1">★</label>
                             <input disabled id="radio2" type="radio" name="estrellas" value="4">
                             <label for="radio2">★</label>
-                            <input disabled id="radio3" type="radio" name="estrellas" value="3" >
-                            <label for="radio3">★</label>  
+                            <input disabled id="radio3" type="radio" name="estrellas" value="3">
+                            <label for="radio3">★</label>
                             <input disabled id="radio4" type="radio" name="estrellas" value="2">
                             <label for="radio4">★</label>
-                            <input disabled id="radio5" type="radio" name="estrellas" value="1" >
+                            <input disabled id="radio5" type="radio" name="estrellas" value="1">
                             <label for="radio5">★</label>
-                          </div>
+                        </div>
                     </div>
                 </ion-col>
             </ion-row>
@@ -224,36 +248,47 @@
                         </div>
                     </div>
                 </ion-col>
-            </ion-row> 
+            </ion-row>
         </ion-grid>
     </div>
 
-    
 
     <ion-fab *ngIf="existeSesion" horizontal="end" vertical="bottom" slot="fixed">
         <ion-fab-button color="primary">
             <ion-icon name="call"></ion-icon>
         </ion-fab-button>
         <ion-fab-list side="top">
-            <ion-fab-button  *ngIf="informacionNegocio.telefono !== null && informacionNegocio.telefono !== ''" color="light" (click)="llamar(informacionNegocio.telefono)">
+            <ion-fab-button *ngIf="informacionNegocio.telefono !== null && informacionNegocio.telefono !== ''"
+                            color="light" (click)="llamar(informacionNegocio.telefono)">
                 <ion-icon name="call"></ion-icon>
             </ion-fab-button>
-            <ion-fab-button color="light" *ngIf="informacionNegocio.celular !== null && informacionNegocio.celular !== ''" (click)="enviarWhasapp(informacionNegocio.celular)">
+            <ion-fab-button color="light"
+                            *ngIf="informacionNegocio.celular !== null && informacionNegocio.celular !== ''"
+                            (click)="enviarWhasapp(informacionNegocio.celular)">
                 <ion-icon name="logo-whatsapp"></ion-icon>
             </ion-fab-button>
-            <ion-fab-button color="light" *ngIf="informacionNegocio.id_facebook !== null && informacionNegocio.id_facebook !== ''" [href]="informacionNegocio.id_facebook" target="_blank" >
+            <ion-fab-button color="light"
+                            *ngIf="informacionNegocio.id_facebook !== null && informacionNegocio.id_facebook !== ''"
+                            [href]="informacionNegocio.id_facebook" target="_blank">
                 <ion-icon name="logo-facebook"></ion-icon>
             </ion-fab-button>
-            <ion-fab-button color="light" *ngIf="informacionNegocio.twitter !== null && informacionNegocio.twitter !== ''" [href]="informacionNegocio.twitter" target="_blank" >
+            <ion-fab-button color="light"
+                            *ngIf="informacionNegocio.twitter !== null && informacionNegocio.twitter !== ''"
+                            [href]="informacionNegocio.twitter" target="_blank">
                 <ion-icon name="logo-twitter"></ion-icon>
             </ion-fab-button>
-            <ion-fab-button color="light" *ngIf="informacionNegocio.instagram !== null && informacionNegocio.instagram !== ''" [href]="informacionNegocio.instagram" target="_blank" >
+            <ion-fab-button color="light"
+                            *ngIf="informacionNegocio.instagram !== null && informacionNegocio.instagram !== ''"
+                            [href]="informacionNegocio.instagram" target="_blank">
                 <ion-icon name="logo-instagram"></ion-icon>
             </ion-fab-button>
-            <ion-fab-button color="light" *ngIf="informacionNegocio.tiktok !== null && informacionNegocio.tiktok !== ''" [href]="informacionNegocio.tiktok" target="_blank" >
+            <ion-fab-button color="light" *ngIf="informacionNegocio.tiktok !== null && informacionNegocio.tiktok !== ''"
+                            [href]="informacionNegocio.tiktok" target="_blank">
                 <ion-icon name="logo-tiktok"></ion-icon>
             </ion-fab-button>
-            <ion-fab-button color="light" *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''" [href]="informacionNegocio.youtube" target="_blank" >
+            <ion-fab-button color="light"
+                            *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''"
+                            [href]="informacionNegocio.youtube" target="_blank">
                 <ion-icon name="logo-youtube"></ion-icon>
             </ion-fab-button>
         </ion-fab-list>

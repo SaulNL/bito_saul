@@ -1,0 +1,50 @@
+<ion-header translucent>
+  <ion-toolbar class="tolbar">
+    <ion-title>Lista de productos: {{ lista.nombre }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-content>
+      <div style="margin-bottom: 10px;">
+        <ion-button expand="full" color="primary" (click)="agregarMovile()">Agregar producto</ion-button>
+      </div>
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <div style="width: 30%; text-align: center;">
+          <h3 style="font-weight: bolder;">No.</h3>
+        </div>
+        <div style="width: 30%; text-align: justify;">
+          <h3 style="font-weight: bolder;">Nombre</h3>
+        </div>
+        <div style="width: 30%; text-align: center;">
+          <h3 style="font-weight: bolder;">Acciones</h3>
+        </div>
+      </div>
+    </ion-card-content>
+    <div *ngFor="let produc of lista.productos; index as i">
+      <ion-card>
+        <ion-card-content>
+          <div style="display: flex; justify-content: center; align-items: center;">
+            <div style="width: 30%; text-align: center;">
+              <h3 style="font-weight: bolder;">{{ i +1 }}</h3>
+            </div>
+            <div style="width: 30%;">
+              <h3 style="font-weight: bolder;">{{ produc.nombre }}</h3>
+            </div>
+            <div style="width: 30%; display: flex; justify-content: center; align-items: center;">
+              <ion-button color="warning" (click)="editarRegistro(produc)">
+                <ion-icon name="create"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-card>
+  
+</ion-content>

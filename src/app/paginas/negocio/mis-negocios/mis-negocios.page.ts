@@ -19,6 +19,7 @@ export class MisNegociosPage implements OnInit {
     
   }
   ngOnInit() {
+    this.router.navigate(['/tabs/home/negocio/card-negocio']);
     this.active.queryParams.subscribe(params => {
       if (params && params.special) {
         this.negocioTO  = JSON.parse(params.special);
@@ -54,7 +55,7 @@ export class MisNegociosPage implements OnInit {
     //this.admin.blnActivaDatosCategoria = true;
   }
   inforNegocio(negocio: NegocioModel){
-    this.negocioTO = JSON.parse(JSON.stringify(negocio));
+   this.negocioTO = JSON.parse(JSON.stringify(negocio));
     let navigationExtras = JSON.stringify(this.negocioTO);
     this.router.navigate(["/tabs/home/negocio/mis-negocios/informacion-negocio"], {
       queryParams: { special: navigationExtras },
