@@ -111,8 +111,6 @@ export class FiltrosBusquedaComponent implements OnInit {
         if(this.filtros.kilometros < 10 ){
             this.kilometrosSlider = this.filtros.kilometros;            
         }
-        console.log("filtros page");        
-        console.log(this.filtros);
     }
 
     public obtenergiros() {
