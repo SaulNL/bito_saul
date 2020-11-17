@@ -127,7 +127,7 @@ export class DatosDomicilioPage implements OnInit {
   }
   guardar() {
     this.datosD();
-    console.log(this.negocioGuardar);
+    
     this.negocioServico.guardar(this.negocioGuardar).subscribe(
       response => {
         if (response.code === 200) {
@@ -210,7 +210,7 @@ export class DatosDomicilioPage implements OnInit {
           this.list_cat_estado.forEach(element => {
             if (element.id_estado==this.negocioTO.det_domicilio.id_estado) {
               this.estadoAux = element.nombre;
-              console.log(this.estadoAux);
+              
             }
           });
           //this.loader = false;
@@ -244,7 +244,7 @@ export class DatosDomicilioPage implements OnInit {
             this.list_cat_municipio.forEach(element => {
               if (element.id_municipio==this.negocioTO.det_domicilio.id_municipio) {
                 this.municiAux = element.nombre;
-                console.log(this.municiAux);
+                
                 
               }
             });
@@ -288,7 +288,7 @@ export class DatosDomicilioPage implements OnInit {
             this.list_cat_localidad.forEach(element => {
               if (element.id_localidad==this.negocioTO.det_domicilio.id_localidad) {
                 this.localiAux = element.nombre;
-                console.log(this.localiAux);
+                
               }
             });
           }

@@ -27,7 +27,6 @@ export class TabsPage implements OnInit{
     }
 
     ngOnInit(): void {
-        console.log(sessionStorage.getItem('isRedirected'));
         this.sideBarService.getObservable().subscribe((data) => {
             this.usuario = this.util.getData();
         });
@@ -37,13 +36,11 @@ export class TabsPage implements OnInit{
 
     inicio() {
         this.router.navigate(['/tabs/inicio'], { queryParams: {special: true}  });
-        console.log(sessionStorage.getItem('isRedirected'));
         
     }
 
     promociones() {
         this.router.navigate(['/tabs/promociones'], { queryParams: {special: true}  });
-        console.log(sessionStorage.getItem('isRedirected'));
         
     }
 
