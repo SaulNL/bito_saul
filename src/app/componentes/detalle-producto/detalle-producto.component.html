@@ -1,0 +1,47 @@
+<ion-header>
+    <ion-toolbar class="tolbar">
+        <ion-title>Producto</ion-title>
+        <ion-buttons slot="end" (click)="cerrarModal()">
+            <ion-button>
+                <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col class="ion-text-center">
+                <ion-text color="secondary">
+                    <h1>{{datos.nombre}}</h1>
+                </ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="ion-text-center">
+                <img style="max-height: 20em" [srcset]="datos.imagen"
+                     src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-badge *ngIf="datos.existencia === true" color="primary">Aun con existencia</ion-badge>
+                <ion-badge *ngIf="datos.exitencia === false" color="danger">Sin existencia</ion-badge>
+            </ion-col>
+            <ion-col class="ion-text-right">
+                <h1 style="margin: 0px">{{datos.precio | currency}}</h1>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="ion-text-justify">
+                <p>{{datos.descripcion}}</p>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="mostrarComponente">
+            <ion-col>
+                <ion-button expand="block" (click)="agragarproducto()">Agregar a la bolsa <ion-icon name="bag-add-outline"></ion-icon></ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
