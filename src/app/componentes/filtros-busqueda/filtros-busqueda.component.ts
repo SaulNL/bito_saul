@@ -23,6 +23,9 @@ export class FiltrosBusquedaComponent implements OnInit {
     estado: any;
     private listCaLocalidad: any;
     private listCatMunicipio: any;
+    categoriaAux: any;
+    estadoAux:any;
+    subCategoriaAux: any;
     municipio: any;
     localidad: any;
     categoria: any;
@@ -116,6 +119,12 @@ export class FiltrosBusquedaComponent implements OnInit {
         this.filtroServicio.obtenerGiros().subscribe(
             response => {
                 this.lstCatTipoProducto = response.data;
+                this.lstCatTipoProducto.forEach(element => {
+                    if (element.id_giro==this.categoria) {
+                      this.categoriaAux = element.nombre;
+                      
+                    }
+                  });
             },
             error => {
             }
@@ -127,6 +136,11 @@ export class FiltrosBusquedaComponent implements OnInit {
             response => {
                 this.lstCatEstados = response.data.lst_estado_proveedor;
                 this.validarCheckbox();
+                this.lstCatEstados.forEach(element => {
+                    if (element.id_estado == this.estado) {
+                      this.estadoAux = element.nombre;
+                    }
+                });
             },
             error => {
                 console.error(error);
@@ -237,6 +251,17 @@ export class FiltrosBusquedaComponent implements OnInit {
                 this.listaCategorias = response.data;
                 this.listaCategorias.map(item => {
                     item.estaSeleccionado = false;
+                });
+
+                this.listaCategorias.forEach(element => {
+                    if(this.filtros.idCategoriaNegocio !== null){
+                        this.filtros.idCategoriaNegocio.forEach(elementCategoria => {
+                            if (elementCategoria == element.id_categoria) {
+                                this.subCategoriaAux = element.nombre;
+                            }
+                        });
+                    }
+
                 });
 
             },
