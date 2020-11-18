@@ -85,7 +85,7 @@
       </div>
       <ion-item>
         <ion-label position="stacked">Afiliado a</ion-label>
-        <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idOrganiza" name="idOrganiza" #organizaciones="ngModel" [(ngModel)]="negocioTO.organizaciones" required [value]="negocioTO.organizaciones">
+        <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idOrganiza" name="idOrganiza" #organizaciones="ngModel" [(ngModel)]="negocioTO.organizaciones" [value]="negocioTO.organizaciones">
           <ion-select-option *ngFor="let org of lstOrganizaciones" [value]="org.id_organizacion">{{org.nombre}}</ion-select-option>
         </ion-select>
       </ion-item>

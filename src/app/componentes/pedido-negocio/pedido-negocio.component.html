@@ -15,7 +15,7 @@
 
 <ion-content>
   <ion-list *ngIf="tipoEnvio !== undefined">
-    <ion-radio-group (ionChange)="cambiarTipo()">
+    <ion-radio-group (ionChange)="cambiarTipo($event)" [value]="tipoEnvio">
       <ion-list-header>
         <ion-label>
           Tipo de entrega
@@ -24,17 +24,17 @@
 
       <ion-item *ngIf="_entregaDomicilio === 1">
         <ion-label>Envio a domicilio</ion-label>
-        <ion-radio [(ngModel)]="tipoEnvio" [value]="2" (select)="tipoEnvio===2"></ion-radio>
+        <ion-radio [value]="2" ></ion-radio>
       </ion-item>
 
       <ion-item *ngIf="_entregaSitio === 1">
         <ion-label>Recoger en sucursal</ion-label>
-        <ion-radio [(ngModel)]="tipoEnvio" [value]="3"></ion-radio>
+        <ion-radio [value]="3"></ion-radio>
       </ion-item>
 
       <ion-item *ngIf="_consumoSitio === 1">
         <ion-label>Consumo en sitio</ion-label>
-        <ion-radio [(ngModel)]="tipoEnvio" [value]="1"></ion-radio>
+        <ion-radio [value]="1"></ion-radio>
       </ion-item>
     </ion-radio-group>
   </ion-list>

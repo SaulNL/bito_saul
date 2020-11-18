@@ -50,7 +50,6 @@ export class PedidoNegocioComponent implements OnInit {
     console.log(this._entregaDomicilio, this._entregaSitio, this._consumoSitio)
     this.getCurrentPosition();
     this.sumarLista();
-
   }
 
   loadMap() {
@@ -156,8 +155,14 @@ export class PedidoNegocioComponent implements OnInit {
 
   }
 
-  cambiarTipo() {
+  cambiarTipo(evento) {
+    this.tipoEnvio = parseInt(evento.detail.value);
     this.sumarLista();
+    if (this.tipoEnvio === 2) {
+      setTimeout(it => {
+        this.loadMap();
+      }, 500);
+    }
   }
   /**
     * Funcion para obtener la ubicacion actual
