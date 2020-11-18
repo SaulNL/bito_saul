@@ -40,6 +40,9 @@ export class DatosComplementariosPage implements OnInit {
   private file_img_galeria: FileList;
   public nombreArchivo: string;
   public nombreArchivo2: string;
+  public estaAux: any;
+  public muniAux: any;
+  public locaAux: any;
   constructor(
     private _general_service: GeneralServicesService,
     private _utils_cls: UtilsCls,
@@ -82,6 +85,12 @@ export class DatosComplementariosPage implements OnInit {
       response => {
         if (this._utils_cls.is_success_response(response.code)) {
           this.list_cat_estado = response.data.list_cat_estado;
+          this.list_cat_estado.forEach(element => {
+            if (element.id_estado==this.proveedorTO.det_domicilio.id_estado) {
+              this.estaAux = element.nombre;
+              
+            }
+          });
         }
       },
       error => {
@@ -111,6 +120,12 @@ export class DatosComplementariosPage implements OnInit {
         response => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_municipio = response.data.list_cat_municipio;
+            this.list_cat_municipio.forEach(element => {
+              if (element.id_municipio==this.proveedorTO.det_domicilio.id_municipio) {
+                this.muniAux = element.nombre;
+                
+              }
+            });
             this.select_estado = true;
             this.blnBuscadoMunicipios = false;
           }
@@ -147,6 +162,12 @@ export class DatosComplementariosPage implements OnInit {
         response => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_localidad = response.data.list_cat_localidad;
+            this.list_cat_localidad.forEach(element => {
+              if (element.id_localidad==this.proveedorTO.det_domicilio.id_localidad) {
+                this.locaAux = element.nombre;
+                
+              }
+            });
             this.select_municipio = true;
             this.primeraVez = false;
             this.blnBuscadoLocalidades = false;

@@ -31,8 +31,10 @@
           </ion-item>  
           <ion-item>
             <ion-label position="stacked">Estado</ion-label>
-            <ion-select ok-text="Ok" cancel-text="Cancelar" #estado="ngModel" required (ionChange)="get_list_cat_municipio($event,true)" name="estado" [(ngModel)]="proveedorTO.det_domicilio.id_estado">
-              <ion-select-option *ngFor="let e of list_cat_estado" [value]="e.id_estado">{{e.nombre}}</ion-select-option>
+            <ion-select placeholder="{{ estaAux }}" ok-text="Ok" cancel-text="Cancelar" #estado="ngModel" required (ionChange)="get_list_cat_municipio($event,true)" name="estado" [(ngModel)]="proveedorTO.det_domicilio.id_estado">
+              <ng-container *ngFor="let e of list_cat_estado">
+                <ion-select-option [value]="e.id_estado">{{e.nombre}}</ion-select-option>
+              </ng-container>
             </ion-select>
           </ion-item>   
           <div *ngIf="estado.touched  && estado.invalid" class="alert alert-danger">
@@ -41,8 +43,10 @@
         </div> 
           <ion-item>
             <ion-label position="stacked">Municipio</ion-label>
-            <ion-select ok-text="Ok" cancel-text="Cancelar"  #municipio="ngModel" required (ionChange)="get_list_cat_localidad($event,true)" name="municipio" [(ngModel)]="proveedorTO.det_domicilio.id_municipio" [disabled]="!select_estado">
-              <ion-select-option *ngFor="let e of list_cat_municipio" [value]="e.id_municipio">{{e.nombre}}</ion-select-option>
+            <ion-select placeholder="{{ muniAux }}" ok-text="Ok" cancel-text="Cancelar"  #municipio="ngModel" required (ionChange)="get_list_cat_localidad($event,true)" name="municipio" [(ngModel)]="proveedorTO.det_domicilio.id_municipio" [disabled]="!select_estado">
+              <ng-container *ngFor="let e of list_cat_municipio">
+                <ion-select-option [value]="e.id_municipio">{{e.nombre}}</ion-select-option>
+              </ng-container>
             </ion-select>
           </ion-item>  
           <div *ngIf="municipio.touched  && municipio.invalid" class="alert alert-danger">
@@ -51,8 +55,10 @@
         </div>
           <ion-item>
             <ion-label position="stacked">Localidad</ion-label>
-            <ion-select ok-text="Ok" cancel-text="Cancelar" #localidad="ngModel" required name="localidad" [(ngModel)]="proveedorTO.det_domicilio.id_localidad" [disabled]="!select_municipio">
-              <ion-select-option *ngFor="let e of list_cat_localidad" [value]="e.id_localidad"> {{e.nombre}}</ion-select-option>
+            <ion-select placeholder="{{ locaAux }}" ok-text="Ok" cancel-text="Cancelar" #localidad="ngModel" required name="localidad" [(ngModel)]="proveedorTO.det_domicilio.id_localidad" [disabled]="!select_municipio">
+              <ng-container *ngFor="let e of list_cat_localidad">
+                <ion-select-option [value]="e.id_localidad"> {{e.nombre}}</ion-select-option>
+              </ng-container>
             </ion-select>
           </ion-item> 
           <div *ngIf="localidad.touched  && localidad.invalid" class="alert alert-danger">
