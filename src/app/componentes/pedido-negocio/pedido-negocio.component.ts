@@ -130,6 +130,7 @@ export class PedidoNegocioComponent implements OnInit {
       longitud: this.lng,
       pedido: this.lista
     };
+    console.log(pedido);
     this.negocioService.registrarPedido(pedido).subscribe(
       res => {
         this.mesajes.exito('Pedido realizado éxito')
