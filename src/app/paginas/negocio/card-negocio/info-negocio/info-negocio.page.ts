@@ -133,9 +133,9 @@ export class InfoNegocioPage implements OnInit {
       response => {
         this.listTipoNegocio = response.data;
         this.listTipoNegocio.forEach(element => {
-          if (element.id_tipo_negocio==this.negocioTO.id_tipo_negocio) {
+          if (element.id_tipo_negocio == this.negocioTO.id_tipo_negocio) {
             this.tipoNegoAux = element.nombre;
-            
+
           }
         });
       },
@@ -144,14 +144,14 @@ export class InfoNegocioPage implements OnInit {
         console.log(error);
       }
     );
-    
+
   }
   categoriaPrincipal(evento) {
     let idE;
     if (evento.type === 'ionChange') {
       this.negocioTO.id_giro = [];
       idE = evento.detail.value;
-      
+
     } else {
       idE = evento.value;
     }
@@ -159,12 +159,12 @@ export class InfoNegocioPage implements OnInit {
       respuesta => {
         this.listCategorias = respuesta.data;
         this.listCategorias.forEach(element => {
-          if (element.id_giro==this.negocioTO.id_giro) {
+          if (element.id_giro == this.negocioTO.id_giro) {
             this.tipoGiroAux = element.nombre;
-            
+
           }
         });
-        
+
       }
     );
   }
@@ -182,9 +182,9 @@ export class InfoNegocioPage implements OnInit {
         if (respuesta.code === 200) {
           this.listaSubCategorias = respuesta.data;
           this.listaSubCategorias.forEach(element => {
-            if (element.id_categoria==this.negocioTO.id_categoria_negocio) {
+            if (element.id_categoria == this.negocioTO.id_categoria_negocio) {
               this.tipoSubAux = element.nombre;
-              
+
             }
           });
         }
@@ -271,18 +271,18 @@ export class InfoNegocioPage implements OnInit {
     this.tags = tags.join();
   }
   public obtenerCatOrganizaciones() {
-    
+
     this.negocioServico.obtenerCatOrganizaciones().subscribe(
       response => {
         this.lstOrganizaciones = Object.values(response.data);
         this.lstOrganizaciones.forEach(element => {
           this.negocioTO.organizaciones.forEach(elements => {
-            if (element.id_organizacion==elements) {
+            if (element.id_organizacion == elements) {
               this.tipoOrgAux = element.nombre;
-                       
+
             }
-          });  
           });
+        });
       });
   }
 
@@ -291,14 +291,9 @@ export class InfoNegocioPage implements OnInit {
      * @param evento
      * @author Omar
      */
-  confirmarUrlNegocio(evento, entrada = 1) {
+  confirmarUrlNegocio(evento) {
     let cadena = '';
-    if (entrada === 2) {
-      cadena = evento.detail.value;
-    }
-    else {
-      cadena = evento;
-    }
+    cadena = evento;
     clearTimeout(this.controladorTiempo);
     this.controladorTiempo = setTimeout(() => {
       let tem = cadena.replace(/[^a-zA-Z0-9 ]/g, "");
@@ -316,7 +311,7 @@ export class InfoNegocioPage implements OnInit {
   guardar() {
     this.datos();
     this.negocioServico.guardar(this.negocioGuardar).subscribe(
-      response => {        
+      response => {
         if (response.code === 200) {
           this.notificaciones.exito('Tu negocio se guardo exitosamente');
           this.router.navigate(["/tabs/home/negocio"]);
@@ -332,28 +327,28 @@ export class InfoNegocioPage implements OnInit {
       }
     );
   }
-  entregasDomicilio(evento){
+  entregasDomicilio(evento) {
     this.blnActivaEntregas = evento.detail.value;
   }
   diasSeleccionado(evento) {
-    if(evento.detail.value.length > 0){
+    if (evento.detail.value.length > 0) {
       this.nuevoHorario.dias = evento.detail.value;
       this.blnActivaHorario = false;
-    }else{
+    } else {
       this.blnActivaHorario = true;
     }
   }
 
-agregarHorario() {
+  agregarHorario() {
     if (this.nuevoHorario.id_horario === null || this.nuevoHorario.id_horario === undefined) {
       this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
       this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
       this.nuevoHorario.activo = true;
       this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
       this.nuevoHorario.id_horario = null;
-      if(this.posicionHorario >=  0){
+      if (this.posicionHorario >= 0) {
         this.negocioTO.dias[this.posicionHorario] = this.nuevoHorario;
-      }else{
+      } else {
         this.negocioTO.dias.push(this.nuevoHorario);
       }
       this.horarioini = '';
@@ -374,8 +369,8 @@ agregarHorario() {
     }
   }
 
-  next(){
-    this.datos();    
+  next() {
+    this.datos();
     this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
     this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
     let all = {
@@ -383,19 +378,19 @@ agregarHorario() {
       pys: this.negocioGuardar
     };
     let navigationExtras = JSON.stringify(all);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios/datos-contacto",],{
-        queryParams: { special: navigationExtras },
-      }
+    this.router.navigate(["/tabs/home/negocio/mis-negocios/datos-contacto",], {
+      queryParams: { special: navigationExtras },
+    }
     );
   }
-  regresar(){
-     this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
+  regresar() {
+    this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
     let navigationExtras = JSON.stringify(this.negocioTO);
     this.router.navigate(["/tabs/home/negocio/card-negocio"], {
       queryParams: { special: navigationExtras },
     });
   }
-  datos(){
+  datos() {
     this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
     this.negocioGuardar = new NegocioModel();
     this.negocioGuardar.id_negocio = this.negocioTO.id_negocio;
@@ -429,8 +424,8 @@ agregarHorario() {
       this.negocioGuardar.tags = this.tags;
     } else {
       let convertir;
-      convertir =JSON.parse(JSON.stringify(this.negocioTO));
-      this.negocioGuardar.tags = convertir.tags.join(); 
+      convertir = JSON.parse(JSON.stringify(this.negocioTO));
+      this.negocioGuardar.tags = convertir.tags.join();
     }
     this.negocioGuardar.descripcion = this.negocioTO.descripcion;
     this.negocioGuardar.entrega_domicilio = this.negocioTO.entrega_domicilio;
@@ -485,7 +480,7 @@ agregarHorario() {
       this.blnActivaDias = false;
     }
   }
-  cancelarHorario(){
+  cancelarHorario() {
     this.horarioini = '';
     this.horariofin = '';
     this.nuevoHorario = new HorarioNegocioModel;
@@ -513,5 +508,5 @@ agregarHorario() {
     });
     await alert.present();
   }
-  
+
 }
