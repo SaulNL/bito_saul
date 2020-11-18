@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { MisProductosServiciosPageRoutingModule } from './mis-productos-servicios-routing.module';
-import { MisProductosServiciosPage } from './mis-productos-servicios.page';
+import { MisServiciosPageRoutingModule } from './mis-servicios-routing.module';
+import { MisServiciosPage } from './mis-servicios.page';
 import { TabsPageModule } from '../../../../paginas/tabs/tabs.module';
 
 @NgModule({
@@ -11,11 +11,11 @@ import { TabsPageModule } from '../../../../paginas/tabs/tabs.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    MisProductosServiciosPageRoutingModule,
+    MisServiciosPageRoutingModule,
     TabsPageModule
   ],
   declarations: [
-    MisProductosServiciosPage
+    MisServiciosPage
   ]
 })
-export class MisProductosServiciosPageModule {}
+export class MisServiciosPageModule {}

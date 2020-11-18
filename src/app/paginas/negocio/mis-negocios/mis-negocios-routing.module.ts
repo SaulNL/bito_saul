@@ -23,7 +23,11 @@ const routes: Routes = [
   {
     path: 'mis-productos-servicios',
     loadChildren: () => import('./mis-productos-servicios/mis-productos-servicios.module').then( m => m.MisProductosServiciosPageModule)
+  },  {
+    path: 'mis-servicios',
+    loadChildren: () => import('./mis-servicios/mis-servicios.module').then( m => m.MisServiciosPageModule)
   }
+
 
 ];
 

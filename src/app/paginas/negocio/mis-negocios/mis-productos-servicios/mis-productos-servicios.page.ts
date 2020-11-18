@@ -620,7 +620,7 @@ export class MisProductosServiciosPage implements OnInit {
             this.productoNuevo.editar = false;
             item.productos.push(this.productoNuevo);
           }
-        })
+        });
         this.notificacionService.exito('Se guardó el producto con éxito');
         this.indexModificar = undefined;
         this.blnEditando = false;

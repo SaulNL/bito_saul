@@ -108,4 +108,13 @@ export class NegocioService {
     }));
   }
 
+  obtenerNumMaxServicios(): Observable<any> {
+    return this.http.get(
+      this.url + 'api/negocio/numero/max/servicios',
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
 }
