@@ -47,8 +47,6 @@ export class CardNegocioPage implements OnInit {
       response => {
         this.negocioTO = response.data;
         this.btload=true;
-        console.log(this.btload);
-        
       },
       error => {
         console.log(error);

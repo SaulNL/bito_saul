@@ -32,6 +32,9 @@ export class DatosDomicilioPage implements OnInit {
   public btnEstado: boolean;
   public btnMuncipio: boolean;
   public btnLocalidad: boolean;
+  public estadoAux: any;
+  public municiAux: any;
+  public localiAux: any;
 
   constructor(
     private router: Router,
@@ -124,7 +127,7 @@ export class DatosDomicilioPage implements OnInit {
   }
   guardar() {
     this.datosD();
-    console.log(this.negocioGuardar);
+    
     this.negocioServico.guardar(this.negocioGuardar).subscribe(
       response => {
         if (response.code === 200) {
@@ -204,6 +207,12 @@ export class DatosDomicilioPage implements OnInit {
       response => {
         if (this._utils_cls.is_success_response(response.code)) {
           this.list_cat_estado = response.data.list_cat_estado;
+          this.list_cat_estado.forEach(element => {
+            if (element.id_estado==this.negocioTO.det_domicilio.id_estado) {
+              this.estadoAux = element.nombre;
+              
+            }
+          });
           //this.loader = false;
           if (this.negocioTO.det_domicilio.id_estado > 0) {
             this.get_list_cat_municipio({ value: this.negocioTO.det_domicilio.id_estado });
@@ -232,6 +241,13 @@ export class DatosDomicilioPage implements OnInit {
         response => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_municipio = response.data.list_cat_municipio;
+            this.list_cat_municipio.forEach(element => {
+              if (element.id_municipio==this.negocioTO.det_domicilio.id_municipio) {
+                this.municiAux = element.nombre;
+                
+                
+              }
+            });
             this.btnMuncipio = false;
             if (this.negocioTO.det_domicilio.id_municipio > 0) {
               this.btnMuncipio = false;
@@ -269,6 +285,12 @@ export class DatosDomicilioPage implements OnInit {
           if (this._utils_cls.is_success_response(response.code)) {
             this.btnLocalidad = false;
             this.list_cat_localidad = response.data.list_cat_localidad;
+            this.list_cat_localidad.forEach(element => {
+              if (element.id_localidad==this.negocioTO.det_domicilio.id_localidad) {
+                this.localiAux = element.nombre;
+                
+              }
+            });
           }
         },
         error => {

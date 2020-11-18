@@ -51,6 +51,9 @@ export class FormSolicitudPage implements OnInit {
   public resizeToWidth: number = 0;
   public resizeToHeight: number = 0;
   public imageChangedEvent: any = '';
+  public estaAux: any;
+  public muniAux: any;
+  public locaAux: any;
 
   constructor(
     private _general_service: GeneralServicesService,
@@ -165,6 +168,12 @@ export class FormSolicitudPage implements OnInit {
       response => {
         if (this._utils_cls.is_success_response(response.code)) {
           this.list_cat_estado = response.data.list_cat_estado;
+          this.list_cat_estado.forEach(element => {
+            if (element.id_estado==this.actualTO.det_domicilio.id_estado) {
+              this.estaAux = element.nombre;
+              
+            }
+          });
           //this.loader = false;
           if (this.actualTO.det_domicilio.id_estado > 0) {
             this.get_list_cat_municipio({ value: this.actualTO.det_domicilio.id_estado });
@@ -193,6 +202,12 @@ export class FormSolicitudPage implements OnInit {
         response => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_municipio = response.data.list_cat_municipio;
+            this.list_cat_municipio.forEach(element => {
+              if (element.id_municipio==this.actualTO.det_domicilio.id_municipio) {
+                this.muniAux = element.nombre;
+                
+              }
+            });
             this.btnMuncipio = false;
             if (this.actualTO.det_domicilio.id_municipio > 0) {
               this.btnMuncipio = false;
@@ -230,6 +245,12 @@ export class FormSolicitudPage implements OnInit {
           if (this._utils_cls.is_success_response(response.code)) {
             this.btnLocalidad = false;
             this.list_cat_localidad = response.data.list_cat_localidad;
+            this.list_cat_localidad.forEach(element => {
+              if (element.id_localidad==this.actualTO.det_domicilio.id_localidad) {
+                this.locaAux = element.nombre;
+                
+              }
+            });
           }
         },
         error => {
