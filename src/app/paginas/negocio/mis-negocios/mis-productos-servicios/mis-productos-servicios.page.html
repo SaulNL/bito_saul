@@ -8,13 +8,14 @@
         Servicios
       </span>
     </ion-title>
-    <ion-buttons slot="end">
-      <ion-button *ngIf="negocioTO.id_negocio !== null || negocioTO.id_negocio !== undefined" (click)="datosProductosServicios(1)" class="blanco">
-        <ion-icon name="add-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
     <ion-buttons slot="start">
-      <ion-button (click)="regresar()" class="blanco">
+      <ion-button (click)="regresar()" class="blanco" *ngIf="!mostrarListaProductos && !agregarProducto">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="mostrarListaProductos = !mostrarListaProductos" class="blanco" *ngIf="mostrarListaProductos && !agregarProducto">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="regresarLista()" class="blanco" *ngIf="!mostrarListaProductos && agregarProducto">
         <ion-icon name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -22,125 +23,268 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-content>
-      <ion-item lines="none">
-        <ion-title class="cent"> Carta de <span *ngIf="iden== 1">productos</span> <span *ngIf="iden== 2">servicios</span>
-          </ion-title>
-      </ion-item>
-  
-      <div *ngIf="loader" style="display: flex; justify-content: center; align-items: center;">
-        <ion-spinner name="dots"></ion-spinner>
-      </div>
-  
-      <div *ngIf="!loader">
-  
-        <div *ngIf="loadPdf" style="display: flex; justify-content: center; align-items: center;">
+
+  <div *ngIf="!mostrarListaProductos && !agregarProducto">
+
+    <ion-card *ngIf="!ocultar">
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-title class="cent"> Carta de <span *ngIf="iden== 1">productos</span> <span *ngIf="iden== 2">servicios</span>
+            </ion-title>
+        </ion-item>
+    
+        <div *ngIf="loader" style="display: flex; justify-content: center; align-items: center;">
           <ion-spinner name="dots"></ion-spinner>
         </div>
-  
-        <div *ngIf="(carta !== null && carta !== '') && !loadPdf" style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 20px;">
-          <div style="width: 50px; height: 50px; border-radius: 50%; background-color: yellow; border: 1px solid black; display: flex; justify-content: center; align-items: center; background-color: linear-gradient(90deg,#fa4f72,#a74eef);">
-            <a [href]="carta" target="_blank">
-              <ion-icon name="document-text-outline" style="font-size: 30px;"></ion-icon>
-            </a>
-          </div>
-          <h4 style="margin-top: 5px;">Carta</h4>
-          <small id="emailHelp" class="form-text text-muted">Tamaño máximo de archivo 3 MB</small>
-        </div>
     
-        <div style="display: flex; justify-content: center; align-items: center;">
-  
-          <label for="imagenCarta" *ngIf="(carta === null || carta === undefined) && !loadPdf">
-            <div class="boton">
-              Agregar
-            </div>
-          </label>
-  
-          <label for="imagenCarta" *ngIf="carta !== null && carta !== '' && carta !== undefined">
-            <div class="boton">
-              Editar<ion-icon name="create-outline" style="margin-left: 5px;"></ion-icon>
-            </div>
-          </label>
-  
-          <ion-button *ngIf="carta !== null && carta !== '' && carta !== undefined" color="danger" (click)="eliminarCarta()">Eliminar<ion-icon name="trash-outline" style="margin-left: 5px;"></ion-icon> </ion-button>
-          <input type='file' id="imagenCarta" hidden accept="application/pdf" (change)="subirCarta($event)" />
-        </div>
-  
-        <div>
-          <app-input-tags [tags]="productoTags" (_enviarTags)="agregarTags($event)"></app-input-tags>
-        </div>
-  
-      </div>
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-
-    <ion-item lines="none">
-      <ion-title class="cent"> Clasificación 
-        <span *ngIf="iden== 1">Productos</span>
-          <span *ngIf="iden== 2">Servicios</span></ion-title>
-    </ion-item>
-
-    <ion-card-content>
-
-      <ion-card  *ngIf="!agregarClas" style="background: crimson;">
-        <ion-card-content>
-          <div style="display: flex; justify-content: center; align-items: center; color: white; font-weight: bold;" (click)="agregarClasificacion()">
-            <h3>Agregar nueva clasificación</h3>
+        <div *ngIf="!loader">
+    
+          <div *ngIf="loadPdf" style="display: flex; justify-content: center; align-items: center;">
+            <ion-spinner name="dots"></ion-spinner>
           </div>
-        </ion-card-content>
-      </ion-card>
-
-
-      <ion-card *ngIf="agregarClas">
-        <ion-card-content>
-          <form  #formVariable="ngForm" (ngSubmit)="guardar(formVariable)">
-            <div>
-              <ion-item>
-                <ion-label position="floating">Nueva clasificación</ion-label>
-                <ion-input  [(ngModel)]="nuevaCategoria"  name="nuevaCategoria" #nueva="ngModel" required></ion-input>
-              </ion-item>
-              <div *ngIf="nueva.touched && nueva.invalid" style="display: flex; justify-content: center; align-items: center;">
-                <small style="color: red;">El nombre de la categoría del producto es requerida</small>
-              </div>
-              <div style="display: flex; justify-content: center; align-items: center; margin-top: 5px;">
-                <ion-button color="medium" expand="full" (click)="agregarClas = !agregarClas">Cancelar</ion-button>
-                <ion-button color="danger" expand="full" type="submit">Guardar</ion-button>
-              </div>
+    
+          <div *ngIf="(carta !== null && carta !== '') && !loadPdf" style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 20px;">
+            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: yellow; border: 1px solid black; display: flex; justify-content: center; align-items: center; background-color: linear-gradient(90deg,#fa4f72,#a74eef);">
+              <a [href]="carta" target="_blank">
+                <ion-icon name="document-text-outline" style="font-size: 30px;"></ion-icon>
+              </a>
             </div>
-          </form>  
-        </ion-card-content>
-      </ion-card>
-
-      <div *ngIf="loader" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
-        <ion-spinner name="dots"></ion-spinner>
-      </div>
+            <h4 style="margin-top: 5px;">Carta</h4>
+            <small id="emailHelp" class="form-text text-muted">Tamaño máximo de archivo 3 MB</small>
+          </div>
       
-      <div *ngIf="!loader" style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 20px;">
-        <h2 style="color: black; text-align: center;">Productos registrados: {{ obtenerProductos }} de {{ maximoProductos }} permitidos</h2>
-        <small style="text-align: justify;">Los productos que no cuenten con una imagen no se mostrará en la busqueda de productos y servicios</small>
-      </div>
-
-      <ion-card *ngFor="let item of listaVista; index as idxCat">
-        <ion-card-content>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="width: 50%;">
-              <h3 style="color: black;">{{item.nombre}} - {{item.activo ? 'VISIBLE' : 'OCULTO'}}</h3>
-            </div>
-            <div style="display: flex; justify-content: flex-end; align-items: center;">
-              <ion-icon name="create" style="color: rgb(55, 55, 199); font-size: 30px;" (click)="modalClasificacion(item)"></ion-icon>
-              <ion-icon name="trash" style="color: red; font-size: 30px;" (click)="eliminarCat(item)"></ion-icon>
-              <ion-icon name="chevron-down-outline" style="color: black; font-size: 30px;" (click)="mostrarProductos(item)" ></ion-icon>
-            </div>
+          <div style="display: flex; justify-content: center; align-items: center;">
+    
+            <label for="imagenCarta" *ngIf="(carta === null || carta === undefined) && !loadPdf">
+              <div class="boton">
+                Agregar
+              </div>
+            </label>
+    
+            <label for="imagenCarta" *ngIf="carta !== null && carta !== '' && carta !== undefined">
+              <div class="boton">
+                Editar<ion-icon name="create-outline" style="margin-left: 5px;"></ion-icon>
+              </div>
+            </label>
+    
+            <ion-button *ngIf="carta !== null && carta !== '' && carta !== undefined" color="danger" (click)="eliminarCarta()">Eliminar<ion-icon name="trash-outline" style="margin-left: 5px;"></ion-icon> </ion-button>
+            <input type='file' id="imagenCarta" hidden accept="application/pdf" (change)="subirCarta($event)" />
           </div>
+    
+          <div>
+            <app-input-tags [tags]="productoTags" (_enviarTags)="agregarTags($event)"></app-input-tags>
+          </div>
+    
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+  
+      <ion-item lines="none" *ngIf="!ocultar">
+        <ion-title class="cent"> Clasificación 
+          <span *ngIf="iden== 1">Productos</span>
+            <span *ngIf="iden== 2">Servicios</span></ion-title>
+      </ion-item>
+  
+      <ion-card-content>
+  
+        <ion-card  *ngIf="!agregarClas" style="background: crimson;">
+          <ion-card-content>
+            <div style="display: flex; justify-content: center; align-items: center; color: white; font-weight: bold;" (click)="agregarClasificacion()">
+              <h3>Agregar nueva clasificación</h3>
+            </div>
+          </ion-card-content>
+        </ion-card>
+  
+  
+        <ion-card *ngIf="agregarClas">
+          <ion-card-content>
+            <form  #formVariable="ngForm" (ngSubmit)="guardar(formVariable)">
+              <div>
+                <ion-item>
+                  <ion-label position="floating">Nueva clasificación</ion-label>
+                  <ion-input  [(ngModel)]="nuevaCategoria.nombre"  name="nuevaCategoria" #nueva="ngModel" required></ion-input>
+                </ion-item>
+                <div *ngIf="nueva.touched && nueva.invalid" style="display: flex; justify-content: center; align-items: center;">
+                  <small style="color: red;">El nombre de la categoría del producto es requerida</small>
+                </div>
+                <div style="display: flex; justify-content: center; align-items: center; margin-top: 5px;">
+                  <ion-button color="medium" expand="full" (click)="agregarClas = !agregarClas">Cancelar</ion-button>
+                  <ion-button color="danger" expand="full" type="submit">Guardar</ion-button>
+                </div>
+              </div>
+            </form>  
+          </ion-card-content>
+        </ion-card>
+  
+        <div *ngIf="loader" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+          <ion-spinner name="dots"></ion-spinner>
+        </div>
         
-        </ion-card-content>
-      </ion-card>
-      
-    </ion-card-content>
+        <div *ngIf="!loader" style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 20px;">
+          <h2 style="color: black; text-align: center;">Productos registrados: {{ obtenerProductos }} de {{ maximoProductos }} permitidos</h2>
+          <small style="text-align: justify;">Los productos que no cuenten con una imagen no se mostrará en la busqueda de productos y servicios</small>
+        </div>
   
-  </ion-card>
+        <ion-card *ngFor="let item of listaVista; index as idxCat">
+          <ion-card-content *ngIf="!loader">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="width: 50%;">
+                <h3 style="color: black;">{{item.nombre}} - {{item.activo ? 'VISIBLE' : 'OCULTO'}}</h3>
+              </div>
+              <div style="display: flex; justify-content: flex-end; align-items: center;">
+                <ion-icon name="create" style="color: rgb(55, 55, 199); font-size: 30px;" (click)="modalClasificacion(item)"></ion-icon>
+                <ion-icon name="trash" style="color: red; font-size: 30px;" (click)="eliminarCat(item)"></ion-icon>
+                <ion-icon name="chevron-down-outline" style="color: black; font-size: 30px;" (click)="mostrarProductos(item)" ></ion-icon>
+              </div>
+            </div>
+          
+          </ion-card-content>
+        </ion-card>
+        
+      </ion-card-content>
+    
+    </ion-card>
+
+  </div>
+
+  <div *ngIf="mostrarListaProductos">
+
+    <ion-card>
+    <ion-card-content>
+    <ion-grid>
+
+      <ion-row>
+        <ion-col size='12'>
+          <ion-button color="success" expand="full" (click)="agregarProductos()">Agregar producto</ion-button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size='12'>
+              <div style="width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+
+                <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
+                  <div style="width: 25%;"><strong>No.</strong></div>
+                  <div style="width: 25%;"><strong>Nombre</strong></div>
+                  <div style="width: 25%; text-align: center;"><strong>Precio</strong></div>
+                  <div style="width: 25%;"><strong>Acciones</strong></div>
+                </div>
+
+                <div style="width: 100%; display: flex; justify-content: center; align-items: center; margin: 10px 0;" *ngFor="let producto of listaProductos.productos; index as i">
+                  <div style="width: 25%;">{{ i + 1 }}</div>
+                  <div style="width: 25%;">{{ producto.nombre }}</div>
+                  <div style="width: 25%; text-align: center;">${{ producto.precio }}</div>
+                  <div style="width: 25%;">
+                    <ion-button color="warning"  (click)="editarRegistro(producto)">
+                      <ion-icon name="create"></ion-icon>
+                    </ion-button>
+                  </div>
+                </div>
+
+                <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
+                </div>
+
+              </div>
+            
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+    </ion-card-content>
+    </ion-card>
+
+  </div>
+
+  <div *ngIf="agregarProducto">
+    <ion-card>
+      <ion-card-content>
+        <form  #formProductoAgregar="ngForm" (ngSubmit)="crearProducto(formProductoAgregar)" >
+          <ion-grid>
+
+            <ion-row>
+              <ion-col size='12'>
+
+                <div style="display: flex; justify-content: center; align-items: center;">
+                  <div style="width: 250px; height: 250px; border-radius: 50%; border: 2px solid black; display: flex; justify-content: center; align-items: center;" *ngIf="productoNuevo.imagen.archivo_64!== undefined && productoNuevo.imagen.archivo_64 !== null"[ngStyle]="{'background-image': 'url('+productoNuevo.imagen.archivo_64+')', 'background-size': 'cover', 'background-position': 'center'}">
+                    <input type='file' id="imagenProducto" accept="image/*" (change)="subirArchivo($event)" hidden required/>
+                    <label for="imagenProducto">
+                      <em>
+                        <ion-icon name="image" style="font-size: 30px;"></ion-icon>
+                      </em>
+                    </label>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: center; align-items: center;">
+                  <div style="width: 250px; height: 250px; border-radius: 50%; border: 2px solid black; display: flex; justify-content: center; align-items: center;" *ngIf="productoNuevo.imagen.archivo_64 === undefined || productoNuevo.imagen.archivo_64 === null" [ngStyle]="{'background-image': 'url('+productoNuevo.imagen+')', 'background-size': 'cover', 'background-position': 'center'}">
+                    <input type='file' id="imagenProducto" accept="image/*" (change)="subirArchivo($event)" hidden required/>
+                    <label for="imagenProducto">
+                      <em>
+                        <ion-icon name="image" style="font-size: 30px;"></ion-icon>
+                      </em>
+                    </label>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size='12'>
+                <ion-item>
+                  <ion-label position="floating">Nombre</ion-label>
+                  <ion-input name="nombre" #nombre="ngModel" [(ngModel)]="productoNuevo.nombre" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size='12'>
+                <ion-item>  
+                  <ion-label position="floating">
+                    Precio
+                  </ion-label>
+                  <ion-input  name="precio"
+                  #precio="ngModel" [(ngModel)]="productoNuevo.precio" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size='12'>
+                <div style="display: flex; justify-content: center; align-items: center;">
+                  <label style="color: black; font-size: 15px;">Existencia</label>
+                  <ion-toggle name="existencia" #existencia="ngModel" [(ngModel)]="productoNuevo.existencia" color="danger"></ion-toggle>
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size='12'>
+                <ion-item>
+                  <ion-label position="floating">
+                    Descripción
+                  </ion-label>
+                  <ion-textarea  name="descripcion"  #descripcion="ngModel"  [(ngModel)]="productoNuevo.descripcion" required></ion-textarea>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size='6'>
+                <ion-button color="success" expand="full" type="submit">Guardar <ion-spinner name="dots" *ngIf="banderaGuardar"></ion-spinner></ion-button>
+              </ion-col>
+              <ion-col size='6'>
+                <ion-button color="danger" expand="full" (click)="regresarLista()">Cancelar</ion-button>
+              </ion-col>
+            </ion-row>
+
+          </ion-grid>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
 </ion-content>
 
 

@@ -6,8 +6,6 @@ import { IonicModule } from '@ionic/angular';
 import { MisProductosServiciosPageRoutingModule } from './mis-productos-servicios-routing.module';
 import { MisProductosServiciosPage } from './mis-productos-servicios.page';
 import { ModalClasificacionComponent } from '../../../../componentes/modal-clasificacion/modal-clasificacion.component';
-import { ModalProductosComponent } from '../../../../componentes/modal-productos/modal-productos.component';
-import { ModalEditarProductoComponent } from '../../../../componentes/modal-editar-producto/modal-editar-producto.component';
 import { RecorteImagenComponent } from '../../../../components/recorte-imagen/recorte-imagen.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 
@@ -23,8 +21,6 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     MisProductosServiciosPage,
     InputTagsComponent,
     ModalClasificacionComponent,
-    ModalProductosComponent,
-    ModalEditarProductoComponent,
     RecorteImagenComponent
   ]
 })
