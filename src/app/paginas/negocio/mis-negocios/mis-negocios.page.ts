@@ -61,14 +61,27 @@ export class MisNegociosPage implements OnInit {
       queryParams: { special: navigationExtras },
     });
   }
-    productosServicios(negocio: NegocioModel,inde){
+
+  productosServicios(negocio: NegocioModel,inde){
     this.negocioTO = JSON.parse(JSON.stringify(negocio));
     let all = {
       inden: inde,
       info: this.negocioTO
-  };
+    };
     let navigationExtras = JSON.stringify(all);
     this.router.navigate(["/tabs/home/negocio/mis-negocios/mis-productos-servicios"], {
+      queryParams: { special: navigationExtras },
+    });
+  }
+
+  misServicios(negocio: NegocioModel,inde){
+    this.negocioTO = JSON.parse(JSON.stringify(negocio));
+    let all = {
+      inden: inde,
+      info: this.negocioTO
+    };
+    let navigationExtras = JSON.stringify(all);
+    this.router.navigate(["/tabs/home/negocio/mis-negocios/mis-servicios"], {
       queryParams: { special: navigationExtras },
     });
   }

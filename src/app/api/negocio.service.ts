@@ -1,11 +1,9 @@
-import { NegocioModel } from './../Modelos/NegocioModel';
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppSettings} from "../AppSettings";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {DatosNegocios} from '../Modelos/DatosNegocios';
-
 
 @Injectable({
   providedIn: 'root'
@@ -210,4 +208,13 @@ export class NegocioService {
       return res;
     }));
   }
+  obtenerNumMaxServicios(): Observable<any> {
+    return this.http.get(
+      this.url + 'api/negocio/numero/max/servicios',
+      {headers: AppSettings.getHeadersToken()}
+    ).pipe(map(res => {
+      return res;
+    }));
+  }
+
 }
