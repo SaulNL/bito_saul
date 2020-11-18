@@ -105,6 +105,12 @@ export class FiltrosBusquedaComponent implements OnInit {
             this.categoria = this.filtros.idGiro;
             this.subCategorias();
         }
+        if(this.filtros.idCategoriaNegocio !== null){
+            this.subCategoria = this.filtros.idCategoriaNegocio;
+        }
+        if(this.filtros.kilometros < 10 ){
+            this.kilometrosSlider = this.filtros.kilometros;            
+        }
     }
 
     public obtenergiros() {

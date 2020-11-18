@@ -19,6 +19,7 @@ import {DetalleProductoComponent} from "../../componentes/detalle-producto/detal
 import {PedidoNegocioComponent} from "../../componentes/pedido-negocio/pedido-negocio.component";
 
 const {Share} = Plugins;
+const haversineCalculator = require('haversine-calculator');
 
 
 @Component({
@@ -35,6 +36,7 @@ export class PerfilNegocioPage implements OnInit {
     public miLat: any;
     public miLng: any;
     public permisoUbicacionCancelado: boolean;
+    public distanciaNegocio: string;
     public existeSesion: boolean;
     url = `${AppSettings.URL_FRONT}`;
     public url_negocio: string;
@@ -98,6 +100,17 @@ export class PerfilNegocioPage implements OnInit {
         const coordinates = await Geolocation.getCurrentPosition().then(res => {
             this.miLat = res.coords.latitude;
             this.miLng = res.coords.longitude;
+            // const start = {
+            //     latitude: this.miLat,
+            //     longitude: this.miLng
+            // };
+            // const end = {
+            //     latitude: this.informacionNegocio.latitud,
+            //     longitude: this.informacionNegocio.longitud
+            // };              
+            // const dis = haversineCalculator(start, end);
+            // this.distanciaNegocio = dis.toFixed(2);
+                  
         }).catch(error => {
                 this.permisoUbicacionCancelado = true;
             }
@@ -118,6 +131,8 @@ export class PerfilNegocioPage implements OnInit {
                     this.obtenerEstatusCalificacion();
 
                     this.horarios(this.informacionNegocio);
+                    this.calcularDistancia();
+                    
                 }
                 this.loader = false;
                 setTimeout(it => {
@@ -542,5 +557,17 @@ export class PerfilNegocioPage implements OnInit {
         });
 
         await alert.present();
+    }
+    calcularDistancia(){
+        const start = {
+            latitude: this.miLat,
+            longitude: this.miLng
+        };
+        const end = {
+            latitude: this.informacionNegocio.latitud,
+            longitude: this.informacionNegocio.longitud
+        };              
+        const dis = haversineCalculator(start, end);
+        this.distanciaNegocio = dis.toFixed(2);
     }
 }
