@@ -54,9 +54,11 @@
         <ion-label position="stacked">Estado</ion-label>
         <ion-select [disabled]="btnEstado" ok-text="Ok" cancel-text="Cancelar" name="estado" required #compEstado="ngModel" [(ngModel)]="actualTO.det_domicilio.id_estado"
         #compEstado="ngModel" [(ngModel)]="actualTO.det_domicilio.id_estado"
-                        (ionChange)="get_list_cat_municipio($event)">
-          <ion-select-option *ngFor="let e of list_cat_estado" [value]="e.id_estado">{{e.nombre}}</ion-select-option>
-        </ion-select>
+                        (ionChange)="get_list_cat_municipio($event)" placeholder="{{ estaAux }}">
+                        <ng-container *ngFor="let e of list_cat_estado">
+                          <ion-select-option [value]="e.id_estado">{{e.nombre}}</ion-select-option>
+                        </ng-container>
+                      </ion-select>
       </ion-item>
       <div *ngIf="compEstado.invalid" class="alert">
         <div>Seleccione un Estado</div>
@@ -64,10 +66,12 @@
       <ion-item>
         <ion-label position="stacked">Municipio</ion-label>
         <ion-select [disabled]="btnMuncipio" ok-text="Ok" cancel-text="Cancelar" name="municipio" required #compMunicipio="ngModel" [(ngModel)]="actualTO.det_domicilio.id_municipio"
-        (ionChange)="get_list_cat_localidad($event)">
-          <ion-select-option *ngFor="let mun of list_cat_municipio" [value]="mun.id_municipio">
+        (ionChange)="get_list_cat_localidad($event)" placeholder="{{ muniAux }}">
+        <ng-container *ngFor="let mun of list_cat_municipio">
+          <ion-select-option [value]="mun.id_municipio">
             {{mun.nombre}}
           </ion-select-option>
+        </ng-container>
         </ion-select>
       </ion-item>
       <div *ngIf="compMunicipio.invalid" class="alert">
@@ -75,8 +79,10 @@
       </div>
       <ion-item>
         <ion-label position="stacked">Localidad</ion-label>
-        <ion-select [disabled]="btnLocalidad" ok-text="Ok" cancel-text="Cancelar" name="localidad" required  #compLocalidad="ngModel" [(ngModel)]="actualTO.det_domicilio.id_localidad">
-          <ion-select-option *ngFor="let loc of list_cat_localidad" [value]="loc.id_localidad"> {{loc.nombre}}</ion-select-option>
+        <ion-select placeholder="{{ locaAux }}" [disabled]="btnLocalidad" ok-text="Ok" cancel-text="Cancelar" name="localidad" required  #compLocalidad="ngModel" [(ngModel)]="actualTO.det_domicilio.id_localidad">
+          <ng-container *ngFor="let loc of list_cat_localidad">
+            <ion-select-option [value]="loc.id_localidad"> {{loc.nombre}}</ion-select-option>
+          </ng-container>
         </ion-select>
       </ion-item>
       <div *ngIf="compLocalidad.invalid" class="alert">
