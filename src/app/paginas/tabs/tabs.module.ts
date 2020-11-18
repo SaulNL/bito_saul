@@ -26,7 +26,7 @@ import { BotonTopComponent } from 'src/app/componentes/boton-top/boton-top.compo
     TabsPage,
     BannerPromocionesComponent,
     ToolbarBusquedaComponent,
-    BotonTopComponent
+    BotonTopComponent,
     InputTagsComponent,
     ModalClasificacionComponent,
     RecorteImagenComponent
@@ -34,7 +34,7 @@ import { BotonTopComponent } from 'src/app/componentes/boton-top/boton-top.compo
   exports: [
     BannerPromocionesComponent,
     ToolbarBusquedaComponent ,
-    BotonTopComponent
+    BotonTopComponent,
     InputTagsComponent,
     ModalClasificacionComponent,
     RecorteImagenComponent

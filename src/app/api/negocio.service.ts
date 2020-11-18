@@ -4,6 +4,7 @@ import {AppSettings} from "../AppSettings";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {DatosNegocios} from '../Modelos/DatosNegocios';
+import {NegocioModel} from "../Modelos/NegocioModel";
 
 @Injectable({
   providedIn: 'root'
