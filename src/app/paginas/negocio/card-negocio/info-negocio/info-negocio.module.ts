@@ -7,19 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { InfoNegocioPageRoutingModule } from './info-negocio-routing.module';
 
 import { InfoNegocioPage } from './info-negocio.page';
-import { ImageCropperModule } from 'ngx-image-cropper';
-import {RecorteImagenComponent} from "../../../../components/recorte-imagen/recorte-imagen.component";
-
-import { InputTagsComponent } from '../../../../components/input-tags/input-tags.component';
-
+import { TabsPageModule } from '../../../../paginas/tabs/tabs.module';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     InfoNegocioPageRoutingModule,
-    ImageCropperModule
+    TabsPageModule
   ],
-  declarations: [InfoNegocioPage, RecorteImagenComponent, InputTagsComponent]
+  declarations: [InfoNegocioPage]
 })
 export class InfoNegocioPageModule {}

@@ -1,3 +1,4 @@
+import { TabsPageModule } from 'src/app/paginas/tabs/tabs.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,8 +9,6 @@ import { DatosBasicosPageRoutingModule } from './datos-basicos-routing.module';
 
 import { DatosBasicosPage } from './datos-basicos.page';
 
-import { RecorteImagenComponent } from './../../components/recorte-imagen/recorte-imagen.component';
-import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   imports: [
@@ -17,8 +16,9 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     FormsModule,
     IonicModule,
     DatosBasicosPageRoutingModule,
-    ImageCropperModule
+    TabsPageModule
+
   ],
-  declarations: [DatosBasicosPage, RecorteImagenComponent]
+  declarations: [DatosBasicosPage]
 })
 export class DatosBasicosPageModule {}
