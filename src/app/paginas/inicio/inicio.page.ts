@@ -60,8 +60,6 @@ export class InicioPage implements OnInit {
             }
         }
         )
-        console.log("inicio pagina");                 
-        console.log(this.Filtros);
     }
     buscarNegocios() {
         this.loader = true;

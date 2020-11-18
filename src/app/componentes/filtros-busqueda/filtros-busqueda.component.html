@@ -30,9 +30,13 @@
     <div *ngIf="ubicacion === 'localidad'">
         <ion-item>
             <ion-label>Estados</ion-label>
-            <ion-select placeholder="Seleccionar" (ionChange)="selectEstado($event)" [(ngModel)]="estado">
-                <ion-select-option *ngFor="let estado of lstCatEstados"
-                                   [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
+
+            
+            
+            <ion-select placeholder="{{estadoAux}}" (ionChange)="selectEstado($event)" [(ngModel)]="estado">
+                <ng-container *ngFor="let estado of lstCatEstados">
+                    <ion-select-option [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
+                </ng-container>
             </ion-select>
             <!-- <ion-select [value]="this.estado" (ionChange)="selectEstado($event)">
                 <ion-select-option *ngFor="let estado of lstCatEstados" 
@@ -63,8 +67,8 @@
                 <h2>Te encuentras en:</h2>
                 <p>{{estasUbicacion}}</p>
                 <h5>Radio de busqueda:</h5>
-                <h5>Kilometros a la redonda: </h5>
-                <ion-range (ionChange)="obtenerKilometrosRango($event)" min="1" max="10" 
+                <h5>Kilometros a la redonda: <ion-badge color="medium">{{kilometrosSlider}} Km</ion-badge></h5>
+                <ion-range [value]="kilometrosSlider" (ionChange)="obtenerKilometrosRango($event)" min="1" max="10" 
                 step="1" snaps="true" color="danger" pin="true"></ion-range>
             </div>
         </ion-item>
@@ -89,9 +93,10 @@
     </ion-item-divider>
     <ion-item>
         <ion-label>Categorias</ion-label>
-        <ion-select placeholder="Seleccionar" [(ngModel)]="categoria" (ionChange)="selectCategoria()">
-            <ion-select-option *ngFor="let giro of lstCatTipoProducto;"
-                             [value]="giro.id_giro">{{giro.nombre}}</ion-select-option>
+        <ion-select placeholder="{{categoriaAux}}" [(ngModel)]="categoria" (ionChange)="selectCategoria()">
+            <ng-container *ngFor="let giro of lstCatTipoProducto;">            
+                <ion-select-option [value]="giro.id_giro">{{giro.nombre}}</ion-select-option>
+            </ng-container>
         </ion-select>
     </ion-item>
     <ion-item-divider>
@@ -101,9 +106,10 @@
     </ion-item-divider>
     <ion-item>
         <ion-label>SubCategoria</ion-label>
-        <ion-select placeholder="Seleccionar" multiple [(ngModel)]="subCategoria" (ionChange)="selectSubCategoria()">
-            <ion-select-option *ngFor="let sub of listaCategorias;"
-                               [value]="sub.id_categoria">{{sub.nombre}}</ion-select-option>
+        <ion-select placeholder="{{subCategoriaAux}}" multiple [(ngModel)]="subCategoria" (ionChange)="selectSubCategoria()">
+            <ng-container *ngFor="let sub of listaCategorias;">
+                <ion-select-option [value]="sub.id_categoria">{{sub.nombre}}</ion-select-option>
+            </ng-container>
         </ion-select>
     </ion-item>
     <ion-list>

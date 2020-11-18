@@ -23,6 +23,9 @@ export class FiltrosBusquedaComponent implements OnInit {
     estado: any;
     private listCaLocalidad: any;
     private listCatMunicipio: any;
+    categoriaAux: any;
+    estadoAux:any;
+    subCategoriaAux: any;
     municipio: any;
     localidad: any;
     categoria: any;
@@ -81,16 +84,15 @@ export class FiltrosBusquedaComponent implements OnInit {
         this.miUbicacionlongitud = 0;
         this.miUbicacionlatitud = 0;
         this.kilometrosSlider = 1;
-        this.filtros.kilometros = 1;
         this.filtros.tipoBusqueda = 0;
         this.tipoNegocio = 0;
         if (this.filtros.idEstado !== null) {
             this.estado = this.filtros.idEstado;
-            console.log(this.estado);
             this.obtenerCatMunicipio();
         } else if (this.filtros.idEstado === null) {
             this.filtros.idEstado = 29;
             this.estado = this.filtros.idEstado;
+            this.obtenerCatMunicipio();
         }
         if (this.filtros.idMunicipio !== null) {
             this.municipio = this.filtros.idMunicipio;
@@ -99,9 +101,15 @@ export class FiltrosBusquedaComponent implements OnInit {
         if (this.filtros.idLocalidad !== null) {
             this.localidad = this.filtros.idLocalidad;
         }
-        if (this.filtros.idGiro != null) {
+        if (this.filtros.idGiro !== null) {
             this.categoria = this.filtros.idGiro;
             this.subCategorias();
+        }
+        if(this.filtros.idCategoriaNegocio !== null){
+            this.subCategoria = this.filtros.idCategoriaNegocio;
+        }
+        if(this.filtros.kilometros < 10 ){
+            this.kilometrosSlider = this.filtros.kilometros;            
         }
     }
 
@@ -109,6 +117,12 @@ export class FiltrosBusquedaComponent implements OnInit {
         this.filtroServicio.obtenerGiros().subscribe(
             response => {
                 this.lstCatTipoProducto = response.data;
+                this.lstCatTipoProducto.forEach(element => {
+                    if (element.id_giro==this.categoria) {
+                      this.categoriaAux = element.nombre;
+                      
+                    }
+                  });
             },
             error => {
             }
@@ -120,6 +134,11 @@ export class FiltrosBusquedaComponent implements OnInit {
             response => {
                 this.lstCatEstados = response.data.lst_estado_proveedor;
                 this.validarCheckbox();
+                this.lstCatEstados.forEach(element => {
+                    if (element.id_estado == this.estado) {
+                      this.estadoAux = element.nombre;
+                    }
+                });
             },
             error => {
                 console.error(error);
@@ -220,7 +239,7 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     selectCategoria() {
-        this.filtros.idGiro = [this.categoria]
+        this.filtros.idGiro = [this.categoria];        
         this.subCategorias();
     }
 
@@ -232,20 +251,37 @@ export class FiltrosBusquedaComponent implements OnInit {
                     item.estaSeleccionado = false;
                 });
 
+                this.listaCategorias.forEach(element => {
+                    if(this.filtros.idCategoriaNegocio !== null){
+                        this.filtros.idCategoriaNegocio.forEach(elementCategoria => {
+                            if (elementCategoria == element.id_categoria) {
+                                this.subCategoriaAux = element.nombre;
+                            }
+                        });
+                    }
+
+                });
+
             },
             error => {
             }
         );
     }
 
-    selectSubCategoria() {
-        console.log(this.subCategoria)
-        this.filtros.idCategoriaNegocio = [this.subCategoria]
+    selectSubCategoria() {        
+        this.filtros.idCategoriaNegocio = this.subCategoria;
     }
 
     public selectTipoNegocio(evento) {
         if (evento.detail.checked === true) {
             this.listaTipoNegocio.push(parseInt(evento.detail.value));
+        }else if(evento.detail.checked === false && this.listaTipoNegocio.length > 0){
+            if(this.listaTipoNegocio.length > 1){
+                this.listaTipoNegocio=null;
+            }else{
+                let index=this.listaTipoNegocio.indexOf(parseInt(evento.detail.value));
+                this.listaTipoNegocio.splice(index, 1);
+            }
         }
         if (parseInt(evento.detail.value) === 3 && evento.detail.checked === true) {
             var checkboxs = document.getElementsByTagName("ion-checkbox");
