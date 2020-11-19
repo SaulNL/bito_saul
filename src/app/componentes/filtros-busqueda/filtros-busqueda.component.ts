@@ -108,7 +108,7 @@ export class FiltrosBusquedaComponent implements OnInit {
         if(this.filtros.idCategoriaNegocio !== null){
             this.subCategoria = this.filtros.idCategoriaNegocio;
         }
-        if(this.filtros.kilometros < 10 ){
+        if(this.filtros.kilometros <=10 ){
             this.kilometrosSlider = this.filtros.kilometros;            
         }
     }
@@ -275,13 +275,9 @@ export class FiltrosBusquedaComponent implements OnInit {
     public selectTipoNegocio(evento) {
         if (evento.detail.checked === true) {
             this.listaTipoNegocio.push(parseInt(evento.detail.value));
-        }else if(evento.detail.checked === false && this.listaTipoNegocio.length > 0){
-            if(this.listaTipoNegocio.length > 1){
-                this.listaTipoNegocio=null;
-            }else{
-                let index=this.listaTipoNegocio.indexOf(parseInt(evento.detail.value));
-                this.listaTipoNegocio.splice(index, 1);
-            }
+        }else if(evento.detail.checked === false){
+            let index=this.listaTipoNegocio.indexOf(parseInt(evento.detail.value));
+            this.listaTipoNegocio.splice(index, 1);
         }
         if (parseInt(evento.detail.value) === 3 && evento.detail.checked === true) {
             var checkboxs = document.getElementsByTagName("ion-checkbox");
@@ -318,6 +314,7 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
     borrarFiltros() {
         this.filtros = new FiltrosModel();
+        this.filtros.kilometros = 1;
         this.listaTipoNegocio = [];
         this.buscar();
     }

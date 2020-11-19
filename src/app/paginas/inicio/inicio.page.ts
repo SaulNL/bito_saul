@@ -43,6 +43,7 @@ export class InicioPage implements OnInit {
     ) {
         this.Filtros = new FiltrosModel();
         this.Filtros.idEstado = 29;
+        this.Filtros.kilometros = 1;
         this.listaCategorias = [];
         this.listaIdsMapa = [];
     }
@@ -54,6 +55,7 @@ export class InicioPage implements OnInit {
                 if (params.special) {
                     this.Filtros = new FiltrosModel();
                     this.Filtros.idEstado = 29;
+                    this.Filtros.kilometros = 1;
                     this.listaCategorias = [];
                     this.buscarNegocios();
                 }
@@ -102,8 +104,6 @@ export class InicioPage implements OnInit {
                 'dismissed': true
             });
             this.Filtros = res;
-            console.log("inicio pagina");                 
-            console.log(res);
             this.buscarNegocios();
         });        
         this.modal = await this.modalController.create({
