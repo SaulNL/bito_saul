@@ -32,7 +32,7 @@ const { Geolocation } = Plugins;
   ]
 })
 export class FormSolicitudPage implements OnInit {
-  public actualTO: SolicitudesModel;
+  public actualTO: any;
   map: Map;
   public latitud: any;
   public longitud: any;
@@ -54,6 +54,7 @@ export class FormSolicitudPage implements OnInit {
   public estaAux: any;
   public muniAux: any;
   public locaAux: any;
+  public data: any;
 
   constructor(
     private _general_service: GeneralServicesService,
@@ -75,7 +76,10 @@ export class FormSolicitudPage implements OnInit {
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.special) {
-        this.actualTO = JSON.parse(params.special);
+        this.data= JSON.parse(params.special);
+        this.actualTO= JSON.parse(params.special);
+        console.log(this.data);
+        console.log(this.actualTO);
       }
     });
     this.list_cat_estado = new Array<CatEstadoModel>();
@@ -118,6 +122,7 @@ export class FormSolicitudPage implements OnInit {
       if (this.actualTO.id_giro === 12) {
         this.actualTO.id_categoria = 9999;
       }
+      console.log(this.actualTO);
       this.solicitudesService.guardar(this.actualTO).subscribe(
         response => {
           if (this._utils_cls.is_success_response(response.code)) {
@@ -133,10 +138,10 @@ export class FormSolicitudPage implements OnInit {
           this.notificaciones.error(error);
         }
       );
+      
     } else {
       this.notificaciones.alerta('Es requerido que llenes todos los campos obligatorios');
     }
-
   }
 
   /**
@@ -189,7 +194,6 @@ export class FormSolicitudPage implements OnInit {
   * Funcion para obtener los municipios
   */
   public get_list_cat_municipio(evento) {
-    this.actualTO.det_domicilio.id_municipio = [];
     let idE;
     if (evento.type === 'ionChange') {
       idE = evento.detail.value;
@@ -230,7 +234,6 @@ export class FormSolicitudPage implements OnInit {
    * Obtener localidad
    */
   public get_list_cat_localidad(evento) {
-    this.actualTO.det_domicilio.id_localidad = [];
     let idE;
     if (evento.type === 'ionChange') {
       idE = evento.detail.value;
