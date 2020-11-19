@@ -319,7 +319,8 @@ export class InfoNegocioPage implements OnInit {
       response => {        
         if (response.code === 200) {
           this.notificaciones.exito('Tu negocio se guardo exitosamente');
-          this.router.navigate(["/tabs/home/negocio"]);
+          // this.router.navigate(["/tabs/home/negocio"]);
+          this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}});
         } else {
           this.notificaciones.alerta('Error al guardar, intente nuevamente');
           //   this._notificacionService.pushAlert('Error al guardar, intente nuevamente');
@@ -394,6 +395,28 @@ agregarHorario() {
     this.router.navigate(["/tabs/home/negocio/card-negocio"], {
       queryParams: { special: navigationExtras },
     });
+  }
+  async cancelar() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '¿Estas seguro?',
+      message: 'Se cancelara todo el proceso',
+      buttons: [
+        {
+          text: 'Cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          }
+        }, {
+          text: 'Confirmar',
+          handler: () => {
+            this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}});
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
   datos(){
     this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
