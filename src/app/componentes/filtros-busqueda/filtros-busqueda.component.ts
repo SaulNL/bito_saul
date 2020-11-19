@@ -314,7 +314,6 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
     borrarFiltros() {
         this.filtros = new FiltrosModel();
-        this.filtros.kilometros = 1;
         this.listaTipoNegocio = [];
         this.buscar();
     }

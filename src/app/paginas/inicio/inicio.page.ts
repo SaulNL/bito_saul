@@ -43,7 +43,6 @@ export class InicioPage implements OnInit {
     ) {
         this.Filtros = new FiltrosModel();
         this.Filtros.idEstado = 29;
-        this.Filtros.kilometros = 1;
         this.listaCategorias = [];
         this.listaIdsMapa = [];
     }
@@ -55,7 +54,6 @@ export class InicioPage implements OnInit {
                 if (params.special) {
                     this.Filtros = new FiltrosModel();
                     this.Filtros.idEstado = 29;
-                    this.Filtros.kilometros = 1;
                     this.listaCategorias = [];
                     this.buscarNegocios();
                 }
