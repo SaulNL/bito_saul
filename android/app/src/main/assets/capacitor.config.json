@@ -14,5 +14,6 @@
     "hostname": "localhost:8100",
     "iosScheme": "ionic",
     "androidScheme": "http",
-    "allowNavigation": ["https://beta-bitoo-back.azurewebsites.net/", "*.https://beta-bitoo-back.azurewebsites.net/", "192.0.2.1","10.0.2.2:8100"]  }
+    "allowNavigation": ["https://beta-bitoo-back.azurewebsites.net/", "*.https://beta-bitoo-back.azurewebsites.net/", "192.0.2.1","10.0.2.2:8100"]
+  }
 }
