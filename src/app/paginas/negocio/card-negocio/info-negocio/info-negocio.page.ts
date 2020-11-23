@@ -132,13 +132,12 @@ export class InfoNegocioPage implements OnInit {
     this.negocioServico.obtnerTipoNegocio().subscribe(
       response => {
         this.listTipoNegocio = response.data;
-        if(this.negocioTO.id_negocio!=null){
-          this.listTipoNegocio.forEach(element => {
-            if (element.id_tipo_negocio==this.negocioTO.id_tipo_negocio) {
-              this.tipoNegoAux = element.nombre;     
-            }
-          });
-        }
+        this.listTipoNegocio.forEach(element => {
+          if (element.id_tipo_negocio == this.negocioTO.id_tipo_negocio) {
+            this.tipoNegoAux = element.nombre;
+
+          }
+        });
       },
       error => {
         this.listTipoNegocio = [];
@@ -277,14 +276,12 @@ export class InfoNegocioPage implements OnInit {
       response => {
         this.lstOrganizaciones = Object.values(response.data);
         this.lstOrganizaciones.forEach(element => {
-          if(this.negocioTO.id_negocio!=null){
           this.negocioTO.organizaciones.forEach(elements => {
             if (element.id_organizacion==elements) {
               this.tipoOrgAux = element.nombre;
                        
             }
           });  
-        }
           });
       });
   }
@@ -322,8 +319,7 @@ export class InfoNegocioPage implements OnInit {
       response => {        
         if (response.code === 200) {
           this.notificaciones.exito('Tu negocio se guardo exitosamente');
-          // this.router.navigate(["/tabs/home/negocio"]);
-          this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}});
+          this.router.navigate(["/tabs/home/negocio"]);
         } else {
           this.notificaciones.alerta('Error al guardar, intente nuevamente');
           //   this._notificacionService.pushAlert('Error al guardar, intente nuevamente');
@@ -398,28 +394,6 @@ agregarHorario() {
     this.router.navigate(["/tabs/home/negocio/card-negocio"], {
       queryParams: { special: navigationExtras },
     });
-  }
-  async cancelar() {
-    const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: '¿Estas seguro?',
-      message: 'Se cancelara todo el proceso',
-      buttons: [
-        {
-          text: 'Cancel',
-          cssClass: 'secondary',
-          handler: (blah) => {
-          }
-        }, {
-          text: 'Confirmar',
-          handler: () => {
-            this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}});
-          }
-        }
-      ]
-    });
-
-    await alert.present();
   }
   datos(){
     this.blnActivaEntregas = this.negocioTO.entrega_domicilio;

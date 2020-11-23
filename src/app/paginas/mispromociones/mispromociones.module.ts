@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { MispromocionesPageRoutingModule } from './mispromociones-routing.module';
 import { MispromocionesPage } from './mispromociones.page';
-import { RecorteImagenComponent } from '../../components/recorte-imagen/recorte-imagen.component';
-import { ImageCropperModule } from 'ngx-image-cropper';
 import { ModalPublicarComponent } from '../../components/modal-publicar/modal-publicar.component';
 import { ModalInfoPromoComponent } from '../../components/modal-info-promo/modal-info-promo.component';
 import { TabsPageModule } from '../tabs/tabs.module';
@@ -17,12 +15,10 @@ import { TabsPageModule } from '../tabs/tabs.module';
     FormsModule,
     IonicModule,
     MispromocionesPageRoutingModule,
-    ImageCropperModule,
     TabsPageModule
   ],
   declarations: [
   	MispromocionesPage,
-    RecorteImagenComponent,
     ModalPublicarComponent,
     ModalInfoPromoComponent
   ]
