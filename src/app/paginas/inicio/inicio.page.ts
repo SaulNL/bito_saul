@@ -102,8 +102,6 @@ export class InicioPage implements OnInit {
                 'dismissed': true
             });
             this.Filtros = res;
-            console.log("inicio pagina");                 
-            console.log(res);
             this.buscarNegocios();
         });        
         this.modal = await this.modalController.create({

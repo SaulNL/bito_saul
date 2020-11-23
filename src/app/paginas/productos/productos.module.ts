@@ -7,6 +7,7 @@ import { ExploreContainerComponentModule } from '../../explore-container/explore
 import { TabsPageModule } from '../tabs/tabs.module';
 
 import { Tab1PageRoutingModule } from './productos-routing.module';
+import { ModalProductoPageModule } from './modal-producto/modal-producto.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { Tab1PageRoutingModule } from './productos-routing.module';
     FormsModule,
     ExploreContainerComponentModule,
     Tab1PageRoutingModule,
-    TabsPageModule
+    TabsPageModule,
+    ModalProductoPageModule
   ],
   declarations: [ProductosPage]
 })

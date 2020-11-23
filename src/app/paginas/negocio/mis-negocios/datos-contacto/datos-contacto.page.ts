@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { NegocioModel } from "./../../../../Modelos/NegocioModel";
-import { ActionSheetController } from "@ionic/angular";
+import { ActionSheetController, AlertController } from "@ionic/angular";
 import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
 import { NegocioService } from "../../../../api/negocio.service";
 
@@ -27,7 +27,8 @@ export class DatosContactoPage implements OnInit {
     private active: ActivatedRoute,
     private actionSheetController: ActionSheetController,
     private negocioServico: NegocioService,
-    private notificaciones: ToadNotificacionService
+    private notificaciones: ToadNotificacionService,
+    public alertController: AlertController
   ) {
     this.valido = false;
     this.variaf = false;
@@ -90,6 +91,28 @@ export class DatosContactoPage implements OnInit {
       queryParams: { special: navigationExtras },
     });
   }
+  async cancelar() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '¿Estas seguro?',
+      message: 'Se cancelara todo el proceso',
+      buttons: [
+        {
+          text: 'Cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          }
+        }, {
+          text: 'Confirmar',
+          handler: () => {
+            this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}});
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
   
   datosDomicilio(negocio: NegocioModel) {
     this.datosC();
@@ -111,7 +134,8 @@ export class DatosContactoPage implements OnInit {
       response => {        
         if (response.code === 200) {
           this.notificaciones.exito('Tu negocio se guardo exitosamente');
-          this.router.navigate(["/tabs/home/negocio"]);
+          //this.router.navigate(["/tabs/home/negocio"]);
+          this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}});
         } else {
           this.notificaciones.alerta('Error al guardar, intente nuevamente');
           //   this._notificacionService.pushAlert('Error al guardar, intente nuevamente');
