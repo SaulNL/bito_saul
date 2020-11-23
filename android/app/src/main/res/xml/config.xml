@@ -1,6 +1,16 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <access origin="*" />
+  <allow-intent href="http://*/*" />
+  <allow-intent href="https://*/*" />
+  <allow-intent href="tel:*" />
+  <allow-intent href="sms:*" />
+  <allow-intent href="mailto:*" />
+  <allow-intent href="geo:*" />
+  <icon src="res/logo.png" />
+  <access origin="https://beta-bitoo-back.azurewebsites.net" />
+  <allow-navigation href="*" />
+  <allow-intent href="market:*" />
   
   <feature name="Downloader">
     <param name="android-package" value="hr.integrator.cordova.plugins.downloader.Downloader"/>
