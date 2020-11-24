@@ -94,5 +94,9 @@ export class PedidosNegocioPage implements OnInit {
     });
     await loading.present();
   }
+
+  regresar(){
+    this.router.navigate(['/tabs/inicio']);
+  }
   
 }
