@@ -170,18 +170,30 @@
                   <div style="width: 25%; text-align: center;"><strong>Precio</strong></div>
                   <div style="width: 25%;"><strong>Acciones</strong></div>
                 </div>
-
-                <div style="width: 100%; display: flex; justify-content: center; align-items: center; margin: 10px 0;" *ngFor="let producto of listaProductos.productos; index as i">
-                  <div style="width: 25%;">{{ i + 1 }}</div>
-                  <div style="width: 25%;">{{ producto.nombre }}</div>
-                  <div style="width: 25%; text-align: center;">${{ producto.precio }}</div>
-                  <div style="width: 25%;">
-                    <ion-button color="warning"  (click)="editarRegistro(producto)">
-                      <ion-icon name="create"></ion-icon>
-                    </ion-button>
+                <div *ngIf="iden===1">
+                  <div style="width: 100%; display: flex; justify-content: center; align-items: center; margin: 10px 0;" *ngFor="let producto of listaProductos.productos; index as i">
+                    <div style="width: 25%;">{{ i + 1 }}</div>
+                    <div style="width: 25%;">{{ producto.nombre }}</div>
+                    <div style="width: 25%; text-align: center;">${{ producto.precio }}</div>
+                    <div style="width: 25%;">
+                      <ion-button color="warning"  (click)="editarRegistro(producto)">
+                        <ion-icon name="create"></ion-icon>
+                      </ion-button>
+                    </div>
                   </div>
                 </div>
-
+                <div *ngIf="iden===2">
+                  <div style="width: 100%; display: flex; justify-content: center; align-items: center; margin: 10px 0;" *ngFor="let producto of listaProductos.servicios; index as i">
+                    <div style="width: 25%;">{{ i + 1 }}</div>
+                    <div style="width: 25%;">{{ producto.nombre }}</div>
+                    <div style="width: 25%; text-align: center;">${{ producto.precio }}</div>
+                    <div style="width: 25%;">
+                      <ion-button color="warning"  (click)="editarRegistro(producto)">
+                        <ion-icon name="create"></ion-icon>
+                      </ion-button>
+                    </div>
+                  </div>
+                </div>
                 <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
                 </div>
 
@@ -244,7 +256,7 @@
                   <ion-label position="floating">
                     Precio
                   </ion-label>
-                  <ion-input  name="precio"
+                  <ion-input type="number" name="precio"
                   #precio="ngModel" [(ngModel)]="productoNuevo.precio" required></ion-input>
                 </ion-item>
               </ion-col>

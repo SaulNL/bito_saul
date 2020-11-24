@@ -234,6 +234,7 @@ export class DatosCategoriaPage implements OnInit {
         if (data.code === 200) {
           this._notificacionService.exito('Los datos se guardaron correctamente');
           this.loader.dismiss();
+          this.router.navigate(['/tabs/home/cat-categoria'], { queryParams: {special: true}  });
           //this.admin.getCategoria();
           //this.admin.blnActivaDatosCategoria = true;
         } else {
