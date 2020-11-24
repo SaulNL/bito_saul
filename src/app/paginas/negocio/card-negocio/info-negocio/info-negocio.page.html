@@ -95,7 +95,7 @@
       </div>
       <ion-item>
         <ion-label position="stacked">Afiliado a</ion-label>
-        <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idOrganiza" name="idOrganiza" #organizaciones="ngModel" [(ngModel)]="negocioTO.organizaciones" required  placeholder="{{ tipoOrgAux }}">
+        <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idOrganiza" name="idOrganiza" #organizaciones="ngModel" [(ngModel)]="negocioTO.organizaciones" placeholder="{{ tipoOrgAux }}">
           <ion-select-option *ngFor="let org of lstOrganizaciones" [value]="org.id_organizacion">{{org.nombre}}</ion-select-option>
         </ion-select>
       </ion-item>
@@ -108,13 +108,13 @@
           <ion-label stacked>
             Horario Inicial
           </ion-label>
-          <ion-datetime display-format="H:mm"  name="feInicio" #feInicio="ngModel" [(ngModel)]="horarioini" (ionChange)="validarHoraInicio($event)"></ion-datetime>
+          <ion-datetime display-format="H:mm"  picker-format="H:mm" name="feInicio" #feInicio="ngModel" [(ngModel)]="horarioini" (ionChange)="validarHoraInicio($event)"></ion-datetime>
         </ion-item>
         <ion-item>
           <ion-label stacked>
             Horario Final
           </ion-label>
-          <ion-datetime [disabled]="blnActivaHoraF" display-format="H:mm" name="fechaFinal" #fechaFinal="ngModel" [(ngModel)]="horariofin"  (ionChange)="validarHoraFinal($event)"></ion-datetime>
+          <ion-datetime [disabled]="blnActivaHoraF" display-format="H:mm" picker-format="H:mm" name="fechaFinal" #fechaFinal="ngModel" [(ngModel)]="horariofin"  (ionChange)="validarHoraFinal($event)"></ion-datetime>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Dias de la Semana</ion-label>

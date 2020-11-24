@@ -58,7 +58,8 @@
       <ion-card-header >
         <ion-item lines="none" (click)="datosNegocio(item)">
           <ion-avatar slot="start">
-            <img src="{{ item.url_logo }}" alt="{{ item.nombre_comercial }}">
+            <img *ngIf="item.url_logo !== '' && item.url_logo !== null "  src="{{ item.url_logo }}" alt="{{ item.nombre_comercial }}">
+          <img *ngIf="item.url_logo === '' || item.url_logo === null  " src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg">
           </ion-avatar>
           <ion-label>
             <h3></h3>

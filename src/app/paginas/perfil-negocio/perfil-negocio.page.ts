@@ -357,7 +357,7 @@ export class PerfilNegocioPage implements OnInit {
         this.url_negocio = this.url + this.informacionNegocio.url_negocio;
         await Share.share({
             title: 'Ver cosas interesantes',
-            text: 'Te recomiento este negocio' + this.informacionNegocio.nombre_comercial,
+            text: 'Te recomiendo este negocio ' + this.informacionNegocio.nombre_comercial,
             url: this.url_negocio,
             dialogTitle: 'Compartir con Amigos'
         })
