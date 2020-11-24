@@ -361,7 +361,7 @@ export class PerfilNegocioPage implements OnInit {
             url: this.url_negocio,
             dialogTitle: 'Compartir con Amigos'
         })
-            .then(() => this.notificacionService.exito('Se compartio exitosamente'))
+            .then(() =>console.log('Se compartio exitosamente'))
             .catch((error) => this.notificacionService.error(error));
     }
 

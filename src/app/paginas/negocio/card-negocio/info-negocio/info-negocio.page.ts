@@ -314,23 +314,31 @@ export class InfoNegocioPage implements OnInit {
     }, 1000);
   }
   guardar() {
-    this.datos();
-    this.negocioServico.guardar(this.negocioGuardar).subscribe(
-      response => {        
-        if (response.code === 200) {
-          this.notificaciones.exito('Tu negocio se guardo exitosamente');
-          this.router.navigate(["/tabs/home/negocio"]);
-        } else {
-          this.notificaciones.alerta('Error al guardar, intente nuevamente');
-          //   this._notificacionService.pushAlert('Error al guardar, intente nuevamente');
+    if(this.negocioTO.logo === null ||
+       this.negocioTO.logo === undefined ||
+       this.negocioTO.logo.archivo_64 === '' || 
+       this.negocioTO.logo.archivo_64 === null){
+        this.notificaciones.alerta('Agregue la foto de su negocio');
+    }else{
+      this.datos();
+      this.negocioServico.guardar(this.negocioGuardar).subscribe(
+        response => {        
+          if (response.code === 200) {
+            this.notificaciones.exito('Tu negocio se guardo exitosamente');
+            this.router.navigate(["/tabs/home/negocio"]);
+          } else {
+            this.notificaciones.alerta('Error al guardar, intente nuevamente');
+            //   this._notificacionService.pushAlert('Error al guardar, intente nuevamente');
+            //  this.loaderGuardar = false;
+          }
+        },
+        error => {
+          this.notificaciones.error(error);
           //  this.loaderGuardar = false;
         }
-      },
-      error => {
-        this.notificaciones.error(error);
-        //  this.loaderGuardar = false;
-      }
-    );
+      );
+    }
+
   }
   entregasDomicilio(evento){
     this.blnActivaEntregas = evento.detail.value;

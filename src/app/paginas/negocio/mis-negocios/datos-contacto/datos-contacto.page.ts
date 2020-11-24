@@ -129,6 +129,12 @@ export class DatosContactoPage implements OnInit {
   }
   
   guardar() {
+    if(this.negocioTO.logo === null ||
+      this.negocioTO.logo === undefined ||
+      this.negocioTO.logo.archivo_64 === '' || 
+      this.negocioTO.logo.archivo_64 === null){
+       this.notificaciones.alerta('Agregue la foto de su negocio');
+   }else{
     this.datosC();
     this.negocioServico.guardar(this.negocioGuardar).subscribe(
       response => {        
@@ -147,6 +153,7 @@ export class DatosContactoPage implements OnInit {
         //  this.loaderGuardar = false;
       }
     );
+   }
   }
   datosC(){
     this.negocioGuardar.telefono = this.negocioTO.telefono;

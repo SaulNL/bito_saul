@@ -140,7 +140,7 @@ export class DatosDomicilioPage implements OnInit {
         }, {
           text: 'Confirmar',
           handler: () => {
-            this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}});
+            this.router.navigate(['/tabs/home/negocio'], { queryParams: { special: true } });
           }
         }
       ]
@@ -149,25 +149,31 @@ export class DatosDomicilioPage implements OnInit {
     await alert.present();
   }
   guardar() {
-    this.datosD();
-    
-    this.negocioServico.guardar(this.negocioGuardar).subscribe(
-      response => {
-        if (response.code === 200) {
-          this.notificaciones.exito('Tu negocio se guardo exitosamente');
-          // this.router.navigate(["/tabs/home/negocio"]);
-          this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}});
-        } else {
-          this.notificaciones.alerta('Error al guardar, intente nuevamente');
-          //   this._notificacionService.pushAlert('Error al guardar, intente nuevamente');
+    if (
+      this.negocioTO.logo === null ||
+      this.negocioTO.logo === undefined ||
+      this.negocioTO.logo === undefined ||
+      this.negocioTO.logo.archivo_64 === '' ||
+      this.negocioTO.logo.archivo_64 === null ||
+      this.negocioTO.logo.archivo_64 === undefined) {
+      this.notificaciones.alerta('Agregue la foto de su negocio');
+    } else {
+      this.datosD();
+      this.negocioServico.guardar(this.negocioGuardar).subscribe(
+        response => {
+          if (response.code === 200) {
+            this.notificaciones.exito('Tu negocio se guardo exitosamente');
+            this.router.navigate(['/tabs/home/negocio'], { queryParams: { special: true } });
+          } else {
+            this.notificaciones.alerta('Error al guardar, intente nuevamente');
+          }
+        },
+        error => {
+          this.notificaciones.error(error);
           //  this.loaderGuardar = false;
         }
-      },
-      error => {
-        this.notificaciones.error(error);
-        //  this.loaderGuardar = false;
-      }
-    );
+      );
+    }
   }
   /**
  * Funcion para cargar el mapa
@@ -226,15 +232,15 @@ export class DatosDomicilioPage implements OnInit {
   /**
 * Funcion para obtener el estado
 */
-  private load_cat_estados() {  
+  private load_cat_estados() {
     this._general_service.getEstadosWS().subscribe(
       response => {
         if (this._utils_cls.is_success_response(response.code)) {
           this.list_cat_estado = response.data.list_cat_estado;
           this.list_cat_estado.forEach(element => {
-            if (element.id_estado==this.negocioTO.det_domicilio.id_estado) {
+            if (element.id_estado == this.negocioTO.det_domicilio.id_estado) {
               this.estadoAux = element.nombre;
-              
+
             }
           });
           //this.loader = false;
@@ -266,10 +272,10 @@ export class DatosDomicilioPage implements OnInit {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_municipio = response.data.list_cat_municipio;
             this.list_cat_municipio.forEach(element => {
-              if (element.id_municipio==this.negocioTO.det_domicilio.id_municipio) {
+              if (element.id_municipio == this.negocioTO.det_domicilio.id_municipio) {
                 this.municiAux = element.nombre;
-                
-                
+
+
               }
             });
             this.btnMuncipio = false;
@@ -290,9 +296,9 @@ export class DatosDomicilioPage implements OnInit {
       this.list_cat_municipio = [];
     }
   }
-    /**
-   * Obtener localidad
-   */
+  /**
+ * Obtener localidad
+ */
   public get_list_cat_localidad(evento) {
     let idE;
     if (evento.type === 'ionChange') {
@@ -310,9 +316,9 @@ export class DatosDomicilioPage implements OnInit {
             this.btnLocalidad = false;
             this.list_cat_localidad = response.data.list_cat_localidad;
             this.list_cat_localidad.forEach(element => {
-              if (element.id_localidad==this.negocioTO.det_domicilio.id_localidad) {
+              if (element.id_localidad == this.negocioTO.det_domicilio.id_localidad) {
                 this.localiAux = element.nombre;
-                
+
               }
             });
           }

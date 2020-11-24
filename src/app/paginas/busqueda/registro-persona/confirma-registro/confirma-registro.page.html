@@ -19,7 +19,7 @@
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Código</ion-label>
-        <ion-input id="codigo" (keyup)="setBlnInput()" (change)="setBlnInput()" type="text" name="codigo" type="password" maxlength='5' #correo="ngModel" [(ngModel)]="usuario_sistema.codigo" placeholder="00000" required></ion-input>
+        <ion-input id="codigo" (ionChange)="setBlnInput()" type="text" name="codigo" type="password" maxlength='5' #correo="ngModel" [(ngModel)]="usuario_sistema.codigo" placeholder="00000" required></ion-input>
       </ion-item>
       <div class="ion-text-center ion-margin-top">
         <label>Ingresa el código que se te envio por sms a tu celular</label>
