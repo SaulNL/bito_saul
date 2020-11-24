@@ -37,7 +37,7 @@ export class ToolbarBusquedaComponent implements OnInit {
       this.notificacionesVentas();
       setInterval(it => {
         this.notificacionesVentas();
-      }, 300000);
+      }, 700);
     }
     this.sideBarService.getObservable().subscribe((data) => {
       this.user = this._auth0.getUserData();
@@ -76,7 +76,7 @@ export class ToolbarBusquedaComponent implements OnInit {
       this.permisos = list;
     }
   }
-  public notificacionesVentas() {
+  notificacionesVentas() {
     const id = this._utils_cls.getIdProveedor();
     this.pedidosServicios.noVistos(id).subscribe(
       res => {

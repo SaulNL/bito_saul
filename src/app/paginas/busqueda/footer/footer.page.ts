@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { IonContent } from '@ionic/angular';
 
 @Component({
   selector: 'app-footer',
@@ -6,20 +7,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./footer.page.scss'],
 })
 export class FooterPage implements OnInit {
+  @Input() content: IonContent;
+  @Input() cordenada: number;
 
   constructor() { }
 
   ngOnInit() {
   }
 
-    /**
-   * Funcion para abrir los terminos y condiciones
-   * @author Omar
-   */
-  public abrirTerminosCondiciones(){
-    const pdfWindow = window.open('');
-    pdfWindow.document.write("<html<head><title>"+"Términos y Condiciones Bitoo"+"</title><style>body{margin: 0px;}iframe{border-width: 0px;}</style></head>");
-    pdfWindow.document.write("<body><embed width='100%' height='100%' src='https://ecoevents.blob.core.windows.net/comprandoando/documentos%2FTERMINOS%20Y%20CONDICIONES%20Bitoo.pdf'></embed></body></html>");
+  public abrirTerminosCondiciones() {
+    window.open("https://ecoevents.blob.core.windows.net/comprandoando/documentos%2FTERMINOS%20Y%20CONDICIONES%20Bitoo.pdf", "_blank");
+  }
+
+  scrollToTop() {
+    this.content.scrollToTop();
   }
 
 }

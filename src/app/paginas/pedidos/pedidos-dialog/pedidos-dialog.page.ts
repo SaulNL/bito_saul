@@ -89,7 +89,7 @@ export class PedidosDialogPage implements OnInit {
   }
 
   regresar(){
-    this.router.navigate(['/tabs/inicio']);
+    this.router.navigate(['/tabs/inicio'],{ queryParams: {special: false}  });
   }
 
 }
