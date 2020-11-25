@@ -9,10 +9,10 @@ import { UtilsCls } from 'src/app/utils/UtilsCls';
 import { LoginService } from 'src/app/api/login.service';
 import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
 import { LoadingController } from '@ionic/angular';
-import {Location} from "@angular/common";
+import { Location } from "@angular/common";
 
-import {NavController} from "@ionic/angular";
-import {SideBarService} from "../../../../api/busqueda/side-bar-service";
+import { NavController } from "@ionic/angular";
+import { SideBarService } from "../../../../api/busqueda/side-bar-service";
 
 @Component({
   selector: 'app-confirma-registro',
@@ -74,10 +74,10 @@ export class ConfirmaRegistroPage implements OnInit {
   public obtenerCodigoSMS() {
     this.blnEnviarSms = true;
     if (this.numeroCelular.length === 10 && this.numeroCelular !== undefined) {
-       this._usuario_service.obtenerCodigoSMS(this.numeroCelular).subscribe(response => {
-       this.usuario_sistema.idCode = response.data;
-       this.IniciaTemporizador();
-       });
+      this._usuario_service.obtenerCodigoSMS(this.numeroCelular).subscribe(response => {
+        this.usuario_sistema.idCode = response.data;
+        this.IniciaTemporizador();
+      });
     } else {
       //  this._notificacionService.pushError('Número incorrecto');
     }
@@ -160,8 +160,10 @@ export class ConfirmaRegistroPage implements OnInit {
   }
   validarInputCodigo() {
     if (this.usuario_sistema.codigo !== null && this.usuario_sistema.codigo !== '' && this.usuario_sistema.codigo.length === 5) {
+      console.log('true');
       return true;
     } else {
+      console.log('false');
       return false;
     }
   }
@@ -186,8 +188,8 @@ export class ConfirmaRegistroPage implements OnInit {
               this.notificaciones.exito('Bienvenido a Bitoo');
               this.router.navigate(['/tabs/inicio']);
               setTimeout(() => {
-                 location.reload();
-               }, 1300);
+                location.reload();
+              }, 1300);
             } else {
               this.loader.dismiss();
               this.notificaciones.alerta(data.message);

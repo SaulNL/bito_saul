@@ -1,4 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Router } from '@angular/router';
+import { PedidosService } from 'src/app/api/pedidos.service';
+import { UtilsCls } from 'src/app/utils/UtilsCls';
 import {Auth0Service} from '../../api/busqueda/auth0.service';
 import {NavBarServiceService} from '../../api/busqueda/nav-bar-service.service';
 import {SideBarService} from '../../api/busqueda/side-bar-service';
@@ -14,22 +17,27 @@ export class ToolbarBusquedaComponent implements OnInit {
   strBuscar: String;
   public user: any;
   public permisos: Array<string>;
+  public totalNoVistos: number;
 
   constructor(
+    private router: Router,
     private _auth0: Auth0Service,
     private navBarServiceService: NavBarServiceService,
-    private sideBarService: SideBarService
+    private sideBarService: SideBarService,
+    private pedidosServicios: PedidosService,
+    private _utils_cls: UtilsCls
   ) { 
+    this.totalNoVistos = 0;
     this.permisos = [];
     this.permisosList();
   }
 
   ngOnInit() {
     if (this.permisos.includes('ver_negocio')) {
-      //this.notificacionesVentas();
+      this.notificacionesVentas();
       setInterval(it => {
-        //this.notificacionesVentas();
-      }, 300000);
+        this.notificacionesVentas();
+      }, 700);
     }
     this.sideBarService.getObservable().subscribe((data) => {
       this.user = this._auth0.getUserData();
@@ -67,5 +75,21 @@ export class ToolbarBusquedaComponent implements OnInit {
       });
       this.permisos = list;
     }
+  }
+  notificacionesVentas() {
+    const id = this._utils_cls.getIdProveedor();
+    this.pedidosServicios.noVistos(id).subscribe(
+      res => {
+        this.totalNoVistos = res.data;
+      },
+      error => {
+      });
+  }
+
+  verCompras(){
+    this.router.navigate(['/tabs/home/compras'], { queryParams: {special: true}});
+  }
+  verVentas(){
+    this.router.navigate(['/tabs/home/ventas'], { queryParams: {special: true}});
   }
 }

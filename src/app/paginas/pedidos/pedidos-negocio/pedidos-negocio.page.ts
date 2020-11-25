@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { PedidosService } from '../../../api/pedidos.service';
 import {UtilsCls} from '../../../utils/UtilsCls';
 import { ModalController } from '@ionic/angular';
@@ -12,6 +12,7 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./pedidos-negocio.page.scss'],
 })
 export class PedidosNegocioPage implements OnInit {
+  
   listaNegocioPedididos: any;
   public listaEstatus: any;
   public lstFiltroEstatus: any;
@@ -84,6 +85,7 @@ export class PedidosNegocioPage implements OnInit {
   datosPedido(pedido: any) {
     this.selectTO =  JSON.parse(JSON.stringify(pedido));
     let navigationExtras = JSON.stringify(this.selectTO);
+    this.visto(pedido.id_pedido_negocio);
     this.router.navigate(['/tabs/home/ventas/datos-pedido-negocio'], { queryParams: {special: navigationExtras}  });
   }
 
@@ -93,6 +95,18 @@ export class PedidosNegocioPage implements OnInit {
       duration: 500
     });
     await loading.present();
+  }
+
+  regresar(){
+    this.router.navigate(['/tabs/inicio'],{ queryParams: {special: false}});
+  }
+
+  visto(pedido) {
+    this.pedidosServicios.ponerVisto(pedido).subscribe(
+      respuesta => {
+      },
+      error => {
+      });
   }
   
 }

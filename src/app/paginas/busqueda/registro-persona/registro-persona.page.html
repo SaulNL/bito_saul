@@ -50,14 +50,14 @@
         </div>
         <ion-item>
           <ion-label position="stacked">Contraseña<span style="color: red;">*</span></ion-label>
-          <ion-input (keyup)="verificarContrasena()" id="password_admin" type="password" name="password" placeholder="Contraseña" #password="ngModel" [(ngModel)]="usuario_sistema.password" required></ion-input>
+          <ion-input (ionChange)="verificarContrasena()" id="password_admin" type="password" name="password" placeholder="Contraseña" #password="ngModel" [(ngModel)]="usuario_sistema.password" required></ion-input>
         </ion-item>
         <div *ngIf="password.touched  && password.invalid" class="alert">
           <div *ngIf="password.errors.required">La contraseña es requerido</div>
         </div>
         <ion-item>
           <ion-label position="stacked">Repetir Contraseña<span style="color: red;">*</span></ion-label>
-          <ion-input  (keyup)="verificarContrasena()" id="repeat_password_admin" type="password" name="repeat_password" placeholder="Repetir Contraseña"  #repeat_password="ngModel" [(ngModel)]="usuario_sistema.repeat_password" required></ion-input>
+          <ion-input  (ionChange)="verificarContrasena()" id="repeat_password_admin" type="password" name="repeat_password" placeholder="Repetir Contraseña"  #repeat_password="ngModel" [(ngModel)]="usuario_sistema.repeat_password" required></ion-input>
         </ion-item>
         <div *ngIf="repeat_password.touched  && repeat_password.invalid" class="alert">
           <div *ngIf="repeat_password.errors.required">La contraseña es requerido</div>

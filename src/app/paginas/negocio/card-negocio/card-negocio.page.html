@@ -16,8 +16,8 @@
 <ion-content>
   <ion-card style="margin-bottom: 15%;">
     <div class="ion-text-center ion-margin-top">
-      <img *ngIf="negocioTO.url_logo !== ''"  class="rounded-circle" [src]="negocioTO.url_logo"   alt="">
-      <img *ngIf="negocioTO.url_logo === ''" class="imagen" alt="" >
+      <img *ngIf="negocioTO.url_logo !== '' && negocioTO.url_logo !== null "  class="rounded-circle" [src]="negocioTO.url_logo"   alt="">
+      <img *ngIf="negocioTO.url_logo === '' || negocioTO.url_logo === null || negocioTO.url_logo === undefined " class="imagen" alt="" >
     </div>
     <div  class="ion-text-center ion-margin-top">
       <ion-label>{{negocioTO.nombre_comercial}}</ion-label>
