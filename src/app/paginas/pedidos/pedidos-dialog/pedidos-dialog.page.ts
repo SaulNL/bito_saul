@@ -88,4 +88,8 @@ export class PedidosDialogPage implements OnInit {
     this.router.navigate(['/tabs/home/compras/datos-pedido-dialog'], { queryParams: {special: navigationExtras}  });
   }
 
+  regresar(){
+    this.router.navigate(['/tabs/inicio'],{ queryParams: {special: false}  });
+  }
+
 }

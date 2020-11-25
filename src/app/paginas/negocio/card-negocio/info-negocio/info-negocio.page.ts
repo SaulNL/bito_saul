@@ -521,5 +521,28 @@ agregarHorario() {
     });
     await alert.present();
   }
+  async cancelar() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '¿Estas seguro?',
+      message: 'Se cancelara todo el proceso',
+      buttons: [
+        {
+          text: 'Cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          }
+        }, {
+          text: 'Confirmar',
+          handler: () => {
+            this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}});
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  
   
 }
