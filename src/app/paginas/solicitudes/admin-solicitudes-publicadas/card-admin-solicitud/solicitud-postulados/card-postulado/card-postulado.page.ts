@@ -25,7 +25,7 @@ export class CardPostuladoPage implements OnInit {
     public loadingController: LoadingController,
     private downloader: Downloader,
     public notificaciones: ToadNotificacionService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.lstPostulados = new Array<PostuladosModel>();
@@ -62,22 +62,25 @@ export class CardPostuladoPage implements OnInit {
   }
   descargarArchivo() {
     this.extensionArchivo();
-    var request: DownloadRequest = {
-      uri: this.solicitudPostulado.url_archivo,
-      title: 'Archivo_Solicitud_Postulado',
-      description: 'Archivo que contiene una solicitud de un postulado',
-      mimeType: '',
-      visibleInDownloadsUi: true,
-      notificationVisibility: NotificationVisibility.VisibleNotifyCompleted,
-      destinationInExternalFilesDir: {
-        dirType: 'Downloads',
-        subPath: 'MyFile.' + this.extencion
-      }
-    };
-
-    this.downloader.download(request)
-      .then((location: string) => this.notificaciones.exito('Archivo descargado en:' + location))
-      .catch((error: any) => this.notificaciones.error(error));
+    this.presentLoading();
+    setTimeout(() => {
+      var request: DownloadRequest = {
+        uri: this.solicitudPostulado.url_archivo,
+        title: 'Archivo_Solicitud_Postulado',
+        description: 'Archivo que contiene una solicitud de un postulado',
+        mimeType: '',
+        visibleInDownloadsUi: true,
+        notificationVisibility: NotificationVisibility.VisibleNotifyCompleted,
+        destinationInExternalFilesDir: {
+          dirType: '',
+          subPath: '../../../../Download/'+this.solicitudPostulado.nombre+'_Archivo_Postulado.' + this.extencion
+        }
+      };
+      this.downloader.download(request)
+        .then(
+          () => this.notificaciones.exito('El Archivo se descargo con exito'),this.loader.dismiss())
+        .catch((error) => this.notificaciones.error(error));
+    }, 700);
   }
 
   extensionArchivo() {
@@ -85,11 +88,11 @@ export class CardPostuladoPage implements OnInit {
     for (let i = this.solicitudPostulado.url_archivo.length - 1; i >= 0; i--) {
       if (this.solicitudPostulado.url_archivo[i] === '.') {
         break;
-      }else{
+      } else {
         listapabra.push(this.solicitudPostulado.url_archivo[i]);
       }
-      this.extencion = listapabra.reverse().toString();
-      this.extencion  = this.extencion .split(',').join('');
     }
+    this.extencion = listapabra.reverse().toString();
+    this.extencion = this.extencion.split(',').join('');
   }
 }
