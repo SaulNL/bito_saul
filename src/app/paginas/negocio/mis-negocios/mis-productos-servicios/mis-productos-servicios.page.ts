@@ -436,13 +436,16 @@ export class MisProductosServiciosPage implements OnInit {
       if( !exist ) {
         this.nuevaCategoria.id_categoria = null;
         this.nuevaCategoria.id_categoria_negocio = null;
-        if (this.iden === 1){
-          this.nuevaCategoria.tipo_categoria = 1;
-        } 
-        if(this.iden === 2){
-          this.nuevaCategoria.tipo_categoria = 0;
+        switch (this.iden) {
+          case 1:
+            this.nuevaCategoria.tipo_categoria = 0;  
+            break;
+            case 2:
+              this.nuevaCategoria.tipo_categoria = 1;  
+              break;
+          default:
+            break;
         }
-
         const enviar = {
           id_negocio: this.negocioTO.id_negocio,
           id_proveedor: this.datosUsuario.proveedor.id_proveedor,
@@ -458,7 +461,7 @@ export class MisProductosServiciosPage implements OnInit {
               nombre: '',
               id_categoria: null,
               id_categoria_negocio: null,
-              tipo_categoria: 0
+              tipo_categoria: null
             }
             this.agregarClas = false;
             this.blnNuevaCategoria = false;
