@@ -44,7 +44,7 @@ export class DatosSubcategoriaPage implements OnInit {
     this.active.queryParams.subscribe(params => {
       if (params && params.special) {
          this.all = JSON.parse(params.special);
-         this.subcategoriaTO = this.all.make;
+         this.subcategoriaTO = this.all;
         //this.listaSubcategoria(this.subcategoriaTO.id_giro);
         
       }

@@ -1,14 +1,14 @@
 <ion-header >
   <ion-toolbar class="tolbar">
-    <ion-buttons >
-      <ion-button  slot="start" (click)="regresar()">
-        <ion-icon name="chevron-back-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
     <ion-title>
       <span *ngIf="categoriaTO.id_giro === null || categoriaTO.id_giro === undefined" class="">Agregar</span>
       <span *ngIf="categoriaTO.id_giro!== null && categoriaTO.id_giro !== undefined" class="">Modificar</span>
     </ion-title>
+    <ion-buttons slot="start" >
+      <ion-button (click)="regresar()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-buttons slot="end" (click)="presentActionSheet()" *ngIf="categoriaTO.id_giro!== null && categoriaTO.id_giro !== undefined">
       <ion-button>
         <ion-icon name="ellipsis-vertical-outline"></ion-icon>

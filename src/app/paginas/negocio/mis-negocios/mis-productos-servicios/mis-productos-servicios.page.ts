@@ -177,7 +177,17 @@ export class MisProductosServiciosPage implements OnInit {
 
   private buscarDatos() {
     this.loader = true;
-    this.sercicioNegocio.buscarProductosServios(this.negocioTO.id_negocio, 0).subscribe(
+    let valores;
+    switch (this.iden) {
+      case 1:
+        valores = 0;        
+        break;
+        case 2:
+        valores=1;
+        break;
+    }
+    console.log(valores);
+    this.sercicioNegocio.buscarProductosServios(this.negocioTO.id_negocio, valores).subscribe(
       repsuesta => {
         this.datosNegocio = repsuesta.data;
         this.productoTags = this.datosNegocio.productoTags;
@@ -197,12 +207,23 @@ export class MisProductosServiciosPage implements OnInit {
         this.loader = false;
         this.listaVista = repsuesta.data.categorias !== undefined ? repsuesta.agrupados : [];
         // this.armarListaVista();
-        if (this.datosNegocio.cartaProducto !== undefined && this.datosNegocio.cartaProducto !== null && this.datosNegocio.cartaProducto !== '') {
-          this.carta = this.cleanURL(this.datosNegocio.cartaProducto);
-          console.log(this.carta, 'al iniciar');
-        }else {
-          this.carta = null;
+        if(this.iden === 1 ){
+          if (this.datosNegocio.cartaProducto !== undefined && this.datosNegocio.cartaProducto !== null && this.datosNegocio.cartaProducto !== '') {
+            this.carta = this.cleanURL(this.datosNegocio.cartaProducto);
+          }else{
+            this.carta = null;
+          }
         }
+        if (this.iden === 2){
+          if(this.datosNegocio.cartaServicio !== undefined && this.datosNegocio.cartaServicio !== null && this.datosNegocio.cartaServicio !== ''){
+            this.carta = this.cleanURL(this.datosNegocio.cartaServicio);
+          }else {
+            this.carta = null;
+          }
+        }
+        
+         
+        console.log(this.carta);
       },
       error => {
         this.loader = false;
@@ -222,15 +243,23 @@ export class MisProductosServiciosPage implements OnInit {
     if (file.size < 3145728) {
     let file64: any;
     const utl = new UtilsCls();
-      console.log('llegue');
     utl.getBase64(file).then(
       data => {
         file64 = data;
         const archivo = new ArchivoComunModel();
         archivo.nombre_archivo = this.utilscls.convertir_nombre(fileName);
         archivo.archivo_64 = file64;
-        console.log(archivo);
-        this.datosNegocio.cartaProducto = archivo;
+        switch (this.iden) {
+          case 1:
+            this.datosNegocio.cartaProducto = archivo;
+            break;
+            case 2:
+              this.datosNegocio.cartaServicio = archivo;
+            break;
+          default:
+            break;
+        }
+      
         this.guardarDatos();
       }
     );
@@ -263,7 +292,17 @@ export class MisProductosServiciosPage implements OnInit {
   eliminarCarta() {
     (document.getElementById('imagenCarta') as HTMLInputElement).value = '';
     this.carta =  null;
-    this.datosNegocio.cartaProducto = '';
+    switch (this.iden) {
+      case 1:
+        this.datosNegocio.cartaProducto = '';    
+        break;
+        case 2:
+          this.datosNegocio.cartaServicio = '';    
+          break;
+      default:
+        break;
+    }
+    
     this.guardarDatos();
   }
 
@@ -397,7 +436,13 @@ export class MisProductosServiciosPage implements OnInit {
       if( !exist ) {
         this.nuevaCategoria.id_categoria = null;
         this.nuevaCategoria.id_categoria_negocio = null;
-        this.nuevaCategoria.tipo_categoria = 0;
+        if (this.iden === 1){
+          this.nuevaCategoria.tipo_categoria = 1;
+        } 
+        if(this.iden === 2){
+          this.nuevaCategoria.tipo_categoria = 0;
+        }
+
         const enviar = {
           id_negocio: this.negocioTO.id_negocio,
           id_proveedor: this.datosUsuario.proveedor.id_proveedor,
@@ -604,7 +649,14 @@ export class MisProductosServiciosPage implements OnInit {
       datosAEnviar.productos[this.indexModificar] = this.productoNuevo;
     } else {
       this.productoNuevo.nombre_categoria1 = this.productoNuevo.categoria.nombre;
-      datosAEnviar.productos.push(this.productoNuevo);
+      switch (this.iden) {
+        case 1:
+          datosAEnviar.productos.push(this.productoNuevo);
+          break;
+      case 2:
+        datosAEnviar.servicios.push(this.productoNuevo);
+        break;
+      }
     }
     this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
       repsuesta => {
@@ -618,7 +670,17 @@ export class MisProductosServiciosPage implements OnInit {
 
             // @ts-ignore
             this.productoNuevo.editar = false;
-            item.productos.push(this.productoNuevo);
+            switch (this.iden) {
+              case 1:
+                item.productos.push(this.productoNuevo);    
+                break;
+            case 2:
+              item.servicios.push(this.productoNuevo);    
+              break;
+              default:
+                break;
+            }
+            
           }
         });
         this.notificacionService.exito('Se guardó el producto con éxito');
