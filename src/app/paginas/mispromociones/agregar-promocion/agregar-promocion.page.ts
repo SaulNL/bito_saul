@@ -266,15 +266,8 @@ export class AgregarPromocionPage implements OnInit {
           if (this._utils_cls.is_success_response(response.code)) {
             form.resetForm();
             this._router.navigate(['/tabs/home/promociones'], { queryParams: {special: true}  });
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            this._notificacionService.exito('se guardo correctamente');
           }
-          if (response.code === 402) {
-            this._notificacionService.alerta(response.message);
-            form.resetForm();
-            this._router.navigate(['/tabs/home/promociones'], { queryParams: {special: true}  });
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-          this._notificacionService.configToad(response.message, response.code);
         },
         error => {
           this._notificacionService.error(error);
@@ -282,7 +275,6 @@ export class AgregarPromocionPage implements OnInit {
       );
     }else {
       this._notificacionService.error('Es requerido que llenes todos los campos obligatorios');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
   }

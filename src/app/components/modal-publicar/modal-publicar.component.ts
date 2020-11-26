@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 import { SolicitudesService } from './../../api/solicitudes.service';
 import { PromocionesModel } from '../../Modelos/PromocionesModel';
 import { PromocionesService } from '../../api/promociones.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -39,7 +40,6 @@ export class ModalPublicarComponent implements OnInit {
   public seleccionaSolicitud: boolean;
   public id_persona: any;
   public publicacionesHechas: number;
-  public loaderBtn =  false;
   public seleccionTO: PromocionesModel;
 
 
@@ -47,7 +47,8 @@ export class ModalPublicarComponent implements OnInit {
                private _negocio_service: NegocioService,
                private _notificacionService: ToadNotificacionService,
                private solicitudesService: SolicitudesService,
-               private _promociones_service: PromocionesService
+               private _promociones_service: PromocionesService,
+               private router: Router,
               ) {
                 const currentYear = new Date().getFullYear(); 
                 this.minDate = new Date();
@@ -144,7 +145,6 @@ export class ModalPublicarComponent implements OnInit {
       this.mensajeValidacion = false;
       if (this.verificacionPublicaciones()) {
         this.mensajePublicacion2 = false;
-        this.loaderBtn = true;
         this.publicacion.fecha_inicio = this.fechaini;
         this.publicacion.fecha_fin = this.fechafin;
         this.publicacion.id_proveedor = this.seleccionTO.id_proveedor;
@@ -153,12 +153,9 @@ export class ModalPublicarComponent implements OnInit {
             if (response.code === 200) {
               form.resetForm();
               this.dismiss();
-            } else {
-              this._notificacionService.configToad(response.message, 500);
+              this.router.navigate(['/tabs/home/promociones']);
+              this._notificacionService.exito('se publico correctamente');
             }
-
-            this.loaderBtn = false;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
           },
           error => {
             console.error(error);
