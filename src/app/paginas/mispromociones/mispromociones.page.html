@@ -41,7 +41,7 @@
 						<ion-card>
 							<ion-card-content>
 								<div class="ion-text-center" style="margin-top: 20px">
-									<strong style="color: black;">Publicaciones que has realizado</strong>
+									<strong style="color: black;">Publicaciones que haz realizado</strong>
 								</div>
 		
 								<div style="display: flex; justify-content: center; align-items: center;">
@@ -50,7 +50,7 @@
 								 <ion-searchbar (keyup)="btnBuscar()" [(ngModel)]="filtro" type="text"></ion-searchbar>
 								 <div *ngIf="lstPromocionesPublicadas !== undefined" style="width: 100%;">
 									<ion-list>
-										<ion-item *ngFor="let promoPubli of lstPromocionesPublicadas">
+										<ion-item *ngFor="let promoPubli of lstPromocionesPublicadas; let i = index;">
 											<ion-avatar (click)="abrirModalDetalle(promoPubli.id_publicacion, promoPubli.activo_public)">
 												<img  [src]="promoPubli.url_imagen" [alt]="promoPubli.promocion">
 											</ion-avatar>
@@ -59,7 +59,7 @@
 												<h4><strong>{{ promoPubli.fecha_inicio }}</strong> al <strong>{{ promoPubli.fecha_fin }}</strong></h4>
 											</ion-label>
 											<ion-buttons slot="end">
-												<ion-toggle color="danger"  *ngIf="promoPubli.activo_public === 1"  (click)="dejar(promoPubli)"></ion-toggle>
+												<ion-toggle color="danger"  *ngIf="promoPubli.activo_public === 1"  (ionChange)="dejar(promoPubli, $event, i)" [checked]="promoPubli.activo === 1" [value]="i"></ion-toggle>
 											</ion-buttons>
 										</ion-item>
 									</ion-list>

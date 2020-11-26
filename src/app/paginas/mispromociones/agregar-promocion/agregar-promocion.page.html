@@ -119,8 +119,8 @@
             <div *ngIf="!blnImgRectangulo">
               <div>
                 <div class="contenido"  style="display: flex; justify-content: center;align-items: center;">
-                   <img style="height: 300px;" class="image" *ngIf="seleccionTo.imagenBanner !== '' && seleccionTo.imagenBanner !== undefined" src="{{seleccionTo.imagenBanner.archivo_64}}" alt="Falla al cargar imagen" width="200">
-                           <img style="height: 300px;"class="image" *ngIf="seleccionTo.url_imagen_banner !== '' && seleccionTo.imagenBanner === undefined" src="{{seleccionTo.url_imagen_banner}}" alt="Falla al cargar imagen" width="200">
+                   <img class="image" *ngIf="seleccionTo.imagenBanner !== '' && seleccionTo.imagenBanner !== undefined" src="{{seleccionTo.imagenBanner.archivo_64}}" alt="Falla al cargar imagen" width="200">
+                           <img class="image" *ngIf="seleccionTo.url_imagen_banner !== '' && seleccionTo.imagenBanner === undefined" src="{{seleccionTo.url_imagen_banner}}" alt="Falla al cargar imagen" width="200">
                 </div>
               </div>
             </div>

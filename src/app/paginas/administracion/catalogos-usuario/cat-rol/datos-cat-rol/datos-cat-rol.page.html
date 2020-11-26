@@ -28,7 +28,7 @@
         </div>
         <ion-item>
           <ion-label>Activo</ion-label>
-          <ion-toggle #activo="ngModel" name="activo" slot="end" name="blackberry" color="dark"
+          <ion-toggle #activo="ngModel" name="activo" slot="end" (ionChange)="validarCheck($event)"
             [(ngModel)]="variableTO.activo"></ion-toggle>
         </ion-item>
       </ion-card-header>
@@ -44,23 +44,12 @@
           <ion-checkbox [ngModelOptions]="{standalone: true}" (ionChange)="notify()"
             [(ngModel)]="permiso.estaSeleccionado"></ion-checkbox>
         </ion-item>
+                <ion-button expand="block" type="submit" *ngIf="this.botonAgregar" class="bg-rosa"
+                  [disabled]="(!blnBtnPermisos ||form.invalid)&&this.botonAgregar===true" >Guardar</ion-button>
+                <ion-button expand="block" type="submit" *ngIf="valida ===true" class="bg-rosa"
+                  [disabled]="(!blnBtnPermisos ||form.invalid)&&this.botonAgregar===false">Actualizar</ion-button>
+
       </ion-card-content>
     </ion-card>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <div>
-            <ion-button style="position: relative;" type="submit" *ngIf="this.botonAgregar" class="bg-rosa"
-              [disabled]="(!blnBtnPermisos ||form.invalid)&&this.botonAgregar===true">Guardar</ion-button>
-            <ion-button style="position: relative;" type="submit" *ngIf="valida ===true" class="bg-rosa"
-              [disabled]="(!blnBtnPermisos ||form.invalid)&&this.botonAgregar===false">Actualizar</ion-button>
-          </div>
-        </ion-col>
-        <ion-col>
-          <div>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
   </form>
 </ion-content>

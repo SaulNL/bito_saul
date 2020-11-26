@@ -1,12 +1,16 @@
 <ion-header translucent>
-  <ion-toolbar>
+  <ion-toolbar class="tolbar">
     <ion-title>Publicar promoción</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">Close</ion-button>
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content fullscreen >
+  <ion-card>
+    <ion-card-header>
   <form  #formBasicos="ngForm" (ngSubmit)="guardarPublicacion(formBasicos)">
 
     <div *ngIf="mensajePublicacion2">
@@ -73,7 +77,7 @@
             <span>Sólo puede seleccionar {{diasPermitidos}} días, verifique sus fechas</span>
           </div>
           
-          <ion-button type="submit" color="primary" expand="block" style="margin-top: 10px;">Publicar</ion-button>
+          <ion-button type="submit"  class="bg-rosa" expand="block" style="margin-top: 10px;">Publicar</ion-button>
 
           <ion-button  type="button"  color="medium" expand="block"(click)="cancelarPublicacion()">Cancelar</ion-button>    
           
@@ -81,4 +85,6 @@
       </div>
     </div>
   </form>
+</ion-card-header>
+</ion-card>
 </ion-content>

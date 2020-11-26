@@ -8,7 +8,7 @@ import { ModalController } from '@ionic/angular';
 import { ModalPublicarComponent } from 'src/app/components/modal-publicar/modal-publicar.component';
 import { QuienVioModel } from '../../Modelos/QuienVioModel';
 import { ModalInfoPromoComponent } from '../../components/modal-info-promo/modal-info-promo.component';
-import {Router, ActivatedRoute} from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-mispromociones',
@@ -31,7 +31,7 @@ export class MispromocionesPage implements OnInit {
   public lstPromociones: Array<PromocionesModel>;
   public lstPromocionesBK: Array<PromocionesModel>;
   public publicacionesHechas: number;
-  public publicacionesPermitidas:number;
+  public publicacionesPermitidas: number;
   public lstPromocionesPublicadasBK: Array<PromocionesModel>;
   public blnActivarFormularioEdicion: boolean;
   public filtro: any;
@@ -47,17 +47,18 @@ export class MispromocionesPage implements OnInit {
   public btnLoaderModal = false;
   public lstQuienVioPublicacion: Array<QuienVioModel>;
   public numeroVisto: number;
+  public blnActivaPromocion: boolean;
 
   constructor(
-              private _promociones_service: PromocionesService,
-              public _notificacionService: ToadNotificacionService,
-              private  alertController: AlertController,
-              public modalController: ModalController,
-              private _router: Router,
-              private active: ActivatedRoute
-            ) { 
-
-            }
+    private _promociones_service: PromocionesService,
+    public _notificacionService: ToadNotificacionService,
+    private alertController: AlertController,
+    public modalController: ModalController,
+    private _router: Router,
+    private active: ActivatedRoute
+  ) {
+    this.blnActivaPromocion = true;
+  }
 
   ngOnInit() {
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
@@ -73,7 +74,7 @@ export class MispromocionesPage implements OnInit {
     this.buscar();
     this.active.queryParams.subscribe(params => {
       if (params && params.special) {
-        if (params.special){
+        if (params.special) {
           this.buscar();
         }
       }
@@ -83,7 +84,7 @@ export class MispromocionesPage implements OnInit {
   agregar() {
     this.seleccionTO = new PromocionesModel();
     let navigationExtras = JSON.stringify(this.seleccionTO);
-    this._router.navigate(['/tabs/home/promociones/agregar-promocion'], { queryParams: {special: navigationExtras}});
+    this._router.navigate(['/tabs/home/promociones/agregar-promocion'], { queryParams: { special: navigationExtras } });
   }
 
   buscar() {
@@ -116,7 +117,7 @@ export class MispromocionesPage implements OnInit {
     this.btnDetallePromocion = false;
   }
 
-  obtenerNumeroPublicacionesPromocion(){
+  obtenerNumeroPublicacionesPromocion() {
     this._promociones_service.obtenerNumeroPublicacionesPromocion(this.id_proveedor).subscribe(
       response => {
         this.publicacionesHechas = response.data.numPublicacionesPromo;
@@ -130,23 +131,23 @@ export class MispromocionesPage implements OnInit {
     );
   }
 
-  public obtenerPromocionesPublicadas(){
+  public obtenerPromocionesPublicadas() {
     this.loader = true;
     this._promociones_service.obtenerPromocinesPublicadas(this.seleccionTO).subscribe(response => {
-        this.lstPromocionesPublicadas = response.data;
-        this.lstPromocionesPublicadasBK = response.data;
-        this.loader = false;
-      },
+      this.lstPromocionesPublicadas = response.data;
+      this.lstPromocionesPublicadasBK = response.data;
+      this.loader = false;
+    },
       error => {
         this._notificacionService.error(error);
         this.loader = false;
       });
   }
 
-  public seleccionarPromocion(promocion: PromocionesModel){
+  public seleccionarPromocion(promocion: PromocionesModel) {
     this.promocion = promocion;
     let navigation = JSON.stringify(this.promocion);
-    this._router.navigate(['/tabs/home/promociones/publicar-promocion'], { queryParams: {especial: navigation}});
+    this._router.navigate(['/tabs/home/promociones/publicar-promocion'], { queryParams: { especial: navigation } });
   }
 
   btnBuscar() {
@@ -209,7 +210,7 @@ export class MispromocionesPage implements OnInit {
 
   public abrirModal(Promocion: PromocionesModel) {
 
-    if (this.publicacionesHechas >= this.publicacionesPermitidas){
+    if (this.publicacionesHechas >= this.publicacionesPermitidas) {
       this.mensajePublicacion = true;
     }
 
@@ -241,23 +242,25 @@ export class MispromocionesPage implements OnInit {
     }
   }
 
-  dejar( publicada: any ){
-    this.seleccionTO = publicada;
-    this.presentAlert();
+  dejar(publicada: any, evento, i) {
+    if (evento.detail.checked === false) {
+      this.presentAlert(i);
+    }
+      this.seleccionTO = publicada;
   }
-
-  async presentAlert() {
+  async presentAlert(i: number) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Dejar de publicar',
       subHeader: '!Precaución! esta acción no podrá ser revertida',
-      message: `¿Desea dejar de publicar esta publicación de la promoción: ${ this.seleccionTO.promocion }?`,
+      message: `¿Desea dejar de publicar esta publicación de la promoción: ${this.seleccionTO.promocion}?`,
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cancel',
           role: 'cancel',
+          cssClass: 'secondary',
           handler: () => {
-            console.log('cancelar');
+            this.validaRadio(i);
           }
         },
         {
@@ -272,7 +275,7 @@ export class MispromocionesPage implements OnInit {
     await alert.present();
   }
 
-  quitarPublicacionPromocion(){
+  quitarPublicacionPromocion() {
     this._promociones_service.quitarPublicacionPromocion(this.seleccionTO).subscribe(
       response => {
         this.buscar();
@@ -288,27 +291,27 @@ export class MispromocionesPage implements OnInit {
     this.quienVioPublicacion(id_promocion);
   }
 
-  quienVioPublicacion(id_promocion){
+  quienVioPublicacion(id_promocion) {
     this.btnLoaderModal = true;
     this._promociones_service.obtenerQuienVioPublicacion(id_promocion, this.usuario.id_persona).subscribe(
-        response => {
-          this.lstQuienVioPublicacion = response.data;
-          this.quienNumeroVioPublicacion(id_promocion);
-        },
-        error => {
-        }
+      response => {
+        this.lstQuienVioPublicacion = response.data;
+        this.quienNumeroVioPublicacion(id_promocion);
+      },
+      error => {
+      }
     );
   }
 
-  quienNumeroVioPublicacion(id_promocion){
+  quienNumeroVioPublicacion(id_promocion) {
     this._promociones_service.obtenerNumeroQuienVioPublicacion(id_promocion).subscribe(
-        response => {
-          this.numeroVisto = response.data;
-          this.btnLoaderModal = false;
-          this.infoPromocion();
-        },
-        error => {
-        }
+      response => {
+        this.numeroVisto = response.data;
+        this.btnLoaderModal = false;
+        this.infoPromocion();
+      },
+      error => {
+      }
     );
   }
 
@@ -326,8 +329,16 @@ export class MispromocionesPage implements OnInit {
     return await modal.present();
   }
 
-  regresar(){
+  regresar() {
     this._router.navigateByUrl('tabs/home/perfil');
   }
-
+  validaRadio(i) {
+    let radiobuttons = document.getElementsByTagName("ion-toggle");
+    for (let j = 0; j < radiobuttons.length; j++) {
+      if (parseInt(radiobuttons[j].value) === i) { 
+        console.log(radiobuttons[j].value);
+        radiobuttons[j].setAttribute('checked', 'true');
+      }
+    }
+  }
 }

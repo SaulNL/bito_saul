@@ -97,7 +97,6 @@ export class PedidoNegocioComponent implements OnInit {
         console.error(e);
       }
     }).catch(error => {
-      console.log(error, 'asdasdsad');
       this.blnUbicacion = false;
     }
     );

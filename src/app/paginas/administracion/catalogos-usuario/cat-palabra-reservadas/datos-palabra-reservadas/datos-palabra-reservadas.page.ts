@@ -119,8 +119,8 @@ export class DatosPalabraReservadasPage implements OnInit {
   async presentAlertMultipleButtons() {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
-      header: "Borrar",
-      message: "Confirmar borrar variable",
+      header: "¿Esta seguro que desa Eliminar el registro?",
+      message: "Recuerde que la acción es ireversible",
       buttons: [
         {
           text: "Cancelar",
