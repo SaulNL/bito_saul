@@ -12,6 +12,7 @@ import { UtilsCls } from './../../../../utils/UtilsCls';
 import { CatEstadoModel } from 'src/app/Modelos/busqueda/CatEstadoModel';
 import { CatMunicipioModel } from 'src/app/Modelos/busqueda/CatMunicipioModel';
 import { CatLocalidadModel } from 'src/app/Modelos/busqueda/CatLocalidadModel';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-datos-domicilio',
@@ -37,6 +38,7 @@ export class DatosDomicilioPage implements OnInit {
   public localiAux: any;
 
   constructor(
+    private platform: Platform,
     private router: Router,
     private active: ActivatedRoute,
     private actionSheetController: ActionSheetController,
@@ -67,7 +69,11 @@ export class DatosDomicilioPage implements OnInit {
     });
     this.cagarMapa();
     this.load_cat_estados();
+    console.log(this.negocioTO);
+    console.log(this.negocioGuardar);
+    this.platform.backButton.observers.pop();
   }
+  
   datosD() {
     this.negocioGuardar.det_domicilio.calle = this.negocioTO.det_domicilio.calle;
     this.negocioGuardar.det_domicilio.numero_int = this.negocioTO.det_domicilio.numero_int;

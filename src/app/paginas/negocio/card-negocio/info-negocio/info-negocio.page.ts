@@ -100,6 +100,8 @@ export class InfoNegocioPage implements OnInit {
     });
     this.obtenerCatOrganizaciones();
     this.buscarNegocio(this.negocioTO.id_negocio);
+    console.log(this.negocioTO);
+    console.log(this.negocioGuardar);
   }
   public buscarNegocio(id) {
     if (
@@ -270,7 +272,7 @@ export class InfoNegocioPage implements OnInit {
     this.negocioServico.obtenerCatOrganizaciones().subscribe((response) => {
       this.lstOrganizaciones = Object.values(response.data);
       this.lstOrganizaciones.forEach((element) => {
-        if (this.negocioTO != null) {
+        if (this.negocioTO.id_negocio != null) {
           this.negocioTO.organizaciones.forEach((elements) => {
             if (element.id_organizacion == elements) {
               this.tipoOrgAux = element.nombre;
@@ -538,7 +540,7 @@ export class InfoNegocioPage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: '¿Estas seguro?',
-      message: 'Se cancelara todo el proceso',
+      message: 'Se cancelara todo el proceso?',
       buttons: [
         {
           text: 'Cancel',

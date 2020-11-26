@@ -4,6 +4,14 @@ import { NegocioModel } from "./../../../../Modelos/NegocioModel";
 import { ActionSheetController, AlertController } from "@ionic/angular";
 import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
 import { NegocioService } from "../../../../api/negocio.service";
+import { Plugins, AppState, AppUrlOpen } from '@capacitor/core';
+import { Platform } from '@ionic/angular';
+
+
+const { App } = Plugins;
+
+App.addListener('backButton', (data: AppUrlOpen) => {
+});
 
 @Component({
   selector: "app-datos-contacto",
@@ -23,6 +31,7 @@ export class DatosContactoPage implements OnInit {
   public negocioGuardar: any;
   public nuevoPS: any;
   constructor(
+    private platform: Platform,
     private router: Router,
     private active: ActivatedRoute,
     private actionSheetController: ActionSheetController,
@@ -46,7 +55,10 @@ export class DatosContactoPage implements OnInit {
         this.negocioGuardar = this.datos.pys;
       }
     });
+    this.platform.backButton.observers.pop();
   }
+  
+
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       header: "Opciones",
