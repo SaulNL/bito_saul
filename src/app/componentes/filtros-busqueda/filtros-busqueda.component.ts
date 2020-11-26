@@ -110,7 +110,7 @@ export class FiltrosBusquedaComponent implements OnInit {
         }
         if(this.filtros.kilometros <=10 ){
             this.kilometrosSlider = this.filtros.kilometros;            
-        }
+        }     
     }
 
     public obtenergiros() {
@@ -164,6 +164,7 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     buscar() {
+        this.filtros.strBuscar=null;
         this.filtros.idTipoNegocio = this.listaTipoNegocio;
         if (this.filtros.tipoBusqueda === 1) {
             this.filtros.idEstado = null;

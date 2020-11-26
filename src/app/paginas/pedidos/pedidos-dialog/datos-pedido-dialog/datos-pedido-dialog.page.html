@@ -81,10 +81,10 @@
       <ion-item>
         <ion-label position="floating">Motivo de la cancelación</ion-label>
         <ion-textarea type="text" [(ngModel)]="motivo"></ion-textarea>
-        <ion-icon *ngIf="motivo" (click)="motivo=''" name="close-outline"></ion-icon>
+        <ion-icon *ngIf="motivo" (click)="motivo=''" name="close-outline" slot="end"></ion-icon>
       </ion-item>
       <div align="end">
-        <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="regresar()" color="light">Regresar
+        <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="btnRegresar()" color="light">Regresar
         </ion-button>
         <ion-button expand="full" [disabled]="!motivo || loaderBtn" (click)="cancelarPedido(pedido)" color="danger"> Cancelar pedido
         </ion-button>
