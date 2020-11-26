@@ -11,6 +11,7 @@ import { Platform } from '@ionic/angular';
 const { App } = Plugins;
 
 App.addListener('backButton', (data: AppUrlOpen) => {
+  console.log("Hola mundo");
 });
 
 @Component({
@@ -55,7 +56,7 @@ export class DatosContactoPage implements OnInit {
         this.negocioGuardar = this.datos.pys;
       }
     });
-    this.platform.backButton.observers.pop();
+    //this.platform.backButton.observers.pop();
   }
   
 
