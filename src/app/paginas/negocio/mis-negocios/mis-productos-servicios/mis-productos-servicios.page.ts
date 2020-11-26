@@ -256,10 +256,7 @@ export class MisProductosServiciosPage implements OnInit {
             case 2:
               this.datosNegocio.cartaServicio = archivo;
             break;
-          default:
-            break;
         }
-      
         this.guardarDatos();
       }
     );
@@ -272,11 +269,20 @@ export class MisProductosServiciosPage implements OnInit {
     if (this.datosNegocio.cartaProducto.archivo_64 !== undefined){
       this.loadPdf = true;
     }
+    if (this.datosNegocio.cartaServicio.archivo_64 !== undefined){
+      this.loadPdf = true;
+    }
     this.sercicioNegocio.guardarProductoServio(this.datosNegocio).subscribe(
       repsuesta => {
         this.datosNegocio = repsuesta.data;
         if ( this.datosNegocio.cartaProducto !== undefined && this.datosNegocio.cartaProducto !== null && this.datosNegocio.cartaProducto !== '') {
           this.carta = this.cleanURL(this.datosNegocio.cartaProducto);
+        }
+        if (this.loadPdf){
+          this.notificacionService.exito('Carta guardada con éxito');
+        }
+        if ( this.datosNegocio.cartaServicio !== undefined && this.datosNegocio.cartaServicio !== null && this.datosNegocio.cartaServicio !== '') {
+          this.carta = this.cleanURL(this.datosNegocio.cartaServicio);
         }
         if (this.loadPdf){
           this.notificacionService.exito('Carta guardada con éxito');
@@ -436,13 +442,16 @@ export class MisProductosServiciosPage implements OnInit {
       if( !exist ) {
         this.nuevaCategoria.id_categoria = null;
         this.nuevaCategoria.id_categoria_negocio = null;
-        if (this.iden === 1){
-          this.nuevaCategoria.tipo_categoria = 1;
-        } 
-        if(this.iden === 2){
-          this.nuevaCategoria.tipo_categoria = 0;
+        switch (this.iden) {
+          case 1:
+            this.nuevaCategoria.tipo_categoria = 0;  
+            break;
+            case 2:
+              this.nuevaCategoria.tipo_categoria = 1;  
+              break;
+          default:
+            break;
         }
-
         const enviar = {
           id_negocio: this.negocioTO.id_negocio,
           id_proveedor: this.datosUsuario.proveedor.id_proveedor,
@@ -458,7 +467,7 @@ export class MisProductosServiciosPage implements OnInit {
               nombre: '',
               id_categoria: null,
               id_categoria_negocio: null,
-              tipo_categoria: 0
+              tipo_categoria: null
             }
             this.agregarClas = false;
             this.blnNuevaCategoria = false;
