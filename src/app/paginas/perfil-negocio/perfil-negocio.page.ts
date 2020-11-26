@@ -559,15 +559,17 @@ export class PerfilNegocioPage implements OnInit {
         await alert.present();
     }
     calcularDistancia(){
-        const start = {
-            latitude: this.miLat,
-            longitude: this.miLng
-        };
-        const end = {
-            latitude: this.informacionNegocio.latitud,
-            longitude: this.informacionNegocio.longitud
-        };              
-        const dis = haversineCalculator(start, end);
-        this.distanciaNegocio = dis.toFixed(2);
+        setTimeout(()=>{
+            const start = {
+                latitude: this.miLat,
+                longitude: this.miLng
+            };
+            const end = {
+                latitude: this.informacionNegocio.latitud,
+                longitude: this.informacionNegocio.longitud
+            };              
+            const dis = haversineCalculator(start, end);
+            this.distanciaNegocio = dis.toFixed(2);
+        }, 3000);
     }
 }

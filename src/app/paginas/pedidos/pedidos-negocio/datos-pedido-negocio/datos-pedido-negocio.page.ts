@@ -48,7 +48,7 @@ export class DatosPedidoNegocioPage implements OnInit {
 
   regresar(){
     //this.blnCancelar = false;
-    this.router.navigate(['/tabs/home/ventas']);
+    this.router.navigate(['/tabs/home/ventas'], { queryParams: {special: true}  });
     //this.admin.blnActivaDatosVariable = false;
     //this.admin.getVariables();
   }

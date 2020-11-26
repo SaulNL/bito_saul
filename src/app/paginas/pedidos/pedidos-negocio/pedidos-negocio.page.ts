@@ -34,6 +34,15 @@ export class PedidosNegocioPage implements OnInit {
     this.buscar();
     this.buscarEstatus();
     this.presentLoading();
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          this.buscar();
+          this.buscarEstatus();
+          this.presentLoading();         
+        }
+      }
+    });
   }
   
   buscar() {

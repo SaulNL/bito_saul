@@ -145,7 +145,7 @@
                         {{informacionNegocio.det_domicilio.nombre_localidad !== undefined ? informacionNegocio.det_domicilio.nombre_localidad + ', ' : ''}}{{informacionNegocio.det_domicilio.nombre_municipio}}
                         ,
                         {{informacionNegocio.det_domicilio.nombre_estado}}</p>
-                    <p *ngIf="!permisoUbicacionCancelado && miLat && miLng">
+                    <p *ngIf="!permisoUbicacionCancelado && miLat && miLng && distanciaNegocio !== 'NaN'">
                         <b class="texto-resaltado">A {{distanciaNegocio}} Km Cerca de tí</b>
                     </p>
                 </ion-col>

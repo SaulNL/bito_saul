@@ -36,6 +36,14 @@ export class PedidosDialogPage implements OnInit {
   ngOnInit() {
     this.buscar();
     this.buscarEstatus();
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          this.buscar();
+          this.buscarEstatus();          
+        }
+      }
+    });
   }
 
   buscar() {
