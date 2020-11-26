@@ -69,31 +69,17 @@ export class DatosCatTipoVentasPage implements OnInit {
         this.ventaTO.activo = 0;
       }
     }
-    //this.loader = true;
     this.servicioUsuarios.guardarTipoVenta(this.ventaTO).subscribe(
       (data) => {
         if (data.code === 200) {
-          this._notificacionService.exito(
-            "Los datos se guardaron correctamente"
-          );
-          if (this.botonAgregar){
-              this.regresar();
-          } else{
-            this.valida = false;
-          }
-          //this.loader = false;
-          //this.regresar();
-          
+          this._notificacionService.exito("Los datos se guardaron correctamente");
+          this.regresar();
         } else {
-          //this.loader = false;
           this._notificacionService.error(data.message);
         }
       },
       (error) => {
         this._notificacionService.error(error);
-        //this.loader = false;
-      },
-      () => {
       }
     );
   }
@@ -140,8 +126,8 @@ export class DatosCatTipoVentasPage implements OnInit {
   async presentAlertMultipleButtons() {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
-      header: "Borrar",
-      message: "Confirmar borrar variable",
+      header: "¿Esta seguro que desa Eliminar el registro?",
+      message: "Recuerde que la acción es ireversible",
       buttons: [
         {
           text: "Cancelar",
