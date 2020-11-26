@@ -117,7 +117,9 @@ export class DatosCatRolPage implements OnInit {
     );
   }
   actualizarDatos() {
-    console.log(this.variableTO);
+    if(this.variableTO.activo === null){
+      this.variableTO.activo = 0;
+    }
     this.servicioUsuarios.guardarRol(this.variableTO).subscribe(
       (data) => {
         if (data.code === 200) {
@@ -207,6 +209,7 @@ export class DatosCatRolPage implements OnInit {
     );
   }
   validarCheck(evento) {
+  
     if (evento.detail.checked) {
       this.variableTO.activo = 1;
     } else {
