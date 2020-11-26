@@ -275,16 +275,16 @@ export class InfoNegocioPage implements OnInit {
   public obtenerCatOrganizaciones() {
     this.negocioServico.obtenerCatOrganizaciones().subscribe((response) => {
       this.lstOrganizaciones = Object.values(response.data);
-      this.lstOrganizaciones.forEach((element) => {
-        if (this.negocioTO.id_negocio != null) {
+      if (this.negocioTO.id_negocio != null) {
+        this.lstOrganizaciones.forEach((element) => {
           this.negocioTO.organizaciones.forEach((elements) => {
             if (element.id_organizacion == elements) {
               this.tipoOrgAux = element.nombre;
-                       
             }
-          });  
           });
-      });
+        });
+      }
+    });
   }
 
   /**
