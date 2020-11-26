@@ -133,7 +133,7 @@ export class ModalPublicarSolicitudPage implements OnInit {
             if (response.code === 200) {
               this.loader.dismiss();
               this.notificaciones.exito('Se público correctamente la solicitud');
-              this.regresar();
+              this.router.navigate(['/tabs/home/solicitudes']);
               form.resetForm();
             //  this.buscar();
             } else {
