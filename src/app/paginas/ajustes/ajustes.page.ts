@@ -30,23 +30,25 @@ export class AjustesPage implements OnInit {
   ngOnInit() {
     this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
+        this.usuario = JSON.parse(localStorage.getItem('u_data'));
         if (params.special) {
           if (localStorage.getItem("isRedirected") === "false") {
             localStorage.setItem("isRedirected", "true");
-            console.log(localStorage.getItem("isRedirected"));
             location.reload();
           }
         }
       }
     });
     this.usuario = this.util.getData();
-    console.log(this.usuario);
     if (this.usuario === null) {
       this.navctrl.navigateRoot("tabs/inicio");
     }
     this.url_user = AppSettings.API_ENDPOINT + "img/user.png";
   }
-
+  ionViewDidLeave(){
+    console.log('entro');
+    this.usuario = this.util.getData();
+  }
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       header: "Perfil",

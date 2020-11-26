@@ -70,15 +70,11 @@ export class DatosBasicosPage implements OnInit {
       this.servicioPersona.guardar(this.usuarioSistema).subscribe(
         data => {
           if (data.code === 200) {
+            localStorage.setItem('u_data', JSON.stringify(this.usuarioSistema));
+            this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
             this.loader.dismiss();
-            this.notificaciones.alerta(data.data.mensaje);
+            this.notificaciones.exito(data.data.mensaje);
           }
-          //const resultado = this.sesionUtl.actualizarSesion();
-          this.router.navigate(['/tabs/home/perfil']);
-          this.loader.dismiss();
-          this.notificaciones.exito(data.data.mensaje);
-          //resolve(resultado);
-
         },
         error => {
           this.loader.dismiss();
@@ -90,7 +86,7 @@ export class DatosBasicosPage implements OnInit {
     miPrimeraPromise.then((successMessage) => {
     });
   }
-  regresar(){
+  regresar() {
     this.router.navigate(['/tabs/home/perfil']);
   }
   convercionFechaNac(event) {
@@ -137,10 +133,10 @@ export class DatosBasicosPage implements OnInit {
               this.resizeToWidth = 200;
               this.resizeToHeight = 200;
               this.abrirModal(event, this.resizeToWidth, this.resizeToHeight).then(r => {
-               if (r !== undefined) {
+                if (r !== undefined) {
                   const archivo = new ArchivoComunModel();
                   archivo.nombre_archivo = r.nombre_archivo,
-                  archivo.archivo_64 = r.data;
+                    archivo.archivo_64 = r.data;
                   this.usuarioSistema.selfie = archivo;
                 }
               }

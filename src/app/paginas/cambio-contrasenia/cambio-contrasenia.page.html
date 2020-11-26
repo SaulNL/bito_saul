@@ -24,7 +24,7 @@
               </span>
               <ion-item>
                 <ion-label position="stacked">Nueva Contraseña</ion-label>
-                <ion-input type="password" name="contraseniaN" (keyup)="contraseniasIguales()" formControlName="contraseniaN" type="password" [(ngModel)]="contrasenia"></ion-input>
+                <ion-input type="password" name="contraseniaN" (ionChange)="contraseniasIguales()" formControlName="contraseniaN" type="password" [(ngModel)]="contrasenia"></ion-input>
               </ion-item>
               <span *ngIf="formGroup1.controls.contraseniaN.invalid && formGroup1.controls.contraseniaN.touched" class="mat-requerido">
                la contraseña nueva campo es requerido 
@@ -34,14 +34,14 @@
               </span>
               <ion-item>
                 <ion-label position="stacked">Repetir Contraseña</ion-label>
-                <ion-input name="contraseniaR" (keyup)="contraseniasIguales()" formControlName="contraseniaR" type="password" [(ngModel)]="contraseniaRepit"
+                <ion-input name="contraseniaR" (ionChange)="contraseniasIguales()" formControlName="contraseniaR" type="password" [(ngModel)]="contraseniaRepit"
                 required></ion-input>
               </ion-item> 
               <span *ngIf="blnIguales">
                 Las contraseñas no coinciden
               </span>     
         </ion-list>
-        <ion-button type="submit" color="primary" [disabled]="formGroup1.invalid || blnIguales" expand="block">Actualizar</ion-button>
+        <ion-button type="submit" class="bg-rosa" [disabled]="formGroup1.invalid || blnIguales" expand="block">Actualizar</ion-button>
         </form>
     </ion-card-content>
 </ion-card>
