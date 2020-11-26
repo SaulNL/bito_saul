@@ -87,6 +87,7 @@ export class InicioPage implements OnInit {
     }
 
     buscarToolbar(event) {
+        this.Filtros=new FiltrosModel();
         this.Filtros.strBuscar = event;
         this.buscarNegocios();
     }
@@ -101,7 +102,7 @@ export class InicioPage implements OnInit {
             this.modal.dismiss({
                 'dismissed': true
             });
-            this.Filtros = res;
+            this.Filtros = res;            
             this.buscarNegocios();
         });        
         this.modal = await this.modalController.create({

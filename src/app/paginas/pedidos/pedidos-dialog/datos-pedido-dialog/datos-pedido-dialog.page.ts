@@ -31,11 +31,11 @@ export class DatosPedidoDialogPage implements OnInit {
   cancelar() {
     this.blnCancelar = true;
   }
-  regresar(){
+  btnRegresar(){
     this.blnCancelar = false;
+  }
+  regresar(){
     this.router.navigate(['/tabs/home/compras'], { queryParams: {special: true}  });
-    //this.admin.blnActivaDatosVariable = false;
-    //this.admin.getVariables();
   }
   cancelarPedido(pedido: any) {
     //this.loaderBtn = true;
