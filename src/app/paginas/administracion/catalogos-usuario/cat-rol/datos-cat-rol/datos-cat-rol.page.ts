@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { FiltroCatRolModel } from "../../../../../Modelos/catalogos/FiltroCatRolModel";
 import { AdministracionService } from "../../../../../api/administracion-service.service";
-import {Router, ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from "@angular/forms";
 import { AlertController } from "@ionic/angular";
 import { ActionSheetController } from "@ionic/angular";
@@ -38,7 +38,7 @@ export class DatosCatRolPage implements OnInit {
     this.variableTO = new FiltroCatRolModel();
     this.valida = false;
     this.isToggled = false;
-    this.botonAgregar=false;
+    this.botonAgregar = false;
   }
   public notify() {
     let permisoSeleccionado = this.variableTO.permisos.filter(function (
@@ -53,7 +53,7 @@ export class DatosCatRolPage implements OnInit {
     }
   }
   regresar() {
-    this.router.navigate(['/tabs/home/cat-rol'], { queryParams: {special: true}  });
+    this.router.navigate(['/tabs/home/cat-rol'], { queryParams: { special: true } });
     //this.admin.blnActivaDatosRol = false;
     //this.btnAdd.botonAgregar = false;
   }
@@ -62,9 +62,9 @@ export class DatosCatRolPage implements OnInit {
       if (params && params.special) {
         this.actualTO = JSON.parse(params.special);
         if (this.actualTO.id_rol === null || this.actualTO.id_rol === undefined) {
-          this.botonAgregar=true;
-        }else{
-          this.botonAgregar=false;
+          this.botonAgregar = true;
+        } else {
+          this.botonAgregar = false;
         }
       }
     });
@@ -95,7 +95,7 @@ export class DatosCatRolPage implements OnInit {
       (error) => {
         //console.log(error);
       },
-      () => {}
+      () => { }
     );
   }
   getPermiso() {
@@ -116,36 +116,20 @@ export class DatosCatRolPage implements OnInit {
       }
     );
   }
-  actualizarDatos(form: NgForm) {
-    //this.loader = true;
-    if (this.variableTO.activo === null) {
-      this.variableTO.activo = 0;
-    }
+  actualizarDatos() {
+    console.log(this.variableTO);
     this.servicioUsuarios.guardarRol(this.variableTO).subscribe(
       (data) => {
         if (data.code === 200) {
-          if (this.botonAgregar) {
-            this.notificaciones.exito("Rol guardado");
-            this.regresar();
-          } else {
-            this.notificaciones.exito("Rol actualizado");
-            this.valida = false;
-          }
-          //this.admin.getRoles();
-          //this.admin.blnActivaDatosRol = false;
-          //this.admin.activarTabla();
+          this.notificaciones.exito("Los datos se guardaron correctamente");
+          this.regresar();
         } else {
-          //this.loader = false;
           this.notificaciones.alerta(data.message);
         }
       },
       (error) => {
         this.notificaciones.alerta(error);
-        //this._notificacionService.pushError(error);
-        //this.loader = false;
-      },
-      () => {
-        //window.scrollTo({ top: 0, behavior: 'smooth' });
+
       }
     );
     this.valida = false;
@@ -173,7 +157,7 @@ export class DatosCatRolPage implements OnInit {
           text: "Cancel",
           icon: "close",
           role: "cancel",
-          handler: () => {},
+          handler: () => { },
         },
       ],
     });
@@ -188,7 +172,7 @@ export class DatosCatRolPage implements OnInit {
         {
           text: "Cancelar",
           role: "No",
-          handler: (blah) => {},
+          handler: (blah) => { },
         },
         {
           text: "Confirmar",
@@ -221,5 +205,12 @@ export class DatosCatRolPage implements OnInit {
         this.notificaciones.error(error);
       }
     );
+  }
+  validarCheck(evento) {
+    if (evento.detail.checked) {
+      this.variableTO.activo = 1;
+    } else {
+      this.variableTO.activo = 0;
+    }
   }
 }

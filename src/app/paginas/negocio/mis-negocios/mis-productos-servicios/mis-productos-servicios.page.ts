@@ -606,7 +606,13 @@ export class MisProductosServiciosPage implements OnInit {
       this.productoNuevo.nombre_categoria1 = this.productoNuevo.categoria.nombre;
       datosAEnviar.productos.push(this.productoNuevo);
     }
-    this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
+    if(datosAEnviar.productos[0].imagen.archivo_64 === '' ||
+    datosAEnviar.productos[0].imagen.archivo_64 === null ||
+    datosAEnviar.productos[0].imagen.archivo_64 === undefined){
+      this.banderaGuardar = false;
+      this.notificacionService.alerta('Agregue la foto de su producto');
+    }else{
+     this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
       repsuesta => {
         this.buscarCategoriasProductos();
         this.datosNegocio = repsuesta.data;
@@ -633,6 +639,7 @@ export class MisProductosServiciosPage implements OnInit {
         this.regresarLista();
       }
     );
+    }
   }
 
   buscarCategoriasProductos() {
@@ -670,7 +677,8 @@ export class MisProductosServiciosPage implements OnInit {
     if (this.blnEditando) {
       datosAEnviar.productos[this.indexModificar] = this.productoE;
     }
-    this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
+  
+   this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
       repsuesta => {
         this.buscarCategoriasProductos();
         // this.modalReference.close();
