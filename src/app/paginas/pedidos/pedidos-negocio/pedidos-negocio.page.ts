@@ -107,7 +107,7 @@ export class PedidosNegocioPage implements OnInit {
   }
 
   regresar(){
-    this.router.navigate(['/tabs/inicio'],{ queryParams: {special: false}});
+    this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}});
   }
 
   visto(pedido) {

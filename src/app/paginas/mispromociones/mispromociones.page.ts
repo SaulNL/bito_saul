@@ -48,6 +48,7 @@ export class MispromocionesPage implements OnInit {
   public lstQuienVioPublicacion: Array<QuienVioModel>;
   public numeroVisto: number;
   public blnActivaPromocion: boolean;
+  public mostrarListaPromocionesPublicadas = true;
 
   constructor(
     private _promociones_service: PromocionesService,

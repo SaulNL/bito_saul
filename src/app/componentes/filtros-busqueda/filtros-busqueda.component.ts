@@ -46,7 +46,7 @@ export class FiltrosBusquedaComponent implements OnInit {
         private modalCtrl: ModalController,
         private filtroServicio: FiltrosService
     ) {
-        this.ubicacion = 'localidad';
+        // this.ubicacion = 'localidad';
         this.lstCatTipoProducto = [];
         this.lstCatTipoNegocio = [];
         this.lstCatEstados = [];
@@ -69,6 +69,8 @@ export class FiltrosBusquedaComponent implements OnInit {
             this.filtros.latitud = this.miUbicacionlatitud;
             this.filtros.longitud = this.miUbicacionlongitud;
             try {
+                this.ubicacion = 'ubicacion';
+                this.filtros.tipoBusqueda = 1;
                 this.geocodeLatLng();
             } catch (e) {
                 console.error(e);
@@ -76,6 +78,8 @@ export class FiltrosBusquedaComponent implements OnInit {
         }).catch(error => {
             console.log(error, 'asdasdsad');
             this.blnUbicacion = false;
+            this.ubicacion = 'localidad';
+            this.filtros.tipoBusqueda = 0;
         }
         );
     }
@@ -84,7 +88,6 @@ export class FiltrosBusquedaComponent implements OnInit {
         this.miUbicacionlongitud = 0;
         this.miUbicacionlatitud = 0;
         this.kilometrosSlider = 1;
-        this.filtros.tipoBusqueda = 0;
         this.tipoNegocio = 0;
         if (this.filtros.idEstado !== null) {
             this.estado = this.filtros.idEstado;

@@ -30,6 +30,7 @@ export class PedidoNegocioComponent implements OnInit {
   suma: number;
   sumaTotal: number;
   cantidad: number;
+  //detalle:string;
   constructor(
     private utilsCls: UtilsCls,
     private modalController: ModalController,
@@ -128,6 +129,7 @@ export class PedidoNegocioComponent implements OnInit {
       latitud: this.lat,
       longitud: this.lng,
       pedido: this.lista
+      //detalle: this.detalle
     };
     console.log(pedido);
     this.negocioService.registrarPedido(pedido).subscribe(

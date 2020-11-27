@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PedidosService } from 'src/app/api/pedidos.service';
 import { UtilsCls } from 'src/app/utils/UtilsCls';
 import {Auth0Service} from '../../api/busqueda/auth0.service';
@@ -25,7 +25,8 @@ export class ToolbarBusquedaComponent implements OnInit {
     private navBarServiceService: NavBarServiceService,
     private sideBarService: SideBarService,
     private pedidosServicios: PedidosService,
-    private _utils_cls: UtilsCls
+    private _utils_cls: UtilsCls,
+    private active: ActivatedRoute
   ) { 
     this.totalNoVistos = 0;
     this.permisos = [];
@@ -37,8 +38,17 @@ export class ToolbarBusquedaComponent implements OnInit {
       this.notificacionesVentas();
       setInterval(it => {
         this.notificacionesVentas();
-      }, 700);
+      }, 300000);
     }
+    this.active.queryParams.subscribe(params => {
+      if (params && params.special) {
+        if (params.special){
+          if (this.permisos.includes('ver_negocio')){
+            this.notificacionesVentas();
+          }
+        }
+      }
+    });
     this.sideBarService.getObservable().subscribe((data) => {
       this.user = this._auth0.getUserData();
       this.permisosList();
