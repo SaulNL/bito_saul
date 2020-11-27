@@ -110,7 +110,7 @@
                 </div>
                 <div style="display: flex; justify-content: center; align-items: center; margin-top: 5px;">
                   <ion-button color="medium" expand="full" (click)="agregarClas = !agregarClas">Cancelar</ion-button>
-                  <ion-button color="danger" expand="full" type="submit">Guardar</ion-button>
+                  <ion-button color="danger" expand="full" type="submit">Crear</ion-button>
                 </div>
               </div>
             </form>  
@@ -166,13 +166,15 @@
                 <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
                   <div style="width: 25%;"><strong>No.</strong></div>
                   <div style="width: 25%;"><strong>Nombre</strong></div>
-                  <div style="width: 25%; text-align: center;"><strong>Precio</strong></div>
+                  <div style="width: 25%;"><strong>Existencia</strong></div>
                   <div style="width: 25%;"><strong>Acciones</strong></div>
                 </div>
                   <div style="width: 100%; display: flex; justify-content: center; align-items: center; margin: 10px 0;" *ngFor="let producto of listaProductos.productos; index as i">
                   <div style="width: 25%;">{{ i + 1 }}</div>
                   <div style="width: 25%;">{{ producto.nombre }}</div>
-                  <div style="width: 25%; text-align: center;">${{ producto.precio }}</div>
+                  <div style="width: 25%; text-align: center;">
+                    <ion-toggle name="existencia" disabled #existencia="ngModel" [(ngModel)]="producto.existencia" color="danger"></ion-toggle>
+                  </div>
                   <div style="width: 25%;">
                     <ion-button color="warning"  (click)="editarRegistro(producto)">
                       <ion-icon name="create"></ion-icon>
@@ -186,13 +188,15 @@
                 <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
                   <div style="width: 25%;"><strong>No.</strong></div>
                   <div style="width: 25%;"><strong>Nombre</strong></div>
-                  <div style="width: 25%; text-align: center;"><strong>Precio</strong></div>
+                  <div style="width: 25%;"><strong>Existencia</strong></div>
                   <div style="width: 25%;"><strong>Acciones</strong></div>
                 </div>
                   <div style="width: 100%; display: flex; justify-content: center; align-items: center; margin: 10px 0;" *ngFor="let producto of listaProductos.servicios; index as i">
                   <div style="width: 25%;">{{ i + 1 }}</div>
                   <div style="width: 25%;">{{ producto.nombre }}</div>
-                  <div style="width: 25%; text-align: center;">${{ producto.precio }}</div>
+                  <div style="width: 25%;">
+                    <ion-toggle name="existencia" disabled #existencia="ngModel" [(ngModel)]="producto.existencia" color="danger"></ion-toggle>
+                  </div>
                   <div style="width: 25%;">
                     <ion-button color="warning"  (click)="editarRegistro(producto)">
                       <ion-icon name="create"></ion-icon>

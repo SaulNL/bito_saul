@@ -85,13 +85,16 @@ export class MisProductosServiciosPage implements OnInit {
       this.blnEditando = false;
       this.productoE = new DtosMogoModel();
       this.listaCategorias = [];
+      this.productoNuevo = new DtosMogoModel();
     }
 
   ngOnInit() {
     this.active.queryParams.subscribe(params => {
       if (params && params.special) {
         this.ocultar = false;
-        this.productoNuevo = new DtosMogoModel();
+        
+        console.log(this.productoNuevo);
+        
         this.mostrarListaProductos = false;
         this.agregarProducto = false;
         this.agregarClas = false;
@@ -495,6 +498,10 @@ export class MisProductosServiciosPage implements OnInit {
     this.blnformMobile = true;
     this.isEdicion = false;
     this.opcion = 1;
+    this.productoNuevo= JSON.parse(JSON.stringify(this.productoNuevo));
+    
+    console.log(this.productoNuevo);
+    
   }
 
   public regresarLista() {
@@ -653,7 +660,8 @@ export class MisProductosServiciosPage implements OnInit {
     let datosAEnviar: DatosNegocios;
     const datos = JSON.stringify(this.datosNegocio);
     datosAEnviar = JSON.parse(datos);
-
+    this.productoNuevo.imagen = JSON.parse(JSON.stringify(this.productoNuevo.imagen));
+    console.log(this.productoNuevo.imagen);
     if (this.blnEditando) {
       datosAEnviar.productos[this.indexModificar] = this.productoNuevo;
     } else {
@@ -663,53 +671,126 @@ export class MisProductosServiciosPage implements OnInit {
           datosAEnviar.productos.push(this.productoNuevo);
           break;
       case 2:
+        console.log(this.productoNuevo);
+        
         datosAEnviar.servicios.push(this.productoNuevo);
         break;
       }
     }
-    if(datosAEnviar.productos[0].imagen.archivo_64 === '' ||
-    datosAEnviar.productos[0].imagen.archivo_64 === null ||
-    datosAEnviar.productos[0].imagen.archivo_64 === undefined){
-      this.banderaGuardar = false;
-      this.notificacionService.alerta('Agregue la foto de su producto');
-    }else{
-     this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
-      repsuesta => {
-        this.buscarCategoriasProductos();
-        this.datosNegocio = repsuesta.data;
-        this.blnformMobile = false;
-        this.listaVista.map(item => {
-          if (item.id_categoria === this.productoNuevo.id_categoria) {
-            this.productoNuevo = this.datosNegocio.productos[this.datosNegocio.productos.length - 1];
-            this.productoNuevo.index = this.datosNegocio.productos.length - 1;
-
-            // @ts-ignore
-            this.productoNuevo.editar = false;
-            switch (this.iden) {
-              case 1:
-                item.productos.push(this.productoNuevo);    
-                break;
-            case 2:
-              item.servicios.push(this.productoNuevo);    
-              break;
-              default:
-                break;
-            }
-            
+    console.log(datosAEnviar);
+    console.log(datosAEnviar.productos.length);
+    let tamano;
+    switch (this.iden) {
+      case 1:
+        if(datosAEnviar.productos.length>1){
+          tamano = datosAEnviar.productos.length-1;
+        }    
+        break;
+        case 2:
+          if(datosAEnviar.servicios.length>1){
+            tamano = datosAEnviar.servicios.length-1;
+          }    
+          break;
+      default:
+        break;
+    }
+    
+    switch (this.iden) {
+      case 1:
+        if(datosAEnviar.productos[tamano].imagen.archivo_64 === '' ||
+        datosAEnviar.productos[tamano].imagen.archivo_64 === null ||
+        datosAEnviar.productos[tamano].imagen.archivo_64 === undefined){
+          this.banderaGuardar = false;
+          this.notificacionService.alerta('Agregue la foto de su producto');
+        }else{
+         this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
+          repsuesta => {
+            this.buscarCategoriasProductos();
+            this.datosNegocio = repsuesta.data;
+            this.blnformMobile = false;
+            this.listaVista.map(item => {
+              if (item.id_categoria === this.productoNuevo.id_categoria) {
+                this.productoNuevo = this.datosNegocio.productos[this.datosNegocio.productos.length - 1];
+                this.productoNuevo.index = this.datosNegocio.productos.length - 1;
+    
+                // @ts-ignore
+                this.productoNuevo.editar = false;
+                switch (this.iden) {
+                  case 1:
+                    item.productos.push(this.productoNuevo);    
+                    break;
+                case 2:
+                  item.servicios.push(this.productoNuevo);    
+                  break;
+                  default:
+                    break;
+                }
+                
+              }
+            });
+            this.notificacionService.exito('Se guardó el producto con éxito');
+            this.indexModificar = undefined;
+            this.blnEditando = false;
+            this.productoNuevo = new DtosMogoModel();
+          },
+          error => {
+    
+          }, () => {
+            this.banderaGuardar = false;
+            this.regresarLista();
           }
-        });
-        this.notificacionService.exito('Se guardó el producto con éxito');
-        this.indexModificar = undefined;
-        this.blnEditando = false;
-        this.productoNuevo = new DtosMogoModel();
-      },
-      error => {
-
-      }, () => {
-        this.banderaGuardar = false;
-        this.regresarLista();
-      }
-    );
+        );
+        }   
+        break;
+    
+        case 2:
+          if(datosAEnviar.servicios[tamano].imagen.archivo_64 === '' ||
+          datosAEnviar.servicios[tamano].imagen.archivo_64 === null ||
+          datosAEnviar.servicios[tamano].imagen.archivo_64 === undefined){
+            this.banderaGuardar = false;
+            this.notificacionService.alerta('Agregue la foto de su producto');
+          }else{
+           this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
+            repsuesta => {
+              this.buscarCategoriasProductos();
+              this.datosNegocio = repsuesta.data;
+              this.blnformMobile = false;
+              this.listaVista.map(item => {
+                if (item.id_categoria === this.productoNuevo.id_categoria) {
+                  this.productoNuevo = this.datosNegocio.servicios[this.datosNegocio.servicios.length - 1];
+                  this.productoNuevo.index = this.datosNegocio.servicios.length - 1;
+      
+                  // @ts-ignore
+                  this.productoNuevo.editar = false;
+                  switch (this.iden) {
+                    case 1:
+                      item.productos.push(this.productoNuevo);    
+                      break;
+                  case 2:
+                    item.servicios.push(this.productoNuevo);    
+                    break;
+                    default:
+                      break;
+                  } 
+                }
+              });
+              this.notificacionService.exito('Se guardó el producto con éxito');
+              this.indexModificar = undefined;
+              this.blnEditando = false;
+              this.productoNuevo = new DtosMogoModel();
+            },
+            error => {
+      
+            }, () => {
+              this.banderaGuardar = false;
+              this.regresarLista();
+            }
+          );
+          }
+        break;
+      default:
+        this.notificacionService.alerta('Por favor seleccione productos o servicios');  
+        break;
     }
   }
 
@@ -783,5 +864,5 @@ export class MisProductosServiciosPage implements OnInit {
     );
   }
 
-
+   
 }
