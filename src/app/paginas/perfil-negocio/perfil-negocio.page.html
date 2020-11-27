@@ -38,9 +38,12 @@
             </ion-col>
         </ion-row>
         <ion-row>
+            
             <ion-card class="w-100">
                 <ion-card-content class="ion-text-center">
-                    {{informacionNegocio.descripcion}}
+                    <a [href]="url + informacionNegocio.url_negocio" style="color: #f44f7b;"><ion-label class="ion-text-justify">{{url + informacionNegocio.url_negocio}}</ion-label></a>
+                    <hr>
+                    {{informacionNegocio.descripcion | slice:0:65}}...         
                 </ion-card-content>
             </ion-card>
         </ion-row>
@@ -80,8 +83,12 @@
                 <ion-col size=12>
                     <div (click)="motrarContacto = !motrarContacto;" class="list">
                         <ul>
-                            <li style="display: flex; justify-content: center; align-items: center;">
-                                {{ estatus.tipo === 1 ? 'Abierto' : 'Cerrado'}}</li>
+                            <ion-chip outline *ngIf="estatus.tipo === 1" color="success">
+                                <ion-label>Abierto</ion-label>
+                            </ion-chip>
+                            <ion-chip *ngIf="estatus.tipo === 0" color="danger">
+                                <ion-label>Cerrado</ion-label>
+                            </ion-chip>
                             <li class="lista">
                                 <div>
                                     {{ estatus.mensaje }}
@@ -259,46 +266,34 @@
             </ion-row>
         </ion-grid>
     </div>
-
-
-    <ion-fab *ngIf="existeSesion" horizontal="end" vertical="bottom" slot="fixed">
-        <ion-fab-button color="primary">
-            <ion-icon name="call"></ion-icon>
-        </ion-fab-button>
-        <ion-fab-list side="top">
-            <ion-fab-button *ngIf="informacionNegocio.telefono !== null && informacionNegocio.telefono !== ''"
-                color="light" (click)="llamar(informacionNegocio.telefono)">
-                <ion-icon name="call"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-button color="light"
-                *ngIf="informacionNegocio.celular !== null && informacionNegocio.celular !== ''"
-                (click)="enviarWhasapp(informacionNegocio.celular)">
-                <ion-icon name="logo-whatsapp"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-button color="light"
-                *ngIf="informacionNegocio.id_facebook !== null && informacionNegocio.id_facebook !== ''"
-                [href]="informacionNegocio.id_facebook" target="_blank">
-                <ion-icon name="logo-facebook"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-button color="light"
-                *ngIf="informacionNegocio.twitter !== null && informacionNegocio.twitter !== ''"
-                [href]="informacionNegocio.twitter" target="_blank">
-                <ion-icon name="logo-twitter"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-button color="light"
-                *ngIf="informacionNegocio.instagram !== null && informacionNegocio.instagram !== ''"
-                [href]="informacionNegocio.instagram" target="_blank">
-                <ion-icon name="logo-instagram"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-button color="light" *ngIf="informacionNegocio.tiktok !== null && informacionNegocio.tiktok !== ''"
-                [href]="informacionNegocio.tiktok" target="_blank">
-                <ion-icon name="logo-tiktok"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-button color="light"
-                *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''"
-                [href]="informacionNegocio.youtube" target="_blank">
-                <ion-icon name="logo-youtube"></ion-icon>
-            </ion-fab-button>
-        </ion-fab-list>
+    <ion-fab *ngIf="existeSesion"  horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''"
+    [href]="informacionNegocio.youtube" target="_blank">
+        <ion-icon name="logo-youtube"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.tiktok !== null && informacionNegocio.tiktok !== ''"
+    [href]="informacionNegocio.tiktok" target="_blank">
+        <ion-icon name="logo-tiktok"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.instagram !== null && informacionNegocio.instagram !== ''"
+    [href]="informacionNegocio.instagram" target="_blank">
+        <ion-icon name="logo-instagram"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.twitter !== null && informacionNegocio.twitter !== ''"
+    [href]="informacionNegocio.twitter" target="_blank">
+        <ion-icon name="logo-twitter"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.id_facebook !== null && informacionNegocio.id_facebook !== ''"
+    [href]="informacionNegocio.id_facebook" target="_blank">
+        <ion-icon name="logo-facebook"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.celular !== null && informacionNegocio.celular !== ''"
+    (click)="enviarWhasapp(informacionNegocio.celular)">
+        <ion-icon name="logo-whatsapp"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.telefono !== null && informacionNegocio.telefono !== ''" 
+    (click)="llamar(informacionNegocio.telefono)">
+        <ion-icon name="call"></ion-icon>
+    </ion-fab-button>
     </ion-fab>
 </ion-content>

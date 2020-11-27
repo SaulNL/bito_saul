@@ -45,10 +45,6 @@ export class AjustesPage implements OnInit {
     }
     this.url_user = AppSettings.API_ENDPOINT + "img/user.png";
   }
-  ionViewDidLeave(){
-    console.log('entro');
-    this.usuario = this.util.getData();
-  }
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       header: "Perfil",

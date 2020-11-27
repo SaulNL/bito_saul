@@ -522,6 +522,7 @@ agregarHorario() {
     });
     await alert.present();
   }
+  
   async cancelar() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -544,6 +545,34 @@ agregarHorario() {
 
     await alert.present();
   }
-  
-  
+  async consumoSitioAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Consumo en Sitio',
+      message: 'Esta imagen es solo informativa',
+      buttons: ['Cerrar']
+    });
+
+    await alert.present();
+  }
+  async entregaSitioAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Entrega en Sitio',
+      message: 'Esta imagen es solo informativa',
+      buttons: ['Cerrar']
+    });
+
+    await alert.present();
+  }
+  async entregaDomicilioAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Entrega Domicilio',
+      message: 'Esta imagen es solo informativa',
+      buttons: ['Cerrar']
+    });
+
+    await alert.present();
+  }
 }

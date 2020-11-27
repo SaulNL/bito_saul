@@ -36,11 +36,8 @@
           </div>
           <ion-item>
             <ion-label position="stacked">Número Interior: <span style="color: red">*</span></ion-label>
-            <ion-input id="numInt"  name="numInt" type="text"  #numIntNego="ngModel" [(ngModel)]="negocioTO.det_domicilio.numero_int" required></ion-input>
+            <ion-input id="numInt"  name="numInt" type="text"  #numIntNego="ngModel" [(ngModel)]="negocioTO.det_domicilio.numero_int"></ion-input>
           </ion-item>
-          <div *ngIf="numIntNego.touched  && numIntNego.invalid" class="alert">
-            <div *ngIf="numIntNego.errors.required">el numero interior es requerido</div>
-          </div>
           <ion-item>
             <ion-label position="stacked">Estado <span style="color: red">*</span></ion-label>
             <ion-select placeholder="{{ estadoAux }}" [disabled]="btnEstado"  ok-text="Ok" cancel-text="Cancelar" name="estado" required #compEstado="ngModel" [(ngModel)]="negocioTO.det_domicilio.id_estado"
