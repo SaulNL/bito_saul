@@ -7,7 +7,7 @@ export class DtosMogoModel {
   public precio: string;
   public categoria: any;
   public imagen: any;
-  public negocio: NegocioMongo;
+  public negocio: any;
   public existencia: any;
   categoria2: any;
   nombre_categoria1: any;

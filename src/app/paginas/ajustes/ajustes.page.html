@@ -14,8 +14,8 @@
   </ion-toolbar>
   </ion-header>
 <ion-content fullscreen *ngIf="usuario !== null">
-  <ion-card style="height: 100%;">
-    <div class="ion-text-center ion-margin-top">
+  <ion-card style="margin-bottom: 3%;">
+    <div class="ion-text-center ion-margin-top" [routerLink]="['/tabs/datos-basicos']" >
     <img *ngIf="usuario.imagen !== ''"  class="rounded-circle" [src]="usuario.imagen"   alt="">
     <img *ngIf="usuario.imagen === ''" class="imagen" alt="" >
   </div>
@@ -29,6 +29,16 @@
     <ion-card-content>
       <div  style="display: flex; justify-content: center; align-items: center;">
         <ion-list>
+          <ion-item [routerLink]="['/tabs/home/negocio']">
+            <ion-card>
+              <ion-card-content>
+                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+                  <ion-icon name="briefcase-outline" style="font-size: 30px; margin-right: 10px;"></ion-icon>
+                  <h2>Mis Negocios</h2>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-item>
           <ion-item (click)="misPromociones()">
             <ion-card>
               <ion-card-content>
@@ -45,6 +55,26 @@
                 <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
                   <ion-icon name="document-text-outline" style="font-size: 30px; margin-right: 10px;"></ion-icon>
                   <h2>Mis solicitudes</h2>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-item>
+          <ion-item [routerLink]="['/tabs/home/ventas']">
+            <ion-card>
+              <ion-card-content>
+                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+                  <ion-icon name="receipt-outline" style="font-size: 30px; margin-right: 10px;"></ion-icon>
+                  <h2>Mis ventas</h2>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-item>
+          <ion-item [routerLink]="['/tabs/home/compras']">
+            <ion-card>
+              <ion-card-content>
+                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+                  <ion-icon name="bag-handle-outline" style="font-size: 30px; margin-right: 10px;"></ion-icon>
+                  <h2>Mis compras</h2>
                 </div>
               </ion-card-content>
             </ion-card>

@@ -134,12 +134,13 @@ export class InfoNegocioPage implements OnInit {
     this.negocioServico.obtnerTipoNegocio().subscribe(
       response => {
         this.listTipoNegocio = response.data;
-        this.listTipoNegocio.forEach(element => {
-          if (element.id_tipo_negocio == this.negocioTO.id_tipo_negocio) {
-            this.tipoNegoAux = element.nombre;
-
-          }
-        });
+        if (this.negocioTO.id_negocio != null) {
+          this.listTipoNegocio.forEach(element => {
+            if (element.id_tipo_negocio == this.negocioTO.id_tipo_negocio) {
+              this.tipoNegoAux = element.nombre;
+            }
+          });
+        }
       },
       error => {
         this.listTipoNegocio = [];
@@ -160,13 +161,13 @@ export class InfoNegocioPage implements OnInit {
     this.negocioServico.categoriaPrincipal(idE).subscribe(
       respuesta => {
         this.listCategorias = respuesta.data;
-        this.listCategorias.forEach(element => {
-          if (element.id_giro==this.negocioTO.id_giro) {
-            this.tipoGiroAux = element.nombre;
-            
-          }
-        });
-        
+        if (this.negocioTO.id_negocio != null) {
+          this.listCategorias.forEach(element => {
+            if (element.id_giro==this.negocioTO.id_giro) {
+              this.tipoGiroAux = element.nombre;
+            }
+          });
+        }
       }
     );
   }
@@ -522,6 +523,7 @@ agregarHorario() {
     });
     await alert.present();
   }
+  
   async cancelar() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -544,6 +546,34 @@ agregarHorario() {
 
     await alert.present();
   }
-  
-  
+  async consumoSitioAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Consumo en Sitio',
+      message: 'Esta imagen es solo informativa',
+      buttons: ['Cerrar']
+    });
+
+    await alert.present();
+  }
+  async entregaSitioAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Entrega en Sitio',
+      message: 'Esta imagen es solo informativa',
+      buttons: ['Cerrar']
+    });
+
+    await alert.present();
+  }
+  async entregaDomicilioAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Entrega Domicilio',
+      message: 'Esta imagen es solo informativa',
+      buttons: ['Cerrar']
+    });
+
+    await alert.present();
+  }
 }

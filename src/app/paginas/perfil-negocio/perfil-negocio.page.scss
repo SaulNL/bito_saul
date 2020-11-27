@@ -72,3 +72,15 @@ ul li {
     box-shadow: 0px 5px 0px blue;
   }
 }
+.fab-horizontal-end{
+  right: calc(1.5px + var(--ion-safe-area-right, 0px)) !important;
+}
+
+.fab-button-small{
+  margin: 6px !important;
+  width: 35px !important;
+  height: 35px !important;
+}
+ion-fab-button ion-icon {
+  font-size: 20px;
+}
