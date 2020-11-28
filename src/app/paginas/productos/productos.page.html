@@ -61,7 +61,8 @@
           <ion-item-sliding *ngFor="let producto of lstProductos">
           <ion-item (click)="abrirModal(producto)">
             <ion-thumbnail slot="start">
-              <img [src]="producto.imagen">
+              <img src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+              [srcset]="producto.imagen">
             </ion-thumbnail>
             <ion-label>
               <h2>{{producto.nombre}}</h2>

@@ -12,7 +12,8 @@
     <ion-slide *ngFor="let producto of seleccionadoDetalleArray">
       <ion-grid>
         <ion-col>
-          <ion-img class="img-card-w" [src]="producto.imagen"></ion-img>
+          <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+          [srcset]="producto.imagen">
         </ion-col>
         <ion-row>
           <ion-col>

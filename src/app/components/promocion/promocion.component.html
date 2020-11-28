@@ -1,5 +1,7 @@
 <ion-card  (click)="crearModal()">
-  <img [src]="promocion.url_imagen" alt="">
+  <img 
+   src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTrNdWOVG0us26NN-771ygyqcPWQ4T2KXQuiPJgSKyndpDiv5X_&usqp=CAU"
+   [srcset]="promocion.url_imagen" alt="Falla al cargar imagen">
   <ion-card-content class="ion-no-padding ion-no-margin">
     <ion-grid>
       <ion-row *ngIf="promocion.giro_negocio !== null" class="ion-justify-content-center">
