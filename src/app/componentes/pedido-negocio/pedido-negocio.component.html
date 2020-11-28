@@ -46,7 +46,16 @@
   
   <ion-list>
     <div *ngIf="tipoEnvio === 2">
-      <ion-grid *ngIf="this.blnUbicacion; else elseBlock">
+      <ion-grid>
+          <ion-grid *ngIf="!this.blnUbicacion">
+            <ion-row class="ion-align-items-center">
+              <ion-col class="ion-text-center">
+                <ion-chip color="danger"  class="ion-align-items-center">
+                  <ion-label><strong>Lo sentimos!</strong>Debes habilitar tu ubicación.</ion-label>
+                </ion-chip>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         <ion-row>
           <ion-col>
             <div id="mapIdPedido" style="height:200px"></div>
@@ -55,24 +64,13 @@
         <p class="ion-text-center">{{estasUbicacion}}</p>
         <ion-row class="ion-align-items-center">
           <ion-col class="ion-text-center">
-            <ion-button size="small" class="bg-rosa " type="button" (click)="localizacionTiempo(1)">
+            <ion-button [disabled]="!this.blnUbicacion" size="small" class="bg-rosa " type="button" (click)="localizacionTiempo(1)">
               <ion-icon name="navigate-circle-outline"></ion-icon>
               Ubicación Actual
             </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ng-template #elseBlock>
-        <ion-grid>
-          <ion-row class="ion-align-items-center">
-            <ion-col class="ion-text-center">
-              <ion-chip color="danger"  class="ion-align-items-center">
-                <ion-label><strong>Lo sentimos!</strong>Debes habilitar tu ubicación.</ion-label>
-              </ion-chip>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ng-template>
     </div>
     <h3 class="ion-text-center">Lista de artículos</h3>
     <ion-item *ngFor="let p of lista; let i = index">
@@ -80,8 +78,8 @@
         <ion-row>
           <ion-col size="2">
             <img [srcset]="p.imagen">
-            <ion-label class="ion-text-center">{{p.nombre}}</ion-label>
-            <ion-label class="ion-text-center">{{ p.precio |currency}}</ion-label>
+            <ion-label class="ion-text-center"  style="font-size: 10px; font-weight: 600;">{{p.nombre}}</ion-label>
+            <ion-label class="ion-text-center" style="font-size: 10px; font-weight: 600;">{{ p.precio |currency}}</ion-label>
           </ion-col>
           <ion-col size="5">
             <div class="ion-text-center">{{p.descripcion}}</div>
@@ -120,7 +118,7 @@
     </ion-item>
   </ion-list>
   <div>
-    <ion-button (click)="realizarPedido()" expand="block">Realizar Pedido</ion-button>
+    <ion-button class="bg-rosa " (click)="realizarPedido()" expand="block">Realizar Pedido</ion-button>
   </div>
 
 </ion-content>

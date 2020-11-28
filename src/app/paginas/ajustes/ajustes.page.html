@@ -1,86 +1,89 @@
 <ion-header>
   <ion-toolbar class="tolbar">
     <ion-title>
-     Perfil
+      Perfil
     </ion-title>
     <ion-buttons *ngIf="usuario !== null" slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="end" (click)="presentActionSheet()">
       <ion-button>
-        <ion-icon  name="ellipsis-vertical-outline"></ion-icon>
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
       </ion-button>
-  </ion-buttons>
+    </ion-buttons>
   </ion-toolbar>
-  </ion-header>
+</ion-header>
 <ion-content fullscreen *ngIf="usuario !== null">
   <ion-card style="margin-bottom: 3%;">
-    <div class="ion-text-center ion-margin-top" [routerLink]="['/tabs/datos-basicos']" >
-    <img *ngIf="usuario.imagen !== ''"  class="rounded-circle" [src]="usuario.imagen"   alt="">
-    <img *ngIf="usuario.imagen === ''" class="imagen" alt="" >
-  </div>
+    <div class="ion-text-center ion-margin-top" [routerLink]="['/tabs/datos-basicos']">
+      <img *ngIf="usuario.imagen !== ''" class="rounded-circle" [src]="usuario.imagen" alt="">
+      <img *ngIf="usuario.imagen === ''" class="imagen" alt="">
+    </div>
     <ion-card-header class="ion-text-center">
       <ion-card-title>
-        <h4 style="margin-top: -10px;">{{usuario.nombre}}  {{usuario.paterno}}  {{usuario.materno}}</h4></ion-card-title>
+        <h4 style="margin-top: -10px;">{{usuario.nombre}} {{usuario.paterno}} {{usuario.materno}}</h4>
+      </ion-card-title>
       <ion-label>{{usuario.celular}}</ion-label>
       <br>
       <ion-label>{{usuario.correo}}</ion-label>
     </ion-card-header>
     <ion-card-content>
-      <div  style="display: flex; justify-content: center; align-items: center;">
-        <ion-list>
-          <ion-item [routerLink]="['/tabs/home/negocio']">
+      <ion-grid>
+        <ion-row>
+          <ion-col *ngIf="usuario.proveedor !== null"  [routerLink]="['/tabs/home/negocio']" >
             <ion-card>
               <ion-card-content>
-                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-                  <ion-icon name="briefcase-outline" style="font-size: 30px; margin-right: 10px;"></ion-icon>
+                <div class="ion-text-center">
+                  <ion-icon name="briefcase-outline"></ion-icon>
                   <h2>Mis Negocios</h2>
                 </div>
               </ion-card-content>
             </ion-card>
-          </ion-item>
-          <ion-item (click)="misPromociones()">
+          </ion-col>
+          <ion-col *ngIf="usuario.proveedor !== null" (click)="misPromociones()">
             <ion-card>
               <ion-card-content>
-                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-                  <ion-icon name="pricetags-outline" style="font-size: 30px; margin-right: 10px;"></ion-icon>
+                <div class="ion-text-center">
+                  <ion-icon name="pricetags-outline"></ion-icon>
                   <h2>Mis promociones</h2>
                 </div>
               </ion-card-content>
             </ion-card>
-          </ion-item>
-          <ion-item (click)="misSolicitudes()">
+          </ion-col>
+          <ion-col *ngIf="usuario.proveedor !== null" (click)="misSolicitudes()">
             <ion-card>
               <ion-card-content>
-                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-                  <ion-icon name="document-text-outline" style="font-size: 30px; margin-right: 10px;"></ion-icon>
+                <div class="ion-text-center" >
+                  <ion-icon name="document-text-outline"></ion-icon>
                   <h2>Mis solicitudes</h2>
                 </div>
               </ion-card-content>
             </ion-card>
-          </ion-item>
-          <ion-item [routerLink]="['/tabs/home/ventas']">
+          </ion-col>
+          <ion-col *ngIf="usuario.proveedor !== null">
             <ion-card>
               <ion-card-content>
-                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-                  <ion-icon name="receipt-outline" style="font-size: 30px; margin-right: 10px;"></ion-icon>
-                  <h2>Mis ventas</h2>
+                <div class="ion-text-center" [routerLink]="['/tabs/home/ventas']">
+                  <ion-icon name="receipt-outline"></ion-icon>
+                  <h2>Mis 
+                    <br>
+                    ventas</h2>
                 </div>
               </ion-card-content>
             </ion-card>
-          </ion-item>
-          <ion-item [routerLink]="['/tabs/home/compras']">
+          </ion-col>
+          <ion-col [routerLink]="['/tabs/home/compras']">
             <ion-card>
               <ion-card-content>
-                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-                  <ion-icon name="bag-handle-outline" style="font-size: 30px; margin-right: 10px;"></ion-icon>
+                <div class="ion-text-center">
+                  <ion-icon name="bag-handle-outline"></ion-icon>
                   <h2>Mis compras</h2>
                 </div>
               </ion-card-content>
             </ion-card>
-          </ion-item>
-        </ion-list>
-      </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-card-content>
   </ion-card>
 </ion-content>

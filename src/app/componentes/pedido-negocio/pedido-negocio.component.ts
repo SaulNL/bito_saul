@@ -48,7 +48,7 @@ export class PedidoNegocioComponent implements OnInit {
     } else {
       this.tipoEnvio = null;
     }
-    console.log(this._entregaDomicilio, this._entregaSitio, this._consumoSitio)
+    this.loadMap();
     this.getCurrentPosition();
     this.sumarLista();
   }
@@ -91,7 +91,6 @@ export class PedidoNegocioComponent implements OnInit {
       this.blnUbicacion = true;
       this.lat = res.coords.latitude;
       this.lng = res.coords.longitude;
-      this.loadMap()
       try {
         this.geocodeLatLng();
       } catch (e) {

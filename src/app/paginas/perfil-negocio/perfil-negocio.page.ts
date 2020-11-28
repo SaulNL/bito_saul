@@ -288,13 +288,6 @@ export class PerfilNegocioPage implements OnInit {
                     }
                 },
                 {
-                    text: 'Compartir',
-                    icon: 'share-social-outline',
-                    handler: () => {
-                        this.compartir();
-                    }
-                },
-                {
                     text: 'Cancelar',
                     icon: 'close',
                     role: 'cancel',

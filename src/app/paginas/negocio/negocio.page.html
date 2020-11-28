@@ -70,5 +70,9 @@
       </ion-card-header>
     </ion-card>
   </ion-list>
-
+  <div *ngIf="listaNegocios.length === 0">
+    <ion-chip color="warning">
+      <ion-label><strong>Lo sentimos!</strong> Aún no tiene ninguna solicitud creada.</ion-label>
+    </ion-chip>
+  </div>
 </ion-content>
