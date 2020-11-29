@@ -19,6 +19,7 @@ export class PedidoNegocioComponent implements OnInit {
   @Input() public _entregaDomicilio: any;
   @Input() public _entregaSitio: any;
   @Input() public _consumoSitio: any;
+  @Input() public _costoEntrega: any;
   @Input() lista: any;
   tipoEnvio: any;
   private map: Map;
@@ -30,6 +31,7 @@ export class PedidoNegocioComponent implements OnInit {
   suma: number;
   sumaTotal: number;
   cantidad: number;
+  costoEntrega: number;
   //detalle:string;
   constructor(
     private utilsCls: UtilsCls,
@@ -43,6 +45,7 @@ export class PedidoNegocioComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.costoEntrega = parseInt(this._costoEntrega);
     if (this._entregaDomicilio === 1) {
       this.tipoEnvio = 2;
     } else {
@@ -122,7 +125,7 @@ export class PedidoNegocioComponent implements OnInit {
   public realizarPedido() {
     const pedido = {
       direccion: this.estasUbicacion,
-      idNegocio: this.lista[0].idNegocio,
+      idNegocio: this.lista[0].negocio.idNegocio,
       idPersona: this.utilsCls.getIdPersona(),
       idTipoPedido: this.tipoEnvio,
       latitud: this.lat,
@@ -131,7 +134,7 @@ export class PedidoNegocioComponent implements OnInit {
       //detalle: this.detalle
     };
     console.log(pedido);
-    this.negocioService.registrarPedido(pedido).subscribe(
+   /* this.negocioService.registrarPedido(pedido).subscribe(
       res => {
         this.mesajes.exito('Pedido realizado éxito')
         this.lista = [];
@@ -139,7 +142,7 @@ export class PedidoNegocioComponent implements OnInit {
       }, error => {
         this.mesajes.error('Ocurrio un error al generar el pedido')
       }
-    );
+    );*/
   }
 
   private sumarLista() {
@@ -151,7 +154,7 @@ export class PedidoNegocioComponent implements OnInit {
     this.sumaTotal = this.suma
 
     if (this.tipoEnvio === 2) {
-      this.sumaTotal = this.sumaTotal + 30
+      this.sumaTotal = this.sumaTotal + this.costoEntrega;
     }
 
   }
