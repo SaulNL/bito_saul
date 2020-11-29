@@ -10,6 +10,7 @@ import {ModalProductoPage} from "./modal-producto/modal-producto.page";
 import {ToadNotificacionService} from "../../api/toad-notificacion.service";
 import {FiltrosBusquedaComponent} from "../../componentes/filtros-busqueda/filtros-busqueda.component";
 
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'productos.page.html',
@@ -35,6 +36,8 @@ export class ProductosPage {
   public listaCategorias: any;
   private modal: any;
   public strBuscar: any;
+  alphaScrollItemTemplate: '<ion-item #datos (click)="abrirModal(producto)"><ion-thumbnail slot="start"><img src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"[srcset]="producto.imagen"></ion-thumbnail><ion-label><h2>{{producto.nombre}}</h2><h3>{{(producto.nombre_categoria1 != null)?producto.nombre_categoria1:\'Sin categoría\'}}</h3><div><ion-text>{{(producto.descripcion != null)?producto.descripcion:\'Sin descripción\'}}</ion-text></div><div><ion-text color="success">${{(producto.precio != \'\')?((producto.precio != null)?producto.precio:\'Sin precio\'):\'Sin precio\'}}</ion-text></div><div><ion-badge color="primary">{{producto.tipo}}</ion-badge><ion-badge color="medium">{{(producto.ubicacion != null)?producto.ubicacion.nombre_localidad:\'Sin ubicación\'}}</ion-badge></div></ion-label></ion-item>\n';
+  filtroActivo: any;
 
   constructor(
       public loadingController: LoadingController,

@@ -4,10 +4,12 @@ import {Router} from '@angular/router';
 import { FiltrosModel } from '../../Modelos/FiltrosModel';
 import { HostListener } from '@angular/core';
 import {IonContent, NavController} from "@ionic/angular";
+import {SideBarService} from "../../api/busqueda/side-bar-service";
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.page.html',
   styleUrls: ['./categorias.page.scss'],
+  providers:[SideBarService]
 })
 export class CategoriasPage implements OnInit {
   @ViewChild(IonContent) content: IonContent;
@@ -18,6 +20,7 @@ export class CategoriasPage implements OnInit {
   public imgMobil:boolean;
   constructor(
     private busquedaService:BusquedaService,
+    private sideBarService: SideBarService,
     private router:Router,
     ) { 
       this.Filtros = new FiltrosModel();

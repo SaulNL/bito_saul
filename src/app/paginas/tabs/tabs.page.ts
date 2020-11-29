@@ -3,6 +3,7 @@ import {UtilsCls} from "../../utils/UtilsCls";
 import {SideBarService} from "../../api/busqueda/side-bar-service";
 import {Auth0Service} from "../../api/busqueda/auth0.service";
 import {Router} from "@angular/router";
+import {InicioPage} from "../inicio/inicio.page";
 
 @Component({
     selector: 'app-tabs',
@@ -11,7 +12,8 @@ import {Router} from "@angular/router";
     providers: [
         UtilsCls,
         SideBarService,
-        Auth0Service
+        Auth0Service,
+        InicioPage
     ]
 })
 export class TabsPage implements OnInit{
@@ -22,6 +24,7 @@ export class TabsPage implements OnInit{
         private util: UtilsCls,
         private sideBarService: SideBarService,
         private router:Router,
+        private inicioPage: InicioPage
     ) {
         this.existeSesion = util.existe_sesion();
     }
@@ -35,18 +38,17 @@ export class TabsPage implements OnInit{
     }
 
     inicio() {
-        this.router.navigate(['/tabs/inicio'], { queryParams: {special: true}  });
-        
+        this.router.navigate(['/tabs/inicio']);
+        this.inicioPage.buscarNegocios()
     }
 
     promociones() {
-        this.router.navigate(['/tabs/promociones'], { queryParams: {special: true}  });
+        this.router.navigate(['/tabs/promociones']);
         
     }
 
     productos() {
-         this.router.navigate(['/tabs/productos'], { queryParams: {special: true}  });
-         console.log(sessionStorage.getItem('isRedirected'));
+         this.router.navigate(['/tabs/productos']);
          
     }
     perfil(){        
