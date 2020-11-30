@@ -11,6 +11,7 @@ import {ToadNotificacionService} from "../../api/toad-notificacion.service";
 import {FiltrosBusquedaComponent} from "../../componentes/filtros-busqueda/filtros-busqueda.component";
 import { AnimationController } from '@ionic/angular';
 
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'productos.page.html',
