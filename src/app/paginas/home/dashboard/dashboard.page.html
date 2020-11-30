@@ -7,7 +7,7 @@
           <ion-note style="margin-left: 11px;">{{ correnume }}</ion-note>
           <ion-item [routerLink]="['/tabs/home/perfil']" routerDirection="root" lines="none" detail="false">
             <ion-avatar slot="start">
-              <img [src]="usuario.imagen !== null ? usuario.imagen: url_user">
+              <img src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg" [srcset]="usuario.imagen">
             </ion-avatar>
             <ion-label>{{usuario.nombre}} {{usuario.paterno}} {{usuario.materno}}</ion-label>
           </ion-item>
@@ -19,14 +19,10 @@
       </ion-list>
       <ion-list-header>Administracion</ion-list-header>
       <ion-list id="labels-list">
-        <ion-menu-toggle auto-hide="false">
-          <ion-list lines="none">
-            <!--<ion-item menuclose lines="none" [routerLink]="['/tabs/home/negocio']">
+            <ion-item *ngIf="ver_negocio" menuclose lines="none" [routerLink]="['/tabs/home/negocio']">
               <ion-icon slot="start" ios="briefcase-outline" md="briefcase"></ion-icon>
               Mis Negocios
-            </ion-item>-->
-          </ion-list>
-        </ion-menu-toggle>
+            </ion-item>
         <ion-item *ngIf="admin" lines="none" (click)="isRemainder === true ? isRemainder = false : isRemainder = true">
           <ion-icon slot="start" ios="folder-open-outline" md="folder-open-sharp"></ion-icon>
           Catalogos
@@ -71,14 +67,14 @@
               <ion-list-header>Avisos</ion-list-header>
             </ion-item>
           </ion-list>
-          <!--<ion-item lines="none" [routerLink]="['/tabs/home/solicitudes']">
+          <ion-item *ngIf="ver_negocio" lines="none" [routerLink]="['/tabs/home/solicitudes']">
             <ion-icon slot="start" ios="document-text-outline" md="document-text-outline"></ion-icon>
             Mis solicitudes
-          </ion-item>-->
-         <!--<ion-item lines="none" [routerLink]="['/tabs/home/promociones']">
+          </ion-item>
+         <ion-item *ngIf="ver_negocio" lines="none" [routerLink]="['/tabs/home/promociones']">
             <ion-icon slot="start"  ios="pricetags-outline" md="pricetags-outline" name="pricetags-outline"></ion-icon>
             Promociones
-          </ion-item>-->
+          </ion-item>
           <ion-item lines="none"  [routerLink]="['/tabs/home/ser-proveedor']" *ngIf="!ver_negocio">
             <ion-icon slot="start"  ios="cart-outline" md="cart-outline" name="pricetags-outline" name="cart-outline"></ion-icon>
             Quiero vender

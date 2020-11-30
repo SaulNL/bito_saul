@@ -5,8 +5,10 @@ import { NegocioModel } from "./../../Modelos/NegocioModel";
 import { NegocioService } from "./../../api/negocio.service";
 import { ModalController } from "@ionic/angular";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
-import { AppSettings} from "../../AppSettings"; 
-import { DetDomicilioModel } from 'src/app/Modelos/busqueda/DetDomicilioModel'
+import { AppSettings } from "../../AppSettings";
+import { DetDomicilioModel } from 'src/app/Modelos/busqueda/DetDomicilioModel';
+import { Plugins, FilesystemDirectory } from '@capacitor/core'; 
+const { Filesystem } = Plugins;
 @Component({
   selector: "app-negocio",
   templateUrl: "./negocio.page.html",
@@ -24,7 +26,7 @@ export class NegocioPage implements OnInit {
   public level: "L" | "M" | "Q" | "H";
   public scale: number;
   public width: number;
-  public colorLight: any; 
+  public colorLight: any;
   public colorDark: any;
 
   constructor(
@@ -33,11 +35,10 @@ export class NegocioPage implements OnInit {
     private router: Router,
     private active: ActivatedRoute,
     private modal: ModalController,
-    private notifi: ToadNotificacionService
+    private notifi: ToadNotificacionService,
   ) {
     this.listaNegocios = [];
     this.usuario = JSON.parse(localStorage.getItem("u_data"));
-    this.qrdata = AppSettings.URL_MOVIL;
   }
 
   ngOnInit() {
@@ -74,7 +75,7 @@ export class NegocioPage implements OnInit {
           text: "Cancel",
           icon: "close",
           role: "cancel",
-          handler: () => {},
+          handler: () => { },
         },
       ],
     });
@@ -101,10 +102,10 @@ export class NegocioPage implements OnInit {
       this.loader = false;
     }
   }
-  viewQr(negocio: NegocioModel){
+  viewQr(negocio: NegocioModel) {
     this.selectTO = JSON.parse(JSON.stringify(negocio));
-    if (this.selectTO.url_negocio == null || this.selectTO.url_negocio == undefined){
-  this.notifi.error("Url de negocio no configurada");
+    if (this.selectTO.url_negocio == null || this.selectTO.url_negocio == undefined) {
+      this.notifi.error("Url de negocio no configurada");
     } else {
       let navigationExtras = JSON.stringify(this.selectTO);
       this.router.navigate(["/tabs/home/negocio/view-qr"], {
@@ -113,17 +114,17 @@ export class NegocioPage implements OnInit {
     }
   }
 
-  downQr(negocio: NegocioModel){
-  this.selectTO = JSON.parse(JSON.stringify(negocio));
-      this.elementType = "img";
-      this.level = "H";
-      this.scale = 0.4;
-      this.width = 512;
-      this.colorLight = '#ffffff';
-      this.colorDark = '#f100db';
-      this.qrdata = AppSettings.URL_MOVIL+this.selectTO.url_negocio;
+  downQr(negocio: NegocioModel) {
+    this.selectTO = JSON.parse(JSON.stringify(negocio));
+    this.elementType = "img";
+    this.level = "H";
+    this.scale = 0.4;
+    this.width = 512;
+    this.colorLight = '#ffffff';
+    this.colorDark = '#f100db';
+    this.qrdata = AppSettings.URL_FRONT + this.selectTO.url_negocio;
   }
-  
+
   datosNegocio(negocio: NegocioModel) {
     this.selectTO = JSON.parse(JSON.stringify(negocio));
     let navigationExtras = JSON.stringify(this.selectTO);
@@ -147,40 +148,20 @@ export class NegocioPage implements OnInit {
     });
   }
 
-  public descargar(elemento) {
-    var youtubeimgsrc = (<HTMLImageElement><unknown>document.querySelectorAll(".qrcode img"))[0].src;
-
-    const parentElement = youtubeimgsrc;
-    let blobData = this.convertBase64ToBlob(parentElement);
-
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      //IE
-      window.navigator.msSaveOrOpenBlob(blobData, 'Qrcode');
-    } else {
-      // chrome
-      const blob = new Blob([blobData], { type: 'image/png' });
-      const url = window.URL.createObjectURL(blob);
-      // window.open(url);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'Qrcode.png';
-      link.click();
-    }
+  public descargar(negocio) {
+    console.log(negocio);
+    let base64Imagen = document.querySelectorAll('.qrcode img')[0] as any;
+    let base64Ima = base64Imagen.getAttribute("src");
+    const fileName = 'qr_'+negocio.nombre_comercial+'.png';
+    Filesystem.writeFile({
+      path: fileName,
+      data: base64Ima,
+      directory: FilesystemDirectory.Documents
+  }).then(() => {
+    this.notifi.exito('Se descargo correctamente qr de '+negocio.nombre_comercial);
+  }, error => {
+    this.notifi.error(error);
+  });
   }
-  private convertBase64ToBlob(Base64Image: any) {
-    // SPLIT INTO TWO PARTS
-    const parts = Base64Image.split(';base64,');
-    // HOLD THE CONTENT TYPE
-    const imageType = parts[0].split(':')[1];
-    // DECODE BASE64 STRING
-    const decodedData = window.atob(parts[1]);
-    // CREATE UNIT8ARRAY OF SIZE SAME AS ROW DATA LENGTH
-    const uInt8Array = new Uint8Array(decodedData.length);
-    // INSERT ALL CHARACTER CODE INTO UINT8ARRAY
-    for (let i = 0; i < decodedData.length; ++i) {
-      uInt8Array[i] = decodedData.charCodeAt(i);
-    }
-    // RETURN BLOB IMAGE AFTER CONVERSION
-    return new Blob([uInt8Array], { type: imageType });
-  }
+
 }

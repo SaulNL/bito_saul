@@ -11,6 +11,9 @@
                 <ion-icon name="bag-handle-outline"></ion-icon>
                 <ion-badge>{{bolsa.length}}</ion-badge>
             </ion-button>
+            <ion-button (click)="compartir()" *ngIf="existeSesion">
+                <ion-icon name="share-social-outline"></ion-icon>
+            </ion-button>
             <ion-button (click)="presentActionSheet()" *ngIf="existeSesion">
                 <ion-icon name="ellipsis-vertical-outline"></ion-icon>
             </ion-button>
@@ -27,7 +30,7 @@
         <ion-row>
             <ion-col class="ion-align-items-center ion-justify-content-center" size="12">
                 <ion-avatar style="height: auto; width: 150px; margin: auto">
-                    <img src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
+                    <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
                         [srcset]="informacionNegocio.url_logo">
                 </ion-avatar>
             </ion-col>
@@ -185,9 +188,7 @@
                 </ion-text>
                 <ion-col size="6" *ngFor="let producto of cat.productos">
                     <ion-card (click)="irAlDetalle(producto)" class="m-0 fixed">
-                        <img class="img-card-w"
-                         src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
-                         [srcset]="producto.imagen" alt="Falla al cargar la imagen">
+                        <img class="img-card-w" [src]="producto.imagen" alt="Falla al cargar la imagen">
                         <ion-card-header>
                             <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
                             <ion-badge *ngIf="producto.precio !== null" color="success">

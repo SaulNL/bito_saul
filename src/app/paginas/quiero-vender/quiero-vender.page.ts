@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {UtilsCls} from '../../utils/UtilsCls';
-import {ArchivoComunModel} from '../../Modelos/ArchivoComunModel';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UtilsCls } from '../../utils/UtilsCls';
+import { ArchivoComunModel } from '../../Modelos/ArchivoComunModel';
 import { MsPersonaModel } from '../../Modelos/MsPersonaModel';
 import { DetDomicilioModel } from '../../Modelos/DetDomicilioModel';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
@@ -12,8 +12,8 @@ import { GeneralServicesService } from '../../api/general-services.service';
 import { CatMunicipioModel } from '../../Modelos/CatMunicipioModel';
 import { CatLocalidadModel } from '../../Modelos/CatLocalidadModel';
 import { PersonaService } from '../../api/persona.service';
-import {Router} from '@angular/router';
-import {SessionUtil} from '../../utils/sessionUtil';
+import { Router } from '@angular/router';
+import { SessionUtil } from '../../utils/sessionUtil';
 
 @Component({
   selector: 'app-quiero-vender',
@@ -45,13 +45,13 @@ export class QuieroVenderPage implements OnInit {
   public list_cat_localidad: Array<CatLocalidadModel>;
 
   public sexos = [
-    {id: 1, sexo: 'Hombre'},
-    {id: 2, sexo: 'Mujer'}
+    { id: 1, sexo: 'Hombre' },
+    { id: 2, sexo: 'Mujer' }
   ];
 
   public minDate: Date;
   public maxDate: Date;
-  
+
   public hIneFrente: boolean = false;
   public hIneAtras: boolean = false;
 
@@ -60,14 +60,14 @@ export class QuieroVenderPage implements OnInit {
   public finalizar: boolean;
 
   constructor(
-                private _formBuilder: FormBuilder,
-                private _utils_cls: UtilsCls,
-                public _notificacionService: ToadNotificacionService,
-                public modalController: ModalController,
-                private _general_service: GeneralServicesService,
-                private servicioPersona: PersonaService,
-                private _router: Router,
-                private sesionUtl: SessionUtil
+    private _formBuilder: FormBuilder,
+    private _utils_cls: UtilsCls,
+    public _notificacionService: ToadNotificacionService,
+    public modalController: ModalController,
+    private _general_service: GeneralServicesService,
+    private servicioPersona: PersonaService,
+    private _router: Router,
+    private sesionUtl: SessionUtil
   ) {
 
     this.proveedorTO = new MsPersonaModel();
@@ -75,12 +75,12 @@ export class QuieroVenderPage implements OnInit {
     this.proveedorTO = JSON.parse(localStorage.getItem('u_data'));
     this.proveedorTO.fecha_nacimiento = this.proveedorTO.fecha_nacimiento !== null ? new Date(this.proveedorTO.fecha_nacimiento) : null;
     this.proveedorTO.det_domicilio = JSON.parse(localStorage.getItem('u_data')).domicilio !== null && undefined ? JSON.parse(localStorage.getItem('u_data')).domicilio : new DetDomicilioModel();
-    if (this.proveedorTO.fecha_nacimiento !== null || this.proveedorTO.fecha_nacimiento !== undefined ) {
-      this.fechas = this.proveedorTO.fecha_nacimiento.toISOString();
+    if (this.proveedorTO.fecha_nacimiento !== null || this.proveedorTO.fecha_nacimiento !== undefined) {
+      //    this.fechas = this.proveedorTO.fecha_nacimiento.toISOString();
     } else {
       this.fechas = '';
     }
-    this.fechas = this.proveedorTO.fecha_nacimiento.toISOString();
+    //  this.fechas = this.proveedorTO.fecha_nacimiento.toISOString();
     this.select_estado = false;
     this.list_cat_estado = [];
     this.select_municipio = false;
@@ -91,10 +91,10 @@ export class QuieroVenderPage implements OnInit {
   ngOnInit() {
 
     if (this.proveedorTO.det_domicilio.id_estado !== null && this.proveedorTO.det_domicilio.id_estado !== undefined) {
-      this.get_list_cat_municipio({id_estado: this.proveedorTO.det_domicilio.id_estado});
+      this.get_list_cat_municipio({ id_estado: this.proveedorTO.det_domicilio.id_estado });
     }
     if (this.proveedorTO.det_domicilio.id_municipio !== null && this.proveedorTO.det_domicilio.id_municipio !== undefined) {
-      this.get_list_cat_localidad({id_municipio: this.proveedorTO.det_domicilio.id_municipio});
+      this.get_list_cat_localidad({ id_municipio: this.proveedorTO.det_domicilio.id_municipio });
     }
     this.firstFormGroup = this._formBuilder.group(
       {
@@ -112,13 +112,13 @@ export class QuieroVenderPage implements OnInit {
       }
     );
 
-    if (this.proveedorTO.imagen === null){
+    if (this.proveedorTO.imagen === null) {
       this.firstFormGroup.get('selfie').setValidators([Validators.required]);
     }
 
     this.secondFormGroup = this._formBuilder.group({
       estado: ['', Validators.required],
-      municipio: [{disabled: !this.select_estado}, Validators.required],
+      municipio: [{ disabled: !this.select_estado }, Validators.required],
       localidad: ['', Validators.required],
       colonia: ['', Validators.required],
       calle: ['', Validators.required],
@@ -126,7 +126,7 @@ export class QuieroVenderPage implements OnInit {
       numeroInt: ['', ''],
       cp: ['', ''],
     });
-    
+
     this.load_cat_estados();
 
     this.formulario1 = true;
@@ -172,10 +172,10 @@ export class QuieroVenderPage implements OnInit {
               this.resizeToWidth = 400;
               this.resizeToHeight = 400;
               this.abrirModal(event, this.resizeToWidth, this.resizeToHeight).then(r => {
-                if(r !== undefined ){
+                if (r !== undefined) {
                   const archivo = new ArchivoComunModel();
                   archivo.nombre_archivo = r.nombre_archivo,
-                  archivo.archivo_64 = r.data;
+                    archivo.archivo_64 = r.data;
                   this.proveedorTO.selfie = archivo;
                   this.hImagen = true;
                 }
@@ -241,16 +241,6 @@ export class QuieroVenderPage implements OnInit {
   }
 
   guardar() {
-    this.proveedorTO.fecha_nacimiento = this.fechas;
-    if ( this.firstFormGroup.invalid ) {
-      return Object.values( this.firstFormGroup.controls ).forEach( control => {
-        if (control instanceof FormGroup ) {
-          Object.values( control.controls ).forEach( con => con.markAsTouched());
-        } else {
-          control.markAsTouched();
-        }
-      });
-    }else {
       if (this.proveedorTO.selfie === null || this.proveedorTO.selfie === undefined) {
         this._notificacionService.alerta('Ingrese foto de perfil');
       } else {
@@ -266,7 +256,6 @@ export class QuieroVenderPage implements OnInit {
           }
         }
       }
-    }
   }
 
   public get_list_cat_municipio(evento) {
@@ -309,7 +298,7 @@ export class QuieroVenderPage implements OnInit {
         }
       },
       error => {
-      this._notificacionService.error(error);
+        this._notificacionService.error(error);
       }
     );
   }
@@ -354,15 +343,15 @@ export class QuieroVenderPage implements OnInit {
   }
 
   guardar2() {
-    if ( this.secondFormGroup.invalid ) {
-      return Object.values( this.secondFormGroup.controls ).forEach( control => {
-        if (control instanceof FormGroup ) {
-          Object.values( control.controls ).forEach( con => con.markAsTouched());
+    if (this.secondFormGroup.invalid) {
+      return Object.values(this.secondFormGroup.controls).forEach(control => {
+        if (control instanceof FormGroup) {
+          Object.values(control.controls).forEach(con => con.markAsTouched());
         } else {
           control.markAsTouched();
         }
       });
-    }else {
+    } else {
       this.formulario1 = false;
       this.formulario2 = false;
       this.finalizar = true;
@@ -383,7 +372,6 @@ export class QuieroVenderPage implements OnInit {
           this.mostrarMensaje(data);
           const resultado = this.sesionUtl.actualizarSesion();
           resolve(resultado);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
         },
         error => {
           this._notificacionService.error(error);
@@ -397,9 +385,11 @@ export class QuieroVenderPage implements OnInit {
       case 200:
 
         for (const entry of data.message) {
-          this._notificacionService.alerta(entry);
+          this._notificacionService.exito(entry);
+          localStorage.setItem('u_data', JSON.stringify(this.proveedorTO));
+          this._router.navigate(['/tabs/home/perfil']);
+          location.reload();
         }
-        this._router.navigate(['/tabs/home/negocio']);
         break;
 
       case 402:
@@ -417,5 +407,10 @@ export class QuieroVenderPage implements OnInit {
         break;
     }
   }
-
+  convercionFechaNac(event) {
+    let fecha = event.detail.value;
+    let ms = Date.parse(fecha);
+    fecha = new Date(ms);
+    this.proveedorTO.fecha_nacimiento = fecha;
+  }
 }

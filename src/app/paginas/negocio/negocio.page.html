@@ -14,20 +14,6 @@
 
 <ion-content>
   <ion-list lines="none" class="bgs-gris">
-   <!-- 
-    <ion-card>
-      <ion-card-header>
-        <ion-item lines="none" (click)="agregarNegocio()">
-          <ion-icon slot="start" name="add-circle"></ion-icon>
-          <ion-label>
-            <h3></h3>
-            <h2>Agregar nuevo negocio</h2>
-            <p></p>
-          </ion-label>
-        </ion-item>
-      </ion-card-header>
-    </ion-card>
--->
 <div class="to">
   <qrcode #qrcode
   [elementType]="elementType"
@@ -46,7 +32,7 @@
         <ion-icon class="fond" md="qr-code-outline" ios="qr-code-outline"></ion-icon>
       </ion-fab-button>
       <ion-fab-list side="start">
-        <ion-fab-button (click)="descargar(qrcode)" color="light">
+        <ion-fab-button (click)="descargar(item)" color="light">
           <ion-icon class="fond" name="cloud-download-outline"></ion-icon>
         </ion-fab-button>
         <ion-fab-button (click)="viewQr(item)" color="light">
@@ -70,5 +56,9 @@
       </ion-card-header>
     </ion-card>
   </ion-list>
-
+  <div *ngIf="listaNegocios.length === 0">
+    <ion-chip color="warning">
+      <ion-label><strong>Lo sentimos!</strong> Aún no tiene ninguna solicitud creada.</ion-label>
+    </ion-chip>
+  </div>
 </ion-content>

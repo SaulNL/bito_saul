@@ -8,10 +8,7 @@ import { QuieroVenderPageRoutingModule } from './quiero-vender-routing.module';
 
 import { QuieroVenderPage } from './quiero-vender.page';
 
-import { ImageCropperModule } from 'ngx-image-cropper';
-
-import { RecorteImagenComponent } from '../../components/recorte-imagen/recorte-imagen.component';
-
+import { TabsPageModule } from 'src/app/paginas/tabs/tabs.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -19,10 +16,9 @@ import { RecorteImagenComponent } from '../../components/recorte-imagen/recorte-
     IonicModule,
     QuieroVenderPageRoutingModule,
     ReactiveFormsModule,
-    ImageCropperModule
+    TabsPageModule
   ],
-  declarations: [QuieroVenderPage,
-    RecorteImagenComponent
+  declarations: [QuieroVenderPage
   ]
 })
 export class QuieroVenderPageModule {}
