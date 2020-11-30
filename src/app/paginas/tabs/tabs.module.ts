@@ -12,6 +12,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 
 import { TabsPage } from './tabs.page';
 import { BotonTopComponent } from 'src/app/componentes/boton-top/boton-top.component';
+import {FiltrosBusquedaComponent} from "../../componentes/filtros-busqueda/filtros-busqueda.component";
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { BotonTopComponent } from 'src/app/componentes/boton-top/boton-top.compo
     BotonTopComponent,
     InputTagsComponent,
     ModalClasificacionComponent,
-    RecorteImagenComponent
+    RecorteImagenComponent,
+      FiltrosBusquedaComponent
   ],
   exports: [
     BannerPromocionesComponent,
@@ -37,7 +39,8 @@ import { BotonTopComponent } from 'src/app/componentes/boton-top/boton-top.compo
     BotonTopComponent,
     InputTagsComponent,
     ModalClasificacionComponent,
-    RecorteImagenComponent
+    RecorteImagenComponent,
+    FiltrosBusquedaComponent
   ]
 })
 export class TabsPageModule {}

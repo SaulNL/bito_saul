@@ -6,8 +6,8 @@ import {FiltrosBusquedaComponent} from "./filtros-busqueda.component";
 
 @NgModule({
     imports: [ CommonModule, FormsModule, IonicModule],
-    declarations: [FiltrosBusquedaComponent],
-    exports: [FiltrosBusquedaComponent]
+    declarations: [],
+    exports: []
 })
 
 export class FiltrosBusquedaModule {

@@ -7,14 +7,31 @@
 </ion-header>-->
 
 <ion-content [fullscreen]="true" [scrollEvents]="true"  (ionScroll)="cordenada = $event.detail.scrollTop">
+
   <app-boton-top [content]="content" [cordenada]="cordenada" ></app-boton-top>
   <ion-header collapse="condense">
-    <ion-toolbar class="tolbar">
-      <ion-title size="large">Productos</ion-title>
-    </ion-toolbar>
+    
   </ion-header>
+
+
+
+
+
   <!--<ion-searchbar></ion-searchbar>-->
   <app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
+  <ion-item>
+    <ion-buttons  *ngIf=" filtroActivo" slot="start">
+      <ion-chip (click)="borrarFiltros()" color="danger">
+        <ion-icon name="trash-outline" color="danger"></ion-icon>
+        <ion-label>Borrar Filtros</ion-label>
+      </ion-chip>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="abrirFiltros()">Filtrar
+        <ion-icon name="filter-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-item>
   <ion-grid>
     <ion-row>
       <ion-col>
@@ -59,9 +76,10 @@
       <ion-col>
         <ion-list>
           <ion-item-sliding *ngFor="let producto of lstProductos">
-          <ion-item (click)="abrirModal(producto)">
+          <ion-item #datos (click)="abrirModal(producto)">
             <ion-thumbnail slot="start">
-              <img [src]="producto.imagen">
+              <img src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+              [srcset]="producto.imagen">
             </ion-thumbnail>
             <ion-label>
               <h2>{{producto.nombre}}</h2>

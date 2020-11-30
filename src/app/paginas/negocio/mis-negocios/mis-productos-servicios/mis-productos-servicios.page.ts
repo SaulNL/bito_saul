@@ -1,29 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
 import { NegocioModel } from "./../../../../Modelos/NegocioModel";
 import { ActionSheetController } from "@ionic/angular";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
-import { NegocioService } from '../../../../api/negocio.service';
-import { DatosNegocios } from '../../../../Modelos/DatosNegocios';
-import { UtilsCls } from '../../../../utils/UtilsCls';
-import { ArchivoComunModel } from  '../../../../Modelos/ArchivoComunModel';
-import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
-import { ModalController } from '@ionic/angular';
-import { ModalClasificacionComponent } from '../../../../componentes/modal-clasificacion/modal-clasificacion.component';
-import { AlertController } from '@ionic/angular';
-import { NgForm } from '@angular/forms';
-import { FormGroup } from '@angular/forms';
-import { DtosMogoModel } from '../../../../Modelos/DtosMogoModel';
-import { RecorteImagenComponent } from '../../../../components/recorte-imagen/recorte-imagen.component';
-import { GeneralServicesService } from '../../../../api/general-services.service';
+import { NegocioService } from "../../../../api/negocio.service";
+import { DatosNegocios } from "../../../../Modelos/DatosNegocios";
+import { UtilsCls } from "../../../../utils/UtilsCls";
+import { ArchivoComunModel } from "../../../../Modelos/ArchivoComunModel";
+import { ToadNotificacionService } from "../../../../api/toad-notificacion.service";
+import { ModalController } from "@ionic/angular";
+import { ModalClasificacionComponent } from "../../../../componentes/modal-clasificacion/modal-clasificacion.component";
+import { AlertController } from "@ionic/angular";
+import { NgForm } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
+import { DtosMogoModel } from "../../../../Modelos/DtosMogoModel";
+import { RecorteImagenComponent } from "../../../../components/recorte-imagen/recorte-imagen.component";
+import { GeneralServicesService } from "../../../../api/general-services.service";
 
 @Component({
-  selector: 'app-mis-productos-servicios',
-  templateUrl: './mis-productos-servicios.page.html',
-  styleUrls: ['./mis-productos-servicios.page.scss'],
+  selector: "app-mis-productos-servicios",
+  templateUrl: "./mis-productos-servicios.page.html",
+  styleUrls: ["./mis-productos-servicios.page.scss"],
 })
 export class MisProductosServiciosPage implements OnInit {
-
   public negocioTO: NegocioModel;
   public iden: number;
   public datos: any;
@@ -55,7 +54,7 @@ export class MisProductosServiciosPage implements OnInit {
   public resizeToWidth: number = 0;
   public resizeToHeight: number = 0;
   public tipoImagen: number = 0;
-  public imageChangedEvent: any = '';
+  public imageChangedEvent: any = "";
   public blnImgRectangulo: boolean;
   public blnImgPoster: boolean;
   public opcion: number;
@@ -76,53 +75,55 @@ export class MisProductosServiciosPage implements OnInit {
     public modalController: ModalController,
     public alertController: AlertController,
     private generalServicio: GeneralServicesService
-    ) {
-      this.carta = null;
-      this.listaVista = [];
-      this.productoTags = [];
-      this.blnNuevaCategoria = false;
-      this.blnformMobile = false;
-      this.blnEditando = false;
-      this.productoE = new DtosMogoModel();
-      this.listaCategorias = [];
-      this.productoNuevo = new DtosMogoModel();
-    }
+  ) {
+    this.carta = null;
+    this.listaVista = [];
+    this.productoTags = [];
+    this.blnNuevaCategoria = false;
+    this.blnformMobile = false;
+    this.blnEditando = false;
+    this.productoE = new DtosMogoModel();
+    this.listaCategorias = [];
+    this.productoNuevo = new DtosMogoModel();
+  }
 
   ngOnInit() {
-    this.active.queryParams.subscribe(params => {
+    this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.ocultar = false;
-        
+
         console.log(this.productoNuevo);
-        
+
         this.mostrarListaProductos = false;
         this.agregarProducto = false;
         this.agregarClas = false;
         this.loadPdf = false;
         this.loader = false;
-        this.datosUsuario = JSON.parse(localStorage.getItem('u_data'));
+        this.datosUsuario = JSON.parse(localStorage.getItem("u_data"));
         this.datos = JSON.parse(params.special);
         this.iden = this.datos.inden;
-        this.negocioTO  = this.datos.info;
+        this.negocioTO = this.datos.info;
         this.blnImgCuadrada = true;
         this.nuevaCategoria = {
           activo: 1,
-          nombre: '',
+          nombre: "",
           id_categoria: null,
           id_categoria_negocio: null,
-          tipo_categoria: 0
-        }
+          tipo_categoria: 0,
+        };
         this.buscarDatos();
         this.buscarCategoriasProductos();
-        this.sercicioNegocio.obtenerNumMaxProductos(this.negocioTO.id_negocio).subscribe(
-          respuesta => {
-            this.maximoProductos = respuesta.data;
-          },
-          error => {
-            this.notificacionService.error(error);
-            this.maximoProductos = 0;
-          }
-        );
+        this.sercicioNegocio
+          .obtenerNumMaxProductos(this.negocioTO.id_negocio)
+          .subscribe(
+            (respuesta) => {
+              this.maximoProductos = respuesta.data;
+            },
+            (error) => {
+              this.notificacionService.error(error);
+              this.maximoProductos = 0;
+            }
+          );
       }
     });
   }
@@ -163,19 +164,24 @@ export class MisProductosServiciosPage implements OnInit {
     });
   }
 
-  datosProductosServicios(tre){
+  datosProductosServicios(tre) {
     this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
-    
-   let all = {
-     inden: this.iden,
+
+    let all = {
+      inden: this.iden,
       info: this.negocioTO,
-       pys: tre
-      };
+      pys: tre,
+    };
 
     let navigationExtras = JSON.stringify(all);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios/mis-productos-servicios/datos-productos-servicios"], {
-      queryParams: { special: navigationExtras },
-    });
+    this.router.navigate(
+      [
+        "/tabs/home/negocio/mis-negocios/mis-productos-servicios/datos-productos-servicios",
+      ],
+      {
+        queryParams: { special: navigationExtras },
+      }
+    );
   }
 
   private buscarDatos() {
@@ -183,59 +189,74 @@ export class MisProductosServiciosPage implements OnInit {
     let valores;
     switch (this.iden) {
       case 1:
-        valores = 0;        
+        valores = 0;
         break;
-        case 2:
-        valores=1;
+      case 2:
+        valores = 1;
         break;
     }
     console.log(valores);
-    this.sercicioNegocio.buscarProductosServios(this.negocioTO.id_negocio, valores).subscribe(
-      repsuesta => {
-        this.datosNegocio = repsuesta.data;
-        this.productoTags = this.datosNegocio.productoTags;
-        if (this.datosNegocio === undefined || this.datosNegocio === null || this.datosNegocio._id === undefined) {
-          this.datosNegocio = new DatosNegocios();
-          this.datosNegocio.domicilio = this.negocioTO.det_domicilio;
-          this.datosNegocio.id_negocio = this.negocioTO.id_negocio;
-          this.datosNegocio.idProveedor = this.datosUsuario.proveedor.id_proveedor;
-          this.sercicioNegocio.guardarProductoServio(this.datosNegocio).subscribe(
-            repsuesta => {
-              this.datosNegocio = repsuesta.data;
-            },
-            error => {
+    this.sercicioNegocio
+      .buscarProductosServios(this.negocioTO.id_negocio, valores)
+      .subscribe(
+        (repsuesta) => {
+          this.datosNegocio = repsuesta.data;
+          this.productoTags = this.datosNegocio.productoTags;
+          if (
+            this.datosNegocio === undefined ||
+            this.datosNegocio === null ||
+            this.datosNegocio._id === undefined
+          ) {
+            this.datosNegocio = new DatosNegocios();
+            this.datosNegocio.domicilio = this.negocioTO.det_domicilio;
+            this.datosNegocio.id_negocio = this.negocioTO.id_negocio;
+            this.datosNegocio.idProveedor = this.datosUsuario.proveedor.id_proveedor;
+            this.sercicioNegocio
+              .guardarProductoServio(this.datosNegocio)
+              .subscribe(
+                (repsuesta) => {
+                  this.datosNegocio = repsuesta.data;
+                },
+                (error) => {}
+              );
+          }
+          this.loader = false;
+          this.listaVista =
+            repsuesta.data.categorias !== undefined ? repsuesta.agrupados : [];
+          // this.armarListaVista();
+          if (this.iden === 1) {
+            if (
+              this.datosNegocio.cartaProducto !== undefined &&
+              this.datosNegocio.cartaProducto !== null &&
+              this.datosNegocio.cartaProducto !== ""
+            ) {
+              this.carta = this.cleanURL(this.datosNegocio.cartaProducto);
+            } else {
+              this.carta = null;
             }
-          );
-        }
-        this.loader = false;
-        this.listaVista = repsuesta.data.categorias !== undefined ? repsuesta.agrupados : [];
-        // this.armarListaVista();
-        if(this.iden === 1 ){
-          if (this.datosNegocio.cartaProducto !== undefined && this.datosNegocio.cartaProducto !== null && this.datosNegocio.cartaProducto !== '') {
-            this.carta = this.cleanURL(this.datosNegocio.cartaProducto);
-          }else{
-            this.carta = null;
           }
-        }
-        if (this.iden === 2){
-          if(this.datosNegocio.cartaServicio !== undefined && this.datosNegocio.cartaServicio !== null && this.datosNegocio.cartaServicio !== ''){
-            this.carta = this.cleanURL(this.datosNegocio.cartaServicio);
-          }else {
-            this.carta = null;
+          if (this.iden === 2) {
+            if (
+              this.datosNegocio.cartaServicio !== undefined &&
+              this.datosNegocio.cartaServicio !== null &&
+              this.datosNegocio.cartaServicio !== ""
+            ) {
+              this.carta = this.cleanURL(this.datosNegocio.cartaServicio);
+            } else {
+              this.carta = null;
+            }
           }
+
+          console.log(this.carta);
+        },
+        (error) => {
+          this.loader = false;
         }
-        
-         
-        console.log(this.carta);
-      },
-      error => {
-        this.loader = false;
-      }
-    );
+      );
   }
 
-  cleanURL(oldURL ): SafeUrl {
-    return   this.sanitizer.bypassSecurityTrustResourceUrl(oldURL);
+  cleanURL(oldURL): SafeUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(oldURL);
   }
 
   public subirCarta(event) {
@@ -244,10 +265,9 @@ export class MisProductosServiciosPage implements OnInit {
     const file = this.fileImgGaleria[0];
     console.log(file.size);
     if (file.size < 3145728) {
-    let file64: any;
-    const utl = new UtilsCls();
-    utl.getBase64(file).then(
-      data => {
+      let file64: any;
+      const utl = new UtilsCls();
+      utl.getBase64(file).then((data) => {
         file64 = data;
         const archivo = new ArchivoComunModel();
         archivo.nombre_archivo = this.utilscls.convertir_nombre(fileName);
@@ -256,42 +276,49 @@ export class MisProductosServiciosPage implements OnInit {
           case 1:
             this.datosNegocio.cartaProducto = archivo;
             break;
-            case 2:
-              this.datosNegocio.cartaServicio = archivo;
+          case 2:
+            this.datosNegocio.cartaServicio = archivo;
             break;
         }
         this.guardarDatos();
-      }
-    );
+      });
     } else {
-      this.notificacionService.alerta('El archivo sobrepasa los 3 MB');
+      this.notificacionService.alerta("El archivo sobrepasa los 3 MB");
     }
   }
 
   guardarDatos() {
-    if (this.datosNegocio.cartaProducto.archivo_64 !== undefined){
+    if (this.datosNegocio.cartaProducto.archivo_64 !== undefined) {
       this.loadPdf = true;
     }
-    if (this.datosNegocio.cartaServicio.archivo_64 !== undefined){
+    if (this.datosNegocio.cartaServicio.archivo_64 !== undefined) {
       this.loadPdf = true;
     }
     this.sercicioNegocio.guardarProductoServio(this.datosNegocio).subscribe(
-      repsuesta => {
+      (repsuesta) => {
         this.datosNegocio = repsuesta.data;
-        if ( this.datosNegocio.cartaProducto !== undefined && this.datosNegocio.cartaProducto !== null && this.datosNegocio.cartaProducto !== '') {
+        if (
+          this.datosNegocio.cartaProducto !== undefined &&
+          this.datosNegocio.cartaProducto !== null &&
+          this.datosNegocio.cartaProducto !== ""
+        ) {
           this.carta = this.cleanURL(this.datosNegocio.cartaProducto);
         }
-        if (this.loadPdf){
-          this.notificacionService.exito('Carta guardada con éxito');
+        if (this.loadPdf) {
+          this.notificacionService.exito("Carta guardada con éxito");
         }
-        if ( this.datosNegocio.cartaServicio !== undefined && this.datosNegocio.cartaServicio !== null && this.datosNegocio.cartaServicio !== '') {
+        if (
+          this.datosNegocio.cartaServicio !== undefined &&
+          this.datosNegocio.cartaServicio !== null &&
+          this.datosNegocio.cartaServicio !== ""
+        ) {
           this.carta = this.cleanURL(this.datosNegocio.cartaServicio);
         }
-        if (this.loadPdf){
-          this.notificacionService.exito('Carta guardada con éxito');
+        if (this.loadPdf) {
+          this.notificacionService.exito("Carta guardada con éxito");
         }
-      }, error => {
       },
+      (error) => {},
       () => {
         this.loadPdf = false;
       }
@@ -299,19 +326,19 @@ export class MisProductosServiciosPage implements OnInit {
   }
 
   eliminarCarta() {
-    (document.getElementById('imagenCarta') as HTMLInputElement).value = '';
-    this.carta =  null;
+    (document.getElementById("imagenCarta") as HTMLInputElement).value = "";
+    this.carta = null;
     switch (this.iden) {
       case 1:
-        this.datosNegocio.cartaProducto = '';    
+        this.datosNegocio.cartaProducto = "";
         break;
-        case 2:
-          this.datosNegocio.cartaServicio = '';    
-          break;
+      case 2:
+        this.datosNegocio.cartaServicio = "";
+        break;
       default:
         break;
     }
-    
+
     this.guardarDatos();
   }
 
@@ -328,9 +355,9 @@ export class MisProductosServiciosPage implements OnInit {
   get obtenerProductos() {
     if (this.listaVista !== undefined && this.listaVista !== null) {
       let total = 0;
-      this.listaVista.forEach(it => {
+      this.listaVista.forEach((it) => {
         if (it.activo && it.productos !== undefined) {
-          it.productos.forEach(p => {
+          it.productos.forEach((p) => {
             if (p.existencia) {
               total++;
             }
@@ -347,26 +374,28 @@ export class MisProductosServiciosPage implements OnInit {
   async modalClasificacion(item) {
     const modal = await this.modalController.create({
       component: ModalClasificacionComponent,
-      cssClass: 'my-custom-class',
+      cssClass: "my-custom-class",
       componentProps: {
         modalEditarCat: item,
         datosNegocio: this.datosNegocio,
-        listaVista: this.listaVista
-      }
+        listaVista: this.listaVista,
+      },
     });
     await modal.present();
     const { data } = await modal.onDidDismiss();
     if (data != null) {
       this.buscarDatos();
-      this.sercicioNegocio.obtenerNumMaxProductos(this.negocioTO.id_negocio).subscribe(
-        respuesta => {
-          this.maximoProductos = respuesta.data;
-        },
-        error => {
-          this.notificacionService.error(error);
-          this.maximoProductos = 0;
-        }
-      );
+      this.sercicioNegocio
+        .obtenerNumMaxProductos(this.negocioTO.id_negocio)
+        .subscribe(
+          (respuesta) => {
+            this.maximoProductos = respuesta.data;
+          },
+          (error) => {
+            this.notificacionService.error(error);
+            this.maximoProductos = 0;
+          }
+        );
     }
   }
 
@@ -378,107 +407,111 @@ export class MisProductosServiciosPage implements OnInit {
 
   async presentAlert() {
     const alert = await this.alertController.create({
-      header: 'Eliminar',
+      header: "Eliminar",
       message: `Estas seguro de que deseas eliminar la categoria: ${this.editarCategoria.nombreActual}?`,
       buttons: [
         {
-          text: 'Cancelar',
-          role: 'cancel',
+          text: "Cancelar",
+          role: "cancel",
           handler: () => {
-            console.log('cancelar');
-          }
+            console.log("cancelar");
+          },
         },
         {
-          text: 'Aceptar',
+          text: "Aceptar",
           handler: () => {
             this.eliminarCategoria();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
   }
 
   eliminarCategoria() {
-
     this.banderaGuardar = true;
     this.editarCategoria.id_proveedor = this.datosNegocio.idProveedor;
     this.editarCategoria.id_negocio = this.datosNegocio.id_negocio;
     this.sercicioNegocio.eliminarCategoria(this.editarCategoria).subscribe(
-      repsuesta => {
-
+      (repsuesta) => {
         if (repsuesta.code === 200) {
-          const indexCat = this.listaVista.findIndex(cat => cat.id_categoria === this.editarCategoria.id_categoria);
+          const indexCat = this.listaVista.findIndex(
+            (cat) => cat.id_categoria === this.editarCategoria.id_categoria
+          );
           this.listaVista.splice(indexCat, 1);
 
-          this.notificacionService.exito('Se eliminó la categoría con éxito');
+          this.notificacionService.exito("Se eliminó la categoría con éxito");
         } else {
           this.notificacionService.error(repsuesta.message);
         }
       },
-      error => {
-        this.notificacionService.error('Ocurrio un error al eliminar la categoría, intenta más tarde');
-      }, () => {
+      (error) => {
+        this.notificacionService.error(
+          "Ocurrio un error al eliminar la categoría, intenta más tarde"
+        );
+      },
+      () => {
         this.banderaGuardar = false;
       }
     );
   }
 
-  public guardar(form: NgForm){
-    if ( form.invalid ) {
-      return Object.values( form.controls ).forEach( control => {
-        if (control instanceof FormGroup ) {
-          Object.values( control.controls ).forEach( con => con.markAsTouched());
+  public guardar(form: NgForm) {
+    if (form.invalid) {
+      return Object.values(form.controls).forEach((control) => {
+        if (control instanceof FormGroup) {
+          Object.values(control.controls).forEach((con) => con.markAsTouched());
         } else {
           control.markAsTouched();
         }
       });
     } else {
       let exist = false;
-      this.listaVista.map(item => {
+      this.listaVista.map((item) => {
         if (item.nombre === this.nuevaCategoria.nombre) {
           exist = true;
-          this.notificacionService.alerta('La categoría ya existe');
+          this.notificacionService.alerta("La categoría ya existe");
         }
       });
-      if( !exist ) {
+      if (!exist) {
         this.nuevaCategoria.id_categoria = null;
         this.nuevaCategoria.id_categoria_negocio = null;
         switch (this.iden) {
           case 1:
-            this.nuevaCategoria.tipo_categoria = 0;  
+            this.nuevaCategoria.tipo_categoria = 0;
             break;
-            case 2:
-              this.nuevaCategoria.tipo_categoria = 1;  
-              break;
+          case 2:
+            this.nuevaCategoria.tipo_categoria = 1;
+            break;
           default:
             break;
         }
         const enviar = {
           id_negocio: this.negocioTO.id_negocio,
           id_proveedor: this.datosUsuario.proveedor.id_proveedor,
-          categoria: this.nuevaCategoria
+          categoria: this.nuevaCategoria,
         };
         this.sercicioNegocio.agregarCategoria(enviar).subscribe(
-          response => {
+          (response) => {
             const cat = response;
             cat.productos = [];
             this.listaVista.push(cat);
             this.nuevaCategoria = {
               activo: 1,
-              nombre: '',
+              nombre: "",
               id_categoria: null,
               id_categoria_negocio: null,
-              tipo_categoria: null
-            }
+              tipo_categoria: null,
+            };
             this.agregarClas = false;
             this.blnNuevaCategoria = false;
           },
-          error => {
+          (error) => {
             console.error(error);
-          }, () => {
-            this.notificacionService.exito('Se agrego la categoría con éxito');
+          },
+          () => {
+            this.notificacionService.exito("Se agrego la categoría con éxito");
           }
         );
       }
@@ -498,10 +531,9 @@ export class MisProductosServiciosPage implements OnInit {
     this.blnformMobile = true;
     this.isEdicion = false;
     this.opcion = 1;
-    this.productoNuevo= JSON.parse(JSON.stringify(this.productoNuevo));
-    
+    this.productoNuevo = JSON.parse(JSON.stringify(this.productoNuevo));
+
     console.log(this.productoNuevo);
-    
   }
 
   public regresarLista() {
@@ -526,28 +558,28 @@ export class MisProductosServiciosPage implements OnInit {
           img.onload = () => {
             height = img.naturalHeight;
             width = img.naturalWidth;
-            if (width === 400 &&  height === 400) {
+            if (width === 400 && height === 400) {
               this.procesando_img = true;
               const file_name = archivo.name;
               const file = archivo;
               if (file.size < 3145728) {
                 let file_64: any;
                 const utl = new UtilsCls();
-                utl.getBase64(file).then(
-                  data => {
-                    file_64 = data;
-                    const imagen = new ArchivoComunModel();
-                    imagen.nombre_archivo = this.utilscls.convertir_nombre(file_name);
-                    imagen.archivo_64 = file_64;
-                    this.productoNuevo.imagen = imagen;
-                    this.procesando_img = false;
-                    this.blnImgCuadrada = false;
-                  }
-                );
+                utl.getBase64(file).then((data) => {
+                  file_64 = data;
+                  const imagen = new ArchivoComunModel();
+                  imagen.nombre_archivo = this.utilscls.convertir_nombre(
+                    file_name
+                  );
+                  imagen.archivo_64 = file_64;
+                  this.productoNuevo.imagen = imagen;
+                  this.procesando_img = false;
+                  this.blnImgCuadrada = false;
+                });
               } else {
-                this.notificacionService.alerta('archivo pesado');
+                this.notificacionService.alerta("archivo pesado");
               }
-            }else{
+            } else {
               this.maintainAspectRatio = true;
               this.resizeToWidth = 400;
               this.resizeToHeight = 400;
@@ -568,65 +600,63 @@ export class MisProductosServiciosPage implements OnInit {
   async abrirModalImagen() {
     const modal = await this.modalController.create({
       component: RecorteImagenComponent,
-      cssClass: 'my-custom-class',
+      cssClass: "my-custom-class",
       componentProps: {
-        'actualTo': this.productoNuevo,
-        'imageChangedEvent': this.imageChangedEvent,
-        'maintainAspectRatio': this.maintainAspectRatio,
-        'resizeToWidth': this.resizeToWidth,
-        'resizeToHeight': this.resizeToHeight,
-        'tipoImagen': this.tipoImagen,
-         'blnImgCuadrada': this.blnImgCuadrada,
-        'blnImgRectangulo' : this.blnImgRectangulo,
-        'blnImgPoster': this.blnImgPoster,
-        'procesando_img': this.procesando_img
-      }
+        actualTo: this.productoNuevo,
+        imageChangedEvent: this.imageChangedEvent,
+        maintainAspectRatio: this.maintainAspectRatio,
+        resizeToWidth: this.resizeToWidth,
+        resizeToHeight: this.resizeToHeight,
+        tipoImagen: this.tipoImagen,
+        blnImgCuadrada: this.blnImgCuadrada,
+        blnImgRectangulo: this.blnImgRectangulo,
+        blnImgPoster: this.blnImgPoster,
+        procesando_img: this.procesando_img,
+      },
     });
     await modal.present();
     const { data } = await modal.onDidDismiss();
 
     if (data != null) {
-    	const imagen = new ArchivoComunModel();
+      const imagen = new ArchivoComunModel();
       imagen.nombre_archivo = data.nombre_archivo;
       imagen.archivo_64 = data.data;
 
-    	if(this.tipoImagen === 1) {
+      if (this.tipoImagen === 1) {
         this.productoNuevo.imagen = imagen;
-    	  this.blnImgCuadrada = false;
-    	}
+        this.blnImgCuadrada = false;
+      }
     }
   }
 
-
   public crearProducto(form: NgForm) {
-    if ( form.invalid ) {
-      return Object.values( form.controls ).forEach( control => {
-        if (control instanceof FormGroup ) {
-          Object.values( control.controls ).forEach( con => con.markAsTouched());
+    if (form.invalid) {
+      return Object.values(form.controls).forEach((control) => {
+        if (control instanceof FormGroup) {
+          Object.values(control.controls).forEach((con) => con.markAsTouched());
         } else {
           control.markAsTouched();
         }
       });
     } else {
-      if ( this.opcion === 2) {
+      if (this.opcion === 2) {
         this.blnEditando = true;
         this.indexModificar = this.productoNuevo.index;
         this.productoE = this.productoNuevo;
         this.actualizar(this.productoNuevo);
       }
-      if( this.opcion === 1 ) {
+      if (this.opcion === 1) {
         this.agregar(this.listaProductos);
       }
     }
   }
 
   agregar(item) {
-
     const cat = {
       id_categoria: item.id_categoria,
       nombre: item.nombre,
       id_categoria_negocio: item.id_categoria_negocio,
-    }
+    };
     this.productoNuevo.categoria = cat;
     this.productoNuevo.id_categoria = item.id_categoria;
     this.blnEditando = false;
@@ -642,17 +672,25 @@ export class MisProductosServiciosPage implements OnInit {
   }
 
   guardarProducto() {
-    if (this.productoNuevo.nombre === undefined
-      || this.productoNuevo.nombre === null
-      || this.productoNuevo.nombre === '') {
-      this.notificacionService.error('El nombre es requerido para guardar el producto');
+    if (
+      this.productoNuevo.nombre === undefined ||
+      this.productoNuevo.nombre === null ||
+      this.productoNuevo.nombre === ""
+    ) {
+      this.notificacionService.error(
+        "El nombre es requerido para guardar el producto"
+      );
       return;
     }
 
-    if (this.productoNuevo.descripcion === undefined
-      || this.productoNuevo.descripcion === null
-      || this.productoNuevo.descripcion === '') {
-      this.notificacionService.error('La descripción es requerida para guardar el producto');
+    if (
+      this.productoNuevo.descripcion === undefined ||
+      this.productoNuevo.descripcion === null ||
+      this.productoNuevo.descripcion === ""
+    ) {
+      this.notificacionService.error(
+        "La descripción es requerida para guardar el producto"
+      );
       return;
     }
 
@@ -660,7 +698,9 @@ export class MisProductosServiciosPage implements OnInit {
     let datosAEnviar: DatosNegocios;
     const datos = JSON.stringify(this.datosNegocio);
     datosAEnviar = JSON.parse(datos);
-    this.productoNuevo.imagen = JSON.parse(JSON.stringify(this.productoNuevo.imagen));
+    this.productoNuevo.imagen = JSON.parse(
+      JSON.stringify(this.productoNuevo.imagen)
+    );
     console.log(this.productoNuevo.imagen);
     if (this.blnEditando) {
       datosAEnviar.productos[this.indexModificar] = this.productoNuevo;
@@ -670,11 +710,11 @@ export class MisProductosServiciosPage implements OnInit {
         case 1:
           datosAEnviar.productos.push(this.productoNuevo);
           break;
-      case 2:
-        console.log(this.productoNuevo);
-        
-        datosAEnviar.servicios.push(this.productoNuevo);
-        break;
+        case 2:
+          console.log(this.productoNuevo);
+
+          datosAEnviar.servicios.push(this.productoNuevo);
+          break;
       }
     }
     console.log(datosAEnviar);
@@ -682,131 +722,142 @@ export class MisProductosServiciosPage implements OnInit {
     let tamano;
     switch (this.iden) {
       case 1:
-        if(datosAEnviar.productos.length>1){
-          tamano = datosAEnviar.productos.length-1;
-        }    
+        if (datosAEnviar.productos.length > 1) {
+          tamano = datosAEnviar.productos.length - 1;
+        }
         break;
-        case 2:
-          if(datosAEnviar.servicios.length>1){
-            tamano = datosAEnviar.servicios.length-1;
-          }    
-          break;
+      case 2:
+        if (datosAEnviar.servicios.length > 1) {
+          tamano = datosAEnviar.servicios.length - 1;
+        }
+        break;
       default:
         break;
     }
-    
+
     switch (this.iden) {
       case 1:
-        if(datosAEnviar.productos[tamano].imagen.archivo_64 === '' ||
-        datosAEnviar.productos[tamano].imagen.archivo_64 === null ||
-        datosAEnviar.productos[tamano].imagen.archivo_64 === undefined){
+        if (
+          datosAEnviar.productos[tamano].imagen.archivo_64 === "" ||
+          datosAEnviar.productos[tamano].imagen.archivo_64 === null ||
+          datosAEnviar.productos[tamano].imagen.archivo_64 === undefined
+        ) {
           this.banderaGuardar = false;
-          this.notificacionService.alerta('Agregue la foto de su producto');
-        }else{
-         this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
-          repsuesta => {
-            this.buscarCategoriasProductos();
-            this.datosNegocio = repsuesta.data;
-            this.blnformMobile = false;
-            this.listaVista.map(item => {
-              if (item.id_categoria === this.productoNuevo.id_categoria) {
-                this.productoNuevo = this.datosNegocio.productos[this.datosNegocio.productos.length - 1];
-                this.productoNuevo.index = this.datosNegocio.productos.length - 1;
-    
-                // @ts-ignore
-                this.productoNuevo.editar = false;
-                switch (this.iden) {
-                  case 1:
-                    item.productos.push(this.productoNuevo);    
-                    break;
-                case 2:
-                  item.servicios.push(this.productoNuevo);    
-                  break;
-                  default:
-                    break;
-                }
-                
-              }
-            });
-            this.notificacionService.exito('Se guardó el producto con éxito');
-            this.indexModificar = undefined;
-            this.blnEditando = false;
-            this.productoNuevo = new DtosMogoModel();
-          },
-          error => {
-    
-          }, () => {
-            this.banderaGuardar = false;
-            this.regresarLista();
-          }
-        );
-        }   
-        break;
-    
-        case 2:
-          if(datosAEnviar.servicios[tamano].imagen.archivo_64 === '' ||
-          datosAEnviar.servicios[tamano].imagen.archivo_64 === null ||
-          datosAEnviar.servicios[tamano].imagen.archivo_64 === undefined){
-            this.banderaGuardar = false;
-            this.notificacionService.alerta('Agregue la foto de su producto');
-          }else{
-           this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
-            repsuesta => {
+          this.notificacionService.alerta("Agregue la foto de su producto");
+        } else {
+          this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
+            (repsuesta) => {
               this.buscarCategoriasProductos();
               this.datosNegocio = repsuesta.data;
               this.blnformMobile = false;
-              this.listaVista.map(item => {
+              this.listaVista.map((item) => {
                 if (item.id_categoria === this.productoNuevo.id_categoria) {
-                  this.productoNuevo = this.datosNegocio.servicios[this.datosNegocio.servicios.length - 1];
-                  this.productoNuevo.index = this.datosNegocio.servicios.length - 1;
-      
+                  this.productoNuevo = this.datosNegocio.productos[
+                    this.datosNegocio.productos.length - 1
+                  ];
+                  this.productoNuevo.index =
+                    this.datosNegocio.productos.length - 1;
+
                   // @ts-ignore
                   this.productoNuevo.editar = false;
                   switch (this.iden) {
                     case 1:
-                      item.productos.push(this.productoNuevo);    
+                      item.productos.push(this.productoNuevo);
                       break;
-                  case 2:
-                    item.servicios.push(this.productoNuevo);    
-                    break;
+                    case 2:
+                      item.servicios.push(this.productoNuevo);
+                      break;
                     default:
                       break;
-                  } 
+                  }
                 }
               });
-              this.notificacionService.exito('Se guardó el producto con éxito');
+              this.notificacionService.exito("Se guardó el producto con éxito");
               this.indexModificar = undefined;
               this.blnEditando = false;
               this.productoNuevo = new DtosMogoModel();
             },
-            error => {
-      
-            }, () => {
+            (error) => {},
+            () => {
               this.banderaGuardar = false;
               this.regresarLista();
             }
           );
-          }
+        }
+        break;
+
+      case 2:
+        if (
+          datosAEnviar.servicios[tamano].imagen.archivo_64 === "" ||
+          datosAEnviar.servicios[tamano].imagen.archivo_64 === null ||
+          datosAEnviar.servicios[tamano].imagen.archivo_64 === undefined
+        ) {
+          this.banderaGuardar = false;
+          this.notificacionService.alerta("Agregue la foto de su producto");
+        } else {
+          this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
+            (repsuesta) => {
+              this.buscarCategoriasProductos();
+              this.datosNegocio = repsuesta.data;
+              this.blnformMobile = false;
+              this.listaVista.map((item) => {
+                if (item.id_categoria === this.productoNuevo.id_categoria) {
+                  this.productoNuevo = this.datosNegocio.servicios[
+                    this.datosNegocio.servicios.length - 1
+                  ];
+                  this.productoNuevo.index =
+                    this.datosNegocio.servicios.length - 1;
+
+                  // @ts-ignore
+                  this.productoNuevo.editar = false;
+                  switch (this.iden) {
+                    case 1:
+                      item.productos.push(this.productoNuevo);
+                      break;
+                    case 2:
+                      item.servicios.push(this.productoNuevo);
+                      break;
+                    default:
+                      break;
+                  }
+                }
+              });
+              this.notificacionService.exito("Se guardó el producto con éxito");
+              this.indexModificar = undefined;
+              this.blnEditando = false;
+              this.productoNuevo = new DtosMogoModel();
+            },
+            (error) => {},
+            () => {
+              this.banderaGuardar = false;
+              this.regresarLista();
+            }
+          );
+        }
         break;
       default:
-        this.notificacionService.alerta('Por favor seleccione productos o servicios');  
+        this.notificacionService.alerta(
+          "Por favor seleccione productos o servicios"
+        );
         break;
     }
   }
 
   buscarCategoriasProductos() {
     this.listaCategorias = [];
-    this.generalServicio.obtenerListaCategopriasProducto(this.negocioTO.id_categoria_negocio, 0).subscribe(
-      respuesta => {
-        this.listaCategorias = respuesta.data;
-        this.nuevaCategoria.nombre = '';
-        this.nuevaCategoria.id_categoria = null;
-        // console.info(this.listaCategorias);
-      },
-      error => {
-        this.notificacionService.error(error);
-      }
-    );
+    this.generalServicio
+      .obtenerListaCategopriasProducto(this.negocioTO.id_categoria_negocio, 0)
+      .subscribe(
+        (respuesta) => {
+          this.listaCategorias = respuesta.data;
+          this.nuevaCategoria.nombre = "";
+          this.nuevaCategoria.id_categoria = null;
+          // console.info(this.listaCategorias);
+        },
+        (error) => {
+          this.notificacionService.error(error);
+        }
+      );
   }
 
   editarRegistro(produc: any) {
@@ -818,51 +869,56 @@ export class MisProductosServiciosPage implements OnInit {
     this.opcion = 2;
   }
 
-
   actualizar(produc) {
-    
     this.banderaGuardar = true;
     let datosAEnviar: DatosNegocios;
     const datos = JSON.stringify(this.datosNegocio);
     datosAEnviar = JSON.parse(datos);
 
     if (this.blnEditando) {
-      datosAEnviar.productos[this.indexModificar] = this.productoE;
+      switch (this.iden) {
+        case 1:
+          datosAEnviar.productos[this.indexModificar] = this.productoE;
+          break;
+        case 2:
+          datosAEnviar.servicios[this.indexModificar] = this.productoE;
+          break;
+      }
     }
-  
-   this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
-      repsuesta => {
+    this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
+      (repsuesta) => {
         this.buscarCategoriasProductos();
         // this.modalReference.close();
         this.datosNegocio = repsuesta.data;
         if (repsuesta.code === 402) {
           this.notificacionService.alerta(repsuesta.message);
         }
-        // this.armarListaVista();
-        this.listaVista.map(item => {
+        /* this.armarListaVista();
+        this.listaVista.map((item) => {
           if (this.productoE.id_categoria === item.id_categoria) {
-            item.productos.map(p => {
+            item.productos.map((p) => {
               if (p.index === this.productoE.index) {
                 p = this.productoE;
               }
             });
           }
         });
-
-        produc.editar = false
+*/
+        produc.editar = false;
         this.indexModificar = undefined;
         this.blnEditando = false;
         this.blnformMobile = false;
       },
-      error => {
+      (error) => {
         console.error(error);
-      }, () => {
+      },
+      () => {
         this.banderaGuardar = false;
-        this.notificacionService.exito('Se actualizo correctamente el producto');
+        this.notificacionService.exito(
+          "Se actualizo correctamente el producto"
+        );
         this.regresarLista();
       }
     );
   }
-
-   
 }

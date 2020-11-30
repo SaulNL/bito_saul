@@ -9,6 +9,7 @@ import {FiltroABCModel} from "../../Modelos/FiltroABCModel";
 import {ModalProductoPage} from "./modal-producto/modal-producto.page";
 import {ToadNotificacionService} from "../../api/toad-notificacion.service";
 import {FiltrosBusquedaComponent} from "../../componentes/filtros-busqueda/filtros-busqueda.component";
+import { AnimationController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -35,6 +36,8 @@ export class ProductosPage {
   public listaCategorias: any;
   private modal: any;
   public strBuscar: any;
+  alphaScrollItemTemplate: '<ion-item #datos (click)="abrirModal(producto)"><ion-thumbnail slot="start"><img src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"[srcset]="producto.imagen"></ion-thumbnail><ion-label><h2>{{producto.nombre}}</h2><h3>{{(producto.nombre_categoria1 != null)?producto.nombre_categoria1:\'Sin categoría\'}}</h3><div><ion-text>{{(producto.descripcion != null)?producto.descripcion:\'Sin descripción\'}}</ion-text></div><div><ion-text color="success">${{(producto.precio != \'\')?((producto.precio != null)?producto.precio:\'Sin precio\'):\'Sin precio\'}}</ion-text></div><div><ion-badge color="primary">{{producto.tipo}}</ion-badge><ion-badge color="medium">{{(producto.ubicacion != null)?producto.ubicacion.nombre_localidad:\'Sin ubicación\'}}</ion-badge></div></ion-label></ion-item>\n';
+  filtroActivo: any;
 
   constructor(
       public loadingController: LoadingController,
@@ -44,7 +47,8 @@ export class ProductosPage {
       private servicioProductos: ProductosService,
       public modalController: ModalController,
       private notificaciones: ToadNotificacionService,
-      private active: ActivatedRoute
+      private active: ActivatedRoute,
+      public animationCtrl: AnimationController
   ) {}
 
   ngOnInit(): void {
@@ -214,7 +218,7 @@ export class ProductosPage {
       return (b.select - a.select);
     });
     this.seleccionadoDetalleArray = this.lstProductos;
-    this.presentModal();
+    this.presentModale();
   }
 
   async presentLoading() {
@@ -276,5 +280,40 @@ export class ProductosPage {
       }
     });
     return await this.modal.present();
+  }
+  async presentModale() {
+    const enterAnimation = (baseEl: any) => {
+      const backdropAnimation = this.animationCtrl.create()
+        .addElement(baseEl.querySelector('ion-backdrop')!)
+        .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
+
+      const wrapperAnimation = this.animationCtrl.create()
+        .addElement(baseEl.querySelector('.modal-wrapper')!)
+        .keyframes([
+          { offset: 0, opacity: '0', transform: 'scale(0)' },
+          { offset: 1, opacity: '0.99', transform: 'scale(1)' }
+        ]);
+
+      return this.animationCtrl.create()
+        .addElement(baseEl)
+        .easing('ease-out')
+        .duration(500)
+        .addAnimation([backdropAnimation, wrapperAnimation]);
+    }
+
+    const leaveAnimation = (baseEl: any) => {
+      return enterAnimation(baseEl).direction('reverse');
+    }
+
+    const modal = await this.modalController.create({
+      component: ModalProductoPage,
+      enterAnimation,
+      leaveAnimation,
+      swipeToClose: true,
+      componentProps: {
+        seleccionadoDetalleArray: this.seleccionadoDetalleArray
+      }
+    });
+    return await modal.present();
   }
 }

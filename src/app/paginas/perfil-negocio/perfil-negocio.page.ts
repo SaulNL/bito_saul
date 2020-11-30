@@ -288,13 +288,6 @@ export class PerfilNegocioPage implements OnInit {
                     }
                 },
                 {
-                    text: 'Compartir',
-                    icon: 'share-social-outline',
-                    handler: () => {
-                        this.compartir();
-                    }
-                },
-                {
                     text: 'Cancelar',
                     icon: 'close',
                     role: 'cancel',
@@ -323,7 +316,8 @@ export class PerfilNegocioPage implements OnInit {
                 datos: this.detalle,
                 _entregaDomicilio: this.informacionNegocio.entrega_domicilio,
                 _entregaSitio: this.informacionNegocio.entrega_sitio,
-                _consumoSitio: this.informacionNegocio.consumo_sitio
+                _consumoSitio: this.informacionNegocio.consumo_sitio,
+                _costoEntrega: this.informacionNegocio.costo_entrega
             }
         });
         await modal.present()
@@ -342,7 +336,8 @@ export class PerfilNegocioPage implements OnInit {
                 lista: this.bolsa,
                 _entregaDomicilio: this.informacionNegocio.entrega_domicilio,
                 _entregaSitio: this.informacionNegocio.entrega_sitio,
-                _consumoSitio: this.informacionNegocio.consumo_sitio
+                _consumoSitio: this.informacionNegocio.consumo_sitio,
+                _costoEntrega: this.informacionNegocio.costo_entrega
             }
         });
         await modal.present()
@@ -517,7 +512,7 @@ export class PerfilNegocioPage implements OnInit {
         }
     }
 
-    private llenarBolsa(dato) {
+     private llenarBolsa(dato) {
         let existe = false;
         this.bolsa.map(it => {
             if (it.idProducto === dato.idProducto) {
@@ -571,5 +566,18 @@ export class PerfilNegocioPage implements OnInit {
             const dis = haversineCalculator(start, end);
             this.distanciaNegocio = dis.toFixed(2);
         }, 3000);
+    }
+
+    agregarBolsaDeta(pro){
+        const producto = {
+            idProducto: pro.idProducto,
+            precio: pro.precio,
+            imagen: pro.imagen,
+            cantidad: 1,
+            idNegocio: pro.negocio.idNegocio,
+            nombre: pro.nombre,
+            descripcion: pro.descripcion
+          };
+          this.llenarBolsa(producto);
     }
 }

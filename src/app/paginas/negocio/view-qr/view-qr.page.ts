@@ -39,7 +39,7 @@ export class ViewQrPage implements OnInit {
         if (this.negocioTO.url_negocio == null || this.negocioTO.url_negocio == undefined){
           this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}  });
         } else{
-          this.qrdata = AppSettings.URL_MOVIL+this.negocioTO.url_negocio;
+          this.qrdata = AppSettings.URL_FRONT+this.negocioTO.url_negocio;
         }
 
       }
@@ -47,6 +47,6 @@ export class ViewQrPage implements OnInit {
   }
   regresar() {
     this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}  });
-    //this.admin.blnActivaDatosCategoria = true;
+    this.qrdata = '';
   }
 }

@@ -15,9 +15,11 @@
         alt="Falla al cargar la imagen"> 
         <img *ngIf="nomCategoria.url_imagen !== null && imgMobil==false" [src]="nomCategoria.url_imagen"
         alt="Falla al cargar la imagen"> 
-        <ion-col sizeLg="3" sizeXs="6" sizeSm="4" sizeMd="4" *ngFor="let subCategoria of nomCategoria.categorias" 
+        <ion-col sizeLg="3" sizeXs="6" sizeSm="4"  sizeMd="4" *ngFor="let subCategoria of nomCategoria.categorias"
         (click)="seleccionarCategoria(subCategoria)">
-          <img class="img-card-w" *ngIf="subCategoria.url_imagen !== null" [src]="subCategoria.url_imagen"
+          <img class="img-card-w" *ngIf="subCategoria.url_imagen !== null" 
+          src="https://ecoevents.blob.core.windows.net/comprandoando/Categor%C3%ADas/Im%C3%A1genes%20Sub%20Categor%C3%ADas/Alimentos%20y%20Bebidas/Fondas%20y%20Cocinas%20Econ%C3%B3micas.png"
+          [srcset]="subCategoria.url_imagen"
           alt="Falla al cargar la imagen">
           <p style="text-align: center;">{{subCategoria.nombre}}</p>
         </ion-col>

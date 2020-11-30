@@ -19,3 +19,62 @@
 .fondo-rosa {
   background-color: #FA4F72 !important;
 }
+strong{
+  color: #FA4F72 !important;
+  font-size: 1rem;
+}
+
+.swiper-slide img {
+  height: 275px !important;
+  width: 320px !important;
+}
+$font-size: 15px;
+$line-height: 1.4;
+$lines: 3;
+h2{
+  font-size: 24px;
+    line-height: 1.4;
+    -webkit-line-clamp: 3;
+    display: block;
+  display: -webkit-box;
+  height: 32px;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+#doslienas{
+    display: block;
+    display: -webkit-box;
+    height: 43px;
+    font-size: $font-size;
+    line-height: $line-height;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+h2{
+  margin-bottom: -38px;
+}
+.estrella {
+  width: 250px;
+  margin: 0 auto;
+  height: 50px;
+}
+
+.estrella div {
+  text-align: center;
+}
+
+.estrella label {
+  font-size: 20px;
+}
+.clasificacion {
+  direction: rtl;
+  unicode-bidi: bidi-override;
+}
+input[type="radio"]:checked ~ label {
+  color: orange;
+}

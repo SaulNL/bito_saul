@@ -16,6 +16,12 @@
     </ion-content >
     <div *ngIf="!loader">
         <ion-item>
+            <ion-buttons  *ngIf=" filtroActivo" slot="start">
+                <ion-chip (click)="borrarFiltros()" color="danger">
+                    <ion-icon name="trash-outline" color="danger"></ion-icon>
+                    <ion-label>Borrar Filtros</ion-label>
+                </ion-chip>
+            </ion-buttons>
             <ion-buttons slot="end">
                 <ion-button (click)="abrirFiltros()">Filtrar
                     <ion-icon name="filter-outline"></ion-icon>
@@ -39,7 +45,8 @@
                 </ion-text>
                 <ion-col sizeLg="3" sizeXs="6" sizeSm="4" sizeMd="4" *ngFor="let proveedor of cat.negocios">
                     <ion-card [routerLink]="['/tabs/negocio/' + proveedor.url_negocio]" class="m-0 fixed">
-                        <img class="img-card-w" *ngIf="proveedor.url_logo !== null" [src]="proveedor.url_logo"
+                        <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
+                            [srcset]="proveedor.url_logo" 
                              alt="Falla al cargar la imagen">
                         <ion-card-header>
                             <ion-card-subtitle>{{proveedor.nombre_comercial}}</ion-card-subtitle>

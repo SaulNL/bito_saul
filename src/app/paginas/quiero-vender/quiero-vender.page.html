@@ -1,23 +1,26 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title>
+      Quiero Vender
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
-  <ion-card style="background-color:  #b3b3b3; color: white;">
-    <ion-card-content>
-      <h1 style="text-align: center;">¡Hola!</h1>
-      <h3 style="text-align: justify;">Antes que nada necesitamos conocerte un poco más</h3>
+  <ion-card style="background-color: #f64f7a; color: white;">
+    <ion-card-content  class="ion-text-center">
+      <h1>¡Hola!</h1>
+      <h3>Antes que nada necesitamos conocerte un poco más</h3>
     </ion-card-content>
   </ion-card>
-  <form [formGroup]="firstFormGroup" (ngSubmit)="guardar()" *ngIf="formulario1">
+  <form #formBasicos="ngForm" (ngSubmit)="guardar()" *ngIf="formulario1">
     <ion-card>
       <ion-card-content>
-        <ion-grid>
-          <ion-row>
-            <ion-col size='12'>
-              <div style="display: flex; justify-content: center; align-items: center;">
-               <div style="width: 40px; height: 40px; background-color: blue; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px; color: white; font-weight: bolder;">1</div><h2>Información general</h2>
-              </div>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
+        <ion-card-content  class="ion-text-center">
+          <h2>Información General</h2>
+        </ion-card-content>
+        <ion-grid>        
+         <ion-row>
             <ion-col size='12'>
               <div class="contenedor">
                 <div class="foto" *ngIf="proveedorTO.selfie === null || proveedorTO.selfie === undefined" id="perfil" [ngStyle]="{'border': '2px solid grey', '
@@ -47,150 +50,113 @@
               <input style="display: none;" #selfie id="selfie" type="file" (change)="subir_imagen_cuadrada($event)"  accept="image/*" name="selfie" required>
             </ion-col>
           </ion-row>
-          
-          <ion-row>
-            <ion-col size='12'>
-              <ion-item>
-                <ion-label position="floating">Nombre:</ion-label>
-                <ion-input formControlName="compNombre" [(ngModel)]="proveedorTO.nombre" required></ion-input>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-
-            <ion-col size='12'>
-              <ion-item>
-                <ion-label position="floating">Apellido paterno:</ion-label>
-                <ion-input formControlName="compApellidos" [(ngModel)]="proveedorTO.paterno" required></ion-input>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col size='12'>
-              <ion-item>
-                <ion-label position="floating">Apellido materno:</ion-label>
-                <ion-input formControlName="compApellidoM" [(ngModel)]="proveedorTO.materno" required></ion-input>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col size='12'>
-              <ion-item>
-                <ion-label position="floating">Correo:</ion-label>
-                <ion-input formControlName="compCorreo" [(ngModel)]="proveedorTO.correo" required></ion-input>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col size='12'>
-              <ion-item>
-                <ion-label>Sexo</ion-label>
-                <ion-select name="sexo"  formControlName="compSexo" [(ngModel)]="proveedorTO.genero" required>
-                  <ion-select-option *ngFor="let s of sexos" [value]="s.id">
-                    {{s.sexo}}
-                  </ion-select-option>
-                </ion-select>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col size='12'>
-              <ion-item>
-                <ion-label position="floating">Número de oficina:</ion-label>
-                <ion-input  formControlName="compTelefono" [(ngModel)]="proveedorTO.telefono" required></ion-input>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col size='12'>
-              <ion-item>
-                <ion-label position="floating">Celular / Whatsapp:</ion-label>
-                <ion-input formControlName="compCelular" [(ngModel)]="proveedorTO.celular" required></ion-input>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col size='12'>
-              <ion-item>
-                <ion-label>Fecha de nacimiento</ion-label>
-                <ion-datetime displayFormat="DD MM YYYY"  name="fecha" formControlName="compNacimiento"  [(ngModel)]="fechas" required></ion-datetime>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col size='12'>
-              <div class="contenedor">
-
-                <div class="ine" *ngIf="!hIneFrente">
-                  <label for="ineFrente" class="cargar">
-                    <em>
-                      <ion-icon name="image-outline" style="font-size: 30px;"></ion-icon>
-                    </em>
+        <ion-list>
+          <ion-item>
+            <ion-label position="stacked">Nombre:</ion-label>
+            <ion-input placeholder="Nombre" #nombre="ngModel" required  name="nombre" [(ngModel)]="proveedorTO.nombre"></ion-input>
+          </ion-item>
+          <div
+          *ngIf="nombre.touched  && nombre.invalid"
+          class="alert alert-danger">
+          <div
+            *ngIf="nombre.errors.required">el nombre es requerido
+          </div>
+        </div>
+          <ion-item>
+            <ion-label position="stacked">Apellido paterno:</ion-label>
+            <ion-input placeholder="Apellido Paterno"  #ap="ngModel" required  name="ap" [(ngModel)]="proveedorTO.paterno"></ion-input>
+          </ion-item>
+          <div *ngIf="ap.touched  && ap.invalid" class="alert alert-danger">
+          <div *ngIf="ap.errors.required">el apellido paterno es requerido</div>
+        </div>
+          <ion-item>
+            <ion-label position="stacked">Apellido materno:</ion-label>
+            <ion-input placeholder="Apellido Materno" #am="ngModel" required  name="am" [(ngModel)]="proveedorTO.materno"></ion-input>
+          </ion-item>
+          <div *ngIf="am.touched  && am.invalid" class="alert alert-danger">
+            <div *ngIf="am.errors.required">el apellido materno es requerido</div>
+          </div>
+          <ion-item>
+            <ion-label position="stacked">Correo:</ion-label>
+            <ion-input id="correo" type="email" email name="correo" #correo="ngModel" placeholder="Correo" [(ngModel)]="proveedorTO.correo" required></ion-input>
+          </ion-item>
+          <div *ngIf="correo.touched  && correo.invalid" class="alert alert-danger">
+            <div *ngIf="correo.errors.required">el correo materno es requerido</div>
+          </div>
+          <ion-item>
+            <ion-label position="stacked">Sexo</ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar"  #sexo="ngModel" name="sexo" [(ngModel)]="proveedorTO.genero" required>
+              <ion-select-option *ngFor="let s of sexos" [value]="s.id">{{s.sexo}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div *ngIf="sexo.touched  && sexo.invalid">
+            <div *ngIf="sexo.errors.required">el sexo es requerido
+            </div>
+        </div>
+          <ion-item>
+            <ion-label position="stacked">Número de oficina:</ion-label>
+            <ion-input  placeholder="Telefono"  type="number"  #telefono="ngModel"   name="telefono" [(ngModel)]="proveedorTO.telefono"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Celular / Whatsapp:</ion-label>
+            <ion-input placeholder="Celular"  type="number"  #celular="ngModel" required  name="celular" [(ngModel)]="proveedorTO.celular"></ion-input>
+          </ion-item>
+          <div *ngIf="celular.touched  && celular.invalid" class="alert alert-danger">
+          <div *ngIf="celular.errors.required">el celular es requerido
+          </div>
+        </div>
+          <ion-item>
+            <ion-label position="stacked">Fecha de nacimiento</ion-label>
+            <ion-datetime  displayFormat="D/MM/YYYY"   value="{{proveedorTO.fecha_nacimiento | date: 'yyyy-MM-dd'}}" (ionChange)="convercionFechaNac($event)"  required></ion-datetime>
+          </ion-item>
+          <ion-item style="margin-top: 10px;">
+            <div class="avatar-uploadIne">
+              <div class="avatar-editIne">
+                  <input type='file' hidden id="imageUpload"  accept="image/*"  (change)="subirArchivo($event,1)"/>
+                  <label for="imageUpload">
+                    <ion-icon name="camera-outline" style="
+                    position: relative;
+                    top: 10px;
+                "></ion-icon>
                   </label>
-                </div>
-                
-                <div class="ine" *ngIf="hIneFrente"  [ngStyle]="{'background-image': 'url('+proveedorTO.ine1.archivo_64+')', 'border': '2px solid green', '
-                background-position': 'center', 'background-size': 'cover'}">
-                  <label for="ineFrente" class="cargar">
-                    <em>
-                      <ion-icon name="image-outline" style="font-size: 30px;"></ion-icon>
-                    </em>
-                  </label>
-                </div>
-                <label for="ineFrente" style="margin-top: 10px;">INE (Frente)</label>
-                <small *ngIf="!hIneFrente"  style="color: red;">La INE es requerida</small>
               </div>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col size='12'>
-              <input type='file' id="ineFrente"  accept="image/*"
-              (change)="subirArchivo($event, 1)" formControlName="ineFrente" style="display: none;">
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col size='12'>
-              <div class="contenedor">
-                <div class="ine" *ngIf="!hIneAtras">
-                  <label for="ineAtras" class="cargar">
-                    <em>
-                      <ion-icon name="image-outline" style="font-size: 30px;"></ion-icon>
-                    </em>
-                  </label>
-                </div>
-                <div class="ine" *ngIf="hIneAtras" [ngStyle]="{'background-image': 'url('+proveedorTO.ine2.archivo_64+')', 'border': '2px solid green', '
-                background-position': 'center', 'background-size': 'cover'}">
-                  <label for="ineAtras" class="cargar">
-                    <em>
-                      <ion-icon name="image-outline" style="font-size: 30px;"></ion-icon>
-                    </em>
-                  </label>
-                </div>
-                <label for="ineAtras" style="margin-top: 10px;">INE (Atras)</label>
-                <small *ngIf="!hIneAtras" style="color: red;">La INE es requerida</small>
+              <div class="avatar-previewIne">
+                  <div *ngIf="proveedorTO.ine1 === null || proveedorTO.ine1 === undefined " id="imagePreview" [ngStyle]="{
+         'background-image': 'url('+proveedorTO.ineFrente+')'}">
+                  </div>
+                  <div *ngIf="proveedorTO.ine1 !== null && proveedorTO.ine1 !== undefined" [ngStyle]="{
+         'background-image': 'url('+proveedorTO.ine1.archivo_64+')'}">
+                  </div>
               </div>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col size='12'>
-              <input type='file' id="ineAtras" accept="image/*"
-              formControlName="ineAtras" (change)="subirArchivo($event,2)" style="display: none;">
-            </ion-col>
-          </ion-row>
-
+              <label for="imageUpload" class="col-form-label ">INE (Frente)</label>
+          </div>
+          </ion-item> 
+          <ion-item>
+            <div class="avatar-uploadIne">
+              <div class="avatar-editIne">
+                  <input type='file' hidden id="imageUploadLocal"  accept="image/*" (change)="subirArchivo($event,2)"/>
+                  <label for="imageUploadLocal">
+                    <ion-icon name="camera-outline" style="
+                    position: relative;
+                    top: 10px;
+                "></ion-icon>
+                  </label>
+              </div>
+              <div class="avatar-previewIne">
+                  <div *ngIf="proveedorTO.ine2 === null || proveedorTO.ine2 === undefined" id="imagePreviewLocal" [ngStyle]="{
+         'background-image': 'url('+proveedorTO.ineAtras+')'}">
+                  </div>
+                  <div *ngIf="proveedorTO.ine2 !== null && proveedorTO.ine2 !== undefined" [ngStyle]="{
+         'background-image': 'url('+proveedorTO.ine2.archivo_64+')'}">
+                  </div>
+              </div>
+              <label for="imageUploadLocal" class="col-form-label ">INE (Atras)</label>
+          </div>
+          </ion-item>
+        </ion-list>
           <ion-row>
             <ion-col size="12">
-              <ion-button expand="full" type="submit">
-                Siguente
-              </ion-button>
+              <ion-button expand="full" type="submit" class="bg-rosa" [disabled]="formBasicos.invalid">Siguente</ion-button>
             </ion-col>
           </ion-row>
 
@@ -203,15 +169,13 @@
     <ion-card>
       <ion-card-content>
         <ion-grid>
-
           <ion-row>
             <ion-col size='12'>
               <div style="display: flex; justify-content: center; align-items: center;">
-                <div style="width: 40px; height: 40px; background-color: blue; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px; color: white; font-weight: bolder;">2</div><h2>Dirección</h2>
+                <h2>Dirección</h2>
               </div>
             </ion-col>
           </ion-row>
-
           <ion-row>
             <ion-col size="12">
               <ion-item>
@@ -285,25 +249,23 @@
             <ion-col size="12">
               <ion-item>
                 <ion-label position="floating">Número interior</ion-label>
-                <ion-input name="numero_int" formControlName="numeroInt" [(ngModel)]="proveedorTO.det_domicilio.numero_int" required></ion-input>
+                <ion-input name="numero_int" formControlName="numeroInt" [(ngModel)]="proveedorTO.det_domicilio.numero_int" ></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
-
           <ion-row>
             <ion-col size="12">
               <ion-item>
                 <ion-label position="floating">Codigo postal</ion-label>
-                <ion-input formControlName="cp" name="codigo_postal" [(ngModel)]="proveedorTO.det_domicilio.codigo_postal" required></ion-input>
+                <ion-input formControlName="cp" name="codigo_postal" [(ngModel)]="proveedorTO.det_domicilio.codigo_postal" ></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
-
           <ion-row>
             <ion-col size="12">
               <div style="display: flex; justify-content: center; align-items: center;">
-                <ion-button color="warning"  expand="full" (click)="regresar()">Anterior</ion-button>
-                <ion-button expand="full" type="submit">Siguiente</ion-button>
+                <ion-button class="bg-rosa" expand="full" (click)="regresar()">Anterior</ion-button>
+                <ion-button class="bg-rosa" expand="full" type="submit">Siguiente</ion-button>
               </div>
             </ion-col>
           </ion-row>
@@ -317,36 +279,31 @@
     <ion-card>
       <ion-card-content>
         <ion-grid>
-
           <ion-row>
             <ion-col size="12">
               <div style="display: flex; justify-content: center; align-items: center;">
-                <div style="width: 40px; height: 40px; background-color: blue; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px; color: white; font-weight: bolder;">3</div><h2>Finalizar</h2>
+                  <h2>Finalizar</h2>
               </div>
             </ion-col>
           </ion-row>
-
           <ion-row>
             <ion-col size='12'>
-              <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+              <div class="ion-text-center">
                 <h1>Casi estas listo</h1>
                 <p>Gracias por completar tu información, a partir de ahora podras agregar tus negocios y promociones.</p>
               </div>
             </ion-col>
           </ion-row>
-
           <ion-row>
             <ion-col size="12">
               <div style="display: flex; justify-content: center; align-items: center;">
-                <ion-button color="warning"  expand="full" (click)="regresar2()">Anterior</ion-button>
-                <ion-button expand="full" (click)="guardarProveedor()">Finalizar</ion-button>
+                <ion-button class="bg-rosa"   expand="full" (click)="regresar2()">Anterior</ion-button>
+                <ion-button class="bg-rosa"  expand="full" (click)="guardarProveedor()">Finalizar</ion-button>
               </div>
             </ion-col>
           </ion-row>
-
         </ion-grid>
       </ion-card-content>
     </ion-card>
   </div>
-
 </ion-content>

@@ -7,13 +7,17 @@ import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from "@angular/router";
 import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-negocios.component';
+import {SideBarService} from "../../api/busqueda/side-bar-service";
 
 
 
 @Component({
     selector: 'app-tab3',
     templateUrl: 'inicio.page.html',
-    styleUrls: ['inicio.page.scss']
+    styleUrls: ['inicio.page.scss'],
+    providers: [
+        SideBarService
+    ]
 })
 export class InicioPage implements OnInit {
     @ViewChild(IonContent) content: IonContent;
@@ -23,43 +27,46 @@ export class InicioPage implements OnInit {
     private modal: any;
     public anyFiltros: FiltrosModel;
     strBuscar: any;
-    public filterMunicipio = new FormControl();
-    public miUbicacionlatitud: number;
-    public miUbicacionlongitud: number;
-    public kilometrosView: number;
-    public tipoNegocio: any;
-    public tipoProducto: any;
-    public entregaDomicilio: boolean;
     private seleccionado: any;
     loader: any;
-    listaIdsMapa : any; 
+    listaIdsMapa : any;
+    filtroActivo: boolean;
     constructor(
         public loadingController: LoadingController,
         private toadController: ToastController,
         private principalSercicio: BusquedaService,
         private modalController: ModalController,
         private notificaciones: ToadNotificacionService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private eventosServicios: SideBarService
     ) {
         this.Filtros = new FiltrosModel();
         this.Filtros.idEstado = 29;
+        this.filtroActivo = false;
         this.listaCategorias = [];
         this.listaIdsMapa = [];
     }
 
     ngOnInit(): void {
+        this.eventosServicios.eventBuscar().subscribe((data) => {
+            this.buscarNegocios();
+        });
         this.buscarNegocios();
-        this.route.queryParams.subscribe(params => {
-            if (params && params.special) {
-                if (params.special) {
-                    this.Filtros = new FiltrosModel();
-                    this.Filtros.idEstado = 29;
-                    this.listaCategorias = [];
-                    this.buscarNegocios();
-                }
-            }
+
+    }
+    ionViewWillEnter() {
+
+        let categoria = localStorage.getItem('seleccionado');
+        if (categoria !== null){
+            this.filtroActivo = true;
+            const dato = JSON.parse(categoria);
+            console.log("buscando por categoria")
+            this.Filtros = new FiltrosModel();
+            this.Filtros.idGiro = [dato.idGiro];
+            this.Filtros.idCategoriaNegocio = [dato.id_categoria];
+            this.buscarNegocios();
+            localStorage.removeItem('seleccionado');
         }
-        )
     }
     buscarNegocios() {
         this.loader = true;
@@ -102,6 +109,7 @@ export class InicioPage implements OnInit {
             this.modal.dismiss({
                 'dismissed': true
             });
+            this.filtroActivo = true;
             this.Filtros = res;            
             this.buscarNegocios();
         });        
@@ -146,5 +154,12 @@ export class InicioPage implements OnInit {
             listaIdNegocio.push(listaIds[index].id_negocio);
         }
         this.listaIdsMapa = listaIdNegocio;
+    }
+
+    borrarFiltros() {
+        this.Filtros = new FiltrosModel();
+        this.Filtros.idEstado = 29;
+        this.filtroActivo = false;
+        this.buscarNegocios();
     }
 }
