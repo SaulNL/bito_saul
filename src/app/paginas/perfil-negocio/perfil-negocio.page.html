@@ -41,12 +41,50 @@
             </ion-col>
         </ion-row>
         <ion-row>
-            
+
             <ion-card class="w-100">
                 <ion-card-content class="ion-text-center">
-                    <a [href]="url + informacionNegocio.url_negocio" style="color: #f44f7b;"><ion-label class="ion-text-justify">{{url + informacionNegocio.url_negocio}}</ion-label></a>
+                    {{informacionNegocio.descripcion | slice:0:65}}...
                     <hr>
-                    {{informacionNegocio.descripcion | slice:0:65}}...         
+                    <ion-grid *ngIf="existeSesion">
+                        <ion-row>
+                            <ion-col>
+                                <div class="estrella">
+                                    <h3 class="text-rosa ion-text-center">Calificación del negocio</h3>
+                                    <div class="clasificacion ion-text-center">
+                                        {{informacionNegocio.numCalificaciones}}
+                                        <ion-icon name="person-outline"></ion-icon>
+                                        <input disabled id="radio1" type="radio" name="estrellas" value="5">
+                                        <label for="radio1">★</label>
+                                        <input disabled id="radio2" type="radio" name="estrellas" value="4">
+                                        <label for="radio2">★</label>
+                                        <input disabled id="radio3" type="radio" name="estrellas" value="3">
+                                        <label for="radio3">★</label>
+                                        <input disabled id="radio4" type="radio" name="estrellas" value="2">
+                                        <label for="radio4">★</label>
+                                        <input disabled id="radio5" type="radio" name="estrellas" value="1">
+                                        <label for="radio5">★</label>
+                                    </div>
+                                </div>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col>
+                                <div>
+                                    <div *ngIf="!estatusCalificacion" class="ion-text-center"
+                                        (click)="abrirModalCalifica()">
+                                        <ion-button expand="block" size="small" type="submit" class="bg-rosa">Calificar
+                                        </ion-button>
+                                    </div>
+                                    <!--
+                                    <div *ngIf="estatusCalificacion" class="ion-text-center">
+                                        <ion-label>Gracias, ya calificaste este negocio</ion-label>
+                                    </div>
+-->
+                                </div>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
                 </ion-card-content>
             </ion-card>
         </ion-row>
@@ -233,70 +271,42 @@
                 </ion-col>
             </ion-row>
         </ion-grid>
-        <ion-grid *ngIf="existeSesion">
-            <ion-row>
-                <ion-col>
-                    <div class="estrella">
-                        <h3 class="text-rosa ion-text-center">Calificación del negocio</h3>
-                        <div class="clasificacion ion-text-center">
-                            {{informacionNegocio.numCalificaciones}}
-                            <ion-icon name="person-outline"></ion-icon>
-                            <input disabled id="radio1" type="radio" name="estrellas" value="5">
-                            <label for="radio1">★</label>
-                            <input disabled id="radio2" type="radio" name="estrellas" value="4">
-                            <label for="radio2">★</label>
-                            <input disabled id="radio3" type="radio" name="estrellas" value="3">
-                            <label for="radio3">★</label>
-                            <input disabled id="radio4" type="radio" name="estrellas" value="2">
-                            <label for="radio4">★</label>
-                            <input disabled id="radio5" type="radio" name="estrellas" value="1">
-                            <label for="radio5">★</label>
-                        </div>
-                    </div>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>
-                    <div>
-                        <div *ngIf="!estatusCalificacion" class="ion-text-center" (click)="abrirModalCalifica()">
-                            <ion-button expand="block" size="small" type="submit" class="bg-rosa">Calificar</ion-button>
-                        </div>
-                        <div *ngIf="estatusCalificacion" class="ion-text-center">
-                            <ion-label>Gracias, ya calificaste este negocio</ion-label>
-                        </div>
-                    </div>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
     </div>
-    <ion-fab *ngIf="existeSesion"  horizontal="end" vertical="bottom" slot="fixed">
-    <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''"
-    [href]="informacionNegocio.youtube" target="_blank">
-        <ion-icon name="logo-youtube"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.tiktok !== null && informacionNegocio.tiktok !== ''"
-    [href]="informacionNegocio.tiktok" target="_blank">
-        <ion-icon name="logo-tiktok"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.instagram !== null && informacionNegocio.instagram !== ''"
-    [href]="informacionNegocio.instagram" target="_blank">
-        <ion-icon name="logo-instagram"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.twitter !== null && informacionNegocio.twitter !== ''"
-    [href]="informacionNegocio.twitter" target="_blank">
-        <ion-icon name="logo-twitter"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.id_facebook !== null && informacionNegocio.id_facebook !== ''"
-    [href]="informacionNegocio.id_facebook" target="_blank">
-        <ion-icon name="logo-facebook"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.celular !== null && informacionNegocio.celular !== ''"
-    (click)="enviarWhasapp(informacionNegocio.celular)">
-        <ion-icon name="logo-whatsapp"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.telefono !== null && informacionNegocio.telefono !== ''" 
-    (click)="llamar(informacionNegocio.telefono)">
-        <ion-icon name="call"></ion-icon>
-    </ion-fab-button>
+    <ion-fab *ngIf="existeSesion" horizontal="end" vertical="bottom" slot="fixed">
+        <ion-fab-button size="small" color="light"
+            *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''"
+            [href]="informacionNegocio.youtube" target="_blank">
+            <ion-icon name="logo-youtube"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button size="small" color="light"
+            *ngIf="informacionNegocio.tiktok !== null && informacionNegocio.tiktok !== ''"
+            [href]="informacionNegocio.tiktok" target="_blank">
+            <ion-icon name="logo-tiktok"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button size="small" color="light"
+            *ngIf="informacionNegocio.instagram !== null && informacionNegocio.instagram !== ''"
+            [href]="informacionNegocio.instagram" target="_blank">
+            <ion-icon name="logo-instagram"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button size="small" color="light"
+            *ngIf="informacionNegocio.twitter !== null && informacionNegocio.twitter !== ''"
+            [href]="informacionNegocio.twitter" target="_blank">
+            <ion-icon name="logo-twitter"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button size="small" color="light"
+            *ngIf="informacionNegocio.id_facebook !== null && informacionNegocio.id_facebook !== ''"
+            [href]="informacionNegocio.id_facebook" target="_blank">
+            <ion-icon name="logo-facebook"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button size="small" color="light"
+            *ngIf="informacionNegocio.celular !== null && informacionNegocio.celular !== ''"
+            (click)="enviarWhasapp(informacionNegocio.celular)">
+            <ion-icon name="logo-whatsapp"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button size="small" color="light"
+            *ngIf="informacionNegocio.telefono !== null && informacionNegocio.telefono !== ''"
+            (click)="llamar(informacionNegocio.telefono)">
+            <ion-icon name="call"></ion-icon>
+        </ion-fab-button>
     </ion-fab>
 </ion-content>
