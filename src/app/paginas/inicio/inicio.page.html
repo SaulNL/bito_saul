@@ -53,8 +53,10 @@
                             <ion-badge *ngIf="proveedor.abierto == 'ABIERTO'" color="success">Abierto</ion-badge>
                             <ion-badge *ngIf="proveedor.abierto !== 'ABIERTO'" color="danger">Cerrado</ion-badge>
                         </ion-card-header>
-                        <ion-card-content>
-                            {{proveedor.descripcion}}
+                        <ion-card-content >
+                            <div class="ui-search-item__title">
+                                {{proveedor.descripcion}}
+                            </div>
                         </ion-card-content>
                     </ion-card>
                 </ion-col>
