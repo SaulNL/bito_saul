@@ -23,44 +23,36 @@
         </ion-button>
     </ion-buttons>
 </ion-item>
-  <form *ngIf="this.isToggled" #form="ngForm" (ngSubmit)="logForm(form)">
-    <ion-card>
-      <ion-card-header>
-        <ion-item>
-          <ion-label>Palabra :</ion-label>
-          <ion-input type="text" #palabra="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="palabra" [(ngModel)]="filtro.palabra" ></ion-input>
-        </ion-item>
-      </ion-card-header>
-    </ion-card>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <div>
-            
-            <ion-button type="submit" class="bg-rosa" [disabled]="!blnBtnFiltro">Buscar</ion-button>
-          </div>
-        </ion-col>
-        <ion-col>
-          <div>    
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    </form>
-    <ion-card>
-      <ion-card-header>
-  <ion-list >
-    <ion-item *ngFor="let palabras of lstCatPalabras">
+<ion-card *ngIf="this.isToggled === true">
+  <ion-card-header>
+    <form  #form="ngForm" (ngSubmit)="logForm(form)">
+    <ion-list>
+      <ion-item>
+        <ion-label>Palabra :</ion-label>
+        <ion-input type="text" #palabra="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="palabra" [(ngModel)]="filtro.palabra" ></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-button type="submit" class="bg-rosa" expand="block" [disabled]="!blnBtnFiltro">Buscar</ion-button>
+    <ion-button type="button" color="medium" expand="block" (click)="limpiarFiltro()" [disabled]="!blnBtnFiltro">Limpiar</ion-button>
+  </form>
+  </ion-card-header>
+</ion-card>
+<ion-card>
+<ion-card-header>
+  <ion-list *ngFor="let palabras of lstCatPalabras">
+    <ion-item  (click)="datosPalabra(palabras)">
       <ion-buttons slot="start">
         <ion-label >
           {{palabras.id_palabra}}
         </ion-label>
       </ion-buttons>
-      <ion-label (click)="datosPalabra(palabras)">
+      <ion-label>
         {{palabras.palabra}}
-      </ion-label>
-      
+      </ion-label>   
       <ion-toggle slot="end" name="cherry"  color="danger" (ionChange)="validarActivo(palabras)" [checked]="palabras.activo == 1"  ></ion-toggle>
+      <ion-buttons slot="end">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-buttons>
     </ion-item>
   </ion-list>
       </ion-card-header>

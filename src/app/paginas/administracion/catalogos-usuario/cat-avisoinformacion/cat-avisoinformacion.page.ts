@@ -155,5 +155,9 @@ export class CatAvisoinformacionPage implements OnInit {
     });
     await actionSheet.present();
   }
-
+  limpiarFiltro() {
+    this.getAvisos();
+    this.filtro = new FiltroCatAvisosInfoModel();
+    this.blnBtnFiltro = this.validarFiltros();
+  }
 }

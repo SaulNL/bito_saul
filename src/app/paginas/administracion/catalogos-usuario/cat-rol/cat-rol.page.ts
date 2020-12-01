@@ -103,4 +103,9 @@ obtenerRol(form) {
     let navigationExtras = JSON.stringify(this.selectTO);
   this.router.navigate(['/tabs/home/cat-rol/datos-cat-rol'], { queryParams: {special: navigationExtras}  });
   }
+  limpiarFiltro() {
+    this.getRoles(); 
+    this.selectTO = new FiltroCatRolModel();
+    this.blnBtnFiltro = this.validarFiltros();
+  }
 }

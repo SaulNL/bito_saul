@@ -109,4 +109,10 @@ export class CatVariablePage implements OnInit {
         this.notifi.alerta('Seleccione un parametro de búsqueda');
       }
     }
+
+    limpiarFiltro() {
+      this.getVariables();
+      this.filtro = new FiltroCatVariableModel();
+      this.blnBtnFiltro = this.validarFiltros();
+    }
 }

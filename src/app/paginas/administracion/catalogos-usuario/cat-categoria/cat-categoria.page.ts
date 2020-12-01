@@ -108,7 +108,6 @@ export class CatCategoriaPage implements OnInit {
   }
   limpiarFiltro() {
     this.getCategoria();
-    this.loader.dismiss();
     this.filtro = new FiltroCatCategoriasModel();
     this.blnBtnFiltro = this.validarFiltros();
   }

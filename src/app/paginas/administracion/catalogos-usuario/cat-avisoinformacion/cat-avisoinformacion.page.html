@@ -24,8 +24,10 @@
         </ion-button>
     </ion-buttons>
 </ion-item>
-  <form *ngIf="this.isToggled === true" #formAvisos="ngForm" (ngSubmit)="obtenerAvisos()">
-    <ion-card>
+<ion-card *ngIf="this.isToggled === true">
+  <ion-card-header>
+    <form  #form="ngForm" (ngSubmit)="obtenerAvisos(form)">
+    <ion-list>
       <ion-item>
         <ion-label>Nombre : </ion-label>
         <ion-input #nombre="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="nombre" [(ngModel)]="filtro.nombre"></ion-input>
@@ -34,17 +36,20 @@
         <ion-label>Descripción : </ion-label>
         <ion-input #descripcion="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="descripcion" [(ngModel)]="filtro.descripcion"></ion-input>
       </ion-item>
-    </ion-card>
-    <ion-button expand="full" type="submit" class="bg-rosa">Buscar</ion-button>
+    </ion-list>
+    <ion-button type="submit" class="bg-rosa" expand="block" [disabled]="!blnBtnFiltro">Buscar</ion-button>
+    <ion-button type="button" color="medium" expand="block" (click)="limpiarFiltro()" [disabled]="!blnBtnFiltro">Limpiar</ion-button>
   </form>
+  </ion-card-header>
+</ion-card>
   <ion-card>
     <ion-card-header>
-  <ion-list>
-    <ion-item *ngFor="let item of lstCatAvisos">
-      <ion-label (click)="datosAviso(item)">
-        <h2>{{item.nombre}}</h2>
-      </ion-label>
-      <ion-icon name="caret-forward-outline"></ion-icon>
+  <ion-list *ngFor="let item of lstCatAvisos">
+    <ion-item (click)="datosAviso(item)">
+      <ion-label>{{item.nombre}}</ion-label>
+      <ion-buttons slot="end">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-buttons>
     </ion-item>    
   </ion-list>
     </ion-card-header>
