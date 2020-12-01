@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { PedidosService } from '../../../api/pedidos.service';
 import {UtilsCls} from '../../../utils/UtilsCls';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import {DatosPedidoNegocioPage} from './datos-pedido-negocio/datos-pedido-negocio.page';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
@@ -17,6 +17,7 @@ export class PedidosNegocioPage implements OnInit {
   public listaEstatus: any;
   public lstFiltroEstatus: any;
   public selectTO: any;
+  public subscribe;
 
   constructor(
     private pedidosServicios: PedidosService,
@@ -24,7 +25,8 @@ export class PedidosNegocioPage implements OnInit {
     public modalController: ModalController,
     private router: Router,
     private active: ActivatedRoute,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    private platform: Platform
   ) {
     this.listaNegocioPedididos = [];
     this.lstFiltroEstatus = [1, 2, 3, 4, 5, 6];
@@ -42,6 +44,9 @@ export class PedidosNegocioPage implements OnInit {
           this.presentLoading();         
         }
       }
+      this.subscribe=this.platform.backButton.subscribe(()=>{
+        this.regresar();
+      });
     });
   }
   
@@ -107,6 +112,7 @@ export class PedidosNegocioPage implements OnInit {
   }
 
   regresar(){
+    this.subscribe.unsubscribe();
     this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}});
   }
 

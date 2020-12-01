@@ -3,6 +3,7 @@ import {UtilsCls} from '../../../utils/UtilsCls';
 import { PedidosService } from '../../../api/pedidos.service';
 import {icon, latLng, Map, marker, tileLayer} from 'leaflet';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-pedidos-dialog',
@@ -20,12 +21,14 @@ export class PedidosDialogPage implements OnInit {
   private longitud: number;
   pedidoAbierto: any;
   public selectTO: any;
+  public subscribe;
 
   constructor(
     private pedidosServicios: PedidosService,
     private utilsCls: UtilsCls,
     private router: Router,
-    private active: ActivatedRoute
+    private active: ActivatedRoute,
+    private platform: Platform
   ) {
     this.listaNegocioPedididos = [];
     this.lstFiltroEstatus = [1, 2, 3, 4, 5, 6];
@@ -43,6 +46,9 @@ export class PedidosDialogPage implements OnInit {
           this.buscarEstatus();          
         }
       }
+      this.subscribe=this.platform.backButton.subscribe(()=>{
+          this.regresar();
+      });
     });
   }
 
@@ -97,6 +103,7 @@ export class PedidosDialogPage implements OnInit {
   }
 
   regresar(){
+    this.subscribe.unsubscribe();
     this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
   }
 
