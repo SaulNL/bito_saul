@@ -550,7 +550,7 @@ agregarHorario() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Consumo en Sitio',
-      message: 'Esta imagen es solo informativa',
+      message: 'Activa esta opción para que tus clientes realicen pedidos estando en tu establecimiento',
       buttons: ['Cerrar']
     });
 
@@ -560,7 +560,7 @@ agregarHorario() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Entrega en Sitio',
-      message: 'Esta imagen es solo informativa',
+      message: ' Activa esta opción para que tus clientes realicen pedidos y pasen a recogerlos a tu establecimiento',
       buttons: ['Cerrar']
     });
 
@@ -570,7 +570,7 @@ agregarHorario() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Entrega Domicilio',
-      message: 'Esta imagen es solo informativa',
+      message: 'Activa esta opción para que tus clientes realicen pedidos y tú se los entregues a domicilio',
       buttons: ['Cerrar']
     });
 

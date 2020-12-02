@@ -28,16 +28,16 @@
       <form #formCtegoria="ngForm" (ngSubmit)="obtenerCategoria()">
       <ion-list>
         <ion-item>
-      <ion-label>No Categoria</ion-label>
+      <ion-label>No Categoria:</ion-label>
       <ion-input #id_giro="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="id_giro" [(ngModel)]="filtro.id_giro"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Nombre</ion-label>
+      <ion-label>Nombre:</ion-label>
       <ion-input #nombre="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="nombre" [(ngModel)]="filtro.nombre"></ion-input>
     </ion-item>
     </ion-list>
     <ion-button type="submit" class="bg-rosa" expand="block" [disabled]="!blnBtnFiltro">Buscar</ion-button>
-    <ion-button type="button" class="bg-rosa" expand="block" (click)="limpiarFiltro()" [disabled]="!blnBtnFiltro">Limpiar</ion-button>
+    <ion-button type="button" color="medium" expand="block" (click)="limpiarFiltro()" [disabled]="!blnBtnFiltro">Limpiar</ion-button>
   </form>
     </ion-card-header>
   </ion-card>

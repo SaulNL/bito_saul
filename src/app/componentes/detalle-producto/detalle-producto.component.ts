@@ -30,7 +30,9 @@ export class DetalleProductoComponent implements OnInit {
   }
 
   cerrarModal() {
-    this.modalController.dismiss();
+    this.modalController.dismiss({
+      'data': null,
+    });
   }
 
   get mostrarComponente() {

@@ -23,38 +23,29 @@
         </ion-button>
     </ion-buttons>
 </ion-item>
-  <form *ngIf="this.isToggled" #form="ngForm" (ngSubmit)="logForm(form)">
-    <ion-card>
-      <ion-card-header>
-        <ion-item>
-          <ion-label>No Tipo Venta: </ion-label>
-          <ion-input type="number" #nombre="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="id_tipo_venta" [(ngModel)]="filtro.id_tipo_venta" ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Nombre : </ion-label>
-          <ion-input type="text" #variable="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="nombre" [(ngModel)]="filtro.nombre" ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Precio : </ion-label>
-          <ion-input type="number" #variable="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="precio" [(ngModel)]="filtro.precio" ></ion-input>
-        </ion-item>
-      </ion-card-header>
-    </ion-card>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <div>
-            <ion-button type="submit" class="bg-rosa" [disabled]="!blnBtnFiltro">Buscar</ion-button>
-          </div>
-        </ion-col>
-        <ion-col>
-          <div>    
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    </form>
-  <ion-card>
+<ion-card *ngIf="this.isToggled === true">
+  <ion-card-header>
+    <form  #form="ngForm" (ngSubmit)="logForm(form)">
+    <ion-list>
+      <ion-item>
+        <ion-label>No Tipo Venta: </ion-label>
+        <ion-input type="number" #nombre="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="id_tipo_venta" [(ngModel)]="filtro.id_tipo_venta" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Nombre : </ion-label>
+        <ion-input type="text" #variable="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="nombre" [(ngModel)]="filtro.nombre" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Precio : </ion-label>
+        <ion-input type="number" #variable="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="precio" [(ngModel)]="filtro.precio" ></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-button type="submit" class="bg-rosa" expand="block" [disabled]="!blnBtnFiltro">Buscar</ion-button>
+    <ion-button type="button" color="medium" expand="block" (click)="limpiarFiltro()" [disabled]="!blnBtnFiltro">Limpiar</ion-button>
+  </form>
+  </ion-card-header>
+</ion-card>
+<ion-card>
     <ion-card-header>
         <ion-list >
           <ion-item *ngFor="let ventas of lstCatTipoVenta" >

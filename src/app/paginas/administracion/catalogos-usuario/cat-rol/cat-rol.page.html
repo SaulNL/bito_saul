@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Catalogo de Roles</ion-title>
+    <ion-title>Roles</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="agregarRol()">
         <ion-icon name="add-outline"></ion-icon>
@@ -23,48 +23,34 @@
         </ion-button>
     </ion-buttons>
 </ion-item>
-  <form *ngIf="this.isToggled" #form="ngForm" (ngSubmit)="logForm(form)">
-    <ion-card>
-      <ion-card-header>
-        <ion-item>
-          <ion-label>ID :</ion-label>
-          <ion-input type="number" #nombre="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="id_rol" [(ngModel)]="selectTO.id_rol" ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Rol :</ion-label>
-          <ion-input type="text" #variable="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="rol" [(ngModel)]="selectTO.rol" ></ion-input>
-        </ion-item>
-      </ion-card-header>
-    </ion-card>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <div>
-            <ion-button type="submit" class="bg-rosa" [disabled]="!blnBtnFiltro">Buscar</ion-button>
-          </div>
-        </ion-col>
-        <ion-col>
-          <div>    
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    </form>
-    <ion-card>
-      <ion-card-header>
-  <ion-list >
-    <ion-item *ngFor="let roles of lstCatRol" >
-      <ion-buttons slot="start">
-        <ion-label >
-          {{roles.id_rol}}
-        </ion-label>
-      </ion-buttons>
-      <ion-label (click)="datosRol(roles)">
-        <h2>{{roles.rol}}</h2>
-      </ion-label>
-      <ion-icon name="caret-forward-outline"></ion-icon>
-    </ion-item>
-  </ion-list>
-      </ion-card-header>
-    </ion-card>
+<ion-card *ngIf="this.isToggled === true">
+  <ion-card-header>
+    <form  #form="ngForm" (ngSubmit)="logForm(form)">
+    <ion-list>
+      <ion-item>
+        <ion-label>Id Rol:</ion-label>
+        <ion-input type="number" #nombre="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="id_rol" [(ngModel)]="selectTO.id_rol" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Rol :</ion-label>
+        <ion-input type="text" #variable="ngModel" (keyup)="setBlnFiltro()" (change)="setBlnFiltro()" name="rol" [(ngModel)]="selectTO.rol" ></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-button type="submit" class="bg-rosa" expand="block" [disabled]="!blnBtnFiltro">Buscar</ion-button>
+    <ion-button type="button" color="medium" expand="block" (click)="limpiarFiltro()" [disabled]="!blnBtnFiltro">Limpiar</ion-button>
+  </form>
+  </ion-card-header>
+</ion-card>
+<ion-card>
+  <ion-card-header>
+    <ion-list *ngFor="let roles of lstCatRol">
+      <ion-item (click)="datosRol(roles)">     
+        <ion-label>{{roles.id_rol}}&nbsp;&nbsp;{{roles.rol}}</ion-label>
+        <ion-buttons slot="end">
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+  </ion-card-header>
+</ion-card>
 </ion-content>

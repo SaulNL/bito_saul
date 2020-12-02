@@ -226,14 +226,17 @@
                 </ion-text>
                 <ion-col size="6" *ngFor="let producto of cat.productos">
                     <ion-card (click)="irAlDetalle(producto)" class="m-0 fixed">
-                        <img class="img-card-w" [src]="producto.imagen" alt="Falla al cargar la imagen">
+                        <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+                        [srcset]="producto.imagen" alt="Falla al cargar la imagen">
                         <ion-card-header>
                             <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
                             <ion-badge *ngIf="producto.precio !== null" color="success">
                                 $ {{producto.precio}}</ion-badge>
                         </ion-card-header>
                         <ion-card-content>
-                            {{producto.descripcion}}
+                            <div class="ui-search-item__title">
+                                {{producto.descripcion}}
+                            </div>
                         </ion-card-content>
                     </ion-card>
                 </ion-col>
@@ -265,7 +268,9 @@
                                 $ {{producto.precio}}</ion-badge>
                         </ion-card-header>
                         <ion-card-content>
-                            {{producto.descripcion}}
+                            <div class="ui-search-item__title">
+                                {{producto.descripcion}}
+                            </div>
                         </ion-card-content>
                     </ion-card>
                 </ion-col>

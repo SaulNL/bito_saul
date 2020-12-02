@@ -113,5 +113,9 @@ export class CatTipoVentaPage implements OnInit {
     let navigationExtras = JSON.stringify(this.selectTO);
   this.router.navigate(['/tabs/home/cat-tipo-venta/datos-cat-tipo-ventas'], { queryParams: {special: navigationExtras}  });
   }
-  
+  limpiarFiltro() {
+    this.getTipoVenta();
+    this.selectTO = new FiltroCatTipoVentaModel();
+    this.blnBtnFiltro = this.validarFiltros();
+  }
 }

@@ -123,4 +123,9 @@ export class CatPalabraReservadasPage implements OnInit {
       }
     );
   }
+  limpiarFiltro() {
+    this.getPalabras();
+    this.filtro = new FiltroCatPalabrasResModel();
+    this.blnBtnFiltro = this.validarFiltros();
+  }
 }

@@ -13,10 +13,15 @@
   <ion-slides>
     <ion-slide *ngFor="let producto of seleccionadoDetalleArray">
       <ion-grid>
-        <ion-col>
-          <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
-          [srcset]="producto.imagen">
-        </ion-col>
+        <ion-row>
+          <ion-col class="text-rosa" (click)=verMas(producto)><h1>{{producto.negocio.nombre}}</h1></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+            [srcset]="producto.imagen">
+          </ion-col>
+        </ion-row>
         <ion-row>
           <ion-col>
             <label class="text-rosa"><h1>{{producto.nombre}}</h1></label>

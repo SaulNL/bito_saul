@@ -2,7 +2,7 @@ import {AppSettings} from './../../AppSettings';
 import {Component, EventEmitter, OnInit} from '@angular/core';
 import {Map, tileLayer, marker, icon} from 'leaflet';
 import {ActivatedRoute, Router} from "@angular/router";
-import {AlertController, NavController, ToastController} from "@ionic/angular";
+import {AlertController, NavController, Platform, ToastController} from "@ionic/angular";
 import {NegocioService} from "../../api/negocio.service";
 import {Geolocation} from "@capacitor/core";
 import {ToadNotificacionService} from "../../api/toad-notificacion.service";
@@ -44,6 +44,9 @@ export class PerfilNegocioPage implements OnInit {
     public hoy: number;
     public estatus: { tipo: number; mensaje: string };
     public motrarContacto = true;
+    public backButton = true;
+    public subscribe;
+    public modal;
 
     public diasArray = [
         {id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null},
@@ -70,13 +73,26 @@ export class PerfilNegocioPage implements OnInit {
         private _router: Router,
         public modalController: ModalController,
         private serviceProveedores: ProveedorServicioService,
-        public alertController: AlertController
+        public alertController: AlertController,
+        private router: Router,
+        private platform: Platform
     ) {
         this.seccion = 'ubicacion';
         this.loader = true;
         this.existeSesion = util.existe_sesion();
         this.estatusCalificacion = true;
         this.bolsa = [];
+        this.route.queryParams.subscribe(params=>{
+            this.subscribe=this.platform.backButton.subscribe(()=>{
+                this.modal = this.modalController.getTop().then(dato=>{
+                    if(dato){
+                        this.modal.dismiss();
+                    }else{
+                        this.salir();
+                    }
+                });
+            });
+        });
     }
 
     ngOnInit() {
@@ -322,7 +338,7 @@ export class PerfilNegocioPage implements OnInit {
         });
         await modal.present()
         await modal.onDidDismiss().then(r => {
-            if (r.data.data !== undefined) {
+            if (r.data.data !== null) {
                 this.llenarBolsa(r.data.data);
             }
         });
@@ -531,7 +547,13 @@ export class PerfilNegocioPage implements OnInit {
             this.mensajeBolsa()
         } else {
             this.navctrl.back();
+            // this.subscribe.unsubscribe();
+            // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
         }
+    }
+
+    ionViewDidLeave(){
+        this.subscribe.unsubscribe();        
     }
 
     async mensajeBolsa() {
@@ -546,6 +568,9 @@ export class PerfilNegocioPage implements OnInit {
                     handler: () => {
                         this.bolsa = [];
                         this.navctrl.back();
+                        
+                        // this.subscribe.unsubscribe();
+                        // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
                     }
                 }
             ]
