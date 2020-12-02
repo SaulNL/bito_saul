@@ -278,35 +278,35 @@
         </ion-grid>
     </div>
     <ion-fab *ngIf="existeSesion" horizontal="end" vertical="bottom" slot="fixed">
-        <ion-fab-button size="small" color="light"
+        <ion-fab-button size="small"
             *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''"
             [href]="informacionNegocio.youtube" target="_blank">
-            <ion-icon name="logo-youtube"></ion-icon>
+            <img src="../../../assets/images/yt.png">
         </ion-fab-button>
         <ion-fab-button size="small" color="light"
             *ngIf="informacionNegocio.tiktok !== null && informacionNegocio.tiktok !== ''"
             [href]="informacionNegocio.tiktok" target="_blank">
-            <ion-icon name="logo-tiktok"></ion-icon>
+            <img src="../../../assets/images/tt.png">
         </ion-fab-button>
         <ion-fab-button size="small" color="light"
             *ngIf="informacionNegocio.instagram !== null && informacionNegocio.instagram !== ''"
             [href]="informacionNegocio.instagram" target="_blank">
-            <ion-icon name="logo-instagram"></ion-icon>
+            <img src="../../../assets/images/insta.png">
         </ion-fab-button>
         <ion-fab-button size="small" color="light"
             *ngIf="informacionNegocio.twitter !== null && informacionNegocio.twitter !== ''"
             [href]="informacionNegocio.twitter" target="_blank">
-            <ion-icon name="logo-twitter"></ion-icon>
+            <img src="../../../assets/images/tw.png">
         </ion-fab-button>
         <ion-fab-button size="small" color="light"
             *ngIf="informacionNegocio.id_facebook !== null && informacionNegocio.id_facebook !== ''"
             [href]="informacionNegocio.id_facebook" target="_blank">
-            <ion-icon name="logo-facebook"></ion-icon>
+            <img src="../../../assets/images/fb.png">
         </ion-fab-button>
         <ion-fab-button size="small" color="light"
             *ngIf="informacionNegocio.celular !== null && informacionNegocio.celular !== ''"
             (click)="enviarWhasapp(informacionNegocio.celular)">
-            <ion-icon name="logo-whatsapp"></ion-icon>
+            <img src="../../../assets/images/wp.png">
         </ion-fab-button>
         <ion-fab-button size="small" color="light"
             *ngIf="informacionNegocio.telefono !== null && informacionNegocio.telefono !== ''"
