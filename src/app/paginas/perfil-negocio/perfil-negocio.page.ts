@@ -338,7 +338,7 @@ export class PerfilNegocioPage implements OnInit {
         });
         await modal.present()
         await modal.onDidDismiss().then(r => {
-            if (r.data.data !== undefined) {
+            if (r.data.data !== null) {
                 this.llenarBolsa(r.data.data);
             }
         });
