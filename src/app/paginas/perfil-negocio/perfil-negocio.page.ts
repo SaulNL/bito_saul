@@ -46,6 +46,7 @@ export class PerfilNegocioPage implements OnInit {
     public motrarContacto = true;
     public backButton = true;
     public subscribe;
+    public modal;
 
     public diasArray = [
         {id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null},
@@ -83,7 +84,13 @@ export class PerfilNegocioPage implements OnInit {
         this.bolsa = [];
         this.route.queryParams.subscribe(params=>{
             this.subscribe=this.platform.backButton.subscribe(()=>{
-                this.salir();
+                this.modal = this.modalController.getTop().then(dato=>{
+                    if(dato){
+                        this.modal.dismiss();
+                    }else{
+                        this.salir();
+                    }
+                });
             });
         });
     }
