@@ -2,13 +2,15 @@
   <ion-toolbar class="bg-rosa">
     <ion-title>Detalle del Producto</ion-title>
     <ion-buttons slot="end">
-    <ion-button  (click)="dismiss()">Cerrar</ion-button>
+      <ion-button class="blanco" (click)="dismiss()">
+        <ion-icon class="blanco" name="close-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-slides [options]="slideOpts">
+<ion-content fullscreen class="ion-padding" scroll-y="false">
+  <ion-slides>
     <ion-slide *ngFor="let producto of seleccionadoDetalleArray">
       <ion-grid>
         <ion-row>
@@ -35,11 +37,16 @@
           </ion-col>
         </ion-row>
         <ion-row>
+          <ion-col>          
+          
+          </ion-col>
           <ion-col>
-            <ion-button class="bg-rosa" (click)=verMas(producto)>Ver más</ion-button>
+            <ion-button (click)="verMas(producto)" fill="clear">Ver más <ion-icon slot="end" name="open-outline"></ion-icon>
+            </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
     </ion-slide>
   </ion-slides>
 </ion-content>
+
