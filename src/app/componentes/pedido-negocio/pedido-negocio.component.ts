@@ -45,7 +45,6 @@ export class PedidoNegocioComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.costoEntrega = parseInt(this._costoEntrega);
     if (this._entregaDomicilio === 1) {
       this.tipoEnvio = 2;
     } else {
