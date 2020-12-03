@@ -24,7 +24,7 @@
     <ion-card-content>
       <label class="precio text-rosa"
         *ngIf="unoProducto.precio !== undefined && unoProducto.precio !== null && unoProducto.precio !== '' && unoProducto.precio !== '0'">
-        <h2 class="m-0">${{unoProducto.precio}}</h2>
+        <h2 class="m-0">{{unoProducto.precio |currency}}</h2>
       </label><br>
       <label class="precio"
         *ngIf="unoProducto.precio === undefined || unoProducto.precio === null || unoProducto.precio === '' || unoProducto.precio === '0'">Contactar
@@ -35,12 +35,11 @@
           <label class="existencia" *ngIf="!unoProducto.existencia">Sin existencia</label>
     </ion-card-content>
     <label class="negocio">
-      <p>negocio : </p>
+      <p>Vendido por</p>
     </label>
     <hr>
-    <ion-item lines="none" (click)="verMas(unoProducto)">
-      <h1>{{unoProducto.negocio.nombre}}</h1>
+    <ion-button (click)="verMas(unoProducto)" expand="block" type="submit" >{{unoProducto.negocio.nombre}}
       <ion-icon class="blanco" slot="end" name="open-outline"></ion-icon>
-    </ion-item>
+    </ion-button>
   </ion-card>
 </ion-content>

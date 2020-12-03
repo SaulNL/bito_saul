@@ -91,10 +91,31 @@ ion-fab-button img {
   img.img-card-w {
     height: 32vw !important;
   }
+  .bosar{
+    width: 13vw;
+    height: 13vw;
+  } 
 }
   @media (min-width: 501px)and  (max-width: 1300px) {
     
     img.img-card-w {
       height: 33vw;
     }
+    .bosar{
+      width: 8vw;
+      height: 8vw;
+    } 
   }
+.bolsita{
+  top: 3px;
+  right: 3px;
+}
+.bosar{
+  --background: white;
+  --color: #fa4f72;
+  
+}
+
+
+  
+

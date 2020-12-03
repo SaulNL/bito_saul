@@ -122,41 +122,32 @@
         <ion-grid>
             <ion-row>
                 <ion-col size=12>
-                    <div (click)="motrarContacto = !motrarContacto;" class="list">
-                        <ul>
-                            <ion-chip outline *ngIf="estatus.tipo === 1" color="success">
+                    <div (click)="motrarContacto = !motrarContacto;">
+                        <div style="background: white; border-radius: 1em 1em 0em 0em;" class="ion-text-center">
+                            <ion-chip *ngIf="estatus.tipo === 1" color="success">
                                 <ion-label>Abierto</ion-label>
                             </ion-chip>
                             <ion-chip *ngIf="estatus.tipo === 0" color="danger">
                                 <ion-label>Cerrado</ion-label>
                             </ion-chip>
-                            <li class="lista">
-                                <div>
-                                    {{ estatus.mensaje }}
-                                </div>
-                                <div style="margin: 2px 5px" *ngIf="!motrarContacto">
-                                    <ion-icon name="arrow-up-outline"></ion-icon>
-                                </div>
-                                <div style="margin: 2px 5px" *ngIf="motrarContacto">
-                                    <ion-icon name="arrow-down-outline"></ion-icon>
-                                </div>
-                            </li>
-                        </ul>
-                        <div style="margin: 0px 5px" *ngIf="!motrarContacto && estatus!==undefined">
-                            <ion-list>
+                            <ion-label>{{ estatus.mensaje}}</ion-label>
+                            <ion-icon  style="margin-left: 2px;" *ngIf="!motrarContacto" name="arrow-up-outline"></ion-icon>
+                            <ion-icon style="margin-left: 2px;" *ngIf="motrarContacto" name="arrow-down-outline"></ion-icon>
+                        </div>
+                    <div  *ngIf="!motrarContacto && estatus!==undefined">
+                            <ion-list style="border-radius: 0em 0em 1em 1em;">
                                 <ion-item *ngFor="let dia of diasArray">
                                     <ion-grid>
-                                        <ion-row class="lista">
+                                        <ion-row>
                                             <ion-col>
-                                                <p [ngClass]="{'negritas':dia.id === hoy}">{{ dia.dia }}</p>
+                                                <ion-label [ngClass]="{'negritas':dia.id === hoy}">{{ dia.dia }}</ion-label>
                                             </ion-col>
                                             <ion-col *ngIf="dia.horarios.length > 0">
                                                 <span *ngFor="let h of dia.horarios ">
-                                                    <p class="negritas">{{h.texto}}</p>
+                                                    <ion-label class="negritas">{{h.texto}}</ion-label>
                                                 </span>
                                             </ion-col>
-                                            <ion-col *ngIf="dia.horarios.length === 0"
-                                                style="display: flex; justify-content: center; align-items: center;">
+                                            <ion-col *ngIf="dia.horarios.length === 0">
                                                 <ion-badge color="danger">Cerrado</ion-badge>
                                             </ion-col>
                                         </ion-row>
@@ -225,7 +216,8 @@
                     <h2>{{cat.nombre}}</h2>
                 </ion-text>
                 <ion-col size="6" *ngFor="let producto of cat.productos">
-                    <ion-card (click)="irAlDetalle(producto)" class="m-0 cardsps fixed">
+                    <ion-card class="m-0 fixed cardsps">
+                        <div (click)="irAlDetalle(producto)">
                         <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
                         [srcset]="producto.imagen" alt="Falla al cargar la imagen">
                         <ion-card-header>
@@ -238,6 +230,14 @@
                                 {{producto.descripcion}}
                             </div>
                         </ion-card-content>
+                    </div>
+                    <div *ngIf="producto.existencia === true && producto.precio !== null">
+                        <ion-fab class="bolsita" (click)="agregarBolsaDeta(producto)">
+                            <ion-fab-button class="bosar">
+                                <ion-icon name="bag-add-outline"></ion-icon>
+                            </ion-fab-button>
+                          </ion-fab>
+                </div>
                     </ion-card>
                 </ion-col>
             </ion-row>

@@ -33,6 +33,8 @@ export class PedidoNegocioComponent implements OnInit {
   cantidad: number;
   costoEntrega: number;
   //detalle:string;
+  blnCosto: boolean;
+  blnCostoLetra: boolean;
   constructor(
     private utilsCls: UtilsCls,
     private modalController: ModalController,
@@ -45,6 +47,7 @@ export class PedidoNegocioComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.validarCosto();
     if (this._entregaDomicilio === 1) {
       this.tipoEnvio = 2;
     } else {
@@ -132,8 +135,7 @@ export class PedidoNegocioComponent implements OnInit {
       pedido: this.lista
       //detalle: this.detalle
     };
-    console.log(pedido);
-   /* this.negocioService.registrarPedido(pedido).subscribe(
+    this.negocioService.registrarPedido(pedido).subscribe(
       res => {
         this.mesajes.exito('Pedido realizado éxito')
         this.lista = [];
@@ -141,7 +143,7 @@ export class PedidoNegocioComponent implements OnInit {
       }, error => {
         this.mesajes.error('Ocurrio un error al generar el pedido')
       }
-    );*/
+    );
   }
 
   private sumarLista() {
@@ -153,6 +155,9 @@ export class PedidoNegocioComponent implements OnInit {
     this.sumaTotal = this.suma
 
     if (this.tipoEnvio === 2) {
+      if(this.blnCosto === false){
+        this.costoEntrega = 0;
+         }
       this.sumaTotal = this.sumaTotal + this.costoEntrega;
     }
 
@@ -230,4 +235,14 @@ export class PedidoNegocioComponent implements OnInit {
     });
     await alert.present();
   }
+validarCosto(){
+if(parseInt(this._costoEntrega) >= 0){
+  this.costoEntrega = parseInt(this._costoEntrega);
+  this.blnCosto = true;
+  this.blnCostoLetra = false;
+}else{
+  this.blnCosto = false;
+  this.blnCostoLetra = true;
+}
+}
 }

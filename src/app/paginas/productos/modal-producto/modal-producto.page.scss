@@ -102,13 +102,17 @@ ion-card-title{
 ion-item{
   --border-radius: 1rem;
   background: white;
-  --background: linear-gradient(90deg, rgba(250, 79, 114, 1) 0%, rgba(167, 78, 239, 1) 100%);
-  color: white;
+  
 }
 .existencia{
   color: #464343;
     font-size: large;
 }
 .blanco{
+  color: white;
+}
+ion-button{
+  --border-radius: 34px;
+  --background: linear-gradient(90deg, rgba(250, 79, 114, 1) 0%, rgba(167, 78, 239, 1) 100%);
   color: white;
 }
