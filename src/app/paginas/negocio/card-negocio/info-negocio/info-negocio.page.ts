@@ -77,6 +77,7 @@ export class InfoNegocioPage implements OnInit {
     this.blnActivaHoraF = true;
     this.blnActivaDias = true;
     this.blnActivaHorario = true;
+    
   }
 
   ngOnInit() {
@@ -87,6 +88,7 @@ export class InfoNegocioPage implements OnInit {
         this.negocioTO = new NegocioModel();
         this.negocioTO.tags = [];
         this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
+        this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
         this.obtenerTipoNegocio();
       }
     });
@@ -95,6 +97,7 @@ export class InfoNegocioPage implements OnInit {
         let datos = JSON.parse(params.special);
         this.negocioTO = datos.info;
         this.negocioGuardar = datos.pys;
+        this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
         this.obtenerTipoNegocio();
       }
     });
