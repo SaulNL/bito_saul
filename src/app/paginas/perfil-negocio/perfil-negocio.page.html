@@ -5,7 +5,7 @@
                 <ion-icon name="chevron-back-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title>Información del negocio</ion-title>
+        <ion-title>Información negocio</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="abrirModalpedido()" *ngIf="bolsa.length > 0">
                 <ion-icon name="bag-handle-outline"></ion-icon>
@@ -225,7 +225,7 @@
                     <h2>{{cat.nombre}}</h2>
                 </ion-text>
                 <ion-col size="6" *ngFor="let producto of cat.productos">
-                    <ion-card (click)="irAlDetalle(producto)" class="m-0 fixed">
+                    <ion-card (click)="irAlDetalle(producto)" class="m-0 cardsps fixed">
                         <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
                         [srcset]="producto.imagen" alt="Falla al cargar la imagen">
                         <ion-card-header>
@@ -260,7 +260,7 @@
                     <h2>{{cat.nombre}}</h2>
                 </ion-text>
                 <ion-col size="6" *ngFor="let producto of cat.servicios">
-                    <ion-card (click)="irAlDetalle(producto)" class="m-0 fixed">
+                    <ion-card (click)="irAlDetalle(producto)" class="m-0 cardsps fixed">
                         <img class="img-card-w" [src]="producto.imagen" alt="Falla al cargar la imagen">
                         <ion-card-header>
                             <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>

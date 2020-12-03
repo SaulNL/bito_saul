@@ -44,7 +44,7 @@ export class ProductosPage {
   public strBuscar: any;
   alphaScrollItemTemplate: '<ion-item #datos (click)="abrirModal(producto)"><ion-thumbnail slot="start"><img src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"[srcset]="producto.imagen"></ion-thumbnail><ion-label><h2>{{producto.nombre}}</h2><h3>{{(producto.nombre_categoria1 != null)?producto.nombre_categoria1:\'Sin categoría\'}}</h3><div><ion-text>{{(producto.descripcion != null)?producto.descripcion:\'Sin descripción\'}}</ion-text></div><div><ion-text color="success">${{(producto.precio != \'\')?((producto.precio != null)?producto.precio:\'Sin precio\'):\'Sin precio\'}}</ion-text></div><div><ion-badge color="primary">{{producto.tipo}}</ion-badge><ion-badge color="medium">{{(producto.ubicacion != null)?producto.ubicacion.nombre_localidad:\'Sin ubicación\'}}</ion-badge></div></ion-label></ion-item>\n';
   filtroActivo: any;
-  public unoProducto: any;
+  public unoProducto: ProductoModel;
   public todosProducto: any;
 
   constructor(
@@ -95,30 +95,6 @@ export class ProductosPage {
    */
   public obtenerProductos() {
     this.presentLoading().then((a) => {});
-    this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
-      (response) => {
-        this.lstProductos = response.data.lstProductos;
-        if (this.lstProductos.length > 0) {
-          this.blnBtnMapa = true;
-          this.listaNegocioMap = this.lstProductos;
-        } else {
-          this.blnBtnMapa = false;
-        }
-        this.lstProductosBK = response.data.lstProductos;
-        this.armarFiltroABC();
-        //this.loader.onDidDismiss();
-      },
-      (error) => {
-        this.configToad("Error, intentelo más tarde");
-        //this.loader.onDidDismiss();
-      }
-    );
-  }
-  /**
-   * Funcion para obtener promociones
-   * @author Omar
-   */
-  public dobleObtenerProductos() {
     this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
       (response) => {
         this.lstProductos = response.data.lstProductos;
@@ -267,12 +243,22 @@ export class ProductosPage {
         }
       });
     } else {
-      this.unoProducto = this.seleccionadoDetalleArray;
     }
 
     this.presentModale();
   }
 
+  /**
+   * Funcion para un producto y abrir modal
+   * @param modal
+   * @param producto
+   * @author Juan
+   */
+  public abrirProducto(producto: ProductoModel) {
+    
+    this.unoProducto = producto;
+    this.presentModale();
+  }
   async presentLoading() {
     const loading = await this.loadingController.create({
       message: "Cargando. . .",
@@ -361,22 +347,14 @@ export class ProductosPage {
     };
 
     const modal = await this.modalController.create({
-      component: ModalProductosComponent,
+      component: ModalProductoPage,
       enterAnimation,
       leaveAnimation,
       swipeToClose: true,
       componentProps: {
-        seleccionadoDetalleArray: this.seleccionadoDetalleArray,
-        unoProducto: this.unoProducto,
-        losDemas: this.todosProducto,
+        unoProducto: this.unoProducto
       },
     });
-    this.dobleObtenerProductos();
-    modal.onDidDismiss().then(data => {
-      if (data.data){
-console.log(data.data.dismissed);
-      }
-  });
     return await modal.present();
   }
 }

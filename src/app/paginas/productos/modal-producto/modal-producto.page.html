@@ -9,44 +9,38 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen class="ion-padding" scroll-y="false">
-  <ion-slides>
-    <ion-slide *ngFor="let producto of seleccionadoDetalleArray">
-      <ion-grid>
-        <ion-row>
-          <ion-col class="text-rosa" (click)=verMas(producto)><h1>{{producto.negocio.nombre}}</h1></ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
-            [srcset]="producto.imagen">
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <label class="text-rosa"><h1>{{producto.nombre}}</h1></label>
-            <label><strong>{{producto.categoria.nombre}}</strong></label>
-            <label><hr></label>
-            <label class="text-muted">{{producto.descripcion}}</label><br>
-            <label><hr></label>
-            <label class="text-rosa" *ngIf="producto.precio !== undefined && producto.precio !== null && producto.precio !== '' && producto.precio !== '0'"><h2  class="m-0">${{producto.precio}}</h2></label><br>
-            <label *ngIf="producto.precio === undefined || producto.precio === null || producto.precio === '' || producto.precio === '0'">Contactar precio con el proveedor</label>
-            <label><hr></label>
-            <label *ngIf="producto.existencia">Aún en existencia</label>
-            <label *ngIf="!producto.existencia">Sin existencia</label>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>          
-          
-          </ion-col>
-          <ion-col>
-            <ion-button (click)="verMas(producto)" fill="clear">Ver más <ion-icon slot="end" name="open-outline"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-slide>
-  </ion-slides>
-</ion-content>
+<ion-content fullscreen>
 
+  <ion-card>
+    <img src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+      [srcset]="unoProducto.imagen" />
+    <ion-card-header>
+      <ion-card-subtitle>{{unoProducto.categoria.nombre}}</ion-card-subtitle>
+      <ion-card-title><strong>{{unoProducto.nombre}}</strong> </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{unoProducto.descripcion}}
+    </ion-card-content>
+    <ion-card-content>
+      <label class="precio text-rosa"
+        *ngIf="unoProducto.precio !== undefined && unoProducto.precio !== null && unoProducto.precio !== '' && unoProducto.precio !== '0'">
+        <h2 class="m-0">${{unoProducto.precio}}</h2>
+      </label><br>
+      <label class="precio"
+        *ngIf="unoProducto.precio === undefined || unoProducto.precio === null || unoProducto.precio === '' || unoProducto.precio === '0'">Contactar
+        precio con el proveedor</label>
+    </ion-card-content>
+    <ion-card-content >
+          <label class="existencia" *ngIf="unoProducto.existencia">Aún en existencia</label>
+          <label class="existencia" *ngIf="!unoProducto.existencia">Sin existencia</label>
+    </ion-card-content>
+    <label class="negocio">
+      <p>negocio : </p>
+    </label>
+    <hr>
+    <ion-item lines="none" (click)="verMas(unoProducto)">
+      <h1>{{unoProducto.negocio.nombre}}</h1>
+      <ion-icon class="blanco" slot="end" name="open-outline"></ion-icon>
+    </ion-item>
+  </ion-card>
+</ion-content>
