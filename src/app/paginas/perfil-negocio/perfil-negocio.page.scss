@@ -78,16 +78,23 @@ ul li {
 
 .fab-button-small{
   margin: 6px !important;
-  width: 35px !important;
-  height: 35px !important;
+  width: 10vw !important;
+  height: 10vw !important;
 }
 ion-fab-button img {
-  width: 25px !important;
+  width: 6vw !important;
 }
-img.img-card-w {
-  height: 128px;
-}
-
 .cardsps {
-  height: 280px;
+  height: 100%;
+}  
+@media (max-width: 500px) {
+  img.img-card-w {
+    height: 32vw !important;
+  }
 }
+  @media (min-width: 501px)and  (max-width: 1300px) {
+    
+    img.img-card-w {
+      height: 33vw;
+    }
+  }
