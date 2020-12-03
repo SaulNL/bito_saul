@@ -104,10 +104,14 @@
         <h3>{{suma | currency}}</h3>
       </ion-label>
     </ion-item>
-    <ion-item *ngIf="tipoEnvio === 2 ">
-      <ion-label>
+    <ion-item *ngIf="tipoEnvio === 2">
+      <ion-label *ngIf="blnCosto">
         <h3>Costo de envio</h3>
         <h3>{{costoEntrega | currency}}</h3>
+      </ion-label>
+      <ion-label *ngIf="blnCostoLetra">
+        <h3>Costo de envio</h3>
+        <h3>{{_costoEntrega}}</h3>
       </ion-label>
     </ion-item>
     <ion-item>
