@@ -1,5 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ModalController} from "@ionic/angular";
+import { ActivatedRoute } from '@angular/router';
+import {ModalController, Platform} from "@ionic/angular";
+import { ToadNotificacionService } from 'src/app/api/toad-notificacion.service';
 import {UtilsCls} from "../../utils/UtilsCls";
 
 @Component({
@@ -17,12 +19,20 @@ export class DetalleProductoComponent implements OnInit {
   @Input() public _consumoSitio: boolean;
   @Input() datos: any;
   @Output() llenarLista :  EventEmitter<any> = new EventEmitter();
+  public subscribe;
+  public modal;
 
   constructor(
       private utilsCls: UtilsCls,
       private modalController: ModalController,
+      private route: ActivatedRoute,
+      private notificacionService: ToadNotificacionService,
+      private platform: Platform
   ) {
-    console.log(this.datos)
+    console.log(this.datos);
+    this.subscribe=this.platform.backButton.subscribe(()=>{
+      this.cerrarModal();
+    });
   }
 
   ngOnInit() {
@@ -33,6 +43,9 @@ export class DetalleProductoComponent implements OnInit {
     this.modalController.dismiss({
       'data': null,
     });
+  }
+  ionViewDidLeave(){
+    this.subscribe.unsubscribe();   
   }
 
   get mostrarComponente() {
