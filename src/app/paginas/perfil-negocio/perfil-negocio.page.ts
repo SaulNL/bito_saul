@@ -116,16 +116,6 @@ export class PerfilNegocioPage implements OnInit {
         const coordinates = await Geolocation.getCurrentPosition().then(res => {
             this.miLat = res.coords.latitude;
             this.miLng = res.coords.longitude;
-            // const start = {
-            //     latitude: this.miLat,
-            //     longitude: this.miLng
-            // };
-            // const end = {
-            //     latitude: this.informacionNegocio.latitud,
-            //     longitude: this.informacionNegocio.longitud
-            // };              
-            // const dis = haversineCalculator(start, end);
-            // this.distanciaNegocio = dis.toFixed(2);
                   
         }).catch(error => {
                 this.permisoUbicacionCancelado = true;
@@ -594,16 +584,21 @@ export class PerfilNegocioPage implements OnInit {
     }
 
     agregarBolsaDeta(pro){
-        const producto = {
-            idProducto: pro.idProducto,
-            precio: pro.precio,
-            imagen: pro.imagen,
-            cantidad: 1,
-            idNegocio: pro.negocio.idNegocio,
-            nombre: pro.nombre,
-            descripcion: pro.descripcion
-          };
-          this.llenarBolsa(producto);
+        if(this.existeSesion){
+            const producto = {
+                idProducto: pro.idProducto,
+                precio: pro.precio,
+                imagen: pro.imagen,
+                cantidad: 1,
+                idNegocio: pro.negocio.idNegocio,
+                nombre: pro.nombre,
+                descripcion: pro.descripcion
+            };
+            this.llenarBolsa(producto);
+        }else {
+            this.router.navigate(['/tabs/login'])
+        }
+
     }
 
     irRedSocial(palabra:string){
