@@ -269,23 +269,23 @@
     </div>
     <ion-fab *ngIf="existeSesion"  horizontal="end" vertical="bottom" slot="fixed">
     <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''"
-    [href]="informacionNegocio.youtube" target="_blank">
+    (click)="irRedSocial(informacionNegocio.youtube,1)" target="_blank">
         <ion-icon name="logo-youtube"></ion-icon>
     </ion-fab-button>
     <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.tiktok !== null && informacionNegocio.tiktok !== ''"
-    [href]="informacionNegocio.tiktok" target="_blank">
+    (click)="irRedSocial(informacionNegocio.tiktok,2)" target="_blank">
         <ion-icon name="logo-tiktok"></ion-icon>
     </ion-fab-button>
     <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.instagram !== null && informacionNegocio.instagram !== ''"
-    [href]="informacionNegocio.instagram" target="_blank">
+    (click)="irRedSocial(informacionNegocio.instagram,3)" target="_blank">
         <ion-icon name="logo-instagram"></ion-icon>
     </ion-fab-button>
     <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.twitter !== null && informacionNegocio.twitter !== ''"
-    [href]="informacionNegocio.twitter" target="_blank">
+    (click)="irRedSocial(informacionNegocio.twitter,4)" target="_blank">
         <ion-icon name="logo-twitter"></ion-icon>
     </ion-fab-button>
     <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.id_facebook !== null && informacionNegocio.id_facebook !== ''"
-    [href]="informacionNegocio.id_facebook" target="_blank">
+    (click)="irRedSocial(informacionNegocio.id_facebook,5)" target="_blank">
         <ion-icon name="logo-facebook"></ion-icon>
     </ion-fab-button>
     <ion-fab-button size="small" color="light" *ngIf="informacionNegocio.celular !== null && informacionNegocio.celular !== ''"
