@@ -8,7 +8,7 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from "@angular/router";
 import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-negocios.component';
 import {SideBarService} from "../../api/busqueda/side-bar-service";
-
+import { Router} from "@angular/router";
 
 
 @Component({
@@ -38,7 +38,8 @@ export class InicioPage implements OnInit {
         private modalController: ModalController,
         private notificaciones: ToadNotificacionService,
         private route: ActivatedRoute,
-        private eventosServicios: SideBarService
+        private eventosServicios: SideBarService,
+        private ruta: Router
     ) {
         this.Filtros = new FiltrosModel();
         this.Filtros.idEstado = 29;
@@ -60,7 +61,7 @@ export class InicioPage implements OnInit {
         if (categoria !== null){
             this.filtroActivo = true;
             const dato = JSON.parse(categoria);
-            console.log("buscando por categoria")
+            // console.log("buscando por categoria")
             this.Filtros = new FiltrosModel();
             this.Filtros.idGiro = [dato.idGiro];
             this.Filtros.idCategoriaNegocio = [dato.id_categoria];
@@ -161,5 +162,12 @@ export class InicioPage implements OnInit {
         this.Filtros.idEstado = 29;
         this.filtroActivo = false;
         this.buscarNegocios();
+    }
+    negocioRuta(negocioURL) {
+        if (negocioURL==""){
+            this.notificaciones.error('Este negocio aún no cumple los requisitos mínimos');
+        } else{
+            this.ruta.navigate(['/tabs/negocio/'+negocioURL]);
+        }
     }
 }

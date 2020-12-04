@@ -112,7 +112,7 @@
     <div>
         <ion-grid>
             <ion-row>
-                <ion-col size=12>
+                <ion-col size=12> 
                     <div (click)="motrarContacto = !motrarContacto;">
                         <div style="background: white; border-radius: 1em 1em 0em 0em;" class="ion-text-center">
                             <ion-chip *ngIf="estatus.tipo === 1" color="success">
@@ -212,34 +212,38 @@
                 </ion-col>
             </ion-row>
             <ion-row *ngFor="let cat of informacionNegocio.catProductos">
-                <ion-text class="w-100">
+                <ion-text (click)="negocioSub = !negocioSub;" class="w-100">
                     <h2>{{cat.nombre}}</h2>
                 </ion-text>
-                <ion-col size="6" *ngFor="let producto of cat.productos">
-                    <ion-card class="m-0 fixed cardsps">
-                        <div (click)="irAlDetalle(producto)">
-                        <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
-                        [srcset]="producto.imagen" alt="Falla al cargar la imagen">
-                        <ion-card-header>
-                            <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
-                            <ion-badge *ngIf="producto.precio !== null" color="success">
-                                $ {{producto.precio}}</ion-badge>
-                        </ion-card-header>
-                        <ion-card-content>
-                            <div class="ui-search-item__title">
-                                {{producto.descripcion}}
-                            </div>
-                        </ion-card-content>
+                <ng-container *ngIf="!negocioSub">
+                    <ion-col size="6" *ngFor="let producto of cat.productos">
+                        <ion-card class="m-0 fixed cardsps">
+                            <div (click)="irAlDetalle(producto)">
+                            <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+                            [srcset]="producto.imagen" alt="Falla al cargar la imagen">
+                            <ion-card-header>
+                                <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
+                                <ion-badge *ngIf="producto.precio !== null" color="success">
+                                    $ {{producto.precio}}</ion-badge>
+                            </ion-card-header>
+                            <ion-card-content>
+                                <div class="ui-search-item__title">
+                                    {{producto.descripcion}}
+                                </div>
+                            </ion-card-content>
+                        </div>
+                        <div *ngIf="producto.existencia === true && producto.precio !== null">
+                            <ion-fab class="bolsita" (click)="agregarBolsaDeta(producto)">
+                                <ion-fab-button class="bosar">
+                                    <ion-icon name="bag-add-outline"></ion-icon>
+                                </ion-fab-button>
+                              </ion-fab>
                     </div>
-                    <div *ngIf="producto.existencia === true && producto.precio !== null">
-                        <ion-fab class="bolsita" (click)="agregarBolsaDeta(producto)">
-                            <ion-fab-button class="bosar">
-                                <ion-icon name="bag-add-outline"></ion-icon>
-                            </ion-fab-button>
-                          </ion-fab>
-                </div>
-                    </ion-card>
-                </ion-col>
+                        </ion-card>
+                    </ion-col>
+                </ng-container> 
+                
+                    
             </ion-row>
         </ion-grid>
 

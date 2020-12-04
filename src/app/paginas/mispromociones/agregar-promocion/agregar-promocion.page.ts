@@ -11,6 +11,7 @@ import { ArchivoComunModel } from '../../../Modelos/ArchivoComunModel';
 import { RecorteImagenComponent } from '../../../components/recorte-imagen/recorte-imagen.component';
 import { ModalController } from '@ionic/angular';
 import { PromocionesService } from '../../../api/promociones.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-agregar-promocion',
@@ -41,6 +42,7 @@ export class AgregarPromocionPage implements OnInit {
   public blnImgPoster: boolean;
   @ViewChild('inputTarjeta') inputTar: ElementRef;
   @ViewChild('inputBanner') inputBanner: ElementRef;
+  public loading;
 
   constructor( private route: ActivatedRoute,
                private _negocio_service: NegocioService,
@@ -48,7 +50,8 @@ export class AgregarPromocionPage implements OnInit {
                private _utils_cls: UtilsCls,
                public modalController: ModalController,
                private _router: Router,
-               private _promociones_service: PromocionesService
+               private _promociones_service: PromocionesService,
+               public loadingController: LoadingController
              ) { 
     this.seleccionTo = new PromocionesModel();
     this.publicacion = new PublicacionesModel();
@@ -238,7 +241,7 @@ export class AgregarPromocionPage implements OnInit {
   }
 
   public guardar(form: NgForm) {
-
+    this.handleButtonClick();
     if ((this.seleccionTo.imagen === undefined || this.seleccionTo.imagen === null)
       && (this.seleccionTo.url_imagen === undefined || this.seleccionTo.url_imagen === '')) {
       this._notificacionService.error('La imagen para tarjeta de la promoción es requerida');
@@ -267,6 +270,7 @@ export class AgregarPromocionPage implements OnInit {
             form.resetForm();
             this._router.navigate(['/tabs/home/promociones'], { queryParams: {special: true}  });
             this._notificacionService.exito('se guardo correctamente');
+            this.loading.dismiss();
           }
         },
         error => {
@@ -281,6 +285,13 @@ export class AgregarPromocionPage implements OnInit {
 
   cancelarEdicion() {
     this._router.navigate(['/tabs/home/promociones']);
+  }
+  async handleButtonClick() {
+     this.loading = await this.loadingController.create({
+      message: ' Guardando su promoción...'
+    });
+
+    await this.loading.present();
   }
 
 }

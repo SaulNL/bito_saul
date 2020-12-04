@@ -59,6 +59,7 @@ export class PerfilNegocioPage implements OnInit {
     ];
     private detalle: any;
     private bolsa: Array<any>;
+    public negocioSub = true;
 
     constructor(
         private navctrl: NavController,

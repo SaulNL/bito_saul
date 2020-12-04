@@ -44,7 +44,7 @@
                     <h2>{{cat.nombre}}</h2>
                 </ion-text>
                 <ion-col sizeLg="3" sizeXs="6" sizeSm="4" sizeMd="4" *ngFor="let proveedor of cat.negocios">
-                    <ion-card [routerLink]="['/tabs/negocio/' + proveedor.url_negocio]" class="m-0 fixed">
+                    <ion-card (click)="negocioRuta(proveedor.url_negocio)" class="m-0 fixed">
                         <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
                             [srcset]="proveedor.url_logo" 
                              alt="Falla al cargar la imagen">

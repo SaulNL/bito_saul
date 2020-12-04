@@ -4,7 +4,7 @@
       <ion-back-button defaultHref="/tabs/home/promociones" icon="arrow-back-outline" text="">
       </ion-back-button>
     </ion-buttons>
-    <ion-title>Agregar promocion</ion-title>
+    <ion-title>Agregar promoción</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,7 +14,7 @@
       <ion-card-content>
 
         <ion-item>
-          <ion-label>Promocion: </ion-label>
+          <ion-label>Promoción:<span>*</span></ion-label>
           <ion-input #promocion="ngModel" required type="text" name="promocion" [(ngModel)]="seleccionTo.promocion"></ion-input>
         </ion-item>
         <div *ngIf="promocion.touched && promocion.invalid" style="color: red; display: flex; justify-content: center; align-items: center;">
@@ -26,7 +26,7 @@
         </div>
 
         <ion-item>
-          <ion-label position="floating">Términos y condiciones: </ion-label>
+          <ion-label position="floating">Términos y condiciones:<span>*</span></ion-label>
           <ion-input #terminos = "ngModel" required type="text" name="terminos" [(ngModel)]="seleccionTo.terminos"></ion-input>
         </ion-item>
         <div *ngIf="terminos.touched && terminos.invalid" style="color: red; display: flex; justify-content: center; align-items: center;">
@@ -35,7 +35,7 @@
 
         <ion-item *ngIf="false">
           <ion-label>
-            Relacione su negocio:
+            Relacione su negocio:<span>*</span>
           </ion-label>
           <ion-select [value]="seleccionTo.id_negocio" name="negocio" [(ngModel)]="seleccionTo.id_negocio">
             <div *ngFor="let row of lstNegocios" (change)="decripcionSelect()">
@@ -47,7 +47,7 @@
         <!--? input de la imagen -->
         <div  style="margin-top: 10px;">
           <div style="display: flex; justify-content: center;">
-            <label>Imagen para la tarjeta de promoción:</label>
+            <label>Imagen para la tarjeta de promoción:<span>*</span></label>
           </div>
         </div>
         <div *ngIf="btnCambiarImagen">
@@ -92,7 +92,7 @@
         <div style="margin-top: 10px;">
           <div style="display: flex; justify-content: center;">
             <label>
-              Imagen banner de la promoción
+              Imagen banner de la promoción<span>*</span>
             </label>
           </div>
         </div>
