@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
 })
 export class ModalProductoPage implements OnInit {
 
-  @Input() public seleccionadoDetalleArray: Array<ProductoModel>;
+  @Input() public unoProducto: ProductoModel;
 
   slideOpts ={
     scrollbar:true
@@ -26,9 +26,7 @@ export class ModalProductoPage implements OnInit {
 
   }
   dismiss() {
-    this.modalCtrl.dismiss({
-      'dismissed': true
-    });
+    this.modalCtrl.dismiss();
   }
 
   verMas(producto: ProductoModel){

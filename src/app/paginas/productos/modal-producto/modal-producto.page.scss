@@ -3,15 +3,34 @@
   background: linear-gradient(90deg, rgba(250, 79, 114, 1) 0%, rgba(167, 78, 239, 1) 100%);
 }
 
+img{
+  width: 100% !important;
+}
+ion-card-content{
+  text-align: justify;
+}
+
 .btn-blanco {
   background-color: white !important;
+}
+h1{
+  margin-top: auto;
+}
+.precio{
+  font-size: 16px;
+  font-weight: bolder;
 }
 
 .btn-rosa {
   color: white;
   background-color: #FA4F72 !important;
 }
-
+.negocio{
+  position: relative;
+  top: 1em;
+  left: 1em;
+  font-size: large;
+}
 .text-rosa {
   color: #FA4F72 !important;
 }
@@ -21,7 +40,6 @@
 }
 strong{
   color: #FA4F72 !important;
-  font-size: 1rem;
 }
 
 .swiper-slide img {
@@ -77,4 +95,25 @@ h2{
 }
 input[type="radio"]:checked ~ label {
   color: orange;
+}
+ion-card-title{
+  font-size: 25px;
+}
+ion-item{
+  --border-radius: 1rem;
+  background: white;
+  
+}
+.existencia{
+  color: #464343;
+    font-size: large;
+}
+.blanco{
+  color: white;
+}
+ion-item{
+  --border-radius: 34px;
+  --background: linear-gradient(90deg, rgba(250, 79, 114, 1) 0%, rgba(167, 78, 239, 1) 100%);
+  color: white;
+  padding-bottom: 10px;
 }

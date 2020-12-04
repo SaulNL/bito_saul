@@ -76,11 +76,52 @@ ul li {
   right: calc(1.5px + var(--ion-safe-area-right, 0px)) !important;
 }
 
-.fab-button-small{
-  margin: 6px !important;
-  width: 35px !important;
-  height: 35px !important;
+.cardsps {
+  height: 100%;
+}  
+@media (max-width: 500px) {
+  .fab-button-small{
+    margin: 6px !important;
+    width: 12vw !important;
+    height: 12vw !important;
+  }
+  ion-fab-button img {
+    width: 7vw !important;
+  }
+  img.img-card-w {
+    height: 32vw !important;
+  }
+  .bosar{
+    width: 13vw;
+    height: 13vw;
+  } 
 }
-ion-fab-button img {
-  width: 25px !important;
+  @media (min-width: 501px)and  (max-width: 1300px) {
+    .fab-button-small{
+      margin: 6px !important;
+      width: 10vw !important;
+      height: 10vw !important;
+    }
+    ion-fab-button img {
+      width: 6vw !important;
+    } 
+    img.img-card-w {
+      height: 33vw;
+    }
+    .bosar{
+      width: 8vw;
+      height: 8vw;
+    } 
+  }
+.bolsita{
+  top: 3px;
+  right: 3px;
 }
+.bosar{
+  --background: white;
+  --color: #fa4f72;
+  
+}
+ion-fab-button {--background: white;}
+
+

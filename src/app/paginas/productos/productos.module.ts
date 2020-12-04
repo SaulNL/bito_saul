@@ -9,6 +9,9 @@ import { TabsPageModule } from '../tabs/tabs.module';
 import { Tab1PageRoutingModule } from './productos-routing.module';
 import { ModalProductoPageModule } from './modal-producto/modal-producto.module';
 
+import { InfoProductosComponent } from '../../components/info-productos/info-productos.component';
+import { ModalProductosComponent } from '../../components/modal-productos/modal-productos.component';
+
 @NgModule({
   imports: [
     IonicModule,
@@ -19,6 +22,9 @@ import { ModalProductoPageModule } from './modal-producto/modal-producto.module'
     TabsPageModule,
     ModalProductoPageModule
   ],
-  declarations: [ProductosPage]
+  declarations: [ProductosPage,
+    InfoProductosComponent,
+    ModalProductosComponent
+  ]
 })
 export class Tab1PageModule {}

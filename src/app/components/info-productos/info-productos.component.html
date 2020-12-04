@@ -1,0 +1,39 @@
+<ion-grid>
+  <ion-col>
+   <img class="img-card-w" src="http://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png" [srcset]="producto.imagen">
+  </ion-col>
+  <ion-row>
+    <ion-col>
+      <label class="text-rosa">
+        <h1>{{producto.nombre}}</h1>
+      </label>
+      <label><strong>{{producto.categoria.nombre}}</strong></label>
+      <label>
+        <hr></label>
+      <label class="text-muted">{{producto.descripcion}}</label><br>
+      <label>
+        <hr></label>
+      <label class="text-rosa"
+        *ngIf="producto.precio !== undefined && producto.precio !== null && producto.precio !== '' && producto.precio !== '0'">
+        <h2 class="m-0">${{producto.precio}}</h2>
+      </label><br>
+      <label
+        *ngIf="producto.precio === undefined || producto.precio === null || producto.precio === '' || producto.precio === '0'">Contactar
+        precio con el proveedor</label>
+      <label>
+        <hr></label>
+      <label *ngIf="producto.existencia">Aún en existencia</label>
+      <label *ngIf="!producto.existencia">Sin existencia</label>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+
+    </ion-col>
+    <ion-col>
+      <ion-button (click)="verMas(producto)" fill="clear">Ver más <ion-icon slot="end" name="open-outline">
+        </ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
