@@ -606,41 +606,10 @@ export class PerfilNegocioPage implements OnInit {
           this.llenarBolsa(producto);
     }
 
-    //Funciones de redes sociales
-
-    irRedSocial(palabra:string,numSocial){
-        let blnValidacion = true;
-        let cadena;
-        let redSocial;
-        switch(numSocial){
-            case 1: cadena = palabra.split("https://www.youtube.com/");
-                    redSocial = "https://www.youtube.com/";
-                break;
-            case 2: cadena = palabra.split("https://www.tiktok.com/");
-                    redSocial = "https://www.tiktok.com/";
-                break;
-            case 3: cadena = palabra.split("https://www.instagram.com/");
-                    redSocial = "https://www.instagram.com/";
-                break;
-            case 4: cadena = palabra.split("https://twitter.com/");
-                    redSocial = "https://twitter.com/";
-                break;
-            case 5: cadena = palabra.split("https://www.facebook.com/");     
-                    redSocial = "https://www.facebook.com/";                  
-                break;
+    irRedSocial(palabra:string){
+        if (palabra.substring(0, 7) !== 'http://' && palabra.substring(0, 8) !== 'https://') {
+            palabra = 'https://' + palabra;
         }
-
-        for(let i of palabra.split("")){
-            if(i === " "){
-                blnValidacion = false;
-                break;
-            }
-        }       
-        
-        if(cadena.length === 2 && blnValidacion){
-            if(cadena[1][0] !== '/'){                
-                this.abrirVentana(redSocial+cadena[1]);
-            }
-        }
+        this.abrirVentana(palabra);
     }
 }
