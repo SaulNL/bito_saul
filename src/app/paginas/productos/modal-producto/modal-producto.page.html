@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar class="bg-rosa">
-    <ion-title>Detalle del Producto</ion-title>
+    <ion-title slot="start">Detalle del Producto</ion-title>
     <ion-buttons slot="end">
       <ion-button class="blanco" (click)="dismiss()">
         <ion-icon class="blanco" name="close-outline"></ion-icon>
@@ -38,8 +38,9 @@
       <p>Vendido por</p>
     </label>
     <hr>
-    <ion-button (click)="verMas(unoProducto)" expand="block" type="submit" >{{unoProducto.negocio.nombre}}
+    <ion-item (click)="verMas(unoProducto)">
+      {{unoProducto.negocio.nombre}}
       <ion-icon class="blanco" slot="end" name="open-outline"></ion-icon>
-    </ion-button>
+    </ion-item>
   </ion-card>
 </ion-content>

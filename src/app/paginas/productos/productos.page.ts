@@ -16,6 +16,8 @@ import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/filtros-busqueda.component";
 import { AnimationController } from "@ionic/angular";
 import { ModalProductosComponent } from "../../components/modal-productos/modal-productos.component";
+import { UtilsCls } from "../../utils/UtilsCls";
+import { AppSettings } from "../../AppSettings";
 
 @Component({
   selector: "app-tab1",
@@ -56,8 +58,11 @@ export class ProductosPage {
     public modalController: ModalController,
     private notificaciones: ToadNotificacionService,
     private active: ActivatedRoute,
-    public animationCtrl: AnimationController
-  ) {}
+    public animationCtrl: AnimationController,
+    private util: UtilsCls
+  ) {
+    this.user = this.util.getUserData();
+  }
 
   ngOnInit(): void {
     this.anyFiltros = new FiltrosModel();
@@ -109,7 +114,7 @@ export class ProductosPage {
         //this.loader.onDidDismiss();
       },
       (error) => {
-        this.configToad("Error, intentelo más tarde");
+        this.notificaciones.error("Error, intentelo más tarde");
         //this.loader.onDidDismiss();
       }
     );
@@ -126,11 +131,15 @@ export class ProductosPage {
       (response) => {
         if (response.code === 200) {
           producto.likes = response.data;
+          this.notificaciones.exito(response.message);
+        } else{
+          this.notificaciones.alerta(response.message);
         }
-        this.configToad(response.message);
+        //this.notificaciones.exito(response.message);
+        
       },
       (error) => {
-        this.configToad("Error, intentelo más tarde");
+        this.notificaciones.error("Error, intentelo más tarde");
       }
     );
     //}

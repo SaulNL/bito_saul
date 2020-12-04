@@ -50,7 +50,6 @@ export class ProductosService {
    * @param usuario
    */
   public darLike(producto: ProductoModel, usuario: UsuarioSistemaModel):Observable<any>{
-    console.log(producto);
     const body = JSON.stringify({producto: producto, usuario: usuario});
     return this._http.post(
         this.url + 'api/productos/dar_like', body,
