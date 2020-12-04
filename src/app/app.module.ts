@@ -13,7 +13,8 @@ import { FormsModule } from '@angular/forms';
 
 import { HaversineService } from "ng2-haversine";
 import { Downloader} from '@ionic-native/downloader/ngx';
-
+import {Platform} from "@ionic/angular";
+import {HTTP} from "@ionic-native/http/ngx";
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +25,9 @@ import { Downloader} from '@ionic-native/downloader/ngx';
     SplashScreen,
     HaversineService,
     { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy },
-    Downloader
+    Downloader,
+      Platform,
+    HTTP
   ],
   bootstrap: [AppComponent]
 })
