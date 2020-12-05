@@ -1,25 +1,25 @@
 <ion-tabs>
 
   <ion-tab-bar slot="bottom">
-    <ion-tab-button (click)="productos()">
+    <ion-tab-button (click)="productos()" tab="productos" style="--color-selected: #fa4f72">
       <ion-icon name="cube-outline"></ion-icon>
       <ion-label>Productos</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button (click)="promociones()">
+    <ion-tab-button (click)="promociones()" tab="promociones" style="--color-selected: #fa4f72">
       <ion-icon name="pricetags-outline"></ion-icon>
       <ion-label>Promociones</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button (click)="inicio()">
+    <ion-tab-button (click)="inicio()" tab="inicio" style="--color-selected: #fa4f72">
       <ion-icon name="storefront-outline"></ion-icon>
       <ion-label>Negocios</ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="categorias">
+    <ion-tab-button tab="categorias" style="--color-selected: #fa4f72">
       <ion-icon name="list-outline"></ion-icon>
       <ion-label>Categorias</ion-label>
     </ion-tab-button>
-    <ion-tab-button *ngIf="usuario === null" tab="login">
+    <ion-tab-button *ngIf="usuario === null" tab="login" style="--color-selected: #fa4f72">
       <ion-icon name="person-circle-outline"></ion-icon>
       <ion-label>Usuario</ion-label>
     </ion-tab-button>

@@ -205,7 +205,9 @@
                 <ion-col>
                     <div id="abcedario" class="scrolling-wrapper-flexbox">
                         <div class="item" *ngFor="let item of informacionNegocio.tagsProductos">
-                            <ion-button size="small" color="primary">{{item}}</ion-button>
+                            <ion-chip>
+                                <ion-label style="font-size: 0.8em">{{item}}</ion-label>
+                            </ion-chip>
                         </div>
                     </div>
                     <p><br></p>
@@ -249,7 +251,9 @@
                 <ion-col>
                     <div id="abcedario" class="scrolling-wrapper-flexbox">
                         <div *ngFor="let item of informacionNegocio.tagsServicios">
-                            <ion-button size="small" color="primary">{{item}}</ion-button>
+                            <ion-chip>
+                                <ion-label style="font-size: 0.8em">{{item}}</ion-label>
+                            </ion-chip>
                         </div>
                     </div>
                     <p><br></p>
