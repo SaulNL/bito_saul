@@ -5,7 +5,7 @@
                 <ion-icon name="chevron-back-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title>Información del negocio</ion-title>
+        <ion-title>Información negocio</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="abrirModalpedido()" *ngIf="bolsa.length > 0">
                 <ion-icon name="bag-handle-outline"></ion-icon>
@@ -212,10 +212,10 @@
                 </ion-col>
             </ion-row>
             <ion-row *ngFor="let cat of informacionNegocio.catProductos">
-                <ion-text (click)="negocioSub = !negocioSub;" class="w-100">
-                    <h2>{{cat.nombre}}</h2>
-                </ion-text>
-                <ng-container *ngIf="!negocioSub">
+                <ion-item (click)="negocioSub = !negocioSub; nameSub = cat.nombre" class="w-100 bg-gris">
+                    <h2>{{cat.nombre}}</h2> <ion-icon slot="end" [name]="negocioSub? 'caret-forward-outline' : 'caret-down-outline'"></ion-icon>
+                </ion-item>
+                <ng-container *ngIf="!negocioSub &&  nameSub === cat.nombre">
                     <ion-col size="6" *ngFor="let producto of cat.productos">
                         <ion-card class="m-0 fixed cardsps">
                             <div (click)="irAlDetalle(producto)">
@@ -260,24 +260,28 @@
                 </ion-col>
             </ion-row>
             <ion-row *ngFor="let cat of informacionNegocio.catServicos">
-                <ion-text class="w-100">
-                    <h2>{{cat.nombre}}</h2>
-                </ion-text>
-                <ion-col size="6" *ngFor="let producto of cat.servicios">
-                    <ion-card (click)="irAlDetalle(producto)" class="m-0 cardsps fixed">
-                        <img class="img-card-w" [src]="producto.imagen" alt="Falla al cargar la imagen">
-                        <ion-card-header>
-                            <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
-                            <ion-badge *ngIf="producto.precio !== null" color="success">
-                                $ {{producto.precio}}</ion-badge>
-                        </ion-card-header>
-                        <ion-card-content>
-                            <div class="ui-search-item__title">
-                                {{producto.descripcion}}
-                            </div>
-                        </ion-card-content>
-                    </ion-card>
-                </ion-col>
+                <ion-item (click)="servicioSub = !servicioSub; namelesSub = cat.nombre" class="w-100 bg-gris">
+                    <h2>{{cat.nombre}}</h2> <ion-icon slot="end" [name]="servicioSub? 'caret-forward-outline' : 'caret-down-outline'"></ion-icon>
+                </ion-item>
+                <ng-container *ngIf="!servicioSub &&  namelesSub === cat.nombre">
+                    <ion-col size="6" *ngFor="let producto of cat.servicios">
+                        <ion-card (click)="irAlDetalle(producto)" class="m-0 cardsps fixed">
+                            <img class="img-card-w" [src]="producto.imagen" alt="Falla al cargar la imagen">
+                            <ion-card-header>
+                                <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
+                                <ion-badge *ngIf="producto.precio !== null" color="success">
+                                    $ {{producto.precio}}</ion-badge>
+                            </ion-card-header>
+                            <ion-card-content>
+                                <div class="ui-search-item__title">
+                                    {{producto.descripcion}}
+                                </div>
+                            </ion-card-content>
+                        </ion-card>
+                    </ion-col>
+                </ng-container>
+                
+
             </ion-row>
         </ion-grid>
     </div>

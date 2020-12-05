@@ -20,11 +20,11 @@ export class SideBarService {
 
   buscar(data: any){
       this.buscarNegocios.next(data)
-      console.log('servicio')
+      //console.log('servicio')
   }
 
   eventBuscar(): Subject<any>{
-    console.log('obteniendo')
+    //console.log('obteniendo')
     return this.buscarNegocios;
   }
 }

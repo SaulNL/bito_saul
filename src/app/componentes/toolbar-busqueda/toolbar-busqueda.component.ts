@@ -62,12 +62,12 @@ export class ToolbarBusquedaComponent implements OnInit {
     /* this.sideBarService.change.subscribe(isOpen => {
       this.permisosList();
     }); */
-    console.log(this.user.nombre);
+    //console.log(this.user.nombre);
     
   }
 
   buscar() {
-    console.log(this.strBuscar)
+    //console.log(this.strBuscar)
     this.buscarEmit.emit(this.strBuscar);
   }
 
