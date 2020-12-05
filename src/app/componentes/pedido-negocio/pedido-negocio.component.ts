@@ -127,7 +127,7 @@ export class PedidoNegocioComponent implements OnInit {
   public realizarPedido() {
     const pedido = {
       direccion: this.estasUbicacion,
-      idNegocio: this.lista[0].negocio.idNegocio,
+      idNegocio: this.lista[0].idNegocio,
       idPersona: this.utilsCls.getIdPersona(),
       idTipoPedido: this.tipoEnvio,
       latitud: this.lat,
@@ -155,9 +155,9 @@ export class PedidoNegocioComponent implements OnInit {
     this.sumaTotal = this.suma
 
     if (this.tipoEnvio === 2) {
-      if(this.blnCosto === false){
+      if (this.blnCosto === false) {
         this.costoEntrega = 0;
-         }
+      }
       this.sumaTotal = this.sumaTotal + this.costoEntrega;
     }
 
@@ -215,7 +215,7 @@ export class PedidoNegocioComponent implements OnInit {
   async presentAlertConfirm(i) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: '¿Esta seguro que desa Eliminar?',
+      header: '¿Esta seguro que desea Eliminar?',
       message: 'Recuerde que la acción es ireversible',
       buttons: [
         {
@@ -235,14 +235,41 @@ export class PedidoNegocioComponent implements OnInit {
     });
     await alert.present();
   }
-validarCosto(){
-if(parseInt(this._costoEntrega) >= 0){
-  this.costoEntrega = parseInt(this._costoEntrega);
-  this.blnCosto = true;
-  this.blnCostoLetra = false;
-}else{
-  this.blnCosto = false;
-  this.blnCostoLetra = true;
-}
-}
+  validarCosto() {
+    if (parseInt(this._costoEntrega) >= 0) {
+      this.costoEntrega = parseInt(this._costoEntrega);
+      this.blnCosto = true;
+      this.blnCostoLetra = false;
+    } else {
+      this.blnCosto = false;
+      this.blnCostoLetra = true;
+    }
+  }
+  async presentAlertCancelar() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '¿Esta seguro que desea cancelar tu pedido ?',
+      message: 'Recuerde que la acción es ireversible',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          }
+        }, {
+          role: 'destructive',
+          text: 'Confirmar',
+          handler: () => {
+            this.cancelarPedido();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+  cancelarPedido() {
+    this.lista = [];
+    this.cerrarModal();
+  }
 }
