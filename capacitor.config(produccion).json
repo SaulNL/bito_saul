@@ -9,10 +9,12 @@
       "launchShowDuration": 0
     }
   },
+ "cordova": {},
   "server": {
     "hostname": "app-bitoo.com.mx",
     "iosScheme": "ionic",
     "androidScheme": "https",
     "allowNavigation": ["https://bitoo-back.azurewebsites.net/", "*.https://bitoo-back.azurewebsites.net/"]
-  }
+   }
+
 }
