@@ -234,7 +234,7 @@
                                 </div>
                             </ion-card-content>
                         </div>
-                        <div *ngIf="producto.existencia === true && producto.precio !== null">
+                        <div *ngIf="mostrarBoton(producto.precio)">
                             <ion-fab class="bolsita" (click)="agregarBolsaDeta(producto)">
                                 <ion-fab-button class="bosar">
                                     <ion-icon name="bag-add-outline"></ion-icon>

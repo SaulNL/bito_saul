@@ -611,4 +611,9 @@ export class PerfilNegocioPage implements OnInit {
         }
         this.abrirVentana(palabra);
     }
+
+    mostrarBoton(precio) {
+        console.log(this.informacionNegocio);
+        return (this.informacionNegocio.entrega_domicilio === 1 || this.informacionNegocio.entrega_sitio === 1 || this.informacionNegocio.consumo_sitio === 1 && parseInt(precio) > 0); // && parseInt(precio) > 0
+    }
 }
