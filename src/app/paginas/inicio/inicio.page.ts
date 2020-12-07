@@ -62,17 +62,21 @@ export class InicioPage implements OnInit {
         }
         let estatusFiltro = localStorage.getItem('resetFiltro');
         if (categoria !== null) {
+            console.log(categoria);
             this.filtroActivo = true;
             const dato = JSON.parse(categoria);
             localStorage.setItem('resetFiltro', '1');
             estatusFiltro = localStorage.getItem('resetFiltro');
+            console.log("buscando por categoria")
             this.Filtros = new FiltrosModel();
             this.Filtros.idGiro = [dato.idGiro];
             this.Filtros.idCategoriaNegocio = [dato.id_categoria];
             this.buscarNegocios();
             localStorage.removeItem('seleccionado');
         }
-        if (categoria === null && estatusFiltro === '0'){
+        console.log(this.Filtros);
+        if (categoria === null &&
+            estatusFiltro === '0'){
                 if( this.Filtros.abierto === null &&
                     this.Filtros.blnEntrega === null &&
                     this.Filtros.idEstado === 29 &&
@@ -88,6 +92,7 @@ export class InicioPage implements OnInit {
                     this.Filtros.strBuscar === '' &&
                     this.Filtros.strMunicipio === '' &&
                     this.Filtros.tipoBusqueda === 0){
+                     console.log('no hubo filtros');
                 }else{
             this.borrarFiltros();
                 }
