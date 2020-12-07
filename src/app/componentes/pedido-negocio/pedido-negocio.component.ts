@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UtilsCls } from "../../utils/UtilsCls";
-import { AlertController, ModalController } from "@ionic/angular";
+import { AlertController, ModalController, Platform } from "@ionic/angular";
 import { icon, Map, Marker, marker, tileLayer } from "leaflet";
 import { Geolocation } from "@capacitor/core";
 import { NegocioService } from "../../api/negocio.service";
@@ -35,15 +35,21 @@ export class PedidoNegocioComponent implements OnInit {
   detalle:string;
   blnCosto: boolean;
   blnCostoLetra: boolean;
+  public subscribe;
+  public modal;
   constructor(
     private utilsCls: UtilsCls,
     private modalController: ModalController,
     private negocioService: NegocioService,
     private mesajes: ToadNotificacionService,
     public alertController: AlertController,
+    private platform: Platform
   ) {
     this.lat = 19.31905;
     this.lng = -98.19982;
+    this.subscribe = this.platform.backButton.subscribe(() => {
+      this.cerrarModal();
+    });
   }
 
   ngOnInit() {
@@ -84,6 +90,10 @@ export class PedidoNegocioComponent implements OnInit {
     this.modalController.dismiss({
       data: this.lista
     });
+  }
+
+  ionViewDidLeave() {
+    this.subscribe.unsubscribe();
   }
 
   eliminar(index) {
