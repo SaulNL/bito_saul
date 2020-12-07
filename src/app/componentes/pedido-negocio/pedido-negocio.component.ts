@@ -127,13 +127,12 @@ export class PedidoNegocioComponent implements OnInit {
   public realizarPedido() {
     const pedido = {
       direccion: this.estasUbicacion,
-      idNegocio: this.lista[0].idNegocio,
+      idNegocio:  this.lista[0].idNegocio,
       idPersona: this.utilsCls.getIdPersona(),
       idTipoPedido: this.tipoEnvio,
       latitud: this.lat,
       longitud: this.lng,
       pedido: this.lista
-      //detalle: this.detalle
     };
     this.negocioService.registrarPedido(pedido).subscribe(
       res => {
