@@ -7,7 +7,7 @@ import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from "@angular/router";
 import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-negocios.component';
-import {SideBarService} from "../../api/busqueda/side-bar-service";
+import { SideBarService } from "../../api/busqueda/side-bar-service";
 
 
 
@@ -29,7 +29,7 @@ export class InicioPage implements OnInit {
     strBuscar: any;
     private seleccionado: any;
     loader: any;
-    listaIdsMapa : any;
+    listaIdsMapa: any;
     filtroActivo: boolean;
     constructor(
         public loadingController: LoadingController,
@@ -57,15 +57,42 @@ export class InicioPage implements OnInit {
     ionViewWillEnter() {
 
         let categoria = localStorage.getItem('seleccionado');
-        if (categoria !== null){
+        if (this.filtroActivo === false) {
+            localStorage.setItem('resetFiltro', '0');
+        }
+        let estatusFiltro = localStorage.getItem('resetFiltro');
+        if (categoria !== null) {
+            console.log(categoria);
             this.filtroActivo = true;
             const dato = JSON.parse(categoria);
+            localStorage.setItem('resetFiltro', '1');
+            estatusFiltro = localStorage.getItem('resetFiltro');
             console.log("buscando por categoria")
             this.Filtros = new FiltrosModel();
             this.Filtros.idGiro = [dato.idGiro];
             this.Filtros.idCategoriaNegocio = [dato.id_categoria];
             this.buscarNegocios();
             localStorage.removeItem('seleccionado');
+        }
+        if (categoria === null && estatusFiltro === '0'){
+                if( this.Filtros.abierto === null &&
+                    this.Filtros.blnEntrega === null &&
+                    this.Filtros.idEstado === 29 &&
+                    this.Filtros.idCategoriaNegocio === null &&
+                    this.Filtros.idGiro === null &&
+                    this.Filtros.idLocalidad === null &&
+                    this.Filtros.idMunicipio === null &&
+                    this.Filtros.idTipoNegocio === null &&
+                    this.Filtros.intEstado === 0 &&
+                    this.Filtros.kilometros === 10 &&
+                    this.Filtros.latitud === 0 &&
+                    this.Filtros.longitud === 0  &&
+                    this.Filtros.strBuscar === '' &&
+                    this.Filtros.strMunicipio === '' &&
+                    this.Filtros.tipoBusqueda === 0){
+                }else{
+            this.borrarFiltros();
+                }
         }
     }
     buscarNegocios() {
@@ -94,13 +121,13 @@ export class InicioPage implements OnInit {
     }
 
     buscarToolbar(event) {
-        this.Filtros=new FiltrosModel();
+        this.Filtros = new FiltrosModel();
         this.Filtros.strBuscar = event;
         this.buscarNegocios();
     }
 
     abrirFiltros() {
-        this.presentModal();    
+        this.presentModal();
     }
 
     async presentModal() {
@@ -110,9 +137,9 @@ export class InicioPage implements OnInit {
                 'dismissed': true
             });
             this.filtroActivo = true;
-            this.Filtros = res;            
+            this.Filtros = res;
             this.buscarNegocios();
-        });        
+        });
         this.modal = await this.modalController.create({
             component: FiltrosBusquedaComponent,
             componentProps: {
@@ -132,7 +159,7 @@ export class InicioPage implements OnInit {
     }
 
     async abrirModalMapa() {
-      //  let listaIds = [68, 95, 116, 52, 155, 20, 142];
+        //  let listaIds = [68, 95, 116, 52, 155, 20, 142];
         const modal = await this.modalController.create({
             component: MapaNegociosComponent,
             componentProps: {
