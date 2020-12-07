@@ -35,7 +35,7 @@
           <label class="existencia" *ngIf="!unoProducto.existencia">Sin existencia</label>
     </ion-card-content>
     <ion-card-content *ngIf="!existeSesion" class="ion-text-center">
-      Inicia sesión para poder ver la información de este negocio
+      Inicia sesión para poder ir a la información de este negocio
       <ion-button expand="block" (click)="login()"> Iniciar Sesión</ion-button>
   </ion-card-content>
     <label *ngIf="existeSesion" class="negocio">
