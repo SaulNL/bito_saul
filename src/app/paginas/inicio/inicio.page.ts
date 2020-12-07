@@ -59,6 +59,7 @@ export class InicioPage implements OnInit {
 
         let categoria = localStorage.getItem('seleccionado');
         if (this.filtroActivo === false) {
+            console.log('entro aqui ');
             localStorage.setItem('resetFiltro', '0');
         }
         let estatusFiltro = localStorage.getItem('resetFiltro');
@@ -68,14 +69,12 @@ export class InicioPage implements OnInit {
             const dato = JSON.parse(categoria);
             localStorage.setItem('resetFiltro', '1');
             estatusFiltro = localStorage.getItem('resetFiltro');
-            console.log("buscando por categoria")
             this.Filtros = new FiltrosModel();
             this.Filtros.idGiro = [dato.idGiro];
             this.Filtros.idCategoriaNegocio = [dato.id_categoria];
             this.buscarNegocios();
             localStorage.removeItem('seleccionado');
         }
-        console.log(this.Filtros);
         if (categoria === null &&
             estatusFiltro === '0'){
                 if( this.Filtros.abierto === null &&

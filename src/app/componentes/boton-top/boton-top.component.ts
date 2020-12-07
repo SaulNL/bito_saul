@@ -12,10 +12,10 @@ export class BotonTopComponent implements OnInit {
   @Input() cordenada: number;
   constructor() {}
 
-  ngOnInit() {     
+  ngOnInit() {
   }
 
   scrollToTop() {
-    this.content.scrollToTop();
+    this.content.scrollToTop(500);
   }
 }
