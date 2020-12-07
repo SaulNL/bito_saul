@@ -34,13 +34,18 @@
           <label class="existencia" *ngIf="unoProducto.existencia">Aún en existencia</label>
           <label class="existencia" *ngIf="!unoProducto.existencia">Sin existencia</label>
     </ion-card-content>
-    <label class="negocio">
+    <ion-card-content *ngIf="!existeSesion" class="ion-text-center">
+      Inicia sesión para poder ver la información de este negocio
+      <ion-button expand="block" (click)="login()"> Iniciar Sesión</ion-button>
+  </ion-card-content>
+    <label *ngIf="existeSesion" class="negocio">
       <p>Vendido por</p>
+      <ion-icon class="iconoss" slot="end" name="open-outline"></ion-icon>
     </label>
     <hr>
-    <ion-item (click)="verMas(unoProducto)">
-      {{unoProducto.negocio.nombre}}
-      <ion-icon class="blanco" slot="end" name="open-outline"></ion-icon>
+    <ion-item *ngIf="existeSesion" (click)="verMas(unoProducto)">
+      <label>{{unoProducto.negocio.nombre}}  </label>
+      <ion-icon slot="end" class="blanco" name="storefront-outline"></ion-icon> 
     </ion-item>
   </ion-card>
 </ion-content>

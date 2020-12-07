@@ -48,6 +48,7 @@ export class ProductosPage {
   filtroActivo: any;
   public unoProducto: ProductoModel;
   public todosProducto: any;
+  public existeSesion: boolean;
 
   constructor(
     public loadingController: LoadingController,
@@ -62,6 +63,7 @@ export class ProductosPage {
     private util: UtilsCls
   ) {
     this.user = this.util.getUserData();
+    this.existeSesion = util.existe_sesion();
   }
 
   ngOnInit(): void {
@@ -93,6 +95,7 @@ export class ProductosPage {
         }
       }
     });
+    this.existeSesion = this.util.existe_sesion();
   }
   /**
    * Funcion para obtener promociones
@@ -361,7 +364,8 @@ export class ProductosPage {
       leaveAnimation,
       swipeToClose: true,
       componentProps: {
-        unoProducto: this.unoProducto
+        unoProducto: this.unoProducto,
+        existeSesion: this.existeSesion
       },
     });
     return await modal.present();
