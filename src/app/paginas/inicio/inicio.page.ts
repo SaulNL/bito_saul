@@ -62,12 +62,10 @@ export class InicioPage implements OnInit {
         }
         let estatusFiltro = localStorage.getItem('resetFiltro');
         if (categoria !== null) {
-            console.log(categoria);
             this.filtroActivo = true;
             const dato = JSON.parse(categoria);
             localStorage.setItem('resetFiltro', '1');
             estatusFiltro = localStorage.getItem('resetFiltro');
-            console.log("buscando por categoria")
             this.Filtros = new FiltrosModel();
             this.Filtros.idGiro = [dato.idGiro];
             this.Filtros.idCategoriaNegocio = [dato.id_categoria];
