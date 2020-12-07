@@ -16,6 +16,7 @@ export class BotonTopComponent implements OnInit {
   }
 
   scrollToTop() {
-    this.content.scrollToTop(500);
+    this.content.scrollToTop(600);
+  
   }
 }
