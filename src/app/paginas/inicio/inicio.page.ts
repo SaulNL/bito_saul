@@ -58,15 +58,44 @@ export class InicioPage implements OnInit {
     ionViewWillEnter() {
 
         let categoria = localStorage.getItem('seleccionado');
-        if (categoria !== null){
+        if (this.filtroActivo === false) {
+            console.log('entro aqui ');
+            localStorage.setItem('resetFiltro', '0');
+        }
+        let estatusFiltro = localStorage.getItem('resetFiltro');
+        if (categoria !== null) {
+            console.log(categoria);
             this.filtroActivo = true;
             const dato = JSON.parse(categoria);
-            // console.log("buscando por categoria")
+            localStorage.setItem('resetFiltro', '1');
+            estatusFiltro = localStorage.getItem('resetFiltro');
             this.Filtros = new FiltrosModel();
             this.Filtros.idGiro = [dato.idGiro];
             this.Filtros.idCategoriaNegocio = [dato.id_categoria];
             this.buscarNegocios();
             localStorage.removeItem('seleccionado');
+        }
+        if (categoria === null &&
+            estatusFiltro === '0'){
+                if( this.Filtros.abierto === null &&
+                    this.Filtros.blnEntrega === null &&
+                    this.Filtros.idEstado === 29 &&
+                    this.Filtros.idCategoriaNegocio === null &&
+                    this.Filtros.idGiro === null &&
+                    this.Filtros.idLocalidad === null &&
+                    this.Filtros.idMunicipio === null &&
+                    this.Filtros.idTipoNegocio === null &&
+                    this.Filtros.intEstado === 0 &&
+                    this.Filtros.kilometros === 10 &&
+                    this.Filtros.latitud === 0 &&
+                    this.Filtros.longitud === 0  &&
+                    this.Filtros.strBuscar === '' &&
+                    this.Filtros.strMunicipio === '' &&
+                    this.Filtros.tipoBusqueda === 0){
+                     console.log('no hubo filtros');
+                }else{
+            this.borrarFiltros();
+                }
         }
     }
     buscarNegocios() {

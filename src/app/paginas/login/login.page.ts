@@ -75,5 +75,7 @@ export class LoginPage implements OnInit {
         });
         await modal.present();
     }
-
+    public back(){
+        this.location.back();
+    }
 }
