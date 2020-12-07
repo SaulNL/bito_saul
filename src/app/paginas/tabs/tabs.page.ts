@@ -40,19 +40,23 @@ export class TabsPage implements OnInit{
     inicio() {
         this.router.navigate(['/tabs/inicio']);
         this.inicioPage.buscarNegocios()
+        localStorage.setItem('resetFiltro', '0');
     }
 
     promociones() {
         this.router.navigate(['/tabs/promociones']);
+        localStorage.setItem('resetFiltro', '0');
         
     }
 
     productos() {
          this.router.navigate(['/tabs/productos']);
+         localStorage.setItem('resetFiltro', '0');
          
     }
     perfil(){        
         sessionStorage.setItem('isRedirected', 'false');
+        localStorage.setItem('resetFiltro', '0');
         console.log(sessionStorage.getItem('isRedirected'));
         this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
     }
