@@ -73,6 +73,10 @@ export class PedidoNegocioComponent implements OnInit {
         iconAnchor: [13, 41],
       });
       this.marker = marker([lat, lng], { icon: myIcon, draggable: true }).addTo(this.map);
+      this.marker.on("dragend", () =>{
+        console.log(this.marker.getLatLng());     
+        this.getLatLong({latlng: this.marker.getLatLng()});
+      });
     }, 500);
   }
 
