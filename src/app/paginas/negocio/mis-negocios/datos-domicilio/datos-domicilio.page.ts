@@ -206,7 +206,7 @@ export class DatosDomicilioPage implements OnInit {
     this.negocioTO.det_domicilio.latitud = latitude;
     let longitude = e.latlng.lng;
     this.negocioTO.det_domicilio.longitud = longitude;
-    this.map.setView([latitude, longitude], 12);
+    this.map.panTo([latitude, longitude]);
     this.marker.setLatLng([latitude, longitude]);
 
   }
@@ -222,7 +222,7 @@ export class DatosDomicilioPage implements OnInit {
         latitude = res.coords.latitude;
         this.negocioTO.det_domicilio.longitud = res.coords.longitude;
         longitude = res.coords.longitude;
-        this.map.setView([latitude, longitude], 12);
+        this.map.panTo([latitude, longitude]);
         this.marker.setLatLng([latitude, longitude]);
       } else {
         latitude = this.negocioTO.det_domicilio.latitud;

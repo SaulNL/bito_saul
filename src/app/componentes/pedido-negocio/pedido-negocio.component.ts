@@ -32,7 +32,7 @@ export class PedidoNegocioComponent implements OnInit {
   sumaTotal: number;
   cantidad: number;
   costoEntrega: number;
-  //detalle:string;
+  detalle:string;
   blnCosto: boolean;
   blnCostoLetra: boolean;
   constructor(
@@ -72,7 +72,7 @@ export class PedidoNegocioComponent implements OnInit {
         iconSize: [45, 41],
         iconAnchor: [13, 41],
       });
-      this.marker = marker([lat, lng], { icon: myIcon }).addTo(this.map);
+      this.marker = marker([lat, lng], { icon: myIcon, draggable: true }).addTo(this.map);
     }, 500);
   }
 
@@ -132,7 +132,8 @@ export class PedidoNegocioComponent implements OnInit {
       idTipoPedido: this.tipoEnvio,
       latitud: this.lat,
       longitud: this.lng,
-      pedido: this.lista
+      pedido: this.lista,
+      detalle: this.detalle
     };
     this.negocioService.registrarPedido(pedido).subscribe(
       res => {
@@ -183,7 +184,7 @@ export class PedidoNegocioComponent implements OnInit {
         this.lat = res.coords.latitude;
         //   this.actualTO.det_domicilio.longitud = res.coords.longitude;
         this.lng = res.coords.longitude;
-        this.map.setView([this.lat, this.lng], 14);
+        this.map.panTo([this.lat, this.lng]);
         this.marker.setLatLng([this.lat, this.lng]);
         this.geocodeLatLng();
       }
@@ -195,7 +196,7 @@ export class PedidoNegocioComponent implements OnInit {
   getLatLong(e) {
     this.lat = e.latlng.lat;
     this.lng = e.latlng.lng;
-    this.map.setView([this.lat, this.lng], 14);
+    this.map.panTo([this.lat, this.lng]);
     this.marker.setLatLng([this.lat, this.lng]);
     this.geocodeLatLng();
   }

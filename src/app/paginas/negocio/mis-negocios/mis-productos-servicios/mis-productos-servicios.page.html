@@ -126,10 +126,10 @@
           <small style="text-align: justify;">Los productos que no cuenten con una imagen no se mostrará en la busqueda de productos y servicios</small>
         </div>
   
-        <ion-card *ngFor="let item of listaVista; index as idxCat">
-          <ion-card-content *ngIf="!loader">
+        <ion-card *ngFor="let item of listaVista; index as idxCat" >
+          <ion-card-content *ngIf="!loader" >
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div style="width: 50%;">
+              <div style="width: 50%;" (click)="mostrarProductos(item)" >
                 <h3 style="color: black;">{{item.nombre}} - {{item.activo ? 'VISIBLE' : 'OCULTO'}}</h3>
               </div>
               <div style="display: flex; justify-content: flex-end; align-items: center;">

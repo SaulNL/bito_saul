@@ -202,10 +202,12 @@
         <ion-grid *ngIf="seccion === 'productos'">
             <ion-row
                 *ngIf="informacionNegocio.tagsProductos !== undefined && informacionNegocio.tagsProductos.length > 0">
+                <!-- <ion-col> <ion-text style="font-size: 0.8em">Etiuetas: </ion-text> </ion-col> -->
                 <ion-col>
                     <div id="abcedario" class="scrolling-wrapper-flexbox">
-                        <div class="item" *ngFor="let item of informacionNegocio.tagsProductos">
-                            <ion-chip>
+                        <div class="item" *ngFor="let item of informacionNegocio.tagsProductos; let i = index;">
+                            <ion-text style="font-size: 0.8em" *ngIf="i === 0">Etiuetas: </ion-text>
+                            <ion-chip style="pointer-events: none;">
                                 <ion-label style="font-size: 0.8em">{{item}}</ion-label>
                             </ion-chip>
                         </div>
@@ -252,10 +254,11 @@
         <ion-grid *ngIf="seccion === 'servicios'">
             <ion-row
                 *ngIf="informacionNegocio.tagsServicios !== undefined && informacionNegocio.tagsServicios.length > 0">
+                <ion-col> <ion-text>Etiuetas: </ion-text> </ion-col>
                 <ion-col>
                     <div id="abcedario" class="scrolling-wrapper-flexbox">
                         <div *ngFor="let item of informacionNegocio.tagsServicios">
-                            <ion-chip>
+                            <ion-chip style="pointer-events: none;">
                                 <ion-label style="font-size: 0.8em">{{item}}</ion-label>
                             </ion-chip>
                         </div>
