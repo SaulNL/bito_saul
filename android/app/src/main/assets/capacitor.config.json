@@ -6,13 +6,14 @@
   "webDir": "www",
   "plugins": {
     "SplashScreen": {
-      "launchShowDuration": 0
+      "launchShowDuration": 3000
     }
   },
-  "server": {
-    "hostname": "app-bitoo.com.mx",
-    "iosScheme": "ionic",
-    "androidScheme": "https",
-    "allowNavigation": ["https://bitoo-back.azurewebsites.net/", "*.https://bitoo-back.azurewebsites.net/"]
-  }
+  "cordova": {},
+   "server": {
+      "hostname": "app-bitoo.com.mx",
+      "iosScheme": "ionic",
+      "androidScheme": "https",
+      "allowNavigation": ["https://bitoo-back.azurewebsites.net/", "*.https://bitoo-back.azurewebsites.net/"]
+     }
 }

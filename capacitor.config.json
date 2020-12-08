@@ -4,13 +4,14 @@
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
+
   "plugins": {
     "SplashScreen": {
-      "launchShowDuration": 0
+      "launchShowDuration": 3000
     }
   },
   "cordova": {},
-  "server": {
+"server": {
     "hostname": "localhost:8100",
     "iosScheme": "ionic",
     "androidScheme": "http",

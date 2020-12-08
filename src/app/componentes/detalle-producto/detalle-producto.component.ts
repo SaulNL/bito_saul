@@ -15,8 +15,9 @@ import {UtilsCls} from "../../utils/UtilsCls";
 export class DetalleProductoComponent implements OnInit {
 
     @Input() public _entregaDomicilio: any;
-    @Input() public _entregaSitio: boolean;
-    @Input() public _consumoSitio: boolean;
+    @Input() public _entregaSitio: any;
+    @Input() public _consumoSitio: any;
+    @Input() public _abierto: any;
     @Input() datos: any;
     @Output() llenarLista: EventEmitter<any> = new EventEmitter();
     public subscribe;
@@ -53,7 +54,7 @@ export class DetalleProductoComponent implements OnInit {
     }
 
     get mostrarComponente() {
-        return (this._entregaDomicilio === 1 || this._entregaSitio === true || this._consumoSitio === true) && this.utilsCls.existe_sesion() && parseInt(this.datos.precio) > 0;
+        return (this._entregaDomicilio === 1 || this._entregaSitio === 1 || this._consumoSitio === 1) && this.utilsCls.existe_sesion() && parseInt(this.datos.precio) > 0 && this._abierto;
     }
 
     agragarproducto() {

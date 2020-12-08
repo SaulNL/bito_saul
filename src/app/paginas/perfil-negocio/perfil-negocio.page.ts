@@ -327,7 +327,8 @@ export class PerfilNegocioPage implements OnInit {
                 _entregaDomicilio: this.informacionNegocio.entrega_domicilio,
                 _entregaSitio: this.informacionNegocio.entrega_sitio,
                 _consumoSitio: this.informacionNegocio.consumo_sitio,
-                _costoEntrega: this.informacionNegocio.costo_entrega
+                _costoEntrega: this.informacionNegocio.costo_entrega,
+                _abierto: this.informacionNegocio.abierto === 'ABIERTO'
             }
         });
         await modal.present()
@@ -347,7 +348,7 @@ export class PerfilNegocioPage implements OnInit {
                 _entregaDomicilio: this.informacionNegocio.entrega_domicilio,
                 _entregaSitio: this.informacionNegocio.entrega_sitio,
                 _consumoSitio: this.informacionNegocio.consumo_sitio,
-                _costoEntrega: this.informacionNegocio.costo_entrega
+                _costoEntrega: this.informacionNegocio.costo_entrega,
             }
         });
         await modal.present()
@@ -614,6 +615,6 @@ export class PerfilNegocioPage implements OnInit {
 
     mostrarBoton(precio) {
         console.log(this.informacionNegocio);
-        return (this.informacionNegocio.entrega_domicilio === 1 || this.informacionNegocio.entrega_sitio === 1 || this.informacionNegocio.consumo_sitio === 1 && parseInt(precio) > 0); // && parseInt(precio) > 0
+        return (this.informacionNegocio.entrega_domicilio === 1 || this.informacionNegocio.entrega_sitio === 1 || this.informacionNegocio.consumo_sitio === 1 ) && parseInt(precio) > 0 && this.informacionNegocio.abierto === 'ABIERTO'; // && parseInt(precio) > 0
     }
 }
