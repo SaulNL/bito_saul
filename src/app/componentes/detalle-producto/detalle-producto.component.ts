@@ -54,7 +54,7 @@ export class DetalleProductoComponent implements OnInit {
     }
 
     get mostrarComponente() {
-        return (this._entregaDomicilio === 1 || this._entregaSitio === 1 || this._consumoSitio === 1) && this.utilsCls.existe_sesion() && parseInt(this.datos.precio) > 0 && this._abierto;
+        return (this._entregaDomicilio === 1 || this._entregaSitio === 1 || this._consumoSitio === 1) && this.utilsCls.existe_sesion() && parseInt(this.datos.precio) > 0 && this._abierto === 'ABIERTO';
     }
 
     agragarproducto() {

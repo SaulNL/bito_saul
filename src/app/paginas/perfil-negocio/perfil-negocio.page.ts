@@ -328,7 +328,7 @@ export class PerfilNegocioPage implements OnInit {
                 _entregaSitio: this.informacionNegocio.entrega_sitio,
                 _consumoSitio: this.informacionNegocio.consumo_sitio,
                 _costoEntrega: this.informacionNegocio.costo_entrega,
-                _abierto: this.informacionNegocio.abierto === 'ABIERTO'
+                _abierto: this.informacionNegocio.abierto
             }
         });
         await modal.present()
