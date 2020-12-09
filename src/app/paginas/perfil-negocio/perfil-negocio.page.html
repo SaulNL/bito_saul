@@ -113,8 +113,8 @@
         <ion-grid>
             <ion-row>
                 <ion-col size=12> 
-                    <div (click)="motrarContacto = !motrarContacto;">
-                        <div style="background: white; border-radius: 1em 1em 0em 0em;" class="ion-text-center">
+                    <div>
+                        <div (click)="mostrarOcultar()" style="background: white; border-radius: 1em 1em 0em 0em;" class="ion-text-center">
                             <ion-chip *ngIf="estatus.tipo === 1" color="success">
                                 <ion-label>Abierto</ion-label>
                             </ion-chip>
@@ -215,7 +215,7 @@
                 </ion-col>
             </ion-row>
             <ion-row *ngFor="let cat of informacionNegocio.catProductos">
-                <ion-item (click)="negocioSub = !negocioSub; nameSub = cat.nombre" class="w-100 bg-gris">
+                <ion-item (click)="mostrarProducto(cat.nombre)" class="w-100 bg-gris">
                     <h2>{{cat.nombre}}</h2> <ion-icon slot="end" [name]="negocioSub? 'caret-forward-outline' : 'caret-down-outline'"></ion-icon>
                 </ion-item>
                 <ng-container *ngIf="!negocioSub &&  nameSub === cat.nombre">
@@ -236,7 +236,7 @@
                             </ion-card-content>
                         </div>
                         <div *ngIf="mostrarBoton(producto.precio)">
-                            <ion-fab class="bolsita agregarBolda" (click)="agregarBolsaDeta(producto)" >
+                            <ion-fab class="bolsita agregarBolda" (click)="agregarBolsaDeta(producto)">
                                 <ion-fab-button class="bosar">
                                     <ion-icon name="bag-add-outline"></ion-icon>
                                 </ion-fab-button>
@@ -257,8 +257,6 @@
                         </ion-card>
                     </ion-col>
                 </ng-container> 
-                
-                    
             </ion-row>
         </ion-grid>
 
@@ -278,7 +276,7 @@
                 </ion-col>
             </ion-row>
             <ion-row *ngFor="let cat of informacionNegocio.catServicos">
-                <ion-item (click)="servicioSub = !servicioSub; namelesSub = cat.nombre" class="w-100 bg-gris">
+                <ion-item (click)="mostrarServicio(cat.nombre)" class="w-100 bg-gris">
                     <h2>{{cat.nombre}}</h2> <ion-icon slot="end" [name]="servicioSub? 'caret-forward-outline' : 'caret-down-outline'"></ion-icon>
                 </ion-item>
                 <ng-container *ngIf="!servicioSub &&  namelesSub === cat.nombre">
