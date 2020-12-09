@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { PedidosService } from '../../../../api/pedidos.service';
 import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
 
@@ -18,7 +19,8 @@ export class DatosPedidoDialogPage implements OnInit {
     private pedidosServicios: PedidosService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private notificaciones: ToadNotificacionService
+    private notificaciones: ToadNotificacionService,
+    public alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -55,4 +57,20 @@ export class DatosPedidoDialogPage implements OnInit {
       });
   }
 
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Información',
+      message: 'para cancelar este pedido, es necesario escribir el motivo de la cancelación',
+      buttons: ['Cerrar']
+    });
+    await alert.present();
+ }
+  validarMotivoCancelacion(pedido: any){
+    if (this.motivo) {
+      this.cancelarPedido(pedido);
+  }else{
+    this.presentAlert();
+  }
+}
 }

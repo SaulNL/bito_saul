@@ -68,27 +68,21 @@
     </ion-item>
 
     <div *ngIf="!blnCancelar">
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="cancelar()"  [disabled]="loaderBtn" color="light">Cancelar mi pedido</ion-button>
-      <!-- <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 4">
-        <ion-icon name="checkmark-circle-outline" [style]="{'color': pedido.color}"></ion-icon><span> Tu pedido te fue entregado</span>
-      </div> -->
+      <ion-button  expand="block" *ngIf="pedido.id_estatus_pedido < 4" (click)="cancelar()" color="medium">Cancelar mi pedido</ion-button>
       <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 5 || pedido.id_estatus_pedido === 6">
-        <ion-icon name="ban-outline" style="color: darkred"></ion-icon><span> {{pedido.estatus}}</span>
+        <ion-icon name="ban-outline" style="color: darkred; font-size: 12px;"></ion-icon><span style=" font-size: 12px;"> {{pedido.estatus}}</span>
         <small class="d-block">{{pedido.motivo}}</small>
       </div>
     </div>
     <div *ngIf="blnCancelar">
-      <ion-item>
-        <ion-label position="floating">Motivo de la cancelación</ion-label>
+      <ion-item class="ion-margin-bottom">
+        <ion-label  position="stacked">Motivo de la cancelación</ion-label>
         <ion-textarea type="text" [(ngModel)]="motivo"></ion-textarea>
-        <ion-icon *ngIf="motivo" (click)="motivo=''" name="close-outline" slot="end"></ion-icon>
       </ion-item>
-      <div align="end">
-        <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="btnRegresar()" color="light">Regresar
+        <ion-button  expand="block" *ngIf="pedido.id_estatus_pedido < 4" (click)="btnRegresar()" color="medium">Regresar
         </ion-button>
-        <ion-button expand="full" [disabled]="!motivo || loaderBtn" (click)="cancelarPedido(pedido)" color="danger"> Cancelar pedido
+        <ion-button  expand="block" (click)="validarMotivoCancelacion(pedido);" color="danger"> Cancelar pedido
         </ion-button>
       </div>
-    </div>
   </ion-card>
 </ion-content>
