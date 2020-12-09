@@ -63,12 +63,13 @@ export class PerfilNegocioPage implements OnInit {
     { id: 7, dia: "Domingo", horarios: [], hi: null, hf: null },
   ];
   private detalle: any;
-  public bolsa: Array<any>;
+  public bolsa: any;
   public negocioSub = true;
   public nameSub;
   public servicioSub = true;
   public namelesSub;
   public cantidadBolda;
+  suma: number;
   constructor(
     private navctrl: NavController,
     private route: ActivatedRoute,
@@ -722,6 +723,13 @@ export class PerfilNegocioPage implements OnInit {
       this.namelesSub = nombreCat;
       this.banderaS = nombreCat;
     }
-    
+  }
+  eliminar(inde) {
+    for (let index = 0; index < this.bolsa.length; index++) {
+      const element = this.bolsa[index];
+      if (element.idProducto===inde.idProducto) {
+        this.bolsa.splice(index, 1);
+      }
+    }
   }
 }

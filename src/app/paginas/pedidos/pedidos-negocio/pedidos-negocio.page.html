@@ -32,15 +32,17 @@
       <ion-label>
         <h2 class="text-center"> No se encontraron pedidos</h2>
       </ion-label>
-    </ion-item>  
-    <ion-list *ngFor="let negocio of listaNegocioPedididos">
-      <ion-item >
+    </ion-item>
+  </ion-card>
+  <ion-card *ngFor="let negocio of listaNegocioPedididos">
+    <ion-list >
+      <ion-item lines="none">
         <ion-avatar>
           <ion-img [src]="negocio.url_logo"></ion-img>
         </ion-avatar>
         <ion-label>{{negocio.nombre_comercial}}</ion-label>
       </ion-item>
-      <ion-item *ngFor="let pedido of negocio.pedidos" (click)="datosPedido(pedido)">
+      <ion-item style="margin: 15px; border-bottom: 1px solid gray;" lines="none" *ngFor="let pedido of negocio.pedidos" (click)="datosPedido(pedido)">
         <ion-grid>
           <ion-row>
             <ion-col class="ion-text-start">

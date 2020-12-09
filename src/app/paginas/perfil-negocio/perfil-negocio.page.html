@@ -216,7 +216,7 @@
             </ion-row>
             <ion-row *ngFor="let cat of informacionNegocio.catProductos">
                 <ion-item (click)="mostrarProducto(cat.nombre)" class="w-100 bg-gris">
-                    <h2>{{cat.nombre}}</h2> <ion-icon slot="end" [name]="negocioSub? 'caret-forward-outline' : 'caret-down-outline'"></ion-icon>
+                    <h2>{{cat.nombre}}</h2> <ion-icon slot="end" [name]="negocioSub?'caret-forward-outline' : 'caret-down-outline'"></ion-icon>
                 </ion-item>
                 <ng-container *ngIf="!negocioSub &&  nameSub === cat.nombre">
                     <ion-col size="6" *ngFor="let producto of cat.productos">
@@ -250,7 +250,11 @@
                             <span class="ion-text-center" class="arriba">
                                 {{ item.cantidad }}
                             </span>
-                            <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.cantidad, i , 1)"  style="margin: 4px; background: #bbbbbb;" name="add-outline"></ion-icon>
+                            <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.cantidad, i , 1)"  style="margin: 4px; background: #bbbbbb;" name="add-outline"></ion-icon>                            
+                            <ion-icon class="ion-text-center" style="margin: 4px;
+                            background: #bbbbbb;
+                            position: relative;
+                            bottom: 14px;" name="close-outline" (click)="eliminar(item)"></ion-icon>
                         </div>
                         </div>
                       </div>
