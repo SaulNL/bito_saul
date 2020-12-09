@@ -191,7 +191,6 @@ export class PerfilNegocioPage implements OnInit {
                 }
               });
               this.informacionNegocio.catProductos = cats;
-              console.log(this.informacionNegocio);
             }
           }
           if (response.code === 200) {
