@@ -38,7 +38,7 @@
         <ion-label>{{negocio.nombre_comercial}}</ion-label>
         <!-- duda con el celular porque aquí va el telefóno según el código -->
       </ion-item>
-      <ion-item style="margin: 15px; border-top: 1px solid gray; border-bottom: 1px solid gray;" lines="none" *ngFor="let pedido of negocio.pedidos" (click)="datosPedido(pedido)">
+      <ion-item style="margin: 15px; border-bottom: 1px solid gray;" lines="none" *ngFor="let pedido of negocio.pedidos" (click)="datosPedido(pedido)">
         <ion-grid>
           <ion-row>
             <ion-col class="ion-text-start">
