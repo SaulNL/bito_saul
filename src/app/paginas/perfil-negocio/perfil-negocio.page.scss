@@ -124,10 +124,19 @@ ul li {
 }
 ion-fab-button {--background: white;}
 
-ion-fab {
+.agregarBolda {
   z-index: 1;
 }
 
 .telefono{
   color: #a74eef;
+}
+
+.arriba{
+  position: relative;
+  top: -7px;
+}
+.alado{
+  position: relative;
+  left: 15px;
 }

@@ -58,12 +58,12 @@ export class PerfilNegocioPage implements OnInit {
         {id: 7, dia: 'Domingo', horarios: [], hi: null, hf: null},
     ];
     private detalle: any;
-    private bolsa: Array<any>;
+    public  bolsa: Array<any>;
     public negocioSub = true;
     public nameSub;
     public servicioSub = true;
     public namelesSub;
-
+    public cantidadBolda;
     constructor(
         private navctrl: NavController,
         private route: ActivatedRoute,
@@ -184,6 +184,8 @@ export class PerfilNegocioPage implements OnInit {
 
                         });
                         this.informacionNegocio.catProductos = cats;
+                        console.log(this.informacionNegocio);
+                        
 
                     }
                 }
@@ -226,6 +228,8 @@ export class PerfilNegocioPage implements OnInit {
 
                         });
                         this.informacionNegocio.catServicos = cats;
+                        console.log(this.informacionNegocio);
+                        
                     }
                 }
             },
@@ -523,7 +527,7 @@ export class PerfilNegocioPage implements OnInit {
         }
     }
 
-     private llenarBolsa(dato) {
+     public llenarBolsa(dato) {
         let existe = false;
         this.bolsa.map(it => {
             if (it.idProducto === dato.idProducto) {
@@ -615,6 +619,19 @@ export class PerfilNegocioPage implements OnInit {
 
     mostrarBoton(precio) {
         console.log(this.informacionNegocio);
+        
         return (this.informacionNegocio.entrega_domicilio === 1 || this.informacionNegocio.entrega_sitio === 1 || this.informacionNegocio.consumo_sitio === 1 ) && parseInt(precio) > 0 && this.informacionNegocio.abierto === 'ABIERTO'; // && parseInt(precio) > 0
     }
+    aumentarDismuir(cantidad: number, index: number, operacion: number) {
+        let valor = this.bolsa[index].cantidad;
+        if (operacion === 1 && cantidad >= 1) {
+          this.bolsa[index].cantidad = ++valor;
+        }
+        if (operacion === 2 && cantidad > 1) {
+          this.bolsa[index].cantidad = --valor;
+          
+        }
+        console.log(this.bolsa);
+        
+      }
 }
