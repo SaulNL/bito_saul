@@ -22,6 +22,7 @@ import { CalificarNegocioComponent } from "../../componentes/calificar-negocio/c
 import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveedor-servicio.service";
 import { DetalleProductoComponent } from "../../componentes/detalle-producto/detalle-producto.component";
 import { PedidoNegocioComponent } from "../../componentes/pedido-negocio/pedido-negocio.component";
+import { AuthGuardService } from "../../api/auth-guard.service";
 
 const { Share } = Plugins;
 const haversineCalculator = require("haversine-calculator");
@@ -70,6 +71,7 @@ export class PerfilNegocioPage implements OnInit {
   public namelesSub;
   public cantidadBolda;
   suma: number;
+  public ruta;
   constructor(
     private navctrl: NavController,
     private route: ActivatedRoute,
@@ -85,7 +87,8 @@ export class PerfilNegocioPage implements OnInit {
     private serviceProveedores: ProveedorServicioService,
     public alertController: AlertController,
     private router: Router,
-    private platform: Platform
+    private platform: Platform,
+    private blockk: AuthGuardService
   ) {
     this.seccion = "ubicacion";
     this.loader = true;
@@ -108,6 +111,17 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params.cancel && params){
+        let all = JSON.parse(JSON.stringify(params));
+        let objeto = JSON.parse(all.cancel);
+        this.ruta = objeto.ruta;
+        if (objeto.cancel){
+          this.mensajeRuta();
+        }
+      }
+    });
+
     this.sideBarService.getObservable().subscribe((data) => {
       this.existeSesion = this.util.existe_sesion();
     });
@@ -233,7 +247,7 @@ export class PerfilNegocioPage implements OnInit {
                 }
               });
               this.informacionNegocio.catServicos = cats;
-              console.log(this.informacionNegocio);
+              //console.log(this.informacionNegocio);
             }
           }
         },
@@ -588,13 +602,14 @@ export class PerfilNegocioPage implements OnInit {
     if (!existe) {
       this.bolsa.push(dato);
     }
+    this.blockk.tf = false;
+    this.blockk.url = this.negocio;
   }
-
   salir() {
     if (this.bolsa.length > 0) {
       this.mensajeBolsa();
     } else {
-      this.navctrl.back();
+      this.router.navigate(['/tabs/inicio']);
       // this.subscribe.unsubscribe();
       // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
     }
@@ -602,6 +617,39 @@ export class PerfilNegocioPage implements OnInit {
 
   ionViewDidLeave() {
     this.subscribe.unsubscribe();
+  }
+  
+  async mensajeRuta() {
+    const alert = await this.alertController.create({
+      header: "Advertencia",
+      message:
+        "Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!",
+      buttons: [
+        {
+          text: "Cancelar",
+          handler: () => {
+            this.blockk.tf = false;
+            this.router.navigate(['/tabs/negocio/'+this.negocio]);
+          }
+        },
+        {
+          text: "Salir",
+          handler: () => {
+            this.blockk.tf = true;
+            this.bolsa = [];
+            if (this.ruta==="/tabs/home/perfil"){
+              this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
+            } else {
+              this.router.navigate([this.ruta]);
+            }
+            // this.subscribe.unsubscribe();
+            // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
+          }
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
   async mensajeBolsa() {
@@ -617,7 +665,8 @@ export class PerfilNegocioPage implements OnInit {
           text: "Salir",
           handler: () => {
             this.bolsa = [];
-            this.navctrl.back();
+            this.blockk.tf = true;
+            this.router.navigate(['/tabs/inicio']);
 
             // this.subscribe.unsubscribe();
             // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
@@ -730,6 +779,9 @@ export class PerfilNegocioPage implements OnInit {
       if (element.idProducto===inde.idProducto) {
         this.bolsa.splice(index, 1);
       }
+    }
+    if (Object.keys(this.bolsa).length === 0){
+      this.blockk.tf = true;
     }
   }
 }

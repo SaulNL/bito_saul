@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
+import { AuthGuardService } from "../../../api/auth-guard.service";
 import { DashboardPage } from './dashboard.page';
 
 const routes: Routes = [
@@ -10,7 +10,7 @@ const routes: Routes = [
     children: [
       {
         path: 'perfil',
-        loadChildren: () => import('../../ajustes/ajustes.module').then(m => m.AjustesPageModule)
+        loadChildren: () => import('../../ajustes/ajustes.module').then(m => m.AjustesPageModule) ,canActivate: [AuthGuardService]
       },
       {
         path: 'cat-variable',

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
+import { AuthGuardService } from "../../api/auth-guard.service";
 
 const routes: Routes = [
   {
@@ -9,19 +10,19 @@ const routes: Routes = [
     children: [
       {
         path: 'productos',
-        loadChildren: () => import('../productos/productos.module').then(m => m.Tab1PageModule)
+        loadChildren: () => import('../productos/productos.module').then(m => m.Tab1PageModule),canActivate: [AuthGuardService]
       },
       {
         path: 'promociones',
-        loadChildren: () => import('../promociones/promociones.module').then(m => m.Tab2PageModule)
+        loadChildren: () => import('../promociones/promociones.module').then(m => m.Tab2PageModule) ,canActivate: [AuthGuardService]
       },
       {
         path: 'inicio',
-        loadChildren: () => import('../inicio/inicio.module').then(m => m.Tab3PageModule)
+        loadChildren: () => import('../inicio/inicio.module').then(m => m.Tab3PageModule) ,canActivate: [AuthGuardService]
       },
       {
         path: 'categorias',
-        loadChildren: () => import('../categorias/categorias.module').then(m => m.CategoriasPageModule),
+        loadChildren: () => import('../categorias/categorias.module').then(m => m.CategoriasPageModule),canActivate: [AuthGuardService]
       },
       {
         path: 'negocio/:negocio',
