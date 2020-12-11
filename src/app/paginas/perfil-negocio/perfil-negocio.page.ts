@@ -72,6 +72,7 @@ export class PerfilNegocioPage implements OnInit {
   public cantidadBolda;
   suma: number;
   public ruta;
+  public contador: number;
   constructor(
     private navctrl: NavController,
     private route: ActivatedRoute,
@@ -95,13 +96,18 @@ export class PerfilNegocioPage implements OnInit {
     this.existeSesion = util.existe_sesion();
     this.estatusCalificacion = true;
     this.bolsa = [];
+    this.contador = 0;
     this.route.queryParams.subscribe((params) => {
       this.subscribe = this.platform.backButton.subscribe(() => {
         this.modal = this.modalController.getTop().then((dato) => {
           if (dato) {
             this.modal.dismiss();
           } else {
-            this.salir();
+            console.log(this.contador)
+            if (this.contador===0) {
+              this.contador = this.contador + 1;
+                  this.salir();
+            } 
           }
         });
       });
@@ -609,6 +615,7 @@ export class PerfilNegocioPage implements OnInit {
     if (this.bolsa.length > 0) {
       this.mensajeBolsa();
     } else {
+      this.blockk.tf = true;
       this.router.navigate(['/tabs/inicio']);
       // this.subscribe.unsubscribe();
       // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
@@ -653,6 +660,8 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   async mensajeBolsa() {
+    console.log("Esto entra aca");
+    
     const alert = await this.alertController.create({
       header: "Advertencia",
       message:
@@ -660,6 +669,10 @@ export class PerfilNegocioPage implements OnInit {
       buttons: [
         {
           text: "Cancelar",
+          handler: () => {
+            this.blockk.tf = false;
+            this.contador = 0;
+          }
         },
         {
           text: "Salir",

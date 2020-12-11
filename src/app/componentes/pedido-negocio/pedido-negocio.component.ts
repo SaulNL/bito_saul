@@ -5,6 +5,7 @@ import { icon, Map, Marker, marker, tileLayer } from "leaflet";
 import { Geolocation } from "@capacitor/core";
 import { NegocioService } from "../../api/negocio.service";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { AuthGuardService } from "../../api/auth-guard.service";
 
 declare var google: any;
 
@@ -43,7 +44,8 @@ export class PedidoNegocioComponent implements OnInit {
     private negocioService: NegocioService,
     private mesajes: ToadNotificacionService,
     public alertController: AlertController,
-    private platform: Platform
+    private platform: Platform,
+    private guard: AuthGuardService
   ) {
     this.lat = 19.31905;
     this.lng = -98.19982;
@@ -102,6 +104,7 @@ export class PedidoNegocioComponent implements OnInit {
     if (this.suma === 0) {
       this.lista = [];
       this.cerrarModal();
+        this.guard.tf = true;
     }
   }
 
@@ -284,6 +287,7 @@ export class PedidoNegocioComponent implements OnInit {
   }
   cancelarPedido() {
     this.lista = [];
+    this.guard.tf = true;
     this.cerrarModal();
   }
 }
