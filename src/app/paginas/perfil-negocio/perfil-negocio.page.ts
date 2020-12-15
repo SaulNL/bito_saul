@@ -73,6 +73,7 @@ export class PerfilNegocioPage implements OnInit {
   suma: number;
   public ruta;
   public contador: number;
+  public navegacion: any;
   constructor(
     private navctrl: NavController,
     private route: ActivatedRoute,
@@ -103,7 +104,6 @@ export class PerfilNegocioPage implements OnInit {
           if (dato) {
             this.modal.dismiss();
           } else {
-            console.log(this.contador)
             if (this.contador===0) {
               this.contador = this.contador + 1;
                   this.salir();
@@ -114,6 +114,7 @@ export class PerfilNegocioPage implements OnInit {
     });
     this.banderaS = null;
     this.banderaP = null;
+    this.navegacion = false;
   }
 
   ngOnInit() {
@@ -125,6 +126,11 @@ export class PerfilNegocioPage implements OnInit {
         if (objeto.cancel){
           this.mensajeRuta();
         }
+      }
+    });
+    this.route.queryParams.subscribe(params => {
+      if (params.route && params){
+        this.navegacion = true;
       }
     });
 
@@ -361,11 +367,14 @@ export class PerfilNegocioPage implements OnInit {
         _consumoSitio: this.informacionNegocio.consumo_sitio,
         _costoEntrega: this.informacionNegocio.costo_entrega,
         _abierto: this.informacionNegocio.abierto,
+        bolsa: this.bolsa
       },
     });
     await modal.present();
     await modal.onDidDismiss().then((r) => {
       if (r.data.data !== null) {
+        console.log(r);
+        
         this.llenarBolsa(r.data.data);
       }
     });
@@ -417,6 +426,7 @@ export class PerfilNegocioPage implements OnInit {
       this.informacionNegocio.numCalificaciones = data.numCalificaciones;
       this.informacionNegocio.promedio = data.promedio;
       this.obtenerEstatusCalificacion();
+      
     }
   }
 
@@ -601,7 +611,11 @@ export class PerfilNegocioPage implements OnInit {
     this.bolsa.map((it) => {
       if (it.idProducto === dato.idProducto) {
         existe = true;
-        it.cantidad++;
+        if (dato.cantidad>1){
+              it.cantidad=dato.cantidad;
+        } else{
+            it.cantidad++;
+        }
       }
     });
 
@@ -616,7 +630,13 @@ export class PerfilNegocioPage implements OnInit {
       this.mensajeBolsa();
     } else {
       this.blockk.tf = true;
-      this.router.navigate(['/tabs/inicio']);
+      if (this.navegacion){
+        this.location.back();
+        this.navegacion=false;
+      } else{
+        this.router.navigate(['/tabs/inicio']);
+      }
+      
       // this.subscribe.unsubscribe();
       // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
     }
@@ -679,7 +699,11 @@ export class PerfilNegocioPage implements OnInit {
           handler: () => {
             this.bolsa = [];
             this.blockk.tf = true;
-            this.router.navigate(['/tabs/inicio']);
+            if (this.navegacion) {
+              this.location.back();
+            } else{
+              this.router.navigate(['/tabs/inicio']);
+            }
 
             // this.subscribe.unsubscribe();
             // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });

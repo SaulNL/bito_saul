@@ -20,9 +20,11 @@ export class DetalleProductoComponent implements OnInit {
     @Input() public _abierto: any;
     @Input() datos: any;
     @Output() llenarLista: EventEmitter<any> = new EventEmitter();
+    @Input() bolsa: any;
     public subscribe;
     public modal;
     public existeSesion: boolean;
+    public cantidad : number;
 
     constructor(
         private utilsCls: UtilsCls,
@@ -33,14 +35,20 @@ export class DetalleProductoComponent implements OnInit {
         private router: Router,
     ) {
         this.existeSesion = utilsCls.existe_sesion();
-        console.log(this.datos);
         this.subscribe = this.platform.backButton.subscribe(() => {
             this.cerrarModal();
         });
+        this.cantidad = 1;
     }
 
     ngOnInit() {
-        console.log(this.datos)
+        if (this.bolsa.length > 0) {
+        this.bolsa.forEach(element => {
+            if (element.idProducto === this.datos.idProducto) {
+                       this.cantidad= element.cantidad;
+            }
+        });    
+        }
     }
 
     cerrarModal() {
@@ -57,13 +65,22 @@ export class DetalleProductoComponent implements OnInit {
         return (this._entregaDomicilio === 1 || this._entregaSitio === 1 || this._consumoSitio === 1) && this.utilsCls.existe_sesion() && parseInt(this.datos.precio) > 0 && this._abierto === 'ABIERTO';
     }
 
+    aumentar(){
+        this.cantidad = this.cantidad+1;
+    }
+    disminuir(){
+            if( this.cantidad > 1){
+                this.cantidad = this.cantidad-1;
+            } 
+    }
     agragarproducto() {
+        //console.log(this.cantidad);
         if (this.existeSesion) {
             const producto = {
                 idProducto: this.datos.idProducto,
                 precio: this.datos.precio,
                 imagen: this.datos.imagen,
-                cantidad: 1,
+                cantidad: this.cantidad,
                 idNegocio: this.datos.negocio.idNegocio,
                 nombre: this.datos.nombre,
                 descripcion: this.datos.descripcion

@@ -8,7 +8,7 @@ export class AppSettings {
     public static API_ENDPOINT = 'https://beta-bitoo-back.azurewebsites.net/';
     public static URL_REGISTRO = 'https://beta-bitoo.azurewebsites.net/registro';
     public static URL_FRONT = 'https://beta-bitoo.azurewebsites.net/';
-
+    public static URL_MOVIL = 'http://localhost:8100/tabs/negocio/';
     // public static API_ENDPOINT = 'http://127.0.0.1:8000/';
     // public static URL_REGISTRO = 'http://127.0.0.1:8000/registro';
     // public static URL_FRONT = 'https://127.0.0.1:4200/';

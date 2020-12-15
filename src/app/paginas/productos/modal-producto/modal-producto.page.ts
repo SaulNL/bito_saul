@@ -35,7 +35,8 @@ export class ModalProductoPage implements OnInit {
   verMas(producto: ProductoModel){
     this.negocioServico.buscarNegocio(producto.negocio.idNegocio).subscribe(
         (response) => {
-          this.router.navigate(['/tabs/negocio/' + response.data.url_negocio]);
+          this.router.navigate(['/tabs/negocio/' + response.data.url_negocio], {
+            queryParams: { route: true }});
           this.modalCtrl.dismiss({
             'dismissed': true
           });

@@ -17,7 +17,7 @@ export class MapaNegociosComponent implements OnInit {
   public longitud: any;
   @Input() public listaIds: Array<any>;
   public lstNegocios: Array<any>;
-  url = `${AppSettings.URL_FRONT}`;
+  url = `${AppSettings.URL_MOVIL}`;
   public iconoMarker: string;
   public urlNegocio: string;
   constructor(
