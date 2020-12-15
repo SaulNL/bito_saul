@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "923911532405",
+    "firebase_url": "https://bitoo-3ecf0.firebaseio.com",
+    "project_id": "bitoo-3ecf0",
+    "storage_bucket": "bitoo-3ecf0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923911532405:android:f80fd8e157cfeefaf2ad3c",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923911532405-6nrm99qeg5at6jcm62u3tegfo8970tcu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.ionic.starter",
+            "certificate_hash": "bf2056b552591faa9d0f67a1b53279e97f1b30fd"
+          }
+        },
+        {
+          "client_id": "923911532405-77uvn5rfg78cc0f1bis1lve31bahu3jc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByfKDFNPMrgvvl_U8x9TkIHGThkAZUi48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923911532405-77uvn5rfg78cc0f1bis1lve31bahu3jc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

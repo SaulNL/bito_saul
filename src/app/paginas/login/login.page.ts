@@ -9,7 +9,15 @@ import { ModalController, NavController, Platform } from "@ionic/angular";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { RecuperarContraseniaPage } from "./recuperar-contrasenia/recuperar-contrasenia.page";
-import { Subscription } from 'rxjs';
+import { Subscription } from "rxjs";
+import { Capacitor, Plugins, registerWebPlugin } from "@capacitor/core";
+import { NavigationExtras } from "@angular/router";
+import { FacebookLogin } from "@rdlabo/capacitor-facebook-login";
+import { GooglePlus } from "@ionic-native/google-plus/ngx";
+import { AngularFireAuth } from "@angular/fire/auth";
+import * as firebase from "firebase/app";
+import { Facebook, FacebookLoginResponse } from "@ionic-native/facebook/ngx";
+import { AlertController } from "@ionic/angular";
 
 @Component({
   selector: "app-login",
@@ -25,6 +33,15 @@ export class LoginPage implements OnInit {
   public backI: null;
   public validador: number;
   private backButtonSub: Subscription;
+  public user: any;
+  public logininfo: any;
+  userData: any = {};
+
+  picture;
+  name;
+  email;
+  lastname;
+  uid;
 
   constructor(
     private navctrl: NavController,
@@ -36,19 +53,24 @@ export class LoginPage implements OnInit {
     private notifi: ToadNotificacionService,
     private modalController: ModalController,
     private rot: ActivatedRoute,
-    private platform: Platform
+    private platform: Platform,
+    private router: Router,
+    private googlePlus: GooglePlus,
+    private afAuth: AngularFireAuth,
+    private fb: Facebook,
+    public alertController: AlertController
   ) {
     this.loader = false;
     this.usuario = new Login();
-    this.ionViewDidEnter()
-    this.ionViewWillLeave()
+    this.ionViewDidEnter();
+    this.ionViewWillLeave();
+    registerWebPlugin(FacebookLogin);
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   ionViewDidEnter() {
     this.backButtonSub = this.platform.backButton.subscribe(() => {
-      this.back()
+      this.back();
     });
   }
   ionViewWillLeave() {
@@ -79,6 +101,130 @@ export class LoginPage implements OnInit {
   }
   registratePersona() {
     this._router.navigate(["/tabs/registro-persona"]);
+  }
+
+  /**
+   * *****************************************************
+   * Funcion para login por facebook Y Google
+   * @author Omar
+   */
+
+  /**
+   * Login Web
+   */
+  async loginGoogleWeb() {
+    const res = await this.afAuth.auth.signInWithPopup(
+      new firebase.auth.GoogleAuthProvider()
+    );
+    const user = res.user;
+    console.log("Datos de usuario Google:", user.providerData);
+    this.picture = user.photoURL;
+    this.name = user.displayName;
+    this.email = user.email;
+    this.uid = user.uid;
+    this.usuario.password = user.providerData[0].uid;
+    this.usuario.usuario = this.email;
+    this.doLogin();
+  }
+
+  /**
+   * Login Android
+   */
+  async loginGoogleAndroid() {
+    const res = await this.googlePlus.login({
+      webClientId:
+        "923911532405-77uvn5rfg78cc0f1bis1lve31bahu3jc.apps.googleusercontent.com",
+      offline: true,
+    });
+    const resConfirmed = await this.afAuth.auth.signInWithCredential(
+      firebase.auth.GoogleAuthProvider.credential(res.idToken)
+    );
+    const user = resConfirmed.user;
+    this.picture = user.photoURL;
+    this.name = user.displayName;
+    this.email = user.email;
+    this.uid = user.uid;
+    this.usuario.password = user.providerData[0].uid;
+    this.usuario.usuario = this.email;
+    this.doLogin();
+  }
+
+  /**
+   * Movil o web
+   */
+  loginGoogle() {
+    if (this.platform.is("android")) {
+      this.loginGoogleAndroid();
+    } else {
+      this.loginGoogleWeb();
+    }
+  }
+
+  /**
+   * Login Web
+   */
+  async loginFacebookWeb() {
+    const res = await this.afAuth.auth.signInWithPopup(
+      new firebase.auth.FacebookAuthProvider()
+    );
+    const user = res.user;
+    console.log("Datos de usuario Facebook:", user);
+    this.picture = user.photoURL;
+    this.name = user.displayName;
+    this.email = user.email;
+    this.uid = user.uid;
+    this.usuario.password = user.providerData[0].uid;
+    this.usuario.usuario = this.email;
+    this.doLogin();
+  }
+
+  /**
+   * Login Android
+   */
+  async loginFacebookAndroid() {
+    const res: FacebookLoginResponse = await this.fb.login([
+      "public_profile",
+      "email",
+    ]);
+    const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
+      res.authResponse.accessToken
+    );
+    const resConfirmed = await this.afAuth.auth.signInWithCredential(
+      facebookCredential
+    );
+    const user = resConfirmed.user;
+    this.picture = user.photoURL;
+    this.name = user.displayName;
+    this.email = user.email;
+    this.usuario.password = user.providerData[0].uid;
+    this.usuario.usuario = this.email;
+    this.doLogin();
+  }
+
+  /**
+   * Movil o web
+   */
+  loginFacebook() {
+    if (this.platform.is("capacitor")) {
+      this.loginFacebookAndroid();
+    } else {
+      this.loginFacebookWeb();
+    }
+  }
+
+  /**
+   * Mensaje de error de datos
+   */
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      cssClass: "my-custom-class",
+      header: "Aviso",
+      subHeader: "",
+      message: "Datos incorrectos, verifique sus credenciales",
+      buttons: ["OK"],
+    });
+
+    await alert.present();
   }
 
   async recuerarContrasenia() {
