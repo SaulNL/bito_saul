@@ -61,6 +61,7 @@ export class PedidoNegocioComponent implements OnInit {
     } else {
       this.tipoEnvio = null;
     }
+    
     this.loadMap();
     this.getCurrentPosition();
     this.sumarLista();
@@ -152,7 +153,7 @@ export class PedidoNegocioComponent implements OnInit {
       pedido: this.lista,
       detalle: this.detalle
     };
-    if(this._entregaDomicilio === 1 || this._entregaSitio === 1 || this._consumoSitio === 1){
+    if(this.tipoEnvio !== null){
       this.negocioService.registrarPedido(pedido).subscribe(
         res => {
           this.mesajes.exito('Pedido realizado éxito')
@@ -163,7 +164,7 @@ export class PedidoNegocioComponent implements OnInit {
         }
       );
     }else{
-      this.mesajes.alerta("Debe elegir el Tipo de Entrega");
+      this.presentAlert("Debe seleccionar el Tipo de Entrega");
     }
 
     
@@ -188,6 +189,7 @@ export class PedidoNegocioComponent implements OnInit {
 
   cambiarTipo(evento) {
     this.tipoEnvio = parseInt(evento.detail.value);
+    
     this.sumarLista();
     if (this.tipoEnvio === 2) {
       setTimeout(it => {
@@ -256,6 +258,16 @@ export class PedidoNegocioComponent implements OnInit {
         }
       ]
     });
+    await alert.present();
+  }
+  async presentAlert(texto:string) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Aviso',
+      message: texto,
+      buttons: ['OK']
+    });
+
     await alert.present();
   }
   validarCosto() {
