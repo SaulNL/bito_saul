@@ -152,15 +152,21 @@ export class PedidoNegocioComponent implements OnInit {
       pedido: this.lista,
       detalle: this.detalle
     };
-    this.negocioService.registrarPedido(pedido).subscribe(
-      res => {
-        this.mesajes.exito('Pedido realizado éxito')
-        this.lista = [];
-        this.cerrarModal();
-      }, error => {
-        this.mesajes.error('Ocurrio un error al generar el pedido')
-      }
-    );
+    if(this._entregaDomicilio === 1 || this._entregaSitio === 1 || this._consumoSitio === 1){
+      this.negocioService.registrarPedido(pedido).subscribe(
+        res => {
+          this.mesajes.exito('Pedido realizado éxito')
+          this.lista = [];
+          this.cerrarModal();
+        }, error => {
+          this.mesajes.error('Ocurrio un error al generar el pedido')
+        }
+      );
+    }else{
+      this.mesajes.alerta("Debe elegir el Tipo de Entrega");
+    }
+
+    
   }
 
   private sumarLista() {

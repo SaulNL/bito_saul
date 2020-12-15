@@ -12,8 +12,12 @@
 <ion-content fullscreen>
 
   <ion-card>
-    <img src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+    <div>
+      <img src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
       [srcset]="unoProducto.imagen" />
+      <p class="restriccion">*Algunas imágenes sólamente son usadas con fines ilustrativos. El producto final puede no estár representado con exactitud por las mismas</p>
+    </div>
+    
     <ion-card-header>
       <ion-card-subtitle>{{unoProducto.categoria.nombre}}</ion-card-subtitle>
       <ion-card-title><strong>{{unoProducto.nombre}}</strong> </ion-card-title>
