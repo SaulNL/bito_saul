@@ -159,11 +159,12 @@ export class PerfilNegocioPage implements OnInit {
       this.location.back();
     }
     this.getCurrentPosition();
+  }
+  ionViewWillEnter() {
     this.navBarServiceService.cambio.subscribe(respuesta => {
       this.detallePromocion(respuesta);
     });
   }
-
   async getCurrentPosition() {
     const coordinates = await Geolocation.getCurrentPosition()
       .then((res) => {
@@ -817,7 +818,7 @@ export class PerfilNegocioPage implements OnInit {
     if (promocion !== new PromocionesModel()) {
     setTimeout(() => {
       this.abrirModalPromocion(promocion);
-    }, 500);
+    }, 200);
     }
   }
   async abrirModalPromocion(promo: PromocionesModel) {
