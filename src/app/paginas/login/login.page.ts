@@ -124,7 +124,8 @@ export class LoginPage implements OnInit {
     this.uid = user.uid;
     this.usuario.password = user.providerData[0].uid;
     this.usuario.usuario = this.email;
-    this.doLogin();
+    console.log(this.usuario);
+    //this.doLogin();
   }
 
   /**
@@ -146,7 +147,8 @@ export class LoginPage implements OnInit {
     this.uid = user.uid;
     this.usuario.password = user.providerData[0].uid;
     this.usuario.usuario = this.email;
-    this.doLogin();
+    console.log(this.usuario);
+    //this.doLogin();
   }
 
   /**
@@ -175,7 +177,8 @@ export class LoginPage implements OnInit {
     this.uid = user.uid;
     this.usuario.password = user.providerData[0].uid;
     this.usuario.usuario = this.email;
-    this.doLogin();
+    console.log(this.usuario);
+    //this.doLogin();
   }
 
   /**
@@ -198,7 +201,8 @@ export class LoginPage implements OnInit {
     this.email = user.email;
     this.usuario.password = user.providerData[0].uid;
     this.usuario.usuario = this.email;
-    this.doLogin();
+    console.log(this.usuario);
+    //this.doLogin();
   }
 
   /**
