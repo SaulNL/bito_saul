@@ -25,7 +25,16 @@
         <ion-spinner></ion-spinner>
     </div>
 </ion-content>
-<ion-content class="ion-padding" *ngIf="!loader" fullscreen>
+<ion-content *ngIf="!loader">
+    <ng-container *ngIf="(informacionNegocio.promociones !== undefined && informacionNegocio.promociones !== null && informacionNegocio.promociones.length > 0)"> 
+        <ion-slides class="ion-margin-bottom"   [options]="slideOptsOne" #mySlider>
+            <ion-slide *ngFor="let promocion of informacionNegocio.promociones;">
+              <img src="{{(promocion.url_imagen_banner)==='' || (promocion.url_imagen_banner)==null?promocionDefault:promocion.url_imagen_banner}}"
+               class="d-block img-fluid" alt="Cargando imagen..."onerror="this.onerror=null;this.src=promocionDefault;" (click)="abrirModalPromocion(promocion)">
+            </ion-slide>
+        </ion-slides>
+    </ng-container>  
+    <div class="ion-padding" >
     <ion-grid>
         <ion-row>
             <ion-col class="ion-align-items-center ion-justify-content-center" size="12">
@@ -45,6 +54,28 @@
             <ion-card class="w-100">
                 <ion-card-content class="ion-text-center">
                     {{informacionNegocio.descripcion}}
+                    <br *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0">
+                    <br *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0">
+                    <ion-label *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0">
+                        <strong>
+                        <ion-icon name="pizza-outline"></ion-icon>
+                        Consumo en Sitio
+                    </strong>
+                    </ion-label>
+                    <br *ngIf="informacionNegocio.entrega_sitio !== null && informacionNegocio.entrega_sitio > 0">
+                    <ion-label  *ngIf="informacionNegocio.entrega_sitio !== null && informacionNegocio.entrega_sitio > 0">
+                        <strong>
+                        <ion-icon name="storefront-outline"></ion-icon>
+                        Entregas en Sitio
+                    </strong>
+                    </ion-label>
+                        <br *ngIf="informacionNegocio.entrega_domicilio !== null && informacionNegocio.entrega_domicilio > 0">
+                    <ion-label *ngIf="informacionNegocio.entrega_domicilio !== null && informacionNegocio.entrega_domicilio > 0">
+                        <strong>
+                        <ion-icon name="bicycle-outline"></ion-icon>
+                        Entregas a Domicilio
+                     </strong>
+                    </ion-label>
                     <hr>
                     <ion-grid *ngIf="existeSesion">
                         <ion-row>
@@ -129,7 +160,7 @@
                             <ion-list style="border-radius: 0em 0em 1em 1em;">
                                 <ion-item *ngFor="let dia of diasArray">
                                     <ion-grid>
-                                        <ion-row class="lista">
+                                        <ion-row>
                                             <ion-col>
                                                 <p [ngClass]="{'negritas':dia.id === hoy}">{{ dia.dia }}</p>
                                             </ion-col>
@@ -165,7 +196,6 @@
                 </ion-segment>
             </ion-row>
         </ion-grid>
-
         <ion-grid *ngIf="seccion === 'ubicacion'">
                 <ion-row *ngIf="!existeSesion">
                     <ion-card class="w-100">
@@ -297,46 +327,45 @@
                         </ion-card>
                     </ion-col>
                 </ng-container>
-                
-
             </ion-row>
         </ion-grid>
     </div>
-    <ion-fab *ngIf="existeSesion" horizontal="end" vertical="bottom" slot="fixed">
-        <ion-fab-button size="small"
-            *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''"
-                        (click)="irRedSocial(informacionNegocio.youtube)" target="_blank">
-            <img src="../../../assets/images/yt.png">
-        </ion-fab-button>
-        <ion-fab-button size="small" color="light"
-            *ngIf="informacionNegocio.tiktok !== null && informacionNegocio.tiktok !== ''"
-                        (click)="irRedSocial(informacionNegocio.tiktok)" target="_blank">
-            <img src="../../../assets/images/tt.png">
-        </ion-fab-button>
-        <ion-fab-button size="small" color="light"
-            *ngIf="informacionNegocio.instagram !== null && informacionNegocio.instagram !== ''"
-                        (click)="irRedSocial(informacionNegocio.instagram)" target="_blank">
-            <img src="../../../assets/images/insta.png">
-        </ion-fab-button>
-        <ion-fab-button size="small" color="light"
-            *ngIf="informacionNegocio.twitter !== null && informacionNegocio.twitter !== ''"
-                        (click)="irRedSocial(informacionNegocio.twitter)" target="_blank">
-            <img src="../../../assets/images/tw.png">
-        </ion-fab-button>
-        <ion-fab-button size="small" color="light"
-            *ngIf="informacionNegocio.id_facebook !== null && informacionNegocio.id_facebook !== ''"
-                        (click)="irRedSocial(informacionNegocio.id_facebook)" target="_blank">
-            <img src="../../../assets/images/fb.png">
-        </ion-fab-button>
-        <ion-fab-button size="small" color="light"
-            *ngIf="informacionNegocio.celular !== null && informacionNegocio.celular !== ''"
-            (click)="enviarWhasapp(informacionNegocio.celular)">
-            <img src="../../../assets/images/wp.png">
-        </ion-fab-button>
-        <ion-fab-button size="small" color="light"
-            *ngIf="informacionNegocio.telefono !== null && informacionNegocio.telefono !== ''"
-            (click)="llamar(informacionNegocio.telefono)">
-            <ion-icon class="telefono" name="call"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
+</div>
+<ion-fab *ngIf="existeSesion" horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button size="small"
+        *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''"
+                    (click)="irRedSocial(informacionNegocio.youtube)" target="_blank">
+        <img src="../../../assets/images/yt.png">
+    </ion-fab-button>
+    <ion-fab-button size="small" color="light"
+        *ngIf="informacionNegocio.tiktok !== null && informacionNegocio.tiktok !== ''"
+                    (click)="irRedSocial(informacionNegocio.tiktok)" target="_blank">
+        <img src="../../../assets/images/tt.png">
+    </ion-fab-button>
+    <ion-fab-button size="small" color="light"
+        *ngIf="informacionNegocio.instagram !== null && informacionNegocio.instagram !== ''"
+                    (click)="irRedSocial(informacionNegocio.instagram)" target="_blank">
+        <img src="../../../assets/images/insta.png">
+    </ion-fab-button>
+    <ion-fab-button size="small" color="light"
+        *ngIf="informacionNegocio.twitter !== null && informacionNegocio.twitter !== ''"
+                    (click)="irRedSocial(informacionNegocio.twitter)" target="_blank">
+        <img src="../../../assets/images/tw.png">
+    </ion-fab-button>
+    <ion-fab-button size="small" color="light"
+        *ngIf="informacionNegocio.id_facebook !== null && informacionNegocio.id_facebook !== ''"
+                    (click)="irRedSocial(informacionNegocio.id_facebook)" target="_blank">
+        <img src="../../../assets/images/fb.png">
+    </ion-fab-button>
+    <ion-fab-button size="small" color="light"
+        *ngIf="informacionNegocio.celular !== null && informacionNegocio.celular !== ''"
+        (click)="enviarWhasapp(informacionNegocio.celular)">
+        <img src="../../../assets/images/wp.png">
+    </ion-fab-button>
+    <ion-fab-button size="small" color="light"
+        *ngIf="informacionNegocio.telefono !== null && informacionNegocio.telefono !== ''"
+        (click)="llamar(informacionNegocio.telefono)">
+        <ion-icon class="telefono" name="call"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
 </ion-content>
