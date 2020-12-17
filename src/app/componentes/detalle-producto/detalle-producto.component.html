@@ -38,33 +38,19 @@
                 <p>{{datos.descripcion}}</p>
             </ion-col>
         </ion-row>
-        <ion-row  *ngIf="mostrarComponente">
-            <ion-col class="ion-text-center">
-            <ion-label>Cantidad:</ion-label>
-        </ion-col>
-        </ion-row>
         <ion-row *ngIf="mostrarComponente">
-            <ion-col class="ion-text-center">
-                <ion-button size="small" color="light" (click)="aumentarDismuir(1)">
-                    <ion-icon name="add-outline"></ion-icon>
-                </ion-button>
-                <ion-label>{{cantidadProducto}}</ion-label>
-                 <ion-button size="small" color="light" (click)="aumentarDismuir(2)">
-                    <ion-icon name="remove-outline"></ion-icon>
-                 </ion-button>
-        </ion-col>
-        </ion-row>
-        <ion-row *ngIf="mostrarComponente">
-        <div class="alado">
-                        <div >
-                            <ion-label class="arriba"><strong>Cantidad</strong></ion-label>
-                            <ion-icon class="ion-text-center" (click)="disminuir()" style="margin: 4px; background: #bbbbbb;" name="remove-outline"></ion-icon>
-                            <span class="ion-text-center" class="arriba"> {{ cantidad }} </span>
-                            <ion-icon class="ion-text-center" (click)="aumentar()"  style="margin: 4px; background: #bbbbbb;" name="add-outline"></ion-icon>
-                        </div>
-                      </div>
+            <div class="alado">
+                <div>
+                    <ion-label class="arriba"><strong>Cantidad</strong></ion-label>
+                    <ion-icon class="ion-text-center" (click)="disminuir()" style="margin: 4px; background: #bbbbbb;"
+                              name="remove-outline"></ion-icon>
+                    <span class="ion-text-center" class="arriba"> {{ cantidad }} </span>
+                    <ion-icon class="ion-text-center" (click)="aumentar()" style="margin: 4px; background: #bbbbbb;"
+                              name="add-outline"></ion-icon>
+                </div>
+            </div>
             <ion-col>
-                <ion-button [disabled]="this.cantidadProducto === 0 " expand="block" (click)="agragarproducto()">Agregar a la Bolsa
+                <ion-button expand="block" (click)="agragarproducto()">Agregar a la Bolsa
                     <ion-icon name="bag-add-outline"></ion-icon>
                 </ion-button>
             </ion-col>
