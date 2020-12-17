@@ -97,6 +97,7 @@ export class RegistroPersonaPage implements OnInit {
     const resConfirmed = await this.afAuth.auth.signInWithCredential(
       firebase.auth.GoogleAuthProvider.credential(res.idToken)
     );
+    this.presentLoading();
     const user = resConfirmed.user;
     //console.log(user);
     this.passGogl = user.providerData[0].uid;
@@ -106,7 +107,6 @@ export class RegistroPersonaPage implements OnInit {
       photoUrl: user.providerData[0].photoURL,
       id: user.providerData[0].uid,
     };
-    this.presentLoading();
     this.usuarioSistema.crearCuantaAdminGoogle(data).subscribe(
       (response) => {
         //console.log(response.data);
@@ -150,6 +150,7 @@ export class RegistroPersonaPage implements OnInit {
     const resConfirmed = await this.afAuth.auth.signInWithCredential(
       facebookCredential
     );
+    this.presentLoading();
     const user = resConfirmed.user;
     this.passFace = user.providerData[0].uid;
     let data = {
@@ -158,13 +159,12 @@ export class RegistroPersonaPage implements OnInit {
       photoUrl: user.providerData[0].photoURL,
       id: user.providerData[0].uid,
     };
-    this.presentLoading()
     this.usuarioSistema.crearCuantaAdminFacebook(data).subscribe(
       (response) => {
         //console.log(response.data);
         if (response.data.code === 200) {
-          //          console.log(this.passFace);
-          //console.log(this.usuario);
+          // console.log(this.passFace);
+          // console.log(this.usuario);
           this.usuario.password = this.passFace;
           this.usuario.usuario = data.email;
           //console.log(this.usuario);
@@ -172,11 +172,13 @@ export class RegistroPersonaPage implements OnInit {
           this.doLogin();
           this.fb.logout();
         } else {
+          this.fb.logout();
           this.loader.dismiss();
           this.notificacion.alerta(response.data.message);
         }
       },
       (error) => {
+        this.fb.logout();
         this.loader.dismiss();
         this.notificacion.alerta(error);
       }
