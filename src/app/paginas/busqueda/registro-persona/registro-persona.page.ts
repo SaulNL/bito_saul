@@ -27,10 +27,10 @@ export class RegistroPersonaPage implements OnInit {
   public usuario_sistema: UsuarioSistemaModel;
   public blnContraseniaIgual: boolean;
   public condiciones_servicio: boolean = false;
-  public usuario: Login;
+  private usuario: Login;
   public loader: any;
-  public passFace: any;
-  public passGogl: any;
+  private passFace: any;
+  private passGogl: any;
 
   constructor(
     private router: Router,
@@ -118,10 +118,12 @@ export class RegistroPersonaPage implements OnInit {
           //console.log(this.usuario);
           this.doLogin();
         } else {
+          this.loader.dismiss();
           this.notificacion.alerta(response.data.message);
         }
       },
       (error) => {
+        this.loader.dismiss();
         this.notificacion.alerta(error);
       }
     );
@@ -170,10 +172,12 @@ export class RegistroPersonaPage implements OnInit {
           this.doLogin();
           this.fb.logout();
         } else {
+          this.loader.dismiss();
           this.notificacion.alerta(response.data.message);
         }
       },
       (error) => {
+        this.loader.dismiss();
         this.notificacion.alerta(error);
       }
     );
@@ -203,10 +207,12 @@ export class RegistroPersonaPage implements OnInit {
           this.notificacion.exito(respuesta.message);
         }
         if (respuesta.code === 402) {
+          this.loader.dismiss();
           this.notificacion.alerta("Usuario y/o contraseña incorrectos");
         }
       },
       (error) => {
+        this.loader.dismiss();
         this.notificacion.error(error);
       }
     );
