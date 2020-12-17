@@ -55,5 +55,4 @@ export class RecorteImagenComponent implements OnInit {
       'nombre_archivo': name
     });
   }
-
 }

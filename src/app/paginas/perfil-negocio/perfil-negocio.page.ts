@@ -23,13 +23,9 @@ import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveed
 import { DetalleProductoComponent } from "../../componentes/detalle-producto/detalle-producto.component";
 import { PedidoNegocioComponent } from "../../componentes/pedido-negocio/pedido-negocio.component";
 import { AuthGuardService } from "../../api/auth-guard.service";
-import { NavBarServiceService } from "src/app/api/busqueda/nav-bar-service.service";
-import { PromocionesModel } from "src/app/Modelos/busqueda/PromocionesModel";
-import { IonSlides } from "@ionic/angular";
-import { ViewChild } from "@angular/core";
+
 const { Share } = Plugins;
 const haversineCalculator = require("haversine-calculator");
-import { ModalPromocionNegocioComponent } from "src/app/componentes/modal-promocion-negocio/modal-promocion-negocio.component";
 
 @Component({
   selector: "app-perfil-negocio",
@@ -77,32 +73,24 @@ export class PerfilNegocioPage implements OnInit {
   suma: number;
   public ruta;
   public contador: number;
-  public mostrarDetalle: boolean;
-  slideOptsOne = {
-    initialSlide: 0,
-    slidesPerView: 1,
-    autoplay: true,
-    speed: 10000,
-  };
-  @ViewChild("mySlider") slides: IonSlides;
+  public navegacion: any;
   constructor(
-    private navctrl: NavController,
-    private route: ActivatedRoute,
-    private toadController: ToastController,
-    private negocioService: NegocioService,
-    private notificacionService: ToadNotificacionService,
-    private location: Location,
-    private util: UtilsCls,
-    private sideBarService: SideBarService,
-    private actionSheetController: ActionSheetController,
-    private _router: Router,
-    public modalController: ModalController,
-    private serviceProveedores: ProveedorServicioService,
-    public alertController: AlertController,
-    private router: Router,
-    private platform: Platform,
-    private blockk: AuthGuardService,
-    private navBarServiceService: NavBarServiceService
+      private navctrl: NavController,
+      private route: ActivatedRoute,
+      private toadController: ToastController,
+      private negocioService: NegocioService,
+      private notificacionService: ToadNotificacionService,
+      private location: Location,
+      private util: UtilsCls,
+      private sideBarService: SideBarService,
+      private actionSheetController: ActionSheetController,
+      private _router: Router,
+      public modalController: ModalController,
+      private serviceProveedores: ProveedorServicioService,
+      public alertController: AlertController,
+      private router: Router,
+      private platform: Platform,
+      private blockk: AuthGuardService
   ) {
     this.seccion = "ubicacion";
     this.loader = true;
@@ -116,8 +104,7 @@ export class PerfilNegocioPage implements OnInit {
           if (dato) {
             this.modal.dismiss();
           } else {
-            console.log(this.contador);
-            if (this.contador === 0) {
+            if (this.contador===0) {
               this.contador = this.contador + 1;
               this.salir();
             }
@@ -127,18 +114,23 @@ export class PerfilNegocioPage implements OnInit {
     });
     this.banderaS = null;
     this.banderaP = null;
-    this.mostrarDetalle = false;
+    this.navegacion = false;
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
-      if (params.cancel && params) {
+    this.route.queryParams.subscribe(params => {
+      if (params.cancel && params){
         let all = JSON.parse(JSON.stringify(params));
         let objeto = JSON.parse(all.cancel);
         this.ruta = objeto.ruta;
-        if (objeto.cancel) {
+        if (objeto.cancel){
           this.mensajeRuta();
         }
+      }
+    });
+    this.route.queryParams.subscribe(params => {
+      if (params.route && params){
+        this.navegacion = true;
       }
     });
 
@@ -149,9 +141,9 @@ export class PerfilNegocioPage implements OnInit {
       this.negocio = params.negocio;
     });
     if (
-      this.negocio !== undefined &&
-      this.negocio !== null &&
-      this.negocio !== ""
+        this.negocio !== undefined &&
+        this.negocio !== null &&
+        this.negocio !== ""
     ) {
       this.obtenerInformacionNegocio();
     } else {
@@ -160,125 +152,121 @@ export class PerfilNegocioPage implements OnInit {
     }
     this.getCurrentPosition();
   }
-  ionViewWillEnter() {
-    this.navBarServiceService.cambio.subscribe(respuesta => {
-      this.detallePromocion(respuesta);
-    });
-  }
+
   async getCurrentPosition() {
     const coordinates = await Geolocation.getCurrentPosition()
-      .then((res) => {
-        this.miLat = res.coords.latitude;
-        this.miLng = res.coords.longitude;
-      })
-      .catch((error) => {
-        this.permisoUbicacionCancelado = true;
-      });
+        .then((res) => {
+          this.miLat = res.coords.latitude;
+          this.miLng = res.coords.longitude;
+        })
+        .catch((error) => {
+          this.permisoUbicacionCancelado = true;
+        });
   }
 
   obtenerInformacionNegocio() {
     this.loader = true;
     this.negocioService.obteneretalleNegocio(this.negocio).subscribe(
-      (response) => {
-        if (response.data !== null) {
-          this.informacionNegocio = response.data;
-          this.informacionNegocio.catProductos = [];
-          this.informacionNegocio.catServicos = [];
-          // this.obtenerPromociones();
-          this.obtenerProductos();
-          this.obtenerServicios();
-          this.obtenerEstatusCalificacion();
+        (response) => {
+          if (response.data !== null) {
+            this.informacionNegocio = response.data;
+            this.informacionNegocio.catProductos = [];
+            this.informacionNegocio.catServicos = [];
+            // this.obtenerPromociones();
+            this.obtenerProductos();
+            this.obtenerServicios();
+            this.obtenerEstatusCalificacion();
 
-          this.horarios(this.informacionNegocio);
-          this.calcularDistancia();
+            this.horarios(this.informacionNegocio);
+            this.calcularDistancia();
+          }
+          this.loader = false;
+          setTimeout((it) => {
+            this.loadMap();
+          }, 100);
+        },
+        (error) => {
+          confirm("Error al cargar");
+          this.loader = false;
         }
-        this.loader = false;
-        setTimeout((it) => {
-          this.loadMap();
-        }, 100);
-      },
-      (error) => {
-        confirm("Error al cargar");
-        this.loader = false;
-      }
     );
   }
 
   obtenerProductos() {
     this.negocioService
-      .obtenerDetalleDeNegocio(this.informacionNegocio.id_negocio, 0)
-      .subscribe(
-        (response) => {
-          if (response.code === 200 && response.agrupados != null) {
-            const productos = response.agrupados;
-            const cats = [];
+        .obtenerDetalleDeNegocio(this.informacionNegocio.id_negocio, 0)
+        .subscribe(
+            (response) => {
+              if (response.code === 200 && response.agrupados != null) {
+                const productos = response.agrupados;
+                const cats = [];
 
-            if (productos !== undefined) {
-              productos.map((catprod) => {
-                if (catprod.activo) {
-                  const productos3 = [];
-                  catprod.productos.map((pro) => {
-                    if (pro.existencia) {
-                      productos3.push(pro);
+                if (productos !== undefined) {
+                  productos.map((catprod) => {
+                    if (catprod.activo) {
+                      const productos3 = [];
+                      catprod.productos.map((pro) => {
+                        if (pro.existencia) {
+                          productos3.push(pro);
+                        }
+                      });
+                      catprod.productos = productos3;
+
+                      if (productos3.length > 0) {
+                        cats.push(catprod);
+                      }
                     }
                   });
-                  catprod.productos = productos3;
-
-                  if (productos3.length > 0) {
-                    cats.push(catprod);
-                  }
+                  this.informacionNegocio.catProductos = cats;
                 }
-              });
-              this.informacionNegocio.catProductos = cats;
+              }
+              if (response.code === 200) {
+                this.informacionNegocio.cartaProducto = response.data.cartaProducto;
+                this.informacionNegocio.cartaServicio = response.data.cartaServicio;
+                this.informacionNegocio.tagsProductos = response.data.productoTags;
+                this.informacionNegocio.tagsServicios = response.data.serviciosTags;
+              }
+            },
+            (error) => {
+              confirm("Error al o¿btener los productos");
             }
-          }
-          if (response.code === 200) {
-            this.informacionNegocio.cartaProducto = response.data.cartaProducto;
-            this.informacionNegocio.cartaServicio = response.data.cartaServicio;
-            this.informacionNegocio.tagsProductos = response.data.productoTags;
-            this.informacionNegocio.tagsServicios = response.data.serviciosTags;
-          }
-        },
-        (error) => {
-          confirm("Error al o¿btener los productos");
-        }
-      );
+        );
   }
 
   obtenerServicios() {
     this.negocioService
-      .obtenerDetalleDeNegocio(this.informacionNegocio.id_negocio, 1)
-      .subscribe(
-        (response) => {
-          if (response.code === 200 && response.agrupados != null) {
-            const servicios = response.agrupados;
-            const cats = [];
+        .obtenerDetalleDeNegocio(this.informacionNegocio.id_negocio, 1)
+        .subscribe(
+            (response) => {
+              if (response.code === 200 && response.agrupados != null) {
+                const servicios = response.agrupados;
+                const cats = [];
 
-            if (servicios !== undefined) {
-              servicios.map((catprod) => {
-                if (catprod.activo) {
-                  const servicios3 = [];
-                  catprod.servicios.map((ser) => {
-                    if (ser.existencia) {
-                      servicios3.push(ser);
+                if (servicios !== undefined) {
+                  servicios.map((catprod) => {
+                    if (catprod.activo) {
+                      const servicios3 = [];
+                      catprod.servicios.map((ser) => {
+                        if (ser.existencia) {
+                          servicios3.push(ser);
+                        }
+                      });
+                      catprod.servicios = servicios3;
+
+                      if (servicios3.length > 0) {
+                        cats.push(catprod);
+                      }
                     }
                   });
-                  catprod.servicios = servicios3;
-
-                  if (servicios3.length > 0) {
-                    cats.push(catprod);
-                  }
+                  this.informacionNegocio.catServicos = cats;
+                  //console.log(this.informacionNegocio);
                 }
-              });
-              this.informacionNegocio.catServicos = cats;
-              //console.log(this.informacionNegocio);
+              }
+            },
+            (error) => {
+              confirm("Error al o¿btener los servicios");
             }
-          }
-        },
-        (error) => {
-          confirm("Error al o¿btener los servicios");
-        }
-      );
+        );
   }
 
   loadMap() {
@@ -291,7 +279,7 @@ export class PerfilNegocioPage implements OnInit {
 
     var myIcon = icon({
       iconUrl:
-        "https://ecoevents.blob.core.windows.net/comprandoando/marker.png",
+          "https://ecoevents.blob.core.windows.net/comprandoando/marker.png",
       iconSize: [45, 41],
       iconAnchor: [13, 41],
     });
@@ -316,9 +304,9 @@ export class PerfilNegocioPage implements OnInit {
     }
   }
 
-  irAlDetalle(producto: any, index: number) {
+  irAlDetalle(producto: any) {
     this.detalle = producto;
-    this.abrirModaldetalle(index);
+    this.abrirModaldetalle();
   }
 
   enviarWhasapp(celular: any) {
@@ -331,9 +319,9 @@ export class PerfilNegocioPage implements OnInit {
 
   abrirVentana(ruta) {
     window.open(
-      ruta,
-      "_blank",
-      "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400"
+        ruta,
+        "_blank",
+        "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400"
     );
   }
 
@@ -369,7 +357,7 @@ export class PerfilNegocioPage implements OnInit {
     await modal.present();
   }
 
-  async abrirModaldetalle(index: number) {
+  async abrirModaldetalle() {
     const modal = await this.modalController.create({
       component: DetalleProductoComponent,
       componentProps: {
@@ -379,14 +367,15 @@ export class PerfilNegocioPage implements OnInit {
         _consumoSitio: this.informacionNegocio.consumo_sitio,
         _costoEntrega: this.informacionNegocio.costo_entrega,
         _abierto: this.informacionNegocio.abierto,
-        pedidos: this.bolsa,
-        indexProducto: index
+        bolsa: this.bolsa
       },
     });
     await modal.present();
     await modal.onDidDismiss().then((r) => {
       if (r.data.data !== null) {
-       this.bolsa[index] = r.data.data
+        console.log(r);
+
+        this.llenarBolsa(r.data.data);
       }
     });
   }
@@ -415,13 +404,13 @@ export class PerfilNegocioPage implements OnInit {
     await Share.share({
       title: "Ver cosas interesantes",
       text:
-        "Te recomiendo este negocio " +
-        this.informacionNegocio.nombre_comercial,
+          "Te recomiendo este negocio " +
+          this.informacionNegocio.nombre_comercial,
       url: this.url_negocio,
       dialogTitle: "Compartir con Amigos",
     })
-      .then(() => console.log("Se compartio exitosamente"))
-      .catch((error) => this.notificacionService.error(error));
+        .then(() => console.log("Se compartio exitosamente"))
+        .catch((error) => this.notificacionService.error(error));
   }
 
   async abrirModalCalifica() {
@@ -437,6 +426,7 @@ export class PerfilNegocioPage implements OnInit {
       this.informacionNegocio.numCalificaciones = data.numCalificaciones;
       this.informacionNegocio.promedio = data.promedio;
       this.obtenerEstatusCalificacion();
+
     }
   }
 
@@ -448,24 +438,24 @@ export class PerfilNegocioPage implements OnInit {
     //  this.loaderEstatusCalifi = true;
     if (this.existeSesion) {
       this.serviceProveedores
-        .obtenerEstatusCalificacionUsuario(this.informacionNegocio)
-        .subscribe(
-          (response) => {
-            if (response.code === 200) {
-              this.estatusCalificacion = true;
-              this.valorEstrellas();
-            } else {
-              this.estatusCalificacion = false;
-              this.valorEstrellas();
-            }
-          },
-          (error) => {
-            //      this.loaderEstatusCalifi = false;
-          },
-          () => {
-            //     this.loaderEstatusCalifi = false;
-          }
-        );
+          .obtenerEstatusCalificacionUsuario(this.informacionNegocio)
+          .subscribe(
+              (response) => {
+                if (response.code === 200) {
+                  this.estatusCalificacion = true;
+                  this.valorEstrellas();
+                } else {
+                  this.estatusCalificacion = false;
+                  this.valorEstrellas();
+                }
+              },
+              (error) => {
+                //      this.loaderEstatusCalifi = false;
+              },
+              () => {
+                //     this.loaderEstatusCalifi = false;
+              }
+          );
     } else {
       this.estatusCalificacion = false;
       //   this.loaderEstatusCalifi = false;
@@ -497,9 +487,9 @@ export class PerfilNegocioPage implements OnInit {
       hros.forEach((horarioTmp) => {
         diasArray.map((dia) => {
           if (
-            horarioTmp.dias.includes(dia.dia) &&
-            horarioTmp.hora_inicio !== undefined &&
-            horarioTmp.hora_fin !== undefined
+              horarioTmp.dias.includes(dia.dia) &&
+              horarioTmp.hora_inicio !== undefined &&
+              horarioTmp.hora_fin !== undefined
           ) {
             const dato = {
               texto: horarioTmp.hora_inicio + " a " + horarioTmp.hora_fin,
@@ -514,13 +504,13 @@ export class PerfilNegocioPage implements OnInit {
       diasArray.map((dia) => {
         if (dia.id === this.hoy) {
           const now = new Date(
-            1995,
-            11,
-            18,
-            hoy.getHours(),
-            hoy.getMinutes(),
-            0,
-            0
+              1995,
+              11,
+              18,
+              hoy.getHours(),
+              hoy.getMinutes(),
+              0,
+              0
           );
           let abieto = null;
           let index = null;
@@ -530,13 +520,13 @@ export class PerfilNegocioPage implements OnInit {
               const inicio = item.hi.split(":");
               // tslint:disable-next-line:radix
               const fi = new Date(
-                1995,
-                11,
-                18,
-                parseInt(inicio[0]),
-                parseInt(inicio[1]),
-                0,
-                0
+                  1995,
+                  11,
+                  18,
+                  parseInt(inicio[0]),
+                  parseInt(inicio[1]),
+                  0,
+                  0
               );
               const fin = item.hf.split(":");
               let aux = 18;
@@ -546,13 +536,13 @@ export class PerfilNegocioPage implements OnInit {
               }
               // tslint:disable-next-line:radix
               const ff = new Date(
-                1995,
-                11,
-                aux,
-                parseInt(fin[0]),
-                parseInt(fin[1]),
-                0,
-                0
+                  1995,
+                  11,
+                  aux,
+                  parseInt(fin[0]),
+                  parseInt(fin[1]),
+                  0,
+                  0
               );
               listaAux.push({
                 valor: (fi.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
@@ -621,7 +611,11 @@ export class PerfilNegocioPage implements OnInit {
     this.bolsa.map((it) => {
       if (it.idProducto === dato.idProducto) {
         existe = true;
-        it.cantidad++;
+        if (dato.cantidad>1){
+          it.cantidad=dato.cantidad;
+        } else{
+          it.cantidad++;
+        }
       }
     });
 
@@ -636,7 +630,13 @@ export class PerfilNegocioPage implements OnInit {
       this.mensajeBolsa();
     } else {
       this.blockk.tf = true;
-      this.router.navigate(["/tabs/inicio"]);
+      if (this.navegacion){
+        this.location.back();
+        this.navegacion=false;
+      } else{
+        this.router.navigate(['/tabs/inicio']);
+      }
+
       // this.subscribe.unsubscribe();
       // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
     }
@@ -650,30 +650,28 @@ export class PerfilNegocioPage implements OnInit {
     const alert = await this.alertController.create({
       header: "Advertencia",
       message:
-        "Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!",
+          "Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!",
       buttons: [
         {
           text: "Cancelar",
           handler: () => {
             this.blockk.tf = false;
-            this.router.navigate(["/tabs/negocio/" + this.negocio]);
-          },
+            this.router.navigate(['/tabs/negocio/'+this.negocio]);
+          }
         },
         {
           text: "Salir",
           handler: () => {
             this.blockk.tf = true;
             this.bolsa = [];
-            if (this.ruta === "/tabs/home/perfil") {
-              this.router.navigate(["/tabs/home/perfil"], {
-                queryParams: { special: true },
-              });
+            if (this.ruta==="/tabs/home/perfil"){
+              this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
             } else {
               this.router.navigate([this.ruta]);
             }
             // this.subscribe.unsubscribe();
             // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
-          },
+          }
         },
       ],
     });
@@ -687,21 +685,25 @@ export class PerfilNegocioPage implements OnInit {
     const alert = await this.alertController.create({
       header: "Advertencia",
       message:
-        "Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!",
+          "Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!",
       buttons: [
         {
           text: "Cancelar",
           handler: () => {
             this.blockk.tf = false;
             this.contador = 0;
-          },
+          }
         },
         {
           text: "Salir",
           handler: () => {
             this.bolsa = [];
             this.blockk.tf = true;
-            this.router.navigate(["/tabs/inicio"]);
+            if (this.navegacion) {
+              this.location.back();
+            } else{
+              this.router.navigate(['/tabs/inicio']);
+            }
 
             // this.subscribe.unsubscribe();
             // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
@@ -746,8 +748,8 @@ export class PerfilNegocioPage implements OnInit {
 
   irRedSocial(palabra: string) {
     if (
-      palabra.substring(0, 7) !== "http://" &&
-      palabra.substring(0, 8) !== "https://"
+        palabra.substring(0, 7) !== "http://" &&
+        palabra.substring(0, 8) !== "https://"
     ) {
       palabra = "https://" + palabra;
     }
@@ -756,11 +758,11 @@ export class PerfilNegocioPage implements OnInit {
 
   mostrarBoton(precio) {
     return (
-      (this.informacionNegocio.entrega_domicilio === 1 ||
-        this.informacionNegocio.entrega_sitio === 1 ||
-        this.informacionNegocio.consumo_sitio === 1) &&
-      parseInt(precio) > 0 &&
-      this.informacionNegocio.abierto === "ABIERTO"
+        (this.informacionNegocio.entrega_domicilio === 1 ||
+            this.informacionNegocio.entrega_sitio === 1 ||
+            this.informacionNegocio.consumo_sitio === 1) &&
+        parseInt(precio) > 0 &&
+        this.informacionNegocio.abierto === "ABIERTO"
     ); // && parseInt(precio) > 0
   }
   aumentarDismuir(cantidad: number, index: number, operacion: number) {
@@ -789,9 +791,11 @@ export class PerfilNegocioPage implements OnInit {
       this.nameSub = nombreCat;
       this.banderaP = nombreCat;
     }
+
   }
   mostrarServicio(nombreCat) {
     if (!this.servicioSub) {
+
       if (this.banderaS === nombreCat) {
         this.servicioSub = !this.servicioSub;
         this.namelesSub = nombreCat;
@@ -799,6 +803,7 @@ export class PerfilNegocioPage implements OnInit {
         this.namelesSub = nombreCat;
         this.banderaS = nombreCat;
       }
+
     } else {
       this.servicioSub = !this.servicioSub;
       this.namelesSub = nombreCat;
@@ -808,28 +813,12 @@ export class PerfilNegocioPage implements OnInit {
   eliminar(inde) {
     for (let index = 0; index < this.bolsa.length; index++) {
       const element = this.bolsa[index];
-      if (element.idProducto === inde.idProducto) {
+      if (element.idProducto===inde.idProducto) {
         this.bolsa.splice(index, 1);
       }
     }
-    if (Object.keys(this.bolsa).length === 0) {
+    if (Object.keys(this.bolsa).length === 0){
       this.blockk.tf = true;
     }
-  }
-  public detallePromocion(promocion: PromocionesModel) {
-    if (promocion !== new PromocionesModel()) {
-    setTimeout(() => {
-      this.abrirModalPromocion(promocion);
-    }, 200);
-    }
-  }
-  async abrirModalPromocion(promo: PromocionesModel) {
-    const modal = await this.modalController.create({
-      component: ModalPromocionNegocioComponent,
-      componentProps: {
-        promocionTO: promo,
-      },
-    });
-    await modal.present();
   }
 }

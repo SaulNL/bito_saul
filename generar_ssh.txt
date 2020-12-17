@@ -1,0 +1,12 @@
+keytool -exportcert -list -v-alias beta_key -keystore C:\Users\Ikaro\Desktop\beta_key.jks
+
+
+C:\Program Files (x86)\GnuWin32\bin\openssl.exe
+
+
+keytool -exportcert -alias beta_key -keystore C:\Users\Ikaro\Desktop\beta_key.jks
+
+keytool -exportcert -alias beta_key -keystore C:\Users\Ikaro\Desktop\beta_key.jks | "C:\Program Files (x86)\GnuWin32\bin\openssl.exe" sha1 -binary | "C:\Program Files (x86)\GnuWin32\bin\openssl.exe" base64
+
+
+"C:\Program Files (x86)\GnuWin32\bin\openssl.exe"

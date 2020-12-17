@@ -32,7 +32,8 @@ export class InfoPromoComponent implements OnInit {
   }
 
   masInformacion(promocion: any) {
-    this.router.navigateByUrl(`/tabs/negocio/${ promocion.url_negocio }`);
+      this.router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
+            queryParams: { route: true }});
     this.modalController.dismiss();
   }
 

@@ -20,12 +20,12 @@ export class DetalleProductoComponent implements OnInit {
     @Input() public _abierto: any;
     @Input() datos: any;
     @Output() llenarLista: EventEmitter<any> = new EventEmitter();
+    @Input() bolsa: any;
     public subscribe;
     public modal;
     public existeSesion: boolean;
-    @Input() public pedidos: any;
-    @Input() public indexProducto: number;
-     public cantidadProducto: number;
+    public cantidad : number;
+
     constructor(
         private utilsCls: UtilsCls,
         private modalController: ModalController,
@@ -38,11 +38,17 @@ export class DetalleProductoComponent implements OnInit {
         this.subscribe = this.platform.backButton.subscribe(() => {
             this.cerrarModal();
         });
-        this.cantidadProducto = 0;
+        this.cantidad = 1;
     }
 
     ngOnInit() {
-        this.buscarProducto();
+        if (this.bolsa.length > 0) {
+            this.bolsa.forEach(element => {
+                if (element.idProducto === this.datos.idProducto) {
+                    this.cantidad= element.cantidad;
+                }
+            });
+        }
     }
 
     cerrarModal() {
@@ -59,13 +65,22 @@ export class DetalleProductoComponent implements OnInit {
         return (this._entregaDomicilio === 1 || this._entregaSitio === 1 || this._consumoSitio === 1) && this.utilsCls.existe_sesion() && parseInt(this.datos.precio) > 0 && this._abierto === 'ABIERTO';
     }
 
+    aumentar(){
+        this.cantidad = this.cantidad+1;
+    }
+    disminuir(){
+        if( this.cantidad > 1){
+            this.cantidad = this.cantidad-1;
+        }
+    }
     agragarproducto() {
+        //console.log(this.cantidad);
         if (this.existeSesion) {
             const producto = {
                 idProducto: this.datos.idProducto,
                 precio: this.datos.precio,
                 imagen: this.datos.imagen,
-                cantidad: this.cantidadProducto,
+                cantidad: this.cantidad,
                 idNegocio: this.datos.negocio.idNegocio,
                 nombre: this.datos.nombre,
                 descripcion: this.datos.descripcion
@@ -77,19 +92,4 @@ export class DetalleProductoComponent implements OnInit {
             this.router.navigate(['/tabs/login'])
         }
     }
-     buscarProducto(){
-   for (let index = 0; index < this.pedidos.length; index++) {
-    if(this.datos.idProducto === this.pedidos[index].idProducto){
-        this.cantidadProducto =  this.pedidos[index].cantidad;
-     }      
-   }
-     }
-     aumentarDismuir( operacion: number) {
-        if (operacion === 1 && this.cantidadProducto >= 0) {
-             ++this.cantidadProducto;
-        }
-        if (operacion === 2 && this.cantidadProducto > 1) {
-               --this.cantidadProducto;
-        }
-      }  
 }

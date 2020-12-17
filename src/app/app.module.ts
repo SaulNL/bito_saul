@@ -15,20 +15,28 @@ import { HaversineService } from "ng2-haversine";
 import { Downloader} from '@ionic-native/downloader/ngx';
 import {Platform} from "@ionic/angular";
 import {HTTP} from "@ionic-native/http/ngx";
+import {GooglePlus} from '@ionic-native/google-plus/ngx';
+import {Facebook} from '@ionic-native/facebook/ngx';
+
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { firebaseConfig } from '../environments/environment';
+
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule,HttpClientModule, IonicModule.forRoot(), AppRoutingModule, FormsModule],
+  imports: [BrowserModule,HttpClientModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, AngularFireModule.initializeApp(firebaseConfig),AngularFireAuthModule],
   providers: [
     StatusBar,
     SplashScreen,
     HaversineService,
-    { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy },
     Downloader,
       Platform,
-    HTTP
-  ],
+    HTTP, GooglePlus,
+    Facebook,
+  { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
