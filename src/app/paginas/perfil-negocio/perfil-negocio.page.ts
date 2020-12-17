@@ -23,9 +23,13 @@ import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveed
 import { DetalleProductoComponent } from "../../componentes/detalle-producto/detalle-producto.component";
 import { PedidoNegocioComponent } from "../../componentes/pedido-negocio/pedido-negocio.component";
 import { AuthGuardService } from "../../api/auth-guard.service";
-
+import { NavBarServiceService } from "src/app/api/busqueda/nav-bar-service.service";
+import { PromocionesModel } from "src/app/Modelos/busqueda/PromocionesModel";
+import { IonSlides } from "@ionic/angular";
+import { ViewChild } from "@angular/core";
 const { Share } = Plugins;
 const haversineCalculator = require("haversine-calculator");
+import { ModalPromocionNegocioComponent } from "src/app/componentes/modal-promocion-negocio/modal-promocion-negocio.component";
 
 @Component({
   selector: "app-perfil-negocio",
@@ -73,6 +77,14 @@ export class PerfilNegocioPage implements OnInit {
   suma: number;
   public ruta;
   public contador: number;
+  public mostrarDetalle: boolean;
+  slideOptsOne = {
+    initialSlide: 0,
+    slidesPerView: 1,
+    autoplay: true,
+    speed: 10000,
+  };
+  @ViewChild("mySlider") slides: IonSlides;
   constructor(
     private navctrl: NavController,
     private route: ActivatedRoute,
@@ -89,7 +101,8 @@ export class PerfilNegocioPage implements OnInit {
     public alertController: AlertController,
     private router: Router,
     private platform: Platform,
-    private blockk: AuthGuardService
+    private blockk: AuthGuardService,
+    private navBarServiceService: NavBarServiceService
   ) {
     this.seccion = "ubicacion";
     this.loader = true;
@@ -103,26 +116,27 @@ export class PerfilNegocioPage implements OnInit {
           if (dato) {
             this.modal.dismiss();
           } else {
-            console.log(this.contador)
-            if (this.contador===0) {
+            console.log(this.contador);
+            if (this.contador === 0) {
               this.contador = this.contador + 1;
-                  this.salir();
-            } 
+              this.salir();
+            }
           }
         });
       });
     });
     this.banderaS = null;
     this.banderaP = null;
+    this.mostrarDetalle = false;
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      if (params.cancel && params){
+    this.route.queryParams.subscribe((params) => {
+      if (params.cancel && params) {
         let all = JSON.parse(JSON.stringify(params));
         let objeto = JSON.parse(all.cancel);
         this.ruta = objeto.ruta;
-        if (objeto.cancel){
+        if (objeto.cancel) {
           this.mensajeRuta();
         }
       }
@@ -146,7 +160,11 @@ export class PerfilNegocioPage implements OnInit {
     }
     this.getCurrentPosition();
   }
-
+  ionViewWillEnter() {
+    this.navBarServiceService.cambio.subscribe(respuesta => {
+      this.detallePromocion(respuesta);
+    });
+  }
   async getCurrentPosition() {
     const coordinates = await Geolocation.getCurrentPosition()
       .then((res) => {
@@ -298,9 +316,9 @@ export class PerfilNegocioPage implements OnInit {
     }
   }
 
-  irAlDetalle(producto: any) {
+  irAlDetalle(producto: any, index: number) {
     this.detalle = producto;
-    this.abrirModaldetalle();
+    this.abrirModaldetalle(index);
   }
 
   enviarWhasapp(celular: any) {
@@ -351,7 +369,7 @@ export class PerfilNegocioPage implements OnInit {
     await modal.present();
   }
 
-  async abrirModaldetalle() {
+  async abrirModaldetalle(index: number) {
     const modal = await this.modalController.create({
       component: DetalleProductoComponent,
       componentProps: {
@@ -361,12 +379,14 @@ export class PerfilNegocioPage implements OnInit {
         _consumoSitio: this.informacionNegocio.consumo_sitio,
         _costoEntrega: this.informacionNegocio.costo_entrega,
         _abierto: this.informacionNegocio.abierto,
+        pedidos: this.bolsa,
+        indexProducto: index
       },
     });
     await modal.present();
     await modal.onDidDismiss().then((r) => {
       if (r.data.data !== null) {
-        this.llenarBolsa(r.data.data);
+       this.bolsa[index] = r.data.data
       }
     });
   }
@@ -616,7 +636,7 @@ export class PerfilNegocioPage implements OnInit {
       this.mensajeBolsa();
     } else {
       this.blockk.tf = true;
-      this.router.navigate(['/tabs/inicio']);
+      this.router.navigate(["/tabs/inicio"]);
       // this.subscribe.unsubscribe();
       // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
     }
@@ -625,7 +645,7 @@ export class PerfilNegocioPage implements OnInit {
   ionViewDidLeave() {
     this.subscribe.unsubscribe();
   }
-  
+
   async mensajeRuta() {
     const alert = await this.alertController.create({
       header: "Advertencia",
@@ -636,22 +656,24 @@ export class PerfilNegocioPage implements OnInit {
           text: "Cancelar",
           handler: () => {
             this.blockk.tf = false;
-            this.router.navigate(['/tabs/negocio/'+this.negocio]);
-          }
+            this.router.navigate(["/tabs/negocio/" + this.negocio]);
+          },
         },
         {
           text: "Salir",
           handler: () => {
             this.blockk.tf = true;
             this.bolsa = [];
-            if (this.ruta==="/tabs/home/perfil"){
-              this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
+            if (this.ruta === "/tabs/home/perfil") {
+              this.router.navigate(["/tabs/home/perfil"], {
+                queryParams: { special: true },
+              });
             } else {
               this.router.navigate([this.ruta]);
             }
             // this.subscribe.unsubscribe();
             // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
-          }
+          },
         },
       ],
     });
@@ -661,7 +683,7 @@ export class PerfilNegocioPage implements OnInit {
 
   async mensajeBolsa() {
     console.log("Esto entra aca");
-    
+
     const alert = await this.alertController.create({
       header: "Advertencia",
       message:
@@ -672,14 +694,14 @@ export class PerfilNegocioPage implements OnInit {
           handler: () => {
             this.blockk.tf = false;
             this.contador = 0;
-          }
+          },
         },
         {
           text: "Salir",
           handler: () => {
             this.bolsa = [];
             this.blockk.tf = true;
-            this.router.navigate(['/tabs/inicio']);
+            this.router.navigate(["/tabs/inicio"]);
 
             // this.subscribe.unsubscribe();
             // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
@@ -755,31 +777,28 @@ export class PerfilNegocioPage implements OnInit {
   }
   mostrarProducto(nombreCat) {
     if (!this.negocioSub) {
-        if (this.banderaP === nombreCat) {
-          this.negocioSub = !this.negocioSub;
-          this.nameSub = nombreCat;
-        } else {
-          this.nameSub = nombreCat;
-          this.banderaP = nombreCat;
-        }
+      if (this.banderaP === nombreCat) {
+        this.negocioSub = !this.negocioSub;
+        this.nameSub = nombreCat;
+      } else {
+        this.nameSub = nombreCat;
+        this.banderaP = nombreCat;
+      }
     } else {
       this.negocioSub = !this.negocioSub;
       this.nameSub = nombreCat;
       this.banderaP = nombreCat;
     }
-    
   }
   mostrarServicio(nombreCat) {
     if (!this.servicioSub) {
-      
-        if (this.banderaS === nombreCat) {
-          this.servicioSub = !this.servicioSub;
-          this.namelesSub = nombreCat;
-        } else {
-          this.namelesSub = nombreCat;
-          this.banderaS = nombreCat;
-        }
-      
+      if (this.banderaS === nombreCat) {
+        this.servicioSub = !this.servicioSub;
+        this.namelesSub = nombreCat;
+      } else {
+        this.namelesSub = nombreCat;
+        this.banderaS = nombreCat;
+      }
     } else {
       this.servicioSub = !this.servicioSub;
       this.namelesSub = nombreCat;
@@ -789,12 +808,28 @@ export class PerfilNegocioPage implements OnInit {
   eliminar(inde) {
     for (let index = 0; index < this.bolsa.length; index++) {
       const element = this.bolsa[index];
-      if (element.idProducto===inde.idProducto) {
+      if (element.idProducto === inde.idProducto) {
         this.bolsa.splice(index, 1);
       }
     }
-    if (Object.keys(this.bolsa).length === 0){
+    if (Object.keys(this.bolsa).length === 0) {
       this.blockk.tf = true;
     }
+  }
+  public detallePromocion(promocion: PromocionesModel) {
+    if (promocion !== new PromocionesModel()) {
+    setTimeout(() => {
+      this.abrirModalPromocion(promocion);
+    }, 200);
+    }
+  }
+  async abrirModalPromocion(promo: PromocionesModel) {
+    const modal = await this.modalController.create({
+      component: ModalPromocionNegocioComponent,
+      componentProps: {
+        promocionTO: promo,
+      },
+    });
+    await modal.present();
   }
 }

@@ -33,6 +33,9 @@ export class NavBarServiceService {
    */
   public promocionSeleccionada(promocion){
     this.cambio.emit(promocion);
+    setTimeout(() => {   
+      this.cambio = new EventEmitter();
+     }, 100);
   }
 
   /**

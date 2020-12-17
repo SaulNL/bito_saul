@@ -23,7 +23,9 @@ export class DetalleProductoComponent implements OnInit {
     public subscribe;
     public modal;
     public existeSesion: boolean;
-
+    @Input() public pedidos: any;
+    @Input() public indexProducto: number;
+     public cantidadProducto: number;
     constructor(
         private utilsCls: UtilsCls,
         private modalController: ModalController,
@@ -33,14 +35,14 @@ export class DetalleProductoComponent implements OnInit {
         private router: Router,
     ) {
         this.existeSesion = utilsCls.existe_sesion();
-        console.log(this.datos);
         this.subscribe = this.platform.backButton.subscribe(() => {
             this.cerrarModal();
         });
+        this.cantidadProducto = 0;
     }
 
     ngOnInit() {
-        console.log(this.datos)
+        this.buscarProducto();
     }
 
     cerrarModal() {
@@ -63,7 +65,7 @@ export class DetalleProductoComponent implements OnInit {
                 idProducto: this.datos.idProducto,
                 precio: this.datos.precio,
                 imagen: this.datos.imagen,
-                cantidad: 1,
+                cantidad: this.cantidadProducto,
                 idNegocio: this.datos.negocio.idNegocio,
                 nombre: this.datos.nombre,
                 descripcion: this.datos.descripcion
@@ -75,4 +77,19 @@ export class DetalleProductoComponent implements OnInit {
             this.router.navigate(['/tabs/login'])
         }
     }
+     buscarProducto(){
+   for (let index = 0; index < this.pedidos.length; index++) {
+    if(this.datos.idProducto === this.pedidos[index].idProducto){
+        this.cantidadProducto =  this.pedidos[index].cantidad;
+     }      
+   }
+     }
+     aumentarDismuir( operacion: number) {
+        if (operacion === 1 && this.cantidadProducto >= 0) {
+             ++this.cantidadProducto;
+        }
+        if (operacion === 2 && this.cantidadProducto > 1) {
+               --this.cantidadProducto;
+        }
+      }  
 }

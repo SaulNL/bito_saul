@@ -112,8 +112,8 @@ export class BannerPromocionesComponent implements OnInit {
   * @param promocion
   * @author Omar
   */
-  accionPromocion(promocion, ruta) {
-    this.urlNegocio = ruta + promocion.url_negocio;
+  accionPromocion(promocion) {
+    this.urlNegocio = 'tabs/negocio/'+ promocion.url_negocio;
     this.promocion = promocion;
     this.visteMiPromocion(promocion);
     this.quienNumeroVioPublicacion(promocion.id_promocion);
