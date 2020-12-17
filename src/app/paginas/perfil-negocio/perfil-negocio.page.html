@@ -244,14 +244,14 @@
                     <p><br></p>
                 </ion-col>
             </ion-row>
-            <ion-row *ngFor="let cat of informacionNegocio.catProductos">
+            <ion-row *ngFor="let cat of informacionNegocio.catProductos; let i = index">
                 <ion-item (click)="mostrarProducto(cat.nombre)" class="w-100 bg-gris">
                     <h2>{{cat.nombre}}</h2> <ion-icon slot="end" [name]="negocioSub?'caret-forward-outline' : 'caret-down-outline'"></ion-icon>
                 </ion-item>
                 <ng-container *ngIf="!negocioSub &&  nameSub === cat.nombre">
-                    <ion-col size="6" *ngFor="let producto of cat.productos">
+                    <ion-col size="6" *ngFor="let producto of cat.productos; let i = index">
                         <ion-card class="m-0 fixed cardsps">
-                            <div (click)="irAlDetalle(producto)">
+                            <div (click)="irAlDetalle(producto, i)">
                             <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
                             [srcset]="producto.imagen" alt="Falla al cargar la imagen">
                             <ion-card-header>

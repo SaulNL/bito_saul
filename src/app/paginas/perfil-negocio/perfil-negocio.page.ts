@@ -316,9 +316,9 @@ export class PerfilNegocioPage implements OnInit {
     }
   }
 
-  irAlDetalle(producto: any) {
+  irAlDetalle(producto: any, index: number) {
     this.detalle = producto;
-    this.abrirModaldetalle();
+    this.abrirModaldetalle(index);
   }
 
   enviarWhasapp(celular: any) {
@@ -369,7 +369,7 @@ export class PerfilNegocioPage implements OnInit {
     await modal.present();
   }
 
-  async abrirModaldetalle() {
+  async abrirModaldetalle(index: number) {
     const modal = await this.modalController.create({
       component: DetalleProductoComponent,
       componentProps: {
@@ -379,12 +379,14 @@ export class PerfilNegocioPage implements OnInit {
         _consumoSitio: this.informacionNegocio.consumo_sitio,
         _costoEntrega: this.informacionNegocio.costo_entrega,
         _abierto: this.informacionNegocio.abierto,
+        pedidos: this.bolsa,
+        indexProducto: index
       },
     });
     await modal.present();
     await modal.onDidDismiss().then((r) => {
       if (r.data.data !== null) {
-        this.llenarBolsa(r.data.data);
+       this.bolsa[index] = r.data.data
       }
     });
   }
