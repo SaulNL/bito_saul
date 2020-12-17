@@ -26,7 +26,8 @@ export class AppSettings {
     public static NUEVAS_FUNCIONES = true;
     public static APP_DOWNLOAD = 'https://play.google.com/store/apps/details?id=mx.com.softura.bitoo&hl=es';
     public static PROVIDER_ID_GOOGLE = '581785024825-fltko80kfanssgi3hqre8fcslk0iv80e.apps.googleusercontent.com';
-    public static PROVIDER_ID_FACEBOOK = '740270933494486';
+    public static PROVIDER_ID_FACEBOOK = '378335770215970';
+    //public static PROVIDER_ID_FACEBOOK = '740270933494486';
 
     public static getHeaders() {
         return {

@@ -87,7 +87,7 @@ export class LoginPage implements OnInit {
           // this.loader = false;
           this.sideBarService.publishSomeData("");
           localStorage.setItem("isRedirected", "false");
-          this.navctrl.back();
+          this._router.navigate(['/tabs/login']);
           this.notifi.exito(respuesta.message);
         }
         if (respuesta.code === 402) {
@@ -124,7 +124,7 @@ export class LoginPage implements OnInit {
     this.uid = user.uid;
     this.usuario.password = user.providerData[0].uid;
     this.usuario.usuario = this.email;
-    console.log(this.usuario);
+    //console.log(this.usuario);
     //this.doLogin();
   }
 
@@ -147,8 +147,8 @@ export class LoginPage implements OnInit {
     this.uid = user.uid;
     this.usuario.password = user.providerData[0].uid;
     this.usuario.usuario = this.email;
-    console.log(this.usuario);
-    //this.doLogin();
+    console.log(user);
+    this.doLogin();
   }
 
   /**
@@ -177,7 +177,7 @@ export class LoginPage implements OnInit {
     this.uid = user.uid;
     this.usuario.password = user.providerData[0].uid;
     this.usuario.usuario = this.email;
-    console.log(this.usuario);
+    //console.log(this.usuario);
     //this.doLogin();
   }
 
@@ -185,10 +185,7 @@ export class LoginPage implements OnInit {
    * Login Android
    */
   async loginFacebookAndroid() {
-    const res: FacebookLoginResponse = await this.fb.login([
-      "public_profile",
-      "email",
-    ]);
+    const res: FacebookLoginResponse = await this.fb.login(['public_profile', 'user_friends', 'email']);
     const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
       res.authResponse.accessToken
     );
@@ -201,8 +198,8 @@ export class LoginPage implements OnInit {
     this.email = user.email;
     this.usuario.password = user.providerData[0].uid;
     this.usuario.usuario = this.email;
-    console.log(this.usuario);
-    //this.doLogin();
+    console.log(user);
+    this.doLogin();
   }
 
   /**

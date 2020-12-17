@@ -13,6 +13,25 @@
       <div class="ion-text-center">
         <label>Puedes crear tu cuenta usando tus redes sociales</label>
         <br>
+        <ion-item lines="none">
+          <ion-grid>
+            <ion-row>
+              <ion-col></ion-col>
+              <ion-col>
+                <ion-avatar (click)="loginFacebook()">
+                  <img src="../../../assets/images/cambiar/facebook.png">
+                </ion-avatar>
+              </ion-col>
+              <ion-col>
+                  <ion-avatar (click)="loginGoogle()">
+                    <img src="../../../assets/images/google.png">
+                  </ion-avatar>            
+            </ion-col>
+            <ion-col></ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        
         <label>- O -</label>
         <br>
         <label>Puedes usar tu número de celular para crear tu cuenta
