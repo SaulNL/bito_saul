@@ -36,6 +36,7 @@ export class LoginPage implements OnInit {
   public user: any;
   public logininfo: any;
   userData: any = {};
+  private userFG: Login;
 
   picture;
   name;
@@ -65,6 +66,7 @@ export class LoginPage implements OnInit {
     this.ionViewDidEnter();
     this.ionViewWillLeave();
     registerWebPlugin(FacebookLogin);
+    this.userFG = new Login();
   }
 
   ngOnInit(): void {}
@@ -76,18 +78,17 @@ export class LoginPage implements OnInit {
   ionViewWillLeave() {
     this.backButtonSub.unsubscribe();
   }
-  doLogin() {
+  doLogin(data) {
     this.loader = true;
-    this.loginService.login(this.usuario).subscribe(
+    this.loginService.login(data).subscribe(
       (respuesta) => {
         if (respuesta.code === 200) {
           const actualizado = AppSettings.setTokenUser(respuesta);
-          console.log(respuesta.data);
           // this.sideBarService.actualizarSide();
           // this.loader = false;
           this.sideBarService.publishSomeData("");
           localStorage.setItem("isRedirected", "false");
-          this._router.navigate(['/tabs/login']);
+          this._router.navigate(['/tabs/inicio']);
           this.notifi.exito(respuesta.message);
         }
         if (respuesta.code === 402) {
@@ -122,8 +123,8 @@ export class LoginPage implements OnInit {
     this.name = user.displayName;
     this.email = user.email;
     this.uid = user.uid;
-    this.usuario.password = user.providerData[0].uid;
-    this.usuario.usuario = this.email;
+    this.userFG.password = user.providerData[0].uid;
+    this.userFG.usuario = this.email;
     //console.log(this.usuario);
     //this.doLogin();
   }
@@ -142,13 +143,12 @@ export class LoginPage implements OnInit {
     );
     const user = resConfirmed.user;
     this.picture = user.photoURL;
-    this.name = user.displayName;
-    this.email = user.email;
-    this.uid = user.uid;
-    this.usuario.password = user.providerData[0].uid;
-    this.usuario.usuario = this.email;
-    console.log(user);
-    this.doLogin();
+    //this.name = user.displayName;
+    //this.email = user.email;
+    //this.uid = user.uid;
+    this.userFG.password = user.providerData[0].uid;
+    this.userFG.usuario = this.email;
+    this.doLogin(this.userFG);
   }
 
   /**
@@ -170,13 +170,13 @@ export class LoginPage implements OnInit {
       new firebase.auth.FacebookAuthProvider()
     );
     const user = res.user;
-    console.log("Datos de usuario Facebook:", user);
-    this.picture = user.photoURL;
-    this.name = user.displayName;
+    //console.log("Datos de usuario Facebook:", user);
+    //this.picture = user.photoURL;
+    //this.name = user.displayName;
     this.email = user.email;
-    this.uid = user.uid;
-    this.usuario.password = user.providerData[0].uid;
-    this.usuario.usuario = this.email;
+    //this.uid = user.uid;
+    this.userFG.password = user.providerData[0].uid;
+    this.userFG.usuario = this.email;
     //console.log(this.usuario);
     //this.doLogin();
   }
@@ -193,13 +193,12 @@ export class LoginPage implements OnInit {
       facebookCredential
     );
     const user = resConfirmed.user;
-    this.picture = user.photoURL;
-    this.name = user.displayName;
+    //this.picture = user.photoURL;
+    //this.name = user.displayName;
     this.email = user.email;
-    this.usuario.password = user.providerData[0].uid;
-    this.usuario.usuario = this.email;
-    console.log(user);
-    this.doLogin();
+    this.userFG.password = user.providerData[0].uid;
+    this.userFG.usuario = this.email;
+    this.doLogin(this.userFG);
   }
 
   /**
