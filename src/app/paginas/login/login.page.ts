@@ -18,6 +18,7 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import * as firebase from "firebase/app";
 import { Facebook, FacebookLoginResponse } from "@ionic-native/facebook/ngx";
 import { AlertController } from "@ionic/angular";
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: "app-login",
@@ -37,7 +38,7 @@ export class LoginPage implements OnInit {
   public logininfo: any;
   userData: any = {};
   private userFG: Login;
-
+  public loadion:any;
   picture;
   name;
   email;
@@ -59,7 +60,8 @@ export class LoginPage implements OnInit {
     private googlePlus: GooglePlus,
     private afAuth: AngularFireAuth,
     private fb: Facebook,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public loadingController: LoadingController
   ) {
     this.loader = false;
     this.usuario = new Login();
@@ -78,24 +80,32 @@ export class LoginPage implements OnInit {
   ionViewWillLeave() {
     this.backButtonSub.unsubscribe();
   }
+  enterlogin(){
+    this.doLogin(this.usuario);
+  }
   doLogin(data) {
     this.loader = true;
+    console.log(data);
     this.loginService.login(data).subscribe(
       (respuesta) => {
+        console.log(respuesta);
         if (respuesta.code === 200) {
           const actualizado = AppSettings.setTokenUser(respuesta);
           // this.sideBarService.actualizarSide();
           // this.loader = false;
           this.sideBarService.publishSomeData("");
           localStorage.setItem("isRedirected", "false");
+          this.loadion.dismiss();
           this._router.navigate(['/tabs/inicio']);
           this.notifi.exito(respuesta.message);
         }
         if (respuesta.code === 402) {
+          this.loadion.dismiss();
           this.notifi.alerta("Usuario y/o contraseña incorrectos");
         }
       },
       (error) => {
+        this.loadion.dismiss();
         this.notifi.error(error);
       }
     );
@@ -141,10 +151,11 @@ export class LoginPage implements OnInit {
     const resConfirmed = await this.afAuth.auth.signInWithCredential(
       firebase.auth.GoogleAuthProvider.credential(res.idToken)
     );
+    this.presentLoading()
     const user = resConfirmed.user;
     this.picture = user.photoURL;
     //this.name = user.displayName;
-    //this.email = user.email;
+    this.email = user.email;
     //this.uid = user.uid;
     this.userFG.password = user.providerData[0].uid;
     this.userFG.usuario = this.email;
@@ -192,6 +203,7 @@ export class LoginPage implements OnInit {
     const resConfirmed = await this.afAuth.auth.signInWithCredential(
       facebookCredential
     );
+    this.presentLoading()
     const user = resConfirmed.user;
     //this.picture = user.photoURL;
     //this.name = user.displayName;
@@ -237,4 +249,12 @@ export class LoginPage implements OnInit {
   public back() {
     this.location.back();
   }
+
+  async presentLoading() {
+    this.loadion = await this.loadingController.create({
+  cssClass: 'my-custom-class',
+  message: 'Creando Cuenta...'
+});
+await this.loadion.present();
+}
 }

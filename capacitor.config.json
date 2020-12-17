@@ -11,10 +11,10 @@
     }
   },
   "cordova": {},
-"server": {
-    "hostname": "localhost:8100",
+  "server": {
+    "hostname": "app-bitoo.com.mx",
     "iosScheme": "ionic",
-    "androidScheme": "http",
-    "allowNavigation": ["https://beta-bitoo-back.azurewebsites.net/", "*.https://beta-bitoo-back.azurewebsites.net/", "192.0.2.1","10.0.2.2:8100"]
+    "androidScheme": "https",
+    "allowNavigation": ["https://bitoo-back.azurewebsites.net/", "*.https://bitoo-back.azurewebsites.net/"]
    }
 }

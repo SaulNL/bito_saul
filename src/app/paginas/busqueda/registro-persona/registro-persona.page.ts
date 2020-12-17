@@ -193,8 +193,12 @@ export class RegistroPersonaPage implements OnInit {
 
   doLogin() {
     //this.loader = true;
+    //console.log(this.usuario);
+    
     this.loginService.login(this.usuario).subscribe(
       (respuesta) => {
+        //console.log(respuesta);
+        
         if (respuesta.code === 200) {
           const actualizado = AppSettings.setTokenUser(respuesta);
           //console.log(respuesta.data);
