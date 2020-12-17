@@ -253,7 +253,7 @@ export class LoginPage implements OnInit {
   async presentLoading() {
     this.loadion = await this.loadingController.create({
   cssClass: 'my-custom-class',
-  message: 'Creando Cuenta...'
+  message: 'Iniciando sesión...'
 });
 await this.loadion.present();
 }
