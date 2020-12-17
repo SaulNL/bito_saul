@@ -23,9 +23,11 @@ import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveed
 import { DetalleProductoComponent } from "../../componentes/detalle-producto/detalle-producto.component";
 import { PedidoNegocioComponent } from "../../componentes/pedido-negocio/pedido-negocio.component";
 import { AuthGuardService } from "../../api/auth-guard.service";
-
+import { NavBarServiceService } from "src/app/api/busqueda/nav-bar-service.service";
+import { PromocionesModel } from "src/app/Modelos/busqueda/PromocionesModel";
 const { Share } = Plugins;
 const haversineCalculator = require("haversine-calculator");
+import { ModalPromocionNegocioComponent } from "src/app/componentes/modal-promocion-negocio/modal-promocion-negocio.component";
 
 @Component({
   selector: "app-perfil-negocio",
@@ -90,7 +92,8 @@ export class PerfilNegocioPage implements OnInit {
       public alertController: AlertController,
       private router: Router,
       private platform: Platform,
-      private blockk: AuthGuardService
+      private blockk: AuthGuardService,
+      private navBarServiceService: NavBarServiceService
   ) {
     this.seccion = "ubicacion";
     this.loader = true;
@@ -152,7 +155,11 @@ export class PerfilNegocioPage implements OnInit {
     }
     this.getCurrentPosition();
   }
-
+  ionViewWillEnter() {
+    this.navBarServiceService.cambio.subscribe(respuesta => {
+      this.detallePromocion(respuesta);
+    });
+  }
   async getCurrentPosition() {
     const coordinates = await Geolocation.getCurrentPosition()
         .then((res) => {
@@ -820,5 +827,21 @@ export class PerfilNegocioPage implements OnInit {
     if (Object.keys(this.bolsa).length === 0){
       this.blockk.tf = true;
     }
+  }
+  public detallePromocion(promocion: PromocionesModel) {
+    if (promocion !== new PromocionesModel()) {
+    setTimeout(() => {
+      this.abrirModalPromocion(promocion);
+    }, 200);
+    }
+  }
+  async abrirModalPromocion(promo: PromocionesModel) {
+    const modal = await this.modalController.create({
+      component: ModalPromocionNegocioComponent,
+      componentProps: {
+        promocionTO: promo,
+      },
+    });
+    await modal.present();
   }
 }
