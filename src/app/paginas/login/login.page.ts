@@ -81,6 +81,7 @@ export class LoginPage implements OnInit {
     this.backButtonSub.unsubscribe();
   }
   enterlogin(){
+    this.presentLoading()
     this.doLogin(this.usuario);
   }
   doLogin(data) {
