@@ -41,6 +41,8 @@ export class ToolbarBusquedaComponent implements OnInit {
       }, 300000);
     }
     this.active.queryParams.subscribe(params => {
+      this.permisosList();
+      this.user = this._auth0.getUserData();
       if (params && params.special) {
         if (params.special){
           if (this.permisos.includes('ver_negocio')){
@@ -49,21 +51,6 @@ export class ToolbarBusquedaComponent implements OnInit {
         }
       }
     });
-    this.sideBarService.getObservable().subscribe((data) => {
-      this.user = this._auth0.getUserData();
-      this.permisosList();
-    });
-    this.user = this._auth0.getUserData();
-    this.navBarServiceService.change.subscribe(respuesta => {
-      this.user = respuesta;
-      this.permisos = ['ver_negocio'];
-    });
-
-    /* this.sideBarService.change.subscribe(isOpen => {
-      this.permisosList();
-    }); */
-    //console.log(this.user.nombre);
-    
   }
 
   buscar() {
