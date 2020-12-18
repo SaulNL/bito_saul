@@ -18,7 +18,7 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import * as firebase from "firebase/app";
 import { Facebook, FacebookLoginResponse } from "@ionic-native/facebook/ngx";
 import { AlertController } from "@ionic/angular";
-import { LoadingController } from '@ionic/angular';
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: "app-login",
@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
   public logininfo: any;
   userData: any = {};
   private userFG: Login;
-  public loadion:any;
+  public loadion: any;
   picture;
   name;
   email;
@@ -80,8 +80,8 @@ export class LoginPage implements OnInit {
   ionViewWillLeave() {
     this.backButtonSub.unsubscribe();
   }
-  enterlogin(){
-    this.presentLoading()
+  enterlogin() {
+    this.presentLoading();
     this.doLogin(this.usuario);
   }
   doLogin(data) {
@@ -97,7 +97,7 @@ export class LoginPage implements OnInit {
           this.sideBarService.publishSomeData("");
           localStorage.setItem("isRedirected", "false");
           this.loadion.dismiss();
-          this._router.navigate(['/tabs/inicio']);
+          this._router.navigate(["/tabs/inicio"]);
           this.notifi.exito(respuesta.message);
         }
         if (respuesta.code === 402) {
@@ -149,18 +149,20 @@ export class LoginPage implements OnInit {
         "923911532405-77uvn5rfg78cc0f1bis1lve31bahu3jc.apps.googleusercontent.com",
       offline: true,
     });
+    this.presentLoading();
     const resConfirmed = await this.afAuth.auth.signInWithCredential(
       firebase.auth.GoogleAuthProvider.credential(res.idToken)
     );
-    this.presentLoading()
-    const user = resConfirmed.user;
+    this.validationfg(resConfirmed);
+    /*const user = resConfirmed.user;
     this.picture = user.photoURL;
-    //this.name = user.displayName;
+    this.name = user.displayName;
     this.email = user.email;
     //this.uid = user.uid;
     this.userFG.password = user.providerData[0].uid;
     this.userFG.usuario = this.email;
     this.doLogin(this.userFG);
+    */
   }
 
   /**
@@ -197,23 +199,46 @@ export class LoginPage implements OnInit {
    * Login Android
    */
   async loginFacebookAndroid() {
-    const res: FacebookLoginResponse = await this.fb.login(['public_profile', 'user_friends', 'email']);
+    const res: FacebookLoginResponse = await this.fb.login([
+      "public_profile",
+      "user_friends",
+      "email",
+    ]);
     const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
       res.authResponse.accessToken
     );
+    this.presentLoading();
     const resConfirmed = await this.afAuth.auth.signInWithCredential(
       facebookCredential
     );
-    this.presentLoading()
-    const user = resConfirmed.user;
-    //this.picture = user.photoURL;
-    //this.name = user.displayName;
-    this.email = user.email;
-    this.userFG.password = user.providerData[0].uid;
-    this.userFG.usuario = this.email;
-    this.doLogin(this.userFG);
+    this.fb.logout();
+    this.validationfg(resConfirmed);
   }
 
+  /**
+   * validationfg
+   */
+  public validationfg(inform) {
+    const resConfirmed = inform;
+    if (
+      typeof resConfirmed.user.providerData[0].uid === "undefined" ||
+      resConfirmed.user.providerData[0].uid === null ||
+      resConfirmed.user.providerData[0].uid === "undefined"
+    ) {
+      this.loadion.dismiss();
+      this.notifi.error(
+        "Se perdio la conexión con el servicio de Google, Reintentar"
+      );
+    } else {
+      const user = resConfirmed.user;
+      //this.picture = user.photoURL;
+      //this.name = user.displayName;
+      this.email = user.email;
+      this.userFG.password = user.providerData[0].uid;
+      this.userFG.usuario = this.email;
+      this.doLogin(this.userFG);
+    }
+  }
   /**
    * Movil o web
    */
@@ -253,9 +278,10 @@ export class LoginPage implements OnInit {
 
   async presentLoading() {
     this.loadion = await this.loadingController.create({
-  cssClass: 'my-custom-class',
-  message: 'Iniciando sesión...'
-});
-await this.loadion.present();
-}
+      spinner: "crescent",
+      cssClass: "my-custom-class",
+      message: "Iniciando Sesión...",
+    });
+    await this.loadion.present();
+  }
 }
