@@ -44,6 +44,7 @@ export class LoginPage implements OnInit {
   email;
   lastname;
   uid;
+  public EnterUser:any;
 
   constructor(
     private navctrl: NavController,
@@ -69,6 +70,7 @@ export class LoginPage implements OnInit {
     this.ionViewWillLeave();
     registerWebPlugin(FacebookLogin);
     this.userFG = new Login();
+    this.EnterUser= false;
   }
 
   ngOnInit(): void {}
@@ -81,15 +83,13 @@ export class LoginPage implements OnInit {
     this.backButtonSub.unsubscribe();
   }
   enterlogin() {
+    this.EnterUser = true;
     this.presentLoading();
-    this.doLogin(this.usuario);
   }
   doLogin(data) {
     this.loader = true;
-    console.log(data);
     this.loginService.login(data).subscribe(
       (respuesta) => {
-        console.log(respuesta);
         if (respuesta.code === 200) {
           const actualizado = AppSettings.setTokenUser(respuesta);
           // this.sideBarService.actualizarSide();
@@ -283,5 +283,10 @@ export class LoginPage implements OnInit {
       message: "Iniciando Sesión...",
     });
     await this.loadion.present();
+    if (this.EnterUser) {
+      this.EnterUser=false;
+      this.doLogin(this.usuario);
+    }
+    this.EnterUser=false;
   }
 }
