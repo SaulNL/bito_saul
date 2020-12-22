@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppSettings} from "../AppSettings";
-import {Observable} from "rxjs";
+import {Observable,from} from "rxjs";
 import {map} from "rxjs/operators";
 import {DatosNegocios} from '../Modelos/DatosNegocios';
 import {NegocioModel} from "../Modelos/NegocioModel";
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ import {NegocioModel} from "../Modelos/NegocioModel";
 export class NegocioService {
 
   constructor(
-      private http: HttpClient
+      private http: HttpClient,
+      private _http: HTTP
   ) {
   }
 
@@ -20,13 +22,16 @@ export class NegocioService {
 
   obteneretalleNegocio(negocioo: string): Observable<any>{
     const body = JSON.stringify({negocio: negocioo });
-    return this.http.post(
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
         this.url+'/proveedor/obtener/detalleNegocio',
-        body,
-        {headers: AppSettings.getHeaders()}
-    ).pipe(map(data => {
-      return data;
-    }));
+        body,AppSettings.getHeaders())
+        .then((data) => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        }));
   }
 
   public obtenerDetalleDeNegocio(negocio: number, tip ): Observable<any> {
