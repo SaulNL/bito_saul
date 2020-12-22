@@ -81,10 +81,23 @@ export class BusquedaService {
     }));
   }
   public obtenerCategorias():Observable<any>{
-    return this.http.get(this.url + '/buscar/datos/inicio/allfiltro',
-      { headers: {'Content-Type':'application/json'}}
-    ).pipe(map(data => {
-      return data;
+    const body = JSON.stringify({});
+    let datos = from(this.httpNative.get(this.url + '/buscar/datos/inicio/allfiltro',{},
+    {'Content-Type':'application/json'})
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
     }));
+    
+    return datos.pipe(map(data => {
+        return data;
+    }));
+    // return this.http.get(this.url + '/buscar/datos/inicio/allfiltro',
+    //   { headers: {'Content-Type':'application/json'}}
+    // ).pipe(map(data => {
+    //   return data;
+    // }));
   }
 }

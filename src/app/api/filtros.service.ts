@@ -31,7 +31,6 @@ export class FiltrosService {
         .catch((error) => {
             return error;
         }));
-        console.log(datos);
         
         return datos.pipe(map(data => {
             return data;
