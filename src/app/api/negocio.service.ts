@@ -130,11 +130,16 @@ export class NegocioService {
 
   buscarNegocio(idNegocio: any): Observable<any>{
     const body = JSON.stringify({id: idNegocio});
-    return this.http.post(
-        this.url + 'api/buscar/negocio', body,
-        {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post( this.url + 'api/buscar/negocio',body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
   }
 
