@@ -210,12 +210,15 @@ export class NegocioService {
 
   registrarPedido(datos): Observable<any> {
     const body = JSON.stringify(datos);
-    return this.http.post(
-        this.url + 'api/pedios/registrar', body,
-        {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+        this.url + 'api/pedios/registrar', body, AppSettings.getHeadersToken())
+        .then((data) => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        }));
   }
   obtenerNumMaxServicios(): Observable<any> {
     return this.http.get(
