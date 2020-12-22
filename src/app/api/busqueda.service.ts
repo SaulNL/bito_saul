@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {AppSettings} from "../AppSettings";
-import {HttpClient} from "@angular/common/http";
 import {Observable, from} from "rxjs";
 import {map} from "rxjs/operators";
 import { HTTP } from '@ionic-native/http/ngx';
@@ -10,8 +9,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 export class BusquedaService {
 
   constructor(
-      private http: HttpClient,
-      private httpNative: HTTP
+      private http: HTTP
   ) {
   }
 
@@ -19,8 +17,8 @@ export class BusquedaService {
 
   public obtenerDatos(filtro): Observable<any> {
     const body = JSON.stringify({filtros: filtro});
-    this.httpNative.setDataSerializer("utf8");
-    let datos = from(this.httpNative.post(`${this.url}api/negocios/obtener`,body, AppSettings.getHeaders())
+    this.http.setDataSerializer("utf8");
+    let datos = from(this.http.post(`${this.url}api/negocios/obtener`,body, AppSettings.getHeaders())
     .then( data => {
       return JSON.parse(data.data);
     }));    
@@ -82,7 +80,7 @@ export class BusquedaService {
   }
   public obtenerCategorias():Observable<any>{
     const body = JSON.stringify({});
-    let datos = from(this.httpNative.get(this.url + '/buscar/datos/inicio/allfiltro',{},
+    let datos = from(this.http.get(this.url + '/buscar/datos/inicio/allfiltro',{},
     {'Content-Type':'application/json'})
     .then( data => {
         return JSON.parse(data.data);
@@ -94,10 +92,5 @@ export class BusquedaService {
     return datos.pipe(map(data => {
         return data;
     }));
-    // return this.http.get(this.url + '/buscar/datos/inicio/allfiltro',
-    //   { headers: {'Content-Type':'application/json'}}
-    // ).pipe(map(data => {
-    //   return data;
-    // }));
   }
 }
