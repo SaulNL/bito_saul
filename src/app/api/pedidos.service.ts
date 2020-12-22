@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {AppSettings} from '../AppSettings';
 import {from, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -10,7 +9,6 @@ import { HTTP } from '@ionic-native/http/ngx';
 export class PedidosService {
 
   constructor(
-    private http: HttpClient,
     private _http: HTTP
   ) { }
 
@@ -18,80 +16,114 @@ export class PedidosService {
 
   pedidosNegocios(idPersona: number, idProveedor: number, listAst: any): Observable<any> {
     const body = JSON.stringify({id_proveedor: idProveedor, id_persona: idPersona, estatus: listAst});
-    return this.http.post(
-      this.url + 'api/pedios/proveedor/obtener', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post( this.url + 'api/pedios/proveedor/obtener',body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
   }
 
   estatusPedidios(id: number): Observable<any> {
     const body = JSON.stringify({id_proveedor: id});
-    return this.http.post(
-      this.url + 'api/pedidos/estatus/obtener', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post( this.url + 'api/pedidos/estatus/obtener' ,body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
   }
 
   preparar(id_pedido_negocio: any): Observable<any> {
     const body = JSON.stringify({idPedidoNegocio: id_pedido_negocio});
-    return this.http.post(
-      this.url + 'api/pedidos/estatus/preparar', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    return from(this._http.post( this.url + 'api/pedidos/estatus/preparar' ,body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
   }
 
   enviar(id_pedido_negocio: any): Observable<any> {
     const body = JSON.stringify({idPedidoNegocio: id_pedido_negocio});
-    return this.http.post(
-      this.url + 'api/pedidos/estatus/enviar', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    return from(this._http.post(  this.url + 'api/pedidos/estatus/enviar' ,body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
   }
 
   entregar(id_pedido_negocio: any): Observable<any> {
     const body = JSON.stringify({idPedidoNegocio: id_pedido_negocio});
-    return this.http.post(
-      this.url + 'api/pedidos/estatus/entregar', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    return from(this._http.post(  this.url + 'api/pedidos/estatus/entregar' ,body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
   }
 
   cancelar(id_pedido_negocio: any, motivo: any): Observable<any> {
     const body = JSON.stringify({idPedidoNegocio: id_pedido_negocio, motivo});
-    return this.http.post(
-      this.url + 'api/pedidos/estatus/cancelar', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    return from(this._http.post( this.url + 'api/pedidos/estatus/cancelar' ,body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
   }
 
   cancelarUsuario(id_pedido_negocio: any, motivo: any): Observable<any> {
     const body = JSON.stringify({idPedidoNegocio: id_pedido_negocio, motivo});
-    return this.http.post(
-      this.url + 'api/pedidos/estatus/cancelarUsuario', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    return from(this._http.post( this.url + 'api/pedidos/estatus/cancelarUsuario' ,body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
   }
   numero(): Observable<any> {
     const body = JSON.stringify({variable: 'repartidor'});
-    return this.http.post(
-      this.url + 'api/variables/byVariable', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    return from(this._http.post(  this.url + 'api/variables/byVariable' ,body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
   }
 
@@ -110,11 +142,16 @@ export class PedidosService {
 
   ponerVisto(id_pedido_negocio: any): Observable<any> {
     const body = JSON.stringify({idPedidoNegocio: id_pedido_negocio});
-    return this.http.post(
-      this.url + 'api/pedidos/visto', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post( this.url + 'api/pedidos/visto' ,body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
   }
 
