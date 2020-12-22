@@ -68,11 +68,5 @@ export class ProductosService {
     })).pipe(map(data => {
         return data;
     }));
-    // return this._http.post(
-    //     this.url + 'api/productos/dar_like', body,
-    //     {headers: AppSettings.getHeadersToken()}
-    // ).pipe(map(data => {
-    //   return data;
-    // }));
   }
 }
