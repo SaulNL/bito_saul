@@ -36,12 +36,15 @@ export class NegocioService {
 
   public obtenerDetalleDeNegocio(negocio: number, tip ): Observable<any> {
     const body = JSON.stringify({id_negocio: negocio, tipo: tip});
-    return this.http.post(
-        this.url + 'api/lista/producto/negocio', body,
-        {headers: AppSettings.getHeaders()}
-    ).pipe(map(data => {
-      return data;
-    }));
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+        this.url + 'api/lista/producto/negocio', body, AppSettings.getHeaders())
+        .then((data) => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        }));
   }
 
   misNegocios(id: number): Observable<any> {

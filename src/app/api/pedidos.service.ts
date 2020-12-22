@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AppSettings} from '../AppSettings';
-import {Observable} from 'rxjs';
+import {from, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import { HTTP } from '@ionic-native/http/ngx';
 @Injectable({
   providedIn: 'root'
 })
 export class PedidosService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private _http: HTTP
   ) { }
 
   url = `${AppSettings.API_ENDPOINT}`;
@@ -95,12 +97,15 @@ export class PedidosService {
 
   noVistos(id: number): Observable<any> {
     const body = JSON.stringify({id_proveedor: id});
-    return this.http.post(
-      this.url + 'api/pedidos/novistos', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url + 'api/pedidos/novistos', body, AppSettings.getHeadersToken())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
   ponerVisto(id_pedido_negocio: any): Observable<any> {

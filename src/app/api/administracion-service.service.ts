@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {from, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import { FiltroCatVariableModel } from './../Modelos/catalogos/FiltroCatVariableModel';
 import { FiltroCatOrgModel } from './../Modelos/catalogos/FiltroCatOrgModel';
@@ -14,7 +14,7 @@ import { FiltroCatAvisosInfoModel } from './../Modelos/catalogos/FiltroCatAvisos
 import { FiltroCatTipoVentaModel } from './../Modelos/catalogos/FiltroCatTipoVentaModel';
 import { DenunciaModel } from './../Modelos/DenunciaModel';
 import { FiltroCatTipoNegoModel } from './../Modelos/catalogos/FiltroCatTipoNegoModel';
-
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,8 @@ import { FiltroCatTipoNegoModel } from './../Modelos/catalogos/FiltroCatTipoNego
 export class AdministracionService {
   url = `${AppSettings.API_ENDPOINT}`;
   constructor(
-    private _http: HttpClient
+    private _http: HttpClient,
+    private http: HTTP
   ) { }
 
   /*CATALOGO VARIABLE*/
@@ -425,12 +426,15 @@ export class AdministracionService {
     /*GUARDAR DENUNCIA PARA NEGOCIO */
   guardarDenunciaNegocio(denuncia: DenunciaModel): Observable<any> {
     const body = JSON.stringify(denuncia);
-    return this._http.post(
-      this.url + 'api/servicios/denunciar/enviar', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(
+      this.url + 'api/servicios/denunciar/enviar', body,AppSettings.getHeadersToken())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
   /*OBTENER LA LISTA  DE DENUNCIAS */
   obtenerDenuncias(): Observable<any> {

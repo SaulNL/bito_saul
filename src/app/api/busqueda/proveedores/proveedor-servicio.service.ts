@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppSettings} from "../../../AppSettings";
-import {Observable} from "rxjs";
+import {from, Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import { MsNegocioModel } from './../../../Modelos/busqueda/MsNegocioModel';
-
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,8 @@ import { MsNegocioModel } from './../../../Modelos/busqueda/MsNegocioModel';
 export class ProveedorServicioService {
   private url: string;
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private _http: HTTP
   ) {
     this.url = AppSettings.API_ENDPOINT;
    }
@@ -38,12 +39,15 @@ export class ProveedorServicioService {
    */
   obtenerEstatusCalificacionUsuario(usuario): Observable<any> {
     const body = JSON.stringify(usuario);
-    return this.http.post(
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
       `${this.url}api/proveedor/obtener/estatus/calificacion`,
-      body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-      return data;
-    }));
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 }
