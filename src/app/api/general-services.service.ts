@@ -82,24 +82,34 @@ export class GeneralServicesService {
    * Servicio para obtener el tiempo de espera por sms
    */
   public obtenerTiempoTemporizador(): Observable<any> {
-    return this._http.post(
-      `${this.url}api/catalogo/tiempoTemporizador`,
-      {},
-      {headers: AppSettings.getHeaders()}
-    ).pipe(map(data => {
-      return data;
-    }));
+    const body = JSON.stringify({});
+    console.log(body);
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(
+      this.url+'api/catalogo/tiempoTemporizador',
+      body,AppSettings.getHeaders())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
   obtenerListaCategopriasProducto(id: any, tipo: number): Observable<any> {
     const body = JSON.stringify({id_categoria_negocio: id, tipo: tipo});
-    return this._http.post(
-      `${this.url}api/buscar/categorias/producto`,
-      body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-
-      return data;
-    }));
+    console.log(body);
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(
+      this.url+'api/buscar/categorias/producto',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 }

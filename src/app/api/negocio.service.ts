@@ -36,135 +36,194 @@ export class NegocioService {
 
   public obtenerDetalleDeNegocio(negocio: number, tip ): Observable<any> {
     const body = JSON.stringify({id_negocio: negocio, tipo: tip});
+    console.log(body);
     this._http.setDataSerializer("utf8");
     return from(this._http.post(
-        this.url + 'api/lista/producto/negocio', body, AppSettings.getHeaders())
-        .then((data) => {
-          return JSON.parse(data.data);
-        })
-        .catch((error) => {
-          return error;
-        }));
+      this.url+'api/lista/producto/negocio',
+      body,AppSettings.getHeaders())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
   misNegocios(id: number): Observable<any> {
     const body = JSON.stringify({id_proveedor: id});
-    return this.http.post(
-      this.url + 'api/buscar/mis-negocios', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/buscar/mis-negocios',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
   buscarProductosServios(id: number, tipo: number): Observable<any> {
     const body = JSON.stringify({id_negocio: id, tipo : tipo});
-    return this.http.post(
-      this.url + 'api/lista/producto/negocio', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/lista/producto/negocio',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
   guardarProductoServio(datosNegocio: DatosNegocios): Observable<any> {
     const body = JSON.stringify(datosNegocio);
-    return this.http.post(
-      this.url + 'api/guardarProductosServicios', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/guardarProductosServicios',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
   obtenerNumMaxProductos(idNegocio): Observable<any> {
     const body = JSON.stringify({id: idNegocio});
-    return this.http.post(
-      this.url + 'api/negocio/numero/max/productos', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/negocio/numero/max/productos',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
   modificarCategoria(enviar:any): Observable<any> {
     const body = JSON.stringify(enviar);
-    return this.http.post(
-      this.url + 'api/negocio/modificar/categoria', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/negocio/modificar/categoria',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
   eliminarCategoria(enviar:any): Observable<any> {
     const body = JSON.stringify(enviar);
-    return this.http.post(
-      this.url + 'api/negocio/eliminar/categoria', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/negocio/eliminar/categoria',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
   agregarCategoria(enviar:any): Observable<any> {
     const body = JSON.stringify(enviar);
-    return this.http.post(
-      this.url + 'api/negocio/guardar/categoria', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/negocio/guardar/categoria',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
   public obtnerTipoNegocio(): Observable<any> {
-    return this.http.post(
-        this.url+'api/servicio/lista/negocios',
-        {},
-        {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-
-      return data;
-    }));
+    const body = JSON.stringify({});
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/servicio/lista/negocios',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
   buscarNegocio(idNegocio: any): Observable<any>{
     const body = JSON.stringify({id: idNegocio});
+    console.log(body);
     this._http.setDataSerializer("utf8");
-    return from(this._http.post( this.url + 'api/buscar/negocio',body,
-    AppSettings.getHeadersToken())
-    .then( data => {
+    return from(this._http.post(
+      this.url+'api/buscar/negocio',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
         return JSON.parse(data.data);
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         return error;
-    })).pipe(map(data => {
-        return data;
-    }));
+      }));
   }
 
   categoriaPrincipal(id: number): Observable<any> {
     const body = JSON.stringify({id_tipo_negocio: id});
-    return this.http.post(
-        this.url+'api/servicio/tipoProductoServicio',
-        body,
-        {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-
-      return data;
-    }));
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/servicio/tipoProductoServicio',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
   obtenerCategorias(id: any): Observable<any> {
     const body = JSON.stringify({id_giro: id});
-    return this.http.post(
-        this.url+'buscar/giro/categorias',
-        body,
-        {headers: AppSettings.getHeaders()}
-    ).pipe(map(data => {
-
-      return data;
-    }));
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'buscar/giro/categorias',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
     /**
    * Funcion para obtener el catalogo de organizaciones
@@ -172,13 +231,19 @@ export class NegocioService {
    * @author Omar
    */
   obtenerCatOrganizaciones(): Observable<any> {
-    return this.http.post(
-      `${this.url}api/catalogo/organizaciones/obtener`,
-      {},
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-      return data;
-    }));
+    const body = JSON.stringify({});
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/catalogo/organizaciones/obtener',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
    /**
    * Servicio para validar disponivilidad de url del negocio
@@ -187,51 +252,78 @@ export class NegocioService {
    */
   verificarUrlNegocio(url_negocio: string): Observable<any> {
     const body = JSON.stringify({url_negocio: url_negocio});
-    return this.http.post(
-      this.url + 'api/negocio/verificar_url', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/negocio/verificar_url',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
   guardar(negocio: NegocioModel): Observable<any> {
     const body = JSON.stringify(negocio);
-    return this.http.post(
-      this.url + 'api/proveedor/guardar_negocio', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/proveedor/guardar_negocio',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
   activarDesactivar(id_negocio: number, cambio: boolean): Observable<any> {
     const body = JSON.stringify({negocio: id_negocio, valor : cambio});
-    return this.http.post(
-      this.url + 'api/negocio/activar-desactivar', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/negocio/activar-desactivar',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
   registrarPedido(datos): Observable<any> {
     const body = JSON.stringify(datos);
+    console.log(body);
     this._http.setDataSerializer("utf8");
     return from(this._http.post(
-        this.url + 'api/pedios/registrar', body, AppSettings.getHeadersToken())
-        .then((data) => {
-          return JSON.parse(data.data);
-        })
-        .catch((error) => {
-          return error;
-        }));
+      this.url+'api/pedios/registrar',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
   obtenerNumMaxServicios(): Observable<any> {
-    return this.http.get(
-      this.url + 'api/negocio/numero/max/servicios',
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+    const body = JSON.stringify({});
+    console.log(body);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/negocio/numero/max/servicios',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        console.log(data);
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
-
 }
