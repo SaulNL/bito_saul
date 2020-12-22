@@ -1,8 +1,9 @@
 import { AppSettings } from './../AppSettings';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, from} from 'rxjs';
 import {map} from 'rxjs/operators';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ export class GeneralServicesService {
   url = `${AppSettings.API_ENDPOINT}`;
 
   constructor(
-    private _http: HttpClient
+    private _http: HttpClient,
+    private http: HTTP
   ) { }
 
   public getEstadosWS(): Observable<any> {
@@ -65,15 +67,15 @@ export class GeneralServicesService {
    * Servicio para obtener la lista de de negocios por id's
    */
   public obtenerNegocios(ids: any): Observable<any> {
-    const body = JSON.stringify({id_negocios: ids});
-    return this._http.post(
-      `${this.url}api/servicio/lista/mapaNegocios`,
-      body,
-      {headers: AppSettings.getHeaders()}
-    ).pipe(map(data => {
-      return data;
-    }));
-
+    const body = JSON.stringify({id_negocios: ids});    
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(`${this.url}api/servicio/lista/mapaNegocios`,body,AppSettings.getHeaders())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
+    }));  
   }
   
   /**
