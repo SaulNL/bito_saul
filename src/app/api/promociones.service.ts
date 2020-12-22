@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { AppSettings } from "../AppSettings";
-import { Observable } from "rxjs";
+import { Observable, from } from "rxjs";
 import { map } from "rxjs/operators";
 import { FiltrosModel } from '../Modelos/FiltrosModel';
 import { PromocionesModel } from '../Modelos/busqueda/PromocionesModel';
 import { PublicacionesModel } from '../Modelos/PublicacionesModel';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,10 @@ export class PromocionesService {
 
   url = `${AppSettings.API_ENDPOINT}`;
 
-  constructor( private _http: HttpClient ) { }
+  constructor( 
+    private _http: HttpClient,
+    private http: HTTP
+  ) { }
 
   obtenerDetalle(id_promocion): Observable<any> {
     const body = JSON.stringify({id_promocion: id_promocion});
@@ -28,10 +32,19 @@ export class PromocionesService {
 
   buscarPromocinesPublicadasModulo(filtros: FiltrosModel): Observable<any> {
     const body = JSON.stringify({filtros: filtros});
-    return this._http.post(
-      this.url + 'api/promociones/buscar/publicadas', body,
-      {headers: AppSettings.getHeaders()}
-    ).pipe(map(res => {
+    this.http.setDataSerializer("utf8");
+    let datos = from(this.http.post(this.url + 'api/promociones/buscar/publicadas',body,
+    AppSettings.getHeaders())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    }));
+    
+    return datos.pipe(map(data => {
+        return data;
+    })).pipe(map(res => {
       let jsOrigen: any;
       jsOrigen = res;
 
@@ -82,7 +95,8 @@ export class PromocionesService {
       }
 
       jsOrigen.data = jsCategoria;
-
+      console.log(jsOrigen);
+      
       return jsOrigen;
     }));
   }

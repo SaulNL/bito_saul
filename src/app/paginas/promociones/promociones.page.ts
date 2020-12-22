@@ -32,7 +32,14 @@ export class PromocionesPage implements OnInit {
   public banner: string;
 
 
-  constructor(private _promociones: PromocionesService,  public loadingController: LoadingController,  private filtrosService: FiltrosService, private serviceProveedores: ProveedorServicioService, public _notificacionService: ToadNotificacionService, private active: ActivatedRoute ) {
+  constructor(
+    private _promociones: PromocionesService,  
+    public loadingController: LoadingController,  
+    private filtrosService: FiltrosService, 
+    private serviceProveedores: ProveedorServicioService, 
+    public _notificacionService: ToadNotificacionService, 
+    private active: ActivatedRoute 
+  ) {
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.listaCategorias = [];
