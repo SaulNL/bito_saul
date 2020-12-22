@@ -95,7 +95,6 @@ export class PromocionesService {
       }
 
       jsOrigen.data = jsCategoria;
-      console.log(jsOrigen);
       
       return jsOrigen;
     }));
