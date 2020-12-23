@@ -22,11 +22,13 @@ export class PromocionesService {
 
   obtenerDetalle(id_promocion): Observable<any> {
     const body = JSON.stringify({id_promocion: id_promocion});
-    return this._http.post(
-      this.url + 'api/promocion/obtener/detalle', body,
-      {headers: AppSettings.getHeaders()}
-    ).pipe(map(data => {
-      return data;
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(`${this.url}api/promocion/obtener/detalle`,body, AppSettings.getHeaders())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
 
@@ -102,96 +104,122 @@ export class PromocionesService {
 
   buscar(promocion: PromocionesModel): Observable<any> {
     const body = JSON.stringify(promocion);
-    return this._http.post(
-      this.url + 'api/promociones/persona', body,
-      {headers: AppSettings.getHeaders()}
-    ).pipe(map(res => {
-      return res;
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/promociones/persona',body, AppSettings.getHeaders())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
 
   obtenerNumeroPublicacionesPromocion(id_proveedor): Observable<any>{
     const body = JSON.stringify({'id_proveedor':id_proveedor});
-    return this._http.post(
-      this.url + 'api/promocion/obtener/numero_publicaciones', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-      return data;
+    this. http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/promocion/obtener/numero_publicaciones',body, AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
 
   obtenerPromocinesPublicadas(promocion: PromocionesModel): Observable<any> {
+    console.log(promocion);
     const body = JSON.stringify(promocion);
-    return this._http.post(
-      this.url + 'api/promociones/obtener/publicadas', body,
-      {headers:  AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    console.log(body);
+    this. http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/promociones/obtener/publicadas',body, AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
 
   quitarPublicacionPromocion(variable: PromocionesModel) {
-    console.log( variable );
+    console.log(variable)
     const body = JSON.stringify(variable);
-    return this._http.post(
-      this.url + 'api/promociones/eliminar/publicacion', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-      return data;
+    console.log(body);
+    this. http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/promociones/eliminar/publicacion',body, AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
 
   obtenerQuienVioPublicacion(id_promocion, id_persona): Observable<any>{
     const body = JSON.stringify({'id_promocion': id_promocion, 'id_persona': id_persona});
-    return this._http.post(
-      this.url + 'api/promociones/obtener/viste_mi_promocion', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-      return data;
+    this. http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/promociones/obtener/viste_mi_promocion',body, AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
 
   obtenerNumeroQuienVioPublicacion(id_promocion): Observable<any>{
     const body = JSON.stringify({'id_promocion': id_promocion});
-    return this._http.post(
-      this.url + 'api/promociones/obtener/numero_viste_mi_promocion', body,
-      {headers:  AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-      return data;
+    console.log(body);
+    this. http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/promociones/obtener/numero_viste_mi_promocion',body, AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
 
   guardar(variable: PromocionesModel): Observable<any> {
+    console.log(variable);
     const body = JSON.stringify(variable);
-    return this._http.post(
-      this.url + 'api/promociones/guardar', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-
-      return data;
+    console.log(body);
+    this. http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/promociones/guardar',body, AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
 
   eliminar(variable: PromocionesModel) {
+    console.log(variable);
     const body = JSON.stringify(variable);
-    return this._http.post(
-      this.url + 'api/promociones/eliminar', body,
-      {headers:  AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-
-      return data;
+    console.log(body);
+    this. http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/promociones/eliminar',body, AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
 
   guardarPublicacion(publicacion: PublicacionesModel): Observable<any> {
+    console.log(publicacion);
     const body = JSON.stringify(publicacion);
-    return this._http.post(
-      this.url + 'api/promocion/publicar', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-
-      return data;
+    console.log(body);
+    this. http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/promocion/publicar',body, AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
+    
   }
 
 }
