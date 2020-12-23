@@ -17,35 +17,36 @@ export class GeneralServicesService {
   ) { }
 
   public getEstadosWS(): Observable<any> {
-    return this._http.post(
-      `${this.url}api/catalogo/estado/list`,
-      {},
-      {headers: AppSettings.getHeaders()}
-    ).pipe(map(data => {
-      return data;
+    return from(this.http.post(`${this.url}api/catalogo/estado/list`,{},AppSettings.getHeaders())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
   public getMunicipios(id_estado: number): Observable<any> {
     const body = JSON.stringify({id_estado: id_estado});
-    return this._http.post(
-      `${this.url}api/catalogo/municipio/list`,
-      body,
-      {headers: AppSettings.getHeaders()}
-    ).pipe(map(data => {
-
-      return data;
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(`${this.url}api/catalogo/municipio/list`,body, AppSettings.getHeaders())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
 
   public getLocalidad(id_municipio: number): Observable<any> {
     const body = JSON.stringify({id_municipio: id_municipio});
-    return this._http.post(
-      `${this.url}api/catalogo/localidad/list`,
-      body, {headers: AppSettings.getHeaders()}
-    ).pipe(map(data => {
-
-      return data;
-    }));
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(`${this.url}api/catalogo/localidad/list`, body,  AppSettings.getHeaders())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
   /**

@@ -1,44 +1,52 @@
 import { Injectable } from '@angular/core';
 import {AppSettings} from "../AppSettings";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
+import {from, Observable} from "rxjs";
 import { MsPersonaModel } from '../Modelos/MsPersonaModel';
+import { HTTP } from '@ionic-native/http/ngx';
 @Injectable({
   providedIn: 'root'
 })
 export class PersonaService {
 
   constructor(
-    private http: HttpClient
+    private _http: HTTP
   ) { }
   url = `${AppSettings.API_ENDPOINT}`;
 
   cambiarContrasenia(idUsuario: number, contrasenia: any): Observable<any> {
     const body = JSON.stringify({id_usuario: idUsuario, password: contrasenia.newContrasenia, passwordAct: contrasenia.contaseniaAtual});
-    return this.http.post(
-      this.url + 'api/usr/password/edit', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(this.url + 'api/usr/password/edit', body, AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
   guardar(busquedaTO: MsPersonaModel): Observable<any> {
     const body = JSON.stringify(busquedaTO);
-    return this.http.post(
-      this.url + 'api/proveedoresUsuario/guardarPersonaProveedor', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(this.url + 'api/proveedoresUsuario/guardarPersonaProveedor', body,AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
   datosUsuario(idPesona: number): Observable<any> {
     const body = JSON.stringify({id_persona : idPesona});
-    return this.http.post(
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
       this.url + 'api/proveedor/obtener-proveedor-id-persona', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
-    }));
+       AppSettings.getHeadersToken())
+       .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 }
