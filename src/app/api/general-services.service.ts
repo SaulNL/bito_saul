@@ -14,7 +14,9 @@ export class GeneralServicesService {
   constructor(
     private _http: HttpClient,
     private http: HTTP
-  ) { }
+  ) {
+    this.http.setDataSerializer("utf8");
+   }
 
   public getEstadosWS(): Observable<any> {
     return from(this.http.post(`${this.url}api/catalogo/estado/list`,{},AppSettings.getHeaders())
@@ -56,13 +58,21 @@ export class GeneralServicesService {
    */
   enviarComentarioCorreo(datos:any): Observable<any>{
     const body = JSON.stringify(datos);
-    return this._http.post(
-      `${this.url}api/comentario/enviar`,
-      body,
-      {headers: AppSettings.getHeaders()}
-    ).pipe(map(data => {
-      return data;
-    }));
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(`${this.url}api/comentario/enviar`, body,  AppSettings.getHeaders())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+    // return this._http.post(
+    //   `${this.url}api/comentario/enviar`,
+    //   body,
+    //   {headers: AppSettings.getHeaders()}
+    // ).pipe(map(data => {
+    //   return data;
+    // }));
   }
     /**
    * Servicio para obtener la lista de de negocios por id's

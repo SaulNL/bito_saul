@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, from} from 'rxjs';
 import {map} from 'rxjs/operators';
 import { SolicitudesModel } from './../Modelos/SolicitudesModel';
 import {AppSettings} from '../AppSettings';
@@ -9,6 +9,7 @@ import { UbicacionModel } from '../Modelos/busqueda/UbicacionModel';
 import { FiltrosModel } from '../Modelos/busqueda/FiltrosModel';
 import { PostulacionModel } from '../Modelos/PostulacionModel';
 import { PostuladosModel } from '../Modelos/PostuladosModel';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,11 @@ export class SolicitudesService {
   url = `${AppSettings.API_ENDPOINT}`;
 
   constructor(
-    private _http: HttpClient
-  ) { }
+    private _http: HttpClient,
+    private http: HTTP
+  ) {
+    this.http.setDataSerializer("utf8");
+   }
   
   /**
    * Servicio para buscar una solicitud
@@ -27,12 +31,22 @@ export class SolicitudesService {
    */
   buscar(solicitud: SolicitudesModel): Observable<any> {
     const body = JSON.stringify(solicitud);
-    return this._http.post(
-      this.url + 'api/solicitudes/persona', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    return from(this.http.post( this.url + 'api/solicitudes/persona',body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
+    // return this._http.post(
+    //   this.url + 'api/solicitudes/persona', body,
+    //   {headers: AppSettings.getHeadersToken()}
+    // ).pipe(map(res => {
+    //   return res;
+    // }));
   }
     /**
    * Servicio para buscar publicaciones
@@ -52,13 +66,23 @@ export class SolicitudesService {
    */
   guardar(variable: SolicitudesModel): Observable<any> {
     const body = JSON.stringify(variable);
-    return this._http.post(
-      this.url + '/api/solicitudes/guardar', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-
-      return data;
+    return from(this.http.post( this.url + '/api/solicitudes/guardar',body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
+    // return this._http.post(
+    //   this.url + '/api/solicitudes/guardar', body,
+    //   {headers: AppSettings.getHeadersToken()}
+    // ).pipe(map(data => {
+
+    //   return data;
+    // }));
   }
     /**
    * Servicio para eliminar la solicitud
@@ -82,13 +106,23 @@ export class SolicitudesService {
    */
   guardarPublicacion(publicacion: PublicacionesModel) {
     const body = JSON.stringify(publicacion);
-    return this._http.post(
-      this.url + '/api/solicitudes/publicar', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-
-      return data;
+    return from(this.http.post( this.url + '/api/solicitudes/publicar',body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
+    // return this._http.post(
+    //   this.url + '/api/solicitudes/publicar', body,
+    //   {headers: AppSettings.getHeadersToken()}
+    // ).pipe(map(data => {
+
+    //   return data;
+    // }));
   }
   /**
    * Funcion para obtener detalle de quien vio la publicacion
@@ -141,12 +175,22 @@ export class SolicitudesService {
    */
   obtenerNumeroPublicacionesSolicitud(id_persona): Observable<any>{
     const body = JSON.stringify({'id_persona':id_persona});
-    return this._http.post(
-      this.url + '/api/solicitudes/obtener/numero_publicaciones', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-      return data;
+    return from(this.http.post( this.url + '/api/solicitudes/obtener/numero_publicaciones',body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
+    // return this._http.post(
+    //   this.url + '/api/solicitudes/obtener/numero_publicaciones', body,
+    //   {headers: AppSettings.getHeadersToken()}
+    // ).pipe(map(data => {
+    //   return data;
+    // }));
   }
     /**
    * Servicio para dejar de publicar una promocion
@@ -181,12 +225,22 @@ export class SolicitudesService {
    */
   obtenerDiasPublicacionesSolicitud(id_proveedor): Observable<any>{
     const body = JSON.stringify({'id_proveedor':id_proveedor});
-    return this._http.post(
-      this.url + '/api/solicitudes/obtener/dias_publicaciones', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-      return data;
+    return from(this.http.post( this.url + '/api/solicitudes/obtener/dias_publicaciones',body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
+    // return this._http.post(
+    //   this.url + '/api/solicitudes/obtener/dias_publicaciones', body,
+    //   {headers: AppSettings.getHeadersToken()}
+    // ).pipe(map(data => {
+    //   return data;
+    // }));
   }
   /**
    * Servicio para obtener las plantillas
@@ -206,12 +260,22 @@ export class SolicitudesService {
    */
   obtenerSolcitudesPublicadas(solicitud: SolicitudesModel): Observable<any> {
     const body = JSON.stringify(solicitud);
-    return this._http.post(
-      this.url + '/api/solicitudes/obtener/publicadas', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(res => {
-      return res;
+    return from(this.http.post( this.url + '/api/solicitudes/obtener/publicadas',body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
+    // return this._http.post(
+    //   this.url + '/api/solicitudes/obtener/publicadas', body,
+    //   {headers: AppSettings.getHeadersToken()}
+    // ).pipe(map(res => {
+    //   return res;
+    // }));
   }
    /**
    * Funcion para buscar las promociones publicadas
@@ -297,13 +361,23 @@ export class SolicitudesService {
    */
   quitarPublicacion(variable: SolicitudesModel) {
     const body = JSON.stringify(variable);
-    return this._http.post(
-      this.url + '/api/solicitudes/dejar/publicar', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-
-      return data;
+    return from(this.http.post( this.url + '/api/solicitudes/dejar/publicar',body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
+    // return this._http.post(
+    //   this.url + '/api/solicitudes/dejar/publicar', body,
+    //   {headers: AppSettings.getHeadersToken()}
+    // ).pipe(map(data => {
+
+    //   return data;
+    // }));
   }
    /**
    * Servicio para guardar la postulacion
@@ -327,12 +401,22 @@ export class SolicitudesService {
    */
   obtenerPostulados(idSolicitud): Observable<any>{
     const body = JSON.stringify({'id_solicitud': idSolicitud});
-    return this._http.post(
-      this.url + '/api/solicitudes/obtener/postulados', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-      return data;
+    return from(this.http.post( this.url + '/api/solicitudes/obtener/postulados',body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
+    // return this._http.post(
+    //   this.url + '/api/solicitudes/obtener/postulados', body,
+    //   {headers: AppSettings.getHeadersToken()}
+    // ).pipe(map(data => {
+    //   return data;
+    // }));
   }
   
   /**
@@ -342,11 +426,21 @@ export class SolicitudesService {
    */
   checkendPostulacion(postulado: PostuladosModel): Observable<any>{
     const body = JSON.stringify(postulado);
-    return this._http.post(
-      this.url + '/api/solicitudes/guardar/checkend', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-      return data;
+    return from(this.http.post( this.url + '/api/solicitudes/guardar/checkend',body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
+    // return this._http.post(
+    //   this.url + '/api/solicitudes/guardar/checkend', body,
+    //   {headers: AppSettings.getHeadersToken()}
+    // ).pipe(map(data => {
+    //   return data;
+    // }));
   }
 }

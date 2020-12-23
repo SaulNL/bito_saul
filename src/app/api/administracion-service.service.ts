@@ -24,7 +24,9 @@ export class AdministracionService {
   constructor(
     private _http: HttpClient,
     private http: HTTP
-  ) { }
+  ) {
+    this.http.setDataSerializer("utf8");
+   }
 
   /*CATALOGO VARIABLE*/
   guardarVarible(filtro: FiltroCatVariableModel): Observable<any> {
