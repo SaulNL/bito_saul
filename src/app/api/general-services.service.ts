@@ -19,7 +19,9 @@ export class GeneralServicesService {
    }
 
   public getEstadosWS(): Observable<any> {
-    return from(this.http.post(`${this.url}api/catalogo/estado/list`,{},AppSettings.getHeaders())
+    const body = JSON.stringify({});
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(`${this.url}api/catalogo/estado/list`,body, AppSettings.getHeaders())
     .then((data) => {
       return JSON.parse(data.data);
     })

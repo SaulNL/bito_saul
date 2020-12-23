@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable, from} from 'rxjs';
+import {Observable,from} from 'rxjs';
 import {map} from 'rxjs/operators';
 import { SolicitudesModel } from './../Modelos/SolicitudesModel';
 import {AppSettings} from '../AppSettings';
@@ -145,11 +145,13 @@ export class SolicitudesService {
    */
   obtenerNumeroQuienVioPublicacion(idSolicitud): Observable<any>{
     const body = JSON.stringify({'id_solicitud': idSolicitud});
-    return this._http.post(
-      this.url + '/api/solicitudes/obtener/numero_viste_mi_solicitud', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-      return data;
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + '/api/solicitudes/obtener/numero_viste_mi_solicitud',body, AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
     /**
@@ -158,14 +160,14 @@ export class SolicitudesService {
    * @author Omar
    */
   guardarQuienVioSolicitud(solicitud: SolicitudesModel, ubicacion: UbicacionModel): Observable<any> {
-    console.log('enviando: ', solicitud);
     const body = JSON.stringify(solicitud);
-    return this._http.post(
-      this.url + '/api/solicitudes/guardar/viste_mi_solicitud', body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-
-      return data;
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + '/api/solicitudes/guardar/viste_mi_solicitud',body, AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
   /**
@@ -347,11 +349,13 @@ export class SolicitudesService {
    */
   obtenerSolicitudesPublicadas(filtros: FiltrosModel): Observable<any> {
     const body = JSON.stringify({filtros: filtros});
-    return this._http.post(
-      this.url + '/api/solicitudes/buscar/publicadas', body,
-      {headers: AppSettings.getHeaders()}
-    ).pipe(map(data => {
-      return data;
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + '/api/solicitudes/buscar/publicadas',body, AppSettings.getHeaders())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
     }));
   }
   /**
