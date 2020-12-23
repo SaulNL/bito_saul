@@ -297,25 +297,31 @@ export class MisProductosServiciosPage implements OnInit {
     this.sercicioNegocio.guardarProductoServio(this.datosNegocio).subscribe(
       (repsuesta) => {
         this.datosNegocio = repsuesta.data;
-        if (
-          this.datosNegocio.cartaProducto !== undefined &&
-          this.datosNegocio.cartaProducto !== null &&
-          this.datosNegocio.cartaProducto !== ""
-        ) {
-          this.carta = this.cleanURL(this.datosNegocio.cartaProducto);
-        }
-        if (this.loadPdf) {
-          this.notificacionService.exito("Carta guardada con éxito");
-        }
-        if (
-          this.datosNegocio.cartaServicio !== undefined &&
-          this.datosNegocio.cartaServicio !== null &&
-          this.datosNegocio.cartaServicio !== ""
-        ) {
-          this.carta = this.cleanURL(this.datosNegocio.cartaServicio);
-        }
-        if (this.loadPdf) {
-          this.notificacionService.exito("Carta guardada con éxito");
+        switch (this.iden) {
+          case 1:
+            if (
+              this.datosNegocio.cartaProducto !== undefined &&
+              this.datosNegocio.cartaProducto !== null &&
+              this.datosNegocio.cartaProducto !== ""
+            ) {
+              this.carta = this.cleanURL(this.datosNegocio.cartaProducto);
+            }
+            if (this.loadPdf) {
+              this.notificacionService.exito("Carta guardada con éxito");
+            }    
+            break;
+          case 2:
+            if (
+              this.datosNegocio.cartaServicio !== undefined &&
+              this.datosNegocio.cartaServicio !== null &&
+              this.datosNegocio.cartaServicio !== ""
+            ) {
+              this.carta = this.cleanURL(this.datosNegocio.cartaServicio);
+            }
+            if (this.loadPdf) {
+              this.notificacionService.exito("Carta guardada con éxito");
+            }
+            break;
         }
       },
       (error) => {},
