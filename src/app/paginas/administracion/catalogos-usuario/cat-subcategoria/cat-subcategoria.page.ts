@@ -80,12 +80,13 @@ export class CatSubcategoriaPage implements OnInit {
     this.all = {
       make: this.selectTO,
       model: this.subcategoriaTO
-  };
+  };  
     let navigationExtras = JSON.stringify(this.all);
     this.router.navigate(['/tabs/home/cat-categoria/datos-categoria/cat-subcategoria/datos-subcategoria'], { queryParams: {special: navigationExtras}  });
   }
   agregarSubcategoria() {
     this.selectTO = new FiltroCatSubCategoriasModel();
+    this.selectTO.id_giro = this.subcategoriaTO.id_giro;
     let navigationExtras = JSON.stringify(this.selectTO);
     this.router.navigate(['/tabs/home/cat-categoria/datos-categoria/cat-subcategoria/datos-subcategoria'], { queryParams: {special: navigationExtras}  });
   }

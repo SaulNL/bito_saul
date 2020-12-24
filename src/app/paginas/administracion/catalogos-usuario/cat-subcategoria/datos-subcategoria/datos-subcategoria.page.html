@@ -41,20 +41,20 @@
     <ion-item>
       <div class="avatar-upload">
         <div id="giroEdit" class="avatar-edit">
-            <input type='file' id="imageUploadLocal" accept="image/*" (change)="subirArchivo($event, 1)" />
-            <label for="imageUploadLocal">
+            <input type='file' id="imageUploadLocals" accept="image/*" (change)="subirArchivo($event, 1)" />
+            <label for="imageUploadLocals">
               <ion-icon name="camera-outline" style="position: relative; top: 7px;"></ion-icon>
             </label>
         </div>
         <div id="giro" class="avatar-preview">
-            <div *ngIf="subcategoriaTO.imagen === null || subcategoriaTO.imagen === undefined" id="imageUploadLocal" [ngStyle]="subcategoriaTO.imagen !== null ? 
+            <div *ngIf="subcategoriaTO.imagen === null || subcategoriaTO.imagen === undefined" id="imageUploadLocals" [ngStyle]="subcategoriaTO.imagen !== null ? 
             {'background-image': 'url('+subcategoriaTO.url_imagen+')'} : ''">
             </div>
             <div *ngIf="subcategoriaTO.imagen !== null && subcategoriaTO.imagen !== undefined" [ngStyle]="{
          'background-image': 'url('+subcategoriaTO.imagen.archivo_64+')'}">
             </div>
         </div>
-        <label for="imageUploadLocal" class="col-form-label ">Imagen</label>
+        <label for="imageUploadLocals" class="col-form-label ">Imagen</label>
     </div>
     </ion-item>
     <ion-item>
