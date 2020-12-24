@@ -556,7 +556,7 @@ export class MisProductosServiciosPage implements OnInit {
       let height;
       let width;
       for (const archivo of event.target.files) {
-        const reader = new FileReader();
+        const reader = this.utilscls.getFileReader();
         reader.readAsDataURL(archivo);
         reader.onload = () => {
           const img = new Image();
@@ -591,7 +591,7 @@ export class MisProductosServiciosPage implements OnInit {
               this.resizeToHeight = 400;
               this.tipoImagen = 1;
               this.fileChangeEvent(event);
-              this.abrirModalImagen();
+              this.abrirModalImagen(img.src,this.resizeToWidth, this.resizeToHeight);
             }
           };
         };
@@ -602,17 +602,17 @@ export class MisProductosServiciosPage implements OnInit {
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
   }
-
-  async abrirModalImagen() {
+ 
+  async abrirModalImagen(evento, width, heigh) {
     const modal = await this.modalController.create({
       component: RecorteImagenComponent,
       cssClass: "my-custom-class",
       componentProps: {
         actualTo: this.productoNuevo,
-        imageChangedEvent: this.imageChangedEvent,
+        imageChangedEvent: evento,
         maintainAspectRatio: this.maintainAspectRatio,
-        resizeToWidth: this.resizeToWidth,
-        resizeToHeight: this.resizeToHeight,
+        resizeToWidth: width,
+        resizeToHeight: heigh,
         tipoImagen: this.tipoImagen,
         blnImgCuadrada: this.blnImgCuadrada,
         blnImgRectangulo: this.blnImgRectangulo,
