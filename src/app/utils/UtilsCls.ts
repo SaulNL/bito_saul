@@ -28,7 +28,7 @@ export class UtilsCls {
 
   getBase64(file) {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+      const reader = this.getFileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
@@ -245,4 +245,10 @@ export class UtilsCls {
     }
     return 0;
   }
+
+  private getFileReader(): FileReader {
+    const fileReader = new FileReader();
+    const zoneOriginalInstance = (fileReader as any)["__zone_symbol__originalInstance"];
+    return zoneOriginalInstance || fileReader;
+    }
 }

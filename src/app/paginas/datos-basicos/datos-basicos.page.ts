@@ -101,7 +101,7 @@ export class DatosBasicosPage implements OnInit {
       let height;
       let width;
       for (const archivo of event.target.files) {
-        const reader = new FileReader();
+        const reader = this.getFileReader();
         reader.readAsDataURL(archivo);
         reader.onload = () => {
           const img = new Image();
@@ -165,4 +165,9 @@ export class DatosBasicosPage implements OnInit {
     );
     return data;
   }
+  private getFileReader(): FileReader {
+    const fileReader = new FileReader();
+    const zoneOriginalInstance = (fileReader as any)["__zone_symbol__originalInstance"];
+    return zoneOriginalInstance || fileReader;
+    }
 }
