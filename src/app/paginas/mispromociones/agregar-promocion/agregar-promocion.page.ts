@@ -110,7 +110,7 @@ export class AgregarPromocionPage implements OnInit {
       let height;
       let width;
       for (const archivo of event.target.files) {
-        const reader = new FileReader();
+        const reader = this._utils_cls.getFileReader();
         reader.readAsDataURL(archivo);
         reader.onload = () => {
           const img = new Image();
@@ -145,7 +145,7 @@ export class AgregarPromocionPage implements OnInit {
               this.resizeToHeight = 400;
               this.tipoImagen = 1;
               this.fileChangeEvent(event);
-              this.abrirModalImagen();
+              this.abrirModalImagen(img.src,this.resizeToWidth,this.resizeToHeight);
             }
           };
         };
@@ -157,16 +157,16 @@ export class AgregarPromocionPage implements OnInit {
     this.imageChangedEvent = event;
   }
 
-  async abrirModalImagen() {
+  async abrirModalImagen(evento,wi,he) {
     const modal = await this.modalController.create({
       component: RecorteImagenComponent,
       cssClass: 'my-custom-class',
       componentProps: {
         'actualTo': this.seleccionTo,
-        'imageChangedEvent': this.imageChangedEvent,
+        'imageChangedEvent': evento,
         'maintainAspectRatio': this.maintainAspectRatio,
-        'resizeToWidth': this.resizeToWidth,
-        'resizeToHeight': this.resizeToHeight,
+        'resizeToWidth': wi,
+        'resizeToHeight': he,
         'tipoImagen': this.tipoImagen,
          'blnImgCuadrada': this.blnImgCuadrada,
         'blnImgRectangulo' : this.blnImgRectangulo,
@@ -196,7 +196,7 @@ export class AgregarPromocionPage implements OnInit {
       let height;
       let width;
       for (const archivo of event.target.files) {
-        const reader = new FileReader();
+        const reader = this._utils_cls.getFileReader();
         reader.readAsDataURL(archivo);
         reader.onload = () => {
           const img = new Image();
@@ -232,7 +232,7 @@ export class AgregarPromocionPage implements OnInit {
               this.resizeToHeight = 300;
               this.tipoImagen = 2;
               this.fileChangeEvent(event);
-              this.abrirModalImagen();
+              this.abrirModalImagen(img.src,this.resizeToWidth,this.resizeToHeight);
             }
           };
         };

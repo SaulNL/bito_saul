@@ -198,13 +198,15 @@ export class InfoNegocioPage implements OnInit {
     );
   }
   public subir_imagen_cuadrada(event) {
+    let nombre_archivo;
     if (event.target.files && event.target.files.length) {
       let height;
       let width;
       for (const archivo of event.target.files) {
-        const reader = new FileReader();
+        const reader = this._utils_cls.getFileReader();
         reader.readAsDataURL(archivo);
         reader.onload = () => {
+          nombre_archivo = archivo.name;
           const img = new Image();
           img.src = reader.result as string;
           img.onload = () => {
@@ -237,10 +239,10 @@ export class InfoNegocioPage implements OnInit {
             } else {
               this.resizeToWidth = 400;
               this.resizeToHeight = 400;
-              this.abrirModal(event, this.resizeToWidth, this.resizeToHeight).then(r => {
+              this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
                 if (r !== undefined) {
                   const archivo = new ArchivoComunModel();
-                  archivo.nombre_archivo = r.nombre_archivo,
+                  archivo.nombre_archivo = nombre_archivo,
                     archivo.archivo_64 = r.data;
                   this.negocioTO.logo = archivo;
                   this.negocioTO.local = archivo;
