@@ -159,7 +159,7 @@ export class DatosCategoriaPage implements OnInit {
     let height;
     let width;
     for (const archivo of event.target.files) {
-      const reader = new FileReader();
+      const reader = this._utils_cls.getFileReader();
       reader.readAsDataURL(archivo);
       reader.onload = () => {
         const img = new Image();
@@ -178,7 +178,7 @@ export class DatosCategoriaPage implements OnInit {
               const archivo = new ArchivoComunModel();
               archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
               archivo.archivo_64 = file_64;
-              archivo.extension = file_type.slice((file_type.lastIndexOf('/') - 1 >>> 0) + 2);
+              // archivo.extension = file_type.slice((file_type.lastIndexOf('/') - 1 >>> 0) + 2);
               switch (tipo) {
                 case 1:
                   if (width > height) {
