@@ -41,12 +41,6 @@ export class SolicitudesService {
     })).pipe(map(data => {
         return data;
     }));
-    // return this._http.post(
-    //   this.url + 'api/solicitudes/persona', body,
-    //   {headers: AppSettings.getHeadersToken()}
-    // ).pipe(map(res => {
-    //   return res;
-    // }));
   }
     /**
    * Servicio para buscar publicaciones
@@ -76,13 +70,6 @@ export class SolicitudesService {
     })).pipe(map(data => {
         return data;
     }));
-    // return this._http.post(
-    //   this.url + '/api/solicitudes/guardar', body,
-    //   {headers: AppSettings.getHeadersToken()}
-    // ).pipe(map(data => {
-
-    //   return data;
-    // }));
   }
     /**
    * Servicio para eliminar la solicitud
@@ -116,13 +103,6 @@ export class SolicitudesService {
     })).pipe(map(data => {
         return data;
     }));
-    // return this._http.post(
-    //   this.url + '/api/solicitudes/publicar', body,
-    //   {headers: AppSettings.getHeadersToken()}
-    // ).pipe(map(data => {
-
-    //   return data;
-    // }));
   }
   /**
    * Funcion para obtener detalle de quien vio la publicacion
@@ -187,12 +167,6 @@ export class SolicitudesService {
     })).pipe(map(data => {
         return data;
     }));
-    // return this._http.post(
-    //   this.url + '/api/solicitudes/obtener/numero_publicaciones', body,
-    //   {headers: AppSettings.getHeadersToken()}
-    // ).pipe(map(data => {
-    //   return data;
-    // }));
   }
     /**
    * Servicio para dejar de publicar una promocion
@@ -237,12 +211,6 @@ export class SolicitudesService {
     })).pipe(map(data => {
         return data;
     }));
-    // return this._http.post(
-    //   this.url + '/api/solicitudes/obtener/dias_publicaciones', body,
-    //   {headers: AppSettings.getHeadersToken()}
-    // ).pipe(map(data => {
-    //   return data;
-    // }));
   }
   /**
    * Servicio para obtener las plantillas
@@ -272,12 +240,6 @@ export class SolicitudesService {
     })).pipe(map(data => {
         return data;
     }));
-    // return this._http.post(
-    //   this.url + '/api/solicitudes/obtener/publicadas', body,
-    //   {headers: AppSettings.getHeadersToken()}
-    // ).pipe(map(res => {
-    //   return res;
-    // }));
   }
    /**
    * Funcion para buscar las promociones publicadas
@@ -375,13 +337,6 @@ export class SolicitudesService {
     })).pipe(map(data => {
         return data;
     }));
-    // return this._http.post(
-    //   this.url + '/api/solicitudes/dejar/publicar', body,
-    //   {headers: AppSettings.getHeadersToken()}
-    // ).pipe(map(data => {
-
-    //   return data;
-    // }));
   }
    /**
    * Servicio para guardar la postulacion
@@ -415,12 +370,6 @@ export class SolicitudesService {
     })).pipe(map(data => {
         return data;
     }));
-    // return this._http.post(
-    //   this.url + '/api/solicitudes/obtener/postulados', body,
-    //   {headers: AppSettings.getHeadersToken()}
-    // ).pipe(map(data => {
-    //   return data;
-    // }));
   }
   
   /**
@@ -440,11 +389,5 @@ export class SolicitudesService {
     })).pipe(map(data => {
         return data;
     }));
-    // return this._http.post(
-    //   this.url + '/api/solicitudes/guardar/checkend', body,
-    //   {headers: AppSettings.getHeadersToken()}
-    // ).pipe(map(data => {
-    //   return data;
-    // }));
   }
 }
