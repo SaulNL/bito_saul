@@ -95,20 +95,15 @@ export class DatosBasicosPage implements OnInit {
     fecha = new Date(ms);
     this.usuarioSistema.fecha_nacimiento = fecha;
   }
-  private getFileReader(): FileReader {
-    const fileReader = new FileReader();
-    const zoneOriginalInstance = (fileReader as any)["__zone_symbol__originalInstance"];
-    return zoneOriginalInstance || fileReader;
-    }
   public subir_imagen_cuadrado(event) {
     let nombre_archivo;
     if (event.target.files && event.target.files.length) {
       let height;
       let width;
       for (const archivo of event.target.files) {
-        const reader = this.getFileReader();
+        const reader = this.utilsCls.getFileReader();
         reader.readAsDataURL(event.target.files[0]);
-        reader.onload = (imgsrc) => {
+        reader.onload = () => {
           nombre_archivo = archivo.name;
           const img = new Image();
           img.src = reader.result as string;
