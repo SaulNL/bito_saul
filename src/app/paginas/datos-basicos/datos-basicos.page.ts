@@ -95,15 +95,21 @@ export class DatosBasicosPage implements OnInit {
     fecha = new Date(ms);
     this.usuarioSistema.fecha_nacimiento = fecha;
   }
-
+  private getFileReader(): FileReader {
+    const fileReader = new FileReader();
+    const zoneOriginalInstance = (fileReader as any)["__zone_symbol__originalInstance"];
+    return zoneOriginalInstance || fileReader;
+    }
   public subir_imagen_cuadrado(event) {
+    let nombre_archivo;
     if (event.target.files && event.target.files.length) {
       let height;
       let width;
       for (const archivo of event.target.files) {
         const reader = this.getFileReader();
-        reader.readAsDataURL(archivo);
-        reader.onload = () => {
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload = (imgsrc) => {
+          nombre_archivo = archivo.name;
           const img = new Image();
           img.src = reader.result as string;
           img.onload = () => {
@@ -132,11 +138,11 @@ export class DatosBasicosPage implements OnInit {
             } else {
               this.resizeToWidth = 200;
               this.resizeToHeight = 200;
-              this.abrirModal(event, this.resizeToWidth, this.resizeToHeight).then(r => {
+              this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
                 if (r !== undefined) {
                   const archivo = new ArchivoComunModel();
-                  archivo.nombre_archivo = r.nombre_archivo,
-                    archivo.archivo_64 = r.data;
+                  archivo.nombre_archivo = nombre_archivo;
+                  archivo.archivo_64 = r.data;
                   this.usuarioSistema.selfie = archivo;
                 }
               }
@@ -165,9 +171,4 @@ export class DatosBasicosPage implements OnInit {
     );
     return data;
   }
-  private getFileReader(): FileReader {
-    const fileReader = new FileReader();
-    const zoneOriginalInstance = (fileReader as any)["__zone_symbol__originalInstance"];
-    return zoneOriginalInstance || fileReader;
-    }
 }
