@@ -309,13 +309,15 @@ export class FormSolicitudPage implements OnInit {
    * @param modal
    */
   public subir_imagen_cuadrada(event) {
+    let nombre_archivo;
     if (event.target.files && event.target.files.length) {
       let height;
       let width;
       for (const archivo of event.target.files) {
-        const reader = new FileReader();
+        const reader = this._utils_cls.getFileReader();
         reader.readAsDataURL(archivo);
         reader.onload = () => {
+          nombre_archivo = archivo.name;
           const img = new Image();
           img.src = reader.result as string;
           img.onload = () => {
@@ -332,9 +334,9 @@ export class FormSolicitudPage implements OnInit {
                   data => {
                     file_64 = data;
                     const imagen = new ArchivoComunModel();
-                    imagen.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
-                    imagen.archivo_64 = file_64;
-                    this.actualTO.imagen = imagen;
+                    archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
+                    archivo.archivo_64 = file_64;
+                    this.actualTO.imagen = archivo;
                     //   this.procesando_img = false;
                     this.blnImgCuadrada = false;
                   }
@@ -345,10 +347,10 @@ export class FormSolicitudPage implements OnInit {
             } else {
               this.resizeToWidth = 200;
               this.resizeToHeight = 200;
-              this.abrirModal(event, this.resizeToWidth, this.resizeToHeight).then(r => {
+              this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
                 if (r !== undefined) {
                   const archivo = new ArchivoComunModel();
-                  archivo.nombre_archivo = r.nombre_archivo,
+                  archivo.nombre_archivo = nombre_archivo,
                     archivo.archivo_64 = r.data;
                   this.actualTO.imagen = archivo;
                   this.blnImgCuadrada = false;
