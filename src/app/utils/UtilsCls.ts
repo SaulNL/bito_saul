@@ -246,7 +246,7 @@ export class UtilsCls {
     return 0;
   }
 
-  private getFileReader(): FileReader {
+   getFileReader(): FileReader {
     const fileReader = new FileReader();
     const zoneOriginalInstance = (fileReader as any)["__zone_symbol__originalInstance"];
     return zoneOriginalInstance || fileReader;
