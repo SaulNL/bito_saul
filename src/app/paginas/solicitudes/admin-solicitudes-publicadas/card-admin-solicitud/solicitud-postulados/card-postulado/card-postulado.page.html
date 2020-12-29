@@ -20,13 +20,14 @@
       <br>
       <ion-label><strong>Archivo Adjunto: </strong>
         <ion-button size="small" class="bg-rosa" *ngIf="solicitudPostulado.url_archivo !== ''" (click)="descargarArchivo()">Descargar</ion-button>
+        <ion-button size="small" class="bg-rosa" *ngIf="solicitudPostulado.url_archivo !== ''" (click)="descargaHttp()">Descargar HTTP</ion-button>
         <!--<a *ngIf="solicitudPostulado.url_archivo !== ''" href="{{solicitudPostulado.url_archivo}}" download> Descargar </a>-->
         <label *ngIf="solicitudPostulado.url_archivo === ''">Sin archivo adjunto</label>
       </ion-label>
       <br>
       <br>
       <ion-label><strong>Fecha: </strong>
-        {{solicitudPostulado.fecha | date: 'dd-MM-yyyy'}}
+        {{solicitudPostulado.fecha}}
       </ion-label>
       <br>
       <br>

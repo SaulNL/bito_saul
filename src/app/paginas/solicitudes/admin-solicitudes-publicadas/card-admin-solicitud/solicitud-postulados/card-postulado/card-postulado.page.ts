@@ -6,6 +6,8 @@ import { PostuladosModel } from 'src/app/Modelos/PostuladosModel';
 import { LoadingController } from '@ionic/angular';
 import { Downloader, DownloadRequest, NotificationVisibility } from '@ionic-native/downloader/ngx';
 import { ToadNotificacionService } from '../../../../../../api/toad-notificacion.service';
+import { HTTP } from '@ionic-native/http/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 
 @Component({
@@ -24,7 +26,9 @@ export class CardPostuladoPage implements OnInit {
     private solicitudesService: SolicitudesService,
     public loadingController: LoadingController,
     private downloader: Downloader,
-    public notificaciones: ToadNotificacionService
+    public notificaciones: ToadNotificacionService,
+    private http: HTTP,
+    private file: File
   ) { }
 
   ngOnInit() {
@@ -94,5 +98,18 @@ export class CardPostuladoPage implements OnInit {
     }
     this.extencion = listapabra.reverse().toString();
     this.extencion = this.extencion.split(',').join('');
+  }
+
+  descargaHttp(){
+    console.log('entro al metodo'); 
+    const filePath = this.file.documentsDirectory + this.solicitudPostulado.nombre+'_Archivo_Postulado.jpg'; 
+    this.http.downloadFile(this.solicitudPostulado.url_archivo,{},{},filePath)
+    .then((response)=>{
+      console.log('entro aqui en descargar');
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+  });
   }
 }
