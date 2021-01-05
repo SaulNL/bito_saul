@@ -99,17 +99,42 @@ export class CardPostuladoPage implements OnInit {
     this.extencion = listapabra.reverse().toString();
     this.extencion = this.extencion.split(',').join('');
   }
-
   descargaHttp(){
-    console.log('entro al metodo'); 
-    const filePath = this.file.documentsDirectory + this.solicitudPostulado.nombre+'_Archivo_Postulado.jpg'; 
-    this.http.downloadFile(this.solicitudPostulado.url_archivo,{},{},filePath)
-    .then((response)=>{
-      console.log('entro aqui en descargar');
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-  });
-  }
+    this.extensionArchivo();
+    setTimeout(() => {
+      const options: any = {
+        method: 'get',
+        responseType: 'blob',
+        headers: {
+        accept: this.getMimetype(this.extencion),
+        }
+      };
+     this.http.sendRequest(this.solicitudPostulado.url_archivo,options).then((response)=>{
+        let blob: Blob = response.data;
+        let blob1 = response.data.slice(0, response.data.size, "image/jpg")
+        console.log('blob1');
+        console.log(blob1);
+        console.log('response.data');
+        console.log(response.data);
+        this.file.writeFile(this.file.externalDataDirectory, this.solicitudPostulado.nombre+'_Archivo_Postulado.' + this.extencion, blob1, { replace: true, append: false}).then((response)=>{
+          this.notificaciones.exito('se guardo correctamente el archivo');
+        }).catch((error) => this.notificaciones.error(error));
+      }) .catch((error) => this.notificaciones.error(error));
+       }, 700);
+      }
+    getMimetype(name){
+    if(name.indexOf('pdf') >= 0){
+      console.log('este archivo es pdf');
+      return 'application/pdf';
+    }else if(name.indexOf('png') >= 0){
+      console.log('este archivo es png');
+      return 'image/png';
+    }else if(name.indexOf('jpeg') >= 0){
+      console.log('este archivo es jpeg');
+      return 'image/jpeg';
+    }else if(name.indexOf('jpg') >= 0){
+      console.log('este archivo es jpg');
+      return 'image/jpg';
+    }
+    }
 }
