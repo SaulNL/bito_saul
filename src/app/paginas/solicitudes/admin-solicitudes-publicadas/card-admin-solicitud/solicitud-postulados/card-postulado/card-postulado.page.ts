@@ -111,12 +111,12 @@ export class CardPostuladoPage implements OnInit {
       };
      this.http.sendRequest(this.solicitudPostulado.url_archivo,options).then((response)=>{
         let blob: Blob = response.data;
-        let blob1 = response.data.slice(0, response.data.size, "image/jpg")
+      /*  let blob1 = response.data.slice(0, response.data.size, "image/jpg")
         console.log('blob1');
         console.log(blob1);
         console.log('response.data');
-        console.log(response.data);
-        this.file.writeFile(this.file.externalDataDirectory, this.solicitudPostulado.nombre+'_Archivo_Postulado.' + this.extencion, blob1, { replace: true, append: false}).then((response)=>{
+        console.log(response.data);*/
+        this.file.writeFile(this.file.documentsDirectory, this.solicitudPostulado.nombre+'_Archivo_Postulado.' + this.extencion, blob, { replace: true, append: false}).then((response)=>{
           this.notificaciones.exito('se guardo correctamente el archivo');
         }).catch((error) => this.notificaciones.error(error));
       }) .catch((error) => this.notificaciones.error(error));
