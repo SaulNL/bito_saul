@@ -78,11 +78,11 @@
                     </ion-label>
                     <hr>
                     <ion-grid *ngIf="existeSesion">
-                        <ion-row class="ion-text-center">
-                            <ion-col class="ion-text-center">
-                                <div class="estrella ion-text-center">
-                                    <h3 class="text-rosa ion-text-center">Calificación del negocio</h3>
-                                    <div class="clasificacion ion-text-center">
+                        <ion-row style="display: flex; justify-content: center; align-items: center;">
+                            <ion-col>
+                                <div class="estrella" style="display: flex; justify-content: center; align-items: center;">
+                                    <h3 class="text-rosa">Calificación del negocio</h3>
+                                    <div class="clasificacion">
                                         {{informacionNegocio.numCalificaciones}}
                                         <ion-icon name="person-outline"></ion-icon>
                                         <input disabled id="radio1" type="radio" name="estrellas" value="5">
