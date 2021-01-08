@@ -214,7 +214,7 @@ export class PedidoNegocioComponent implements OnInit {
         this.geocodeLatLng();
       }
     }).catch(error => {
-      //   this.notificaciones.error(error);
+        this.mesajes.error(error);
     }
     );
   }

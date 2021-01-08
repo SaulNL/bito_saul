@@ -5,12 +5,14 @@ import { AppSettings } from "../../AppSettings";
 import { ActionSheetController, NavController } from "@ionic/angular";
 import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Location } from "@angular/common";
+import { Auth0Service } from "src/app/api/auth0.service";
+import { PersonaService } from '../../api/persona.service';
 
 @Component({
   selector: "app-ajustes",
   templateUrl: "./ajustes.page.html",
   styleUrls: ["./ajustes.page.scss"],
-  providers: [UtilsCls],
+  providers: [UtilsCls, Auth0Service],
 })
 export class AjustesPage implements OnInit {
   usuario: any;
@@ -22,10 +24,12 @@ export class AjustesPage implements OnInit {
     public actionSheetController: ActionSheetController,
     private sideBarService: SideBarService,
     private _router: Router,
-    private location: Location,
     private navctrl: NavController,
-    private active: ActivatedRoute
-  ) {}
+    private active: ActivatedRoute,
+    private auth0: Auth0Service
+  ) {
+    this.usuario = this.auth0.getUserData();
+  }
 
   ngOnInit() {
     this.active.queryParams.subscribe((params) => {
@@ -39,7 +43,10 @@ export class AjustesPage implements OnInit {
         }
       }
     });
-    this.usuario = this.util.getData();
+  //  this.usuario = this.util.getData();
+  this.sideBarService.change.subscribe(isOpen => {
+    this.usuario = this.auth0.getUserData();
+  });
     if (this.usuario === null) {
       this.navctrl.navigateRoot("tabs/inicio");
     }

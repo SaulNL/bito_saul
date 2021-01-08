@@ -10,7 +10,7 @@ import { ModalController } from '@ionic/angular';
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { Router } from "@angular/router";
 import { RecorteImagenComponent } from 'src/app/components/recorte-imagen/recorte-imagen.component';
-
+import {SessionUtil} from './../../utils/sessionUtil';
 
 
 
@@ -19,6 +19,9 @@ import { RecorteImagenComponent } from 'src/app/components/recorte-imagen/recort
   selector: 'app-datos-basicos',
   templateUrl: './datos-basicos.page.html',
   styleUrls: ['./datos-basicos.page.scss'],
+  providers: [
+    SessionUtil,
+  ]
 })
 export class DatosBasicosPage implements OnInit {
   public usuarioSistema: MsPersonaModel;
@@ -40,7 +43,8 @@ export class DatosBasicosPage implements OnInit {
     private utilsCls: UtilsCls,
     public modalController: ModalController,
     private notificaciones: ToadNotificacionService,
-    private router: Router
+    private router: Router,
+    private sesionUtl: SessionUtil
   ) {
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(currentYear - 100, 0, 0);
@@ -70,10 +74,12 @@ export class DatosBasicosPage implements OnInit {
       this.servicioPersona.guardar(this.usuarioSistema).subscribe(
         data => {
           if (data.code === 200) {
-            localStorage.setItem('u_data', JSON.stringify(this.usuarioSistema));
+            //localStorage.setItem('u_data', JSON.stringify(this.usuarioSistema));
+            const resultado = this.sesionUtl.actualizarSesion();
             this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
             this.loader.dismiss();
             this.notificaciones.exito(data.data.mensaje);
+            resolve(resultado);
           }
         },
         error => {

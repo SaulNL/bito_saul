@@ -47,7 +47,7 @@
   <ion-list>
     <div *ngIf="tipoEnvio === 2">
       <ion-grid>
-          <ion-grid *ngIf="!this.blnUbicacion">
+          <!--<ion-grid *ngIf="!this.blnUbicacion">
             <ion-row class="ion-align-items-center">
               <ion-col class="ion-text-center">
                 <ion-chip color="danger"  class="ion-align-items-center">
@@ -55,7 +55,7 @@
                 </ion-chip>
               </ion-col>
             </ion-row>
-          </ion-grid>
+          </ion-grid>-->
         <ion-row>
           <ion-col>
             <div id="mapIdPedido" style="height:200px"></div>
@@ -64,7 +64,7 @@
         <p class="ion-text-center">{{estasUbicacion}}</p>
         <ion-row class="ion-align-items-center">
           <ion-col class="ion-text-center">
-            <ion-button [disabled]="!this.blnUbicacion" size="small" class="bg-rosa " type="button" (click)="localizacionTiempo(1)">
+            <ion-button  size="small" class="bg-rosa " type="button" (click)="localizacionTiempo(1)">
               <ion-icon name="navigate-circle-outline"></ion-icon>
               Ubicación Actual
             </ion-button>
