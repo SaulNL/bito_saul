@@ -70,26 +70,6 @@ export class ViewQrPage implements OnInit {
     this.notifi.error(error);
   });
   }
-  b64toBlob(contentType, sliceSize?):any{
-    let base64Imagen = document.querySelectorAll('.qrcode img')[0] as any;
-    let base64Ima = base64Imagen.getAttribute("src");
-    let startIndex = base64Ima.indexOf("base64,") + 7;
-    let b64 = base64Ima.substr(startIndex);
-    contentType = contentType || '';
-    sliceSize = sliceSize || 512;
-   const byteCharacters = atob(b64);
-   const byteArrays = [];
-  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-        const slice = byteCharacters.slice(offset, offset + sliceSize);
-        const byteNumbers = new Array(slice.length);
-        for (let i = 0; i < slice.length; i++) {
-             byteNumbers[i] = slice.charCodeAt(i);
-        }
-        const byteArray = new Uint8Array(byteNumbers);
-        return byteArrays.push(byteArray);
-        }
-      }
-
     convertBase64ToBlob() {
         // Split into two parts
         let base64Imagen = document.querySelectorAll('.qrcode img')[0] as any;
@@ -115,12 +95,8 @@ export class ViewQrPage implements OnInit {
       }
       descargarIOS(negocio){
         const fileName = 'qr_'+negocio.nombre_comercial+'.png';
-        //const DataBlob1 = this.b64toBlob('image/png');
         const DataBlob = this.convertBase64ToBlob();
-        console.log('DataBlob');
-        console.log(DataBlob);
        this.file.writeFile(this.file.tempDirectory, fileName, DataBlob, { replace: true }).then(res => {
-          console.log('responseWriteFile => ', res); 
           Share.share({
               title: fileName,
               url: res.nativeURL,
