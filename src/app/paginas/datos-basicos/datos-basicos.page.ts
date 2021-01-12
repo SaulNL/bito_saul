@@ -74,26 +74,22 @@ export class DatosBasicosPage implements OnInit {
       this.servicioPersona.guardar(this.usuarioSistema).subscribe(
         data => {
           if (data.code === 200) {
-            //localStorage.setItem('u_data', JSON.stringify(this.usuarioSistema));
             const resultado = this.sesionUtl.actualizarSesion();
-            this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
             this.loader.dismiss();
             this.notificaciones.exito(data.data.mensaje);
             resolve(resultado);
+            setTimeout(() => {
+              this.router.navigate(['/tabs/home/perfil']);
+              }, 1000);
           }
         },
         error => {
           this.loader.dismiss();
           this.notificaciones.error(error);
-          // this.lstPrincipal = new Array();
-
         });
     });
     miPrimeraPromise.then((successMessage) => {
     });
-  }
-  regresar() {
-    this.router.navigate(['/tabs/home/perfil']);
   }
   convercionFechaNac(event) {
     let fecha = event.detail.value;
