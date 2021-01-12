@@ -75,21 +75,27 @@ export class DatosBasicosPage implements OnInit {
         data => {
           if (data.code === 200) {
             const resultado = this.sesionUtl.actualizarSesion();
+            this.router.navigate(['/tabs/home/perfil']);
             this.loader.dismiss();
             this.notificaciones.exito(data.data.mensaje);
             resolve(resultado);
             setTimeout(() => {
               this.router.navigate(['/tabs/home/perfil']);
-              }, 1000);
+              }, 500);
           }
         },
         error => {
           this.loader.dismiss();
           this.notificaciones.error(error);
+          // this.lstPrincipal = new Array();
+
         });
     });
     miPrimeraPromise.then((successMessage) => {
     });
+  }
+  regresar() {
+    this.router.navigate(['/tabs/home/perfil']);
   }
   convercionFechaNac(event) {
     let fecha = event.detail.value;
