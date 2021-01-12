@@ -81,7 +81,7 @@ export class DatosBasicosPage implements OnInit {
             resolve(resultado);
             setTimeout(() => {
               this.router.navigate(['/tabs/home/perfil']);
-              }, 500);
+              }, 1500);
           }
         },
         error => {
