@@ -14,6 +14,7 @@ import { CatLocalidadModel } from '../../Modelos/CatLocalidadModel';
 import { PersonaService } from '../../api/persona.service';
 import { Router } from '@angular/router';
 import { SessionUtil } from '../../utils/sessionUtil';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-quiero-vender',
@@ -58,7 +59,7 @@ export class QuieroVenderPage implements OnInit {
   public formulario1: boolean;
   public formulario2: boolean;
   public finalizar: boolean;
-
+  public loadion: any;
   constructor(
     private _formBuilder: FormBuilder,
     private _utils_cls: UtilsCls,
@@ -67,7 +68,8 @@ export class QuieroVenderPage implements OnInit {
     private _general_service: GeneralServicesService,
     private servicioPersona: PersonaService,
     private _router: Router,
-    private sesionUtl: SessionUtil
+    private sesionUtl: SessionUtil,
+    private loadingController : LoadingController
   ) {
 
     this.proveedorTO = new MsPersonaModel();
@@ -374,9 +376,11 @@ export class QuieroVenderPage implements OnInit {
           this.mostrarMensaje(data);
           const resultado = this.sesionUtl.actualizarSesion();
           resolve(resultado);
+          this.loadion.dismiss();
         },
         error => {
           this._notificacionService.error(error);
+          this.loadion.dismiss();
         }
       );
     });
@@ -390,7 +394,6 @@ export class QuieroVenderPage implements OnInit {
           this._notificacionService.exito(entry);
           localStorage.setItem('u_data', JSON.stringify(this.proveedorTO));
           this._router.navigate(['/tabs/home/perfil']);
-          location.reload();
         }
         break;
 
@@ -414,5 +417,13 @@ export class QuieroVenderPage implements OnInit {
     let ms = Date.parse(fecha);
     fecha = new Date(ms);
     this.proveedorTO.fecha_nacimiento = fecha;
+  }
+  async presentLoading() {
+    this.loadion = await this.loadingController.create({
+      spinner: "crescent",
+      cssClass: "my-custom-class",
+      message: "Cargando...",
+    });
+    await this.loadion.present();  
   }
 }
