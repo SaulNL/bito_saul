@@ -50,7 +50,8 @@ export class PedidoNegocioComponent implements OnInit {
     this.lat = 19.31905;
     this.lng = -98.19982;
     this.subscribe = this.platform.backButton.subscribe(() => {
-      this.cerrarModal();
+    this.cerrarModal();
+    this.getCurrentPosition();
     });
   }
 
@@ -63,7 +64,7 @@ export class PedidoNegocioComponent implements OnInit {
     }
     
     this.loadMap();
-    this.getCurrentPosition();
+    //this.getCurrentPosition();
     this.sumarLista();
   }
 
