@@ -369,6 +369,7 @@ export class QuieroVenderPage implements OnInit {
   }
 
   public guardarProveedor() {
+    this.presentLoading();
     this.proveedorTO.convertir_proveedor = true;
     const miPrimeraPromise = new Promise((resolve, reject) => {
       this.servicioPersona.guardar(this.proveedorTO).subscribe(
