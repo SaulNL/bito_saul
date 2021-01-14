@@ -50,7 +50,8 @@ export class PedidoNegocioComponent implements OnInit {
     this.lat = 19.31905;
     this.lng = -98.19982;
     this.subscribe = this.platform.backButton.subscribe(() => {
-      this.cerrarModal();
+    this.cerrarModal();
+    this.getCurrentPosition();
     });
   }
 
@@ -63,7 +64,7 @@ export class PedidoNegocioComponent implements OnInit {
     }
     
     this.loadMap();
-    this.getCurrentPosition();
+    //this.getCurrentPosition();
     this.sumarLista();
   }
 
@@ -110,30 +111,42 @@ export class PedidoNegocioComponent implements OnInit {
   }
 
   private getCurrentPosition() {
+    console.log('enntro getCurrentPosition')
     Geolocation.getCurrentPosition().then(res => {
       this.blnUbicacion = true;
       this.lat = res.coords.latitude;
       this.lng = res.coords.longitude;
+      console.log('enntro getCurrentPosition response')
+      console.log(res)
       try {
         this.geocodeLatLng();
       } catch (e) {
         console.error(e);
       }
     }).catch(error => {
+      console.log('error');
+      console.log(error);
       this.blnUbicacion = false;
     }
     );
   }
 
   public geocodeLatLng() {
+    console.log('entro a geocodeLatLng');
     const geocoder = new google.maps.Geocoder;
     const latlng = {
       lat: parseFloat(String(this.lat)),
       lng: parseFloat(String(this.lng))
     };
     geocoder.geocode({ location: latlng }, (results, status) => {
+      console.log('results');
+      console.log(results);
+      console.log('status');
+      console.log(status);
       if (status === 'OK') {
         if (results[0]) {
+          console.log('results OK');
+          console.log(results[0]);
           this.estasUbicacion = results[0].formatted_address;
         } else {
         }
@@ -203,7 +216,10 @@ export class PedidoNegocioComponent implements OnInit {
   async localizacionTiempo(tipo: number) {
     let latitude;
     let longitude;
+    console.log('enntro Geolocation.getCurrentPosition');
     const coordinates = await Geolocation.getCurrentPosition().then(res => {
+      console.log('enntro response');
+      console.log(res);
       if (tipo === 1) {
         //  this.actualTO.det_domicilio.latitud = res.coords.latitude;
         this.lat = res.coords.latitude;
@@ -214,7 +230,9 @@ export class PedidoNegocioComponent implements OnInit {
         this.geocodeLatLng();
       }
     }).catch(error => {
-      //   this.notificaciones.error(error);
+        console.log('erro de localizacion');
+        console.log(error);
+        this.mesajes.error(error);
     }
     );
   }

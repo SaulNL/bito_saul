@@ -146,7 +146,8 @@ export class LoginPage implements OnInit {
   async loginGoogleAndroid() {
     const res = await this.googlePlus.login({
       webClientId:
-        "923911532405-77uvn5rfg78cc0f1bis1lve31bahu3jc.apps.googleusercontent.com",
+       
+      "315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com",
       offline: true,
     });
     this.presentLoading();

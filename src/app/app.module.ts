@@ -21,7 +21,7 @@ import {Facebook} from '@ionic-native/facebook/ngx';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { firebaseConfig } from '../environments/environment';
-
+import { File } from '@ionic-native/file/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,9 +32,11 @@ import { firebaseConfig } from '../environments/environment';
     SplashScreen,
     HaversineService,
     Downloader,
-      Platform,
-    HTTP, GooglePlus,
+    Platform,
+    HTTP, 
+    GooglePlus,
     Facebook,
+    File,
   { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy }
 ],
   bootstrap: [AppComponent]

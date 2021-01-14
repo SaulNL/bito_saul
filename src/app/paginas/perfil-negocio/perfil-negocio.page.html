@@ -5,7 +5,7 @@
                 <ion-icon name="chevron-back-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title>Información negocio</ion-title>
+        <ion-title>Información</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="abrirModalpedido()" *ngIf="bolsa.length > 0">
                 <ion-icon name="bag-handle-outline"></ion-icon>
@@ -78,11 +78,11 @@
                     </ion-label>
                     <hr>
                     <ion-grid *ngIf="existeSesion">
-                        <ion-row>
+                        <ion-row style="display: flex; justify-content: center; align-items: center;">
                             <ion-col>
-                                <div class="estrella">
-                                    <h3 class="text-rosa ion-text-center">Calificación del negocio</h3>
-                                    <div class="clasificacion ion-text-center">
+                                <div class="estrella" style="display: flex; justify-content: center; align-items: center;">
+                                    <h3 class="text-rosa" style="display: flex; justify-content: center; align-items: center;">Calificación del negocio</h3>
+                                    <div class="clasificacion" style="display: flex; justify-content: center; align-items: center;">
                                         {{informacionNegocio.numCalificaciones}}
                                         <ion-icon name="person-outline"></ion-icon>
                                         <input disabled id="radio1" type="radio" name="estrellas" value="5">

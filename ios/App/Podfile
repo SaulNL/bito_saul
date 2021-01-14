@@ -15,10 +15,16 @@ def capacitor_pods
   pod 'CordovaPluginsStatic', :path => '../capacitor-cordova-ios-plugins'
   pod 'FacebookCore'
   pod 'FacebookLogin'
+
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'GoogleSignIn'
+
 # Do not delete
 end
 
 target 'App' do
   capacitor_pods
   # Add your Pods here
+
 end

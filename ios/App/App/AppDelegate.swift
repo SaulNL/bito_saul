@@ -1,6 +1,7 @@
 import UIKit
 import Capacitor
 import FBSDKCoreKit
+import Firebase
 
 
 @UIApplicationMain
@@ -14,9 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let handled = FBSDKCoreKit.ApplicationDelegate.shared.application(app, open: url, options: options)
     return handled
 }
-   
+
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
+    FirebaseApp.configure()
     return true
   }
 
