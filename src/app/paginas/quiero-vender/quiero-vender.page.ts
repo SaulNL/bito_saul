@@ -423,7 +423,7 @@ export class QuieroVenderPage implements OnInit {
     this.loadion = await this.loadingController.create({
       spinner: "crescent",
       cssClass: "my-custom-class",
-      message: "Cargando...",
+      message: "Guardando...",
     });
     await this.loadion.present();  
   }

@@ -63,7 +63,7 @@ export class MisProductosServiciosPage implements OnInit {
   public productoE: DtosMogoModel;
   public listaCategorias: any;
   public almacenarRegistro: any;
-
+  public tamano : any;
   constructor(
     private router: Router,
     private active: ActivatedRoute,
@@ -725,28 +725,39 @@ export class MisProductosServiciosPage implements OnInit {
     }
     console.log(datosAEnviar);
     console.log(datosAEnviar.productos.length);
-    let tamano;
+    console.log(datosAEnviar.servicios.length);
     switch (this.iden) {
       case 1:
         if (datosAEnviar.productos.length > 1) {
-          tamano = datosAEnviar.productos.length - 1;
+          this.tamano = datosAEnviar.productos.length - 1;
+        } else {
+          if (datosAEnviar.productos.length > 0 ){
+            this.tamano = datosAEnviar.productos.length -1;
+              } else {
+                this.tamano = 0;
+              }
         }
         break;
       case 2:
         if (datosAEnviar.servicios.length > 1) {
-          tamano = datosAEnviar.servicios.length - 1;
+        this.tamano = datosAEnviar.servicios.length - 1;
+        } else {
+          if (datosAEnviar.servicios.length > 0 ){
+        this.tamano = datosAEnviar.servicios.length -1;
+          } else {
+            this.tamano = 0;
+          }
+          //this.segtamano = 0; 
         }
-        break;
-      default:
         break;
     }
 
     switch (this.iden) {
       case 1:
         if (
-          datosAEnviar.productos[tamano].imagen.archivo_64 === "" ||
-          datosAEnviar.productos[tamano].imagen.archivo_64 === null ||
-          datosAEnviar.productos[tamano].imagen.archivo_64 === undefined
+          datosAEnviar.productos[this.tamano].imagen.archivo_64 === "" ||
+          datosAEnviar.productos[this.tamano].imagen.archivo_64 === null ||
+          datosAEnviar.productos[this.tamano].imagen.archivo_64 === undefined
         ) {
           this.banderaGuardar = false;
           this.notificacionService.alerta("Agregue la foto de su producto");
@@ -758,24 +769,11 @@ export class MisProductosServiciosPage implements OnInit {
               this.blnformMobile = false;
               this.listaVista.map((item) => {
                 if (item.id_categoria === this.productoNuevo.id_categoria) {
-                  this.productoNuevo = this.datosNegocio.productos[
-                    this.datosNegocio.productos.length - 1
-                  ];
-                  this.productoNuevo.index =
-                    this.datosNegocio.productos.length - 1;
-
+                  this.productoNuevo = this.datosNegocio.productos[ this.datosNegocio.productos.length - 1 ];
+                  this.productoNuevo.index = this.datosNegocio.productos.length - 1;
                   // @ts-ignore
                   this.productoNuevo.editar = false;
-                  switch (this.iden) {
-                    case 1:
                       item.productos.push(this.productoNuevo);
-                      break;
-                    case 2:
-                      item.servicios.push(this.productoNuevo);
-                      break;
-                    default:
-                      break;
-                  }
                 }
               });
               this.notificacionService.exito("Se guardó el producto con éxito");
@@ -794,9 +792,9 @@ export class MisProductosServiciosPage implements OnInit {
 
       case 2:
         if (
-          datosAEnviar.servicios[tamano].imagen.archivo_64 === "" ||
-          datosAEnviar.servicios[tamano].imagen.archivo_64 === null ||
-          datosAEnviar.servicios[tamano].imagen.archivo_64 === undefined
+          datosAEnviar.servicios[this.tamano].imagen.archivo_64 === "" ||
+          datosAEnviar.servicios[this.tamano].imagen.archivo_64 === null ||
+          datosAEnviar.servicios[this.tamano].imagen.archivo_64 === undefined
         ) {
           this.banderaGuardar = false;
           this.notificacionService.alerta("Agregue la foto de su producto");
@@ -808,24 +806,11 @@ export class MisProductosServiciosPage implements OnInit {
               this.blnformMobile = false;
               this.listaVista.map((item) => {
                 if (item.id_categoria === this.productoNuevo.id_categoria) {
-                  this.productoNuevo = this.datosNegocio.servicios[
-                    this.datosNegocio.servicios.length - 1
-                  ];
-                  this.productoNuevo.index =
-                    this.datosNegocio.servicios.length - 1;
-
+                  this.productoNuevo = this.datosNegocio.servicios[ this.datosNegocio.servicios.length - 1];
+                  this.productoNuevo.index = this.datosNegocio.servicios.length - 1;
                   // @ts-ignore
                   this.productoNuevo.editar = false;
-                  switch (this.iden) {
-                    case 1:
-                      item.productos.push(this.productoNuevo);
-                      break;
-                    case 2:
                       item.servicios.push(this.productoNuevo);
-                      break;
-                    default:
-                      break;
-                  }
                 }
               });
               this.notificacionService.exito("Se guardó el producto con éxito");
