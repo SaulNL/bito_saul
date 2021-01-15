@@ -63,7 +63,10 @@ export class MisProductosServiciosPage implements OnInit {
   public productoE: DtosMogoModel;
   public listaCategorias: any;
   public almacenarRegistro: any;
-  public tamano : any;
+  public tamano: any;
+  public segtamano: any;
+  public static: any;
+
   constructor(
     private router: Router,
     private active: ActivatedRoute,
@@ -216,6 +219,8 @@ export class MisProductosServiciosPage implements OnInit {
               .subscribe(
                 (repsuesta) => {
                   this.datosNegocio = repsuesta.data;
+                  this.static = repsuesta.data
+                  console.log(this.static);
                 },
                 (error) => {}
               );
@@ -246,8 +251,6 @@ export class MisProductosServiciosPage implements OnInit {
               this.carta = null;
             }
           }
-
-          console.log(this.carta);
         },
         (error) => {
           this.loader = false;
@@ -502,6 +505,7 @@ export class MisProductosServiciosPage implements OnInit {
           (response) => {
             const cat = response;
             cat.productos = [];
+            cat.servicios = [];
             this.listaVista.push(cat);
             this.nuevaCategoria = {
               activo: 1,
@@ -791,6 +795,11 @@ export class MisProductosServiciosPage implements OnInit {
         break;
 
       case 2:
+        console.log(datosAEnviar);
+        console.log(this.tamano);
+        console.log(datosAEnviar.servicios);
+        console.log(datosAEnviar.servicios[this.tamano].imagen);
+        console.log(datosAEnviar.servicios[this.tamano].imagen.archivo_64);
         if (
           datosAEnviar.servicios[this.tamano].imagen.archivo_64 === "" ||
           datosAEnviar.servicios[this.tamano].imagen.archivo_64 === null ||
