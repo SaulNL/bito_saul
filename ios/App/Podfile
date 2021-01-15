@@ -20,7 +20,7 @@ def capacitor_pods
   pod 'Firebase/Auth'
   pod 'GoogleSignIn'
 
-# Do not delete
+# Do not delete
 end
 
 target 'App' do

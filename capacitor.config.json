@@ -10,9 +10,5 @@
       "launchShowDuration": 3000
     }
   },
-  "cordova": {},
-  "server": {
-    "url": "https://beta-bitoo-back.azurewebsites.net",
-    "cleartext": true
-  }
+  "cordova": {}
 }

@@ -22,7 +22,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { firebaseConfig } from '../environments/environment';
 import { File } from '@ionic-native/file/ngx';
-
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -37,6 +37,7 @@ import { File } from '@ionic-native/file/ngx';
     GooglePlus,
     Facebook,
     File,
+    Geolocation,
   { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy }
 ],
   bootstrap: [AppComponent]
