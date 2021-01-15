@@ -170,8 +170,10 @@ export class LoginPage implements OnInit {
    * Movil o web
    */
   loginGoogle() {
-    if (this.platform.is("android")) {
-      this.loginGoogleAndroid();
+    this.loginGoogleAndroid();
+    if (this.platform.is("ios")) {
+      //this.loginGoogleAndroid();
+      this.notifi.alerta("Entro a la plataforma de Ios");
     } else {
       this.loginGoogleWeb();
     }
