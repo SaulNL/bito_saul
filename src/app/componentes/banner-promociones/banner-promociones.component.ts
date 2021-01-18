@@ -6,7 +6,7 @@ import { NavBarServiceService } from '../../../app/api/busqueda/nav-bar-service.
 import { Router } from '@angular/router';
 import { UbicacionModel } from './../../Modelos/busqueda/UbicacionModel';
 import { AlertController } from '@ionic/angular';
-
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 
 @Component({
@@ -36,7 +36,8 @@ export class BannerPromocionesComponent implements OnInit {
     private servicioPromociones: PromocionesService,
     private navBarServiceService: NavBarServiceService,
     private _router: Router,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private geolocation: Geolocation
   ) {
     this.lstPromociones = [];
     this.lstAvisos = [];
@@ -67,15 +68,15 @@ export class BannerPromocionesComponent implements OnInit {
    * @author Omar
    */
   public obtenerGeolocalizacion() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(posicion => {
-        this.miUbicacionlatitud = posicion.coords.latitude;
-        this.miUbicacionlongitud = posicion.coords.longitude;
-      },
-        error => {
-          console.error(error);
-        }, { enableHighAccuracy: true, maximumAge: 60000, timeout: 10000 });
-    }
+      this.geolocation.getCurrentPosition().then((reponse)=> {
+        this.miUbicacionlatitud = reponse.coords.latitude;
+        this.miUbicacionlongitud = reponse.coords.longitude;
+        console.log(this.miUbicacionlatitud);
+        console.log(this.miUbicacionlongitud );
+
+      }).catch((error) => {
+        console.log('Errorlocation', error);
+      });
   }
   /**
      * Funcion para obtener las promociones

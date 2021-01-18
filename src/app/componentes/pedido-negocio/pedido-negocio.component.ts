@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { UtilsCls } from "../../utils/UtilsCls";
 import { AlertController, ModalController, Platform } from "@ionic/angular";
 import { icon, Map, Marker, marker, tileLayer } from "leaflet";
-//import { Geolocation } from "@capacitor/core";
 import { NegocioService } from "../../api/negocio.service";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { AuthGuardService } from "../../api/auth-guard.service";
@@ -186,7 +185,6 @@ export class PedidoNegocioComponent implements OnInit {
     */
   async localizacionTiempo() {
     this.geolocation.getCurrentPosition().then((resp) => {
-      console.log(resp)
       this.lat =  resp.coords.latitude
       this.lng =  resp.coords.longitude
       this.map.panTo([this.lat, this.lng]);
