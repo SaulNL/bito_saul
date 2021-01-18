@@ -31,9 +31,9 @@
 			<div>
 				<p style="text-align: center; color: black;">{{ seleccionTo.terminos }}</p>
       </div>
-      <div style="display: flex; justify-content: center; align-items: center;">
-        <ion-badge *ngFor="let item of seleccionTo.tags; let i = index" style="margin: 5px 3px;">
-          <p *ngIf="item !== undefined && item !== null && item !== ''">{{ item }}</p>
+      <div>
+        <ion-badge *ngFor="let item of seleccionTo.tags; let i = index" style="margin: 2px;">
+          <span *ngIf="item !== undefined && item !== null && item !== ''">{{ item }}</span>
         </ion-badge>
       </div>
       <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px">

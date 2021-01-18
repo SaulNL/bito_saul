@@ -101,6 +101,7 @@ export class DashboardPage implements OnInit {
     }
     this.sideBarService.change.subscribe(isOpen => {
       this.usuario = this.auth0.getUserData();
+      this.obtenerPermisos();
     })
   }
 

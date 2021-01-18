@@ -358,4 +358,4 @@ export class DatosDomicilioPage implements OnInit {
     await this.loadion.present();  
   }
 }
-}
+

@@ -665,7 +665,7 @@ export class MisProductosServiciosPage implements OnInit {
     const cat = {
       id_categoria: item.id_categoria,
       nombre: item.nombre,
-      id_categoria_negocio: item.id_categoria_negocio,
+      id_categoria_negocio: this.negocioTO.id_categoria_negocio,
     };
     this.productoNuevo.categoria = cat;
     this.productoNuevo.id_categoria = item.id_categoria;
