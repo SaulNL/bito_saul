@@ -711,6 +711,8 @@ export class MisProductosServiciosPage implements OnInit {
     this.productoNuevo.imagen = JSON.parse(
       JSON.stringify(this.productoNuevo.imagen)
     );
+    this.productoNuevo.imagen.nombre_archivo = 'hola_prueba.jpg';
+    this.productoNuevo.negocio.dirección = 564;
     console.log(this.productoNuevo.imagen);
     if (this.blnEditando) {
       datosAEnviar.productos[this.indexModificar] = this.productoNuevo;
