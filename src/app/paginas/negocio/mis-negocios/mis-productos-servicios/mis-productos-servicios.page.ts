@@ -94,9 +94,6 @@ export class MisProductosServiciosPage implements OnInit {
     this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.ocultar = false;
-
-        console.log(this.productoNuevo);
-
         this.mostrarListaProductos = false;
         this.agregarProducto = false;
         this.agregarClas = false;
@@ -198,7 +195,6 @@ export class MisProductosServiciosPage implements OnInit {
         valores = 1;
         break;
     }
-    console.log(valores);
     this.sercicioNegocio
       .buscarProductosServios(this.negocioTO.id_negocio, valores)
       .subscribe(
@@ -220,7 +216,6 @@ export class MisProductosServiciosPage implements OnInit {
                 (repsuesta) => {
                   this.datosNegocio = repsuesta.data;
                   this.static = repsuesta.data
-                  console.log(this.static);
                 },
                 (error) => {}
               );
@@ -266,7 +261,6 @@ export class MisProductosServiciosPage implements OnInit {
     this.fileImgGaleria = event.target.files;
     const fileName = this.fileImgGaleria[0].name;
     const file = this.fileImgGaleria[0];
-    console.log(file.size);
     if (file.size < 3145728) {
       let file64: any;
       const utl = new UtilsCls();
@@ -542,8 +536,6 @@ export class MisProductosServiciosPage implements OnInit {
     this.isEdicion = false;
     this.opcion = 1;
     this.productoNuevo = JSON.parse(JSON.stringify(this.productoNuevo));
-
-    console.log(this.productoNuevo);
   }
 
   public regresarLista() {
@@ -582,11 +574,6 @@ export class MisProductosServiciosPage implements OnInit {
                     imagen.nombre_archivo = this.utilscls.convertir_nombre(file_name);
                     imagen.archivo_64 = file_64;
                   }
-                    console.log("El nombre del archivo es:");
-                    console.log(file_name);
-                    console.log("Verificando, el contenido del archivo es:");
-                    console.log(archivo);
-                  
                   this.productoNuevo.imagen = imagen;
                   this.procesando_img = false;
                   this.blnImgCuadrada = false;
@@ -716,9 +703,8 @@ export class MisProductosServiciosPage implements OnInit {
     this.productoNuevo.imagen = JSON.parse(
       JSON.stringify(this.productoNuevo.imagen)
     );
-    this.productoNuevo.imagen.nombre_archivo = 'hola_prueba.jpg';
-    this.productoNuevo.negocio.dirección = 564;
-    console.log(this.productoNuevo.imagen);
+    this.productoNuevo.imagen.nombre_archivo = this.productoNuevo.nombre+'.jpg';
+    this.productoNuevo.negocio.dirección = this.negocioTO.det_domicilio.id_domicilio;
     if (this.blnEditando) {
       datosAEnviar.productos[this.indexModificar] = this.productoNuevo;
     } else {
@@ -728,15 +714,10 @@ export class MisProductosServiciosPage implements OnInit {
           datosAEnviar.productos.push(this.productoNuevo);
           break;
         case 2:
-          console.log(this.productoNuevo);
-
           datosAEnviar.servicios.push(this.productoNuevo);
           break;
       }
     }
-    console.log(datosAEnviar);
-    console.log(datosAEnviar.productos.length);
-    console.log(datosAEnviar.servicios.length);
     switch (this.iden) {
       case 1:
         if (datosAEnviar.productos.length > 1) {
@@ -802,11 +783,6 @@ export class MisProductosServiciosPage implements OnInit {
         break;
 
       case 2:
-        console.log(datosAEnviar);
-        console.log(this.tamano);
-        console.log(datosAEnviar.servicios);
-        console.log(datosAEnviar.servicios[this.tamano].imagen);
-        console.log(datosAEnviar.servicios[this.tamano].imagen.archivo_64);
         if (
           datosAEnviar.servicios[this.tamano].imagen.archivo_64 === "" ||
           datosAEnviar.servicios[this.tamano].imagen.archivo_64 === null ||
@@ -859,7 +835,6 @@ export class MisProductosServiciosPage implements OnInit {
           this.listaCategorias = respuesta.data;
           this.nuevaCategoria.nombre = "";
           this.nuevaCategoria.id_categoria = null;
-          // console.info(this.listaCategorias);
         },
         (error) => {
           this.notificacionService.error(error);
