@@ -578,10 +578,15 @@ export class MisProductosServiciosPage implements OnInit {
                 utl.getBase64(file).then((data) => {
                   file_64 = data;
                   const imagen = new ArchivoComunModel();
-                  imagen.nombre_archivo = this.utilscls.convertir_nombre(
-                    file_name
-                  );
-                  imagen.archivo_64 = file_64;
+                  if(file_name!=null) {
+                    imagen.nombre_archivo = this.utilscls.convertir_nombre(file_name);
+                    imagen.archivo_64 = file_64;
+                  }
+                    console.log("El nombre del archivo es:");
+                    console.log(file_name);
+                    console.log("Verificando, el contenido del archivo es:");
+                    console.log(archivo);
+                  
                   this.productoNuevo.imagen = imagen;
                   this.procesando_img = false;
                   this.blnImgCuadrada = false;
