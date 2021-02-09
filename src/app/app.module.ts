@@ -23,6 +23,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { firebaseConfig } from '../environments/environment';
 import { File } from '@ionic-native/file/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -38,7 +39,8 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     Facebook,
     File,
     Geolocation,
-  { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy }
+  { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy },
+    Deeplinks
 ],
   bootstrap: [AppComponent]
 })
