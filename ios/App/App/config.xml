@@ -25,5 +25,9 @@
     <param name="onload" value="true"/>
   </feature>
 
+  <feature name="IonicDeeplinkPlugin">
+    <param name="ios-package" value="IonicDeeplinkPlugin" onload="true"/>
+  </feature>
+
   
 </widget>

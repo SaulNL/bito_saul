@@ -16,7 +16,7 @@ import { Login } from "../../../Modelos/login";
 import { AppSettings } from "../../../AppSettings";
 import { NavController } from "@ionic/angular";
 import { SideBarService } from "../../../api/busqueda/side-bar-service";
-import { LoadingController } from "@ionic/angular";
+import { LoadingController,Platform } from "@ionic/angular";
 
 @Component({
   selector: "app-registro-persona",
@@ -43,7 +43,8 @@ export class RegistroPersonaPage implements OnInit {
     private loginService: LoginService,
     private navctrl: NavController,
     private sideBarService: SideBarService,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    private platform: Platform
   ) {
     this.usuario = new Login();
     //   this.condiciones_servicio = false;
@@ -89,12 +90,23 @@ export class RegistroPersonaPage implements OnInit {
   }
 
   async loginGoogle() {
-    const res = await this.googlePlus.login({
+    let res;
+    if (this.platform.is('android')) {
+      res = await this.googlePlus.login({
+        webClientId:
+        "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
+        offline: true,
+      });
+  } else if (this.platform.is('ios')) {
+    res = await this.googlePlus.login({
       webClientId:
- 
       "315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com",
       offline: true,
     });
+
+  } else {
+    this.notificacion.alerta('Error Login Google');
+  }
     this.presentLoading();
     const resConfirmed = await this.afAuth.auth.signInWithCredential(
       firebase.auth.GoogleAuthProvider.credential(res.idToken)

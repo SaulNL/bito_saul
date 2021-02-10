@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "923911532405",
-    "firebase_url": "https://bitoo-3ecf0.firebaseio.com",
-    "project_id": "bitoo-3ecf0",
-    "storage_bucket": "bitoo-3ecf0.appspot.com"
+    "project_number": "315189899862",
+    "firebase_url": "https://app-bitoo-default-rtdb.firebaseio.com",
+    "project_id": "app-bitoo",
+    "storage_bucket": "app-bitoo.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:923911532405:android:f80fd8e157cfeefaf2ad3c",
+        "mobilesdk_app_id": "1:315189899862:android:ff3eb5bbe2f2db4bfec1f7",
         "android_client_info": {
-          "package_name": "io.ionic.starter"
+          "package_name": "mx.com.softura.bitoo.produccion"
         }
       },
       "oauth_client": [
         {
-          "client_id": "923911532405-6nrm99qeg5at6jcm62u3tegfo8970tcu.apps.googleusercontent.com",
+          "client_id": "315189899862-92lt74ql4iajdnfsjj9m8mnmv713h812.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "io.ionic.starter",
-            "certificate_hash": "bf2056b552591faa9d0f67a1b53279e97f1b30fd"
+            "package_name": "mx.com.softura.bitoo.produccion",
+            "certificate_hash": "a021b914ad35ad2a3360f2ebdd8ebdb30df50938"
           }
         },
         {
-          "client_id": "923911532405-77uvn5rfg78cc0f1bis1lve31bahu3jc.apps.googleusercontent.com",
+          "client_id": "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyByfKDFNPMrgvvl_U8x9TkIHGThkAZUi48"
+          "current_key": "AIzaSyDBIHNATf9qtT-JkfXFJ6N1PA22viXHMf4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "923911532405-77uvn5rfg78cc0f1bis1lve31bahu3jc.apps.googleusercontent.com",
+              "client_id": "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

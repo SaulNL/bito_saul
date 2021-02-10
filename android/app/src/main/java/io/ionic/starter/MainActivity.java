@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package mx.com.softura.bitoo.produccion;
 
 import android.os.Bundle;
 
