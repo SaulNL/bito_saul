@@ -686,6 +686,16 @@ export class PerfilNegocioPage implements OnInit {
     await alert.present();
   }
 
+  async avisoNegocioCerrado() {
+    const alert = await this.alertController.create({
+      header: 'Aviso',
+      message: 'Este negocio está cerrado, revisa sus horarios para hacer un pedido cuando se encuentre abierto',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
   async mensajeBolsa() {
     console.log("Esto entra aca");
 
@@ -768,8 +778,7 @@ export class PerfilNegocioPage implements OnInit {
         (this.informacionNegocio.entrega_domicilio === 1 ||
             this.informacionNegocio.entrega_sitio === 1 ||
             this.informacionNegocio.consumo_sitio === 1) &&
-        parseInt(precio) > 0 &&
-        this.informacionNegocio.abierto === "ABIERTO"
+        parseInt(precio) > 0 
     ); // && parseInt(precio) > 0
   }
   aumentarDismuir(cantidad: number, index: number, operacion: number) {

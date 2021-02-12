@@ -265,13 +265,20 @@
                                 </div>
                             </ion-card-content>
                         </div>
-                        <div *ngIf="mostrarBoton(producto.precio)">
+                        <div *ngIf="mostrarBoton(producto.precio) && this.informacionNegocio.abierto === 'ABIERTO'">
                             <ion-fab class="bolsita agregarBolda" (click)="agregarBolsaDeta(producto)">
                                 <ion-fab-button class="bosar">
                                     <ion-icon name="bag-add-outline"></ion-icon>
                                 </ion-fab-button>
                               </ion-fab>
-                    </div>
+                        </div>
+                        <div *ngIf="mostrarBoton(producto.precio) && !(this.informacionNegocio.abierto === 'ABIERTO')">
+                            <ion-fab class="bolsita agregarBolda" (click)="avisoNegocioCerrado()">
+                                <ion-fab-button disabled="true" class="bosar">
+                                    <ion-icon name="bag-add-outline"></ion-icon>
+                                </ion-fab-button>
+                            </ion-fab>
+                        </div>
                     <div class="alado">
                         <div *ngFor="let item of bolsa; let i = index">
                         <div *ngIf="item.idProducto === producto.idProducto">

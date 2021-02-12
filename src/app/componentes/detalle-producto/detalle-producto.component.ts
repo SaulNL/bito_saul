@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ModalController, Platform} from "@ionic/angular";
+import {AlertController, ModalController, Platform} from "@ionic/angular";
 import {ToadNotificacionService} from 'src/app/api/toad-notificacion.service';
 import {UtilsCls} from "../../utils/UtilsCls";
 
@@ -33,6 +33,7 @@ export class DetalleProductoComponent implements OnInit {
         private notificacionService: ToadNotificacionService,
         private platform: Platform,
         private router: Router,
+        public alertController: AlertController
     ) {
         this.existeSesion = utilsCls.existe_sesion();
         this.subscribe = this.platform.backButton.subscribe(() => {
@@ -92,4 +93,13 @@ export class DetalleProductoComponent implements OnInit {
             this.router.navigate(['/tabs/login'])
         }
     }
+    async avisoNegocioCerrado() {
+        const alert = await this.alertController.create({
+          header: 'Aviso',
+          message: 'Este negocio está cerrado, revisa sus horarios para hacer un pedido cuando se encuentre abierto',
+          buttons: ['OK']
+        });
+    
+        await alert.present();
+      }
 }
