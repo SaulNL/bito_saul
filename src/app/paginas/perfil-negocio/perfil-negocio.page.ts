@@ -28,6 +28,8 @@ import { PromocionesModel } from "src/app/Modelos/busqueda/PromocionesModel";
 const { Share } = Plugins;
 const haversineCalculator = require("haversine-calculator");
 import { ModalPromocionNegocioComponent } from "src/app/componentes/modal-promocion-negocio/modal-promocion-negocio.component";
+import {ProductoModel} from "../../Modelos/ProductoModel";
+import { ProductosService } from "../../api/productos.service";
 
 @Component({
   selector: "app-perfil-negocio",
@@ -76,6 +78,7 @@ export class PerfilNegocioPage implements OnInit {
   public ruta;
   public contador: number;
   public navegacion: any;
+  public user:any;
   constructor(
       private navctrl: NavController,
       private route: ActivatedRoute,
@@ -93,7 +96,8 @@ export class PerfilNegocioPage implements OnInit {
       private router: Router,
       private platform: Platform,
       private blockk: AuthGuardService,
-      private navBarServiceService: NavBarServiceService
+      private navBarServiceService: NavBarServiceService,
+      private servicioProductos: ProductosService
   ) {
     this.seccion = "ubicacion";
     this.loader = true;
@@ -118,6 +122,7 @@ export class PerfilNegocioPage implements OnInit {
     this.banderaS = null;
     this.banderaP = null;
     this.navegacion = false;
+    this.user = this.util.getUserData();
   }
 
   ngOnInit() {
@@ -374,7 +379,8 @@ export class PerfilNegocioPage implements OnInit {
         _consumoSitio: this.informacionNegocio.consumo_sitio,
         _costoEntrega: this.informacionNegocio.costo_entrega,
         _abierto: this.informacionNegocio.abierto,
-        bolsa: this.bolsa
+        bolsa: this.bolsa,
+        user: this.user
       },
     });
     await modal.present();
@@ -843,5 +849,21 @@ export class PerfilNegocioPage implements OnInit {
       },
     });
     await modal.present();
+  }
+  public darLike(producto: ProductoModel) {
+    this.servicioProductos.darLike(producto, this.user).subscribe(
+      (response) => {
+        if (response.code === 200) {
+          producto.likes = response.data;
+          this.notificacionService.exito(response.message);
+        } else{
+          this.notificacionService.alerta(response.message);
+        }
+      },
+      (error) => {
+        this.notificacionService.error("Error, intentelo más tarde");
+      }
+    );
+    //}
   }
 }

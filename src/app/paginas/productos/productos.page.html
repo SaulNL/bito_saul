@@ -96,11 +96,16 @@
               </div>
             </ion-label>
           </ion-item>
-            <ion-item-options side="end" *ngIf="motrarContacto">
-              <ion-item-option color="danger" (click)="darLike(producto)">
+          <ion-item-options side="end" *ngIf="motrarContacto">
+            <ion-item-option *ngIf="producto.likes>0;else templateName" color="danger" (click)="darLike(producto)">
+              <ion-icon name="heart-outline"></ion-icon>{{producto.likes}}
+            </ion-item-option>
+            <ng-template #templateName>
+              <ion-item-option *ngIf="producto.likes === 0" class="grus" (click)="darLike(producto)">
                 <ion-icon name="heart-outline"></ion-icon>{{producto.likes}}
               </ion-item-option>
-            </ion-item-options>
+            </ng-template>
+          </ion-item-options>
           </ion-item-sliding>
         </ion-list>
       </ion-col>

@@ -3,6 +3,8 @@ import {ProductoModel} from "../../../Modelos/ProductoModel";
 import {ModalController} from "@ionic/angular";
 import {NegocioService} from "../../../api/negocio.service";
 import {Router} from "@angular/router";
+import { ProductosService } from "../../../api/productos.service";
+import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
 
 
 @Component({
@@ -13,14 +15,16 @@ import {Router} from "@angular/router";
 export class ModalProductoPage implements OnInit {
   @Input() public existeSesion: boolean;
   @Input() public unoProducto: ProductoModel;
+  @Input() public user: any;
 
   slideOpts ={
     scrollbar:true
   }
-  constructor(
+  constructor(private servicioProductos: ProductosService,
       public modalCtrl: ModalController,
       private negocioServico: NegocioService,
-      private router:Router
+      private router:Router,
+      private notificaciones: ToadNotificacionService
   ) {
     
    }
@@ -52,4 +56,25 @@ export class ModalProductoPage implements OnInit {
             'dismissed': true
           });
   }
+  public darLike(producto: ProductoModel) {
+    //this.user = this._auth0.getUserData();
+    //if(this.user.id_persona !== undefined){
+    this.servicioProductos.darLike(producto, this.user).subscribe(
+      (response) => {
+        if (response.code === 200) {
+          producto.likes = response.data;
+          this.notificaciones.exito(response.message);
+        } else{
+          this.notificaciones.alerta(response.message);
+        }
+        //this.notificaciones.exito(response.message);
+        
+      },
+      (error) => {
+        this.notificaciones.error("Error, intentelo más tarde");
+      }
+    );
+    //}
+  }
+
 }

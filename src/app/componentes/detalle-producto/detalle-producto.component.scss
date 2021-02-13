@@ -10,3 +10,9 @@
     // padding: 0 18px;
     text-align: justify;
   }
+  ion-item{
+    --border-radius: 34px;
+    --background: linear-gradient(90deg, rgba(250, 79, 114, 1) 0%, rgba(167, 78, 239, 1) 100%);
+    color: white;
+    padding-bottom: 10px;
+  }
