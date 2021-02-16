@@ -43,10 +43,10 @@
             <label for="imageUpload"></label>
           </div>
         </div>
-        <div style="display: flex; justify-content: center; align-items: center;">
-          <ion-label *ngIf="negocioTO.url_negocio !== null"> www.bitoo.com.mx/{{negocioTO.url_negocio}}</ion-label>
+        <div style="display: flex; justify-content: center; align-items: center;" *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">
+          <ion-label > www.bitoo.com.mx/{{negocioTO.url_negocio}}</ion-label>
         </div>
-        <div style="display: flex; justify-content: center; align-items: center;">
+        <div style="display: flex; justify-content: center; align-items: center;" *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">
           <ion-button size="small" *ngIf=" negocioTO.url_negocio !== null" (click)="abrirModalCambio()" color="primary">solicitar cambio de url</ion-button>
         </div>
     <ion-list>

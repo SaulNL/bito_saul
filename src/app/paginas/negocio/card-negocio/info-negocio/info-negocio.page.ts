@@ -583,8 +583,9 @@ agregarHorario() {
     await alert.present();
   }
   abrirModalCambio(){
-    this.negocioTO =  JSON.parse(JSON.stringify(this.negocioTO));
-    let navigationExtras = JSON.stringify(this.negocioTO);
+    let objetoAux;
+    objetoAux=  JSON.parse(JSON.stringify(this.negocioTO));
+    let navigationExtras = JSON.stringify(objetoAux);
     this.router.navigate(['/tabs/home/negocio/card-negocio/info-negocio/solicitud-cambio-url'], { queryParams: {special: navigationExtras}  });
   }
 }

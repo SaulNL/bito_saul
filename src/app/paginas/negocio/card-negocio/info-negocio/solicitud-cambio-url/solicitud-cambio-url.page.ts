@@ -40,7 +40,7 @@ export class SolicitudCambioUrlPage implements OnInit {
     return this.loader.present();
   }
   cerrarModal() {
-    this.router.navigate(['/tabs/home/negocio/card-negocio/info-negocio'], { queryParams: {special: true}});
+    this.router.navigate(['/tabs/home/negocio/card-negocio/info-negocio']);
   }
   enviarSolicitud() {
     this.presentLoading();
