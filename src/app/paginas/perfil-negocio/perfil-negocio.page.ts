@@ -183,22 +183,23 @@ export class PerfilNegocioPage implements OnInit {
     this.negocioService.obteneretalleNegocio(this.negocio).subscribe(
         (response) => {
           if (response.data !== null) {
-            if (!this.informacionNegocio.activo) {
-              this.siEsta = false;
-              this.presentExit();
-            }
             this.informacionNegocio = response.data;
-            this.informacionNegocio.catProductos = [];
-            this.informacionNegocio.catServicos = [];
-            // this.obtenerPromociones();
-            this.obtenerProductos();
-            this.obtenerServicios();
-            this.obtenerEstatusCalificacion();
-
-            this.horarios(this.informacionNegocio);
-            this.calcularDistancia();
-          } else{
-            this.presentExit();
+            if (!this.informacionNegocio.activo) {
+              this.presentExit();
+              this.siEsta = false;
+            } else{
+              this.informacionNegocio.catProductos = [];
+              this.informacionNegocio.catServicos = [];
+              // this.obtenerPromociones();
+              this.obtenerProductos();
+              this.obtenerServicios();
+              this.obtenerEstatusCalificacion();
+  
+              this.horarios(this.informacionNegocio);
+              this.calcularDistancia();
+            }
+          } else {
+            this.presentError();
           }
           this.loader = false;
           setTimeout((it) => {
@@ -874,6 +875,28 @@ export class PerfilNegocioPage implements OnInit {
     );
     //}
   }
+  async presentError() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '',
+      mode:'ios',
+      backdropDismiss : true,
+      message: '<strong>La Url del negocio no existe</strong>!!!',
+      buttons: [
+        {
+          text: 'Salir',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            this.router.navigate(['/']);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   async presentExit() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
