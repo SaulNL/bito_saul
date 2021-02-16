@@ -79,6 +79,7 @@ export class PerfilNegocioPage implements OnInit {
   public contador: number;
   public navegacion: any;
   public user:any;
+  public siEsta:any;
   constructor(
       private navctrl: NavController,
       private route: ActivatedRoute,
@@ -123,6 +124,7 @@ export class PerfilNegocioPage implements OnInit {
     this.banderaP = null;
     this.navegacion = false;
     this.user = this.util.getUserData();
+    this.siEsta=true;
   }
 
   ngOnInit() {
@@ -181,6 +183,10 @@ export class PerfilNegocioPage implements OnInit {
     this.negocioService.obteneretalleNegocio(this.negocio).subscribe(
         (response) => {
           if (response.data !== null) {
+            if (!this.informacionNegocio.activo) {
+              this.siEsta = false;
+              this.presentExit();
+            }
             this.informacionNegocio = response.data;
             this.informacionNegocio.catProductos = [];
             this.informacionNegocio.catServicos = [];
@@ -191,6 +197,8 @@ export class PerfilNegocioPage implements OnInit {
 
             this.horarios(this.informacionNegocio);
             this.calcularDistancia();
+          } else{
+            this.presentExit();
           }
           this.loader = false;
           setTimeout((it) => {
@@ -865,5 +873,26 @@ export class PerfilNegocioPage implements OnInit {
       }
     );
     //}
+  }
+  async presentExit() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '',
+      mode:'ios',
+      backdropDismiss : true,
+      message: '<strong>Este negocio está deshabilitado o ya no existe</strong>!!!',
+      buttons: [
+        {
+          text: 'Salir',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            this.router.navigate(['/']);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
