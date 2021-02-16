@@ -265,6 +265,18 @@
                                 </div>
                             </ion-card-content>
                         </div>
+                        <div *ngIf="existeSesion">
+                            <ion-fab class="bolsi agregarBolda" (click)="darLike(producto)">
+                                <ion-fab-button *ngIf="producto.likes>0;else templateName" class="bosar">
+                                    <ion-icon name="heart-circle-outline"></ion-icon>{{producto.likes}}
+                                </ion-fab-button>
+                                <ng-template #templateName>
+                                    <ion-fab-button *ngIf="producto.likes === 0" class="bosa bosar">
+                                        <ion-icon name="heart-circle-outline"></ion-icon>{{producto.likes}}
+                                    </ion-fab-button>
+                                </ng-template>
+                              </ion-fab>
+                        </div>
                         <div *ngIf="mostrarBoton(producto.precio)">
                             <ion-fab class="bolsita agregarBolda" (click)="agregarBolsaDeta(producto)">
                                 <ion-fab-button class="bosar">
