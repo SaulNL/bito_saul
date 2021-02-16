@@ -13,6 +13,7 @@ import { HorarioNegocioModel } from '../../../../Modelos/HorarioNegocioModel';
 import * as moment from 'moment';
 import { AlertController } from '@ionic/angular';
 
+
 @Component({
   selector: 'app-info-negocio',
   templateUrl: './info-negocio.page.html',
@@ -580,5 +581,10 @@ agregarHorario() {
     });
 
     await alert.present();
+  }
+  abrirModalCambio(){
+    this.negocioTO =  JSON.parse(JSON.stringify(this.negocioTO));
+    let navigationExtras = JSON.stringify(this.negocioTO);
+    this.router.navigate(['/tabs/home/negocio/card-negocio/info-negocio/solicitud-cambio-url'], { queryParams: {special: navigationExtras}  });
   }
 }

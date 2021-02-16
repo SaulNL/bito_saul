@@ -754,4 +754,22 @@ busquedaNegocioDenuncias(nombre_comercial: string): Observable<any> {
         return data;
     }));
   }
+  /**
+   * Funcion para enviar solicitud cambio url negocio por correo
+   * @param datos
+   * @author Kenedy
+   */
+  enviarCambioUrlCorreo(datos:any): Observable<any>{
+    const body = JSON.stringify(datos);
+    return from(this.http.post( this.url + 'api/solicitud/cambiourl',body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
+    }));
+  }
 }

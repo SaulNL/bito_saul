@@ -43,6 +43,12 @@
             <label for="imageUpload"></label>
           </div>
         </div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <ion-label *ngIf="negocioTO.url_negocio !== null"> www.bitoo.com.mx/{{negocioTO.url_negocio}}</ion-label>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <ion-button size="small" *ngIf=" negocioTO.url_negocio !== null" (click)="abrirModalCambio()" color="primary">solicitar cambio de url</ion-button>
+        </div>
     <ion-list>
       <ion-item>
         <ion-label position="stacked">Nombre del negocio: <span style="color: red">*</span></ion-label>
@@ -164,7 +170,7 @@
               </ion-item>
             </ion-list>
           </ion-card>
-      <ion-item>
+      <!--<ion-item>
         <ion-label class="urlnego" position="stacked">Url del negocio: <span style="color: red">*</span></ion-label>
         <ion-input id="idNegocioUrl" name="idNegocioUrl" #urlNegocio="ngModel" required [(ngModel)]="negocioTO.url_negocio" (ngModelChange)="confirmarUrlNegocio($event)"></ion-input>
       </ion-item>
@@ -172,7 +178,7 @@
         <div *ngIf="urlNegocio.errors.required">el url es requerido</div>
       </div>
       <span *ngIf="urlNegocioLibre === true" style="font-size: 11px; margin-left: 11px; font-weight: bolder;">https://www.bitoo.com.mx/@{{negocioTO.url_negocio}}</span>
-      <span *ngIf="urlNegocioLibre === false" style="font-size: 11px; margin-left: 11px; font-weight: bolder;">Url ya existe, sugerencia: https://www.bitoo.com.mx/@{{negocioTO.url_negocio}}</span>
+      <span *ngIf="urlNegocioLibre === false" style="font-size: 11px; margin-left: 11px; font-weight: bolder;">Url ya existe, sugerencia: https://www.bitoo.com.mx/@{{negocioTO.url_negocio}}</span>-->
       <ion-item>
         <ion-button  color="light" size="small" (click)="consumoSitioAlert()" >
           <ion-icon name="information-circle-outline"></ion-icon>

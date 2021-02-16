@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-buttons slot="end" (click)="cerrarModal()">
+      <ion-button>
+          <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+  </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <div class="ion-text-center">
+      <h3>SOLICITUD CAMBIO URL</h3>
+    </div>
+    <ion-card-header>
+      <ion-card-content>
+      <form #formCambioUrl="ngForm" (ngSubmit)="enviarSolicitud(formCambioUrl)">
+        <ion-list>
+          <ion-item>
+            <ion-label position="stacked">Nombre: <span style="color: red">*</span></ion-label>
+            <ion-input id="nombre" name="nombre" #nombre="ngModel"  [(ngModel)]="cambiarUrlTO.nombre"  required></ion-input>
+          </ion-item>
+          <div *ngIf="nombre.touched  && nombre.invalid" class="alert">
+            <div *ngIf="nombre.errors.required">el nombre es requerido</div>
+          </div>
+          <ion-item>
+            <ion-label position="stacked">Telefono: <span style="color: red">*</span></ion-label>
+            <ion-input id="telefono" name="telefono" #telefono="ngModel"  [(ngModel)]="cambiarUrlTO.telefono"  required></ion-input>
+          </ion-item>
+          <div *ngIf="telefono.touched  && telefono.invalid" class="alert">
+            <div *ngIf="telefono.errors.required">el telefono es requerido</div>
+          </div>
+          <ion-item>
+            <ion-label position="stacked">Correo: <span style="color: red">*</span></ion-label>
+            <ion-input id="correo" name="correo" #correo="ngModel"  [(ngModel)]="cambiarUrlTO.correo"  required></ion-input>
+          </ion-item>
+          <div *ngIf="correo.touched  && correo.invalid" class="alert">
+            <div *ngIf="correo.errors.required">el correo es requerido</div>
+          </div>
+          <ion-item>
+            <ion-label position="stacked">Url nueva: <span style="color: red">*</span></ion-label>
+            <ion-input id="url" name="url" #url="ngModel"  [(ngModel)]="cambiarUrlTO.url"  required></ion-input>
+          </ion-item>
+          <div *ngIf="url.touched  && url.invalid" class="alert">
+            <div *ngIf="url.errors.required">el url es requerido</div>
+          </div>
+          <ion-grid>
+            <ion-row class="ion-align-items-center">
+              <ion-col size="12" class="ion-text-center">
+                <ion-button expand="block" type="submit" [disabled]="formCambioUrl.invalid" class="bg-rosa">
+                  <label>Enviar solicitud</label>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-list>
+      </form>
+       </ion-card-content>
+    </ion-card-header>
+  </ion-card>
+</ion-content>
