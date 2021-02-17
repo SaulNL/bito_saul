@@ -124,6 +124,7 @@
           <ion-select [disabled]="blnActivaDias"  ok-text="Ok" cancel-text="Cancelar" multiple  #dias="ngModel" name="dias" (ionChange)="diasSeleccionado($event)" [(ngModel)]="nuevoHorario.dias">
             <ion-select-option  *ngFor="let dia of diasArray" [value]="dia.dia">{{dia.dia}}</ion-select-option>
           </ion-select>
+
         </ion-item>
         <ion-grid>
           <ion-row class="ion-align-items-center">
@@ -222,6 +223,16 @@
       <ion-item>
         <ion-label position="stacked">Costo de Entrega</ion-label>
         <ion-input placeholder="$0.00" id="idNegoCostoEntrega" name="idNegoCostoEntrega" #negoCostoEntrega="ngModel" required [(ngModel)]="negocioTO.costo_entrega"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Métodos de pago</ion-label>
+<!-- ok-text="Ok" cancel-text="Cancelar" multiple  #dias="ngModel" name="dias" (ionChange)="diasSeleccionado($event)" [(ngModel)]="nuevoHorario.dias" -->
+        <!-- <ion-select ok-text="Ok" cancel-text="Cancelar" multiple (ionChange)="cambiarPago($event)">
+          <ion-select-option  *ngFor="let item of metodosPago" [value]="item.value">{{item.metodo}}</ion-select-option>
+        </ion-select> -->
+        <ion-select ok-text="Ok" cancel-text="Cancelar" multiple  #pago="ngModel" name="pago" (ionChange)="cambiarPago($event)" [(ngModel)]="copyPago">
+          <ion-select-option  *ngFor="let item of metodosPago" [value]="item">{{item.metodo}}</ion-select-option>
+        </ion-select>
       </ion-item>
     </div>
       <ion-item>
