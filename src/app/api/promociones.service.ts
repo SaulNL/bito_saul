@@ -32,6 +32,7 @@ export class PromocionesService {
     }));
   }
 
+
   buscarPromocinesPublicadasModulo(filtros: FiltrosModel): Observable<any> {
     const body = JSON.stringify({filtros: filtros});
     this.http.setDataSerializer("utf8");
