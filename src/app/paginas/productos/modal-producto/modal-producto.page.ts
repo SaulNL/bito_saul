@@ -6,7 +6,6 @@ import {Router} from "@angular/router";
 import { ProductosService } from "../../../api/productos.service";
 import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
 
-
 @Component({
   selector: 'app-modal-producto',
   templateUrl: './modal-producto.page.html',
@@ -30,7 +29,9 @@ export class ModalProductoPage implements OnInit {
    }
 
   ngOnInit() {
-    
+    if (this.existeSesion) {
+      this.loVio(this.unoProducto);
+    }
   }
   dismiss() {
     this.modalCtrl.dismiss();
@@ -77,4 +78,12 @@ export class ModalProductoPage implements OnInit {
     //}
   }
 
+  public loVio(producto) {
+    let objectoVio = {
+     "id_persona": this.user.id_persona, //usuario
+     "id_producto": producto.idProducto //idProducto
+   };
+   this.servicioProductos.quienVioProdu(objectoVio).subscribe(
+   response => { if (response.code === 200) { console.log(response.code); }},error => {});
+ }
 }

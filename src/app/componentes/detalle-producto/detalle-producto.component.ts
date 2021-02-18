@@ -53,6 +53,9 @@ export class DetalleProductoComponent implements OnInit {
                 }
             });
         }
+        if (this.existeSesion){
+            this.loVio(this.datos);
+        }
     }
 
     cerrarModal() {
@@ -112,4 +115,13 @@ export class DetalleProductoComponent implements OnInit {
         );
         //}
       }
+      
+      public loVio(producto) {
+        let objectoVio = {
+         "id_persona": this.user.id_persona, //usuario
+         "id_producto": producto.idProducto //idProducto
+       };
+       this.servicioProductos.quienVioProdu(objectoVio).subscribe(
+       response => { if (response.code === 200) { console.log(response.code); }},error => {});
+     }
 }
