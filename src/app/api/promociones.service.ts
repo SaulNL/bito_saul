@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { AppSettings } from "../AppSettings";
-import { Observable, from } from "rxjs";
-import { map } from "rxjs/operators";
+import { HttpClient } from '@angular/common/http';
+import { AppSettings } from '../AppSettings';
+import { Observable, from } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { FiltrosModel } from '../Modelos/FiltrosModel';
 import { PromocionesModel } from '../Modelos/busqueda/PromocionesModel';
 import { PublicacionesModel } from '../Modelos/PublicacionesModel';
@@ -15,15 +15,16 @@ export class PromocionesService {
 
   url = `${AppSettings.API_ENDPOINT}`;
 
-  constructor( 
+  constructor(
     private _http: HttpClient,
     private http: HTTP
   ) { }
 
-  obtenerDetalle(id_promocion): Observable<any> {
-    const body = JSON.stringify({id_promocion: id_promocion});
-    this.http.setDataSerializer("utf8");
-    return from(this.http.post(`${this.url}api/promocion/obtener/detalle`,body, AppSettings.getHeaders())
+
+  obtenerDetalle(idPromocion): Observable<any> {
+    const body = JSON.stringify({idPromocion});
+    this.http.setDataSerializer('utf8');
+    return from(this.http.post(`${this.url}api/promocion/obtener/detalle`, body, AppSettings.getHeaders())
     .then((data) => {
       return JSON.parse(data.data);
     })
@@ -34,9 +35,9 @@ export class PromocionesService {
 
 
   buscarPromocinesPublicadasModulo(filtros: FiltrosModel): Observable<any> {
-    const body = JSON.stringify({filtros: filtros});
-    this.http.setDataSerializer("utf8");
-    let datos = from(this.http.post(this.url + 'api/promociones/buscar/publicadas',body,
+    const body = JSON.stringify({filtros});
+    this.http.setDataSerializer('utf8');
+    const datos = from(this.http.post(this.url + 'api/promociones/buscar/publicadas', body,
     AppSettings.getHeaders())
     .then( data => {
         return JSON.parse(data.data);
@@ -44,7 +45,7 @@ export class PromocionesService {
     .catch((error) => {
         return error;
     }));
-    
+
     return datos.pipe(map(data => {
         return data;
     })).pipe(map(res => {
@@ -98,15 +99,15 @@ export class PromocionesService {
       }
 
       jsOrigen.data = jsCategoria;
-      
+
       return jsOrigen;
     }));
   }
 
   buscar(promocion: PromocionesModel): Observable<any> {
     const body = JSON.stringify(promocion);
-    this.http.setDataSerializer("utf8");
-    return from(this.http.post(this.url + 'api/promociones/persona',body, AppSettings.getHeaders())
+    this.http.setDataSerializer('utf8');
+    return from(this.http.post(this.url + 'api/promociones/persona', body, AppSettings.getHeaders())
     .then((data) => {
       return JSON.parse(data.data);
     })
@@ -115,10 +116,10 @@ export class PromocionesService {
     }));
   }
 
-  obtenerNumeroPublicacionesPromocion(id_proveedor): Observable<any>{
-    const body = JSON.stringify({'id_proveedor':id_proveedor});
-    this. http.setDataSerializer("utf8");
-    return from(this.http.post(this.url + 'api/promocion/obtener/numero_publicaciones',body, AppSettings.getHeadersToken())
+  obtenerNumeroPublicacionesPromocion(idProveedor): Observable<any>{
+    const body = JSON.stringify({id_proveedor: idProveedor});
+    this. http.setDataSerializer('utf8');
+    return from(this.http.post(this.url + 'api/promocion/obtener/numero_publicaciones', body, AppSettings.getHeadersToken())
     .then((data) => {
       return JSON.parse(data.data);
     })
@@ -131,8 +132,8 @@ export class PromocionesService {
     console.log(promocion);
     const body = JSON.stringify(promocion);
     console.log(body);
-    this. http.setDataSerializer("utf8");
-    return from(this.http.post(this.url + 'api/promociones/obtener/publicadas',body, AppSettings.getHeadersToken())
+    this. http.setDataSerializer('utf8');
+    return from(this.http.post(this.url + 'api/promociones/obtener/publicadas', body, AppSettings.getHeadersToken())
     .then((data) => {
       return JSON.parse(data.data);
     })
@@ -142,11 +143,11 @@ export class PromocionesService {
   }
 
   quitarPublicacionPromocion(variable: PromocionesModel) {
-    console.log(variable)
+    console.log(variable);
     const body = JSON.stringify(variable);
     console.log(body);
-    this. http.setDataSerializer("utf8");
-    return from(this.http.post(this.url + 'api/promociones/eliminar/publicacion',body, AppSettings.getHeadersToken())
+    this. http.setDataSerializer('utf8');
+    return from(this.http.post(this.url + 'api/promociones/eliminar/publicacion', body, AppSettings.getHeadersToken())
     .then((data) => {
       return JSON.parse(data.data);
     })
@@ -156,9 +157,9 @@ export class PromocionesService {
   }
 
   obtenerQuienVioPublicacion(id_promocion, id_persona): Observable<any>{
-    const body = JSON.stringify({'id_promocion': id_promocion, 'id_persona': id_persona});
-    this. http.setDataSerializer("utf8");
-    return from(this.http.post(this.url + 'api/promociones/obtener/viste_mi_promocion',body, AppSettings.getHeadersToken())
+    const body = JSON.stringify({id_promocion: id_promocion, id_persona: id_persona});
+    this. http.setDataSerializer('utf8');
+    return from(this.http.post(this.url + 'api/promociones/obtener/viste_mi_promocion', body, AppSettings.getHeadersToken())
     .then((data) => {
       return JSON.parse(data.data);
     })
@@ -168,10 +169,10 @@ export class PromocionesService {
   }
 
   obtenerNumeroQuienVioPublicacion(id_promocion): Observable<any>{
-    const body = JSON.stringify({'id_promocion': id_promocion});
+    const body = JSON.stringify({id_promocion: id_promocion});
     console.log(body);
-    this. http.setDataSerializer("utf8");
-    return from(this.http.post(this.url + 'api/promociones/obtener/numero_viste_mi_promocion',body, AppSettings.getHeadersToken())
+    this. http.setDataSerializer('utf8');
+    return from(this.http.post(this.url + 'api/promociones/obtener/numero_viste_mi_promocion', body, AppSettings.getHeadersToken())
     .then((data) => {
       return JSON.parse(data.data);
     })
@@ -184,8 +185,8 @@ export class PromocionesService {
     console.log(variable);
     const body = JSON.stringify(variable);
     console.log(body);
-    this. http.setDataSerializer("utf8");
-    return from(this.http.post(this.url + 'api/promociones/guardar',body, AppSettings.getHeadersToken())
+    this. http.setDataSerializer('utf8');
+    return from(this.http.post(this.url + 'api/promociones/guardar', body, AppSettings.getHeadersToken())
     .then((data) => {
       return JSON.parse(data.data);
     })
@@ -198,8 +199,8 @@ export class PromocionesService {
     console.log(variable);
     const body = JSON.stringify(variable);
     console.log(body);
-    this. http.setDataSerializer("utf8");
-    return from(this.http.post(this.url + 'api/promociones/eliminar',body, AppSettings.getHeadersToken())
+    this. http.setDataSerializer('utf8');
+    return from(this.http.post(this.url + 'api/promociones/eliminar', body, AppSettings.getHeadersToken())
     .then((data) => {
       return JSON.parse(data.data);
     })
@@ -212,15 +213,15 @@ export class PromocionesService {
     console.log(publicacion);
     const body = JSON.stringify(publicacion);
     console.log(body);
-    this. http.setDataSerializer("utf8");
-    return from(this.http.post(this.url + 'api/promocion/publicar',body, AppSettings.getHeadersToken())
+    this. http.setDataSerializer('utf8');
+    return from(this.http.post(this.url + 'api/promocion/publicar', body, AppSettings.getHeadersToken())
     .then((data) => {
       return JSON.parse(data.data);
     })
     .catch((error) => {
       return error;
     }));
-    
+
   }
 
 }
