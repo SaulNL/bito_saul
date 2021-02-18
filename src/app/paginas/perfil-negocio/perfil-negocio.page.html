@@ -77,6 +77,28 @@
                      </strong>
                     </ion-label>
                     <hr>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col>
+                                <p>Métodos de pago</p>
+                                <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito===0 && informacionNegocio.tipo_pago_tarjeta_debito===0) && informacionNegocio.tipo_pago_transferencia==0">
+                                Este negocio solo se acepta pago en efectivo
+                                </p>
+                                <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito) && informacionNegocio.tipo_pago_transferencia">
+                                Este negocio acepta pagos en efectivo, pagos con tarjeta y transferencia electrónica
+                                </p>
+                                <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito)&& informacionNegocio.tipo_pago_transferencia===0">
+                                Este negocio acepta pagos en efectivo y pagos con tarjeta
+                                </p>
+                                <p *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito) && informacionNegocio.tipo_pago_transferencia===0">
+                                Este negocio solo acepta pagos con tarjeta
+                                </p>
+                                <p *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito===0 || informacionNegocio.tipo_pago_tarjeta_debito===0) && informacionNegocio.tipo_pago_transferencia===0">
+                                Este negocio solo acepta pagos con transferencia electrónica
+                                </p>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
                     <ion-grid *ngIf="existeSesion">
                         <ion-row style="display: flex; justify-content: center; align-items: center;">
                             <ion-col>
@@ -115,6 +137,7 @@
                                 </div>
                             </ion-col>
                         </ion-row>
+
                     </ion-grid>
                 </ion-card-content>
             </ion-card>
@@ -277,13 +300,20 @@
                                 </ng-template>
                               </ion-fab>
                         </div>
-                        <div *ngIf="mostrarBoton(producto.precio)">
+                        <div *ngIf="mostrarBoton(producto.precio) && this.informacionNegocio.abierto === 'ABIERTO'">
                             <ion-fab class="bolsita agregarBolda" (click)="agregarBolsaDeta(producto)">
                                 <ion-fab-button class="bosar">
                                     <ion-icon name="bag-add-outline"></ion-icon>
                                 </ion-fab-button>
                               </ion-fab>
-                    </div>
+                        </div>
+                        <div *ngIf="mostrarBoton(producto.precio) && !(this.informacionNegocio.abierto === 'ABIERTO')">
+                            <ion-fab class="bolsita agregarBolda" (click)="avisoNegocioCerrado()">
+                                <ion-fab-button disabled="true" class="bosar">
+                                    <ion-icon name="bag-add-outline"></ion-icon>
+                                </ion-fab-button>
+                            </ion-fab>
+                        </div>
                     <div class="alado">
                         <div *ngFor="let item of bolsa; let i = index">
                         <div *ngIf="item.idProducto === producto.idProducto">

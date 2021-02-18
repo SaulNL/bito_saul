@@ -46,6 +46,13 @@ export class InfoNegocioPage implements OnInit {
     { id: 6, dia: 'Sábado', horarios: [], hi: null, hf: null },
     { id: 7, dia: 'Domingo', horarios: [], hi: null, hf: null },
   ];
+  public metodosPago = [
+    {id: 1, metodo: "Transferencia Electrónica", value: null},
+    {id: 2, metodo: "Tajeta de Crédito", value:null},
+    {id: 3, metodo: "Tajeta de Débito", value:null},
+    {id: 4, metodo: "Efectivo", value:null}
+  ]
+  public copyPago = [];
 
   public negocioGuardar: any;
   public horarioini: string;
@@ -105,7 +112,19 @@ export class InfoNegocioPage implements OnInit {
     this.obtenerCatOrganizaciones();
     this.buscarNegocio(this.negocioTO.id_negocio);
     console.log(this.negocioTO);
-    console.log(this.negocioGuardar);
+    this.metodosPago = [
+      {id: 1, metodo: "Transferencia Electrónica", value: this.negocioTO.tipo_pago_transferencia},
+      {id: 2, metodo: "Tajeta de Crédito", value:this.negocioTO.tipo_pago_tarjeta_credito},
+      {id: 3, metodo: "Tajeta de Débito", value:this.negocioTO.tipo_pago_tarjeta_debito},
+      {id: 4, metodo: "Efectivo", value:this.negocioTO.tipo_pago_efectivo}
+    ]
+    console.log("metodos de pago");
+    
+    console.log(this.metodosPago);
+    this.setarPago();
+    console.log(this.copyPago);
+    
+    
   }
   public buscarNegocio(id) {
 
@@ -470,6 +489,12 @@ agregarHorario() {
     this.negocioGuardar.det_domicilio.id_municipio = this.negocioTO.det_domicilio.id_municipio;
     this.negocioGuardar.det_domicilio.id_localidad = this.negocioTO.det_domicilio.id_localidad;
     this.negocioGuardar.det_domicilio.colonia = this.negocioTO.det_domicilio.colonia;
+    this.negocioGuardar.tipo_pago_transferencia = this.negocioTO.tipo_pago_transferencia;
+    this.negocioGuardar.tipo_pago_tarjeta_credito = this.negocioTO.tipo_pago_tarjeta_credito;
+    this.negocioGuardar.tipo_pago_tarjeta_debito = this.negocioTO.tipo_pago_tarjeta_debito;
+    this.negocioGuardar.tipo_pago_efectivo = this.negocioTO.tipo_pago_efectivo;
+    console.log("guardar() credito: "+this.negocioTO.tipo_pago_tarjeta_credito);
+    
     if (this.negocioTO.det_domicilio.id_domicilio != null) {
       this.negocioGuardar.det_domicilio.id_domicilio = this.negocioTO.det_domicilio.id_domicilio;
     }
@@ -505,6 +530,46 @@ agregarHorario() {
     this.horarioini = '';
     this.horariofin = '';
     this.nuevoHorario = new HorarioNegocioModel;
+  }
+  cambiarPago(event) {
+    console.log(event);
+    
+    if(this.copyPago.length){
+      this.copyPago.map(item => {
+        console.log(item);
+        
+        if(item.id === 1){
+          this.negocioTO.tipo_pago_transferencia === 0?1:0;
+          item.value=== 0?1:0;
+          return item;
+        }
+        if(item.id === 2){
+          this.negocioTO.tipo_pago_tarjeta_credito===0?1:0;
+          item.value === 0?1:0;      
+          
+          return item;
+        }
+        if(item.id === 3){
+          this.negocioTO.tipo_pago_tarjeta_debito === 0?1:0;
+          item.value === 0?1:0;
+          return item;
+        }
+        if(item.id === 4){
+          this.negocioTO.tipo_pago_tarjeta_debito === 0 ? 1:0;
+          item.value === 0 ? 1:0;
+          return item;
+        }
+      })
+    }
+    console.log(this.copyPago);
+       
+  }
+  setarPago(){
+    this.metodosPago.forEach(i => {
+      if(i.value === 1){
+        this.copyPago.push(i);
+      }
+    });
   }
   async presentAlertEliminar(i) {
     const alert = await this.alertController.create({

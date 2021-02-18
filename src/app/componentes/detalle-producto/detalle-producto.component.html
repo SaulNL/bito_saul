@@ -81,5 +81,16 @@
             
             
         </ion-row>
+        <ion-row *ngIf="!mostrarComponente">
+            <ion-grid>
+                <ion-row>
+                    <ion-col (click)="avisoNegocioCerrado()">
+                        <ion-button disabled="true" expand="block">Agregar a la Bolsa
+                            <ion-icon name="bag-add-outline"></ion-icon>
+                        </ion-button>
+                    </ion-col>        
+                </ion-row>
+            </ion-grid>
+        </ion-row>
     </ion-grid>
 </ion-content>

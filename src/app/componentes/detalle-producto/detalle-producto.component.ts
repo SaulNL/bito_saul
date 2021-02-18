@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ModalController, Platform} from "@ionic/angular";
+import {AlertController, ModalController, Platform} from "@ionic/angular";
 import {ToadNotificacionService} from 'src/app/api/toad-notificacion.service';
 import {UtilsCls} from "../../utils/UtilsCls";
 import {ProductoModel} from "../../Modelos/ProductoModel";
@@ -36,7 +36,8 @@ export class DetalleProductoComponent implements OnInit {
         private notificacionService: ToadNotificacionService,
         private platform: Platform,
         private router: Router,
-        private servicioProductos: ProductosService
+        private servicioProductos: ProductosService,
+        public alertController: AlertController
     ) {
         this.existeSesion = utilsCls.existe_sesion();
         this.subscribe = this.platform.backButton.subscribe(() => {
@@ -115,7 +116,7 @@ export class DetalleProductoComponent implements OnInit {
         );
         //}
       }
-      
+
       public loVio(producto) {
         let objectoVio = {
          "id_persona": this.user.id_persona, //usuario
@@ -124,4 +125,13 @@ export class DetalleProductoComponent implements OnInit {
        this.servicioProductos.quienVioProdu(objectoVio).subscribe(
        response => { if (response.code === 200) { console.log(response.code); }},error => {});
      }
+    async avisoNegocioCerrado() {
+        const alert = await this.alertController.create({
+          header: 'Aviso',
+          message: 'Este negocio está cerrado, revisa sus horarios para hacer un pedido cuando se encuentre abierto',
+          buttons: ['OK']
+        });
+
+        await alert.present();
+      }
 }
