@@ -9,7 +9,9 @@ import { ActivatedRoute } from "@angular/router";
 import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-negocios.component';
 import {SideBarService} from "../../api/busqueda/side-bar-service";
 import { Router} from "@angular/router";
-
+import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveedor-servicio.service";
+import { UtilsCls } from "../../utils/UtilsCls";
+import { MsNegocioModel } from 'src/app/Modelos/busqueda/MsNegocioModel';
 
 @Component({
     selector: 'app-tab3',
@@ -31,6 +33,8 @@ export class InicioPage implements OnInit {
     loader: any;
     listaIdsMapa : any;
     filtroActivo: boolean;
+    user: any;
+    public existeSesion: boolean;
     constructor(
         public loadingController: LoadingController,
         private toadController: ToastController,
@@ -39,13 +43,17 @@ export class InicioPage implements OnInit {
         private notificaciones: ToadNotificacionService,
         private route: ActivatedRoute,
         private eventosServicios: SideBarService,
-        private ruta: Router
+        private ruta: Router,
+        private serviceProveedores: ProveedorServicioService,
+        private util: UtilsCls
     ) {
         this.Filtros = new FiltrosModel();
         this.Filtros.idEstado = 29;
         this.filtroActivo = false;
         this.listaCategorias = [];
         this.listaIdsMapa = [];
+        this.user = this.util.getUserData();
+        this.existeSesion = this.util.existe_sesion();
     }
 
     ngOnInit(): void {
@@ -199,4 +207,18 @@ export class InicioPage implements OnInit {
             this.ruta.navigate(['/tabs/negocio/'+negocioURL]);
         }
     }
+    public darLikes(proveedor: MsNegocioModel) {
+        if (this.user.id_persona !== undefined) {
+          this.serviceProveedores.darLike(proveedor, this.user).subscribe(
+            response => {
+              if (response.code === 200) {
+                proveedor.likes = response.data;
+                // console.log(proveedor.likes);
+              }
+              this.notificaciones.exito(response.message);
+            },
+            error => {
+            });
+        }
+      }
 }

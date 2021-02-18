@@ -3,6 +3,7 @@ import {AppSettings} from "../../../AppSettings";
 import {from, Observable} from "rxjs";
 import { MsNegocioModel } from './../../../Modelos/busqueda/MsNegocioModel';
 import { HTTP } from '@ionic-native/http/ngx';
+import { UsuarioSistemaModel } from 'src/app/Modelos/UsuarioSistemaModel';
 
 @Injectable({
   providedIn: 'root'
@@ -50,4 +51,20 @@ export class ProveedorServicioService {
         return error;
       }));
   }
+
+  public darLike(proveedor: MsNegocioModel, usuario: UsuarioSistemaModel):Observable<any>{
+    const body = JSON.stringify({proveedor: proveedor, usuario: usuario});
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url + 'api/negocio/dar_like', body,
+      AppSettings.getHeadersToken()).then(data => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+      //return data;
+    //}));
+  }
+
 }
