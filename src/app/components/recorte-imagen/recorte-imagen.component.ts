@@ -46,13 +46,8 @@ export class RecorteImagenComponent implements OnInit {
   }
 
   guardarImagenRecortada() {
-    let name;
-    for (const archivo of this.imageChangedEvent.target.files) {
-      name = archivo.name;
-    }
     this.modalController.dismiss({
-      'data': this.croppedImage,
-      'nombre_archivo': name
+      'data': this.croppedImage
     });
   }
 }

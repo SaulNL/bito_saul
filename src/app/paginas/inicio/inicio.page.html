@@ -44,8 +44,9 @@
                     <h2>{{cat.nombre}}</h2>
                 </ion-text>
                 <ion-col sizeLg="3" sizeXs="6" sizeSm="4" sizeMd="4" *ngFor="let proveedor of cat.negocios">
-                    <ion-card (click)="negocioRuta(proveedor.url_negocio)" class="m-0 fixed">
-                        <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
+                    <ion-card class="m-0 fixed">
+                        <div (click)="negocioRuta(proveedor.url_negocio)">
+                            <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
                             [srcset]="proveedor.url_logo" 
                              alt="Falla al cargar la imagen">
                         <ion-card-header>
@@ -58,6 +59,19 @@
                                 {{proveedor.descripcion}}
                             </div>
                         </ion-card-content>
+                        </div>
+                        <div *ngIf="existeSesion">
+                            <ion-fab class="bolsi agregarBolda" (click)="darLike(proveedor)">
+                                <ion-fab-button *ngIf="proveedor.likes>0;else templateName" class="bosar">
+                                    <ion-icon name="heart-circle-outline"></ion-icon>{{proveedor.likes}}
+                                </ion-fab-button>
+                                <ng-template #templateName>
+                                    <ion-fab-button *ngIf="proveedor.likes === 0" class="bosa bosar">
+                                        <ion-icon name="heart-circle-outline"></ion-icon>{{proveedor.likes}}
+                                    </ion-fab-button>
+                                </ng-template>
+                              </ion-fab>
+                        </div>
                     </ion-card>
                 </ion-col>
             </ion-row>

@@ -43,8 +43,14 @@ export class DatosSubcategoriaPage implements OnInit {
 
     this.active.queryParams.subscribe(params => {
       if (params && params.special) {
-         this.all = JSON.parse(params.special);
-         this.subcategoriaTO = this.all;
+        if(JSON.parse(params.special).make !== null && JSON.parse(params.special).make !== undefined){
+          this.all = JSON.parse(params.special);
+          this.subcategoriaTO = this.all.make;
+        }else{
+          this.all = JSON.parse(params.special);
+          this.subcategoriaTO = this.all;
+        }
+         
         //this.listaSubcategoria(this.subcategoriaTO.id_giro);
         
       }
@@ -135,7 +141,7 @@ export class DatosSubcategoriaPage implements OnInit {
     let height;
     let width;
     for (const archivo of event.target.files) {
-      const reader = new FileReader();
+      const reader = this._utils_cls.getFileReader();
       reader.readAsDataURL(archivo);
       reader.onload = () => {
         const img = new Image();
@@ -154,7 +160,7 @@ export class DatosSubcategoriaPage implements OnInit {
               const archivo = new ArchivoComunModel();
               archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
               archivo.archivo_64 = file_64;
-              archivo.extension = file_type.slice((file_type.lastIndexOf('/') - 1 >>> 0) + 2);
+              // archivo.extension = file_type.slice((file_type.lastIndexOf('/') - 1 >>> 0) + 2);
               switch (tipo) {
                 case 1:
                   if (width === height) {

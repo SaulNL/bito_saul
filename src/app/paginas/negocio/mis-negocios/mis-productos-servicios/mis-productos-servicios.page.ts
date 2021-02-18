@@ -63,6 +63,9 @@ export class MisProductosServiciosPage implements OnInit {
   public productoE: DtosMogoModel;
   public listaCategorias: any;
   public almacenarRegistro: any;
+  public tamano: any;
+  public segtamano: any;
+  public static: any;
 
   constructor(
     private router: Router,
@@ -91,9 +94,6 @@ export class MisProductosServiciosPage implements OnInit {
     this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.ocultar = false;
-
-        console.log(this.productoNuevo);
-
         this.mostrarListaProductos = false;
         this.agregarProducto = false;
         this.agregarClas = false;
@@ -195,7 +195,6 @@ export class MisProductosServiciosPage implements OnInit {
         valores = 1;
         break;
     }
-    console.log(valores);
     this.sercicioNegocio
       .buscarProductosServios(this.negocioTO.id_negocio, valores)
       .subscribe(
@@ -216,6 +215,7 @@ export class MisProductosServiciosPage implements OnInit {
               .subscribe(
                 (repsuesta) => {
                   this.datosNegocio = repsuesta.data;
+                  this.static = repsuesta.data
                 },
                 (error) => {}
               );
@@ -246,8 +246,6 @@ export class MisProductosServiciosPage implements OnInit {
               this.carta = null;
             }
           }
-
-          console.log(this.carta);
         },
         (error) => {
           this.loader = false;
@@ -263,7 +261,6 @@ export class MisProductosServiciosPage implements OnInit {
     this.fileImgGaleria = event.target.files;
     const fileName = this.fileImgGaleria[0].name;
     const file = this.fileImgGaleria[0];
-    console.log(file.size);
     if (file.size < 3145728) {
       let file64: any;
       const utl = new UtilsCls();
@@ -502,6 +499,7 @@ export class MisProductosServiciosPage implements OnInit {
           (response) => {
             const cat = response;
             cat.productos = [];
+            cat.servicios = [];
             this.listaVista.push(cat);
             this.nuevaCategoria = {
               activo: 1,
@@ -538,8 +536,6 @@ export class MisProductosServiciosPage implements OnInit {
     this.isEdicion = false;
     this.opcion = 1;
     this.productoNuevo = JSON.parse(JSON.stringify(this.productoNuevo));
-
-    console.log(this.productoNuevo);
   }
 
   public regresarLista() {
@@ -556,7 +552,7 @@ export class MisProductosServiciosPage implements OnInit {
       let height;
       let width;
       for (const archivo of event.target.files) {
-        const reader = new FileReader();
+        const reader = this.utilscls.getFileReader();
         reader.readAsDataURL(archivo);
         reader.onload = () => {
           const img = new Image();
@@ -574,10 +570,10 @@ export class MisProductosServiciosPage implements OnInit {
                 utl.getBase64(file).then((data) => {
                   file_64 = data;
                   const imagen = new ArchivoComunModel();
-                  imagen.nombre_archivo = this.utilscls.convertir_nombre(
-                    file_name
-                  );
-                  imagen.archivo_64 = file_64;
+                  if(file_name!=null) {
+                    imagen.nombre_archivo = this.utilscls.convertir_nombre(file_name);
+                    imagen.archivo_64 = file_64;
+                  }
                   this.productoNuevo.imagen = imagen;
                   this.procesando_img = false;
                   this.blnImgCuadrada = false;
@@ -591,7 +587,7 @@ export class MisProductosServiciosPage implements OnInit {
               this.resizeToHeight = 400;
               this.tipoImagen = 1;
               this.fileChangeEvent(event);
-              this.abrirModalImagen();
+              this.abrirModalImagen(img.src,this.resizeToWidth, this.resizeToHeight);
             }
           };
         };
@@ -602,17 +598,17 @@ export class MisProductosServiciosPage implements OnInit {
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
   }
-
-  async abrirModalImagen() {
+ 
+  async abrirModalImagen(evento, width, heigh) {
     const modal = await this.modalController.create({
       component: RecorteImagenComponent,
       cssClass: "my-custom-class",
       componentProps: {
         actualTo: this.productoNuevo,
-        imageChangedEvent: this.imageChangedEvent,
+        imageChangedEvent: evento,
         maintainAspectRatio: this.maintainAspectRatio,
-        resizeToWidth: this.resizeToWidth,
-        resizeToHeight: this.resizeToHeight,
+        resizeToWidth: width,
+        resizeToHeight: heigh,
         tipoImagen: this.tipoImagen,
         blnImgCuadrada: this.blnImgCuadrada,
         blnImgRectangulo: this.blnImgRectangulo,
@@ -661,7 +657,7 @@ export class MisProductosServiciosPage implements OnInit {
     const cat = {
       id_categoria: item.id_categoria,
       nombre: item.nombre,
-      id_categoria_negocio: item.id_categoria_negocio,
+      id_categoria_negocio: this.negocioTO.id_categoria_negocio,
     };
     this.productoNuevo.categoria = cat;
     this.productoNuevo.id_categoria = item.id_categoria;
@@ -707,7 +703,8 @@ export class MisProductosServiciosPage implements OnInit {
     this.productoNuevo.imagen = JSON.parse(
       JSON.stringify(this.productoNuevo.imagen)
     );
-    console.log(this.productoNuevo.imagen);
+    this.productoNuevo.imagen.nombre_archivo = this.productoNuevo.nombre+'.jpg';
+    this.productoNuevo.negocio.dirección = this.negocioTO.det_domicilio.id_domicilio;
     if (this.blnEditando) {
       datosAEnviar.productos[this.indexModificar] = this.productoNuevo;
     } else {
@@ -717,36 +714,42 @@ export class MisProductosServiciosPage implements OnInit {
           datosAEnviar.productos.push(this.productoNuevo);
           break;
         case 2:
-          console.log(this.productoNuevo);
-
           datosAEnviar.servicios.push(this.productoNuevo);
           break;
       }
     }
-    console.log(datosAEnviar);
-    console.log(datosAEnviar.productos.length);
-    let tamano;
     switch (this.iden) {
       case 1:
         if (datosAEnviar.productos.length > 1) {
-          tamano = datosAEnviar.productos.length - 1;
+          this.tamano = datosAEnviar.productos.length - 1;
+        } else {
+          if (datosAEnviar.productos.length > 0 ){
+            this.tamano = datosAEnviar.productos.length -1;
+              } else {
+                this.tamano = 0;
+              }
         }
         break;
       case 2:
         if (datosAEnviar.servicios.length > 1) {
-          tamano = datosAEnviar.servicios.length - 1;
+        this.tamano = datosAEnviar.servicios.length - 1;
+        } else {
+          if (datosAEnviar.servicios.length > 0 ){
+        this.tamano = datosAEnviar.servicios.length -1;
+          } else {
+            this.tamano = 0;
+          }
+          //this.segtamano = 0; 
         }
-        break;
-      default:
         break;
     }
 
     switch (this.iden) {
       case 1:
         if (
-          datosAEnviar.productos[tamano].imagen.archivo_64 === "" ||
-          datosAEnviar.productos[tamano].imagen.archivo_64 === null ||
-          datosAEnviar.productos[tamano].imagen.archivo_64 === undefined
+          datosAEnviar.productos[this.tamano].imagen.archivo_64 === "" ||
+          datosAEnviar.productos[this.tamano].imagen.archivo_64 === null ||
+          datosAEnviar.productos[this.tamano].imagen.archivo_64 === undefined
         ) {
           this.banderaGuardar = false;
           this.notificacionService.alerta("Agregue la foto de su producto");
@@ -758,24 +761,11 @@ export class MisProductosServiciosPage implements OnInit {
               this.blnformMobile = false;
               this.listaVista.map((item) => {
                 if (item.id_categoria === this.productoNuevo.id_categoria) {
-                  this.productoNuevo = this.datosNegocio.productos[
-                    this.datosNegocio.productos.length - 1
-                  ];
-                  this.productoNuevo.index =
-                    this.datosNegocio.productos.length - 1;
-
+                  this.productoNuevo = this.datosNegocio.productos[ this.datosNegocio.productos.length - 1 ];
+                  this.productoNuevo.index = this.datosNegocio.productos.length - 1;
                   // @ts-ignore
                   this.productoNuevo.editar = false;
-                  switch (this.iden) {
-                    case 1:
                       item.productos.push(this.productoNuevo);
-                      break;
-                    case 2:
-                      item.servicios.push(this.productoNuevo);
-                      break;
-                    default:
-                      break;
-                  }
                 }
               });
               this.notificacionService.exito("Se guardó el producto con éxito");
@@ -794,9 +784,9 @@ export class MisProductosServiciosPage implements OnInit {
 
       case 2:
         if (
-          datosAEnviar.servicios[tamano].imagen.archivo_64 === "" ||
-          datosAEnviar.servicios[tamano].imagen.archivo_64 === null ||
-          datosAEnviar.servicios[tamano].imagen.archivo_64 === undefined
+          datosAEnviar.servicios[this.tamano].imagen.archivo_64 === "" ||
+          datosAEnviar.servicios[this.tamano].imagen.archivo_64 === null ||
+          datosAEnviar.servicios[this.tamano].imagen.archivo_64 === undefined
         ) {
           this.banderaGuardar = false;
           this.notificacionService.alerta("Agregue la foto de su producto");
@@ -808,24 +798,11 @@ export class MisProductosServiciosPage implements OnInit {
               this.blnformMobile = false;
               this.listaVista.map((item) => {
                 if (item.id_categoria === this.productoNuevo.id_categoria) {
-                  this.productoNuevo = this.datosNegocio.servicios[
-                    this.datosNegocio.servicios.length - 1
-                  ];
-                  this.productoNuevo.index =
-                    this.datosNegocio.servicios.length - 1;
-
+                  this.productoNuevo = this.datosNegocio.servicios[ this.datosNegocio.servicios.length - 1];
+                  this.productoNuevo.index = this.datosNegocio.servicios.length - 1;
                   // @ts-ignore
                   this.productoNuevo.editar = false;
-                  switch (this.iden) {
-                    case 1:
-                      item.productos.push(this.productoNuevo);
-                      break;
-                    case 2:
                       item.servicios.push(this.productoNuevo);
-                      break;
-                    default:
-                      break;
-                  }
                 }
               });
               this.notificacionService.exito("Se guardó el producto con éxito");
@@ -858,7 +835,6 @@ export class MisProductosServiciosPage implements OnInit {
           this.listaCategorias = respuesta.data;
           this.nuevaCategoria.nombre = "";
           this.nuevaCategoria.id_categoria = null;
-          // console.info(this.listaCategorias);
         },
         (error) => {
           this.notificacionService.error(error);

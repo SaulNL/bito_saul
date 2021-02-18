@@ -4,7 +4,7 @@
       <ion-list id="inbox-list">
         <ion-list-header> <strong>Bitoo</strong></ion-list-header>
         <ion-menu-toggle auto-hide="true">
-          <ion-note style="margin-left: 11px;">{{ correnume }}</ion-note>
+          <ion-note style="margin-left: 11px;">{{usuario.correo}}</ion-note>
           <ion-item [routerLink]="['/tabs/home/perfil']" routerDirection="root" lines="none" detail="false">
             <ion-avatar slot="start">
               <img src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg" [srcset]="usuario.imagen">

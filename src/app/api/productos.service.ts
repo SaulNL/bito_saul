@@ -2,18 +2,20 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppSettings} from "../AppSettings";
 import {map} from "rxjs/operators";
-import {Observable} from "rxjs";
+import {Observable, from} from "rxjs";
 import {FiltrosModel} from "../Modelos/FiltrosModel";
 import {ProductoModel} from "../Modelos/ProductoModel";
 import {UsuarioSistemaModel} from "../Modelos/UsuarioSistemaModel";
-
+import { HTTP } from '@ionic-native/http/ngx';
+import { VioProductoModel } from "../Modelos/busqueda/VioProductoModel";
 @Injectable({
   providedIn: 'root'
 })
 export class ProductosService {
   url = `${AppSettings.API_ENDPOINT}`;
   constructor(
-      private _http: HttpClient
+      private _http: HttpClient,
+      private http: HTTP
   ) {
   }
   /**
@@ -22,11 +24,16 @@ export class ProductosService {
    */
   public obtenerProductos(filtros: FiltrosModel): Observable<any> {
     const body = JSON.stringify(filtros);
-    return this._http.post(
-        this.url + 'api/productos/obtener', body,
-        {headers: AppSettings.getHeaders()}
-    ).pipe(map(data => {
-      return data;
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post( this.url + 'api/productos/obtener',body,
+    AppSettings.getHeaders())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
   }
   /**
@@ -51,11 +58,23 @@ export class ProductosService {
    */
   public darLike(producto: ProductoModel, usuario: UsuarioSistemaModel):Observable<any>{
     const body = JSON.stringify({producto: producto, usuario: usuario});
-    return this._http.post(
-        this.url + 'api/productos/dar_like', body,
-        {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-      return data;
+    return from(this.http.post( this.url + 'api/productos/dar_like',body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
     }));
+  }
+  public quienVioProdu(prod: VioProductoModel): Observable<any> {
+    const body = JSON.stringify(prod);
+    return from( this.http.post( this.url + "api/producto/visto/usuario", body, AppSettings.getHeadersToken())
+    .then((data) => { return JSON.parse(data.data); })
+    .catch((error) => { return error; }) ).pipe(
+      map((data) => { return data;})
+    );
   }
 }

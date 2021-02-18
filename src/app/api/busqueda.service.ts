@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import {AppSettings} from "../AppSettings";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, from} from "rxjs";
 import {map} from "rxjs/operators";
-
+import { HTTP } from '@ionic-native/http/ngx';
 @Injectable({
   providedIn: 'root'
 })
 export class BusquedaService {
 
   constructor(
-      private http: HttpClient
+      private http: HTTP
   ) {
   }
 
@@ -18,11 +17,13 @@ export class BusquedaService {
 
   public obtenerDatos(filtro): Observable<any> {
     const body = JSON.stringify({filtros: filtro});
-    return this.http.post(
-        `${this.url}api/negocios/obtener`,
-        body,
-        {headers: AppSettings.getHeaders()}
-    ).pipe(map(data => {
+    this.http.setDataSerializer("utf8");
+    let datos = from(this.http.post(`${this.url}api/negocios/obtener`,body, AppSettings.getHeaders())
+    .then( data => {
+      return JSON.parse(data.data);
+    }));    
+
+    return datos.pipe(map(data => {
       // return data;
       let jsOrigen: any;
       jsOrigen = data;
@@ -73,16 +74,23 @@ export class BusquedaService {
           iterador++;
         });
       }
-      jsOrigen.data = jsCategoria;
-
+      jsOrigen.data = jsCategoria;         
       return jsOrigen;
     }));
   }
   public obtenerCategorias():Observable<any>{
-    return this.http.get(this.url + '/buscar/datos/inicio/allfiltro',
-      { headers: {'Content-Type':'application/json'}}
-    ).pipe(map(data => {
-      return data;
+    const body = JSON.stringify({});
+    let datos = from(this.http.get(this.url + '/buscar/datos/inicio/allfiltro',{},
+    {'Content-Type':'application/json'})
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    }));
+    
+    return datos.pipe(map(data => {
+        return data;
     }));
   }
 }

@@ -16,12 +16,12 @@ export const environment = {
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyDX3Xh5ecbccZrUYYVoN5o4NmMlwFIZvlI",
-  authDomain: "bitoo-3ecf0.firebaseapp.com",
-  databaseURL: "https://bitoo-3ecf0.firebaseio.com",
-  projectId: "bitoo-3ecf0",
-  storageBucket: "bitoo-3ecf0.appspot.com",
-  messagingSenderId: "923911532405",
-  appId: "1:923911532405:web:1dd15bf03849b4d9f2ad3c"
+  apiKey: "AIzaSyDa7ty0zeow2kPD5P2j1P39ocsd9FtZjdE",
+  authDomain: "app-bitoo.firebaseapp.com",
+  databaseURL: "https://app-bitoo-default-rtdb.firebaseio.com",
+  projectId: "app-bitoo",
+  storageBucket: "app-bitoo.appspot.com",
+  messagingSenderId: "315189899862",
+  appId: "1:315189899862:web:bd65a6db0f7260adfec1f7",
+  measurementId: "G-PQH7ST633N"
 };
-

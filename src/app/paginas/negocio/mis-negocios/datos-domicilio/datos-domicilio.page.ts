@@ -13,6 +13,7 @@ import { CatEstadoModel } from 'src/app/Modelos/busqueda/CatEstadoModel';
 import { CatMunicipioModel } from 'src/app/Modelos/busqueda/CatMunicipioModel';
 import { CatLocalidadModel } from 'src/app/Modelos/busqueda/CatLocalidadModel';
 import { Platform } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-datos-domicilio',
@@ -36,7 +37,7 @@ export class DatosDomicilioPage implements OnInit {
   public estadoAux: any;
   public municiAux: any;
   public localiAux: any;
-
+  public loadion : any;
   constructor(
     private platform: Platform,
     private router: Router,
@@ -46,7 +47,9 @@ export class DatosDomicilioPage implements OnInit {
     private notificaciones: ToadNotificacionService,
     public alertController: AlertController,
     private _general_service: GeneralServicesService,
-    private _utils_cls: UtilsCls) {
+    private _utils_cls: UtilsCls,
+    public loadingController: LoadingController
+    ) {
     this.valido = false;
     this.negocioGuardar = new NegocioModel();
     this.latitud = 19.4166896;
@@ -155,6 +158,7 @@ export class DatosDomicilioPage implements OnInit {
     await alert.present();
   }
   guardar() {
+    this.presentLoading();
     if (
       this.negocioTO.logo === null ||
       this.negocioTO.logo === undefined ||
@@ -163,19 +167,23 @@ export class DatosDomicilioPage implements OnInit {
       this.negocioTO.logo.archivo_64 === null ||
       this.negocioTO.logo.archivo_64 === undefined) {
       this.notificaciones.alerta('Agregue la foto de su negocio');
+      this.loadion.dismiss();
     } else {
       this.datosD();
       this.negocioServico.guardar(this.negocioGuardar).subscribe(
         response => {
           if (response.code === 200) {
             this.notificaciones.exito('Tu negocio se guardo exitosamente');
+            this.loadion.dismiss();
             this.router.navigate(['/tabs/home/negocio'], { queryParams: { special: true } });
           } else {
             this.notificaciones.alerta('Error al guardar, intente nuevamente');
+            this.loadion.dismiss();
           }
         },
         error => {
           this.notificaciones.error(error);
+          this.loadion.dismiss();
           //  this.loaderGuardar = false;
         }
       );
@@ -341,4 +349,13 @@ export class DatosDomicilioPage implements OnInit {
       this.list_cat_localidad = [];
     }
   }
+  async presentLoading() {
+    this.loadion = await this.loadingController.create({
+      spinner: "crescent",
+      cssClass: "my-custom-class",
+      message: "Guardando...",
+    });
+    await this.loadion.present();  
+  }
 }
+

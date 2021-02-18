@@ -13,45 +13,20 @@
 </ion-header>
 
 <ion-content>
-  <ion-list lines="none" class="bgs-gris">
-<div class="to">
-  <qrcode #qrcode
-  [elementType]="elementType"
-  [level]="level"
-  [colorDark]="colorDark"
-  [colorlight]="colorLight"
-  [qrdata]="qrdata"
-  [scale]="scale"
-  [width]="width"
-  ></qrcode>
-</div>
-  </ion-list>
   <ion-list *ngFor="let item of listaNegocios" class="bgs-gris">
-    <ion-fab horizontal="end" vertical="top" slot="fixed">
-      <ion-fab-button (click)="downQr(item)" color="light">
-        <ion-icon class="fond" md="qr-code-outline" ios="qr-code-outline"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-list side="start">
-        <ion-fab-button (click)="descargar(item)" color="light">
-          <ion-icon class="fond" name="cloud-download-outline"></ion-icon>
-        </ion-fab-button>
-        <ion-fab-button (click)="viewQr(item)" color="light">
-          <ion-icon name="eye-outline" class="fond"></ion-icon>
-        </ion-fab-button>
-      </ion-fab-list>
-    </ion-fab>
     <ion-card>
       <ion-card-header >
-        <ion-item lines="none" (click)="datosNegocio(item)">
-          <ion-avatar slot="start">
+        <ion-item lines="none" >
+          <ion-avatar slot="start" (click)="datosNegocio(item)">
             <img *ngIf="item.url_logo !== '' && item.url_logo !== null "  src="{{ item.url_logo }}" alt="{{ item.nombre_comercial }}">
           <img *ngIf="item.url_logo === '' || item.url_logo === null  " src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg">
           </ion-avatar>
-          <ion-label>
-            <h3></h3>
+          <ion-label (click)="datosNegocio(item)">
             <h2>{{item.nombre_comercial}}</h2>
-            <p></p>
           </ion-label>
+          <ion-button slot="end" size="small" (click)="viewQr(item)">
+            <ion-icon name="qr-code-outline"></ion-icon>
+          </ion-button>
         </ion-item>
       </ion-card-header>
     </ion-card>

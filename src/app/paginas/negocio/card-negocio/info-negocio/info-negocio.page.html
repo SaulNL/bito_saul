@@ -43,6 +43,12 @@
             <label for="imageUpload"></label>
           </div>
         </div>
+        <div style="display: flex; justify-content: center; align-items: center;" *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">
+          <ion-label > www.bitoo.com.mx/{{negocioTO.url_negocio}}</ion-label>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center;" *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">
+          <ion-button size="small" *ngIf=" negocioTO.url_negocio !== null" (click)="abrirModalCambio()" color="primary">solicitar cambio de url</ion-button>
+        </div>
     <ion-list>
       <ion-item>
         <ion-label position="stacked">Nombre del negocio: <span style="color: red">*</span></ion-label>
@@ -124,6 +130,7 @@
           <ion-select [disabled]="blnActivaDias"  ok-text="Ok" cancel-text="Cancelar" multiple  #dias="ngModel" name="dias" (ionChange)="diasSeleccionado($event)" [(ngModel)]="nuevoHorario.dias">
             <ion-select-option  *ngFor="let dia of diasArray" [value]="dia.dia">{{dia.dia}}</ion-select-option>
           </ion-select>
+
         </ion-item>
         <ion-grid>
           <ion-row class="ion-align-items-center">
@@ -164,7 +171,7 @@
               </ion-item>
             </ion-list>
           </ion-card>
-      <ion-item>
+      <!--<ion-item>
         <ion-label class="urlnego" position="stacked">Url del negocio: <span style="color: red">*</span></ion-label>
         <ion-input id="idNegocioUrl" name="idNegocioUrl" #urlNegocio="ngModel" required [(ngModel)]="negocioTO.url_negocio" (ngModelChange)="confirmarUrlNegocio($event)"></ion-input>
       </ion-item>
@@ -172,7 +179,7 @@
         <div *ngIf="urlNegocio.errors.required">el url es requerido</div>
       </div>
       <span *ngIf="urlNegocioLibre === true" style="font-size: 11px; margin-left: 11px; font-weight: bolder;">https://www.bitoo.com.mx/@{{negocioTO.url_negocio}}</span>
-      <span *ngIf="urlNegocioLibre === false" style="font-size: 11px; margin-left: 11px; font-weight: bolder;">Url ya existe, sugerencia: https://www.bitoo.com.mx/@{{negocioTO.url_negocio}}</span>
+      <span *ngIf="urlNegocioLibre === false" style="font-size: 11px; margin-left: 11px; font-weight: bolder;">Url ya existe, sugerencia: https://www.bitoo.com.mx/@{{negocioTO.url_negocio}}</span>-->
       <ion-item>
         <ion-button  color="light" size="small" (click)="consumoSitioAlert()" >
           <ion-icon name="information-circle-outline"></ion-icon>
@@ -222,6 +229,16 @@
       <ion-item>
         <ion-label position="stacked">Costo de Entrega</ion-label>
         <ion-input placeholder="$0.00" id="idNegoCostoEntrega" name="idNegoCostoEntrega" #negoCostoEntrega="ngModel" required [(ngModel)]="negocioTO.costo_entrega"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Métodos de pago</ion-label>
+<!-- ok-text="Ok" cancel-text="Cancelar" multiple  #dias="ngModel" name="dias" (ionChange)="diasSeleccionado($event)" [(ngModel)]="nuevoHorario.dias" -->
+        <!-- <ion-select ok-text="Ok" cancel-text="Cancelar" multiple (ionChange)="cambiarPago($event)">
+          <ion-select-option  *ngFor="let item of metodosPago" [value]="item.value">{{item.metodo}}</ion-select-option>
+        </ion-select> -->
+        <ion-select ok-text="Ok" cancel-text="Cancelar" multiple  #pago="ngModel" name="pago" (ionChange)="cambiarPago($event)" [(ngModel)]="copyPago">
+          <ion-select-option  *ngFor="let item of metodosPago" [value]="item">{{item.metodo}}</ion-select-option>
+        </ion-select>
       </ion-item>
     </div>
       <ion-item>

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import {AppSettings} from "../../../AppSettings";
-import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
+import {from, Observable} from "rxjs";
 import { MsNegocioModel } from './../../../Modelos/busqueda/MsNegocioModel';
-
+import { HTTP } from '@ionic-native/http/ngx';
+import { UsuarioSistemaModel } from 'src/app/Modelos/UsuarioSistemaModel';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,7 @@ import { MsNegocioModel } from './../../../Modelos/busqueda/MsNegocioModel';
 export class ProveedorServicioService {
   private url: string;
   constructor(
-    private http: HttpClient
+    private _http: HTTP
   ) {
     this.url = AppSettings.API_ENDPOINT;
    }
@@ -23,13 +22,16 @@ export class ProveedorServicioService {
    */
   enviarCalificacionNegocio(negocio: MsNegocioModel): Observable<any> {
     const body = JSON.stringify(negocio);
-    return this.http.post(
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
       `${this.url}api/proveedor/guardar/calificacion`,
-      body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-      return data;
-    }));
+      body,AppSettings.getHeadersToken())
+        .then((data) => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        }));
   }
     /**
    * funcion para saber si ya calificaste el negocio
@@ -38,12 +40,31 @@ export class ProveedorServicioService {
    */
   obtenerEstatusCalificacionUsuario(usuario): Observable<any> {
     const body = JSON.stringify(usuario);
-    return this.http.post(
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
       `${this.url}api/proveedor/obtener/estatus/calificacion`,
-      body,
-      {headers: AppSettings.getHeadersToken()}
-    ).pipe(map(data => {
-      return data;
-    }));
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
+
+  public darLike(proveedor: MsNegocioModel, usuario: UsuarioSistemaModel):Observable<any>{
+    const body = JSON.stringify({proveedor: proveedor, usuario: usuario});
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url + 'api/negocio/dar_like', body,
+      AppSettings.getHeadersToken()).then(data => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+      //return data;
+    //}));
+  }
+
 }

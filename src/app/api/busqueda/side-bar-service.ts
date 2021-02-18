@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import {Subject} from "rxjs";
 
 @Injectable({
@@ -7,7 +7,8 @@ import {Subject} from "rxjs";
 export class SideBarService {
   private fooSubject = new Subject<any>();
   private buscarNegocios = new Subject<any>();
-
+  actualizar = false;
+  @Output() change: EventEmitter<boolean> = new EventEmitter();
 
 
   publishSomeData(data: any) {
@@ -26,5 +27,9 @@ export class SideBarService {
   eventBuscar(): Subject<any>{
     //console.log('obteniendo')
     return this.buscarNegocios;
+  }
+  actualizarSide() {
+    this.actualizar = true;
+    this.change.emit(this.actualizar);
   }
 }

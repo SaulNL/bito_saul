@@ -5,7 +5,7 @@
                 <ion-icon name="chevron-back-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title>Información negocio</ion-title>
+        <ion-title>Información</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="abrirModalpedido()" *ngIf="bolsa.length > 0">
                 <ion-icon name="bag-handle-outline"></ion-icon>
@@ -20,12 +20,12 @@
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding" *ngIf="loader" fullscreen>
+<ion-content class="ion-padding" *ngIf="loader || !siEsta" fullscreen>
     <div class="spin">
         <ion-spinner></ion-spinner>
     </div>
 </ion-content>
-<ion-content *ngIf="!loader">
+<ion-content *ngIf="!loader && siEsta">
     <ng-container *ngIf="(informacionNegocio.promociones !== undefined && informacionNegocio.promociones !== null && informacionNegocio.promociones.length > 0)"> 
         <ion-slides class="ion-margin-bottom"   [options]="slideOptsOne" #mySlider>
             <ion-slide *ngFor="let promocion of informacionNegocio.promociones;">
@@ -77,12 +77,34 @@
                      </strong>
                     </ion-label>
                     <hr>
-                    <ion-grid *ngIf="existeSesion">
+                    <ion-grid>
                         <ion-row>
                             <ion-col>
-                                <div class="estrella">
-                                    <h3 class="text-rosa ion-text-center">Calificación del negocio</h3>
-                                    <div class="clasificacion ion-text-center">
+                                <p>Métodos de pago</p>
+                                <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito===0 && informacionNegocio.tipo_pago_tarjeta_debito===0) && informacionNegocio.tipo_pago_transferencia==0">
+                                Este negocio solo se acepta pago en efectivo
+                                </p>
+                                <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito) && informacionNegocio.tipo_pago_transferencia">
+                                Este negocio acepta pagos en efectivo, pagos con tarjeta y transferencia electrónica
+                                </p>
+                                <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito)&& informacionNegocio.tipo_pago_transferencia===0">
+                                Este negocio acepta pagos en efectivo y pagos con tarjeta
+                                </p>
+                                <p *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito) && informacionNegocio.tipo_pago_transferencia===0">
+                                Este negocio solo acepta pagos con tarjeta
+                                </p>
+                                <p *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito===0 || informacionNegocio.tipo_pago_tarjeta_debito===0) && informacionNegocio.tipo_pago_transferencia===0">
+                                Este negocio solo acepta pagos con transferencia electrónica
+                                </p>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                    <ion-grid *ngIf="existeSesion">
+                        <ion-row style="display: flex; justify-content: center; align-items: center;">
+                            <ion-col>
+                                <div class="estrella" style="display: flex; justify-content: center; align-items: center;">
+                                    <h3 class="text-rosa" style="display: flex; justify-content: center; align-items: center;">Calificación del negocio</h3>
+                                    <div class="clasificacion" style="display: flex; justify-content: center; align-items: center;">
                                         {{informacionNegocio.numCalificaciones}}
                                         <ion-icon name="person-outline"></ion-icon>
                                         <input disabled id="radio1" type="radio" name="estrellas" value="5">
@@ -115,6 +137,7 @@
                                 </div>
                             </ion-col>
                         </ion-row>
+
                     </ion-grid>
                 </ion-card-content>
             </ion-card>
@@ -265,13 +288,32 @@
                                 </div>
                             </ion-card-content>
                         </div>
-                        <div *ngIf="mostrarBoton(producto.precio)">
+                        <div *ngIf="existeSesion">
+                            <ion-fab class="bolsi agregarBolda" (click)="darLike(producto)">
+                                <ion-fab-button *ngIf="producto.likes>0;else templateName" class="bosar">
+                                    <ion-icon name="heart-circle-outline"></ion-icon>{{producto.likes}}
+                                </ion-fab-button>
+                                <ng-template #templateName>
+                                    <ion-fab-button *ngIf="producto.likes === 0" class="bosa bosar">
+                                        <ion-icon name="heart-circle-outline"></ion-icon>{{producto.likes}}
+                                    </ion-fab-button>
+                                </ng-template>
+                              </ion-fab>
+                        </div>
+                        <div *ngIf="mostrarBoton(producto.precio) && this.informacionNegocio.abierto === 'ABIERTO'">
                             <ion-fab class="bolsita agregarBolda" (click)="agregarBolsaDeta(producto)">
                                 <ion-fab-button class="bosar">
                                     <ion-icon name="bag-add-outline"></ion-icon>
                                 </ion-fab-button>
                               </ion-fab>
-                    </div>
+                        </div>
+                        <div *ngIf="mostrarBoton(producto.precio) && !(this.informacionNegocio.abierto === 'ABIERTO')">
+                            <ion-fab class="bolsita agregarBolda" (click)="avisoNegocioCerrado()">
+                                <ion-fab-button disabled="true" class="bosar">
+                                    <ion-icon name="bag-add-outline"></ion-icon>
+                                </ion-fab-button>
+                            </ion-fab>
+                        </div>
                     <div class="alado">
                         <div *ngFor="let item of bolsa; let i = index">
                         <div *ngIf="item.idProducto === producto.idProducto">

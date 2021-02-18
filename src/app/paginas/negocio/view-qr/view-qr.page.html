@@ -13,7 +13,7 @@
   <div class="ion-text-center">
     <h2>{{negocioTO.nombre_comercial}}</h2>
   </div>
-  <qrcode #qrcode
+  <qrcode  class="ion-text-center" #qrcode
   [elementType]="elementType"
   [level]="level"
   [colorDark]="colorDark"
@@ -23,4 +23,7 @@
   [width]="width"
   
 ></qrcode>
+<div  class="ion-text-center">
+  <ion-button expand="block" (click)="descargar()">Descargar</ion-button>
+</div>
 </ion-content>

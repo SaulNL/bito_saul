@@ -13,6 +13,7 @@ import { HorarioNegocioModel } from '../../../../Modelos/HorarioNegocioModel';
 import * as moment from 'moment';
 import { AlertController } from '@ionic/angular';
 
+
 @Component({
   selector: 'app-info-negocio',
   templateUrl: './info-negocio.page.html',
@@ -45,6 +46,13 @@ export class InfoNegocioPage implements OnInit {
     { id: 6, dia: 'Sábado', horarios: [], hi: null, hf: null },
     { id: 7, dia: 'Domingo', horarios: [], hi: null, hf: null },
   ];
+  public metodosPago = [
+    {id: 1, metodo: "Transferencia Electrónica", value: null},
+    {id: 2, metodo: "Tajeta de Crédito", value:null},
+    {id: 3, metodo: "Tajeta de Débito", value:null},
+    {id: 4, metodo: "Efectivo", value:null}
+  ]
+  public copyPago = [];
 
   public negocioGuardar: any;
   public horarioini: string;
@@ -104,7 +112,19 @@ export class InfoNegocioPage implements OnInit {
     this.obtenerCatOrganizaciones();
     this.buscarNegocio(this.negocioTO.id_negocio);
     console.log(this.negocioTO);
-    console.log(this.negocioGuardar);
+    this.metodosPago = [
+      {id: 1, metodo: "Transferencia Electrónica", value: this.negocioTO.tipo_pago_transferencia},
+      {id: 2, metodo: "Tajeta de Crédito", value:this.negocioTO.tipo_pago_tarjeta_credito},
+      {id: 3, metodo: "Tajeta de Débito", value:this.negocioTO.tipo_pago_tarjeta_debito},
+      {id: 4, metodo: "Efectivo", value:this.negocioTO.tipo_pago_efectivo}
+    ]
+    console.log("metodos de pago");
+    
+    console.log(this.metodosPago);
+    this.setarPago();
+    console.log(this.copyPago);
+    
+    
   }
   public buscarNegocio(id) {
 
@@ -198,13 +218,15 @@ export class InfoNegocioPage implements OnInit {
     );
   }
   public subir_imagen_cuadrada(event) {
+    let nombre_archivo;
     if (event.target.files && event.target.files.length) {
       let height;
       let width;
       for (const archivo of event.target.files) {
-        const reader = new FileReader();
+        const reader = this._utils_cls.getFileReader();
         reader.readAsDataURL(archivo);
         reader.onload = () => {
+          nombre_archivo = archivo.name;
           const img = new Image();
           img.src = reader.result as string;
           img.onload = () => {
@@ -237,10 +259,10 @@ export class InfoNegocioPage implements OnInit {
             } else {
               this.resizeToWidth = 400;
               this.resizeToHeight = 400;
-              this.abrirModal(event, this.resizeToWidth, this.resizeToHeight).then(r => {
+              this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
                 if (r !== undefined) {
                   const archivo = new ArchivoComunModel();
-                  archivo.nombre_archivo = r.nombre_archivo,
+                  archivo.nombre_archivo = nombre_archivo,
                     archivo.archivo_64 = r.data;
                   this.negocioTO.logo = archivo;
                   this.negocioTO.local = archivo;
@@ -467,6 +489,12 @@ agregarHorario() {
     this.negocioGuardar.det_domicilio.id_municipio = this.negocioTO.det_domicilio.id_municipio;
     this.negocioGuardar.det_domicilio.id_localidad = this.negocioTO.det_domicilio.id_localidad;
     this.negocioGuardar.det_domicilio.colonia = this.negocioTO.det_domicilio.colonia;
+    this.negocioGuardar.tipo_pago_transferencia = this.negocioTO.tipo_pago_transferencia;
+    this.negocioGuardar.tipo_pago_tarjeta_credito = this.negocioTO.tipo_pago_tarjeta_credito;
+    this.negocioGuardar.tipo_pago_tarjeta_debito = this.negocioTO.tipo_pago_tarjeta_debito;
+    this.negocioGuardar.tipo_pago_efectivo = this.negocioTO.tipo_pago_efectivo;
+    console.log("guardar() credito: "+this.negocioTO.tipo_pago_tarjeta_credito);
+    
     if (this.negocioTO.det_domicilio.id_domicilio != null) {
       this.negocioGuardar.det_domicilio.id_domicilio = this.negocioTO.det_domicilio.id_domicilio;
     }
@@ -502,6 +530,46 @@ agregarHorario() {
     this.horarioini = '';
     this.horariofin = '';
     this.nuevoHorario = new HorarioNegocioModel;
+  }
+  cambiarPago(event) {
+    console.log(event);
+    
+    if(this.copyPago.length){
+      this.copyPago.map(item => {
+        console.log(item);
+        
+        if(item.id === 1){
+          this.negocioTO.tipo_pago_transferencia === 0?1:0;
+          item.value=== 0?1:0;
+          return item;
+        }
+        if(item.id === 2){
+          this.negocioTO.tipo_pago_tarjeta_credito===0?1:0;
+          item.value === 0?1:0;      
+          
+          return item;
+        }
+        if(item.id === 3){
+          this.negocioTO.tipo_pago_tarjeta_debito === 0?1:0;
+          item.value === 0?1:0;
+          return item;
+        }
+        if(item.id === 4){
+          this.negocioTO.tipo_pago_tarjeta_debito === 0 ? 1:0;
+          item.value === 0 ? 1:0;
+          return item;
+        }
+      })
+    }
+    console.log(this.copyPago);
+       
+  }
+  setarPago(){
+    this.metodosPago.forEach(i => {
+      if(i.value === 1){
+        this.copyPago.push(i);
+      }
+    });
   }
   async presentAlertEliminar(i) {
     const alert = await this.alertController.create({
@@ -578,5 +646,11 @@ agregarHorario() {
     });
 
     await alert.present();
+  }
+  abrirModalCambio(){
+    let objetoAux;
+    objetoAux=  JSON.parse(JSON.stringify(this.negocioTO));
+    let navigationExtras = JSON.stringify(objetoAux);
+    this.router.navigate(['/tabs/home/negocio/card-negocio/info-negocio/solicitud-cambio-url'], { queryParams: {special: navigationExtras}  });
   }
 }

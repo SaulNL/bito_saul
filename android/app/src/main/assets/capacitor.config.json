@@ -1,5 +1,5 @@
 {
-  "appId": "io.ionic.starter",
+  "appId": "mx.com.softura.bitoo.produccion",
   "appName": "Bitoo",
   "bundledWebRuntime": false,
   "npmClient": "npm",
@@ -10,11 +10,5 @@
       "launchShowDuration": 3000
     }
   },
-  "cordova": {},
-  "server": {
-    "hostname": "app-bitoo.com.mx",
-    "iosScheme": "ionic",
-    "androidScheme": "https",
-    "allowNavigation": ["https://bitoo-back.azurewebsites.net/", "*.https://bitoo-back.azurewebsites.net/"]
-   }
+  "cordova": {}
 }

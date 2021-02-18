@@ -30,7 +30,7 @@
             <ion-label class="ion-text-center">{{solicitud.descripcion}}</ion-label>
             <ion-row class="ion-margin-top">
               <ion-badge style="margin:1px;" color="primary"  *ngFor="let item of solicitud.tags; let i = index">
-                <span  style="display: inline-block" *ngIf="item !== undefined && item !== null && item !== ''" >
+                <span  style="display: flex" *ngIf="item !== undefined && item !== null && item !== ''" >
                   {{item}}
                 </span>
               </ion-badge>

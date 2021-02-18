@@ -1,16 +1,17 @@
 import { AppSettings } from "../../../AppSettings";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, from } from "rxjs";
 import { map } from "rxjs/operators";
 import { UsuarioSistemaModel } from "src/app/Modelos/UsuarioSistemaModel";
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Injectable({
   providedIn: "root",
 })
 export class UsuarioService {
   url = `${AppSettings.API_ENDPOINT}`;
-  constructor(private _http: HttpClient) {}
+  constructor(private http: HTTP) {}
 
   /**
    * Servicio para obtener el codigo de seguridad (por seguridad solo el id)
@@ -19,55 +20,53 @@ export class UsuarioService {
    */
   public obtenerCodigoSMS(numeroCelular): Observable<any> {
     const body = JSON.stringify({ numero: numeroCelular });
-    return this._http
-      .post(`${this.url}api/proveedoresUsuario/obtener/codigo`, body, {
-        headers: AppSettings.getHeaders(),
-      })
-      .pipe(
-        map((data) => {
-          return data;
-        })
-      );
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/proveedoresUsuario/obtener/codigo',body,
+    AppSettings.getHeaders())
+    .then((data) => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    }));
   }
   create_account_admin_salon(
     register_usuario: UsuarioSistemaModel
   ): Observable<any> {
     const body = JSON.stringify(register_usuario);
-    return this._http
-      .post(`${this.url}api/proveedoresUsuario/guardarUsuario`, body, {
-        headers: AppSettings.getHeaders(),
-      })
-      .pipe(
-        map((data) => {
-          return data;
-        })
-      );
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/proveedoresUsuario/guardarUsuario',body,
+    AppSettings.getHeaders())
+    .then((data) => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    }));
   }
   crearCuantaAdminGoogle(register_usuario): Observable<any> {
     const body = JSON.stringify(register_usuario);
-    console.log(body);
-    return this._http
-      .post(`${this.url}api/proveedoresUsuario/guardarUsuarioGoogle`, body, {
-        headers: AppSettings.getHeaders(),
-      })
-      .pipe(
-        map((data) => {
-          return data;
-        })
-      );
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/proveedoresUsuario/guardarUsuarioGoogle',body,
+    AppSettings.getHeaders())
+    .then((data) => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    }));
   }
 
   crearCuantaAdminFacebook(register_usuario): Observable<any> {
     const body = JSON.stringify(register_usuario);
-    console.log(body);
-    return this._http
-      .post(`${this.url}api/proveedoresUsuario/guardarUsuarioFacebook`, body, {
-        headers: AppSettings.getHeaders(),
-      })
-      .pipe(
-        map((data) => {
-          return data;
-        })
-      );
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/proveedoresUsuario/guardarUsuarioFacebook',body,
+    AppSettings.getHeaders())
+    .then((data) => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    }));
   }
 }

@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: InfoNegocioPage
+  },  {
+    path: 'solicitud-cambio-url',
+    loadChildren: () => import('./solicitud-cambio-url/solicitud-cambio-url.module').then( m => m.SolicitudCambioUrlPageModule)
   }
+
 ];
 
 @NgModule({

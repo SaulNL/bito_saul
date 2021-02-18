@@ -5,10 +5,7 @@ import { NegocioModel } from "./../../Modelos/NegocioModel";
 import { NegocioService } from "./../../api/negocio.service";
 import { ModalController } from "@ionic/angular";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
-import { AppSettings } from "../../AppSettings";
 import { DetDomicilioModel } from 'src/app/Modelos/busqueda/DetDomicilioModel';
-import { Plugins, FilesystemDirectory } from '@capacitor/core'; 
-const { Filesystem } = Plugins;
 @Component({
   selector: "app-negocio",
   templateUrl: "./negocio.page.html",
@@ -35,7 +32,7 @@ export class NegocioPage implements OnInit {
     private router: Router,
     private active: ActivatedRoute,
     private modal: ModalController,
-    private notifi: ToadNotificacionService,
+    private notifi: ToadNotificacionService
   ) {
     this.listaNegocios = [];
     this.usuario = JSON.parse(localStorage.getItem("u_data"));
@@ -113,18 +110,6 @@ export class NegocioPage implements OnInit {
       });
     }
   }
-
-  downQr(negocio: NegocioModel) {
-    this.selectTO = JSON.parse(JSON.stringify(negocio));
-    this.elementType = "img";
-    this.level = "H";
-    this.scale = 0.4;
-    this.width = 512;
-    this.colorLight = '#ffffff';
-    this.colorDark = '#f100db';
-    this.qrdata = AppSettings.URL_FRONT + this.selectTO.url_negocio;
-  }
-
   datosNegocio(negocio: NegocioModel) {
     this.selectTO = JSON.parse(JSON.stringify(negocio));
     let navigationExtras = JSON.stringify(this.selectTO);
@@ -147,21 +132,4 @@ export class NegocioPage implements OnInit {
       queryParams: { specialune: navigationExtras },
     });
   }
-
-  public descargar(negocio) {
-    console.log(negocio);
-    let base64Imagen = document.querySelectorAll('.qrcode img')[0] as any;
-    let base64Ima = base64Imagen.getAttribute("src");
-    const fileName = 'qr_'+negocio.nombre_comercial+'.png';
-    Filesystem.writeFile({
-      path: fileName,
-      data: base64Ima,
-      directory: FilesystemDirectory.Documents
-  }).then(() => {
-    this.notifi.exito('Se descargo correctamente qr de '+negocio.nombre_comercial);
-  }, error => {
-    this.notifi.error(error);
-  });
-  }
-
 }

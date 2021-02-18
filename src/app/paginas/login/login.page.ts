@@ -144,11 +144,24 @@ export class LoginPage implements OnInit {
    * Login Android
    */
   async loginGoogleAndroid() {
-    const res = await this.googlePlus.login({
+    let res;
+    if (this.platform.is('android')) {
+      res = await this.googlePlus.login({
+        webClientId:
+        "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
+        offline: true,
+      });
+  } else if (this.platform.is('ios')) {
+    res = await this.googlePlus.login({
       webClientId:
-        "923911532405-77uvn5rfg78cc0f1bis1lve31bahu3jc.apps.googleusercontent.com",
+      "315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com",
       offline: true,
     });
+
+  } else {
+    this.notifi.alerta('Error Login Google');
+  }
+
     this.presentLoading();
     const resConfirmed = await this.afAuth.auth.signInWithCredential(
       firebase.auth.GoogleAuthProvider.credential(res.idToken)
@@ -169,11 +182,13 @@ export class LoginPage implements OnInit {
    * Movil o web
    */
   loginGoogle() {
-    if (this.platform.is("android")) {
-      this.loginGoogleAndroid();
+    this.loginGoogleAndroid();
+   /* if (this.platform.is("ios")) {
+      //this.loginGoogleAndroid();
+      console.log("Entro a la plataforma de Ios");
     } else {
       this.loginGoogleWeb();
-    }
+    }*/
   }
 
   /**

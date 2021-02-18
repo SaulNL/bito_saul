@@ -2,11 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { UtilsCls } from "../../utils/UtilsCls";
 import { AlertController, ModalController, Platform } from "@ionic/angular";
 import { icon, Map, Marker, marker, tileLayer } from "leaflet";
-import { Geolocation } from "@capacitor/core";
 import { NegocioService } from "../../api/negocio.service";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { AuthGuardService } from "../../api/auth-guard.service";
-
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 declare var google: any;
 
 @Component({
@@ -45,12 +44,13 @@ export class PedidoNegocioComponent implements OnInit {
     private mesajes: ToadNotificacionService,
     public alertController: AlertController,
     private platform: Platform,
-    private guard: AuthGuardService
+    private guard: AuthGuardService,
+    private geolocation: Geolocation
   ) {
     this.lat = 19.31905;
     this.lng = -98.19982;
     this.subscribe = this.platform.backButton.subscribe(() => {
-      this.cerrarModal();
+    this.cerrarModal();
     });
   }
 
@@ -63,7 +63,6 @@ export class PedidoNegocioComponent implements OnInit {
     }
     
     this.loadMap();
-    this.getCurrentPosition();
     this.sumarLista();
   }
 
@@ -107,22 +106,6 @@ export class PedidoNegocioComponent implements OnInit {
       this.cerrarModal();
         this.guard.tf = true;
     }
-  }
-
-  private getCurrentPosition() {
-    Geolocation.getCurrentPosition().then(res => {
-      this.blnUbicacion = true;
-      this.lat = res.coords.latitude;
-      this.lng = res.coords.longitude;
-      try {
-        this.geocodeLatLng();
-      } catch (e) {
-        console.error(e);
-      }
-    }).catch(error => {
-      this.blnUbicacion = false;
-    }
-    );
   }
 
   public geocodeLatLng() {
@@ -200,23 +183,17 @@ export class PedidoNegocioComponent implements OnInit {
   /**
     * Funcion para obtener la ubicacion actual
     */
-  async localizacionTiempo(tipo: number) {
-    let latitude;
-    let longitude;
-    const coordinates = await Geolocation.getCurrentPosition().then(res => {
-      if (tipo === 1) {
-        //  this.actualTO.det_domicilio.latitud = res.coords.latitude;
-        this.lat = res.coords.latitude;
-        //   this.actualTO.det_domicilio.longitud = res.coords.longitude;
-        this.lng = res.coords.longitude;
-        this.map.panTo([this.lat, this.lng]);
-        this.marker.setLatLng([this.lat, this.lng]);
-        this.geocodeLatLng();
-      }
-    }).catch(error => {
-      //   this.notificaciones.error(error);
-    }
-    );
+  async localizacionTiempo() {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.lat =  resp.coords.latitude
+      this.lng =  resp.coords.longitude
+      this.map.panTo([this.lat, this.lng]);
+      this.marker.setLatLng([this.lat, this.lng]);
+      this.geocodeLatLng();
+     }).catch((error) => {
+       console.log('Error getting location', error);
+     });
+     
   }
   getLatLong(e) {
     this.lat = e.latlng.lat;

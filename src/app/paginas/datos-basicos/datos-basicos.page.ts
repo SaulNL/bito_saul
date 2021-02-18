@@ -10,7 +10,7 @@ import { ModalController } from '@ionic/angular';
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { Router } from "@angular/router";
 import { RecorteImagenComponent } from 'src/app/components/recorte-imagen/recorte-imagen.component';
-
+import {SessionUtil} from './../../utils/sessionUtil';
 
 
 
@@ -19,6 +19,9 @@ import { RecorteImagenComponent } from 'src/app/components/recorte-imagen/recort
   selector: 'app-datos-basicos',
   templateUrl: './datos-basicos.page.html',
   styleUrls: ['./datos-basicos.page.scss'],
+  providers: [
+    SessionUtil,
+  ]
 })
 export class DatosBasicosPage implements OnInit {
   public usuarioSistema: MsPersonaModel;
@@ -40,7 +43,8 @@ export class DatosBasicosPage implements OnInit {
     private utilsCls: UtilsCls,
     public modalController: ModalController,
     private notificaciones: ToadNotificacionService,
-    private router: Router
+    private router: Router,
+    private sesionUtl: SessionUtil
   ) {
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(currentYear - 100, 0, 0);
@@ -70,10 +74,14 @@ export class DatosBasicosPage implements OnInit {
       this.servicioPersona.guardar(this.usuarioSistema).subscribe(
         data => {
           if (data.code === 200) {
-            localStorage.setItem('u_data', JSON.stringify(this.usuarioSistema));
-            this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
+            const resultado = this.sesionUtl.actualizarSesion();
+            this.router.navigate(['/tabs/home/perfil']);
             this.loader.dismiss();
             this.notificaciones.exito(data.data.mensaje);
+            resolve(resultado);
+            setTimeout(() => {
+              this.router.navigate(['/tabs/home/perfil']);
+              }, 1500);
           }
         },
         error => {
@@ -95,15 +103,16 @@ export class DatosBasicosPage implements OnInit {
     fecha = new Date(ms);
     this.usuarioSistema.fecha_nacimiento = fecha;
   }
-
   public subir_imagen_cuadrado(event) {
+    let nombre_archivo;
     if (event.target.files && event.target.files.length) {
       let height;
       let width;
       for (const archivo of event.target.files) {
-        const reader = new FileReader();
-        reader.readAsDataURL(archivo);
+        const reader = this.utilsCls.getFileReader();
+        reader.readAsDataURL(event.target.files[0]);
         reader.onload = () => {
+          nombre_archivo = archivo.name;
           const img = new Image();
           img.src = reader.result as string;
           img.onload = () => {
@@ -132,11 +141,11 @@ export class DatosBasicosPage implements OnInit {
             } else {
               this.resizeToWidth = 200;
               this.resizeToHeight = 200;
-              this.abrirModal(event, this.resizeToWidth, this.resizeToHeight).then(r => {
+              this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
                 if (r !== undefined) {
                   const archivo = new ArchivoComunModel();
-                  archivo.nombre_archivo = r.nombre_archivo,
-                    archivo.archivo_64 = r.data;
+                  archivo.nombre_archivo = nombre_archivo;
+                  archivo.archivo_64 = r.data;
                   this.usuarioSistema.selfie = archivo;
                 }
               }

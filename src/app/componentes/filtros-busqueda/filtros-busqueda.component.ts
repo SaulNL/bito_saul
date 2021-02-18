@@ -61,7 +61,8 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     async getCurrentPosition() {
-        const coordinates = await Geolocation.getCurrentPosition().then(res => {
+        let gpsOptions = {maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true};
+        const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
             //console.log(res);
             this.blnUbicacion = true;
             this.miUbicacionlatitud = res.coords.latitude;

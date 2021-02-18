@@ -55,4 +55,5 @@ export class MsNegocioModel {
   public comentarios: Array<any>;
 
   public url_negocio:string;
+  public likes: any;
 }

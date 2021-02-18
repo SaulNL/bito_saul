@@ -14,6 +14,7 @@ import { CatLocalidadModel } from '../../Modelos/CatLocalidadModel';
 import { PersonaService } from '../../api/persona.service';
 import { Router } from '@angular/router';
 import { SessionUtil } from '../../utils/sessionUtil';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-quiero-vender',
@@ -58,7 +59,7 @@ export class QuieroVenderPage implements OnInit {
   public formulario1: boolean;
   public formulario2: boolean;
   public finalizar: boolean;
-
+  public loadion: any;
   constructor(
     private _formBuilder: FormBuilder,
     private _utils_cls: UtilsCls,
@@ -67,7 +68,8 @@ export class QuieroVenderPage implements OnInit {
     private _general_service: GeneralServicesService,
     private servicioPersona: PersonaService,
     private _router: Router,
-    private sesionUtl: SessionUtil
+    private sesionUtl: SessionUtil,
+    private loadingController : LoadingController
   ) {
 
     this.proveedorTO = new MsPersonaModel();
@@ -136,13 +138,15 @@ export class QuieroVenderPage implements OnInit {
   }
 
   public subir_imagen_cuadrada(event) {
+    let nombre_archivo;
     if (event.target.files && event.target.files.length) {
       let height;
       let width;
       for (const archivo of event.target.files) {
-        const reader = new FileReader();
+        const reader = this._utils_cls.getFileReader();
         reader.readAsDataURL(archivo);
         reader.onload = () => {
+          nombre_archivo = archivo.name;
           const img = new Image();
           img.src = reader.result as string;
           img.onload = () => {
@@ -171,10 +175,10 @@ export class QuieroVenderPage implements OnInit {
             } else {
               this.resizeToWidth = 400;
               this.resizeToHeight = 400;
-              this.abrirModal(event, this.resizeToWidth, this.resizeToHeight).then(r => {
+              this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
                 if (r !== undefined) {
                   const archivo = new ArchivoComunModel();
-                  archivo.nombre_archivo = r.nombre_archivo,
+                  archivo.nombre_archivo = nombre_archivo,
                     archivo.archivo_64 = r.data;
                   this.proveedorTO.selfie = archivo;
                   this.hImagen = true;
@@ -365,6 +369,7 @@ export class QuieroVenderPage implements OnInit {
   }
 
   public guardarProveedor() {
+    this.presentLoading();
     this.proveedorTO.convertir_proveedor = true;
     const miPrimeraPromise = new Promise((resolve, reject) => {
       this.servicioPersona.guardar(this.proveedorTO).subscribe(
@@ -372,9 +377,11 @@ export class QuieroVenderPage implements OnInit {
           this.mostrarMensaje(data);
           const resultado = this.sesionUtl.actualizarSesion();
           resolve(resultado);
+          this.loadion.dismiss();
         },
         error => {
           this._notificacionService.error(error);
+          this.loadion.dismiss();
         }
       );
     });
@@ -388,7 +395,6 @@ export class QuieroVenderPage implements OnInit {
           this._notificacionService.exito(entry);
           localStorage.setItem('u_data', JSON.stringify(this.proveedorTO));
           this._router.navigate(['/tabs/home/perfil']);
-          location.reload();
         }
         break;
 
@@ -412,5 +418,13 @@ export class QuieroVenderPage implements OnInit {
     let ms = Date.parse(fecha);
     fecha = new Date(ms);
     this.proveedorTO.fecha_nacimiento = fecha;
+  }
+  async presentLoading() {
+    this.loadion = await this.loadingController.create({
+      spinner: "crescent",
+      cssClass: "my-custom-class",
+      message: "Guardando...",
+    });
+    await this.loadion.present();  
   }
 }

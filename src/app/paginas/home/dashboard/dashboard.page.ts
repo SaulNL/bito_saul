@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { MenuController } from "@ionic/angular";
 import { UtilsCls } from "../../../utils/UtilsCls";
 import { AppSettings } from "../../../AppSettings";
+import { SideBarService } from "src/app/api/busqueda/side-bar-service";
+import { Auth0Service } from "src/app/api/busqueda/auth0.service";
 
 @Component({
   selector: "app-dashboard",
@@ -24,7 +26,11 @@ export class DashboardPage implements OnInit {
   public ruta: any;
   public admin: boolean;
 
-  constructor(private util: UtilsCls, private menuController: MenuController) {
+  constructor(
+     private util: UtilsCls,
+     private menuController: MenuController,
+     private auth0: Auth0Service,
+     private sideBarService: SideBarService,) {
     this.user = this.util.getUserData();
     this.obtenerPermisos();
     const ls = localStorage.getItem("nav");
@@ -93,6 +99,10 @@ export class DashboardPage implements OnInit {
         this.correnume = this.usuario.correo;
       }
     }
+    this.sideBarService.change.subscribe(isOpen => {
+      this.usuario = this.auth0.getUserData();
+      this.obtenerPermisos();
+    })
   }
 
   openFirst() {

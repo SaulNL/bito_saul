@@ -155,7 +155,7 @@ export class DatosCatTipoVentasPage implements OnInit {
       let height;
       let width;
       for (const archivo of event.target.files) {
-        const reader = new FileReader();
+        const reader = this.utilsCls.getFileReader();
         reader.readAsDataURL(archivo);
         reader.onload = () => {
           const img = new Image();

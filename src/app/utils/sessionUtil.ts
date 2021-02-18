@@ -38,7 +38,7 @@ export class SessionUtil {
 
       if( AppSettings.actualizarDatos(data)){
         console.log("Actualizar datos");
-        // this.sideBarService.actualizarSide();
+        this.sideBarService.actualizarSide();
        result = true;
       }else{
         result = false;

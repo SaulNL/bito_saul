@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "io.ionic.starter",
+  "applicationId": "mx.com.softura.bitoo.produccion",
   "variantName": "debug",
   "elements": [
     {

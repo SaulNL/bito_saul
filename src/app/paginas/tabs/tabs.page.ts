@@ -24,7 +24,8 @@ export class TabsPage implements OnInit{
         private util: UtilsCls,
         private sideBarService: SideBarService,
         private router:Router,
-        private inicioPage: InicioPage
+        private inicioPage: InicioPage,
+        private auth0: Auth0Service
     ) {
         this.existeSesion = util.existe_sesion();
     }
@@ -33,7 +34,11 @@ export class TabsPage implements OnInit{
         this.sideBarService.getObservable().subscribe((data) => {
             this.usuario = this.util.getData();
         });
+        this.sideBarService.change.subscribe(isOpen => {
+            this.usuario = this.auth0.getUserData();
+          })
         this.usuario = this.util.getData();
+
         
     }
 
