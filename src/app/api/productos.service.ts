@@ -7,7 +7,7 @@ import {FiltrosModel} from "../Modelos/FiltrosModel";
 import {ProductoModel} from "../Modelos/ProductoModel";
 import {UsuarioSistemaModel} from "../Modelos/UsuarioSistemaModel";
 import { HTTP } from '@ionic-native/http/ngx';
-
+import { VioProductoModel } from "../Modelos/busqueda/VioProductoModel";
 @Injectable({
   providedIn: 'root'
 })
@@ -68,5 +68,13 @@ export class ProductosService {
     })).pipe(map(data => {
         return data;
     }));
+  }
+  public quienVioProdu(prod: VioProductoModel): Observable<any> {
+    const body = JSON.stringify(prod);
+    return from( this.http.post( this.url + "api/producto/visto/usuario", body, AppSettings.getHeadersToken())
+    .then((data) => { return JSON.parse(data.data); })
+    .catch((error) => { return error; }) ).pipe(
+      map((data) => { return data;})
+    );
   }
 }

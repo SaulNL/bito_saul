@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ModalController, Platform} from "@ionic/angular";
 import {ToadNotificacionService} from 'src/app/api/toad-notificacion.service';
 import {UtilsCls} from "../../utils/UtilsCls";
+import {ProductoModel} from "../../Modelos/ProductoModel";
+import { ProductosService } from "../../api/productos.service";
 
 @Component({
     selector: 'app-detalle-producto',
@@ -21,6 +23,7 @@ export class DetalleProductoComponent implements OnInit {
     @Input() datos: any;
     @Output() llenarLista: EventEmitter<any> = new EventEmitter();
     @Input() bolsa: any;
+    @Input() user: any;
     public subscribe;
     public modal;
     public existeSesion: boolean;
@@ -33,6 +36,7 @@ export class DetalleProductoComponent implements OnInit {
         private notificacionService: ToadNotificacionService,
         private platform: Platform,
         private router: Router,
+        private servicioProductos: ProductosService
     ) {
         this.existeSesion = utilsCls.existe_sesion();
         this.subscribe = this.platform.backButton.subscribe(() => {
@@ -48,6 +52,9 @@ export class DetalleProductoComponent implements OnInit {
                     this.cantidad= element.cantidad;
                 }
             });
+        }
+        if (this.existeSesion){
+            this.loVio(this.datos);
         }
     }
 
@@ -92,4 +99,29 @@ export class DetalleProductoComponent implements OnInit {
             this.router.navigate(['/tabs/login'])
         }
     }
+    public darLike(producto: ProductoModel) {
+        this.servicioProductos.darLike(producto, this.user).subscribe(
+          (response) => {
+            if (response.code === 200) {
+              producto.likes = response.data;
+              this.notificacionService.exito(response.message);
+            } else{
+              this.notificacionService.alerta(response.message);
+            }
+          },
+          (error) => {
+            this.notificacionService.error("Error, intentelo más tarde");
+          }
+        );
+        //}
+      }
+      
+      public loVio(producto) {
+        let objectoVio = {
+         "id_persona": this.user.id_persona, //usuario
+         "id_producto": producto.idProducto //idProducto
+       };
+       this.servicioProductos.quienVioProdu(objectoVio).subscribe(
+       response => { if (response.code === 200) { console.log(response.code); }},error => {});
+     }
 }

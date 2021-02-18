@@ -365,9 +365,14 @@ export class ProductosPage {
       swipeToClose: true,
       componentProps: {
         unoProducto: this.unoProducto,
-        existeSesion: this.existeSesion
+        existeSesion: this.existeSesion,
+        user: this.user
       },
     });
     return await modal.present();
+  }
+  public borrarFiltros(){
+    this.filtroActivo = false;
+    this.obtenerProductos();
   }
 }
