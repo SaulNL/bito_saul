@@ -53,7 +53,7 @@ export class NegocioModel {
   public tipo_pago_transferencia:number;
   public tipo_pago_tarjeta_credito:number;
   public tipo_pago_tarjeta_debito:number;
-  public tipo_pago_efectivo:boolean;
+  public tipo_pago_efectivo:number;
 
   constructor(
     id_negocio = null,

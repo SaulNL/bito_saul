@@ -84,8 +84,7 @@ export class InfoNegocioPage implements OnInit {
     this.nuevoHorario = new HorarioNegocioModel();
     this.blnActivaHoraF = true;
     this.blnActivaDias = true;
-    this.blnActivaHorario = true;
-    
+    this.blnActivaHorario = true;    
   }
 
   ngOnInit() {
@@ -111,20 +110,13 @@ export class InfoNegocioPage implements OnInit {
     });
     this.obtenerCatOrganizaciones();
     this.buscarNegocio(this.negocioTO.id_negocio);
-    console.log(this.negocioTO);
     this.metodosPago = [
       {id: 1, metodo: "Transferencia Electrónica", value: this.negocioTO.tipo_pago_transferencia},
       {id: 2, metodo: "Tajeta de Crédito", value:this.negocioTO.tipo_pago_tarjeta_credito},
       {id: 3, metodo: "Tajeta de Débito", value:this.negocioTO.tipo_pago_tarjeta_debito},
       {id: 4, metodo: "Efectivo", value:this.negocioTO.tipo_pago_efectivo}
     ]
-    console.log("metodos de pago");
-    
-    console.log(this.metodosPago);
-    this.setarPago();
-    console.log(this.copyPago);
-    
-    
+    this.setarPago();   
   }
   public buscarNegocio(id) {
 
@@ -493,7 +485,6 @@ agregarHorario() {
     this.negocioGuardar.tipo_pago_tarjeta_credito = this.negocioTO.tipo_pago_tarjeta_credito;
     this.negocioGuardar.tipo_pago_tarjeta_debito = this.negocioTO.tipo_pago_tarjeta_debito;
     this.negocioGuardar.tipo_pago_efectivo = this.negocioTO.tipo_pago_efectivo;
-    console.log("guardar() credito: "+this.negocioTO.tipo_pago_tarjeta_credito);
     
     if (this.negocioTO.det_domicilio.id_domicilio != null) {
       this.negocioGuardar.det_domicilio.id_domicilio = this.negocioTO.det_domicilio.id_domicilio;
@@ -532,37 +523,23 @@ agregarHorario() {
     this.nuevoHorario = new HorarioNegocioModel;
   }
   cambiarPago(event) {
-    console.log(event);
-    
-    if(this.copyPago.length){
-      this.copyPago.map(item => {
-        console.log(item);
-        
-        if(item.id === 1){
-          this.negocioTO.tipo_pago_transferencia === 0?1:0;
-          item.value=== 0?1:0;
-          return item;
-        }
-        if(item.id === 2){
-          this.negocioTO.tipo_pago_tarjeta_credito===0?1:0;
-          item.value === 0?1:0;      
-          
-          return item;
-        }
-        if(item.id === 3){
-          this.negocioTO.tipo_pago_tarjeta_debito === 0?1:0;
-          item.value === 0?1:0;
-          return item;
-        }
-        if(item.id === 4){
-          this.negocioTO.tipo_pago_tarjeta_debito === 0 ? 1:0;
-          item.value === 0 ? 1:0;
-          return item;
-        }
-      })
-    }
-    console.log(this.copyPago);
-       
+    let lista = event.detail.value;
+    let credito=0,debito=0,efectivo=0,transferencia = 0;
+    lista.forEach(element => {
+      if(element.id === 1){
+        transferencia = 1;
+      }else if(element.id === 2){
+        credito = 1;
+      }else if(element.id === 3){
+        debito = 1;
+      }else if(element.id === 4){
+        efectivo = 1;
+      }
+    });
+    this.negocioTO.tipo_pago_transferencia = transferencia;
+    this.negocioTO.tipo_pago_tarjeta_credito = credito; 
+    this.negocioTO.tipo_pago_tarjeta_debito = debito;
+    this.negocioTO.tipo_pago_tarjeta_debito = efectivo;
   }
   setarPago(){
     this.metodosPago.forEach(i => {

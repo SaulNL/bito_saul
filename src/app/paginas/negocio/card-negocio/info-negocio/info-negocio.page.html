@@ -232,10 +232,6 @@
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Métodos de pago</ion-label>
-<!-- ok-text="Ok" cancel-text="Cancelar" multiple  #dias="ngModel" name="dias" (ionChange)="diasSeleccionado($event)" [(ngModel)]="nuevoHorario.dias" -->
-        <!-- <ion-select ok-text="Ok" cancel-text="Cancelar" multiple (ionChange)="cambiarPago($event)">
-          <ion-select-option  *ngFor="let item of metodosPago" [value]="item.value">{{item.metodo}}</ion-select-option>
-        </ion-select> -->
         <ion-select ok-text="Ok" cancel-text="Cancelar" multiple  #pago="ngModel" name="pago" (ionChange)="cambiarPago($event)" [(ngModel)]="copyPago">
           <ion-select-option  *ngFor="let item of metodosPago" [value]="item">{{item.metodo}}</ion-select-option>
         </ion-select>
