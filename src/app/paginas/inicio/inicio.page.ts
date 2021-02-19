@@ -214,8 +214,11 @@ export class InicioPage implements OnInit {
               if (response.code === 200) {
                 proveedor.likes = response.data;
                 // console.log(proveedor.likes);
+                this.notificaciones.exito(response.message);
+              } else{
+                this.notificaciones.alerta(response.message);
               }
-              this.notificaciones.exito(response.message);
+              
             },
             error => {
             });

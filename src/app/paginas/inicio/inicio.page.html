@@ -61,7 +61,7 @@
                         </ion-card-content>
                         </div>
                         <div *ngIf="existeSesion">
-                            <ion-fab class="bolsi agregarBolda" (click)="darLike(proveedor)">
+                            <ion-fab class="bolsi agregarBolda" (click)="darLikes(proveedor)">
                                 <ion-fab-button *ngIf="proveedor.likes>0;else templateName" class="bosar">
                                     <ion-icon name="heart-circle-outline"></ion-icon>{{proveedor.likes}}
                                 </ion-fab-button>
