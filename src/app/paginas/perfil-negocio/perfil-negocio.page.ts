@@ -194,7 +194,7 @@ export class PerfilNegocioPage implements OnInit {
               this.obtenerProductos();
               this.obtenerServicios();
               this.obtenerEstatusCalificacion();
-  
+              this.guardarQuienVioNegocio(this.informacionNegocio.id_negocio);
               this.horarios(this.informacionNegocio);
               this.calcularDistancia();
             }
@@ -927,4 +927,18 @@ export class PerfilNegocioPage implements OnInit {
 
     await alert.present();
   }
+
+  guardarQuienVioNegocio(id_negocio: number){
+    this.negocioService.visteMiNegocio(id_negocio).subscribe(
+      response => {
+        if (response.data !== null) {
+          console.log(response.data);
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
 }

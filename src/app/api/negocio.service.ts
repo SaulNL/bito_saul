@@ -290,4 +290,52 @@ export class NegocioService {
         return error;
       }));
   }
+ /**
+   * Funcion para guardar quien vio mi negocio por qr
+   */
+  visteMiNegocioQr(id_negocio: number): Observable<any> {
+    const body = JSON.stringify({id_negocio: id_negocio});
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/negocio/guardar/viste_mi_negocio_qr',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+  }
+  /**
+   * Funcion para guardar quien vio mi negocio
+   */
+  visteMiNegocio(id_negocio: number): Observable<any> {
+    const body = JSON.stringify({id_negocio: id_negocio});
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/negocio/guardar/viste_mi_negocio',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+  }
+    /**
+   * Funcion para guardar quien vio mi negocio
+   */
+  obtenerIdNegocioUrl(url_negocio: string): Observable<any> {
+    const body = JSON.stringify({url_negocio: url_negocio});
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      this.url+'api/negocio/negocio_url',
+      body,AppSettings.getHeadersToken())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+  }
 }

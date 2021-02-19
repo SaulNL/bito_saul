@@ -46,7 +46,7 @@ export class ViewQrPage implements OnInit {
         if (this.negocioTO.url_negocio == null || this.negocioTO.url_negocio == undefined){
           this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}  });
         } else{
-          this.qrdata = AppSettings.URL_FRONT+this.negocioTO.url_negocio;
+          this.qrdata = AppSettings.URL_FRONT+this.negocioTO.url_negocio+'qr';
         }
 
       }
