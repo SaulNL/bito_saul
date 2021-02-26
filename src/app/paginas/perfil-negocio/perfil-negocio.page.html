@@ -292,7 +292,7 @@
                             <div class="likegegi" (click)="darLike(producto)">
                                 <div *ngIf="producto.likes>0;else templateName">
                                 <ion-icon name="heart-circle-outline"></ion-icon>
-                                <ion-label class="textolikeNego" color="danger" >{{proveedor.likes}}</ion-label>
+                                <ion-label class="textolikeNego" color="danger" >{{producto.likes}}</ion-label>
                                 </div>
                             <ng-template #templateName>
                                 <ion-icon class="grus" name="heart-outline" *ngIf="producto.likes === 0"></ion-icon>
@@ -370,8 +370,8 @@
                             <div *ngIf="existeSesion">
                                 <div class="likegegi" (click)="darLike(producto)">
                                     <div *ngIf="producto.likes>0;else templateName">
-                                    <ion-icon name="heart-circle-outline"></ion-icon>
-                                    <ion-label class="textolikeNego" color="danger" >{{proveedor.likes}}</ion-label>
+                                    <ion-icon color="danger" name="heart-sharp"></ion-icon>
+                                    <ion-label class="textolikeNego" color="danger" >{{producto.likes}}</ion-label>
                                     </div>
                                 <ng-template #templateName>
                                     <ion-icon class="grus" name="heart-outline" *ngIf="producto.likes === 0"></ion-icon>
