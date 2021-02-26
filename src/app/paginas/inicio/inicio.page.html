@@ -61,16 +61,15 @@
                         </ion-card-content>
                         </div>
                         <div *ngIf="existeSesion">
-                            <ion-fab class="bolsi agregarBolda" (click)="darLikes(proveedor)">
-                                <ion-fab-button *ngIf="proveedor.likes>0;else templateName" class="bosar">
-                                    <ion-icon name="heart-circle-outline"></ion-icon>{{proveedor.likes}}
-                                </ion-fab-button>
+                            <div class="likegegi" (click)="darLikes(proveedor)">
+                                    <div *ngIf="proveedor.likes>0;else templateName">
+                                        <ion-icon color="danger" name="heart-sharp"></ion-icon>
+                                    <ion-label class="textolikeNego" color="danger" >{{proveedor.likes}}</ion-label>
+                                    </div>
                                 <ng-template #templateName>
-                                    <ion-fab-button *ngIf="proveedor.likes === 0" class="bosa bosar">
-                                        <ion-icon name="heart-circle-outline"></ion-icon>{{proveedor.likes}}
-                                    </ion-fab-button>
+                                    <ion-icon class="grus" name="heart-outline" *ngIf="proveedor.likes === 0"></ion-icon>
                                 </ng-template>
-                              </ion-fab>
+                              </div>
                         </div>
                     </ion-card>
                 </ion-col>

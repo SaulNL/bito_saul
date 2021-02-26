@@ -26,16 +26,18 @@
       {{unoProducto.descripcion}}
     </ion-card-content>
     <ion-row *ngIf="existeSesion">
-      <ion-col *ngIf="unoProducto.likes>0;else templateName" size="3">
-        <ion-item color="danger" (click)="darLike(unoProducto)">
-          <ion-icon name="heart-outline"></ion-icon>{{unoProducto.likes}}
-        </ion-item>  
+      <ion-col *ngIf="unoProducto.likes>0;else templateName" size="3" class="headersize">
+        <div (click)="darLike(unoProducto)">
+          <ion-icon color="danger" name="heart-sharp"></ion-icon>
+          <ion-label color="danger" class="numeroLike">{{unoProducto.likes}}</ion-label>
+          
+        </div>  
       </ion-col>
       <ng-template #templateName>
-        <ion-col *ngIf="unoProducto.likes === 0" size="3">
-          <ion-item class="grus" (click)="darLike(unoProducto)">
-            <ion-icon name="heart-outline"></ion-icon>{{unoProducto.likes}}
-          </ion-item>  
+        <ion-col *ngIf="unoProducto.likes === 0" size="3" class="headersize">
+          <div (click)="darLike(unoProducto)">
+            <ion-icon class="grus" name="heart-outline"></ion-icon>
+          </div>  
         </ion-col>
       </ng-template>
     <ion-col>

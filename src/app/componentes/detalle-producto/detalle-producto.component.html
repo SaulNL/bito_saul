@@ -39,17 +39,19 @@
                 <p>{{datos.descripcion}}</p>
             </ion-col>
         </ion-row>
-        <ion-row *ngIf="existeSesion">
-            <ion-col *ngIf="datos.likes>0;else templateName" size="3">
-              <ion-item color="danger" (click)="darLike(datos)">
-                <ion-icon name="heart-outline"></ion-icon>{{datos.likes}}
-              </ion-item>  
+          <ion-row *ngIf="existeSesion">
+            <ion-col *ngIf="datos.likes>0;else templateName" size="3" class="headersize">
+              <div (click)="darLike(datos)">
+                <ion-icon color="danger" name="heart-sharp"></ion-icon>
+                <ion-label color="danger" class="numeroLike">{{datos.likes}}</ion-label>
+                
+              </div>  
             </ion-col>
             <ng-template #templateName>
-              <ion-col *ngIf="datos.likes === 0" size="3">
-                <ion-item  class="grus" (click)="darLike(datos)">
-                  <ion-icon name="heart-outline"></ion-icon>{{datos.likes}}
-                </ion-item>  
+              <ion-col *ngIf="datos.likes === 0" size="3" class="headersize">
+                <div (click)="darLike(datos)">
+                  <ion-icon class="grus" name="heart-outline"></ion-icon>
+                </div>  
               </ion-col>
             </ng-template>
           <ion-col>
