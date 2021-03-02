@@ -62,7 +62,6 @@ export class AppComponent {
     this.negocioService.visteMiNegocioQr(id_negocio).subscribe(
       response => {
         if (response.data !== null) {
-          console.log(response.data);
         }
       },
       error => {
@@ -74,8 +73,6 @@ export class AppComponent {
     this.negocioService.obtenerIdNegocioUrl(url_negocio).subscribe(
       response => {
         if (response.data !== null) {
-          console.log('id_negocio');
-          console.log(response.data);
           this.guardarQuienVioNegocioQr(response.data);
         }
       },

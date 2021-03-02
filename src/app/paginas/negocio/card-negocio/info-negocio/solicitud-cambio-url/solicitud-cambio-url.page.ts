@@ -44,13 +44,9 @@ export class SolicitudCambioUrlPage implements OnInit {
   }
   enviarSolicitud() {
     this.presentLoading();
-    if(this.cambiarUrlTO.negocio !== null &&   this.cambiarUrlTO.negocio !== '' &&
-      this.cambiarUrlTO.nombre  !== null  &&   this.cambiarUrlTO.nombre  !== '' &&
-      this.cambiarUrlTO.telefono  !== null  && this.cambiarUrlTO.telefono  !== '' &&
-      this.cambiarUrlTO.telefono  !== null  && this.cambiarUrlTO.telefono  !== '' &&
-      this.cambiarUrlTO.correo  !== null  &&this.cambiarUrlTO.correo  !== '' &&
+    if(this.cambiarUrlTO.motivo  !== null  &&this.cambiarUrlTO.motivo  !== '' &&
       this.cambiarUrlTO.url  !== null  &&this.cambiarUrlTO.url  !== '' ){
-       this.cambiarUrlTO.negocio = this.negocio.nombre_comercial;
+       this.cambiarUrlTO.id_negocio = this.negocio.id_negocio;
        console.log(this.negocio);
     this._serviceAdministracion.enviarCambioUrlCorreo(this.cambiarUrlTO).subscribe(
       response => {

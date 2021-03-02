@@ -1,8 +1,5 @@
 export class CambioUrlModel{
-
-    public nombre:string;
-    public telefono:string;
-    public correo:string;
-    public negocio:string;
+    public id_negocio: number;
+    public motivo:string;
     public url:string;
 }

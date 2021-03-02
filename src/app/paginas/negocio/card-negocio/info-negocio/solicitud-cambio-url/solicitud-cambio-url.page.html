@@ -18,25 +18,11 @@
       <form #formCambioUrl="ngForm" (ngSubmit)="enviarSolicitud(formCambioUrl)">
         <ion-list>
           <ion-item>
-            <ion-label position="stacked">Nombre: <span style="color: red">*</span></ion-label>
-            <ion-input id="nombre" name="nombre" #nombre="ngModel"  [(ngModel)]="cambiarUrlTO.nombre"  required></ion-input>
+            <ion-label position="stacked">Motivo: <span style="color: red">*</span></ion-label>
+            <ion-input id="motivo" name="motivo" #motivo="ngModel"  [(ngModel)]="cambiarUrlTO.motivo"  required></ion-input>
           </ion-item>
-          <div *ngIf="nombre.touched  && nombre.invalid" class="alert">
-            <div *ngIf="nombre.errors.required">el nombre es requerido</div>
-          </div>
-          <ion-item>
-            <ion-label position="stacked">Telefono: <span style="color: red">*</span></ion-label>
-            <ion-input id="telefono" name="telefono" #telefono="ngModel"  [(ngModel)]="cambiarUrlTO.telefono"  required></ion-input>
-          </ion-item>
-          <div *ngIf="telefono.touched  && telefono.invalid" class="alert">
-            <div *ngIf="telefono.errors.required">el telefono es requerido</div>
-          </div>
-          <ion-item>
-            <ion-label position="stacked">Correo: <span style="color: red">*</span></ion-label>
-            <ion-input id="correo" name="correo" #correo="ngModel"  [(ngModel)]="cambiarUrlTO.correo"  required></ion-input>
-          </ion-item>
-          <div *ngIf="correo.touched  && correo.invalid" class="alert">
-            <div *ngIf="correo.errors.required">el correo es requerido</div>
+          <div *ngIf="motivo.touched  && motivo.invalid" class="alert">
+            <div *ngIf="motivo.errors.required">el nombre es requerido</div>
           </div>
           <ion-item>
             <ion-label position="stacked">Url nueva: <span style="color: red">*</span></ion-label>
