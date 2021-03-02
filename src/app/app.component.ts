@@ -7,13 +7,16 @@ import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { Router } from '@angular/router';
 import { NgZone } from '@angular/core';
 import { NegocioService } from './api/negocio.service';
-
+import { VistasBitooModel } from 'src/app/Modelos/vistasBitooModel';
+import { Plugins } from '@capacitor/core';
+const { Geolocation } = Plugins;
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  visitasBitooModel: VistasBitooModel
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -26,6 +29,7 @@ export class AppComponent {
 
   ) {
     this.initializeApp();
+    this.visitasBitooModel = new VistasBitooModel();
   }
 
   initializeApp() {
@@ -33,7 +37,9 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.setupDeeplinks();
-    });
+      this.obtenerPlataforma();
+    }); 
+    this.obtenerIP(); 
   }
 
   setupDeeplinks() {
@@ -81,4 +87,36 @@ export class AppComponent {
       }
     );
   }
+  obtenerPlataforma(){
+    if(this.platform.is("android")){
+        this.visitasBitooModel.plataforma = "android";
+    }else if(this.platform.is("ios")){
+        this.visitasBitooModel.plataforma = "ios";
+    }
+}
+obtenerIP(){
+  this.negocioService.obtenerIP().subscribe( res => {
+      this.visitasBitooModel.usuario_ip = res.ip; 
+      this.getCurrentPosition(); 
+  }, error => {});
+}
+async getCurrentPosition() {
+    let gpsOptions = {maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true};
+    const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
+        this.visitasBitooModel.latitud = res.coords.latitude;
+        this.visitasBitooModel.longitud = res.coords.longitude;
+    }).catch(error => {
+        this.visitasBitooModel.latitud = null;
+        this.visitasBitooModel.longitud = null;
+    });
+    this.registrarVisitas();
+}
+
+registrarVisitas(){
+    this.negocioService.guardarRegistro(this.visitasBitooModel).subscribe( data => {
+         console.log(data);
+    },(error) =>{
+        console.log(error);
+    });
+}
 }

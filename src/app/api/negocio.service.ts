@@ -338,4 +338,35 @@ export class NegocioService {
         return error;
       }));
   }
+
+  public obtenerIP():Observable<any>{
+    let datos = from(this._http.get('https://api.ipify.org?format=json',{},
+    {'Content-Type':'application/json'})
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    }));
+    
+    return datos.pipe(map(data => {
+        return data;
+    }));
+  }
+
+  guardarRegistro(variable: any):Observable<any>{
+    const body = JSON.stringify(variable);
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(`${this.url}api/visitas/RegistrarEntrasteABitoo`,body, AppSettings.getHeaders())
+    .then((data) => {
+      console.log('entro aqui al servicio ');
+      console.log(JSON.parse(data.data));
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
+    }));
+  }
+
+
 }
