@@ -44,35 +44,6 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <!--<ion-col>
-        <ion-card *ngFor="let producto of lstProductos">
-          <ion-img class="img-card-w"*ngIf="producto.imagen !== null" [src]="producto.imagen" (click)="abrirModal(producto)"></ion-img>
-          <ion-card-header>
-            <ion-card-title>{{producto.nombre}}</ion-card-title>
-            <ion-card-subtitle>{{(producto.nombre_categoria1 != null)?producto.nombre_categoria1:'Sin categoría'}}</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <div>
-              <ion-badge color="primary">{{producto.tipo}}</ion-badge>
-            </div>
-            <div>
-              <ion-text>{{(producto.descripcion != null)?producto.descripcion:'Sin descripción'}}</ion-text>
-            </div>
-            <div>
-              <ion-text color="success">${{(producto.precio != '')?((producto.precio != null)?producto.precio:'Sin precio'):'Sin precio'}}</ion-text>
-            </div>
-            <div>
-              <ion-badge color="medium">{{(producto.ubicacion != null)?producto.ubicacion.nombre_localidad:'Sin ubicación'}}</ion-badge>
-            </div>
-            <div align="right" *ngIf="motrarContacto">
-              <ion-button size="small" color="danger" (click)="darLike(producto)">
-                <ion-icon name="heart-outline"></ion-icon>{{producto.likes}}
-                <ion-spinner *ngIf="loaderLike"></ion-spinner>
-              </ion-button>
-            </div>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>-->
       <ion-col>
         <ion-list>
           <ion-item-sliding *ngFor="let producto of lstProductos">
@@ -108,6 +79,13 @@
           </ion-item-options>
           </ion-item-sliding>
         </ion-list>
+
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="scroll">
+          <ion-infinite-scroll-content
+                  loadingSpinner="bubbles"
+                  loadingText="Cargando mas productos...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       </ion-col>
     </ion-row>
   </ion-grid>
