@@ -340,6 +340,7 @@ export class InfoNegocioPage implements OnInit {
         this.notificaciones.alerta('Agregue la foto de su negocio');
     }else{
       this.datos();
+      console.log(this.negocioGuardar);
       this.negocioServico.guardar(this.negocioGuardar).subscribe(
         response => {        
           if (response.code === 200) {
@@ -463,6 +464,7 @@ agregarHorario() {
     this.negocioGuardar.entrega_domicilio = this.negocioTO.entrega_domicilio;
     this.negocioGuardar.consumo_sitio = this.negocioTO.consumo_sitio;
     this.negocioGuardar.entrega_sitio = this.negocioTO.entrega_sitio;
+    this.negocioGuardar.negocio_fisico = this.negocioTO.negocio_fisico;
     this.negocioGuardar.alcance_entrega = this.negocioTO.alcance_entrega;
     this.negocioGuardar.tiempo_entrega_kilometro = this.negocioTO.tiempo_entrega_kilometro;
     this.negocioGuardar.costo_entrega = this.negocioTO.costo_entrega;
