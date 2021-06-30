@@ -15,7 +15,8 @@ export class FiltrosModel {
     public tipoBusqueda: number;
     public idNegocio: number;
     public abierto: any;
-
+    public organizacion: number;
+    public id_persona: number;
     constructor(strBuscar: string = '',
                 intEstado: number = 0,
                 strMunicipio: string = '',
@@ -28,6 +29,8 @@ export class FiltrosModel {
                 idCategoriaNegocio: Array<any> = null,
                 idGiro: number = null,
                 abierto: number = null,
+                id_persona: number = null,
+                organizacion: number = null
     ) {
         this.strBuscar = strBuscar;
         this.intEstado = intEstado;
@@ -44,5 +47,7 @@ export class FiltrosModel {
         this.idLocalidad = null;
         this.abierto = null;
         this.tipoBusqueda = 0;
+        this.id_persona = id_persona;
+        this.organizacion = organizacion;
     }
 }

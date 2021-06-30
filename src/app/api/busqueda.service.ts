@@ -18,10 +18,12 @@ export class BusquedaService {
   public obtenerDatos(filtro): Observable<any> {
     const body = JSON.stringify({filtros: filtro});
     this.http.setDataSerializer("utf8");
+
     let datos = from(this.http.post(`${this.url}api/negocios/obtener`,body, AppSettings.getHeaders())
     .then( data => {
+
       return JSON.parse(data.data);
-    }));    
+    }));
 
     return datos.pipe(map(data => {
       // return data;
