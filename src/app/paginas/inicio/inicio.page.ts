@@ -1,17 +1,17 @@
-import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
-import { IonContent, LoadingController, MenuController, ModalController, ToastController } from "@ionic/angular";
-import { BusquedaService } from "../../api/busqueda.service";
-import { FiltrosModel } from '../../Modelos/FiltrosModel';
-import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/filtros-busqueda.component";
-import { ToadNotificacionService } from "../../api/toad-notificacion.service";
-import { FormControl } from '@angular/forms';
-import { ActivatedRoute } from "@angular/router";
-import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-negocios.component';
+import {Component, EventEmitter, OnInit, ViewChild} from '@angular/core';
+import {IonContent, LoadingController, MenuController, ModalController, ToastController} from "@ionic/angular";
+import {BusquedaService} from "../../api/busqueda.service";
+import {FiltrosModel} from '../../Modelos/FiltrosModel';
+import {FiltrosBusquedaComponent} from "../../componentes/filtros-busqueda/filtros-busqueda.component";
+import {ToadNotificacionService} from "../../api/toad-notificacion.service";
+import {FormControl} from '@angular/forms';
+import {ActivatedRoute} from "@angular/router";
+import {MapaNegociosComponent} from '../../componentes/mapa-negocios/mapa-negocios.component';
 import {SideBarService} from "../../api/busqueda/side-bar-service";
-import { Router} from "@angular/router";
-import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveedor-servicio.service";
-import { UtilsCls } from "../../utils/UtilsCls";
-import { MsNegocioModel } from 'src/app/Modelos/busqueda/MsNegocioModel';
+import {Router} from "@angular/router";
+import {ProveedorServicioService} from "../../api/busqueda/proveedores/proveedor-servicio.service";
+import {UtilsCls} from "../../utils/UtilsCls";
+import {MsNegocioModel} from 'src/app/Modelos/busqueda/MsNegocioModel';
 
 @Component({
     selector: 'app-tab3',
@@ -31,10 +31,11 @@ export class InicioPage implements OnInit {
     strBuscar: any;
     private seleccionado: any;
     loader: any;
-    listaIdsMapa : any;
+    listaIdsMapa: any;
     filtroActivo: boolean;
     user: any;
     public existeSesion: boolean;
+
     constructor(
         public loadingController: LoadingController,
         private toadController: ToastController,
@@ -57,57 +58,60 @@ export class InicioPage implements OnInit {
     }
 
     ngOnInit(): void {
+        this.user = this.util.getUserData();
         this.eventosServicios.eventBuscar().subscribe((data) => {
             this.buscarNegocios();
         });
         this.buscarNegocios();
 
     }
+
     ionViewWillEnter() {
 
         let categoria = localStorage.getItem('seleccionado');
         if (this.filtroActivo === false) {
-            console.log('entro aqui ');
             localStorage.setItem('resetFiltro', '0');
         }
         let estatusFiltro = localStorage.getItem('resetFiltro');
         if (categoria !== null) {
-            console.log(categoria);
             this.filtroActivo = true;
             const dato = JSON.parse(categoria);
             localStorage.setItem('resetFiltro', '1');
             estatusFiltro = localStorage.getItem('resetFiltro');
             this.Filtros = new FiltrosModel();
-            this.Filtros.idGiro = [dato.idGiro];
+            this.Filtros.idGiro = [(dato.idGiro != null) ? dato.idGiro : 1];
             this.Filtros.idCategoriaNegocio = [dato.id_categoria];
             this.buscarNegocios();
             localStorage.removeItem('seleccionado');
         }
-        if (categoria === null &&
-            estatusFiltro === '0'){
-                if( this.Filtros.abierto === null &&
-                    this.Filtros.blnEntrega === null &&
-                    this.Filtros.idEstado === 29 &&
-                    this.Filtros.idCategoriaNegocio === null &&
-                    this.Filtros.idGiro === null &&
-                    this.Filtros.idLocalidad === null &&
-                    this.Filtros.idMunicipio === null &&
-                    this.Filtros.idTipoNegocio === null &&
-                    this.Filtros.intEstado === 0 &&
-                    this.Filtros.kilometros === 10 &&
-                    this.Filtros.latitud === 0 &&
-                    this.Filtros.longitud === 0  &&
-                    this.Filtros.strBuscar === '' &&
-                    this.Filtros.strMunicipio === '' &&
-                    this.Filtros.tipoBusqueda === 0){
-                     console.log('no hubo filtros');
-                }else{
-            this.borrarFiltros();
-                }
+        if (categoria === null && estatusFiltro === '0') {
+            if (this.Filtros.abierto === null &&
+                this.Filtros.blnEntrega === null &&
+                this.Filtros.idEstado === 29 &&
+                this.Filtros.idCategoriaNegocio === null &&
+                this.Filtros.idGiro === null &&
+                this.Filtros.idLocalidad === null &&
+                this.Filtros.idMunicipio === null &&
+                this.Filtros.idTipoNegocio === null &&
+                this.Filtros.intEstado === 0 &&
+                this.Filtros.kilometros === 10 &&
+                this.Filtros.latitud === 0 &&
+                this.Filtros.longitud === 0 &&
+                this.Filtros.strBuscar === '' &&
+                this.Filtros.strMunicipio === '' &&
+                this.Filtros.tipoBusqueda === 0) {
+            } else {
+                this.borrarFiltros();
+            }
         }
     }
+
     buscarNegocios() {
         this.loader = true;
+        const usr = this.user;
+        if (usr.id_persona !== undefined) {
+            this.Filtros.id_persona = usr.id_persona;
+        }
         this.principalSercicio.obtenerDatos(this.Filtros).subscribe(
             respuesta => {
                 this.listaCategorias = respuesta.data;
@@ -132,13 +136,13 @@ export class InicioPage implements OnInit {
     }
 
     buscarToolbar(event) {
-        this.Filtros=new FiltrosModel();
+        this.Filtros = new FiltrosModel();
         this.Filtros.strBuscar = event;
         this.buscarNegocios();
     }
 
     abrirFiltros() {
-        this.presentModal();    
+        this.presentModal();
     }
 
     async presentModal() {
@@ -148,9 +152,9 @@ export class InicioPage implements OnInit {
                 'dismissed': true
             });
             this.filtroActivo = true;
-            this.Filtros = res;            
+            this.Filtros = res;
             this.buscarNegocios();
-        });        
+        });
         this.modal = await this.modalController.create({
             component: FiltrosBusquedaComponent,
             componentProps: {
@@ -170,7 +174,7 @@ export class InicioPage implements OnInit {
     }
 
     async abrirModalMapa() {
-      //  let listaIds = [68, 95, 116, 52, 155, 20, 142];
+        //  let listaIds = [68, 95, 116, 52, 155, 20, 142];
         const modal = await this.modalController.create({
             component: MapaNegociosComponent,
             componentProps: {
@@ -197,31 +201,33 @@ export class InicioPage implements OnInit {
     borrarFiltros() {
         this.Filtros = new FiltrosModel();
         this.Filtros.idEstado = 29;
+        this.Filtros.idGiro = (this.Filtros.idGiro!= null ) ? this.Filtros.idGiro : [1];
         this.filtroActivo = false;
         this.buscarNegocios();
     }
+
     negocioRuta(negocioURL) {
-        if (negocioURL==""){
+        if (negocioURL == "") {
             this.notificaciones.error('Este negocio aún no cumple los requisitos mínimos');
-        } else{
-            this.ruta.navigate(['/tabs/negocio/'+negocioURL]);
+        } else {
+            this.ruta.navigate(['/tabs/negocio/' + negocioURL]);
         }
     }
+
     public darLikes(proveedor: MsNegocioModel) {
         if (this.user.id_persona !== undefined) {
-          this.serviceProveedores.darLike(proveedor, this.user).subscribe(
-            response => {
-              if (response.code === 200) {
-                proveedor.likes = response.data;
-                // console.log(proveedor.likes);
-                this.notificaciones.exito(response.message);
-              } else{
-                this.notificaciones.alerta(response.message);
-              }
-              
-            },
-            error => {
-            });
+            this.serviceProveedores.darLike(proveedor, this.user).subscribe(
+                response => {
+                    if (response.code === 200) {
+                        proveedor.likes = response.data;
+                        this.notificaciones.exito(response.message);
+                    } else {
+                        this.notificaciones.alerta(response.message);
+                    }
+
+                },
+                error => {
+                });
         }
-      }
+    }
 }
