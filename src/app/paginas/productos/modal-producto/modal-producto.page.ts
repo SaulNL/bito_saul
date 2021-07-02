@@ -64,8 +64,11 @@ export class ModalProductoPage implements OnInit {
       (response) => {
         if (response.code === 200) {
           producto.likes = response.data;
+            producto.usuario_dio_like = 1;
           this.notificaciones.exito(response.message);
         } else{
+            producto.likes = response.data;
+            producto.usuario_dio_like = null;
           this.notificaciones.alerta(response.message);
         }
         //this.notificaciones.exito(response.message);
