@@ -84,7 +84,7 @@ export class ToolbarBusquedaComponent implements OnInit {
   }
 
   verCompras(){
-    this.router.navigate(['/tabs/home/compras'], { queryParams: {special: true}});
+    this.router.navigate(['/tabs/home/compras'], { queryParams: {special: true, route: true}});
   }
   verVentas(){
     this.router.navigate(['/tabs/home/ventas'], { queryParams: {special: true}});
