@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'productos-favoritos',
     loadChildren: () => import('./productos-favoritos/productos-favoritos.module').then( m => m.ProductosFavoritosPageModule)
+  },
+  {
+    path: 'negocios-favoritos',
+    loadChildren: () => import('./negocios-favoritos/negocios-favoritos.module').then( m => m.NegociosFavoritosPageModule)
   }
 ];
 

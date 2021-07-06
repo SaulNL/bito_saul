@@ -28,4 +28,8 @@ export class MisFavoritosPage implements OnInit {
     this._router.navigateByUrl("/tabs/home/mis-favoritos/productos-favoritos");
   }
 
+  abrirNegociosFavoritos() {
+    this._router.navigateByUrl("/tabs/home/mis-favoritos/negocios-favoritos");
+  }
+
 }
