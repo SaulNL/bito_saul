@@ -30,6 +30,7 @@ const haversineCalculator = require("haversine-calculator");
 import { ModalPromocionNegocioComponent } from "src/app/componentes/modal-promocion-negocio/modal-promocion-negocio.component";
 import {ProductoModel} from "../../Modelos/ProductoModel";
 import { ProductosService } from "../../api/productos.service";
+import {ComentariosNegocioComponent} from '../../componentes/comentarios-negocio/comentarios-negocio.component';
 
 @Component({
   selector: "app-perfil-negocio",
@@ -37,6 +38,8 @@ import { ProductosService } from "../../api/productos.service";
   styleUrls: ["./perfil-negocio.page.scss"],
 })
 export class PerfilNegocioPage implements OnInit {
+  public listaComentarios: [];
+  public mostrarComentarios: boolean;
   public seccion: any;
   public map: Map;
   public negocio: string;
@@ -195,6 +198,7 @@ export class PerfilNegocioPage implements OnInit {
               this.obtenerServicios();
               this.obtenerEstatusCalificacion();
               this.guardarQuienVioNegocio(this.informacionNegocio.id_negocio);
+              this.comentariosNegocio(this.informacionNegocio.id_negocio);
               this.horarios(this.informacionNegocio);
               this.calcularDistancia();
             }
@@ -395,7 +399,6 @@ export class PerfilNegocioPage implements OnInit {
     await modal.present();
     await modal.onDidDismiss().then((r) => {
       if (r.data.data !== null) {
-        console.log(r);
 
         this.llenarBolsa(r.data.data);
       }
@@ -448,8 +451,25 @@ export class PerfilNegocioPage implements OnInit {
       this.informacionNegocio.numCalificaciones = data.numCalificaciones;
       this.informacionNegocio.promedio = data.promedio;
       this.obtenerEstatusCalificacion();
-
+      this.mostrarComentarios = true;
     }
+  }
+
+  async abrirModalComentarios() {
+    const modal = await this.modalController.create({
+      component: ComentariosNegocioComponent,
+      componentProps: {
+        idNegocio: this.informacionNegocio.id_negocio,
+      },
+    });
+    await modal.present();
+    /*const { data } = await modal.onDidDismiss();
+    if (data !== undefined) {
+      this.informacionNegocio.numCalificaciones = data.numCalificaciones;
+      this.informacionNegocio.promedio = data.promedio;
+      this.obtenerEstatusCalificacion();
+
+    }*/
   }
 
   /**
@@ -712,7 +732,7 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   async mensajeBolsa() {
-    console.log("Esto entra aca");
+
 
     const alert = await this.alertController.create({
       header: "Advertencia",
@@ -940,5 +960,23 @@ export class PerfilNegocioPage implements OnInit {
       }
     );
   }
+
+  comentariosNegocio(idNegocio: number){
+    this.negocioService.obtenerComentariosNegocio(idNegocio).subscribe(
+        response => {
+          if (response.data !== null) {
+            this.listaComentarios = response.data;
+            if (this.listaComentarios.length > 0){
+              this.mostrarComentarios = true;
+            }
+          }
+        },
+        error => {
+          console.log(error);
+        }
+    );
+  }
+
+
 
 }

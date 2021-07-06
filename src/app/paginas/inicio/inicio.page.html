@@ -50,7 +50,7 @@
                             [srcset]="proveedor.url_logo" 
                              alt="Falla al cargar la imagen">
                         <ion-card-header>
-                            <ion-card-subtitle>{{proveedor.nombre_comercial}}</ion-card-subtitle>
+                            <ion-card-subtitle>{{proveedor.nombre_comercial}} <ion-icon *ngIf="proveedor.verificado" class="text-rosa" name="checkmark-circle"></ion-icon></ion-card-subtitle>
                             <ion-badge *ngIf="proveedor.abierto == 'ABIERTO'" color="success">Abierto</ion-badge>
                             <ion-badge *ngIf="proveedor.abierto !== 'ABIERTO'" color="danger">Cerrado</ion-badge>
                         </ion-card-header>

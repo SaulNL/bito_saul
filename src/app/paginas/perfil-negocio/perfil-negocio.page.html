@@ -47,7 +47,7 @@
                 </ion-col>
                 <ion-col size="12">
                     <ion-text class="ion-align-items-center ion-text-center ion-justify-content-center">
-                        <h1>{{informacionNegocio.nombre_comercial}}</h1>
+                        <h1>{{informacionNegocio.nombre_comercial}} <ion-icon *ngIf="informacionNegocio.verificado" class="text-rosa" name="checkmark-circle"></ion-icon></h1>
                     </ion-text>
                 </ion-col>
             </ion-row>
@@ -150,6 +150,19 @@
                                 </ion-col>
                             </ion-row>
 
+                            <ion-row>
+                                <ion-col>
+                                    <div>
+                                        <div *ngIf="mostrarComentarios" class="ion-text-center"
+                                             (click)="abrirModalComentarios()">
+                                            <ion-button expand="block" size="small" type="submit" class="bg-rosa">
+                                                Ver comentarios
+                                            </ion-button>
+                                        </div>
+                                    </div>
+                                </ion-col>
+                            </ion-row>
+
                         </ion-grid>
                     </ion-card-content>
                 </ion-card>
@@ -183,7 +196,8 @@
                         <div>
                             <div (click)="mostrarOcultar()" style="background: white; border-radius: 1em 1em 0em 0em;"
                                  class="ion-text-center">
-                                <ion-title class="ion-align-items-center ion-text-center ion-justify-content-center ion-padding">
+                                <ion-title
+                                        class="ion-align-items-center ion-text-center ion-justify-content-center ion-padding">
                                     Horarios de atención
                                 </ion-title>
                                 <ion-chip *ngIf="estatus.tipo === 1" color="success">
