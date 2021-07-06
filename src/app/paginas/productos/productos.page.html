@@ -32,7 +32,7 @@
     <div id="abcedario" class="scrolling-wrapper-flexbox">
         <div class="item" *ngFor="let filtro of filtroABC">
             <ion-button size="small" color="danger" (click)="filtrarABC(filtro)"
-                        [ngClass]="{active:filtro.id === filtroCheckend}" [disabled]="!filtro.activo">
+                [ngClass]="{active:filtro.id === filtroCheckend}" [disabled]="!filtro.activo">
                 {{filtro.letra}}
             </ion-button>
         </div>
@@ -54,24 +54,12 @@
                     null)?producto.ubicacion.nombre_localidad:'Sin ubicación'}}
                 </ion-badge>
             </ion-label>
-
-            <ion-chip class="ion-margin-start  ion-activatable hydrated" (click)="darLike(producto)"  *ngIf="motrarContacto">
-                <ion-icon *ngIf="producto.usuario_dio_like > 0; else like" class="text-rosa heartLike hydrated" role="img"
-                          name="heart" aria-label="dollar">
-                </ion-icon>
-                <ng-template #like>
-                    <ion-icon name="heart-outline" role="img" class="md hydrated heartNotLike"
-                              aria-label="logo ionic"></ion-icon>
-                </ng-template>
-                <ion-label class="hydrated">{{ producto.likes }}</ion-label>
-            </ion-chip>
+            <app-dar-like-producto [producto]="producto" [usuario]="user" [mostrarLike]="existeSesion"></app-dar-like-producto>
         </ion-item>
     </ion-list>
 
     <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="scroll">
-        <ion-infinite-scroll-content
-                loadingSpinner="bubbles"
-                loadingText="Cargando mas productos...">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando mas productos...">
         </ion-infinite-scroll-content>
     </ion-infinite-scroll>
 

@@ -246,9 +246,23 @@ export class UtilsCls {
     return 0;
   }
 
-   getFileReader(): FileReader {
+  getFileReader(): FileReader {
     const fileReader = new FileReader();
-    const zoneOriginalInstance = (fileReader as any)["__zone_symbol__originalInstance"];
+    const zoneOriginalInstance = (fileReader as any)[
+      "__zone_symbol__originalInstance"
+    ];
     return zoneOriginalInstance || fileReader;
+  }
+
+  public existSession() {
+    try {
+      const tk_str = localStorage.getItem("tk_str");
+      if (tk_str != null && tk_str != "") {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
     }
+  }
 }

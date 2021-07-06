@@ -1,3 +1,4 @@
+import { DarLikeProductoModule } from './../../componentes/dar-like-producto/dar-like-producto.module';
 import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -20,7 +21,8 @@ import { ModalProductosComponent } from '../../components/modal-productos/modal-
     ExploreContainerComponentModule,
     Tab1PageRoutingModule,
     TabsPageModule,
-    ModalProductoPageModule
+    ModalProductoPageModule,
+    DarLikeProductoModule
   ],
   declarations: [ProductosPage,
     InfoProductosComponent,

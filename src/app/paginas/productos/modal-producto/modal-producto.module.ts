@@ -1,3 +1,4 @@
+import { DarLikeProductoModule } from './../../../componentes/dar-like-producto/dar-like-producto.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +14,8 @@ import { ModalProductoPage } from './modal-producto.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    ModalProductoPageRoutingModule
+    ModalProductoPageRoutingModule,
+    DarLikeProductoModule
   ],
   declarations: [ModalProductoPage]
 })
