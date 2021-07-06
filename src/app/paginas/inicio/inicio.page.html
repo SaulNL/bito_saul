@@ -47,7 +47,7 @@
                     <ion-card class="m-0 fixed">
                         <div (click)="negocioRuta(proveedor.url_negocio)">
                             <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
-                            [srcset]="proveedor.url_logo" 
+                            [srcset]="proveedor.url_logo"
                              alt="Falla al cargar la imagen">
                         <ion-card-header>
                             <ion-card-subtitle>{{proveedor.nombre_comercial}} <ion-icon *ngIf="proveedor.verificado" class="text-rosa" name="checkmark-circle"></ion-icon></ion-card-subtitle>
@@ -60,16 +60,8 @@
                             </div>
                         </ion-card-content>
                         </div>
-                        <div *ngIf="existeSesion">
-                            <div class="likegegi" (click)="darLikes(proveedor)">
-                                    <div *ngIf="proveedor.likes>0;else templateName">
-                                        <ion-icon color="danger" name="heart-sharp"></ion-icon>
-                                    <ion-label class="textolikeNego" color="danger" >{{proveedor.likes}}</ion-label>
-                                    </div>
-                                <ng-template #templateName>
-                                    <ion-icon class="grus" name="heart-outline" *ngIf="proveedor.likes === 0"></ion-icon>
-                                </ng-template>
-                              </div>
+                        <div *ngIf="existeSesion" class="likegegi">
+                            <app-dar-like-negocio [negocio]="proveedor" [usuario]="user" [mostrarLike]="existeSesion"> </app-dar-like-negocio>
                         </div>
                     </ion-card>
                 </ion-col>

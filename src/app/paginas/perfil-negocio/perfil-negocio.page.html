@@ -310,7 +310,7 @@
                     </ion-item>
                     <ng-container *ngIf="!negocioSub &&  nameSub === cat.nombre">
                         <ion-col size="6" *ngFor="let producto of cat.productos; let i = index">
-                            <ion-card class="m-0 fixed cardsps altocaja">
+                            <ion-card class="m-0 fixed cardsps">
                                 <div (click)="irAlDetalle(producto, i)">
                                     <img class="img-card-w"
                                          src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
@@ -327,7 +327,7 @@
                                     </ion-card-content>
                                 </div>
                                 <div>
-                                    <div class="likegegi">
+                                    <div class="likeProducto">
                                         <app-dar-like-producto [producto]="producto" [usuario]="user" [mostrarLike]="existeSesion"></app-dar-like-producto>
                                     </div>
                                 </div>
@@ -394,7 +394,7 @@
                     </ion-item>
                     <ng-container *ngIf="!servicioSub &&  namelesSub === cat.nombre">
                         <ion-col size="6" *ngFor="let producto of cat.servicios">
-                            <ion-card class="m-0 cardsps fixed altocaja">
+                            <ion-card class="m-0 cardsps fixed">
                                 <div (click)="irAlDetalle(producto)">
                                     <img class="img-card-w" [src]="producto.imagen" alt="Falla al cargar la imagen">
                                     <ion-card-header class="ion-card-cara">
@@ -408,17 +408,9 @@
                                         </div>
                                     </ion-card-content>
                                 </div>
-                                <div *ngIf="existeSesion">
-                                    <div class="likegegi" (click)="darLike(producto)">
-                                        <div *ngIf="producto.likes>0;else templateName">
-                                            <ion-icon color="danger" name="heart-sharp"></ion-icon>
-                                            <ion-label class="textolikeNego"
-                                                       color="danger">{{producto.likes}}</ion-label>
-                                        </div>
-                                        <ng-template #templateName>
-                                            <ion-icon class="grus" name="heart-outline"
-                                                      *ngIf="producto.likes === 0"></ion-icon>
-                                        </ng-template>
+                                <div >
+                                    <div class="likeProducto">
+                                        <app-dar-like-producto [producto]="producto" [usuario]="user" [mostrarLike]="existeSesion"></app-dar-like-producto>
                                     </div>
                                 </div>
                             </ion-card>
