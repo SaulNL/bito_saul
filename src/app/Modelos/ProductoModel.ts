@@ -11,13 +11,14 @@ export class ProductoModel{
     public tipo:any;
     public ubicacion: any;
     public likes: any;
+    public usuario_dio_like: any;
 
     public idProducto: any;
     public select: any;
     public existencia: any;
 
 
-    constructor(nombre = null, descripcion = null, precio = null, categoria = null, imagenes = null, negocio = null, idProducto = null) {
+    constructor(nombre = null, descripcion = null, precio = null, categoria = null, imagenes = null, negocio = null, idProducto = null, usuario_dio_like = null) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
@@ -25,5 +26,6 @@ export class ProductoModel{
         this.imagenes = imagenes;
         this.negocio = negocio;
         this.idProducto = idProducto;
+        this.usuario_dio_like = usuario_dio_like;
     }
 }

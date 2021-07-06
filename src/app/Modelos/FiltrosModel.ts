@@ -17,6 +17,7 @@ export class FiltrosModel {
     public abierto: any;
     public organizacion: number;
     public id_persona: number;
+    public user: any;
     constructor(strBuscar: string = '',
                 intEstado: number = 0,
                 strMunicipio: string = '',
