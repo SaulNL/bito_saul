@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardService } from "../../../api/auth-guard.service";
 import { DashboardPage } from './dashboard.page';
+import {MisFavoritosPageModule} from '../../mis-favoritos/mis-favoritos.module';
 
 const routes: Routes = [
   {
@@ -75,6 +76,10 @@ const routes: Routes = [
       {
         path: 'solicitud',
         loadChildren: () => import('../../solicitud/solicitud.module').then(m => m.SolicitudPageModule)
+      },
+      {
+        path: 'mis-favoritos',
+        loadChildren: () => import('../../mis-favoritos/mis-favoritos.module').then(m => m.MisFavoritosPageModule)
       }
 
     ]

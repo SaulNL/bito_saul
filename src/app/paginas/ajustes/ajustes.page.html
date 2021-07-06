@@ -72,12 +72,22 @@
               </ion-card-content>
             </ion-card>
           </ion-col>
-          <ion-col [routerLink]="['/tabs/home/compras']">
+          <ion-col>
             <ion-card>
               <ion-card-content>
-                <div class="ion-text-center">
+                <div class="ion-text-center" [routerLink]="['/tabs/home/compras']">
                   <ion-icon name="bag-handle-outline"></ion-icon>
                   <h2>Mis compras</h2>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+          <ion-col *ngIf="usuario.proveedor !== null">
+            <ion-card>
+              <ion-card-content>
+                <div class="ion-text-center" [routerLink]="['/tabs/home/mis-favoritos']">
+                  <ion-icon name="heart-outline"></ion-icon>
+                  <h2>Mis favoritos</h2>
                 </div>
               </ion-card-content>
             </ion-card>

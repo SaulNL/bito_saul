@@ -49,4 +49,20 @@ export class PersonaService {
         return error;
       }));
   }
+
+
+  obtenerProductosFavoritos(idPersona: number): Observable<any> {
+    const body = JSON.stringify({id_persona : idPersona});
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+        `${this.url}api/favoritos/productos`, body,
+        AppSettings.getHeadersToken())
+        .then((data) => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        }));
+  }
+
 }

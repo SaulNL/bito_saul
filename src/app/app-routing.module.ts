@@ -9,7 +9,11 @@ const routes: Routes = [
   {
     path: 'categorias',
     loadChildren: () => import('./paginas/categorias/categorias.module').then( m => m.CategoriasPageModule)
+  },  {
+    path: 'mis-favoritos',
+    loadChildren: () => import('./paginas/mis-favoritos/mis-favoritos.module').then( m => m.MisFavoritosPageModule)
   }
+
 
 ];
 @NgModule({
