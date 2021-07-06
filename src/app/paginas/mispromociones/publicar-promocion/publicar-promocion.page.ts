@@ -1,3 +1,4 @@
+import { ModalPublicarComponent } from './../../../components/modal-publicar/modal-publicar.component';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PromocionesModel } from '../../../Modelos/PromocionesModel';
@@ -5,7 +6,6 @@ import { PromocionesService } from '../../../api/promociones.service';
 import { ToadNotificacionService } from '../../../api/toad-notificacion.service';
 import { PublicacionesModel } from '../../../Modelos/PublicacionesModel';
 import { ModalController } from '@ionic/angular';
-import { ModalPublicarComponent } from 'src/app/components/modal-publicar/modal-publicar.component';
 import { AlertController } from '@ionic/angular';
 
 
@@ -34,7 +34,7 @@ export class PublicarPromocionPage implements OnInit {
                public modalController: ModalController,
                public alertController: AlertController,
                public router: Router
-              ) { 
+              ) {
     this.seleccionTo = new PromocionesModel();
   }
 

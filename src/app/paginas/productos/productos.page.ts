@@ -114,7 +114,6 @@ export class ProductosPage {
         this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
             (response) => {
                 this.lstProductos = response.data.lstProductos;
-                console.log(this.lstProductos);
                 if (this.lstProductos.length > 0) {
                     this.blnBtnMapa = true;
                     this.listaNegocioMap = this.lstProductos;
@@ -133,34 +132,6 @@ export class ProductosPage {
     }
 
     /**
-     * Funcion para dar like a un producto
-     * @param producto
-     * @author Omar
-     */
-    public darLike(producto: ProductoModel) {
-        //this.user = this._auth0.getUserData();
-        //if(this.user.id_persona !== undefined){
-        this.servicioProductos.darLike(producto, this.user).subscribe(
-            (response) => {
-                if (response.code === 200) {
-                    producto.likes = response.data;
-                    producto.usuario_dio_like = 1;
-                    this.notificaciones.exito(response.message);
-                } else {
-                    producto.usuario_dio_like =  0;
-                    producto.likes = response.data;
-
-                    this.notificaciones.alerta(response.message);
-                }
-            },
-            (error) => {
-                this.notificaciones.error("Error, intentelo más tarde");
-            }
-        );
-        //}
-    }
-
-    /**
      * Funcion para armar filtro de ABC
      * @author Omar
      */
@@ -173,7 +144,6 @@ export class ProductosPage {
         }
         this.filtroABC.forEach((item) => {
             let siHay = this.lstProductos.find((producto) => {
-                console.log(producto);
                 if (producto.nombre !== null) {
                     return producto.nombre.charAt(0) === item.letra;
                 }

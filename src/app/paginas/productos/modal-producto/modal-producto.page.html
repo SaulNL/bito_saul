@@ -17,7 +17,7 @@
       [srcset]="unoProducto.imagen" />
       <p class="restriccion">*Algunas imágenes sólamente son usadas con fines ilustrativos. El producto final puede no estár representado con exactitud por las mismas</p>
     </div>
-    
+
     <ion-card-header>
       <ion-card-subtitle>{{unoProducto.categoria.nombre}}</ion-card-subtitle>
       <ion-card-title><strong>{{unoProducto.nombre}}</strong> </ion-card-title>
@@ -25,24 +25,8 @@
     <ion-card-content>
       {{unoProducto.descripcion}}
     </ion-card-content>
-    <ion-row *ngIf="existeSesion">
-      <ion-col *ngIf="unoProducto.likes>0;else templateName" size="3" class="headersize">
-        <div (click)="darLike(unoProducto)">
-          <ion-icon color="danger" name="heart-sharp"></ion-icon>
-          <ion-label color="danger" class="numeroLike">{{unoProducto.likes}}</ion-label>
-          
-        </div>  
-      </ion-col>
-      <ng-template #templateName>
-        <ion-col *ngIf="unoProducto.likes === 0" size="3" class="headersize">
-          <div (click)="darLike(unoProducto)">
-            <ion-icon class="grus" name="heart-outline"></ion-icon>
-          </div>  
-        </ion-col>
-      </ng-template>
-    <ion-col>
-  
-    </ion-col>  
+    <ion-row >
+      <app-dar-like-producto [producto]="unoProducto" [usuario]="user" [mostrarLike]="existeSesion"></app-dar-like-producto>
     </ion-row>
     <ion-card-content>
       <label class="precio text-rosa"
@@ -68,7 +52,7 @@
     <hr>
     <ion-item *ngIf="existeSesion" (click)="verMas(unoProducto)">
       <label>{{unoProducto.negocio.nombre}}  </label>
-      <ion-icon slot="end" class="blanco" name="storefront-outline"></ion-icon> 
+      <ion-icon slot="end" class="blanco" name="storefront-outline"></ion-icon>
     </ion-item>
   </ion-card>
 </ion-content>

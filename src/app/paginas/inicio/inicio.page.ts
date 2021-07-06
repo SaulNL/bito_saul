@@ -11,7 +11,7 @@ import {SideBarService} from "../../api/busqueda/side-bar-service";
 import {Router} from "@angular/router";
 import {ProveedorServicioService} from "../../api/busqueda/proveedores/proveedor-servicio.service";
 import {UtilsCls} from "../../utils/UtilsCls";
-import {MsNegocioModel} from 'src/app/Modelos/busqueda/MsNegocioModel';
+import { MsNegocioModel } from '../../Modelos/busqueda/MsNegocioModel';
 
 @Component({
     selector: 'app-tab3',
@@ -214,20 +214,4 @@ export class InicioPage implements OnInit {
         }
     }
 
-    public darLikes(proveedor: MsNegocioModel) {
-        if (this.user.id_persona !== undefined) {
-            this.serviceProveedores.darLike(proveedor, this.user).subscribe(
-                response => {
-                    if (response.code === 200) {
-                        proveedor.likes = response.data;
-                        this.notificaciones.exito(response.message);
-                    } else {
-                        this.notificaciones.alerta(response.message);
-                    }
-
-                },
-                error => {
-                });
-        }
-    }
 }

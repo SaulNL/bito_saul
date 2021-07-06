@@ -1,3 +1,4 @@
+import { DarLikeProductoModule } from './../../componentes/dar-like-producto/dar-like-producto.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,7 +19,8 @@ import {ComentariosNegocioComponent} from '../../componentes/comentarios-negocio
     CommonModule,
     FormsModule,
     IonicModule,
-    PerfilNegocioPageRoutingModule
+    PerfilNegocioPageRoutingModule,
+    DarLikeProductoModule
   ],
   declarations: [PerfilNegocioPage, CalificarNegocioComponent, DetalleProductoComponent, PedidoNegocioComponent, ComentariosNegocioComponent ]
 })

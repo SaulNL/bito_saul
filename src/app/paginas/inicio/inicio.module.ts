@@ -1,3 +1,4 @@
+import { DarLikeNegocioModule } from './../../componentes/dar-like-negocio/dar-like-negocio.module';
 import {IonicModule, LoadingController} from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -17,6 +18,7 @@ import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-nego
     CommonModule,
     FormsModule,
     ExploreContainerComponentModule,
+    DarLikeNegocioModule,
     RouterModule.forChild([{ path: '', component: InicioPage }]),
     Tab3PageRoutingModule,
       FiltrosBusquedaModule,

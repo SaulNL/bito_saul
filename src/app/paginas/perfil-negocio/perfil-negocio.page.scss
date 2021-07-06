@@ -78,7 +78,7 @@ ul li {
 
 .cardsps {
   height: 100%;
-}  
+}
 @media (max-width: 500px) {
   .fab-button-small{
     margin: 6px !important;
@@ -94,7 +94,7 @@ ul li {
   .bosar{
     width: 13vw;
     height: 13vw;
-  } 
+  }
 }
   @media (min-width: 501px)and  (max-width: 1300px) {
     .fab-button-small{
@@ -104,14 +104,14 @@ ul li {
     }
     ion-fab-button img {
       width: 6vw !important;
-    } 
+    }
     img.img-card-w {
       height: 33vw;
     }
     .bosar{
       width: 8vw;
       height: 8vw;
-    } 
+    }
   }
 .bolsita{
   top: 3px;
@@ -120,7 +120,7 @@ ul li {
 .bosar{
   --background: white;
   --color: #fa4f72;
-  
+
 }
 ion-fab-button {--background: white;}
 
@@ -168,10 +168,11 @@ margin: 4px;
   --background: white !important;
   --color: grey !important;
 }
-.altocaja{
-  height: 21em;
-}
 
 .ion-card-cara {
   padding-top: 3.5rem;
+}
+.likeProducto{
+      top: 8rem;
+      position: absolute;
 }

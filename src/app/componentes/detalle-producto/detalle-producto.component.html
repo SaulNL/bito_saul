@@ -39,24 +39,8 @@
                 <p>{{datos.descripcion}}</p>
             </ion-col>
         </ion-row>
-          <ion-row *ngIf="existeSesion">
-            <ion-col *ngIf="datos.likes>0;else templateName" size="3" class="headersize">
-              <div (click)="darLike(datos)">
-                <ion-icon color="danger" name="heart-sharp"></ion-icon>
-                <ion-label color="danger" class="numeroLike">{{datos.likes}}</ion-label>
-                
-              </div>  
-            </ion-col>
-            <ng-template #templateName>
-              <ion-col *ngIf="datos.likes === 0" size="3" class="headersize">
-                <div (click)="darLike(datos)">
-                  <ion-icon class="grus" name="heart-outline"></ion-icon>
-                </div>  
-              </ion-col>
-            </ng-template>
-          <ion-col>
-        
-          </ion-col>  
+          <ion-row>
+              <app-dar-like-producto [producto]="datos" [usuario]="user" [mostrarLike]="existeSesion"></app-dar-like-producto>
           </ion-row>
         <ion-row *ngIf="mostrarComponente">
             <ion-grid>
@@ -77,11 +61,11 @@
                         <ion-button expand="block" (click)="agragarproducto()">Agregar a la Bolsa
                             <ion-icon name="bag-add-outline"></ion-icon>
                         </ion-button>
-                    </ion-col>        
+                    </ion-col>
                 </ion-row>
             </ion-grid>
-            
-            
+
+
         </ion-row>
         <ion-row *ngIf="!mostrarComponente">
             <ion-grid>
@@ -90,7 +74,7 @@
                         <ion-button disabled="true" expand="block">Agregar a la Bolsa
                             <ion-icon name="bag-add-outline"></ion-icon>
                         </ion-button>
-                    </ion-col>        
+                    </ion-col>
                 </ion-row>
             </ion-grid>
         </ion-row>
