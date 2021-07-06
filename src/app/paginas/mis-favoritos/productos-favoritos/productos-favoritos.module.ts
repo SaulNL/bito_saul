@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { ProductosFavoritosPageRoutingModule } from './productos-favoritos-routing.module';
 
 import { ProductosFavoritosPage } from './productos-favoritos.page';
+import {ModalProductoPageModule} from '../../productos/modal-producto/modal-producto.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ProductosFavoritosPageRoutingModule
+    ProductosFavoritosPageRoutingModule,
+    ModalProductoPageModule
   ],
   declarations: [ProductosFavoritosPage]
 })
