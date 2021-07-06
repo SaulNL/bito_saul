@@ -10,13 +10,16 @@ import { ProductosFavoritosPage } from './productos-favoritos.page';
 import {ModalProductoPageModule} from '../../productos/modal-producto/modal-producto.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ProductosFavoritosPageRoutingModule,
-    ModalProductoPageModule
-  ],
-  declarations: [ProductosFavoritosPage]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        ProductosFavoritosPageRoutingModule,
+        ModalProductoPageModule
+    ],
+    exports: [
+        ProductosFavoritosPage
+    ],
+    declarations: [ProductosFavoritosPage]
 })
 export class ProductosFavoritosPageModule {}

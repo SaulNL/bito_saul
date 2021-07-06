@@ -6,6 +6,8 @@
   </ion-toolbar>
 </ion-header>-->
 
+<app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
+
 <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
 
     <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
@@ -15,7 +17,7 @@
 
 
     <!--<ion-searchbar></ion-searchbar>-->
-    <app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
+
     <ion-item>
         <ion-buttons *ngIf=" filtroActivo" slot="start">
             <ion-chip (click)="borrarFiltros()" color="danger">

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {ModalController} from '@ionic/angular';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {IonContent, ModalController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {UtilsCls} from '../../utils/UtilsCls';
 
@@ -9,8 +9,11 @@ import {UtilsCls} from '../../utils/UtilsCls';
   styleUrls: ['./mis-favoritos.page.scss'],
 })
 export class MisFavoritosPage implements OnInit {
-
+  @ViewChild(IonContent) content: IonContent;
   public user:any;
+  public opcion: any;
+  public segmentModel = 'productos';
+  public cordenada: number;
 
   constructor(
       private _router: Router,
@@ -24,6 +27,11 @@ export class MisFavoritosPage implements OnInit {
     console.log(this.user);
   }
 
+  segmentChanged(event){
+    console.log(this.segmentModel);
+    console.log(event);
+  }
+
   abrirProductosFavoritos() {
     this._router.navigateByUrl("/tabs/home/mis-favoritos/productos-favoritos");
   }
@@ -31,5 +39,10 @@ export class MisFavoritosPage implements OnInit {
   abrirNegociosFavoritos() {
     this._router.navigateByUrl("/tabs/home/mis-favoritos/negocios-favoritos");
   }
+
+  regresar() {
+    this._router.navigate(['/tabs/home/mis-favoritos']);
+  }
+
 
 }

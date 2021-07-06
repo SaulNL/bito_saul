@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {UtilsCls} from '../../../utils/UtilsCls';
 import {PersonaService} from '../../../api/persona.service';
 import {Router} from '@angular/router';
@@ -38,7 +38,6 @@ export class ProductosFavoritosPage implements OnInit {
     this.obtenerProductosFavoritos();
     this.existeSesion = this.util.existe_sesion();
     this.motrarContacto = true;
-    console.log(this.user);
   }
 
 

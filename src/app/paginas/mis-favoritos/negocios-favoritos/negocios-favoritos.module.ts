@@ -9,12 +9,15 @@ import { NegociosFavoritosPageRoutingModule } from './negocios-favoritos-routing
 import { NegociosFavoritosPage } from './negocios-favoritos.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    NegociosFavoritosPageRoutingModule
-  ],
-  declarations: [NegociosFavoritosPage]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        NegociosFavoritosPageRoutingModule
+    ],
+    exports: [
+        NegociosFavoritosPage
+    ],
+    declarations: [NegociosFavoritosPage]
 })
 export class NegociosFavoritosPageModule {}
