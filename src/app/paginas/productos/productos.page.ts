@@ -1,11 +1,6 @@
 import {Component, EventEmitter, ViewChild} from "@angular/core";
 import {ProductoModel} from "../../Modelos/ProductoModel";
-import {
-    IonContent,
-    LoadingController,
-    ModalController,
-    ToastController,
-} from "@ionic/angular";
+import { IonContent, LoadingController, ModalController, ToastController } from "@ionic/angular";
 import {Router, ActivatedRoute} from "@angular/router";
 import {BusquedaService} from "../../api/busqueda.service";
 import {ProductosService} from "../../api/productos.service";
@@ -53,6 +48,7 @@ export class ProductosPage {
     public existeSesion: boolean;
     public lstProductosOriginal : any;
     public scroll: boolean;
+    public mensaje: any;
 
     constructor(
         public loadingController: LoadingController,
@@ -68,9 +64,11 @@ export class ProductosPage {
     ) {
         this.user = this.util.getUserData();
         this.existeSesion = util.existe_sesion();
+        this.mensaje = "Cargando más productos...";
     }
 
     ngOnInit(): void {
+        this.mensaje = "Cargando más productos...";
         this.anyFiltros = new FiltrosModel();
         this.anyFiltros.idEstado = 29;
         this.producto = null;
@@ -382,7 +380,7 @@ export class ProductosPage {
         this.obtenerProductos();
     }
 
-    public loadData(event) {
+    public cargarMasProductos(event) {
         setTimeout(() => {
             event.target.complete();
             if (this.lstProductos.length < this.lstProductosOriginal.length) {

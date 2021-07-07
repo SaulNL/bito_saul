@@ -1,3 +1,4 @@
+import { InfinitoScrollModule } from './../../componentes/infinito-scroll/infinito-scroll.module';
 import { DarLikeProductoModule } from './../../componentes/dar-like-producto/dar-like-producto.module';
 import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
@@ -22,7 +23,8 @@ import { ModalProductosComponent } from '../../components/modal-productos/modal-
     Tab1PageRoutingModule,
     TabsPageModule,
     ModalProductoPageModule,
-    DarLikeProductoModule
+    DarLikeProductoModule,
+    InfinitoScrollModule
   ],
   declarations: [ProductosPage,
     InfoProductosComponent,
