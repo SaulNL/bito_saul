@@ -311,7 +311,7 @@
                     <ng-container *ngIf="!negocioSub &&  nameSub === cat.nombre">
                         <ion-col size="6" *ngFor="let producto of cat.productos; let i = index">
                             <ion-card class="m-0 fixed cardsps">
-                                <div (click)="irAlDetalle(producto, i)">
+                                <div (click)="irAlDetalle(producto)">
                                     <img class="img-card-w"
                                          src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
                                          [srcset]="producto.imagen" alt="Falla al cargar la imagen">
