@@ -54,6 +54,7 @@ export class NegocioModel {
   public tipo_pago_tarjeta_credito:number;
   public tipo_pago_tarjeta_debito:number;
   public tipo_pago_efectivo:number;
+  public verificado: Boolean;
 
   constructor(
     id_negocio = null,

@@ -393,4 +393,18 @@ export class NegocioService {
     }
 
 
+    solicitarValidacionNegocio(idNegocio: any): Observable<any> {
+        const body = JSON.stringify({id_negocio: idNegocio});
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/validar/validacionNegocio',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
 }

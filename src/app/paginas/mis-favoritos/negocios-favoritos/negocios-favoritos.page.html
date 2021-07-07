@@ -13,6 +13,14 @@
 
 
 <ion-content >
+  <ion-grid style="background-color: white;" *ngIf="tamanoLista === 0" >
+    <ion-row class="ion-align-items-center">
+      <ion-col size="12" class="ion-text-center">
+        <ion-badge color="warning">Aún no tienes negocios favoritos</ion-badge>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 
   <ion-list>
     <ion-item *ngFor="let negocio of listaNegocios" class="item  in-list ion-focusable hydrated item-label">
