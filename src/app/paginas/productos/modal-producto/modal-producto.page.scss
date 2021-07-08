@@ -102,7 +102,7 @@ ion-card-title{
 ion-item{
   --border-radius: 1rem;
   background: white;
-  
+
 }
 .existencia{
   color: #464343;
@@ -136,4 +136,8 @@ ion-item{
 .numeroLike{
   font-size: 1.5rem;
   position: relative;
+}
+
+.bordeo{
+  border: solid;
 }

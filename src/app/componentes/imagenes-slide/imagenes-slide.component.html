@@ -1,0 +1,17 @@
+    <ion-slides [options]="slidesOptions" class="ion-margin-top" *ngIf="multiImagen;else uno">
+        <ion-slide *ngFor="let item of lstImagene">
+            <ion-card>
+                <img src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png" [srcset]="item"/>
+            </ion-card>
+        </ion-slide>
+    </ion-slides>
+
+<ng-template #uno>
+<ion-slides *ngIf="!multiImagen">
+        <ion-slide>
+            <ion-card>
+                <img src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png" [srcset]="lstImagen"/>
+            </ion-card>
+        </ion-slide>
+    </ion-slides>
+</ng-template>

@@ -401,4 +401,11 @@ export class ProductosPage {
       this.obtenerProductos();
     }
   }
+
+  public productoImagen(imagen: any){
+    if(Array.isArray(imagen)){
+      return imagen[0];
+    }
+    return imagen;
+  }
 }

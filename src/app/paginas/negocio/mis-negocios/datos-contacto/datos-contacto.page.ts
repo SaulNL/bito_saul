@@ -58,7 +58,7 @@ export class DatosContactoPage implements OnInit {
     });
     //this.platform.backButton.observers.pop();
   }
-  
+
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
@@ -75,7 +75,7 @@ export class DatosContactoPage implements OnInit {
         {
           text: "Cancel",
           icon: "close",
-          
+
           handler: () => {this.valido=false;  },
         },
       ],
@@ -86,7 +86,7 @@ export class DatosContactoPage implements OnInit {
   regresar() {
     this.datosC();
     this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
-    this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));    
+    this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
     let all = {
       info: this.negocioTO,
       pys: this.negocioGuardar
@@ -126,7 +126,7 @@ export class DatosContactoPage implements OnInit {
 
     await alert.present();
   }
-  
+
   datosDomicilio(negocio: NegocioModel) {
     this.datosC();
     this.negocioTO = JSON.parse(JSON.stringify(negocio));
@@ -140,17 +140,17 @@ export class DatosContactoPage implements OnInit {
       queryParams: { special: navigationExtras },
     });
   }
-  
+
   guardar() {
     if(this.negocioTO.logo === null ||
       this.negocioTO.logo === undefined ||
-      this.negocioTO.logo.archivo_64 === '' || 
+      this.negocioTO.logo.archivo_64 === '' ||
       this.negocioTO.logo.archivo_64 === null){
        this.notificaciones.alerta('Agregue la foto de su negocio');
    }else{
     this.datosC();
     this.negocioServico.guardar(this.negocioGuardar).subscribe(
-      response => {        
+      response => {
         if (response.code === 200) {
           this.notificaciones.exito('Tu negocio se guardo exitosamente');
           //this.router.navigate(["/tabs/home/negocio"]);

@@ -1,0 +1,42 @@
+import { Component, OnInit, Input } from "@angular/core";
+
+@Component({
+  selector: "app-imagenes-slide",
+  templateUrl: "./imagenes-slide.component.html",
+  styleUrls: ["./imagenes-slide.component.scss"],
+})
+export class ImagenesSlideComponent implements OnInit {
+  @Input() public imagen: any;
+  public lstImagene: any;
+  public lstImagen: any;
+  public multiImagen: any;
+  constructor() {
+    this.multiImagen = true;
+  }
+
+  slidesOptions = {
+    slidesPerView: 1.5,
+    centeredSlides: true,
+    loop: true,
+    spaceBetween: 10,
+  };
+
+  ngOnInit() {
+    this.multiImagen = true;
+    if (!Array.isArray(this.imagen.imagen)) {
+      this.multiImagen = false;
+      console.log("Sin array");
+      this.lstImagen = this.imagen.imagen;
+    } else {
+      if (this.imagen.length > 1) {
+        this.multiImagen = true;
+        console.log("Array de muchos");
+        this.lstImagene = this.imagen.imagen;
+      } else {
+        console.log("Array de uno");
+        this.multiImagen = false;
+        this.lstImagen = this.imagen.imagen[0];
+      }
+    }
+  }
+}

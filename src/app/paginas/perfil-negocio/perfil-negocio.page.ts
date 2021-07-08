@@ -990,6 +990,10 @@ export class PerfilNegocioPage implements OnInit {
     );
   }
 
-
-
+  public productoImagen(imagen: any){
+    if(Array.isArray(imagen)){
+      return imagen[0];
+    }
+    return imagen;
+  }
 }

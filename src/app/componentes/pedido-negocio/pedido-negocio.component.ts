@@ -61,7 +61,7 @@ export class PedidoNegocioComponent implements OnInit {
     } else {
       this.tipoEnvio = null;
     }
-    
+
     this.loadMap();
     this.sumarLista();
   }
@@ -82,7 +82,7 @@ export class PedidoNegocioComponent implements OnInit {
       });
       this.marker = marker([lat, lng], { icon: myIcon, draggable: true }).addTo(this.map);
       this.marker.on("dragend", () =>{
-        console.log(this.marker.getLatLng());     
+        console.log(this.marker.getLatLng());
         this.getLatLong({latlng: this.marker.getLatLng()});
       });
     }, 500);
@@ -150,7 +150,7 @@ export class PedidoNegocioComponent implements OnInit {
       this.presentAlert("Debe seleccionar el Tipo de Entrega");
     }
 
-    
+
   }
 
   private sumarLista() {
@@ -172,7 +172,7 @@ export class PedidoNegocioComponent implements OnInit {
 
   cambiarTipo(evento) {
     this.tipoEnvio = parseInt(evento.detail.value);
-    
+
     this.sumarLista();
     if (this.tipoEnvio === 2) {
       setTimeout(it => {
@@ -193,7 +193,7 @@ export class PedidoNegocioComponent implements OnInit {
      }).catch((error) => {
        console.log('Error getting location', error);
      });
-     
+
   }
   getLatLong(e) {
     this.lat = e.latlng.lat;
@@ -284,5 +284,11 @@ export class PedidoNegocioComponent implements OnInit {
     this.lista = [];
     this.guard.tf = true;
     this.cerrarModal();
+  }
+    public productoImagen(imagen: any){
+    if(Array.isArray(imagen)){
+      return imagen[0];
+    }
+    return imagen;
   }
 }
