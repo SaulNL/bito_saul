@@ -1,3 +1,4 @@
+import { DetalleProductoModule } from './../../componentes/detalle-producto/detalle-producto.module';
 import { DarLikeProductoModule } from './../../componentes/dar-like-producto/dar-like-producto.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -9,7 +10,7 @@ import { PerfilNegocioPageRoutingModule } from './perfil-negocio-routing.module'
 
 import { PerfilNegocioPage } from './perfil-negocio.page';
 import { CalificarNegocioComponent } from '../../componentes/calificar-negocio/calificar-negocio.component';
-import {DetalleProductoComponent} from "../../componentes/detalle-producto/detalle-producto.component";
+// import {DetalleProductoComponent} from "../../componentes/detalle-producto/detalle-producto.component";
 import {PedidoNegocioComponent} from "../../componentes/pedido-negocio/pedido-negocio.component";
 import {ComentariosNegocioComponent} from '../../componentes/comentarios-negocio/comentarios-negocio.component';
 
@@ -20,8 +21,9 @@ import {ComentariosNegocioComponent} from '../../componentes/comentarios-negocio
     FormsModule,
     IonicModule,
     PerfilNegocioPageRoutingModule,
-    DarLikeProductoModule
+    DarLikeProductoModule,
+    DetalleProductoModule
   ],
-  declarations: [PerfilNegocioPage, CalificarNegocioComponent, DetalleProductoComponent, PedidoNegocioComponent, ComentariosNegocioComponent ]
+  declarations: [PerfilNegocioPage, CalificarNegocioComponent,  PedidoNegocioComponent, ComentariosNegocioComponent ]
 })
 export class PerfilNegocioPageModule {}

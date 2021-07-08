@@ -1,7 +1,7 @@
+import { ToadNotificacionService } from './../../api/toad-notificacion.service';
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertController, ModalController, Platform} from "@ionic/angular";
-import {ToadNotificacionService} from 'src/app/api/toad-notificacion.service';
 import {UtilsCls} from "../../utils/UtilsCls";
 import {ProductoModel} from "../../Modelos/ProductoModel";
 import { ProductosService } from "../../api/productos.service";
@@ -47,6 +47,7 @@ export class DetalleProductoComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this.datos);
         if (this.bolsa.length > 0) {
             this.bolsa.forEach(element => {
                 if (element.idProducto === this.datos.idProducto) {

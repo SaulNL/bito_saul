@@ -43,7 +43,7 @@
       <ion-icon *ngIf="detalle" (click)="detalle=''" name="close-outline" slot="end"></ion-icon>
     </ion-item>
   </ion-list>
-  
+
   <ion-list>
     <div *ngIf="tipoEnvio === 2">
       <ion-grid>
@@ -77,7 +77,7 @@
      <ion-grid>
         <ion-row>
           <ion-col size="2">
-            <img [srcset]="p.imagen">
+            <img [srcset]="productoImagen(p.imagen)">
             <ion-label class="ion-text-center"  style="font-size: 10px; font-weight: 600;">{{p.nombre}}</ion-label>
             <ion-label class="ion-text-center" style="font-size: 10px; font-weight: 600;">{{ p.precio |currency}}</ion-label>
           </ion-col>
@@ -87,7 +87,7 @@
           <ion-col size="3">
             <ion-label><strong>Cantidad</strong></ion-label>
             <ion-icon class="ion-text-center" (click)="aumentarDismuir(p.cantidad, i , 2)" style="margin: 4px; background: #bbbbbb;" name="remove-outline"></ion-icon>
-            <span class="ion-text-center" style="position: relative; top: -7px;">{{p.cantidad}}</span> 
+            <span class="ion-text-center" style="position: relative; top: -7px;">{{p.cantidad}}</span>
             <ion-icon class="ion-text-center" (click)="aumentarDismuir(p.cantidad, i , 1)"  style="margin: 4px; background: #bbbbbb;" name="add-outline"></ion-icon>
           </ion-col>
           <ion-col size="2" class="ion-align-items-center">

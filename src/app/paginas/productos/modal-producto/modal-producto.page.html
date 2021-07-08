@@ -13,8 +13,7 @@
 
   <ion-card>
     <div>
-      <img src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
-      [srcset]="unoProducto.imagen" />
+      <app-imagenes-slide [imagen]="unoProducto"></app-imagenes-slide>
       <p class="restriccion">*Algunas imágenes sólamente son usadas con fines ilustrativos. El producto final puede no estár representado con exactitud por las mismas</p>
     </div>
 
@@ -41,6 +40,12 @@
           <label class="existencia" *ngIf="unoProducto.existencia">Aún en existencia</label>
           <label class="existencia" *ngIf="!unoProducto.existencia">Sin existencia</label>
     </ion-card-content>
+    <ion-row>
+      <ion-chip outline="" class="ion-color text-rosa bordeo ion-color-primary ios chip-outline ion-activatable hydrated" (click)="agregar(unoProducto)" *ngIf="existeSesion">
+          <ion-icon aria-label="pin" class="ios hydrated text-rosa" role="img" name="bag-add-outline"></ion-icon>
+          <ion-label class="sc-ion-label-ios-h sc-ion-label-ios-s ios hydrated">Agregar</ion-label>
+        </ion-chip>
+    </ion-row>
     <ion-card-content *ngIf="!existeSesion" class="ion-text-center">
       Inicia sesión para poder ir a la información de este negocio
       <ion-button expand="block" (click)="login()"> Iniciar Sesión</ion-button>

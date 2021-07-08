@@ -1,13 +1,14 @@
-import { DarLikeProductoModule } from './../../../componentes/dar-like-producto/dar-like-producto.module';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ImagenesSlideModule } from "./../../../componentes/imagenes-slide/imagenes-slide.module";
+import { DarLikeProductoModule } from "./../../../componentes/dar-like-producto/dar-like-producto.module";
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
-import { IonicModule } from '@ionic/angular';
+import { IonicModule } from "@ionic/angular";
 
-import { ModalProductoPageRoutingModule } from './modal-producto-routing.module';
+import { ModalProductoPageRoutingModule } from "./modal-producto-routing.module";
 
-import { ModalProductoPage } from './modal-producto.page';
+import { ModalProductoPage } from "./modal-producto.page";
 
 @NgModule({
   imports: [
@@ -15,8 +16,9 @@ import { ModalProductoPage } from './modal-producto.page';
     FormsModule,
     IonicModule,
     ModalProductoPageRoutingModule,
-    DarLikeProductoModule
+    DarLikeProductoModule,
+    ImagenesSlideModule
   ],
-  declarations: [ModalProductoPage]
+  declarations: [ModalProductoPage],
 })
 export class ModalProductoPageModule {}

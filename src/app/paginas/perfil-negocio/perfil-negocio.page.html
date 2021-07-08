@@ -311,10 +311,8 @@
                     <ng-container *ngIf="!negocioSub &&  nameSub === cat.nombre">
                         <ion-col size="6" *ngFor="let producto of cat.productos; let i = index">
                             <ion-card class="m-0 fixed cardsps">
-                                <div (click)="irAlDetalle(producto, i)">
-                                    <img class="img-card-w"
-                                         src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
-                                         [srcset]="producto.imagen" alt="Falla al cargar la imagen">
+                                <div (click)="irAlDetalle(producto)">
+                                    <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png" [srcset]="productoImagen(producto.imagen)" alt="Falla al cargar la imagen">
                                     <ion-card-header class="ion-card-cara">
                                         <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
                                         <ion-badge *ngIf="producto.precio !== null" color="success">
@@ -396,7 +394,7 @@
                         <ion-col size="6" *ngFor="let producto of cat.servicios">
                             <ion-card class="m-0 cardsps fixed">
                                 <div (click)="irAlDetalle(producto)">
-                                    <img class="img-card-w" [src]="producto.imagen" alt="Falla al cargar la imagen">
+                                    <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"  [srcset]="productoImagen(producto.imagen)" alt="Falla al cargar la imagen">
                                     <ion-card-header class="ion-card-cara">
                                         <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
                                         <ion-badge *ngIf="producto.precio !== null" color="success">

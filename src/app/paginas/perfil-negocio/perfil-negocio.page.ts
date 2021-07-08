@@ -147,9 +147,22 @@ export class PerfilNegocioPage implements OnInit {
       }
     });
 
+    this.route.queryParams.subscribe(params => {
+      if (params && params.carrito) {
+        this.navegacion = true;
+        const agregarProducto = JSON.parse(params.carrito);
+        if (agregarProducto.agregado) {
+          setTimeout(() => {
+          this.agregarBolsaDeta(agregarProducto.producto);
+          }, 2000);
+        }
+      }
+    });
+
     this.sideBarService.getObservable().subscribe((data) => {
       this.existeSesion = this.util.existe_sesion();
     });
+
     this.route.params.subscribe((params) => {
       this.negocio = params.negocio;
     });
@@ -813,7 +826,7 @@ export class PerfilNegocioPage implements OnInit {
         (this.informacionNegocio.entrega_domicilio === 1 ||
             this.informacionNegocio.entrega_sitio === 1 ||
             this.informacionNegocio.consumo_sitio === 1) &&
-        parseInt(precio) > 0 
+        parseInt(precio) > 0
     ); // && parseInt(precio) > 0
   }
   aumentarDismuir(cantidad: number, index: number, operacion: number) {
@@ -977,6 +990,10 @@ export class PerfilNegocioPage implements OnInit {
     );
   }
 
-
-
+  public productoImagen(imagen: any){
+    if(Array.isArray(imagen)){
+      return imagen[0];
+    }
+    return imagen;
+  }
 }

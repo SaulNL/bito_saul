@@ -9,7 +9,7 @@
 <app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
 
 <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
-
+    <app-recargar (respuesta)="recargar($event)"></app-recargar>
     <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
     <ion-header collapse="condense">
 
@@ -43,26 +43,18 @@
         <ion-item *ngFor="let producto of lstProductos" class="item  in-list ion-focusable hydrated item-label">
             <ion-avatar #datos (click)="abrirProducto(producto)" slot="start"><img
                     src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
-                    [srcset]="producto.imagen"></ion-avatar>
+                    [srcset]="productoImagen(producto.imagen)"></ion-avatar>
             <ion-label class="hydrated" #datos (click)="abrirProducto(producto)">
                 <h3>{{producto.nombre}}</h3>
-                <p> {{(producto.nombre_categoria1 != null)?producto.nombre_categoria1:'Sin
-                    categoría'}} </p>
-                <p color="success">${{(producto.precio != '')?((producto.precio !=
-                    null)?producto.precio:'Sin precio'):'Sin precio'}}</p>
+                <p> {{(producto.nombre_categoria1 != null)?producto.nombre_categoria1:'Sin categoría'}} </p>
+                <p color="success">${{(producto.precio != '')?((producto.precio != null)?producto.precio:'Sin precio'):'Sin precio'}}</p>
                 <p>{{(producto.descripcion != null)?producto.descripcion:'Sin descripción'}}</p>
                 <ion-badge color="primary">{{producto.tipo}}</ion-badge>
-                <ion-badge color="medium">{{(producto.ubicacion !=
-                    null)?producto.ubicacion.nombre_localidad:'Sin ubicación'}}
+                <ion-badge color="medium">{{(producto.ubicacion != null)?producto.ubicacion.nombre_localidad:'Sin ubicación'}}
                 </ion-badge>
             </ion-label>
             <app-dar-like-producto [producto]="producto" [usuario]="user" [mostrarLike]="existeSesion"></app-dar-like-producto>
         </ion-item>
     </ion-list>
-
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="scroll">
-        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando mas productos...">
-        </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-
+    <app-infinito-scroll (respuesta)="cargarMasProductos($event)" [activado]="scroll" [msj]="mensaje"> </app-infinito-scroll>
 </ion-content>
