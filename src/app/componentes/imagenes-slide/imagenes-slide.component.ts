@@ -25,15 +25,12 @@ export class ImagenesSlideComponent implements OnInit {
     this.multiImagen = true;
     if (!Array.isArray(this.imagen.imagen)) {
       this.multiImagen = false;
-      console.log("Sin array");
       this.lstImagen = this.imagen.imagen;
     } else {
-      if (this.imagen.length > 1) {
+      if (this.imagen.imagen.length > 1) {
         this.multiImagen = true;
-        console.log("Array de muchos");
         this.lstImagene = this.imagen.imagen;
       } else {
-        console.log("Array de uno");
         this.multiImagen = false;
         this.lstImagen = this.imagen.imagen[0];
       }
