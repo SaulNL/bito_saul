@@ -26,6 +26,8 @@ export class EstadisticasComponent implements OnInit {
     public promociones: any;
     public totalProductos: number;
     public productos: any;
+    loader: any;
+
 
     constructor(
         private modalController: ModalController,
@@ -54,6 +56,7 @@ export class EstadisticasComponent implements OnInit {
     }
 
     public obtenerTodasEstadisticas(){
+        this.loader = true;
         this.obtenerVisitasQR();
         this.obtenerVisitasUrl();
         this.obtenerLikesNegocio();
@@ -61,14 +64,15 @@ export class EstadisticasComponent implements OnInit {
         this.obtenerSolicitudesNegocio();
         this.obtenerPromocionesNegocio();
         this.obtenerLikesProductosNegocio();
+
     }
 
     public filtroEstadistica(evento){
         let filtro;
         filtro = evento.detail.value;
 
-        let newMoment = moment();
-        let hoy = newMoment.format(moment.HTML5_FMT.DATE);
+        const newMoment = moment();
+        const hoy = newMoment.format(moment.HTML5_FMT.DATE);
 
         switch (filtro) {
             case 'hoy':
@@ -77,13 +81,13 @@ export class EstadisticasComponent implements OnInit {
                 this.obtenerTodasEstadisticas();
                 break;
             case 'siete':
-                const fechaInicio7 = moment().subtract(7,'d');
+                const fechaInicio7 = moment().subtract(7, 'd');
                 this.filtroGrafica.fecha_inicio = fechaInicio7.format(moment.HTML5_FMT.DATE);
                 this.filtroGrafica.fecha_final = hoy;
                 this.obtenerTodasEstadisticas();
                 break;
             case 'treinta':
-                const fechaInicio30 = moment().subtract(30,'d');
+                const fechaInicio30 = moment().subtract(30, 'd');
                 this.filtroGrafica.fecha_inicio = fechaInicio30.format(moment.HTML5_FMT.DATE);
                 this.filtroGrafica.fecha_final = hoy;
                 this.obtenerTodasEstadisticas();
@@ -100,11 +104,13 @@ export class EstadisticasComponent implements OnInit {
         this.servicioNegocio.estadisticaVisitasQR(this.filtroGrafica).subscribe(
             response => {
                 this.totalVisitasQR = response.data.numero_visto;
+                this.loader = false;
                 if (response.data.numero_visto === 0) {
                     this.totalVisitasQR = 0;
                 }
             },
             error => {
+                this.loader = false;
                 this.notificaciones.error(error);
             }
         );

@@ -63,6 +63,20 @@ export class NegocioService {
             }));
     }
 
+    misNegociosEstadisticas(proveedor: number, rol:number): Observable<any> {
+        const body = JSON.stringify({id_proveedor: proveedor, id_rol: rol});
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/buscar/mis-negocios/estadisticas',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
     buscarProductosServios(id: number, tipo: number): Observable<any> {
         const body = JSON.stringify({id_negocio: id, tipo: tipo});
         this._http.setDataSerializer('utf8');

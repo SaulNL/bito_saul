@@ -15,37 +15,58 @@ export class EstadisticasPage implements OnInit {
     public listaNegocios: Array<NegocioModel>;
     public usuario: any;
     public loader: boolean;
+    public datosRoles: any;
+    public rol: number;
+    public scroll: boolean;
+    public mensaje: any;
+    public listaNegociosOriginal: any;
 
     constructor(
         private servicioNegocios: NegocioService,
-        private  actionSheetController: ActionSheetController,
+        private actionSheetController: ActionSheetController,
         private modalController: ModalController
     ) {
         this.listaNegocios = [];
         this.usuario = JSON.parse(localStorage.getItem('u_data'));
+        this.datosRoles = JSON.parse(localStorage.getItem('u_roles'));
     }
 
     ngOnInit() {
+        this.scroll = true;
+        this.mensaje = '';
+        this.obtenerRol();
         this.buscarListaNegocios();
+    }
+
+    public obtenerRol() {
+        for (let index = 0; index < this.datosRoles.length; index++) {
+            if (this.datosRoles[index].id_rol === 1) {
+                this.rol = 1;
+                console.log('ES superusuario');
+            }
+        }
     }
 
     public buscarListaNegocios() {
         this.loader = true;
         if (this.usuario.proveedor != null) {
-            this.servicioNegocios
-                .misNegocios(this.usuario.proveedor.id_proveedor)
-                .subscribe(
-                    (resp) => {
+            this.servicioNegocios.misNegociosEstadisticas(this.usuario.proveedor.id_proveedor, this.rol).subscribe(
+                (resp) => {
+                    if (this.rol === 1){
+                        this.listaNegociosOriginal = resp.data;
+                        this.listaNegocios = this.listaNegociosOriginal.slice(0, 12);
+                    }else{
                         this.listaNegocios = resp.data;
-                        this.loader = false;
-                    },
-                    (error) => {
-                        this.loader = false;
-                    },
-                    () => {
-                        window.scrollTo({top: 0, behavior: 'smooth'});
                     }
-                );
+                    this.loader = false;
+                },
+                (error) => {
+                    this.loader = false;
+                },
+                () => {
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                }
+            );
         } else {
             this.loader = false;
         }
@@ -59,31 +80,25 @@ export class EstadisticasPage implements OnInit {
             },
         });
         await modal.present();
-        /*const { data } = await modal.onDidDismiss();
-        if (data !== undefined) {
-          this.informacionNegocio.numCalificaciones = data.numCalificaciones;
-          this.informacionNegocio.promedio = data.promedio;
-          this.obtenerEstatusCalificacion();
-
-        }*/
     }
 
-    async  listarEstadisticas() {
-        const actionSheet = await this.actionSheetController.create({
-            header: 'Elige una estadística',
-            buttons: [
-                { text: 'Vistas', },
-                { text: 'Likes negocio' },
-                { text: 'Calificaciones' },
-                { text: 'Likes productos' },
-                { text: 'Solicitudes' },
-                { text: 'Promociones' },
-                { text: 'Cancel', role: 'cancel' }
-            ]
-        });
-
-        await actionSheet.present();
+    public cargarMasNegocios(event) {
+        setTimeout(() => {
+            event.target.complete();
+            if (this.listaNegocios.length < this.listaNegociosOriginal.length) {
+                let len = this.listaNegocios.length;
+                for (let i = len; i <= len + 6; i++) {
+                    if (this.listaNegociosOriginal[i] === undefined) {
+                        this.scroll = false;
+                        break;
+                    }
+                    this.listaNegocios.push(this.listaNegociosOriginal[i]);
+                }
+            }
+        }, 500);
     }
+
+
 
 
 }
