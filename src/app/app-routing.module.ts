@@ -12,6 +12,10 @@ const routes: Routes = [
   },  {
     path: 'mis-favoritos',
     loadChildren: () => import('./paginas/mis-favoritos/mis-favoritos.module').then( m => m.MisFavoritosPageModule)
+  },
+  {
+    path: 'estadisticas',
+    loadChildren: () => import('./paginas/estadisticas/estadisticas.module').then( m => m.EstadisticasPageModule)
   }
 
 
