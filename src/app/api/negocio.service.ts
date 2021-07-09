@@ -227,7 +227,7 @@ export class NegocioService {
         const body = JSON.stringify({});
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
-            this.url + 'api/catalogo/organizaciones/obtener',
+            this.url + 'api/catalogo/organizaciones/obtenerTodas',
             body, AppSettings.getHeadersToken())
             .then((data) => {
                 return JSON.parse(data.data);
