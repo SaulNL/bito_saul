@@ -657,11 +657,11 @@ export class MisProductosServiciosPage implements OnInit {
         this.indexModificar = this.productoNuevo.index;
         this.productoE = this.productoNuevo;
         console.log(this.productoNuevo);
-        // this.actualizar(this.productoNuevo);
+         this.actualizar(this.productoNuevo);
       }
       if (this.opcion === 1) {
         console.log(this.productoNuevo);
-        // this.agregar(this.listaProductos);
+         this.agregar(this.listaProductos);
       }
     }
   }
@@ -821,7 +821,7 @@ export class MisProductosServiciosPage implements OnInit {
               this.regresarLista();
             }
           );
-        
+
         break;
       default:
         this.notificacionService.alerta(

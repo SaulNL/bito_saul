@@ -5,32 +5,30 @@
         *ngIf="productoImagen.imagen[0] !== undefined"
         [srcset]="setImagen(productoImagen.imagen[0])"
       />
-      <input
-        type="file"
-        id="imagen-producto-uno"
-        accept="image/*"
-        (change)="subirImagenUno($event)"
-        hidden=""
-
-      />
-      <label for="imagen-producto-uno">
+      <label>
+        <ion-icon
+          *ngIf="productoImagen.imagen[0] === undefined"
+          name="image"
+          role="img"
+          class="md hydrated size-icon"
+          aria-label="image"
+        ></ion-icon>
+      </label>
+      <label>
         <em>
-          <ion-icon
-            *ngIf="productoImagen.imagen[0] === undefined"
-            name="image"
-            role="img"
-            class="md hydrated size-icon"
-            aria-label="image"
-          ></ion-icon>
-
-          <ion-icon
-            name="cloud-upload"
-            aria-label="cloud upload"
-            class="md hydrated"
-          ></ion-icon>
-          <p>Subir imagen</p>
-          <p></p>
+          <ion-icon name="cloud-upload" aria-label="cloud upload" class="md hydrated icons-stype" role="img"></ion-icon>
         </em>
+      </label>
+      <br>
+      <label class="custom-file-input">
+        <input
+          type="file"
+          #fileInput
+          id="imagen-producto-uno"
+          accept="image/*"
+          (change)="subirImagenUno($event)"
+          (click)="fileInput.value = null"
+        />
       </label>
     </ion-card>
   </ion-slide>
@@ -40,32 +38,30 @@
         *ngIf="productoImagen.imagen[1] !== undefined"
         [srcset]="setImagen(productoImagen.imagen[1])"
       />
-      <input
-        type="file"
-        id="imagen-producto-dos"
-        accept="image/*"
-        (change)="subirImagenDos($event)"
-        hidden=""
-
-      />
-      <label for="imagen-producto-dos">
+      <label>
+        <ion-icon
+          *ngIf="productoImagen.imagen[1] === undefined"
+          name="image"
+          role="img"
+          class="md hydrated size-icon"
+          aria-label="image"
+        ></ion-icon>
+      </label>
+      <label>
         <em>
-          <ion-icon
-            *ngIf="productoImagen.imagen[1] === undefined"
-            name="image"
-            role="img"
-            class="md hydrated size-icon"
-            aria-label="image"
-          ></ion-icon>
-
-          <ion-icon
-            name="cloud-upload"
-            aria-label="cloud upload"
-            class="md hydrated"
-          ></ion-icon>
-          <p>Subir imagen</p>
-          <p></p>
+          <ion-icon name="cloud-upload" aria-label="cloud upload" class="md hydrated icons-stype" role="img"></ion-icon>
         </em>
+      </label>
+      <br>
+      <label class="custom-file-input">
+        <input
+          type="file"
+          id="imagen-producto-dos"
+          accept="image/*"
+          (change)="subirImagenDos($event)"
+          #fileInputDos
+          (click)="fileInputDos.value = null"
+        />
       </label>
     </ion-card>
   </ion-slide>
@@ -75,32 +71,30 @@
         *ngIf="productoImagen.imagen[2] !== undefined"
         [srcset]="setImagen(productoImagen.imagen[2])"
       />
-      <input
-        type="file"
-        id="imagen-producto-tres"
-        accept="image/*"
-        (change)="subirImagenTres($event)"
-        hidden=""
-
-      />
-      <label for="imagen-producto-tres">
+      <label>
+        <ion-icon
+          *ngIf="productoImagen.imagen[2] === undefined"
+          name="image"
+          role="img"
+          class="md hydrated size-icon"
+          aria-label="image"
+        ></ion-icon>
+      </label>
+      <label>
         <em>
-          <ion-icon
-            *ngIf="productoImagen.imagen[2] === undefined"
-            name="image"
-            role="img"
-            class="md hydrated size-icon"
-            aria-label="image"
-          ></ion-icon>
-
-          <ion-icon
-            name="cloud-upload"
-            aria-label="cloud upload"
-            class="md hydrated"
-          ></ion-icon>
-          <p>Subir imagen</p>
-          <p></p>
+          <ion-icon name="cloud-upload" aria-label="cloud upload" class="md hydrated icons-stype" role="img"></ion-icon>
         </em>
+      </label>
+      <br>
+      <label class="custom-file-input">
+        <input
+          type="file"
+          id="imagen-producto-tres"
+          accept="image/*"
+          (change)="subirImagenTres($event)"
+          #fileInputTres
+          (click)="fileInputTres.value = null"
+        />
       </label>
     </ion-card>
   </ion-slide>
@@ -110,32 +104,30 @@
         *ngIf="productoImagen.imagen[3] !== undefined"
         [srcset]="setImagen(productoImagen.imagen[3])"
       />
-      <input
-        type="file"
-        id="imagen-producto-cuatro"
-        accept="image/*"
-        (change)="subirImagenCuatro($event)"
-        hidden=""
-
-      />
-      <label for="imagen-producto-cuatro">
+      <label>
+        <ion-icon
+          *ngIf="productoImagen.imagen[3] === undefined"
+          name="image"
+          role="img"
+          class="md hydrated size-icon"
+          aria-label="image"
+        ></ion-icon>
+      </label>
+      <label>
         <em>
-          <ion-icon
-            *ngIf="productoImagen.imagen[3] === undefined"
-            name="image"
-            role="img"
-            class="md hydrated size-icon"
-            aria-label="image"
-          ></ion-icon>
-
-          <ion-icon
-            name="cloud-upload"
-            aria-label="cloud upload"
-            class="md hydrated"
-          ></ion-icon>
-          <p>Subir imagen</p>
-          <p></p>
+          <ion-icon name="cloud-upload" aria-label="cloud upload" class="md hydrated icons-stype" role="img"></ion-icon>
         </em>
+      </label>
+      <br>
+      <label class="custom-file-input">
+        <input
+          type="file"
+          id="imagen-producto-cuatro"
+          accept="image/*"
+          (change)="subirImagenCuatro($event)"
+          #fileInputCuatro
+          (click)="fileInputCuatro.value = null"
+        />
       </label>
     </ion-card>
   </ion-slide>
