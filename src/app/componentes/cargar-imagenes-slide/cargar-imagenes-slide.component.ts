@@ -8,13 +8,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 export class CargarImagenesSlideComponent implements OnInit {
   @Input() public productoImagen: any;
   @Output() public subidaProducto = new EventEmitter<any>();
+  @Output() public borrarImagen = new EventEmitter<any>();
 
   constructor() {}
 
   slidesOptions = {
     slidesPerView: 1.5,
     centeredSlides: true,
-    loop: true,
+    loop: false,
     spaceBetween: 10,
   };
 
@@ -59,5 +60,23 @@ export class CargarImagenesSlideComponent implements OnInit {
       return imagen;
     }
     return imagen.archivo_64;
+  }
+  public remove(position: any){
+    const borrado = {
+      po : position
+    };
+    this.borrarImagen.emit(borrado);
+  }
+  public removeOno(){
+    this.remove(0);
+  }
+  public removeDos(){
+    this.remove(1);
+  }
+  public removeTres(){
+    this.remove(2);
+  }
+  public removeCuatro(){
+    this.remove(3);
   }
 }

@@ -14,14 +14,10 @@
 </ion-slides>
 
 <ng-template #uno>
-  <ion-slides *ngIf="!multiImagen">
-    <ion-slide>
-      <ion-card>
+      <ion-card *ngIf="!multiImagen">
         <img
           src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
           [srcset]="lstImagen"
         />
       </ion-card>
-    </ion-slide>
-  </ion-slides>
 </ng-template>

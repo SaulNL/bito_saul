@@ -14,13 +14,7 @@
           aria-label="image"
         ></ion-icon>
       </label>
-      <label>
-        <em>
-          <ion-icon name="cloud-upload" aria-label="cloud upload" class="md hydrated icons-stype" role="img"></ion-icon>
-        </em>
-      </label>
-      <br>
-      <label class="custom-file-input">
+      <label class="custom-file-input" *ngIf="productoImagen.imagen[0] === undefined ;else borrarImagenUno">
         <input
           type="file"
           #fileInput
@@ -30,6 +24,9 @@
           (click)="fileInput.value = null"
         />
       </label>
+      <ng-template #borrarImagenUno>
+        <ion-label (click)="removeOno()" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>
+      </ng-template>
     </ion-card>
   </ion-slide>
   <ion-slide>
@@ -47,13 +44,7 @@
           aria-label="image"
         ></ion-icon>
       </label>
-      <label>
-        <em>
-          <ion-icon name="cloud-upload" aria-label="cloud upload" class="md hydrated icons-stype" role="img"></ion-icon>
-        </em>
-      </label>
-      <br>
-      <label class="custom-file-input">
+      <label class="custom-file-input" *ngIf="productoImagen.imagen[1] === undefined ;else borrarImagenDos">
         <input
           type="file"
           id="imagen-producto-dos"
@@ -63,6 +54,9 @@
           (click)="fileInputDos.value = null"
         />
       </label>
+      <ng-template #borrarImagenDos>
+        <ion-label (click)="removeDos()" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>
+      </ng-template>
     </ion-card>
   </ion-slide>
   <ion-slide>
@@ -80,13 +74,7 @@
           aria-label="image"
         ></ion-icon>
       </label>
-      <label>
-        <em>
-          <ion-icon name="cloud-upload" aria-label="cloud upload" class="md hydrated icons-stype" role="img"></ion-icon>
-        </em>
-      </label>
-      <br>
-      <label class="custom-file-input">
+      <label class="custom-file-input" *ngIf="productoImagen.imagen[2] === undefined ;else borrarImagenTres">
         <input
           type="file"
           id="imagen-producto-tres"
@@ -96,6 +84,9 @@
           (click)="fileInputTres.value = null"
         />
       </label>
+      <ng-template #borrarImagenTres>
+        <ion-label (click)="removeTres()" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>
+      </ng-template>
     </ion-card>
   </ion-slide>
   <ion-slide>
@@ -113,13 +104,7 @@
           aria-label="image"
         ></ion-icon>
       </label>
-      <label>
-        <em>
-          <ion-icon name="cloud-upload" aria-label="cloud upload" class="md hydrated icons-stype" role="img"></ion-icon>
-        </em>
-      </label>
-      <br>
-      <label class="custom-file-input">
+      <label class="custom-file-input" *ngIf="productoImagen.imagen[3] === undefined ;else borrarImagenCuatro">
         <input
           type="file"
           id="imagen-producto-cuatro"
@@ -129,6 +114,9 @@
           (click)="fileInputCuatro.value = null"
         />
       </label>
+      <ng-template #borrarImagenCuatro>
+        <ion-label (click)="removeCuatro()" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>
+      </ng-template>
     </ion-card>
   </ion-slide>
 </ion-slides>

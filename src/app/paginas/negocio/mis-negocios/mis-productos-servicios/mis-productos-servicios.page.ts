@@ -923,4 +923,7 @@ export class MisProductosServiciosPage implements OnInit {
     console.log(event);
     this.subir_imagen_cuadrada(event);
   }
+  public updateBorrado(event: any){
+    this.productoNuevo.imagen.splice(event.po, 1);
+  }
 }

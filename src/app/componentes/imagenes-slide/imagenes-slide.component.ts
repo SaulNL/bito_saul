@@ -17,7 +17,7 @@ export class ImagenesSlideComponent implements OnInit {
   slidesOptions = {
     slidesPerView: 1.5,
     centeredSlides: true,
-    loop: true,
+    loop: false,
     spaceBetween: 10,
   };
 

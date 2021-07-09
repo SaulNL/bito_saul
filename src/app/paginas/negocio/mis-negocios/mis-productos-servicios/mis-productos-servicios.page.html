@@ -454,7 +454,7 @@
           <ion-grid>
             <ion-row>
               <ion-col size="12">
-                <app-cargar-imagenes-slide [productoImagen]="productoNuevo" (subidaProducto)="subirImgs($event)"> </app-cargar-imagenes-slide>
+                <app-cargar-imagenes-slide [productoImagen]="productoNuevo" (subidaProducto)="subirImgs($event)" (borrarImagen)="updateBorrado($event)"> </app-cargar-imagenes-slide>
               </ion-col>
             </ion-row>
 
