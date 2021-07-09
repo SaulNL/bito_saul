@@ -1,3 +1,4 @@
+import { CargarImagenesSlideModule } from './../../../../componentes/cargar-imagenes-slide/cargar-imagenes-slide.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +13,8 @@ import { TabsPageModule } from '../../../../paginas/tabs/tabs.module';
     FormsModule,
     IonicModule,
     MisProductosServiciosPageRoutingModule,
-    TabsPageModule
+    TabsPageModule,
+    CargarImagenesSlideModule
   ],
   declarations: [
     MisProductosServiciosPage

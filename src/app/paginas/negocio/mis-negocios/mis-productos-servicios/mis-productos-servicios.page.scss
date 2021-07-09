@@ -11,3 +11,34 @@
     align-items: center;
     border-radius: 5px;
 }
+
+ion-card {
+  width: 100%;
+  box-shadow: none;
+  border-radius: 12px;
+  img {
+    object-fit: cover;
+    width: 100%;
+    transform: scale(1.1, 1.1) rotate(1deg);
+    transition: 600ms all ease-in-out;
+  }
+}
+
+.swiper-slide-active {
+  transition: scale(1.05, 1.5);
+  ion-card {
+    img {
+      transform: scale(1, 1);
+      height: 160px;
+    }
+  }
+}
+
+.swiper-slide {
+  transition: 400ms all ease-in-out;
+}
+
+.size-icon {
+  width: 187px;
+  height: 140px;
+}

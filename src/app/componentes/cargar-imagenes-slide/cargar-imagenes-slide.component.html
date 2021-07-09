@@ -1,0 +1,142 @@
+<ion-slides [options]="slidesOptions" class="ion-margin-top">
+  <ion-slide>
+    <ion-card>
+      <img
+        *ngIf="productoImagen.imagen[0] !== undefined"
+        [srcset]="setImagen(productoImagen.imagen[0])"
+      />
+      <input
+        type="file"
+        id="imagen-producto-uno"
+        accept="image/*"
+        (change)="subirImagenUno($event)"
+        hidden=""
+
+      />
+      <label for="imagen-producto-uno">
+        <em>
+          <ion-icon
+            *ngIf="productoImagen.imagen[0] === undefined"
+            name="image"
+            role="img"
+            class="md hydrated size-icon"
+            aria-label="image"
+          ></ion-icon>
+
+          <ion-icon
+            name="cloud-upload"
+            aria-label="cloud upload"
+            class="md hydrated"
+          ></ion-icon>
+          <p>Subir imagen</p>
+          <p></p>
+        </em>
+      </label>
+    </ion-card>
+  </ion-slide>
+  <ion-slide>
+    <ion-card>
+      <img
+        *ngIf="productoImagen.imagen[1] !== undefined"
+        [srcset]="setImagen(productoImagen.imagen[1])"
+      />
+      <input
+        type="file"
+        id="imagen-producto-dos"
+        accept="image/*"
+        (change)="subirImagenDos($event)"
+        hidden=""
+
+      />
+      <label for="imagen-producto-dos">
+        <em>
+          <ion-icon
+            *ngIf="productoImagen.imagen[1] === undefined"
+            name="image"
+            role="img"
+            class="md hydrated size-icon"
+            aria-label="image"
+          ></ion-icon>
+
+          <ion-icon
+            name="cloud-upload"
+            aria-label="cloud upload"
+            class="md hydrated"
+          ></ion-icon>
+          <p>Subir imagen</p>
+          <p></p>
+        </em>
+      </label>
+    </ion-card>
+  </ion-slide>
+  <ion-slide>
+    <ion-card>
+      <img
+        *ngIf="productoImagen.imagen[2] !== undefined"
+        [srcset]="setImagen(productoImagen.imagen[2])"
+      />
+      <input
+        type="file"
+        id="imagen-producto-tres"
+        accept="image/*"
+        (change)="subirImagenTres($event)"
+        hidden=""
+
+      />
+      <label for="imagen-producto-tres">
+        <em>
+          <ion-icon
+            *ngIf="productoImagen.imagen[2] === undefined"
+            name="image"
+            role="img"
+            class="md hydrated size-icon"
+            aria-label="image"
+          ></ion-icon>
+
+          <ion-icon
+            name="cloud-upload"
+            aria-label="cloud upload"
+            class="md hydrated"
+          ></ion-icon>
+          <p>Subir imagen</p>
+          <p></p>
+        </em>
+      </label>
+    </ion-card>
+  </ion-slide>
+  <ion-slide>
+    <ion-card>
+      <img
+        *ngIf="productoImagen.imagen[3] !== undefined"
+        [srcset]="setImagen(productoImagen.imagen[3])"
+      />
+      <input
+        type="file"
+        id="imagen-producto-cuatro"
+        accept="image/*"
+        (change)="subirImagenCuatro($event)"
+        hidden=""
+
+      />
+      <label for="imagen-producto-cuatro">
+        <em>
+          <ion-icon
+            *ngIf="productoImagen.imagen[3] === undefined"
+            name="image"
+            role="img"
+            class="md hydrated size-icon"
+            aria-label="image"
+          ></ion-icon>
+
+          <ion-icon
+            name="cloud-upload"
+            aria-label="cloud upload"
+            class="md hydrated"
+          ></ion-icon>
+          <p>Subir imagen</p>
+          <p></p>
+        </em>
+      </label>
+    </ion-card>
+  </ion-slide>
+</ion-slides>

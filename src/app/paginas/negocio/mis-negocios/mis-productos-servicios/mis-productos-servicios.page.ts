@@ -215,7 +215,7 @@ export class MisProductosServiciosPage implements OnInit {
               .subscribe(
                 (repsuesta) => {
                   this.datosNegocio = repsuesta.data;
-                  this.static = repsuesta.data
+                  this.static = repsuesta.data;
                 },
                 (error) => {}
               );
@@ -305,7 +305,7 @@ export class MisProductosServiciosPage implements OnInit {
             }
             if (this.loadPdf) {
               this.notificacionService.exito("Carta guardada con éxito");
-            }    
+            }
             break;
           case 2:
             if (
@@ -543,11 +543,9 @@ export class MisProductosServiciosPage implements OnInit {
     this.agregarProducto = false;
   }
 
-  public subirArchivo(event) {
-    this.subir_imagen_cuadrada(event);
-  }
-
-  public subir_imagen_cuadrada(event) {
+  public subir_imagen_cuadrada(imgen: any) {
+    const event = imgen.event;
+    const position = imgen.posicion;
     if (event.target.files && event.target.files.length) {
       let height;
       let width;
@@ -570,11 +568,11 @@ export class MisProductosServiciosPage implements OnInit {
                 utl.getBase64(file).then((data) => {
                   file_64 = data;
                   const imagen = new ArchivoComunModel();
-                  if(file_name!=null) {
-                    imagen.nombre_archivo = this.utilscls.convertir_nombre(file_name);
+                  if (file_name != null) {
+                    imagen.nombre_archivo = this.utilscls.convertir_nombre(file_name) + ".jpg";
                     imagen.archivo_64 = file_64;
                   }
-                  this.productoNuevo.imagen = imagen;
+                  this.productoNuevo.imagen[position] = imagen;
                   this.procesando_img = false;
                   this.blnImgCuadrada = false;
                 });
@@ -587,7 +585,17 @@ export class MisProductosServiciosPage implements OnInit {
               this.resizeToHeight = 400;
               this.tipoImagen = 1;
               this.fileChangeEvent(event);
-              this.abrirModalImagen(img.src,this.resizeToWidth, this.resizeToHeight);
+              const fName = archivo.name + ".jpg";
+              const newImagen = {
+                i: img.src,
+                p: position,
+                fn: fName
+              }
+              this.abrirModalImagen(
+                 newImagen,
+                this.resizeToWidth,
+                this.resizeToHeight
+              );
             }
           };
         };
@@ -598,8 +606,11 @@ export class MisProductosServiciosPage implements OnInit {
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
   }
- 
-  async abrirModalImagen(evento, width, heigh) {
+
+  async abrirModalImagen(img, width, heigh) {
+    const evento = img.i;
+    const position = img.p;
+    const fileName = img.fn;
     const modal = await this.modalController.create({
       component: RecorteImagenComponent,
       cssClass: "my-custom-class",
@@ -621,11 +632,11 @@ export class MisProductosServiciosPage implements OnInit {
 
     if (data != null) {
       const imagen = new ArchivoComunModel();
-      imagen.nombre_archivo = data.nombre_archivo;
+      imagen.nombre_archivo = this.utilscls.convertir_nombre(fileName);
       imagen.archivo_64 = data.data;
 
       if (this.tipoImagen === 1) {
-        this.productoNuevo.imagen = imagen;
+        this.productoNuevo.imagen[position] = imagen;
         this.blnImgCuadrada = false;
       }
     }
@@ -645,10 +656,12 @@ export class MisProductosServiciosPage implements OnInit {
         this.blnEditando = true;
         this.indexModificar = this.productoNuevo.index;
         this.productoE = this.productoNuevo;
-        this.actualizar(this.productoNuevo);
+        console.log(this.productoNuevo);
+        // this.actualizar(this.productoNuevo);
       }
       if (this.opcion === 1) {
-        this.agregar(this.listaProductos);
+        console.log(this.productoNuevo);
+        // this.agregar(this.listaProductos);
       }
     }
   }
@@ -669,7 +682,8 @@ export class MisProductosServiciosPage implements OnInit {
   setNegocioProducto() {
     this.productoNuevo.negocio.idNegocio = this.datosNegocio.id_negocio;
     this.productoNuevo.negocio.nombre = this.negocioTO.nombre_comercial;
-    this.productoNuevo.negocio.dirección = this.datosNegocio.domicilio.id_domicilio;
+    this.productoNuevo.negocio.dirección =
+      this.datosNegocio.domicilio.id_domicilio;
     this.productoNuevo.negocio.logo = this.negocioTO.url_logo;
   }
 
@@ -700,10 +714,8 @@ export class MisProductosServiciosPage implements OnInit {
     let datosAEnviar: DatosNegocios;
     const datos = JSON.stringify(this.datosNegocio);
     datosAEnviar = JSON.parse(datos);
-    this.productoNuevo.imagen = JSON.parse(
-      JSON.stringify(this.productoNuevo.imagen)
-    );
-    this.productoNuevo.imagen.nombre_archivo = this.productoNuevo.nombre+'.jpg';
+    this.productoNuevo.imagen = JSON.parse(JSON.stringify(this.productoNuevo.imagen));
+    // this.productoNuevo.imagen.nombre_archivo = this.productoNuevo.nombre + ".jpg";
     this.productoNuevo.negocio.dirección = this.negocioTO.det_domicilio.id_domicilio;
     if (this.blnEditando) {
       datosAEnviar.productos[this.indexModificar] = this.productoNuevo;
@@ -723,37 +735,30 @@ export class MisProductosServiciosPage implements OnInit {
         if (datosAEnviar.productos.length > 1) {
           this.tamano = datosAEnviar.productos.length - 1;
         } else {
-          if (datosAEnviar.productos.length > 0 ){
-            this.tamano = datosAEnviar.productos.length -1;
-              } else {
-                this.tamano = 0;
-              }
+          if (datosAEnviar.productos.length > 0) {
+            this.tamano = datosAEnviar.productos.length - 1;
+          } else {
+            this.tamano = 0;
+          }
         }
         break;
       case 2:
         if (datosAEnviar.servicios.length > 1) {
-        this.tamano = datosAEnviar.servicios.length - 1;
+          this.tamano = datosAEnviar.servicios.length - 1;
         } else {
-          if (datosAEnviar.servicios.length > 0 ){
-        this.tamano = datosAEnviar.servicios.length -1;
+          if (datosAEnviar.servicios.length > 0) {
+            this.tamano = datosAEnviar.servicios.length - 1;
           } else {
             this.tamano = 0;
           }
-          //this.segtamano = 0; 
+          //this.segtamano = 0;
         }
         break;
     }
 
     switch (this.iden) {
       case 1:
-        if (
-          datosAEnviar.productos[this.tamano].imagen.archivo_64 === "" ||
-          datosAEnviar.productos[this.tamano].imagen.archivo_64 === null ||
-          datosAEnviar.productos[this.tamano].imagen.archivo_64 === undefined
-        ) {
-          this.banderaGuardar = false;
-          this.notificacionService.alerta("Agregue la foto de su producto");
-        } else {
+
           this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
             (repsuesta) => {
               this.buscarCategoriasProductos();
@@ -761,11 +766,15 @@ export class MisProductosServiciosPage implements OnInit {
               this.blnformMobile = false;
               this.listaVista.map((item) => {
                 if (item.id_categoria === this.productoNuevo.id_categoria) {
-                  this.productoNuevo = this.datosNegocio.productos[ this.datosNegocio.productos.length - 1 ];
-                  this.productoNuevo.index = this.datosNegocio.productos.length - 1;
+                  this.productoNuevo =
+                    this.datosNegocio.productos[
+                      this.datosNegocio.productos.length - 1
+                    ];
+                  this.productoNuevo.index =
+                    this.datosNegocio.productos.length - 1;
                   // @ts-ignore
                   this.productoNuevo.editar = false;
-                      item.productos.push(this.productoNuevo);
+                  item.productos.push(this.productoNuevo);
                 }
               });
               this.notificacionService.exito("Se guardó el producto con éxito");
@@ -779,18 +788,10 @@ export class MisProductosServiciosPage implements OnInit {
               this.regresarLista();
             }
           );
-        }
         break;
 
       case 2:
-        if (
-          datosAEnviar.servicios[this.tamano].imagen.archivo_64 === "" ||
-          datosAEnviar.servicios[this.tamano].imagen.archivo_64 === null ||
-          datosAEnviar.servicios[this.tamano].imagen.archivo_64 === undefined
-        ) {
-          this.banderaGuardar = false;
-          this.notificacionService.alerta("Agregue la foto de su producto");
-        } else {
+
           this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
             (repsuesta) => {
               this.buscarCategoriasProductos();
@@ -798,11 +799,15 @@ export class MisProductosServiciosPage implements OnInit {
               this.blnformMobile = false;
               this.listaVista.map((item) => {
                 if (item.id_categoria === this.productoNuevo.id_categoria) {
-                  this.productoNuevo = this.datosNegocio.servicios[ this.datosNegocio.servicios.length - 1];
-                  this.productoNuevo.index = this.datosNegocio.servicios.length - 1;
+                  this.productoNuevo =
+                    this.datosNegocio.servicios[
+                      this.datosNegocio.servicios.length - 1
+                    ];
+                  this.productoNuevo.index =
+                    this.datosNegocio.servicios.length - 1;
                   // @ts-ignore
                   this.productoNuevo.editar = false;
-                      item.servicios.push(this.productoNuevo);
+                  item.servicios.push(this.productoNuevo);
                 }
               });
               this.notificacionService.exito("Se guardó el producto con éxito");
@@ -816,7 +821,7 @@ export class MisProductosServiciosPage implements OnInit {
               this.regresarLista();
             }
           );
-        }
+        
         break;
       default:
         this.notificacionService.alerta(
@@ -843,12 +848,18 @@ export class MisProductosServiciosPage implements OnInit {
   }
 
   editarRegistro(produc: any) {
+    console.log(produc);
     this.mostrarListaProductos = !this.mostrarListaProductos;
     this.agregarProducto = true;
     this.almacenarRegistro = JSON.parse(JSON.stringify(produc));
     produc.editar = true;
     this.productoNuevo = produc;
+    if (!Array.isArray(this.productoNuevo.imagen)) {
+      const imagens = this.productoNuevo.imagen;
+      this.productoNuevo.imagen = [imagens];
+    }
     this.opcion = 2;
+    console.log(this.productoNuevo);
   }
 
   actualizar(produc) {
@@ -902,5 +913,14 @@ export class MisProductosServiciosPage implements OnInit {
         this.regresarLista();
       }
     );
+  }
+  public subirImgs(event: any){
+    console.log(event);
+    this.subirArchivo(event);
+  }
+
+  public subirArchivo(event: any) {
+    console.log(event);
+    this.subir_imagen_cuadrada(event);
   }
 }
