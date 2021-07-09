@@ -44,8 +44,6 @@ export class ProductosFavoritosPage implements OnInit {
   public obtenerProductosFavoritos() {
 
     if (this.user.id_persona !== undefined) {
-      console.log('entras a consumit el servicio');
-      console.log(this.user.id_persona);
       this.personaService.obtenerProductosFavoritos(this.user.id_persona).subscribe(
 
           response => {
@@ -144,6 +142,13 @@ export class ProductosFavoritosPage implements OnInit {
 
   regresar() {
     this.router.navigate(['/tabs/home/mis-favoritos']);
+  }
+
+  public productoImagen(imagen: any){
+    if (Array.isArray(imagen)){
+      return imagen[0];
+    }
+    return imagen;
   }
 
 }
