@@ -1,6 +1,6 @@
-ion-card {
+.ion-card-custom {
   width: 100%;
-  height: 160px;
+  height: auto;
   box-shadow: none;
   border-radius: 12px;
   img {
@@ -13,7 +13,7 @@ ion-card {
 
 .swiper-slide-active {
   transition: scale(1.05, 1.5);
-  ion-card {
+  .ion-card-custom {
     img {
       transform: scale(1, 1);
       height: 160px;

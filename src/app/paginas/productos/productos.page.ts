@@ -397,13 +397,13 @@ export class ProductosPage {
     }, 500);
   }
   public recargar(event: any) {
-    if (event) {
+    if (event.active) {
       this.obtenerProductos();
     }
   }
 
-  public productoImagen(imagen: any){
-    if(Array.isArray(imagen)){
+  public productoImagen(imagen: any) {
+    if (Array.isArray(imagen)) {
       return imagen[0];
     }
     return imagen;

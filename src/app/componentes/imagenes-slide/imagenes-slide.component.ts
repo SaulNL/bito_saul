@@ -22,15 +22,22 @@ export class ImagenesSlideComponent implements OnInit {
   };
 
   ngOnInit() {
+    this.slidesOptions;
     this.multiImagen = true;
     if (!Array.isArray(this.imagen.imagen)) {
+      console.log("Una Imagen");
+      console.log(this.imagen.imagen);
       this.multiImagen = false;
       this.lstImagen = this.imagen.imagen;
     } else {
       if (this.imagen.imagen.length > 1) {
+        console.log("Muchas Imagenes");
+        console.log(this.imagen.imagen);
         this.multiImagen = true;
         this.lstImagene = this.imagen.imagen;
       } else {
+        console.log("Una Imagen");
+        console.log(this.imagen.imagen);
         this.multiImagen = false;
         this.lstImagen = this.imagen.imagen[0];
       }

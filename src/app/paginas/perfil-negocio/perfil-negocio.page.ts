@@ -196,6 +196,7 @@ export class PerfilNegocioPage implements OnInit {
 
   obtenerInformacionNegocio() {
     this.loader = true;
+    console.log(this.negocio);
     this.negocioService.obteneretalleNegocio(this.negocio).subscribe(
         (response) => {
           if (response.data !== null) {

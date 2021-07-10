@@ -1,11 +1,3 @@
-<!--<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Productos
-    </ion-title>
-  </ion-toolbar>
-</ion-header>-->
-
 <app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
 
 <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
@@ -14,9 +6,6 @@
     <ion-header collapse="condense">
 
     </ion-header>
-
-
-    <!--<ion-searchbar></ion-searchbar>-->
 
     <ion-item>
         <ion-buttons *ngIf=" filtroActivo" slot="start">

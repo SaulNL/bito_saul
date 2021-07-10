@@ -12,7 +12,7 @@ export class RecargarComponent implements OnInit {
 
   ngOnInit() {}
 
-  public recargar(event) {
+  public recargar(event: any) {
     this.respuesta.emit({ active: false });
     setTimeout(() => {
       event.target.complete();

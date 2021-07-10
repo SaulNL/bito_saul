@@ -13,23 +13,23 @@ import { ToadNotificacionService } from "../../../api/toad-notificacion.service"
 })
 export class ModalProductoPage implements OnInit {
   @Input() public existeSesion: boolean;
-  @Input() public unoProducto: ProductoModel;
+  @Input() public unoProducto: any;
   @Input() public user: any;
+  public negocio: any;
+  public informacionNegocio: any;
+  public comprarB: any;
 
-  slideOpts = {
-    scrollbar: true,
-  };
   constructor(
     private servicioProductos: ProductosService,
     public modalCtrl: ModalController,
     private negocioServico: NegocioService,
     private router: Router,
     private notificaciones: ToadNotificacionService
-  ) {}
+  ) { }
 
   ngOnInit() {
     console.log(this.unoProducto);
-
+    this.obtenerInformacionNegocio();
     if (this.existeSesion) {
       this.loVio(this.unoProducto);
     }
@@ -70,27 +70,52 @@ export class ModalProductoPage implements OnInit {
           console.log(response.code);
         }
       },
-      (error) => {}
+      (error) => { }
     );
   }
   public agregar(producto: any) {
-    this.negocioServico.buscarNegocio(producto.negocio.idNegocio).subscribe(
-      (response) => {
         const contenido = JSON.parse(JSON.stringify(producto));
         const enviar = {
           producto: contenido,
           agregado: true,
         };
-        this.router.navigate(["/tabs/negocio/" + response.data.url_negocio], {
+        this.router.navigate(["/tabs/negocio/" + this.negocio.url_negocio], {
           queryParams: { carrito: JSON.stringify(enviar) },
         });
         this.modalCtrl.dismiss({
           dismissed: true,
         });
+  }
+  obtenerInformacionNegocio() {
+     this.negocioServico.buscarNegocio(this.unoProducto.negocio.idNegocio).subscribe(
+      (response) => {
+        console.log(response);
+            this.negocio = response.data;
+            this.negocioUrl(response.data);
       },
       (error) => {
         console.log(error);
       }
     );
+  }
+  public negocioUrl(negocioT: any){
+    console.log(negocioT);
+     this.negocioServico.obteneretalleNegocio(negocioT.url_negocio).subscribe(
+        (response) => {
+          console.log(response);
+          console.log(response.data);
+            this.informacionNegocio = response.data;
+            console.log(this.informacionNegocio);
+            this.mostrarBoton();
+        },
+        (error) => {
+
+        }
+    );
+  }
+
+  public mostrarBoton() {
+    this.comprarB = ( (this.informacionNegocio.entrega_domicilio === 1 || this.informacionNegocio.entrega_sitio === 1 ||
+    this.informacionNegocio.consumo_sitio === 1) && parseInt(this.unoProducto.precio) > 0 );
   }
 }
