@@ -40,8 +40,8 @@
           <label class="existencia" *ngIf="unoProducto.existencia">Aún en existencia</label>
           <label class="existencia" *ngIf="!unoProducto.existencia">Sin existencia</label>
     </ion-card-content>
-    <ion-row *ngIf="comprarB && informacionNegocio.abierto === 'ABIERTO'">
-      <ion-chip outline="" class="ion-color text-rosa bordeo ion-color-primary ios chip-outline ion-activatable hydrated" (click)="agregar(unoProducto)" *ngIf="existeSesion">
+    <ion-row *ngIf="existeSesion">
+      <ion-chip outline="" class="ion-color text-rosa bordeo ion-color-primary ios chip-outline ion-activatable hydrated" (click)="agregar(unoProducto)" *ngIf="comprarB && informacionNegocio.abierto === 'ABIERTO'">
           <ion-icon aria-label="pin" class="ios hydrated text-rosa" role="img" name="bag-add-outline"></ion-icon>
           <ion-label class="sc-ion-label-ios-h sc-ion-label-ios-s ios hydrated">Agregar</ion-label>
         </ion-chip>
@@ -55,7 +55,7 @@
       <ion-icon class="iconoss" slot="end" name="open-outline"></ion-icon>
     </label>
     <hr>
-    <ion-item *ngIf="negocio.url_negocio !== undefined" (click)="verMas(unoProducto)">
+    <ion-item *ngIf="existeSesion" (click)="verMas(unoProducto)">
       <label>{{unoProducto.negocio.nombre}}  </label>
       <ion-icon slot="end" class="blanco" name="storefront-outline"></ion-icon>
     </ion-item>

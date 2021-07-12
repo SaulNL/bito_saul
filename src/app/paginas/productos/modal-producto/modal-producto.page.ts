@@ -29,8 +29,8 @@ export class ModalProductoPage implements OnInit {
 
   ngOnInit() {
     console.log(this.unoProducto);
-    this.obtenerInformacionNegocio();
     if (this.existeSesion) {
+      this.obtenerInformacionNegocio();
       this.loVio(this.unoProducto);
     }
   }
