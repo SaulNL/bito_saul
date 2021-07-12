@@ -16,6 +16,7 @@ export class NegociosFavoritosPage implements OnInit {
   public user: any;
   public listaNegocios: any;
   public motrarContacto: boolean;
+  public tamanoLista: number;
 
   constructor(
       private util: UtilsCls,
@@ -25,6 +26,7 @@ export class NegociosFavoritosPage implements OnInit {
       private serviceProveedores: ProveedorServicioService,
   ) {
     this.user = this.util.getUserData();
+    this.tamanoLista = 0;
   }
 
   ngOnInit() {
@@ -42,12 +44,12 @@ export class NegociosFavoritosPage implements OnInit {
           response => {
             if (response.code === 200) {
               this.listaNegocios = response.data;
-              console.log(this.listaNegocios, response);
+              this.tamanoLista = this.listaNegocios.length;
 
             }
           },
           error => {
-            console.log(error);
+            this.tamanoLista = 0;
           });
     }
   }

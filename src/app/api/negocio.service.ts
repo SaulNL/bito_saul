@@ -6,6 +6,7 @@ import {map} from 'rxjs/operators';
 import {DatosNegocios} from '../Modelos/DatosNegocios';
 import {NegocioModel} from '../Modelos/NegocioModel';
 import {HTTP} from '@ionic-native/http/ngx';
+import {FiltroEstadisticaModel} from '../Modelos/FiltroEstadisticaModel';
 
 @Injectable({
     providedIn: 'root'
@@ -53,6 +54,20 @@ export class NegocioService {
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/buscar/mis-negocios',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
+    misNegociosEstadisticas(proveedor: number, rol:number): Observable<any> {
+        const body = JSON.stringify({id_proveedor: proveedor, id_rol: rol});
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/buscar/mis-negocios/estadisticas',
             body, AppSettings.getHeadersToken())
             .then((data) => {
                 return JSON.parse(data.data);
@@ -392,5 +407,117 @@ export class NegocioService {
             }));
     }
 
+
+    solicitarValidacionNegocio(idNegocio: any): Observable<any> {
+        const body = JSON.stringify({id_negocio: idNegocio});
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/validar/validacionNegocio',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
+    estadisticaVisitasQR(filtroEstadistica: FiltroEstadisticaModel): Observable<any> {
+        const body = JSON.stringify(filtroEstadistica);
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/negocio/numero_visto_qr',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
+    estadisticaVisitasURL(filtroEstadistica: FiltroEstadisticaModel): Observable<any> {
+        const body = JSON.stringify(filtroEstadistica);
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/negocio/numero_visto',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
+    estadisticaLikesNegocio(filtroEstadistica: FiltroEstadisticaModel): Observable<any> {
+        const body = JSON.stringify(filtroEstadistica);
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/negocio/numero_likes',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
+    estadisticaComentariosNegocio(filtroEstadistica: FiltroEstadisticaModel): Observable<any> {
+        const body = JSON.stringify(filtroEstadistica);
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/negocio/numero_comentarios',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
+    estadisticaSolicitudesNegocio(filtroEstadistica: FiltroEstadisticaModel): Observable<any> {
+        const body = JSON.stringify(filtroEstadistica);
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/solicitudes/numero_visto_solicitudes',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
+    estadisticaPromocionesNegocio(filtroEstadistica: FiltroEstadisticaModel): Observable<any> {
+        const body = JSON.stringify(filtroEstadistica);
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/promociones/numero_visto_promocion',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
+    estadisticaVistasProductosNegocio(filtroEstadistica: FiltroEstadisticaModel): Observable<any> {
+        const body = JSON.stringify(filtroEstadistica);
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/productos/numero_visto_productos',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
 
 }

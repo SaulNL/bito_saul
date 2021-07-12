@@ -80,6 +80,10 @@ const routes: Routes = [
       {
         path: 'mis-favoritos',
         loadChildren: () => import('../../mis-favoritos/mis-favoritos.module').then(m => m.MisFavoritosPageModule)
+      },
+      {
+        path: 'estadisticas',
+        loadChildren: () => import('../../estadisticas/estadisticas.module').then(m => m.EstadisticasPageModule)
       }
 
     ]

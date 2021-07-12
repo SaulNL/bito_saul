@@ -20,6 +20,7 @@ export class ProductosFavoritosPage implements OnInit {
   public unoProducto: ProductoModel;
   public existeSesion: boolean;
   public motrarContacto: boolean;
+  public tamanoLista: number;
 
   constructor(
       private util: UtilsCls,
@@ -32,6 +33,7 @@ export class ProductosFavoritosPage implements OnInit {
   ) {
     this.user = this.util.getUserData();
     this.existeSesion = util.existe_sesion();
+    this.tamanoLista = 0;
   }
 
   ngOnInit() {
@@ -49,12 +51,11 @@ export class ProductosFavoritosPage implements OnInit {
           response => {
             if (response.code === 200) {
               this.listaProductos = response.data.data;
-              console.log(this.listaProductos, response);
-
+              this.tamanoLista = this.listaProductos.length;
             }
           },
           error => {
-            console.log(error);
+            this.tamanoLista = 0;
           });
     }
   }

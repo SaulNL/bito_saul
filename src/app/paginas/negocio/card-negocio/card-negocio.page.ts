@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { NegocioService } from "../../../api/negocio.service";
 import { ToadNotificacionService } from "./../../../api/toad-notificacion.service";
 import { AlertController } from "@ionic/angular";
+import {SolicitarValidacionModel} from '../../../Modelos/SolicitarValidacionModel';
 
 @Component({
   selector: "app-card-negocio",
@@ -16,6 +17,8 @@ export class CardNegocioPage implements OnInit {
   public btload: boolean;
   public listTipoNegocio: any;
   public proervi: any;
+  public solicitudValidar: SolicitarValidacionModel;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -49,6 +52,7 @@ export class CardNegocioPage implements OnInit {
     this.negocioServico.buscarNegocio(this.negocioTO.id_negocio).subscribe(
       (response) => {
         this.negocioTO = response.data;
+        console.log(this.negocioTO);
         this.btload = true;
       },
       (error) => {
@@ -159,5 +163,26 @@ export class CardNegocioPage implements OnInit {
           );
         }
       );
+  }
+
+  solicitarValidacion(){
+    console.log(this.negocioTO.id_negocio);
+    this.negocioServico.solicitarValidacionNegocio(this.negocioTO.id_negocio).subscribe(
+        response => {
+          if (response.code === 200) {
+            if (response.data.code === 200){
+              this.notification.exito('Tu negocio será revisado por un administrador de Bitoo. Recibirás una notificación para conocer el estatus de tu solicitud');
+            }else{
+              this.notification.alerta('La solicitud no pudo ser procesada');
+            }
+          }else{
+            this.notification.alerta('La solicitud no pudo ser procesada');
+          }
+
+        },
+        error => {
+          this.notification.error(error.message);
+        });
+
   }
 }
