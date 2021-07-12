@@ -73,7 +73,7 @@
           </ion-item>
          <ion-item *ngIf="ver_negocio" lines="none" [routerLink]="['/tabs/home/promociones']">
             <ion-icon slot="start"  ios="pricetags-outline" md="pricetags-outline" name="pricetags-outline"></ion-icon>
-            Promociones
+            Anuncios y promociones
           </ion-item>
           <ion-item lines="none"  [routerLink]="['/tabs/home/ser-proveedor']" *ngIf="!ver_negocio">
             <ion-icon slot="start"  ios="cart-outline" md="cart-outline" name="pricetags-outline" name="cart-outline"></ion-icon>
@@ -86,6 +86,10 @@
           <ion-item lines="none" [routerLink]="['/tabs/home/mis-favoritos']">
             <ion-icon slot="start" ios="heart-outline" md="heart-outline"></ion-icon>
             Mis favoritos
+          </ion-item>
+          <ion-item lines="none" [routerLink]="['/tabs/home/estadisticas']">
+            <ion-icon slot="start" ios="heart-outline" md="heart-outline"></ion-icon>
+            Estadísticas
           </ion-item>
         </ion-menu-toggle>
         <ion-menu-toggle auto-hide="false">
