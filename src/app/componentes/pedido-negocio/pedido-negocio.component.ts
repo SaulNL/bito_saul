@@ -82,7 +82,7 @@ export class PedidoNegocioComponent implements OnInit {
       });
       this.marker = marker([lat, lng], { icon: myIcon, draggable: true }).addTo(this.map);
       this.marker.on("dragend", () =>{
-        console.log(this.marker.getLatLng());
+
         this.getLatLong({latlng: this.marker.getLatLng()});
       });
     }, 500);
@@ -191,7 +191,7 @@ export class PedidoNegocioComponent implements OnInit {
       this.marker.setLatLng([this.lat, this.lng]);
       this.geocodeLatLng();
      }).catch((error) => {
-       console.log('Error getting location', error);
+       
      });
 
   }

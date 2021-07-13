@@ -67,7 +67,7 @@ export class FormularioAgregarPromocionComponent implements OnInit {
         this.blnImgRectangulo = !(this.actualTo.url_imagen_banner !== '');
         this.blnImgPoster = !(this.actualTo.url_imagen_poster !== '');
         this.buscarNegocios();
-        console.log(this.actualTo);
+        
     }
 
     buscarNegocios() {

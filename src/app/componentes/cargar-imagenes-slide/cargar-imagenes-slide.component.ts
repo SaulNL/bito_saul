@@ -20,38 +20,29 @@ export class CargarImagenesSlideComponent implements OnInit {
   };
 
   ngOnInit() {
-    console.log(this.productoImagen.imagen);
-    console.log(this.productoImagen.imagen[0]);
-    console.log(this.productoImagen.imagen[1]);
-    console.log(this.productoImagen.imagen[2]);
-    console.log(this.productoImagen.imagen[3]);
   }
 
   public subirImagenUno(event: any) {
-    console.log(event);
-    console.log("evento uno");
+
     this.subidaProducto.emit(this.build(0, event));
   }
   public subirImagenDos(event: any) {
-    console.log(event);
-    console.log("evento dos");
+
     this.subidaProducto.emit(this.build(1, event));
   }
   public subirImagenTres(event: any) {
-    console.log(event);
-    console.log("evento tres");
+
     this.subidaProducto.emit(this.build(2, event));
   }
   public subirImagenCuatro(event: any) {
 
-    console.log(event);
-    console.log("evento cuatro");
+
     this.subidaProducto.emit(this.build(3, event));
   }
   private build(position: any, img: any) {
     const imagen = { event: img, posicion: position };
 
-    console.log(imagen);
+    
     return imagen;
   }
 

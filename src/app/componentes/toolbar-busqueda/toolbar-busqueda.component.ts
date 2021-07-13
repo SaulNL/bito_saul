@@ -27,7 +27,7 @@ export class ToolbarBusquedaComponent implements OnInit {
     private pedidosServicios: PedidosService,
     private _utils_cls: UtilsCls,
     private active: ActivatedRoute
-  ) { 
+  ) {
     this.totalNoVistos = 0;
     this.permisos = [];
     this.permisosList();
@@ -54,7 +54,7 @@ export class ToolbarBusquedaComponent implements OnInit {
   }
 
   buscar() {
-    //console.log(this.strBuscar)
+    
     this.buscarEmit.emit(this.strBuscar);
   }
 

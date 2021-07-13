@@ -21,14 +21,14 @@ export class InfoProductosComponent implements OnInit {
   ngOnInit() {}
 
   verMas(producto: ProductoModel) {
-    console.log(producto.negocio.idNegocio);
+
     this.negocioServico.buscarNegocio(producto.negocio.idNegocio).subscribe(
       (response) => {
         this.router.navigate(["/tabs/negocio/" + response.data.url_negocio]);
         this.modalCtrl.dismiss();
       },
       (error) => {
-        console.log(error);
+        
       }
     );
   }
