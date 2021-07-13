@@ -78,8 +78,6 @@ export class FormSolicitudPage implements OnInit {
       if (params && params.special) {
         this.data= JSON.parse(params.special);
         this.actualTO= JSON.parse(params.special);
-        console.log(this.data);
-        console.log(this.actualTO);
       }
     });
     this.list_cat_estado = new Array<CatEstadoModel>();
@@ -122,7 +120,6 @@ export class FormSolicitudPage implements OnInit {
       if (this.actualTO.id_giro === 12) {
         this.actualTO.id_categoria = 9999;
       }
-      console.log(this.actualTO);
       this.solicitudesService.guardar(this.actualTO).subscribe(
         response => {
           if (this._utils_cls.is_success_response(response.code)) {

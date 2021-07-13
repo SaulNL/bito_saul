@@ -87,7 +87,6 @@ export class CatOrganizacionPage implements OnInit {
 
   setBlnFiltro() {
     this.blnBtnFiltro = this.validarFiltros();
-    console.log(this.blnBtnFiltro);
   }
 
   limpiarFiltro() {

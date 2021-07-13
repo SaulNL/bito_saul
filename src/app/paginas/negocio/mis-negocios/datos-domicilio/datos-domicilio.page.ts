@@ -72,8 +72,6 @@ export class DatosDomicilioPage implements OnInit {
     });
     this.cagarMapa();
     this.load_cat_estados();
-    console.log(this.negocioTO);
-    console.log(this.negocioGuardar);
     //this.platform.backButton.observers.pop();
   }
   

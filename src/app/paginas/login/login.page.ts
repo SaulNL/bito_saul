@@ -129,7 +129,7 @@ export class LoginPage implements OnInit {
       new firebase.auth.GoogleAuthProvider()
     );
     const user = res.user;
-    console.log("Datos de usuario Google:", user.providerData);
+   /* console.log("Datos de usuario Google:", user.providerData);*/
     this.picture = user.photoURL;
     this.name = user.displayName;
     this.email = user.email;

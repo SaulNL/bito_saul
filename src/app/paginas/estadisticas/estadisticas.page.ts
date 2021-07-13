@@ -42,7 +42,6 @@ export class EstadisticasPage implements OnInit {
         for (let index = 0; index < this.datosRoles.length; index++) {
             if (this.datosRoles[index].id_rol === 1) {
                 this.rol = 1;
-                console.log('ES superusuario');
             }
         }
     }
