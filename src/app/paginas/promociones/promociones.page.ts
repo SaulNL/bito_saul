@@ -98,7 +98,6 @@ export class PromocionesPage implements OnInit {
     this._promociones.buscarPromocinesPublicadasModulo(this.anyFiltros).subscribe(
       response => {
         if(response.code === 402){
-          console.log('402');
         }
         if (response.data !== null) {
           this.lstPromociones = response.data;
@@ -119,7 +118,9 @@ export class PromocionesPage implements OnInit {
   }
 
   buscarToolbar(respuesta) {
-    if(respuesta !== null ){ console.log('entro');this.blnBtnMap = true}
+    if (respuesta !== null ){
+      this.blnBtnMap = true;
+    }
     this.idGiro = null;
     this.anyFiltros = new FiltrosModel();
     this.mostrarDetalle = false;

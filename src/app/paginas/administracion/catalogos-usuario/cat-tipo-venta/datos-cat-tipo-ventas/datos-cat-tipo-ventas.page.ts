@@ -89,7 +89,7 @@ export class DatosCatTipoVentasPage implements OnInit {
         this.ventaTO = respuesta.data[0];
       },
       (error) => {
-        console.log(error);
+
       },
       () => {}
     );

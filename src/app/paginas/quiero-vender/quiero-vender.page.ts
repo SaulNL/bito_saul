@@ -134,7 +134,6 @@ export class QuieroVenderPage implements OnInit {
     this.formulario1 = true;
     this.formulario2 = false;
     this.finalizar = false;
-    console.log(this.proveedorTO);
   }
 
   public subir_imagen_cuadrada(event) {

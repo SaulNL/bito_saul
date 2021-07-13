@@ -88,7 +88,6 @@ export class AjustesPage implements OnInit {
               });
               location.reload();
               localStorage.clear();
-              console.log(this.usuario);
             }
           },
         },

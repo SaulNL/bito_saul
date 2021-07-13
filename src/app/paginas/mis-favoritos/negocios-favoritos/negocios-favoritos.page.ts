@@ -37,8 +37,6 @@ export class NegociosFavoritosPage implements OnInit {
   public obtenerNegociosFavoritos() {
 
     if (this.user.id_persona !== undefined) {
-      console.log('entras a consumit el servicio');
-      console.log(this.user.id_persona);
       this.personaService.obtenerNegociosFavoritos(this.user.id_persona).subscribe(
 
           response => {

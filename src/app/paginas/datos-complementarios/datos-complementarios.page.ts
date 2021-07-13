@@ -212,7 +212,7 @@ export class DatosComplementariosPage implements OnInit {
         });
     });
     miPrimeraPromise.then((successMessage) => {
-      console.log(successMessage);
+
     });
   }
   public subirArchivo(event, tipo: number) {

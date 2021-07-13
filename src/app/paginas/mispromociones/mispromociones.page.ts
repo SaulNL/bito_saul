@@ -183,7 +183,7 @@ export class MispromocionesPage implements OnInit {
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
-            console.log('cancelar');
+
           }
         },
         {
@@ -238,7 +238,6 @@ export class MispromocionesPage implements OnInit {
     await modal.present();
     const { data } = await modal.onDidDismiss();
     if (data.data.id_proveedor !== undefined && data.data.id_proveedor !== null) {
-      console.log(data);
       this.buscar();
     }
   }
@@ -336,8 +335,7 @@ export class MispromocionesPage implements OnInit {
   validaRadio(i) {
     let radiobuttons = document.getElementsByTagName("ion-toggle");
     for (let j = 0; j < radiobuttons.length; j++) {
-      if (parseInt(radiobuttons[j].value) === i) { 
-        console.log(radiobuttons[j].value);
+      if (parseInt(radiobuttons[j].value) === i) {
         radiobuttons[j].setAttribute('checked', 'true');
       }
     }

@@ -24,12 +24,12 @@ export class MisFavoritosPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.user);
+
   }
 
   segmentChanged(event){
-    console.log(this.segmentModel);
-    console.log(event);
+    /*console.log(this.segmentModel);
+    console.log(event);*/
   }
 
   abrirProductosFavoritos() {
