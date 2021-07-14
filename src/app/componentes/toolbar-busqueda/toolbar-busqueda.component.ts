@@ -89,4 +89,8 @@ export class ToolbarBusquedaComponent implements OnInit {
   verVentas(){
     this.router.navigate(['/tabs/home/ventas'], { queryParams: {special: true}});
   }
+
+  verSolicitudes(){
+    this.router.navigate(['/tabs/home/solicitud']);
+  }
 }
