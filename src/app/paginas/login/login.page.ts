@@ -97,7 +97,7 @@ export class LoginPage implements OnInit {
           this.sideBarService.publishSomeData("");
           localStorage.setItem("isRedirected", "false");
           this.loadion.dismiss();
-          this._router.navigate(["/tabs/inicio"]);
+          location.assign("/tabs/inicio");
           this.notifi.exito(respuesta.message);
         }
         if (respuesta.code === 402) {
