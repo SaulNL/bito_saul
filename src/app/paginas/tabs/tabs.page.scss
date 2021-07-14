@@ -42,3 +42,9 @@ ion-label.sc-ion-label-md-h.sc-ion-label-md-s.md.hydrated {
 .ion_alpha_sidebar li{
     line-height: 1.1;
 }
+
+@media (min-width: 412px) {
+    .tab-button-principal {
+        font-size: 10px;
+    }
+}

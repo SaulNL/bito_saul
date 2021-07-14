@@ -1,15 +1,16 @@
-.m-0{
+.m-0 {
   margin: 0px 0px 10px 0px;
 }
 
-.fixed{
+.fixed {
   height: 23em;
 }
 
-.img-card-w{
+.img-card-w {
   width: 100%;
 }
-.bolsi{
+
+.bolsi {
   bottom: 3px;
   right: 3px;
 }
@@ -19,28 +20,46 @@
 }
 
 @media (max-width: 500px) {
-  .bosar{
+  .bosar {
     width: 13vw;
     height: 13vw;
-  } 
+  }
 }
-@media (min-width: 501px)and  (max-width: 1300px) {
-  .bosar{
+
+@media (min-width: 501px) and (max-width: 1300px) {
+  .bosar {
     width: 8vw;
     height: 8vw;
-  } 
+  }
 }
-.bosar{
+
+.bosar {
   --background: white;
-  --color: #fa4f72;  
+  --color: #fa4f72;
 }
-.bosa{
+
+.bosa {
   --background: white !important;
   --color: grey !important;
 }
+
 .fixed {
   height: 25em;
 }
+
 ion-card-header {
   padding-top: 3.5rem;
 }
+
+
+@media (min-width: 412px) {
+  .likegegi {
+    bottom: 10rem;
+    position: absolute;
+    left: 1px;
+  }
+  .fixed {
+    height: 29em;
+  }
+}
+
