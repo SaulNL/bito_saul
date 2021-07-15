@@ -1,19 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { PromocionesModel } from '../../Modelos/PromocionesModel';
-import { PromocionesService } from '../../api/promociones.service';
-import { ToadNotificacionService } from '../../api/toad-notificacion.service';
-import { AlertController, IonContent } from '@ionic/angular';
-import { PublicacionesModel } from '../../Modelos/PublicacionesModel';
-import { ModalController } from '@ionic/angular';
-import { ModalPublicarComponent } from 'src/app/components/modal-publicar/modal-publicar.component';
-import { QuienVioModel } from '../../Modelos/QuienVioModel';
-import { ModalInfoPromoComponent } from '../../components/modal-info-promo/modal-info-promo.component';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { PromocionesModel } from "../../Modelos/PromocionesModel";
+import { PromocionesService } from "../../api/promociones.service";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { AlertController, IonContent } from "@ionic/angular";
+import { PublicacionesModel } from "../../Modelos/PublicacionesModel";
+import { ModalController } from "@ionic/angular";
+import { ModalPublicarComponent } from "src/app/components/modal-publicar/modal-publicar.component";
+import { QuienVioModel } from "../../Modelos/QuienVioModel";
+import { ModalInfoPromoComponent } from "../../components/modal-info-promo/modal-info-promo.component";
 import { Router, ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'app-mispromociones',
-  templateUrl: './mispromociones.page.html',
-  styleUrls: ['./mispromociones.page.scss'],
+  selector: "app-mispromociones",
+  templateUrl: "./mispromociones.page.html",
+  styleUrls: ["./mispromociones.page.scss"],
 })
 export class MispromocionesPage implements OnInit {
   @ViewChild(IonContent) content: IonContent;
@@ -26,7 +26,8 @@ export class MispromocionesPage implements OnInit {
   public id_proveedor: any;
   public lstPromocionesPublicadas: Array<PromocionesModel>;
   public promocion: PromocionesModel;
-  public loader = false;
+  public loaderPc = false;
+  public loaderPr = false;
   public btnBlockedNuevo = false;
   public lstPromociones: Array<PromocionesModel>;
   public lstPromocionesBK: Array<PromocionesModel>;
@@ -62,7 +63,7 @@ export class MispromocionesPage implements OnInit {
   }
 
   ngOnInit() {
-    this.usuario = JSON.parse(localStorage.getItem('u_data'));
+    this.usuario = JSON.parse(localStorage.getItem("u_data"));
     this.id_proveedor = this.usuario.proveedor.id_proveedor;
     this.publicacionesHechas = 0;
     this.publicacionesPermitidas = 0;
@@ -73,7 +74,7 @@ export class MispromocionesPage implements OnInit {
     this.promocion = new PromocionesModel();
     this.blnActivarFormularioEdicion = false;
     this.buscar();
-    this.active.queryParams.subscribe(params => {
+    this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
         if (params.special) {
           this.buscar();
@@ -85,28 +86,32 @@ export class MispromocionesPage implements OnInit {
   agregar() {
     this.seleccionTO = new PromocionesModel();
     let navigationExtras = JSON.stringify(this.seleccionTO);
-    this._router.navigate(['/tabs/home/promociones/agregar-promocion'], { queryParams: { special: navigationExtras } });
+    this._router.navigate(["/tabs/home/promociones/agregar-promocion"], {
+      queryParams: { special: navigationExtras },
+    });
   }
 
   buscar() {
+    this.loaderPc = true;
+    this.loaderPr = true;
     this.seleccionaPromocion = false;
     this.btnDetallePromocion = false;
     this.agregarPromocion = false;
     this.cancelarEdicion();
-    this.loader = true;
     this.seleccionTO.id_proveedor = this.usuario.proveedor.id_proveedor;
     this._promociones_service.buscar(this.seleccionTO).subscribe(
-      response => {
+      (response) => {
         this.lstPromociones = response.data;
         this.lstPromocionesBK = response.data;
-        this.filtro = '';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        this.filtro = "";
+        window.scrollTo({ top: 0, behavior: "smooth" });
         this.obtenerNumeroPublicacionesPromocion();
         this.obtenerPromocionesPublicadas();
       },
-      error => {
+      (error) => {
         this._notificacionService.error(error);
-        this.loader = false;
+        this.loaderPc = false;
+        this.loaderPr = false;
       }
     );
   }
@@ -119,44 +124,60 @@ export class MispromocionesPage implements OnInit {
   }
 
   obtenerNumeroPublicacionesPromocion() {
-    this._promociones_service.obtenerNumeroPublicacionesPromocion(this.id_proveedor).subscribe(
-      response => {
-        this.publicacionesHechas = response.data.numPublicacionesPromo;
-        this.publicacionesPermitidas = response.data.numPubliPromoPermitidas;
-        this.loader = false;
-      },
-      error => {
-        this._notificacionService.error(error);
-        this.loader = false;
-      }
-    );
+    this._promociones_service
+      .obtenerNumeroPublicacionesPromocion(this.id_proveedor)
+      .subscribe(
+        (response) => {
+          this.publicacionesHechas = response.data.numPublicacionesPromo;
+          this.publicacionesPermitidas = response.data.numPubliPromoPermitidas;
+          this.loaderPr = false;
+        },
+        (error) => {
+          this._notificacionService.error(error);
+          this.loaderPr = false;
+        }
+      );
   }
 
   public obtenerPromocionesPublicadas() {
-    this.loader = true;
-    this._promociones_service.obtenerPromocinesPublicadas(this.seleccionTO).subscribe(response => {
-      this.lstPromocionesPublicadas = response.data;
-      this.lstPromocionesPublicadasBK = response.data;
-      this.loader = false;
-    },
-      error => {
-        this._notificacionService.error(error);
-        this.loader = false;
-      });
+    this.loaderPc = true;
+    this._promociones_service
+      .obtenerPromocinesPublicadas(this.seleccionTO)
+      .subscribe(
+        (response) => {
+          this.lstPromocionesPublicadas = response.data;
+          this.lstPromocionesPublicadasBK = response.data;
+          this.loaderPc = false;
+        },
+        (error) => {
+          this._notificacionService.error(error);
+          this.loaderPc = false;
+        }
+      );
   }
 
   public seleccionarPromocion(promocion: PromocionesModel) {
     this.promocion = promocion;
     let navigation = JSON.stringify(this.promocion);
-    this._router.navigate(['/tabs/home/promociones/publicar-promocion'], { queryParams: { especial: navigation } });
+    this._router.navigate(["/tabs/home/promociones/publicar-promocion"], {
+      queryParams: { especial: navigation },
+    });
   }
 
   btnBuscar() {
     this.lstPromocionesPublicadas = this.lstPromocionesPublicadasBK;
-    this.lstPromocionesPublicadas = this.lstPromocionesPublicadas.filter(element => {
-      return element.nombre_comercial.toLowerCase().indexOf(this.filtro.toString().toLowerCase()) > -1
-        || element.promocion.toLowerCase().indexOf(this.filtro.toString().toLowerCase()) > -1;
-    });
+    this.lstPromocionesPublicadas = this.lstPromocionesPublicadas.filter(
+      (element) => {
+        return (
+          element.nombre_comercial
+            .toLowerCase()
+            .indexOf(this.filtro.toString().toLowerCase()) > -1 ||
+          element.promocion
+            .toLowerCase()
+            .indexOf(this.filtro.toString().toLowerCase()) > -1
+        );
+      }
+    );
   }
 
   public modificar(seleccionTO: PromocionesModel) {
@@ -165,7 +186,7 @@ export class MispromocionesPage implements OnInit {
     this.btnDetallePromocion = false;
     this.seleccionaPromocion = true;
     this.seleccionTO = seleccionTO;
-    this.accionFormulario = 'Modificar Promocion';
+    this.accionFormulario = "Modificar Promocion";
   }
 
   public preguntaEliminar(variable: PromocionesModel) {
@@ -176,23 +197,21 @@ export class MispromocionesPage implements OnInit {
 
   async alerta() {
     const alert = await this.alertController.create({
-      header: 'Esta apunto de eliminar la promoción',
-      message: '¿Desea continuar?',
+      header: "Esta apunto de eliminar la promoción",
+      message: "¿Desea continuar?",
       buttons: [
         {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-
-          }
+          text: "Cancelar",
+          role: "cancel",
+          handler: () => {},
         },
         {
-          text: 'Eliminar',
+          text: "Eliminar",
           handler: (data) => {
             this.eliminar();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
@@ -200,17 +219,16 @@ export class MispromocionesPage implements OnInit {
 
   public eliminar() {
     this._promociones_service.eliminar(this.seleccionTO).subscribe(
-      response => {
+      (response) => {
         this.buscar();
       },
-      error => {
+      (error) => {
         this._notificacionService.error(error);
       }
     );
   }
 
   public abrirModal(Promocion: PromocionesModel) {
-
     if (this.publicacionesHechas >= this.publicacionesPermitidas) {
       this.mensajePublicacion = true;
     }
@@ -219,7 +237,7 @@ export class MispromocionesPage implements OnInit {
     this.publicacion = new PublicacionesModel();
     this.publicacion.id_promocion = Promocion.id_promocion;
     this.publicacion.id_negocio = Promocion.id_negocio;
-    this.fechas = '';
+    this.fechas = "";
     this.fi = null;
     this.ff = null;
     this.publicarPromocion();
@@ -228,16 +246,19 @@ export class MispromocionesPage implements OnInit {
   async publicarPromocion() {
     const modal = await this.modalController.create({
       component: ModalPublicarComponent,
-      cssClass: 'my-custom-class',
+      cssClass: "my-custom-class",
       componentProps: {
-        'publicacion': this.publicacion,
-        'mensajePublicacion': this.mensajePublicacion,
-        'publicacionesPermitidas': this.publicacionesPermitidas
-      }
+        publicacion: this.publicacion,
+        mensajePublicacion: this.mensajePublicacion,
+        publicacionesPermitidas: this.publicacionesPermitidas,
+      },
     });
     await modal.present();
     const { data } = await modal.onDidDismiss();
-    if (data.data.id_proveedor !== undefined && data.data.id_proveedor !== null) {
+    if (
+      data.data.id_proveedor !== undefined &&
+      data.data.id_proveedor !== null
+    ) {
       this.buscar();
     }
   }
@@ -246,44 +267,46 @@ export class MispromocionesPage implements OnInit {
     if (evento.detail.checked === false) {
       this.presentAlert(i);
     }
-      this.seleccionTO = publicada;
+    this.seleccionTO = publicada;
   }
   async presentAlert(i: number) {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'Dejar de publicar',
-      subHeader: '!Precaución! esta acción no podrá ser revertida',
+      cssClass: "my-custom-class",
+      header: "Dejar de publicar",
+      subHeader: "!Precaución! esta acción no podrá ser revertida",
       message: `¿Desea dejar de publicar esta publicación de la promoción: ${this.seleccionTO.promocion}?`,
       buttons: [
         {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
+          text: "Cancel",
+          role: "cancel",
+          cssClass: "secondary",
           handler: () => {
             this.validaRadio(i);
-          }
+          },
         },
         {
-          text: 'Aceptar',
+          text: "Aceptar",
           handler: () => {
             this.quitarPublicacionPromocion();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
   }
 
   quitarPublicacionPromocion() {
-    this._promociones_service.quitarPublicacionPromocion(this.seleccionTO).subscribe(
-      response => {
-        this.buscar();
-      },
-      error => {
-        this._notificacionService.error(error);
-      }
-    );
+    this._promociones_service
+      .quitarPublicacionPromocion(this.seleccionTO)
+      .subscribe(
+        (response) => {
+          this.buscar();
+        },
+        (error) => {
+          this._notificacionService.error(error);
+        }
+      );
   }
 
   public abrirModalDetalle(id_promocion, estatus) {
@@ -293,51 +316,56 @@ export class MispromocionesPage implements OnInit {
 
   quienVioPublicacion(id_promocion) {
     this.btnLoaderModal = true;
-    this._promociones_service.obtenerQuienVioPublicacion(id_promocion, this.usuario.id_persona).subscribe(
-      response => {
-        this.lstQuienVioPublicacion = response.data;
-        this.quienNumeroVioPublicacion(id_promocion);
-      },
-      error => {
-      }
-    );
+    this._promociones_service
+      .obtenerQuienVioPublicacion(id_promocion, this.usuario.id_persona)
+      .subscribe(
+        (response) => {
+          this.lstQuienVioPublicacion = response.data;
+          this.quienNumeroVioPublicacion(id_promocion);
+        },
+        (error) => {}
+      );
   }
 
   quienNumeroVioPublicacion(id_promocion) {
-    this._promociones_service.obtenerNumeroQuienVioPublicacion(id_promocion).subscribe(
-      response => {
-        this.numeroVisto = response.data;
-        this.btnLoaderModal = false;
-        this.infoPromocion();
-      },
-      error => {
-      }
-    );
+    this._promociones_service
+      .obtenerNumeroQuienVioPublicacion(id_promocion)
+      .subscribe(
+        (response) => {
+          this.numeroVisto = response.data;
+          this.btnLoaderModal = false;
+          this.infoPromocion();
+        },
+        (error) => {}
+      );
   }
 
   async infoPromocion() {
     const modal = await this.modalController.create({
       component: ModalInfoPromoComponent,
-      cssClass: 'my-custom-class',
+      cssClass: "my-custom-class",
       componentProps: {
-        'lstQuienVioPublicacion': this.lstQuienVioPublicacion,
-        'lstQuienVioPublicacionActiva': this.lstQuienVioPublicacionActiva,
-        'btnLoaderModal': this.btnLoaderModal,
-        'numeroVisto': this.numeroVisto
-      }
+        lstQuienVioPublicacion: this.lstQuienVioPublicacion,
+        lstQuienVioPublicacionActiva: this.lstQuienVioPublicacionActiva,
+        btnLoaderModal: this.btnLoaderModal,
+        numeroVisto: this.numeroVisto,
+      },
     });
     return await modal.present();
   }
 
   regresar() {
-    this._router.navigateByUrl('tabs/home/perfil');
+    this._router.navigateByUrl("tabs/home/perfil");
   }
   validaRadio(i) {
     let radiobuttons = document.getElementsByTagName("ion-toggle");
     for (let j = 0; j < radiobuttons.length; j++) {
       if (parseInt(radiobuttons[j].value) === i) {
-        radiobuttons[j].setAttribute('checked', 'true');
+        radiobuttons[j].setAttribute("checked", "true");
       }
     }
+  }
+  public loading(pc: any, pr: any) {
+    return pc === true && pr === true ? true : false;
   }
 }

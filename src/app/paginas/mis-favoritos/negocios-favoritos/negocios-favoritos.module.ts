@@ -1,3 +1,4 @@
+import { SpinnerModule } from './../../../componentes/spinner/spinner.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +11,8 @@ import { NegociosFavoritosPage } from './negocios-favoritos.page';
         CommonModule,
         FormsModule,
         IonicModule,
-        NegociosFavoritosPageRoutingModule
+        NegociosFavoritosPageRoutingModule,
+        SpinnerModule
     ],
     exports: [
         NegociosFavoritosPage

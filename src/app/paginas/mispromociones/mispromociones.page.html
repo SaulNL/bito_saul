@@ -12,8 +12,8 @@
   </ion-toolbar>
 </ion-header>
 
-
-<ion-content [scrollEvents]="true"  (ionScroll)="cordenada = $event.detail.scrollTop">
+<app-spinner [loader]="loading(loaderPc, loaderPr)"></app-spinner>
+<ion-content *ngIf="!loaderPc && !loaderPr" [scrollEvents]="true"  (ionScroll)="cordenada = $event.detail.scrollTop">
 	<app-boton-top [content]="content" [cordenada]="cordenada" ></app-boton-top>
 			<div>
 				<div *ngIf="!agregarPromocion">
@@ -35,12 +35,12 @@
 											<ion-buttons slot="end">
          										<ion-icon name="chevron-forward-outline"></ion-icon>
         									</ion-buttons>
-										</ion-item>								
+										</ion-item>
 									</div>
-								</ion-card-content>	
+								</ion-card-content>
 							</ion-card>
 						</div>
-						
+
 						<ion-card>
 							<ion-card-content>
 								<div style="height:5px ;" class="ion-text-end" (click)=" mostrarListaPromocionesPublicadas = !mostrarListaPromocionesPublicadas">
@@ -49,11 +49,11 @@
 								</div>
 								<div class="ion-text-center" style="margin-top: 20px">
 									<strong style="color: black;">Publicaciones que haz realizado
-										
+
 									</strong>
-									
+
 								</div>
-		
+
 								<div style="display: flex; justify-content: center; align-items: center;">
 									<p style="color: black;">{{publicacionesHechas}} de {{publicacionesPermitidas}}</p>
 								</div>
@@ -90,11 +90,11 @@
 								</div>
 							</ion-card-content>
 						</ion-card>
-						
-						
+
+
 					</div>
 				</div>
-		
+
 			</div>
 
 </ion-content>

@@ -1,19 +1,18 @@
-import { SolicitudesService } from './../../api/solicitudes.service';
-import { Component, OnInit } from '@angular/core';
-import { SolicitudesModel } from 'src/app/Modelos/SolicitudesModel';
-import { DetDomicilioModel } from 'src/app/Modelos/busqueda/DetDomicilioModel';
-import { ActionSheetController } from '@ionic/angular';
-import { ToadNotificacionService } from '../../api/toad-notificacion.service';
-import { LoadingController } from '@ionic/angular';
-import * as moment from 'moment';
-import { PublicacionesModel } from 'src/app/Modelos/PublicacionesModel';
-import { Router, ActivatedRoute } from '@angular/router';
-
+import { SolicitudesService } from "./../../api/solicitudes.service";
+import { Component, OnInit } from "@angular/core";
+import { SolicitudesModel } from "src/app/Modelos/SolicitudesModel";
+import { DetDomicilioModel } from "src/app/Modelos/busqueda/DetDomicilioModel";
+import { ActionSheetController } from "@ionic/angular";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { LoadingController } from "@ionic/angular";
+import * as moment from "moment";
+import { PublicacionesModel } from "src/app/Modelos/PublicacionesModel";
+import { Router, ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'app-solicitudes',
-  templateUrl: './solicitudes.page.html',
-  styleUrls: ['./solicitudes.page.scss'],
+  selector: "app-solicitudes",
+  templateUrl: "./solicitudes.page.html",
+  styleUrls: ["./solicitudes.page.scss"],
 })
 export class SolicitudesPage implements OnInit {
   public usuario: any;
@@ -27,10 +26,12 @@ export class SolicitudesPage implements OnInit {
   public filtro: any;
   public accionFormulario: string;
   public loader: any;
+  public loaderSc = false;
+  public loaderSp = false;
   public numeroSolicitudes: number;
-//Admin Solicitudes Publicadas
-public solicitud: SolicitudesModel;
-public numeroPublicadas: number;
+  //Admin Solicitudes Publicadas
+  public solicitud: SolicitudesModel;
+  public numeroPublicadas: number;
 
   constructor(
     private solicitudesService: SolicitudesService,
@@ -39,20 +40,20 @@ public numeroPublicadas: number;
     public loadingController: LoadingController,
     private router: Router,
     private active: ActivatedRoute
-  ) {
-
-  }
+  ) {}
 
   ngOnInit() {
-    this.usuario = JSON.parse(localStorage.getItem('u_data'));
+    this.usuario = JSON.parse(localStorage.getItem("u_data"));
     this.id_proveedor = this.usuario.proveedor.id_proveedor;
     this.id_persona = this.usuario.id_persona;
     this.seleccionTO = new SolicitudesModel();
+    this.loaderSc = true;
+    this.loaderSp = true;
     this.obtenerSolcitudesPublicadas();
     this.buscar();
-    this.active.queryParams.subscribe(params => {
+    this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
-        if (params.special){
+        if (params.special) {
           this.obtenerSolcitudesPublicadas();
           this.buscar();
         }
@@ -61,97 +62,134 @@ public numeroPublicadas: number;
   }
   async presentLoading() {
     this.loader = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'por favor espera...'
+      cssClass: "my-custom-class",
+      message: "por favor espera...",
     });
     return this.loader.present();
   }
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
-      header: 'Solicitudes',
-      cssClass: 'my-custom-class',
-      buttons: [{
-        text: 'Agregar Solicitud',
-        icon: 'add-circle-outline',
-        handler: () => {
-          this.agregar();
-        }
-      }, {
-        text: 'Publicaciones',
-        icon: 'reader-outline',
-        handler: () => {
-        this.router.navigate(['/tabs/home/solicitudes/admin-solicitudes-publicadas']);
-        }
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-        }
-      }]
+      header: "Solicitudes",
+      cssClass: "my-custom-class",
+      buttons: [
+        {
+          text: "Agregar Solicitud",
+          icon: "add-circle-outline",
+          handler: () => {
+            this.agregar();
+          },
+        },
+        {
+          text: "Publicaciones",
+          icon: "reader-outline",
+          handler: () => {
+            this.router.navigate([
+              "/tabs/home/solicitudes/admin-solicitudes-publicadas",
+            ]);
+          },
+        },
+        {
+          text: "Cancel",
+          icon: "close",
+          role: "cancel",
+          handler: () => {},
+        },
+      ],
     });
     await actionSheet.present();
   }
 
   /**
- * Funcion para buscar solicitudes
- * @author Omar
- */
+   * Funcion para buscar solicitudes
+   * @author Omar
+   */
   buscar() {
     this.seleccionTO.id_proveedor = this.usuario.proveedor.id_proveedor;
     this.seleccionTO.id_persona = this.usuario.id_persona;
     this.solicitudesService.buscar(this.seleccionTO).subscribe(
-      response => {
+      (response) => {
         this.lstSolicitudes = response.data;
         this.numeroSolicitudes = this.lstSolicitudes.length;
         this.lstSolicitudesBK = response.data;
+        this.loaderSc = false;
       },
-      error => {
+      (error) => {
+        this.loaderSc = false;
         this.notificaciones.error(error);
       }
     );
   }
- 
+
   seleccionarSolicitud(solicitud) {
-    this.seleccionTO =  JSON.parse(JSON.stringify(solicitud));
+    this.seleccionTO = JSON.parse(JSON.stringify(solicitud));
     let navigationExtras = JSON.stringify(this.seleccionTO);
-    this.router.navigate(['/tabs/home/solicitudes/card-solicitud'], { queryParams: {special: navigationExtras}  });
+    this.router.navigate(["/tabs/home/solicitudes/card-solicitud"], {
+      queryParams: { special: navigationExtras },
+    });
   }
 
   agregar() {
     this.seleccionTO = new SolicitudesModel();
     this.seleccionTO.det_domicilio = new DetDomicilioModel();
     let navigationExtras = JSON.stringify(this.seleccionTO);
-    this.router.navigate(['/tabs/home/solicitudes/form-solicitud'],{ queryParams: {special: navigationExtras}  });
+    this.router.navigate(["/tabs/home/solicitudes/form-solicitud"], {
+      queryParams: { special: navigationExtras },
+    });
   }
 
   abriAdminPublicadas() {
-   this.router.navigate(['/tabs/home/solicitudes/admin-solicitudes-publicadas'], { queryParams: {special: true}  });
+    this.router.navigate(
+      ["/tabs/home/solicitudes/admin-solicitudes-publicadas"],
+      { queryParams: { special: true } }
+    );
   }
-/*ADMINISTRADOT DE SOLICITUDES*/
-public obtenerSolcitudesPublicadas() {
-  this.seleccionTO.id_proveedor = this.id_proveedor;
-  this.seleccionTO.id_persona = this.id_persona;
-  this.solicitudesService.obtenerSolcitudesPublicadas(this.seleccionTO).subscribe(response => {
-    this.lstSolicitudesPublicadas = response.data;
-    this.numeroPublicadas = this.lstSolicitudesPublicadas.length;
-    this.lstSolicitudesPublicadasBK = response.data;
-  },
-    error => {
-           this.notificaciones.error(error);
-    });
-}
-btnBuscar(e) {
-  this.filtro = e.target.value;
-  this.lstSolicitudesPublicadas = this.lstSolicitudesPublicadasBK;
-  this.lstSolicitudesPublicadas = this.lstSolicitudesPublicadas.filter(element => {
-    return element.solicitud.toLowerCase().indexOf(this.filtro.toString().toLowerCase()) > -1
-      || element.descripcion.toLowerCase().indexOf(this.filtro.toString().toLowerCase()) > -1;
-  });
-}
-selecAdminPublicada(solicitud: any) {
-  this.solicitud = JSON.parse(JSON.stringify(solicitud));
-  let navigationExtras = JSON.stringify(this.solicitud);
-  this.router.navigate(['/tabs/home/solicitudes/admin-solicitudes-publicadas/card-admin-solicitud'], { queryParams: { special: navigationExtras } });
-}
+  /*ADMINISTRADOT DE SOLICITUDES*/
+  public obtenerSolcitudesPublicadas() {
+    this.seleccionTO.id_proveedor = this.id_proveedor;
+    this.seleccionTO.id_persona = this.id_persona;
+    this.solicitudesService
+      .obtenerSolcitudesPublicadas(this.seleccionTO)
+      .subscribe(
+        (response) => {
+          this.lstSolicitudesPublicadas = response.data;
+          this.numeroPublicadas = this.lstSolicitudesPublicadas.length;
+          this.lstSolicitudesPublicadasBK = response.data;
+          this.loaderSp = false;
+        },
+        (error) => {
+          this.notificaciones.error(error);
+          this.loaderSp = false;
+        }
+      );
+  }
+  btnBuscar(e) {
+    this.filtro = e.target.value;
+    this.lstSolicitudesPublicadas = this.lstSolicitudesPublicadasBK;
+    this.lstSolicitudesPublicadas = this.lstSolicitudesPublicadas.filter(
+      (element) => {
+        return (
+          element.solicitud
+            .toLowerCase()
+            .indexOf(this.filtro.toString().toLowerCase()) > -1 ||
+          element.descripcion
+            .toLowerCase()
+            .indexOf(this.filtro.toString().toLowerCase()) > -1
+        );
+      }
+    );
+  }
+  selecAdminPublicada(solicitud: any) {
+    this.solicitud = JSON.parse(JSON.stringify(solicitud));
+    let navigationExtras = JSON.stringify(this.solicitud);
+    this.router.navigate(
+      [
+        "/tabs/home/solicitudes/admin-solicitudes-publicadas/card-admin-solicitud",
+      ],
+      { queryParams: { special: navigationExtras } }
+    );
+  }
+
+  public loading(pc: any, pr: any) {
+    return pc === true && pr === true ? true : false;
+  }
 }

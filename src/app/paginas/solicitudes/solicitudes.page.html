@@ -14,7 +14,7 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
- <!--lista Solicitudes-->
+ <app-spinner [loader]="loading(loaderSc, loaderSp)"></app-spinner>
  <ion-content>
   <ion-card>
     <div class="ion-text-center ion-margin-top">
@@ -57,7 +57,7 @@
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </ion-buttons>
     </ion-item>
-    </ion-list>  
+    </ion-list>
   </ion-card-header>
   </ion-card>
 </ion-content>

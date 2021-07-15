@@ -1,4 +1,3 @@
-import { SpinnerComponent } from "./../../componentes/spinner/spinner.component";
 import { BotonTopComponent } from "./../../componentes/boton-top/boton-top.component";
 import { IonicModule } from "@ionic/angular";
 import { NgModule } from "@angular/core";
@@ -11,7 +10,6 @@ import { TabsPageRoutingModule } from "./tabs-routing.module";
 import { ModalClasificacionComponent } from "../../componentes/modal-clasificacion/modal-clasificacion.component";
 import { RecorteImagenComponent } from "../../components/recorte-imagen/recorte-imagen.component";
 import { ImageCropperModule } from "ngx-image-cropper";
-
 import { TabsPage } from "./tabs.page";
 import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/filtros-busqueda.component";
 
@@ -31,8 +29,7 @@ import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/fil
     InputTagsComponent,
     ModalClasificacionComponent,
     RecorteImagenComponent,
-    FiltrosBusquedaComponent,
-    SpinnerComponent
+    FiltrosBusquedaComponent
   ],
   exports: [
     BannerPromocionesComponent,
@@ -41,8 +38,7 @@ import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/fil
     InputTagsComponent,
     ModalClasificacionComponent,
     RecorteImagenComponent,
-    FiltrosBusquedaComponent,
-    SpinnerComponent
+    FiltrosBusquedaComponent
   ],
 })
 export class TabsPageModule {}

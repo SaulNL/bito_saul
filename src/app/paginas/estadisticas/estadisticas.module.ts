@@ -1,3 +1,4 @@
+import { SpinnerModule } from './../../componentes/spinner/spinner.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +14,8 @@ import {InfinitoScrollModule} from '../../componentes/infinito-scroll/infinito-s
         FormsModule,
         IonicModule,
         EstadisticasPageRoutingModule,
-        InfinitoScrollModule
+        InfinitoScrollModule,
+        SpinnerModule
     ],
     declarations: [EstadisticasPage, EstadisticasComponent]
 })
