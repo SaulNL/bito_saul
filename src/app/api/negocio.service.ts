@@ -35,8 +35,8 @@ export class NegocioService {
             }));
     }
 
-    public obtenerDetalleDeNegocio(negocio: number, tip): Observable<any> {
-        const body = JSON.stringify({id_negocio: negocio, tipo: tip});
+    public obtenerDetalleDeNegocio(negocio: number, tip, persona): Observable<any> {
+        const body = JSON.stringify({id_negocio: negocio, tipo: tip, id_persona: persona});
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/lista/producto/negocio',
