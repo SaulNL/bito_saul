@@ -17,7 +17,8 @@ export class DarLikeProductoComponent implements OnInit {
     private servicioProducto: ProductosService,
     private notificacion: ToadNotificacionService
   ) {}
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   public darLike(producto: ProductoModel) {
     this.servicioProducto.darLike(producto, this.usuario).subscribe(

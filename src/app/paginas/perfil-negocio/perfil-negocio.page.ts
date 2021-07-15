@@ -38,6 +38,7 @@ import {ComentariosNegocioComponent} from '../../componentes/comentarios-negocio
   styleUrls: ['./perfil-negocio.page.scss'],
 })
 export class PerfilNegocioPage implements OnInit {
+
   public listaComentarios: [];
   public mostrarComentarios: boolean;
   public seccion: any;
@@ -101,7 +102,7 @@ export class PerfilNegocioPage implements OnInit {
       private platform: Platform,
       private blockk: AuthGuardService,
       private navBarServiceService: NavBarServiceService,
-      private servicioProductos: ProductosService
+      private servicioProductos: ProductosService,
   ) {
     this.seccion = 'ubicacion';
     this.loader = true;
@@ -200,6 +201,7 @@ export class PerfilNegocioPage implements OnInit {
         (response) => {
           if (response.data !== null) {
             this.informacionNegocio = response.data;
+            console.log(response.data);
             if (!this.informacionNegocio.activo) {
               this.presentExit();
               this.siEsta = false;
@@ -232,7 +234,7 @@ export class PerfilNegocioPage implements OnInit {
 
   obtenerProductos() {
     this.negocioService
-        .obtenerDetalleDeNegocio(this.informacionNegocio.id_negocio, 0)
+        .obtenerDetalleDeNegocio(this.informacionNegocio.id_negocio, 0, this.user.id_persona)
         .subscribe(
             (response) => {
               if (response.code === 200 && response.agrupados != null) {
@@ -273,7 +275,7 @@ export class PerfilNegocioPage implements OnInit {
 
   obtenerServicios() {
     this.negocioService
-        .obtenerDetalleDeNegocio(this.informacionNegocio.id_negocio, 1)
+        .obtenerDetalleDeNegocio(this.informacionNegocio.id_negocio, 1, this.user.id_persona)
         .subscribe(
             (response) => {
               if (response.code === 200 && response.agrupados != null) {
