@@ -1,10 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { UtilsCls } from "../../../utils/UtilsCls";
 import { PersonaService } from "../../../api/persona.service";
 import { Router } from "@angular/router";
 import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
 import { MsNegocioModel } from "../../../Modelos/busqueda/MsNegocioModel";
 import { ProveedorServicioService } from "../../../api/busqueda/proveedores/proveedor-servicio.service";
+import {IonContent} from '@ionic/angular';
 
 @Component({
   selector: "app-negocios-favoritos",
@@ -12,6 +13,8 @@ import { ProveedorServicioService } from "../../../api/busqueda/proveedores/prov
   styleUrls: ["./negocios-favoritos.page.scss"],
 })
 export class NegociosFavoritosPage implements OnInit {
+  @ViewChild(IonContent) content: IonContent;
+  public cordenada: number;
   public user: any;
   public listaNegocios: any;
   public motrarContacto: boolean;

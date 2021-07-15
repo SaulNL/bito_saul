@@ -8,6 +8,7 @@ import { ProductosFavoritosPageRoutingModule } from './productos-favoritos-routi
 
 import { ProductosFavoritosPage } from './productos-favoritos.page';
 import {ModalProductoPageModule} from '../../productos/modal-producto/modal-producto.module';
+import {TabsPageModule} from '../../tabs/tabs.module';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import {ModalProductoPageModule} from '../../productos/modal-producto/modal-prod
         FormsModule,
         IonicModule,
         ProductosFavoritosPageRoutingModule,
-        ModalProductoPageModule
+        ModalProductoPageModule,
+        TabsPageModule
     ],
     exports: [
         ProductosFavoritosPage

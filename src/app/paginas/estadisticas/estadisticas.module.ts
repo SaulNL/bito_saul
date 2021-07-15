@@ -6,6 +6,7 @@ import { EstadisticasPageRoutingModule } from './estadisticas-routing.module';
 import { EstadisticasPage } from './estadisticas.page';
 import {EstadisticasComponent} from '../../componentes/estadisticas/estadisticas.component';
 import {InfinitoScrollModule} from '../../componentes/infinito-scroll/infinito-scroll.module';
+import {TabsPageModule} from '../tabs/tabs.module';
 
 @NgModule({
     imports: [
@@ -13,7 +14,8 @@ import {InfinitoScrollModule} from '../../componentes/infinito-scroll/infinito-s
         FormsModule,
         IonicModule,
         EstadisticasPageRoutingModule,
-        InfinitoScrollModule
+        InfinitoScrollModule,
+        TabsPageModule
     ],
     declarations: [EstadisticasPage, EstadisticasComponent]
 })

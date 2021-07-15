@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from "@angular/core";
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import { UtilsCls } from "../../../utils/UtilsCls";
 import { PersonaService } from "../../../api/persona.service";
 import { Router } from "@angular/router";
 import { ProductoModel } from "../../../Modelos/ProductoModel";
 import { ModalProductoPage } from "../../productos/modal-producto/modal-producto.page";
-import { AnimationController, ModalController } from "@ionic/angular";
+import {AnimationController, IonContent, ModalController} from '@ionic/angular';
 import { ProductosService } from "../../../api/productos.service";
 import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
 
@@ -14,6 +14,8 @@ import { ToadNotificacionService } from "../../../api/toad-notificacion.service"
   styleUrls: ["./productos-favoritos.page.scss"],
 })
 export class ProductosFavoritosPage implements OnInit {
+  @ViewChild(IonContent) content: IonContent;
+  public cordenada: number;
   public user: any;
   public listaProductos: any;
   public unoProducto: ProductoModel;

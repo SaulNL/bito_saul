@@ -7,7 +7,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+  <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
   <ion-list>
     <ion-list-header>
       Negocios
