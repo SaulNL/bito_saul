@@ -12,6 +12,7 @@
     </ion-grid>
   </div>
   <div *ngIf="!loader">
+    <app-recargar (respuesta)="recargar($event)"></app-recargar>
     <ion-grid *ngFor="let categorias of lstPromociones" class=".categoria" >
       <ion-row class="categoria">
         <h2>{{ categorias.nombre }}</h2>

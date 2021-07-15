@@ -1,4 +1,4 @@
-import { SpinnerComponent } from './../../componentes/spinner/spinner.component';
+import { RecargarModule } from './../../componentes/recargar/recargar.module';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -26,14 +26,14 @@ import { InfoPromoComponent } from '../../components/info-promo/info-promo.compo
     FormsModule,
     ExploreContainerComponentModule,
     Tab2PageRoutingModule,
-    TabsPageModule
+    TabsPageModule,
+     RecargarModule
   ],
   declarations: [
     PromocionesPage,
     PromocionComponent,
     ModalPromocionComponent,
-    InfoPromoComponent,
-    SpinnerComponent
+    InfoPromoComponent
   ]
 })
 export class Tab2PageModule {}

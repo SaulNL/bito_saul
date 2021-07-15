@@ -1,3 +1,4 @@
+import { RecargarModule } from './../../componentes/recargar/recargar.module';
 import { DarLikeNegocioModule } from './../../componentes/dar-like-negocio/dar-like-negocio.module';
 import {IonicModule, LoadingController} from '@ionic/angular';
 import { RouterModule } from '@angular/router';
@@ -19,6 +20,7 @@ import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-nego
     FormsModule,
     ExploreContainerComponentModule,
     DarLikeNegocioModule,
+    RecargarModule,
     RouterModule.forChild([{ path: '', component: InicioPage }]),
     Tab3PageRoutingModule,
       FiltrosBusquedaModule,

@@ -121,11 +121,9 @@ export class ProductosPage {
         }
         this.lstProductosBK = response.data.lstProductos;
         this.armarFiltroABC();
-        //this.loader.onDidDismiss();
       },
       (error) => {
         this.notificaciones.error("Error, intentelo más tarde");
-        //this.loader.onDidDismiss();
       }
     );
   }

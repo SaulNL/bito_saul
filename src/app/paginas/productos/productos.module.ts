@@ -1,4 +1,3 @@
-import { SpinnerComponent } from './../../componentes/spinner/spinner.component';
 import { RecargarModule } from './../../componentes/recargar/recargar.module';
 import { InfinitoScrollModule } from './../../componentes/infinito-scroll/infinito-scroll.module';
 import { DarLikeProductoModule } from './../../componentes/dar-like-producto/dar-like-producto.module';
@@ -31,8 +30,7 @@ import { ModalProductosComponent } from '../../components/modal-productos/modal-
   ],
   declarations: [ProductosPage,
     InfoProductosComponent,
-    ModalProductosComponent,
-    SpinnerComponent
+    ModalProductosComponent
   ]
 })
 export class Tab1PageModule {}

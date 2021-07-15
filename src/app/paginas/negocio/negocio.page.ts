@@ -61,13 +61,6 @@ export class NegocioPage implements OnInit {
             this.agregarNegocio();
           },
         },
-        /* ,{
-        text: 'Editar',
-        role: 'edit',
-        handler: () => {
-          //
-        }
-      }*/
         {
           text: "Cancel",
           icon: "close",
@@ -131,5 +124,11 @@ export class NegocioPage implements OnInit {
     this.router.navigate(['/tabs/home/negocio/card-negocio/info-negocio'], {
       queryParams: { specialune: navigationExtras },
     });
+  }
+
+  public recargar(event: any) {
+    if (event.active) {
+      this.buscarLista();
+    }
   }
 }

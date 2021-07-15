@@ -38,6 +38,7 @@
                 </ion-col>
             </ion-row>
         </ion-grid>
+        <app-recargar (respuesta)="recargar($event)"></app-recargar>
         <ion-grid *ngIf="listaCategorias.length !== 0">
             <ion-row *ngFor="let cat of listaCategorias">
                 <ion-text class="w-100">

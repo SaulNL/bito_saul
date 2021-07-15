@@ -1,74 +1,34 @@
 <ion-header>
-    <ion-toolbar  class="tolbar">
-        <ion-buttons slot="start">
-            <ion-button>
-                <ion-menu-button></ion-menu-button>
-            </ion-button>
-        </ion-buttons>
-        <ion-title>Mis favoritos</ion-title>
-    </ion-toolbar>
+  <ion-toolbar class="tolbar">
+    <ion-buttons slot="start">
+      <ion-button>
+        <ion-menu-button></ion-menu-button>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Mis favoritos</ion-title>
+  </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
-
-
-    <ion-grid>
-        <ion-row>
-            <ion-toolbar>
-                <ion-segment value="productos" scrollable="true" [(ngModel)]="segmentModel" (ionChange)="segmentChanged($event)">
-                    <ion-segment-button value="productos">Productos</ion-segment-button>
-                    <ion-segment-button value="negocios">Negocios</ion-segment-button>
-                </ion-segment>
-            </ion-toolbar>
-        </ion-row>
-
-
-
-
-    </ion-grid>
-
-    <app-productos-favoritos *ngIf="segmentModel === 'productos'"></app-productos-favoritos>
-
-    <app-negocios-favoritos *ngIf="segmentModel === 'negocios'"></app-negocios-favoritos>
-
-
-
-
-
-
-
-
-    <!--<ion-slides>
-
-        <ion-slide>
-            <div class="slide slide-mis-favoritos">
-                &lt;!&ndash;<ion-icon class="text-rosa" name="fast-food-outline" style="zoom:12.0;"></ion-icon>&ndash;&gt;
-                <img src="https://ecoevents.blob.core.windows.net/comprandoando/logos/slide-2.png"/>
-                <h2>Mis productos favoritos</h2>
-                &lt;!&ndash;<p>The <b>ionic conference app</b> is a practical preview of the ionic framework in action, and a
-                    demonstration of proper code use.</p>&ndash;&gt;
-                <ion-button expand="block" fill="outline" type="submit" class="boton-ver" (click)="abrirProductosFavoritos()">
-                    Ver
-                </ion-button>
-            </div>
-        </ion-slide>
-
-        <ion-slide>
-            <div class="slide slide-mis-favoritos" style="padding-top: 6rem;">
-                &lt;!&ndash;<ion-icon class="text-rosa" name="storefront-outline" style="zoom:12.0;"></ion-icon>&ndash;&gt;
-                <img src="https://ecoevents.blob.core.windows.net/comprandoando/logos/slide-3.png"/>
-                <h2>Mis negocios favoritos</h2>
-                &lt;!&ndash;<p><b>Ionic Framework</b> is an open source SDK that enables developers to build high quality mobile
-                    apps
-                    with web technologies like HTML, CSS, and JavaScript.</p>&ndash;&gt;
-                <ion-button expand="block" fill="outline" type="submit" class="boton-ver" (click)="abrirNegociosFavoritos()">
-                    Ver
-                </ion-button>
-            </div>
-        </ion-slide>
-
-    </ion-slides>-->
-
+  <ion-grid>
+    <ion-row>
+      <ion-toolbar>
+        <ion-segment
+          value="productos"
+          scrollable="true"
+          [(ngModel)]="segmentModel"
+          (ionChange)="segmentChanged($event)"
+        >
+          <ion-segment-button value="productos">Productos</ion-segment-button>
+          <ion-segment-button value="negocios">Negocios</ion-segment-button>
+        </ion-segment>
+      </ion-toolbar>
+    </ion-row>
+  </ion-grid>
+  <app-productos-favoritos
+    *ngIf="segmentModel === 'productos'"
+  ></app-productos-favoritos>
+  <app-negocios-favoritos
+    *ngIf="segmentModel === 'negocios'"
+  ></app-negocios-favoritos>
 </ion-content>
-

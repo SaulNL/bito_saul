@@ -69,6 +69,11 @@ export class PromocionesPage implements OnInit {
       }
     });
   }
+  public recargar(event: any) {
+    if (event.active) {
+      this.obtenerPromociones();
+    }
+  }
 
   public obtenerPromociones() {
     if (navigator.geolocation && this.anyFiltros.tipoBusqueda === 1) {
