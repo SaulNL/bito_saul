@@ -1,7 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import { PedidosService } from '../../../api/pedidos.service';
 import {UtilsCls} from '../../../utils/UtilsCls';
-import { ModalController, Platform } from '@ionic/angular';
+import {IonContent, ModalController, Platform} from '@ionic/angular';
 import {DatosPedidoNegocioPage} from './datos-pedido-negocio/datos-pedido-negocio.page';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
@@ -12,7 +12,8 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./pedidos-negocio.page.scss'],
 })
 export class PedidosNegocioPage implements OnInit {
-  
+  @ViewChild(IonContent) content: IonContent;
+  public cordenada: number;
   listaNegocioPedididos: any;
   public listaEstatus: any;
   public lstFiltroEstatus: any;

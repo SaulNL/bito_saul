@@ -11,6 +11,7 @@ import {ProductosFavoritosPageModule} from './productos-favoritos/productos-favo
 import {NegociosFavoritosPageModule} from './negocios-favoritos/negocios-favoritos.module';
 import {TabsPageModule} from '../tabs/tabs.module';
 
+
 @NgModule({
     imports: [
         CommonModule,

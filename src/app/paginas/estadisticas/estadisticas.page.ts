@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NegocioModel} from '../../Modelos/NegocioModel';
 import {NegocioService} from '../../api/negocio.service';
-import {ActionSheetController, ModalController} from '@ionic/angular';
+import {ActionSheetController, IonContent, ModalController} from '@ionic/angular';
 import {ComentariosNegocioComponent} from '../../componentes/comentarios-negocio/comentarios-negocio.component';
 import {EstadisticasComponent} from '../../componentes/estadisticas/estadisticas.component';
 
@@ -11,7 +11,8 @@ import {EstadisticasComponent} from '../../componentes/estadisticas/estadisticas
     styleUrls: ['./estadisticas.page.scss'],
 })
 export class EstadisticasPage implements OnInit {
-
+    @ViewChild(IonContent) content: IonContent;
+    public cordenada: number;
     public listaNegocios: Array<NegocioModel>;
     public usuario: any;
     public loader: boolean;

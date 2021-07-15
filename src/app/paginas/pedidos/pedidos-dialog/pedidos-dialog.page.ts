@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {UtilsCls} from '../../../utils/UtilsCls';
 import {PedidosService} from '../../../api/pedidos.service';
 import {icon, latLng, Map, marker, tileLayer} from 'leaflet';
 import {Router, ActivatedRoute} from '@angular/router';
-import {Platform} from '@ionic/angular';
+import {IonContent, Platform} from '@ionic/angular';
 import {Location} from '@angular/common';
 
 @Component({
@@ -12,6 +12,8 @@ import {Location} from '@angular/common';
     styleUrls: ['./pedidos-dialog.page.scss'],
 })
 export class PedidosDialogPage implements OnInit {
+    @ViewChild(IonContent) content: IonContent;
+    public cordenada: number;
     listaNegocioPedididos: any;
     public listaEstatus: any;
     public lstFiltroEstatus: any;

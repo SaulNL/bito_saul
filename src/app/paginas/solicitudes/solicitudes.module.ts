@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { SolicitudesPageRoutingModule } from './solicitudes-routing.module';
 
 import { SolicitudesPage } from './solicitudes.page';
+import {TabsPageModule} from '../tabs/tabs.module';
 
 
 

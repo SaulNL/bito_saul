@@ -1,13 +1,14 @@
-import { SolicitudesService } from "./../../api/solicitudes.service";
-import { Component, OnInit } from "@angular/core";
-import { SolicitudesModel } from "src/app/Modelos/SolicitudesModel";
-import { DetDomicilioModel } from "src/app/Modelos/busqueda/DetDomicilioModel";
-import { ActionSheetController } from "@ionic/angular";
-import { ToadNotificacionService } from "../../api/toad-notificacion.service";
-import { LoadingController } from "@ionic/angular";
-import * as moment from "moment";
-import { PublicacionesModel } from "src/app/Modelos/PublicacionesModel";
-import { Router, ActivatedRoute } from "@angular/router";
+import { SolicitudesService } from './../../api/solicitudes.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import { SolicitudesModel } from 'src/app/Modelos/SolicitudesModel';
+import { DetDomicilioModel } from 'src/app/Modelos/busqueda/DetDomicilioModel';
+import {ActionSheetController, IonContent} from '@ionic/angular';
+import { ToadNotificacionService } from '../../api/toad-notificacion.service';
+import { LoadingController } from '@ionic/angular';
+import * as moment from 'moment';
+import { PublicacionesModel } from 'src/app/Modelos/PublicacionesModel';
+import { Router, ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: "app-solicitudes",
@@ -15,6 +16,8 @@ import { Router, ActivatedRoute } from "@angular/router";
   styleUrls: ["./solicitudes.page.scss"],
 })
 export class SolicitudesPage implements OnInit {
+  @ViewChild(IonContent) content: IonContent;
+  public cordenada: number;
   public usuario: any;
   public id_proveedor: any;
   public id_persona: any;
