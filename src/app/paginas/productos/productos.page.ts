@@ -30,7 +30,7 @@ export class ProductosPage {
   public anyFiltros: FiltrosModel;
   public lstProductos: Array<ProductoModel>;
   public lstProductosBK: Array<ProductoModel>;
-  private loader: HTMLIonLoadingElement;
+  private loader: boolean;
   public blnBtnMapa: boolean;
   public listaNegocioMap: any;
   public motrarContacto: boolean;
@@ -52,7 +52,6 @@ export class ProductosPage {
   public lstProductosOriginal: any;
   public scroll: boolean;
   public mensaje: any;
-
   constructor(
     public loadingController: LoadingController,
     private _router: Router,
@@ -109,7 +108,7 @@ export class ProductosPage {
    * @author Omar
    */
   public obtenerProductos() {
-    this.presentLoading().then((a) => {});
+    this.loader = true;
     this.anyFiltros.user = this.user;
     this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
       (response) => {
@@ -184,6 +183,7 @@ export class ProductosPage {
   public filtrarTodos() {
     this.lstProductosOriginal = this.lstProductosBK;
     this.lstProductos = this.lstProductosBK.slice(0, 6);
+    this.loader = false;
     /*this.banderaTodos = true;*/
   }
 
@@ -220,6 +220,7 @@ export class ProductosPage {
       const tempLstProduct = this.lstProductos;
       this.lstProductosOriginal = tempLstProduct;
       this.lstProductos = tempLstProduct.slice(0, 6);
+      this.loader = false;
     }
     if (this.lstProductos.length > 0) {
       this.blnBtnMapa = true;
@@ -271,23 +272,6 @@ export class ProductosPage {
   public abrirProducto(producto: ProductoModel) {
     this.unoProducto = producto;
     this.presentModale();
-  }
-
-  async presentLoading() {
-    const loading = await this.loadingController.create({
-      message: "Cargando. . .",
-      duration: 5000,
-    });
-    return await loading.present();
-  }
-
-  async configToad(mensaje) {
-    const toast = await this.toadController.create({
-      color: "black",
-      duration: 2000,
-      message: mensaje,
-    });
-    return await toast.present();
   }
 
   async presentModal() {

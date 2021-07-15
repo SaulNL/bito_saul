@@ -1,25 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { PromocionesService } from '../../api/promociones.service';
-import {LoadingController} from "@ionic/angular";
-import { FiltrosService } from '../../api/filtros.service';
-import { ProveedorServicioService } from '../../api/proveedor-servicio.service';
-import { ToadNotificacionService } from '../../api/toad-notificacion.service';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { PromocionesService } from "../../api/promociones.service";
+import { LoadingController } from "@ionic/angular";
+import { FiltrosService } from "../../api/filtros.service";
+import { ProveedorServicioService } from "../../api/proveedor-servicio.service";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { ActivatedRoute } from "@angular/router";
 /* Modelos */
-import { PromocionesModel } from '../../Modelos/PromocionesModel';
-import { FiltrosModel } from '../../Modelos/FiltrosModel';
+import { PromocionesModel } from "../../Modelos/PromocionesModel";
+import { FiltrosModel } from "../../Modelos/FiltrosModel";
 
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'promociones.page.html',
-  styleUrls: ['promociones.page.scss']
+  selector: "app-tab2",
+  templateUrl: "promociones.page.html",
+  styleUrls: ["promociones.page.scss"],
 })
 export class PromocionesPage implements OnInit {
-
   private loaderPrincipal: HTMLIonLoadingElement;
   public lstPromociones: Array<PromocionesModel>;
-  public anyFiltros    : FiltrosModel;
-  public loader        : boolean = false;
+  public anyFiltros: FiltrosModel;
+  public loader: boolean = false;
   private Filtros: FiltrosModel;
   public listaCategorias: any;
   public blnBtnMapa: boolean;
@@ -31,14 +30,13 @@ export class PromocionesPage implements OnInit {
   public mensaje: string;
   public banner: string;
 
-
   constructor(
-    private _promociones: PromocionesService,  
-    public loadingController: LoadingController,  
-    private filtrosService: FiltrosService, 
-    private serviceProveedores: ProveedorServicioService, 
-    public _notificacionService: ToadNotificacionService, 
-    private active: ActivatedRoute 
+    private _promociones: PromocionesService,
+    public loadingController: LoadingController,
+    private filtrosService: FiltrosService,
+    private serviceProveedores: ProveedorServicioService,
+    public _notificacionService: ToadNotificacionService,
+    private active: ActivatedRoute
   ) {
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
@@ -57,9 +55,9 @@ export class PromocionesPage implements OnInit {
     this.anyFiltros.idEstado = 29;
     this.lstCatTipoNegocio = new Array<any>();
     this.obtenerPromociones();
-    this.active.queryParams.subscribe(params => {
+    this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
-        if (params.special){
+        if (params.special) {
           this.loader = true;
           this.anyFiltros = new FiltrosModel();
           this.lstPromociones = new Array<PromocionesModel>();
@@ -74,7 +72,7 @@ export class PromocionesPage implements OnInit {
 
   public obtenerPromociones() {
     if (navigator.geolocation && this.anyFiltros.tipoBusqueda === 1) {
-      navigator.geolocation.getCurrentPosition(posicion => {
+      navigator.geolocation.getCurrentPosition((posicion) => {
         this.anyFiltros.latitud = posicion.coords.latitude;
         this.anyFiltros.longitud = posicion.coords.longitude;
         this.obtenerPromocionesServicio();
@@ -85,40 +83,33 @@ export class PromocionesPage implements OnInit {
     }
   }
 
-  async presentLoading() {
-    const loading = await this.loadingController.create({
-        message: 'Cargando. . .',
-        duration: 5000
-    });
-    return await loading.present();
-  }
-
   public obtenerPromocionesServicio() {
-    this.presentLoading().then(a => {});
-    this._promociones.buscarPromocinesPublicadasModulo(this.anyFiltros).subscribe(
-      response => {
-        if(response.code === 402){
-        }
-        if (response.data !== null) {
-          this.lstPromociones = response.data;
-          this.loader = false;
-         // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}
-        } else {
+    this._promociones
+      .buscarPromocinesPublicadasModulo(this.anyFiltros)
+      .subscribe(
+        (response) => {
+          if (response.code === 402) {
+          }
+          if (response.data !== null) {
+            this.lstPromociones = response.data;
+            this.loader = false;
+            // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}
+          } else {
+            this.lstPromociones = [];
+          }
+        },
+        (error) => {
+          console.error(error);
           this.lstPromociones = [];
+        },
+        () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
         }
-      },
-      error => {
-        console.error(error);
-        this.lstPromociones = [];
-      },
-      () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    );
+      );
   }
 
   buscarToolbar(respuesta) {
-    if (respuesta !== null ){
+    if (respuesta !== null) {
       this.blnBtnMap = true;
     }
     this.idGiro = null;
@@ -126,7 +117,7 @@ export class PromocionesPage implements OnInit {
     this.mostrarDetalle = false;
     this.reiniciarFiltro();
     this.obtenerCatagorias(null);
-    this.mensaje = 'Todas las promociones';
+    this.mensaje = "Todas las promociones";
     this.anyFiltros.strBuscar = JSON.parse(JSON.stringify(respuesta));
     this.banner = respuesta;
     this.obtenerPromociones();
@@ -136,7 +127,7 @@ export class PromocionesPage implements OnInit {
     this.anyFiltros.tipoBusqueda = 0;
     this.anyFiltros.idEstado = 29;
     this.anyFiltros.kilometros = 1;
-    this.lstCatTipoNegocio.map(item => {
+    this.lstCatTipoNegocio.map((item) => {
       item.estaSeleccionado = false;
     });
     this.anyFiltros.blnEntrega = null;
@@ -146,17 +137,16 @@ export class PromocionesPage implements OnInit {
   public obtenerCatagorias(buscar) {
     this.listaCategorias = [];
     this.serviceProveedores.obtenerCategoriasGiro(buscar).subscribe(
-      response => {
+      (response) => {
         this.listaCategorias = response.data;
-        this.listaCategorias.map(i => {
+        this.listaCategorias.map((i) => {
           i.estaSeleccionado = false;
           i.id_tipo_producto = i.id_categoria;
         });
       },
-      error => {
+      (error) => {
         this._notificacionService.error(error);
       }
     );
   }
-
 }

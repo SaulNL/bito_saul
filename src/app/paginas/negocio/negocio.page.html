@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    <ion-buttons slot="start" >
+    <ion-buttons slot="start">
       <ion-menu-button class="blanco"></ion-menu-button>
     </ion-buttons>
     <ion-title>Mis Negocios</ion-title>
@@ -12,18 +12,26 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<app-spinner [loader]="loader"></app-spinner>
+<ion-content *ngIf="!loader">
   <ion-list *ngFor="let item of listaNegocios" class="bgs-gris">
     <ion-card>
-      <ion-card-header >
-        <ion-item lines="none" >
+      <ion-card-header>
+        <ion-item lines="none">
           <ion-avatar slot="start" (click)="datosNegocio(item)">
-            <img *ngIf="item.url_logo !== '' && item.url_logo !== null "  src="{{ item.url_logo }}" alt="{{ item.nombre_comercial }}">
-          <img *ngIf="item.url_logo === '' || item.url_logo === null  " src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg">
+            <img
+              *ngIf="item.url_logo !== '' && item.url_logo !== null "
+              src="{{ item.url_logo }}"
+              alt="{{ item.nombre_comercial }}"
+            />
+            <img
+              *ngIf="item.url_logo === '' || item.url_logo === null  "
+              src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
+            />
           </ion-avatar>
           <ion-label (click)="datosNegocio(item)">
             <h2>{{item.nombre_comercial}}</h2>
-           <!-- <h2>{{item.nombre_comercial}} <ion-icon *ngIf="item.verificado" class="text-rosa" name="checkmark-circle"></ion-icon></h2>-->
+            <!-- <h2>{{item.nombre_comercial}} <ion-icon *ngIf="item.verificado" class="text-rosa" name="checkmark-circle"></ion-icon></h2>-->
           </ion-label>
           <ion-button slot="end" size="small" (click)="viewQr(item)">
             <ion-icon name="qr-code-outline"></ion-icon>
@@ -34,7 +42,9 @@
   </ion-list>
   <div *ngIf="listaNegocios.length === 0">
     <ion-chip color="warning">
-      <ion-label><strong>Lo sentimos!</strong> Aún no tiene negocios creados.</ion-label>
+      <ion-label
+        ><strong>Lo sentimos!</strong> Aún no tiene negocios creados.</ion-label
+      >
     </ion-chip>
   </div>
 </ion-content>

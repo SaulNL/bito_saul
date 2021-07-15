@@ -1,3 +1,4 @@
+import { SpinnerComponent } from './../../componentes/spinner/spinner.component';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -31,7 +32,8 @@ import { InfoPromoComponent } from '../../components/info-promo/info-promo.compo
     PromocionesPage,
     PromocionComponent,
     ModalPromocionComponent,
-    InfoPromoComponent
+    InfoPromoComponent,
+    SpinnerComponent
   ]
 })
 export class Tab2PageModule {}

@@ -1,3 +1,4 @@
+import { SpinnerComponent } from './../../componentes/spinner/spinner.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +18,6 @@ import { QRCodeModule } from 'angularx-qrcode';
     NegocioPageRoutingModule,
     QRCodeModule
   ],
-  declarations: [NegocioPage]
+  declarations: [NegocioPage, SpinnerComponent]
 })
 export class NegocioPageModule {}
