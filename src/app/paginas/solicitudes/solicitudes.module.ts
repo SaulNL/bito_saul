@@ -1,3 +1,4 @@
+import { SpinnerModule } from './../../componentes/spinner/spinner.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,13 +13,13 @@ import {TabsPageModule} from '../tabs/tabs.module';
 
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        SolicitudesPageRoutingModule,
-        TabsPageModule
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    SolicitudesPageRoutingModule,
+    SpinnerModule
+  ],
   declarations: [SolicitudesPage ]
 })
 export class SolicitudesPageModule {}

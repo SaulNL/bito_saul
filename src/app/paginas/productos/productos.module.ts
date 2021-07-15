@@ -1,3 +1,4 @@
+import { SpinnerModule } from './../../componentes/spinner/spinner.module';
 import { RecargarModule } from './../../componentes/recargar/recargar.module';
 import { InfinitoScrollModule } from './../../componentes/infinito-scroll/infinito-scroll.module';
 import { DarLikeProductoModule } from './../../componentes/dar-like-producto/dar-like-producto.module';
@@ -8,10 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { ProductosPage } from './productos.page';
 import { ExploreContainerComponentModule } from '../../explore-container/explore-container.module';
 import { TabsPageModule } from '../tabs/tabs.module';
-
 import { Tab1PageRoutingModule } from './productos-routing.module';
 import { ModalProductoPageModule } from './modal-producto/modal-producto.module';
-
 import { InfoProductosComponent } from '../../components/info-productos/info-productos.component';
 import { ModalProductosComponent } from '../../components/modal-productos/modal-productos.component';
 
@@ -26,7 +25,8 @@ import { ModalProductosComponent } from '../../components/modal-productos/modal-
     ModalProductoPageModule,
     DarLikeProductoModule,
     InfinitoScrollModule,
-    RecargarModule
+    RecargarModule,
+    SpinnerModule
   ],
   declarations: [ProductosPage,
     InfoProductosComponent,

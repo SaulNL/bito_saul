@@ -14,7 +14,7 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
- <!--lista Solicitudes-->
+ <app-spinner [loader]="loading(loaderSc, loaderSp)"></app-spinner>
  <ion-content [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
    <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
   <ion-card>
@@ -58,7 +58,7 @@
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </ion-buttons>
     </ion-item>
-    </ion-list>  
+    </ion-list>
   </ion-card-header>
   </ion-card>
 </ion-content>

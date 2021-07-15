@@ -1,11 +1,12 @@
-import { RecargarModule } from './../../componentes/recargar/recargar.module';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { NegocioPageRoutingModule } from './negocio-routing.module';
-import { NegocioPage } from './negocio.page';
-import { QRCodeModule } from 'angularx-qrcode';
+import { SpinnerModule } from './../../componentes/spinner/spinner.module';
+import { RecargarModule } from "./../../componentes/recargar/recargar.module";
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { IonicModule } from "@ionic/angular";
+import { NegocioPageRoutingModule } from "./negocio-routing.module";
+import { NegocioPage } from "./negocio.page";
+import { QRCodeModule } from "angularx-qrcode";
 
 @NgModule({
   imports: [
@@ -14,8 +15,9 @@ import { QRCodeModule } from 'angularx-qrcode';
     IonicModule,
     NegocioPageRoutingModule,
     QRCodeModule,
-    RecargarModule
+    RecargarModule,
+    SpinnerModule
   ],
-  declarations: [NegocioPage]
+  declarations: [NegocioPage],
 })
 export class NegocioPageModule {}
