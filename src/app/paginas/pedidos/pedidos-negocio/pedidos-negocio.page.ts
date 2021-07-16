@@ -11,6 +11,7 @@ import { IonContent, ModalController, Platform } from "@ionic/angular";
 import { DatosPedidoNegocioPage } from "./datos-pedido-negocio/datos-pedido-negocio.page";
 import { Router, ActivatedRoute } from "@angular/router";
 import { LoadingController } from "@ionic/angular";
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-pedidos-negocio",
@@ -30,6 +31,7 @@ export class PedidosNegocioPage implements OnInit {
   public loaderEst = false;
 
   constructor(
+    private location: Location,
     private pedidosServicios: PedidosService,
     private utilsCls: UtilsCls,
     public modalController: ModalController,
@@ -120,7 +122,8 @@ export class PedidosNegocioPage implements OnInit {
 
   regresar() {
     this.subscribe.unsubscribe();
-    this.router.navigate(["/tabs/inicio"], { queryParams: { special: true } });
+     this.location.back();
+    // this.router.navigate(["/tabs/inicio"], { queryParams: { special: true } });
   }
 
   visto(pedido) {

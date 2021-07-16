@@ -15,7 +15,7 @@
   </ion-toolbar>
 </ion-header>
  <app-spinner [loader]="loading(loaderSc, loaderSp)"></app-spinner>
- <ion-content [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+ <ion-content *ngIf="!loaderSc && !loaderSp" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
    <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
   <ion-card>
     <div class="ion-text-center ion-margin-top">

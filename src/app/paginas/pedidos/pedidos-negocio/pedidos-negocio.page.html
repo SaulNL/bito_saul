@@ -39,7 +39,11 @@
       </ion-grid>
     </ion-list>
   </ion-card>
-  <app-spinner [loader]="loaderSearch"></app-spinner>
+  <ion-content class="ion-padding" *ngIf="loaderSearch" >
+  <div class="spin" >
+    <ion-spinner class="spinner-color"></ion-spinner>
+  </div>
+</ion-content>
   <ion-card *ngIf="!loaderSearch">
     <ion-item *ngIf="listaNegocioPedididos.length == 0">
       <ion-label>

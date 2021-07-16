@@ -126,12 +126,15 @@ export class PedidosDialogPage implements OnInit {
   }
 
   regresar() {
-    if (this.navegacion) {
-      this.location.back();
-      this.navegacion = false;
-    } else {
-      this.router.navigate(["/tabs/inicio"]);
-    }
+
+     this.location.back();
+     
+    // if (this.navegacion) {
+    //   this.location.back();
+    //   this.navegacion = false;
+    // } else {
+    //   this.router.navigate(["/tabs/inicio"]);
+    // }
     /* this.subscribe.unsubscribe();
          this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });*/
   }
