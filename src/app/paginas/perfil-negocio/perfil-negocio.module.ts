@@ -13,17 +13,19 @@ import { CalificarNegocioComponent } from '../../componentes/calificar-negocio/c
 // import {DetalleProductoComponent} from "../../componentes/detalle-producto/detalle-producto.component";
 import {PedidoNegocioComponent} from "../../componentes/pedido-negocio/pedido-negocio.component";
 import {ComentariosNegocioComponent} from '../../componentes/comentarios-negocio/comentarios-negocio.component';
+import {DarLikeNegocioModule} from '../../componentes/dar-like-negocio/dar-like-negocio.module';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    PerfilNegocioPageRoutingModule,
-    DarLikeProductoModule,
-    DetalleProductoModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        PerfilNegocioPageRoutingModule,
+        DarLikeProductoModule,
+        DetalleProductoModule,
+        DarLikeNegocioModule
+    ],
   declarations: [PerfilNegocioPage, CalificarNegocioComponent,  PedidoNegocioComponent, ComentariosNegocioComponent ]
 })
 export class PerfilNegocioPageModule {}

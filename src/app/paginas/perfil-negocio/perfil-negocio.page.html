@@ -56,6 +56,9 @@
                 <ion-card class="w-100">
                     <ion-card-content class="ion-text-center">
                         {{informacionNegocio.descripcion}}
+                        <div class="div-like">
+                            <app-dar-like-negocio [negocio]="informacionNegocio" [usuario]="user" [mostrarLike]="existeSesion"> </app-dar-like-negocio>
+                        </div>
                         <br *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0">
                         <br *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0">
                         <ion-label

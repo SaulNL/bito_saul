@@ -21,8 +21,8 @@ export class NegocioService {
 
     url = `${AppSettings.API_ENDPOINT}`;
 
-    obteneretalleNegocio(negocioo: string): Observable<any> {
-        const body = JSON.stringify({negocio: negocioo});
+    obteneretalleNegocio(negocioo: string, persona: any): Observable<any> {
+        const body = JSON.stringify({negocio: negocioo, id_persona: persona});
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + '/proveedor/obtener/detalleNegocio',

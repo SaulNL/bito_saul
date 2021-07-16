@@ -96,7 +96,7 @@ export class ModalProductoPage implements OnInit {
     );
   }
   public negocioUrl(negocioT: any){
-     this.negocioServico.obteneretalleNegocio(negocioT.url_negocio).subscribe(
+     this.negocioServico.obteneretalleNegocio(negocioT.url_negocio, this.user.id_persona).subscribe(
         (response) => {
             this.informacionNegocio = response.data;
             this.mostrarBoton();
