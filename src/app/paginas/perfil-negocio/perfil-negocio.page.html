@@ -279,7 +279,7 @@
                             <b class="texto-resaltado">A {{distanciaNegocio}} Km Cerca de tí</b>
                         </p>
                     </ion-col>
-                    <ion-col>
+                    <!--<ion-col>
                         <ion-button expand="block" size="small"
                                     href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
                                     target="_blank">
@@ -287,7 +287,7 @@
                             <ion-icon name="navigate-outline"></ion-icon>
                         </ion-button>
                         <div id="mapId" style="height:200px"></div>
-                    </ion-col>
+                    </ion-col>-->
                 </ion-row>
             </ion-grid>
             <ion-grid *ngIf="seccion === 'productos'">
@@ -422,6 +422,11 @@
         </div>
     </div>
     <ion-fab *ngIf="existeSesion" horizontal="end" vertical="bottom" slot="fixed">
+        <ion-fab-button size="small" style="color: royalblue;"
+                        href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
+                       target="_blank">
+            <ion-icon name="navigate"></ion-icon>
+        </ion-fab-button>
         <ion-fab-button size="small"
                         *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''"
                         (click)="irRedSocial(informacionNegocio.youtube)" target="_blank">
