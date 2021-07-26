@@ -30,7 +30,7 @@ export class RecuperarContraseniaPage implements OnInit {
   async presentLoading() {
     this.loader = await this.loadingController.create({
       cssClass: 'my-custom-class',
-      message: 'por favor espera...'
+      message: 'Por favor espera...'
     });
     return this.loader.present();
   }

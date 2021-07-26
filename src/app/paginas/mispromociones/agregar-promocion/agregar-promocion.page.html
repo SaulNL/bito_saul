@@ -4,7 +4,7 @@
       <ion-back-button defaultHref="/tabs/home/promociones" icon="arrow-back-outline" text="">
       </ion-back-button>
     </ion-buttons>
-    <ion-title>Agregar promoción</ion-title>
+    <ion-title>Agregar anuncio o promoción</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -47,7 +47,7 @@
         <!--? input de la imagen -->
         <div  style="margin-top: 10px;">
           <div style="display: flex; justify-content: center;">
-            <label>Imagen para la tarjeta de promoción:<span>*</span></label>
+            <label>Imagen para la tarjeta de promoción:</label>
           </div>
         </div>
         <div *ngIf="btnCambiarImagen">
@@ -77,7 +77,7 @@
               </div>
             </div>
           </div>
-          <input #inputTarjeta id="cuadrado" type="file" (change)="subir_imagen_cuadrada($event)"  accept="image/*" name="img_promo" required>
+          <input #inputTarjeta id="cuadrado" type="file" (change)="subir_imagen_cuadrada($event)"  accept="image/*" name="img_promo" >
         </div>
         <div *ngIf="!blnImgCuadrada">
           <div style="display: flex; justify-content: center; align-items: center;">
@@ -92,7 +92,7 @@
         <div style="margin-top: 10px;">
           <div style="display: flex; justify-content: center;">
             <label>
-              Imagen banner de la promoción<span>*</span>
+              Imagen banner de la promoción
             </label>
           </div>
         </div>
@@ -124,7 +124,7 @@
                 </div>
               </div>
             </div>
-            <input #inputBanner id="rectangulo" type="file" type="file" (change)="subir_imagen_rectangulo($event)" accept="image/*" name="img_promo" required>
+            <input #inputBanner id="rectangulo" type="file" type="file" (change)="subir_imagen_rectangulo($event)" accept="image/*" name="img_promo" >
           </div>
         </div>
         <div *ngIf="!blnImgRectangulo"  style="display: flex; justify-content: center;align-items: center;">

@@ -241,27 +241,30 @@ export class AgregarPromocionPage implements OnInit {
   }
 
   public guardar(form: NgForm) {
-    this.handleButtonClick();
-    if ((this.seleccionTo.imagen === undefined || this.seleccionTo.imagen === null)
-      && (this.seleccionTo.url_imagen === undefined || this.seleccionTo.url_imagen === '')) {
-      this._notificacionService.error('La imagen para tarjeta de la promoción es requerida');
+    /*this.handleButtonClick();*/
+    if ((this.seleccionTo.imagen === undefined || this.seleccionTo.imagen === null || this.seleccionTo.imagen === '')
+      && (this.seleccionTo.url_imagen === undefined || this.seleccionTo.url_imagen === '')
+        && (this.seleccionTo.imagenBanner === undefined || this.seleccionTo.imagenBanner === null, this.seleccionTo.imagenBanner === '')
+        && (this.seleccionTo.url_imagen_banner === undefined || this.seleccionTo.url_imagen_banner === '')
+       ) {
+      this._notificacionService.error('Se requiere al menos una imagen, ya sea la tarjeta o el banner');
       this.inputTar.nativeElement.focus();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-
+/*
     if ((this.seleccionTo.imagenBanner === undefined || this.seleccionTo.imagenBanner === null)
       && (this.seleccionTo.url_imagen_banner === undefined || this.seleccionTo.url_imagen_banner === '')) {
       this._notificacionService.error('La imagen del banner de la promoción es requerida');
       this.inputBanner.nativeElement.focus();
       window.scrollTo({ top: 200, behavior: 'smooth' });
       return;
-    }
+    }*/
 
     if (form.valid) {
       this.seleccionTo.id_proveedor = this.usuario.proveedor.id_proveedor;
       this.seleccionTo.tags = this.tags;
-      if(this.seleccionTo.tags.length === 0){
+      if (this.seleccionTo.tags.length === 0){
         this.seleccionTo.tags = [];
       }
       this._promociones_service.guardar(this.seleccionTo).subscribe(
@@ -269,7 +272,7 @@ export class AgregarPromocionPage implements OnInit {
           if (this._utils_cls.is_success_response(response.code)) {
             form.resetForm();
             this._router.navigate(['/tabs/home/promociones'], { queryParams: {special: true}  });
-            this._notificacionService.exito('se guardo correctamente');
+            this._notificacionService.exito('Se guardó correctamente');
             this.loading.dismiss();
           }
         },
