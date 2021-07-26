@@ -16,8 +16,7 @@
                     [srcset]="productoImagen(producto.imagen)"></ion-avatar>
             <ion-label class="hydrated" #datos (click)="abrirProducto(producto)">
                 <h3>{{producto.nombre}}</h3>
-                <p> {{(producto.nombre_categoria1 != null) ? producto.nombre_categoria1 : 'Sin
-                    categoría'}} </p>
+                <p> {{(producto.nombre_categoria1 != null) ? producto.nombre_categoria1 : 'Sin categoría'}} </p>
                 <p color="success">${{(producto.precio != '') ? ((producto.precio !=
                     null) ? producto.precio : 'Sin precio') : 'Sin precio'}}</p>
                 <p>{{(producto.descripcion != null) ? producto.descripcion : 'Sin descripción'}}</p>

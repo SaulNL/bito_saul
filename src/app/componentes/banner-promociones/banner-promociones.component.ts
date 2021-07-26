@@ -75,7 +75,7 @@ export class BannerPromocionesComponent implements OnInit {
         this.miUbicacionlongitud = reponse.coords.longitude;
 
       }).catch((error) => {
-      this.notificacion.error("No se pudo obtener la ubicación");
+      this.notificacion.error('No se pudo obtener la ubicación');
       });
   }
   /**

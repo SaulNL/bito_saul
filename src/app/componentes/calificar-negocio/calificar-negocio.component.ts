@@ -41,7 +41,7 @@ export class CalificarNegocioComponent implements OnInit {
   }
 
   valorEstrella() {
-    let estrella = <any>document.getElementsByName('estrella');
+    const estrella = <any>document.getElementsByName('estrella');
     for (let i = 0; i < estrella.length; i++) {
       if (estrella[i].checked) {
         this.numeroEstrellas = estrella[i].value;

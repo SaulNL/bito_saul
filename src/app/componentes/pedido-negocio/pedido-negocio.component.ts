@@ -75,7 +75,7 @@ export class PedidoNegocioComponent implements OnInit {
       this.map.on('click', respuesta => {
         this.getLatLong(respuesta);
       });
-      var myIcon = icon({
+      const myIcon = icon({
         iconUrl: 'https://ecoevents.blob.core.windows.net/comprandoando/marker.png',
         iconSize: [45, 41],
         iconAnchor: [13, 41],

@@ -35,7 +35,7 @@ export class ComentariosNegocioComponent implements OnInit {
             if (this.listaComentarios.length > 0){
               this.mostrarComentarios = true;
               let i = 0;
-              for (let comentario of this.listaComentarios){
+              for (const comentario of this.listaComentarios){
                 this.valorEstrellas(comentario, i);
                 i++;
               }
@@ -51,12 +51,12 @@ export class ComentariosNegocioComponent implements OnInit {
 
   valorEstrellas(comentario, index) {
     setTimeout((it) => {
-      let numeroEstrella = comentario.calificacion.toString();
-      let estrellas = <any> document.getElementsByName("estrellas" + index);
+      const numeroEstrella = comentario.calificacion.toString();
+      const estrellas = <any> document.getElementsByName('estrellas' + index);
       for (let i = 0; i < estrellas.length; i++) {
         if (estrellas[i].value === numeroEstrella) {
-          let estrellaValor = estrellas[i];
-          estrellaValor.setAttribute("checked", true);
+          const estrellaValor = estrellas[i];
+          estrellaValor.setAttribute('checked', true);
         }
       }
     }, 500);
