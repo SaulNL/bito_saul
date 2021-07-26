@@ -20,7 +20,7 @@
           <ion-label stacked>
             Fecha inicial
           </ion-label>
-          <ion-datetime name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="fechaini" required (ionChange)="calcularRangoFechas()" [min]="minDate" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Inicio" ></ion-datetime>
+          <ion-datetime name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="fechaini" required  [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Inicio" ></ion-datetime>
         </ion-item>
         <div *ngIf="fechaInicio.touched  && fechaInicio.invalid">
           <div *ngIf="fechaInicio.errors.required">Fecha de Inicio es requerido
@@ -30,8 +30,8 @@
           <ion-label stacked>
             Fecha final
           </ion-label>
-          <ion-datetime  name="fechaFinal" #fechaFinal="ngModel" [(ngModel)]="fechafin" required (ionChange)="calcularRangoFechas()" [min]="minDate" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Final"></ion-datetime>
-        </ion-item> 
+          <ion-datetime  name="fechaFinal" #fechaFinal="ngModel" [(ngModel)]="fechafin" required (ionChange)="calcularRangoFechas()" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Final"></ion-datetime>
+        </ion-item>
        <div *ngIf="fechaFinal.touched  && fechaFinal.invalid">
           <div *ngIf="fechaFinal.errors.required">Fecha Final es requerido
           </div>

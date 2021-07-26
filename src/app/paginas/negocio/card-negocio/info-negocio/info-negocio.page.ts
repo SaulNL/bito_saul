@@ -1,10 +1,10 @@
+import { ArchivoComunModel } from './../../../../Modelos/ArchivoComunModel';
 import { CatOrganizacionesModel } from './../../../../Modelos/CatOrganizacionesModel';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NegocioModel } from "./../../../../Modelos/NegocioModel";
 import { NegocioService } from "../../../../api/negocio.service";
 import { UtilsCls } from './../../../../utils/UtilsCls';
-import { ArchivoComunModel } from 'src/app/Modelos/ArchivoComunModel';
 import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
 import { ModalController } from '@ionic/angular';
 import { RecorteImagenComponent } from "../../../../components/recorte-imagen/recorte-imagen.component";
@@ -84,7 +84,7 @@ export class InfoNegocioPage implements OnInit {
     this.nuevoHorario = new HorarioNegocioModel();
     this.blnActivaHoraF = true;
     this.blnActivaDias = true;
-    this.blnActivaHorario = true;    
+    this.blnActivaHorario = true;
   }
 
   ngOnInit() {
@@ -116,13 +116,13 @@ export class InfoNegocioPage implements OnInit {
       {id: 3, metodo: "Tajeta de Débito", value:this.negocioTO.tipo_pago_tarjeta_debito},
       {id: 4, metodo: "Efectivo", value:this.negocioTO.tipo_pago_efectivo}
     ]
-    this.setarPago();   
+    this.setarPago();
   }
   public buscarNegocio(id) {
 
     if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
       //this.negocioTO = new NegocioModel();
-      //this.negocioTO.tags = ""; 
+      //this.negocioTO.tags = "";
       this.categoriaPrincipal({ value: 0 });
       this.subcategorias({ value: 0 });
     } else {
@@ -162,14 +162,14 @@ export class InfoNegocioPage implements OnInit {
 
       }
     );
-    
+
   }
   categoriaPrincipal(evento) {
     let idE;
     if (evento.type === 'ionChange') {
       this.negocioTO.id_giro = [];
       idE = evento.detail.value;
-      
+
     } else {
       idE = evento.value;
     }
@@ -202,7 +202,7 @@ export class InfoNegocioPage implements OnInit {
           this.listaSubCategorias.forEach(element => {
             if (element.id_categoria==this.negocioTO.id_categoria_negocio) {
               this.tipoSubAux = element.nombre;
-              
+
             }
           });
         }
@@ -335,13 +335,13 @@ export class InfoNegocioPage implements OnInit {
   guardar() {
     if(this.negocioTO.logo === null ||
        this.negocioTO.logo === undefined ||
-       this.negocioTO.logo.archivo_64 === '' || 
+       this.negocioTO.logo.archivo_64 === '' ||
        this.negocioTO.logo.archivo_64 === null){
         this.notificaciones.alerta('Agregue la foto de su negocio');
     }else{
       this.datos();
       this.negocioServico.guardar(this.negocioGuardar).subscribe(
-        response => {        
+        response => {
           if (response.code === 200) {
             this.notificaciones.exito('Tu negocio se guardo exitosamente');
             this.router.navigate(["/tabs/home/negocio"]);
@@ -402,7 +402,7 @@ agregarHorario() {
   }
 
   next(){
-    this.datos();    
+    this.datos();
     this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
     this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
     let all = {
@@ -457,7 +457,7 @@ agregarHorario() {
     } else {
       let convertir;
       convertir =JSON.parse(JSON.stringify(this.negocioTO));
-      this.negocioGuardar.tags = convertir.tags.join(); 
+      this.negocioGuardar.tags = convertir.tags.join();
     }
     this.negocioGuardar.descripcion = this.negocioTO.descripcion;
     this.negocioGuardar.entrega_domicilio = this.negocioTO.entrega_domicilio;
@@ -486,7 +486,7 @@ agregarHorario() {
     this.negocioGuardar.tipo_pago_tarjeta_credito = this.negocioTO.tipo_pago_tarjeta_credito;
     this.negocioGuardar.tipo_pago_tarjeta_debito = this.negocioTO.tipo_pago_tarjeta_debito;
     this.negocioGuardar.tipo_pago_efectivo = this.negocioTO.tipo_pago_efectivo;
-    
+
     if (this.negocioTO.det_domicilio.id_domicilio != null) {
       this.negocioGuardar.det_domicilio.id_domicilio = this.negocioTO.det_domicilio.id_domicilio;
     }
@@ -538,7 +538,7 @@ agregarHorario() {
       }
     });
     this.negocioTO.tipo_pago_transferencia = transferencia;
-    this.negocioTO.tipo_pago_tarjeta_credito = credito; 
+    this.negocioTO.tipo_pago_tarjeta_credito = credito;
     this.negocioTO.tipo_pago_tarjeta_debito = debito;
     this.negocioTO.tipo_pago_tarjeta_debito = efectivo;
   }
@@ -572,7 +572,7 @@ agregarHorario() {
     });
     await alert.present();
   }
-  
+
   async cancelar() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',

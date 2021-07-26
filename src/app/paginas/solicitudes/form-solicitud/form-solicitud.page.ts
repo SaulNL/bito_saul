@@ -1,35 +1,28 @@
-import { GeneralServicesService } from './../../../api/general-services.service';
-import { Component, OnInit } from '@angular/core';
-import { Map, tileLayer, marker, Marker } from 'leaflet';
-import { SolicitudesModel } from 'src/app/Modelos/SolicitudesModel';
-import { UtilsCls } from './../../../utils/UtilsCls';
-import { CatEstadoModel } from 'src/app/Modelos/catalogos/CatEstadoModel';
-import { CatMunicipioModel } from 'src/app/Modelos/catalogos/CatMunicipioModel';
-import { CatLocalidadModel } from 'src/app/Modelos/catalogos/CatLocalidadModel';
-import { ArchivoComunModel } from 'src/app/Modelos/ArchivoComunModel';
-import { NgForm } from '@angular/forms';
-import { SolicitudesService } from './../../../api/solicitudes.service';
-import { ToadNotificacionService } from '../../../api/toad-notificacion.service';
-import { LoadingController } from '@ionic/angular';
-import { ModalController } from '@ionic/angular';
-import { Plugins } from '@capacitor/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ArchivoComunModel } from "./../../../Modelos/ArchivoComunModel";
+import { CatLocalidadModel } from "./../../../Modelos/CatLocalidadModel";
+import { CatMunicipioModel } from "./../../../Modelos/CatMunicipioModel";
+import { CatEstadoModel } from "./../../../Modelos/CatEstadoModel";
+import { SolicitudesModel } from "./../../../Modelos/SolicitudesModel";
+import { GeneralServicesService } from "./../../../api/general-services.service";
+import { Component, OnInit } from "@angular/core";
+import { Map, tileLayer, marker, Marker } from "leaflet";
+import { UtilsCls } from "./../../../utils/UtilsCls";
+import { NgForm } from "@angular/forms";
+import { SolicitudesService } from "./../../../api/solicitudes.service";
+import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
+import { LoadingController } from "@ionic/angular";
+import { ModalController } from "@ionic/angular";
+import { Plugins } from "@capacitor/core";
+import { Router, ActivatedRoute } from "@angular/router";
 import { RecorteImagenComponent } from "../../../components/recorte-imagen/recorte-imagen.component";
+import { NegocioService } from "../../../api/negocio.service";
 
 const { Geolocation } = Plugins;
-
-
-
-
-
-
 @Component({
-  selector: 'app-form-solicitud',
-  templateUrl: './form-solicitud.page.html',
-  styleUrls: ['./form-solicitud.page.scss'],
-  providers: [
-    UtilsCls
-  ]
+  selector: "app-form-solicitud",
+  templateUrl: "./form-solicitud.page.html",
+  styleUrls: ["./form-solicitud.page.scss"],
+  providers: [UtilsCls],
 })
 export class FormSolicitudPage implements OnInit {
   public actualTO: any;
@@ -47,10 +40,15 @@ export class FormSolicitudPage implements OnInit {
   public btnEstado: boolean;
   public btnMuncipio: boolean;
   public btnLocalidad: boolean;
-
+  public tipoNegoAux: any;
+  public tipoGiroAux: any;
+  public tipoSubAux: any;
+  public listTipoNegocio: any;
+  public listCategorias: any;
+  public listaSubCategorias: any;
   public resizeToWidth: number = 0;
   public resizeToHeight: number = 0;
-  public imageChangedEvent: any = '';
+  public imageChangedEvent: any = "";
   public estaAux: any;
   public muniAux: any;
   public locaAux: any;
@@ -64,9 +62,10 @@ export class FormSolicitudPage implements OnInit {
     public loadingController: LoadingController,
     public modalController: ModalController,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private negocioServico: NegocioService
   ) {
-    this.usuario = JSON.parse(localStorage.getItem('u_data'));
+    this.usuario = JSON.parse(localStorage.getItem("u_data"));
     this.latitud = 19.4166896;
     this.longitud = -98.1467336;
     this.btnEstado = false;
@@ -74,10 +73,12 @@ export class FormSolicitudPage implements OnInit {
     this.btnLocalidad = true;
   }
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(params => {
+    this.obtenerTipoNegocio();
+    this.activatedRoute.queryParams.subscribe((params) => {
       if (params && params.special) {
-        this.data= JSON.parse(params.special);
-        this.actualTO= JSON.parse(params.special);
+        this.data = JSON.parse(params.special);
+        this.actualTO = JSON.parse(params.special);
+        this.obtenerTipoNegocio();
       }
     });
     this.list_cat_estado = new Array<CatEstadoModel>();
@@ -90,15 +91,17 @@ export class FormSolicitudPage implements OnInit {
   }
   async presentLoading() {
     this.loader = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'por favor espera...'
+      cssClass: "my-custom-class",
+      message: "por favor espera...",
     });
     return this.loader.present();
   }
   regresar() {
-    this.router.navigate(['/tabs/home/solicitudes'], { queryParams: { special: true } });
+    this.router.navigate(["/tabs/home/solicitudes"], {
+      queryParams: { special: true },
+    });
   }
-  agregarTags(tags: string[]) {
+  agregarTags(tags: any) {
     this.tags = tags;
     this.actualTO.tags = this.tags;
   }
@@ -108,10 +111,14 @@ export class FormSolicitudPage implements OnInit {
    * @author Omar
    */
   guardar(form: NgForm) {
-
-    if ((this.actualTO.imagen === undefined || this.actualTO.imagen === null)
-      && (this.actualTO.url_imagen === undefined || this.actualTO.url_imagen === '')) {
-      this.notificaciones.alerta('La imagen para tarjeta de la promoción es requerida');
+    if (
+      (this.actualTO.imagen === undefined || this.actualTO.imagen === null) &&
+      (this.actualTO.url_imagen === undefined ||
+        this.actualTO.url_imagen === "")
+    ) {
+      this.notificaciones.alerta(
+        "La imagen para tarjeta de la promoción es requerida"
+      );
       return;
     }
     if (form.valid) {
@@ -121,23 +128,24 @@ export class FormSolicitudPage implements OnInit {
         this.actualTO.id_categoria = 9999;
       }
       this.solicitudesService.guardar(this.actualTO).subscribe(
-        response => {
+        (response) => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.loader.dismiss();
-            this.notificaciones.exito('Los datos se guardaron correctamente');
+            this.notificaciones.exito("Los datos se guardaron correctamente");
             form.resetForm();
             this.regresar();
           }
           // this.notificaciones.alerta(response.message + ',' + response.code);
         },
-        error => {
+        (error) => {
           this.loader.dismiss();
           this.notificaciones.error(error);
         }
       );
-      
     } else {
-      this.notificaciones.alerta('Es requerido que llenes todos los campos obligatorios');
+      this.notificaciones.alerta(
+        "Es requerido que llenes todos los campos obligatorios"
+      );
     }
   }
 
@@ -145,16 +153,17 @@ export class FormSolicitudPage implements OnInit {
    * Funcion para cargar el mapa
    */
   public cagarMapa() {
-    setTimeout(it => {
+    setTimeout((it) => {
       // this.map = new Map("mapId").setView([this.latitud, this.longitud], 16);
       this.map = new Map("mapId").setView([this.latitud, this.longitud], 16);
-      this.map.on('click', respuesta => {
+      this.map.on("click", (respuesta) => {
         this.getLatLong(respuesta);
-      })
-      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
+      });
+      tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "",
+      }).addTo(this.map);
       this.marker = marker([this.latitud, this.longitud], {
-        draggable:
-          true
+        draggable: true,
       }).addTo(this.map);
       if (this.actualTO.det_domicilio.latitud !== null) {
         this.localizacionTiempo(2);
@@ -163,36 +172,37 @@ export class FormSolicitudPage implements OnInit {
   }
 
   /**
- * Funcion para obtener el estado
- */
+   * Funcion para obtener el estado
+   */
   private load_cat_estados() {
     this._general_service.getEstadosWS().subscribe(
-      response => {
+      (response) => {
         if (this._utils_cls.is_success_response(response.code)) {
           this.list_cat_estado = response.data.list_cat_estado;
-          this.list_cat_estado.forEach(element => {
-            if (element.id_estado==this.actualTO.det_domicilio.id_estado) {
+          this.list_cat_estado.forEach((element) => {
+            if (element.id_estado == this.actualTO.det_domicilio.id_estado) {
               this.estaAux = element.nombre;
-              
             }
           });
           //this.loader = false;
           if (this.actualTO.det_domicilio.id_estado > 0) {
-            this.get_list_cat_municipio({ value: this.actualTO.det_domicilio.id_estado });
+            this.get_list_cat_municipio({
+              value: this.actualTO.det_domicilio.id_estado,
+            });
           }
         }
       },
-      error => {
+      (error) => {
         this.notificaciones.error(error);
       }
     );
   }
   /**
-  * Funcion para obtener los municipios
-  */
+   * Funcion para obtener los municipios
+   */
   public get_list_cat_municipio(evento) {
     let idE;
-    if (evento.type === 'ionChange') {
+    if (evento.type === "ionChange") {
       idE = evento.detail.value;
     } else {
       idE = evento.value;
@@ -200,23 +210,26 @@ export class FormSolicitudPage implements OnInit {
     if (idE > 0) {
       // this.loaderMunicipio = true;
       this._general_service.getMunicipios(idE).subscribe(
-        response => {
+        (response) => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_municipio = response.data.list_cat_municipio;
-            this.list_cat_municipio.forEach(element => {
-              if (element.id_municipio==this.actualTO.det_domicilio.id_municipio) {
+            this.list_cat_municipio.forEach((element) => {
+              if (
+                element.id_municipio == this.actualTO.det_domicilio.id_municipio
+              ) {
                 this.muniAux = element.nombre;
-                
               }
             });
             this.btnMuncipio = false;
             if (this.actualTO.det_domicilio.id_municipio > 0) {
               this.btnMuncipio = false;
-              this.get_list_cat_localidad({ value: this.actualTO.det_domicilio.id_municipio });
+              this.get_list_cat_localidad({
+                value: this.actualTO.det_domicilio.id_municipio,
+              });
             }
           }
         },
-        error => {
+        (error) => {
           this.notificaciones.error(error);
         },
         () => {
@@ -232,7 +245,7 @@ export class FormSolicitudPage implements OnInit {
    */
   public get_list_cat_localidad(evento) {
     let idE;
-    if (evento.type === 'ionChange') {
+    if (evento.type === "ionChange") {
       idE = evento.detail.value;
     } else {
       idE = evento.value;
@@ -241,19 +254,20 @@ export class FormSolicitudPage implements OnInit {
       // this.loaderLocalidad = true;
 
       this._general_service.getLocalidad(idE).subscribe(
-        response => {
+        (response) => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.btnLocalidad = false;
             this.list_cat_localidad = response.data.list_cat_localidad;
-            this.list_cat_localidad.forEach(element => {
-              if (element.id_localidad==this.actualTO.det_domicilio.id_localidad) {
+            this.list_cat_localidad.forEach((element) => {
+              if (
+                element.id_localidad == this.actualTO.det_domicilio.id_localidad
+              ) {
                 this.locaAux = element.nombre;
-                
               }
             });
           }
         },
-        error => {
+        (error) => {
           //   this._notificacionService.pushError(error);
           this.notificaciones.error(error);
         },
@@ -266,36 +280,36 @@ export class FormSolicitudPage implements OnInit {
     }
   }
   /**
-     * Funcion para obtener la ubicacion actual
-     */
+   * Funcion para obtener la ubicacion actual
+   */
   async localizacionTiempo(tipo: number) {
     let latitude;
     let longitude;
-    const coordinates = await Geolocation.getCurrentPosition().then(res => {
-      if (tipo === 1) {
-        this.actualTO.det_domicilio.latitud = res.coords.latitude;
-        latitude = res.coords.latitude;
-        this.actualTO.det_domicilio.longitud = res.coords.longitude;
-        longitude = res.coords.longitude;
-        this.map.setView([latitude, longitude], 16);
-        this.marker.setLatLng([latitude, longitude]);
-      } else {
-        latitude = this.actualTO.det_domicilio.latitud;
-        longitude = this.actualTO.det_domicilio.longitud;
-        this.map.setView([latitude, longitude], 16);
-        this.marker.setLatLng([latitude, longitude]);
-      }
-    }).catch(error => {
-      this.notificaciones.error(error);
-    }
-    );
+    const coordinates = await Geolocation.getCurrentPosition()
+      .then((res) => {
+        if (tipo === 1) {
+          this.actualTO.det_domicilio.latitud = res.coords.latitude;
+          latitude = res.coords.latitude;
+          this.actualTO.det_domicilio.longitud = res.coords.longitude;
+          longitude = res.coords.longitude;
+          this.map.setView([latitude, longitude], 16);
+          this.marker.setLatLng([latitude, longitude]);
+        } else {
+          latitude = this.actualTO.det_domicilio.latitud;
+          longitude = this.actualTO.det_domicilio.longitud;
+          this.map.setView([latitude, longitude], 16);
+          this.marker.setLatLng([latitude, longitude]);
+        }
+      })
+      .catch((error) => {
+        this.notificaciones.error(error);
+      });
   }
   getLatLong(e) {
     let latitude = e.latlng.lat;
     let longitude = e.latlng.lng;
     this.map.setView([latitude, longitude], 16);
     this.marker.setLatLng([latitude, longitude]);
-
   }
   /************************************************************
    * IMAGENES
@@ -327,33 +341,37 @@ export class FormSolicitudPage implements OnInit {
               if (file.size < 3145728) {
                 let file_64: any;
                 const utl = new UtilsCls();
-                utl.getBase64(file).then(
-                  data => {
-                    file_64 = data;
-                    const imagen = new ArchivoComunModel();
-                    archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
-                    archivo.archivo_64 = file_64;
-                    this.actualTO.imagen = archivo;
-                    //   this.procesando_img = false;
-                    this.blnImgCuadrada = false;
-                  }
-                );
+                utl.getBase64(file).then((data) => {
+                  file_64 = data;
+                  const imagen = new ArchivoComunModel();
+                  archivo.nombre_archivo =
+                    this._utils_cls.convertir_nombre(file_name);
+                  archivo.archivo_64 = file_64;
+                  this.actualTO.imagen = archivo;
+                  //   this.procesando_img = false;
+                  this.blnImgCuadrada = false;
+                });
               } else {
-                this.notificaciones.alerta('El tama\u00F1o m\u00E1ximo de archivo es de 3 Mb, por favor intente con otro archivo');
+                this.notificaciones.alerta(
+                  "El tama\u00F1o m\u00E1ximo de archivo es de 3 Mb, por favor intente con otro archivo"
+                );
               }
             } else {
               this.resizeToWidth = 200;
               this.resizeToHeight = 200;
-              this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
+              this.abrirModal(
+                img.src,
+                this.resizeToWidth,
+                this.resizeToHeight
+              ).then((r) => {
                 if (r !== undefined) {
                   const archivo = new ArchivoComunModel();
-                  archivo.nombre_archivo = nombre_archivo,
-                    archivo.archivo_64 = r.data;
+                  (archivo.nombre_archivo = nombre_archivo),
+                    (archivo.archivo_64 = r.data);
                   this.actualTO.imagen = archivo;
                   this.blnImgCuadrada = false;
                 }
-              }
-              );
+              });
             }
           };
         };
@@ -363,19 +381,79 @@ export class FormSolicitudPage implements OnInit {
   async abrirModal(evento, width, heigh) {
     const modal = await this.modalController.create({
       component: RecorteImagenComponent,
-      cssClass: 'my-custom-class',
+      cssClass: "my-custom-class",
       componentProps: {
         imageChangedEvent: evento,
         resizeToWidth: width,
         resizeToHeight: heigh,
-        IdInput: 'cuadrado'
-      }
+        IdInput: "cuadrado",
+      },
     });
     await modal.present();
-    const { data } = await modal.onDidDismiss().then(r => {
+    const { data } = await modal.onDidDismiss().then((r) => {
       return r;
-    }
-    );
+    });
     return data;
+  }
+
+  categoriaPrincipal(evento: any) {
+    let idE;
+    if (evento.type === "ionChange") {
+      this.actualTO.id_giro = [];
+      idE = evento.detail.value;
+    } else {
+      idE = evento.value;
+    }
+    this.negocioServico.categoriaPrincipal(idE).subscribe((respuesta) => {
+      if (respuesta.code === 200) {
+        this.listCategorias = respuesta.data;
+        this.listCategorias.forEach((element) => {
+          if (element.id_giro == this.actualTO.id_giro) {
+            this.tipoGiroAux = element.nombre;
+          }
+        });
+      }
+    });
+    this.subcategorias({ value: 0 });
+  }
+
+  subcategorias(evento: any) {
+    let idE;
+    if (evento.type === "ionChange") {
+      this.actualTO.id_categoria = [];
+      idE = evento.detail.value;
+    } else {
+      idE = evento.value;
+    }
+    this.negocioServico.obtenerCategorias(idE).subscribe((respuesta) => {
+      this.listaSubCategorias = Array();
+      if (respuesta.code === 200) {
+        this.listaSubCategorias = respuesta.data;
+        this.listaSubCategorias.forEach((element) => {
+          if (element.id_categoria == this.actualTO.id_categoria) {
+            this.tipoSubAux = element.nombre;
+          }
+        });
+      }
+    });
+  }
+
+  public obtenerTipoNegocio() {
+    this.negocioServico.obtnerTipoNegocio().subscribe(
+      (response) => {
+        if (response.code === 200) {
+          this.listTipoNegocio = response.data;
+          this.listTipoNegocio.forEach((element) => {
+            if (element.id_tipo_negocio == this.actualTO.id_tipo_negocio) {
+              this.tipoNegoAux = element.nombre;
+            }
+          });
+        }
+      },
+      (error) => {
+        this.listTipoNegocio = [];
+      }
+    );
+    this.categoriaPrincipal({ value: 0 });
   }
 }
