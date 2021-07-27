@@ -7,16 +7,16 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+<app-spinner [loader]="loader"></app-spinner>
+
+<ion-content *ngIf="!loader" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
   <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
   <ion-list>
     <ion-list-header>
       Negocios
     </ion-list-header>
 
-    <app-spinner [loader]="loader"></app-spinner>
-
-    <div *ngIf="!loader">
+    <div>
       <ion-item *ngFor="let negocio of listaNegocios" (click)="abrirModalEstadisticas(negocio.id_negocio)">
         <ion-avatar slot="start">
           <img *ngIf="negocio.url_logo !== '' && negocio.url_logo !== null "  src="{{ negocio.url_logo }}" alt="{{ negocio.nombre_comercial }}">
