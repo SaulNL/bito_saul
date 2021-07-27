@@ -1,3 +1,4 @@
+import { SpinnerModule } from './../../../../componentes/spinner/spinner.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +14,8 @@ import { DatosContactoPage } from './datos-contacto.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    DatosContactoPageRoutingModule
+    DatosContactoPageRoutingModule,
+    SpinnerModule
   ],
   declarations: [DatosContactoPage]
 })

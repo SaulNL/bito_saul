@@ -53,7 +53,7 @@ export class InfoNegocioPage implements OnInit {
     {id: 4, metodo: "Efectivo", value:null}
   ]
   public copyPago = [];
-
+public loader: boolean;
   public negocioGuardar: any;
   public horarioini: string;
   public horariofin: string;
@@ -85,6 +85,7 @@ export class InfoNegocioPage implements OnInit {
     this.blnActivaHoraF = true;
     this.blnActivaDias = true;
     this.blnActivaHorario = true;
+    this.loader = false;
   }
 
   ngOnInit() {
@@ -333,6 +334,7 @@ export class InfoNegocioPage implements OnInit {
     }, 1000);
   }
   guardar() {
+    this.loader = true;
     if(this.negocioTO.logo === null ||
        this.negocioTO.logo === undefined ||
        this.negocioTO.logo.archivo_64 === '' ||
@@ -340,21 +342,20 @@ export class InfoNegocioPage implements OnInit {
         this.notificaciones.alerta('Agregue la foto de su negocio');
     }else{
       this.datos();
-      console.log(this.negocioGuardar);
       this.negocioServico.guardar(this.negocioGuardar).subscribe(
         response => {
           if (response.code === 200) {
             this.notificaciones.exito('Tu negocio se guardo exitosamente');
+            this.loader = false;
             this.router.navigate(["/tabs/home/negocio"]);
           } else {
             this.notificaciones.alerta('Error al guardar, intente nuevamente');
-            //   this._notificacionService.pushAlert('Error al guardar, intente nuevamente');
-            //  this.loaderGuardar = false;
+            this.loader = false;
           }
         },
         error => {
           this.notificaciones.error(error);
-          //  this.loaderGuardar = false;
+          this.loader = false;
         }
       );
     }

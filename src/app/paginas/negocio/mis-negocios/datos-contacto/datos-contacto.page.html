@@ -12,13 +12,13 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  
 </ion-header>
 
-<ion-content>
+<app-spinner [loader]="loader"></app-spinner>
+<ion-content *ngIf="!loader">
   <ion-card>
     <ion-card-content>
-      <form #formNegoContacto="ngForm" (ngSubmit)="guardar(formNegoContacto)"> 
+      <form #formNegoContacto="ngForm" (ngSubmit)="guardar(formNegoContacto)">
     <ion-list lines="none">
       <ion-item>
         <ion-label position="floating">Teléfono oficina :</ion-label>
@@ -48,21 +48,21 @@
         <ion-input id="idTwiNegocio" name="idTwiNegocio" #twiNegocio="ngModel" [(ngModel)]="negocioTO.twitter" placeholder="Twitter :"></ion-input>
       </ion-item>
       <ion-item>
-        
+
         <ion-avatar slot="start" >
           <img src="./../../../../../assets/images/insta.png" alt="">
         </ion-avatar>
         <ion-input id="idInstNegocio" name="idInstNegocio" #instNegocio="ngModel" [(ngModel)]="negocioTO.instagram" placeholder="Instagram :"></ion-input>
       </ion-item>
       <ion-item>
-        
+
         <ion-avatar slot="start" >
           <img src="./../../../../../assets/images/yt.png" alt="">
         </ion-avatar>
         <ion-input id="idYouNegocio" name="idYouNegocio" #youNegocio="ngModel"   [(ngModel)]="negocioTO.youtube" placeholder="Youtube :"></ion-input>
       </ion-item>
       <ion-item>
-        
+
         <ion-avatar slot="start" >
           <img src="./../../../../../assets/images/tt.png" alt="">
         </ion-avatar>

@@ -12,10 +12,10 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  
-</ion-header>
 
-<ion-content>
+</ion-header>
+<app-spinner [loader]="loader"></app-spinner>
+<ion-content *ngIf="!loader">
   <ion-card>
     <ion-card-content>
       <form #formDomicilio="ngForm" class="form-horizontal" (ngSubmit)="guardar(formDomicilio)">
@@ -115,14 +115,14 @@
           </ion-col>
           <ion-col>
             <div>
-              
+
             </div>
           </ion-col>
         </ion-row>
       </ion-grid>
     </ion-card-content>
   </ion-card>
-    
+
 </ion-content>
 
 

@@ -31,6 +31,7 @@ export class DatosContactoPage implements OnInit {
   public iden: any;
   public negocioGuardar: any;
   public nuevoPS: any;
+  public loader : boolean;
   constructor(
     private platform: Platform,
     private router: Router,
@@ -46,6 +47,7 @@ export class DatosContactoPage implements OnInit {
     this.variay = false;
     this.variai = false;
     this.variak = false;
+    this.loader = false;
   }
 
   ngOnInit() {
@@ -142,28 +144,29 @@ export class DatosContactoPage implements OnInit {
   }
 
   guardar() {
+    this.loader = true;
     if(this.negocioTO.logo === null ||
       this.negocioTO.logo === undefined ||
       this.negocioTO.logo.archivo_64 === '' ||
       this.negocioTO.logo.archivo_64 === null){
        this.notificaciones.alerta('Agregue la foto de su negocio');
+       this.loader = false;
    }else{
     this.datosC();
     this.negocioServico.guardar(this.negocioGuardar).subscribe(
       response => {
         if (response.code === 200) {
           this.notificaciones.exito('Tu negocio se guardo exitosamente');
-          //this.router.navigate(["/tabs/home/negocio"]);
+          this.loader = false;
           this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}});
         } else {
           this.notificaciones.alerta('Error al guardar, intente nuevamente');
-          //   this._notificacionService.pushAlert('Error al guardar, intente nuevamente');
-          //  this.loaderGuardar = false;
+          this.loader = false;
         }
       },
       error => {
         this.notificaciones.error(error);
-        //  this.loaderGuardar = false;
+        this.loader = false;
       }
     );
    }

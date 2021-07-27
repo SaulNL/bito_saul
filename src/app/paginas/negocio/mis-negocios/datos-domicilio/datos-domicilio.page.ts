@@ -38,6 +38,7 @@ export class DatosDomicilioPage implements OnInit {
   public municiAux: any;
   public localiAux: any;
   public loadion : any;
+  public loader: boolean;
   constructor(
     private platform: Platform,
     private router: Router,
@@ -60,6 +61,7 @@ export class DatosDomicilioPage implements OnInit {
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
     this.list_cat_localidad = new Array<CatLocalidadModel>();
+    this.loader = false;
   }
 
   ngOnInit() {
@@ -76,7 +78,7 @@ export class DatosDomicilioPage implements OnInit {
     console.log(this.negocioGuardar);
     //this.platform.backButton.observers.pop();
   }
-  
+
   datosD() {
     this.negocioGuardar.det_domicilio.calle = this.negocioTO.det_domicilio.calle;
     this.negocioGuardar.det_domicilio.numero_int = this.negocioTO.det_domicilio.numero_int;
@@ -158,7 +160,7 @@ export class DatosDomicilioPage implements OnInit {
     await alert.present();
   }
   guardar() {
-    this.presentLoading();
+    this.loader = true;
     if (
       this.negocioTO.logo === null ||
       this.negocioTO.logo === undefined ||
@@ -167,23 +169,23 @@ export class DatosDomicilioPage implements OnInit {
       this.negocioTO.logo.archivo_64 === null ||
       this.negocioTO.logo.archivo_64 === undefined) {
       this.notificaciones.alerta('Agregue la foto de su negocio');
-      this.loadion.dismiss();
+      this.loader = false;
     } else {
       this.datosD();
       this.negocioServico.guardar(this.negocioGuardar).subscribe(
         response => {
           if (response.code === 200) {
             this.notificaciones.exito('Tu negocio se guardo exitosamente');
-            this.loadion.dismiss();
+            this.loader = false;
             this.router.navigate(['/tabs/home/negocio'], { queryParams: { special: true } });
           } else {
             this.notificaciones.alerta('Error al guardar, intente nuevamente');
-            this.loadion.dismiss();
+            this.loader = false;
           }
         },
         error => {
           this.notificaciones.error(error);
-          this.loadion.dismiss();
+          this.loader = false;
           //  this.loaderGuardar = false;
         }
       );
@@ -348,14 +350,6 @@ export class DatosDomicilioPage implements OnInit {
     } else {
       this.list_cat_localidad = [];
     }
-  }
-  async presentLoading() {
-    this.loadion = await this.loadingController.create({
-      spinner: "crescent",
-      cssClass: "my-custom-class",
-      message: "Guardando...",
-    });
-    await this.loadion.present();  
   }
 }
 
