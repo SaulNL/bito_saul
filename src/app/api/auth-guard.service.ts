@@ -15,17 +15,17 @@ export class AuthGuardService implements CanActivate {
   }
 
   canActivate(route): boolean {
+    console.log(this.tf);
     
-
     if (this.tf === false) {
       let cancell = "true";
       let ruta = route._routerState.url;
       if (ruta==="/tabs/home/perfil?special=true") {
         ruta = "/tabs/home/perfil";
       }
-
+      
       let all = '{"cancel":'+cancell+',"ruta":"'+ruta+'"}';
-
+      
       this.router.navigate(["/tabs/negocio/" + this.url], {
         queryParams: { cancel: all },
       });

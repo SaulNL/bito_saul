@@ -695,10 +695,13 @@ export class PerfilNegocioPage implements OnInit {
     } else {
       this.blockk.tf = true;
       if (this.navegacion){
+        console.log('aqui');
         this.location.back();
         this.navegacion = false;
       } else{
-        this.router.navigate(['/tabs/inicio']);
+       /* console.log('aca');
+        this.location.back();*/
+        this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
       }
 
       // this.subscribe.unsubscribe();

@@ -1,4 +1,3 @@
-import { ToadNotificacionService } from './../../api/toad-notificacion.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import * as moment from 'moment';
@@ -42,7 +41,7 @@ export class ModalPromocionComponent implements OnInit {
   public anyFiltros    : FiltrosModel;
   public loader        : boolean = false;
 
-  constructor(public modalController: ModalController, private router: Router, private _promociones: PromocionesService, private _haversineService: HaversineService, private toadNotificacionService: ToadNotificacionService) {
+  constructor(public modalController: ModalController, private router: Router, private _promociones: PromocionesService, private _haversineService: HaversineService ) { 
   }
 
   ngOnInit() {
@@ -76,7 +75,7 @@ export class ModalPromocionComponent implements OnInit {
     this._promociones.buscarPromocinesPublicadasModulo(this.anyFiltros).subscribe(
       response => {
         if(response.code === 402){
-
+          console.log('402');
         }
         if (response.data !== null) {
           this.lstPromociones = response.data;
@@ -98,7 +97,7 @@ export class ModalPromocionComponent implements OnInit {
         }
       },
       error => {
-        this.toadNotificacionService.error('No se pudo obtener promociones');
+        console.error(error);
         this.lstPromociones = [];
       },
       () => {

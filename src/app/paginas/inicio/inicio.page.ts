@@ -122,6 +122,7 @@ export class InicioPage implements OnInit {
     if (usr.id_persona !== undefined) {
       this.Filtros.id_persona = usr.id_persona;
     }
+    console.log(this.Filtros);
     this.principalSercicio.obtenerDatos(this.Filtros).subscribe(
       (respuesta) => {
         this.listaCategorias = respuesta.data;
