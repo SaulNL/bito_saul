@@ -9,49 +9,74 @@
   </ion-toolbar>
 </ion-header>
 <app-spinner [loader]="loading(loaderB, loaderBs)"></app-spinner>
-<ion-content *ngIf="!loaderB && !loaderBs" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+<ion-content
+  *ngIf="!loaderB && !loaderBs"
+  [scrollEvents]="true"
+  (ionScroll)="cordenada = $event.detail.scrollTop"
+>
   <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
   <ion-card>
     <ion-list>
       <ion-grid>
-        <ion-row >
-          <ion-col *ngFor="let estatus of listaEstatus" (click)="buscarPorestatus(estatus)" size="6" size-sm>
-            <ion-checkbox color="danger"  [checked]="estatus.seleccionado"></ion-checkbox>
+        <ion-row>
+          <ion-col
+            *ngFor="let estatus of listaEstatus"
+            (click)="buscarPorestatus(estatus)"
+            size="6"
+            size-sm
+          >
+            <ion-checkbox
+              color="danger"
+              [checked]="estatus.seleccionado"
+            ></ion-checkbox>
             <ion-label>{{estatus.estatus}}</ion-label>
           </ion-col>
         </ion-row>
       </ion-grid>
     </ion-list>
   </ion-card>
-  <ion-card>
+  <ion-content class="ion-padding" *ngIf="loaderSearch">
+    <div class="spin">
+      <ion-spinner class="spinner-color"></ion-spinner>
+    </div>
+  </ion-content>
+  <ion-card *ngIf="!loaderSearch">
     <ion-item *ngIf="listaNegocioPedididos.length == 0">
       <ion-label>
-        <h2 class="text-center"> No se encontraron pedidos</h2>
+        <h2 class="text-center">No se encontraron pedidos</h2>
       </ion-label>
     </ion-item>
   </ion-card>
-  <ion-card *ngFor="let negocio of listaNegocioPedididos">
-    <ion-list >
-      <ion-item lines="none">
-        <ion-avatar>
-          <ion-img [src]="negocio.url_logo"></ion-img>
-        </ion-avatar>
-        <ion-label>{{negocio.nombre_comercial}}</ion-label>
-        <!-- duda con el celular porque aquí va el telefóno según el código -->
-      </ion-item>
-      <ion-item style="margin: 15px; border-bottom: 1px solid gray;" lines="none" *ngFor="let pedido of negocio.pedidos" (click)="datosPedido(pedido)">
-        <ion-grid>
-          <ion-row>
-            <ion-col class="ion-text-start">
-              <ion-label>Folio: {{pedido.id_pedido_negocio}}</ion-label>
-            </ion-col>
-            <ion-col class="ion-align-self-end ion-text-end">
-              <ion-badge [style]="{'background': pedido.color}">{{pedido.estatus}}</ion-badge>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
-    </ion-list>
-  </ion-card>
-
+  <div *ngIf="!loaderSearch">
+    <ion-card *ngFor="let negocio of listaNegocioPedididos">
+      <ion-list>
+        <ion-item lines="none">
+          <ion-avatar>
+            <ion-img [src]="negocio.url_logo"></ion-img>
+          </ion-avatar>
+          <ion-label>{{negocio.nombre_comercial}}</ion-label>
+          <!-- duda con el celular porque aquí va el telefóno según el código -->
+        </ion-item>
+        <ion-item
+          style="margin: 15px; border-bottom: 1px solid gray"
+          lines="none"
+          *ngFor="let pedido of negocio.pedidos"
+          (click)="datosPedido(pedido)"
+        >
+          <ion-grid>
+            <ion-row>
+              <ion-col class="ion-text-start">
+                <ion-label>Folio: {{pedido.id_pedido_negocio}}</ion-label>
+              </ion-col>
+              <ion-col class="ion-align-self-end ion-text-end">
+                <ion-badge [style]="{'background': pedido.color}"
+                  >{{pedido.estatus}}</ion-badge
+                >
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+    </ion-card>
+  </div>
 </ion-content>

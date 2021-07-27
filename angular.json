@@ -17,6 +17,13 @@
             "outputPath": "www",
             "index": "src/index.html",
             "main": "src/main.ts",
+            "allowedCommonJsDependencies": [
+              "angularx-qrcode",
+              "qrcode",
+              "firebase/app",
+              "@firebase/auth",
+              "ng2-haversine"
+            ],
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [

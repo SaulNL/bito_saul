@@ -28,6 +28,7 @@ export class PedidosDialogPage implements OnInit {
   public selectTO: any;
   public subscribe;
   public navegacion: any;
+  public loaderSearch = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -78,9 +79,11 @@ export class PedidosDialogPage implements OnInit {
           //this.loader = false;
           this.listaNegocioPedididos = res.data;
           this.loaderB = false;
+          this.loaderSearch = false;
         },
         (error) => {
           this.loaderB = false;
+          this.loaderSearch = false;
           //this.loader = false;
         }
       );
@@ -107,6 +110,7 @@ export class PedidosDialogPage implements OnInit {
   }
 
   buscarPorestatus(estatus: any) {
+    this.loaderSearch = true;
     estatus.seleccionado = !estatus.seleccionado;
     this.lstFiltroEstatus = [];
     this.listaEstatus.map((it) => {
@@ -128,7 +132,7 @@ export class PedidosDialogPage implements OnInit {
   regresar() {
 
      this.location.back();
-     
+
     // if (this.navegacion) {
     //   this.location.back();
     //   this.navegacion = false;

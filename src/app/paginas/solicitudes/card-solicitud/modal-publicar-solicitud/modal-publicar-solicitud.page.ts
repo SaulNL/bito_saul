@@ -20,7 +20,7 @@ export class ModalPublicarSolicitudPage implements OnInit {
   public fechafin: any;
   public publicacionesHechas: number;
   public publicacionesPermitidas: number;
-  public minDate: any;
+
   public maxDate: any;
   public diasPermitidos: number;
   public blnSelectFecha: boolean;
@@ -36,9 +36,7 @@ export class ModalPublicarSolicitudPage implements OnInit {
     public loadingController: LoadingController,
   ) {
     const currentYear = new Date().getFullYear();
-    this.minDate = new Date();
     this.maxDate = new Date(currentYear - -30, 0, 0);
-    this.minDate = moment.parseZone(this.minDate).format("YYYY-MM-DD");
     this.maxDate = moment.parseZone(this.maxDate).format("YYYY-MM-DD");
   }
 

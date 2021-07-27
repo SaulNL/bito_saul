@@ -39,7 +39,7 @@ export class TabsPage implements OnInit{
           })
         this.usuario = this.util.getData();
 
-        
+
     }
 
     inicio() {
@@ -51,15 +51,17 @@ export class TabsPage implements OnInit{
     promociones() {
         this.router.navigate(['/tabs/promociones']);
         localStorage.setItem('resetFiltro', '0');
-        
+    }
+    solicitudes(){
+        this.router.navigate(['/tabs/home/solicitud']);
     }
 
     productos() {
          this.router.navigate(['/tabs/productos']);
          localStorage.setItem('resetFiltro', '0');
-         
+
     }
-    perfil(){        
+    perfil(){
         sessionStorage.setItem('isRedirected', 'false');
         localStorage.setItem('resetFiltro', '0');
         //console.log(sessionStorage.getItem('isRedirected'));
