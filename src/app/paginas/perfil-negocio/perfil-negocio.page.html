@@ -246,14 +246,14 @@
         <div>
             <ion-grid>
                 <ion-row style="background: white;">
-                    <ion-segment color="tertiary" [(ngModel)]="seccion" (ionChange)="cambio()">
-                        <ion-segment-button value="ubicacion">Ubicación</ion-segment-button>
+                    <ion-segment value="productos" color="tertiary" [(ngModel)]="seccion" (ionChange)="cambio()">
                         <ion-segment-button value="productos" *ngIf="informacionNegocio.catProductos.length > 0">
                             Productos
                         </ion-segment-button>
                         <ion-segment-button value="servicios" *ngIf="informacionNegocio.catServicos.length > 0">
                             Servicios
                         </ion-segment-button>
+                        <ion-segment-button value="ubicacion">Ubicación</ion-segment-button>
                     </ion-segment>
                 </ion-row>
             </ion-grid>
@@ -302,7 +302,6 @@
                                 </ion-chip>
                             </div>
                         </div>
-                        <p><br></p>
                     </ion-col>
                 </ion-row>
                 <ion-row *ngFor="let cat of informacionNegocio.catProductos; let i = index">
@@ -422,10 +421,10 @@
         </div>
     </div>
     <ion-fab *ngIf="existeSesion" horizontal="end" vertical="bottom" slot="fixed">
-        <ion-fab-button size="small" style="color: royalblue;"
+        <ion-fab-button size="small"
                         href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
                        target="_blank">
-            <ion-icon name="navigate"></ion-icon>
+            <ion-icon name="navigate" style="color: royalblue;"></ion-icon>
         </ion-fab-button>
         <ion-fab-button size="small"
                         *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''"
