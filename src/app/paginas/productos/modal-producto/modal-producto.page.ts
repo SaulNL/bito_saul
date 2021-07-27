@@ -28,6 +28,7 @@ export class ModalProductoPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.unoProducto);
     if (this.existeSesion) {
       this.obtenerInformacionNegocio();
       this.loVio(this.unoProducto);
@@ -48,7 +49,7 @@ export class ModalProductoPage implements OnInit {
         });
       },
       (error) => {
-
+        console.log(error);
       }
     );
   }
@@ -66,7 +67,7 @@ export class ModalProductoPage implements OnInit {
     this.servicioProductos.quienVioProdu(objectoVio).subscribe(
       (response) => {
         if (response.code === 200) {
-
+          console.log(response.code);
         }
       },
       (error) => { }
@@ -88,17 +89,22 @@ export class ModalProductoPage implements OnInit {
   obtenerInformacionNegocio() {
      this.negocioServico.buscarNegocio(this.unoProducto.negocio.idNegocio).subscribe(
       (response) => {
+        console.log(response);
             this.negocio = response.data;
             this.negocioUrl(response.data);
       },
       (error) => {
+        console.log(error);
       }
     );
   }
   public negocioUrl(negocioT: any){
      this.negocioServico.obteneretalleNegocio(negocioT.url_negocio, this.user.id_persona).subscribe(
         (response) => {
+          console.log(response);
+          console.log(response.data);
             this.informacionNegocio = response.data;
+            console.log(this.informacionNegocio);
             this.mostrarBoton();
         },
         (error) => {

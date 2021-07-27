@@ -54,7 +54,6 @@ export class ToolbarBusquedaComponent implements OnInit {
   }
 
   buscar() {
-    //console.log(this.strBuscar)
     this.buscarEmit.emit(this.strBuscar);
   }
 

@@ -127,6 +127,7 @@ export class FormSolicitudPage implements OnInit {
       if (this.actualTO.id_giro === 12) {
         this.actualTO.id_categoria = 9999;
       }
+      console.log(this.actualTO);
       this.solicitudesService.guardar(this.actualTO).subscribe(
         (response) => {
           if (this._utils_cls.is_success_response(response.code)) {

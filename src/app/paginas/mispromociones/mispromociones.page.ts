@@ -360,8 +360,9 @@ export class MispromocionesPage implements OnInit {
   validaRadio(i) {
     let radiobuttons = document.getElementsByTagName("ion-toggle");
     for (let j = 0; j < radiobuttons.length; j++) {
-      if (parseInt(radiobuttons[j].value) === i) {
-        radiobuttons[j].setAttribute("checked", "true");
+      if (parseInt(radiobuttons[j].value) === i) { 
+        console.log(radiobuttons[j].value);
+        radiobuttons[j].setAttribute('checked', 'true');
       }
     }
   }

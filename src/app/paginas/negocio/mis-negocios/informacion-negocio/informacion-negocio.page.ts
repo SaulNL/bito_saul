@@ -62,6 +62,8 @@ export class InformacionNegocioPage implements OnInit {
     this.active.queryParams.subscribe(params => {
       if (params && params.special) {
         this.negocioTO = JSON.parse(params.special);
+        console.log(this.negocioTO);
+        
         this.negocioTO.det_domicilio = new DetDomicilioModel();
       }
     });
@@ -138,7 +140,7 @@ export class InformacionNegocioPage implements OnInit {
         this.subcategorias();
       },
       error => {
-
+        console.log(error);
       }
     );
   }
@@ -149,6 +151,7 @@ export class InformacionNegocioPage implements OnInit {
       },
       error => {
         this.listTipoNegocio = [];
+        console.log(error);
       }
     );
   }

@@ -1,41 +1,41 @@
-import { AppSettings } from './../../AppSettings';
-import { Component, EventEmitter, OnInit } from '@angular/core';
-import { Map, tileLayer, marker, icon } from 'leaflet';
-import { ActivatedRoute, Router } from '@angular/router';
+import { AppSettings } from "./../../AppSettings";
+import { Component, EventEmitter, OnInit } from "@angular/core";
+import { Map, tileLayer, marker, icon } from "leaflet";
+import { ActivatedRoute, Router } from "@angular/router";
 import {
   AlertController,
   NavController,
   Platform,
   ToastController,
-} from '@ionic/angular';
-import { NegocioService } from '../../api/negocio.service';
-import { Geolocation } from '@capacitor/core';
-import { ToadNotificacionService } from '../../api/toad-notificacion.service';
-import { Location } from '@angular/common';
-import { UtilsCls } from '../../utils/UtilsCls';
-import { SideBarService } from '../../api/busqueda/side-bar-service';
-import { ActionSheetController } from '@ionic/angular';
-import { ModalController } from '@ionic/angular';
-import { DenunciaNegocioPage } from './denuncia-negocio/denuncia-negocio.page';
-import { Plugins } from '@capacitor/core';
-import { CalificarNegocioComponent } from '../../componentes/calificar-negocio/calificar-negocio.component';
-import { ProveedorServicioService } from '../../api/busqueda/proveedores/proveedor-servicio.service';
-import { DetalleProductoComponent } from '../../componentes/detalle-producto/detalle-producto.component';
-import { PedidoNegocioComponent } from '../../componentes/pedido-negocio/pedido-negocio.component';
-import { AuthGuardService } from '../../api/auth-guard.service';
-import { NavBarServiceService } from 'src/app/api/busqueda/nav-bar-service.service';
-import { PromocionesModel } from 'src/app/Modelos/busqueda/PromocionesModel';
+} from "@ionic/angular";
+import { NegocioService } from "../../api/negocio.service";
+import { Geolocation } from "@capacitor/core";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { Location } from "@angular/common";
+import { UtilsCls } from "../../utils/UtilsCls";
+import { SideBarService } from "../../api/busqueda/side-bar-service";
+import { ActionSheetController } from "@ionic/angular";
+import { ModalController } from "@ionic/angular";
+import { DenunciaNegocioPage } from "./denuncia-negocio/denuncia-negocio.page";
+import { Plugins } from "@capacitor/core";
+import { CalificarNegocioComponent } from "../../componentes/calificar-negocio/calificar-negocio.component";
+import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveedor-servicio.service";
+import { DetalleProductoComponent } from "../../componentes/detalle-producto/detalle-producto.component";
+import { PedidoNegocioComponent } from "../../componentes/pedido-negocio/pedido-negocio.component";
+import { AuthGuardService } from "../../api/auth-guard.service";
+import { NavBarServiceService } from "src/app/api/busqueda/nav-bar-service.service";
+import { PromocionesModel } from "src/app/Modelos/busqueda/PromocionesModel";
 const { Share } = Plugins;
-const haversineCalculator = require('haversine-calculator');
-import { ModalPromocionNegocioComponent } from 'src/app/componentes/modal-promocion-negocio/modal-promocion-negocio.component';
-import {ProductoModel} from '../../Modelos/ProductoModel';
-import { ProductosService } from '../../api/productos.service';
+const haversineCalculator = require("haversine-calculator");
+import { ModalPromocionNegocioComponent } from "src/app/componentes/modal-promocion-negocio/modal-promocion-negocio.component";
+import {ProductoModel} from "../../Modelos/ProductoModel";
+import { ProductosService } from "../../api/productos.service";
 import {ComentariosNegocioComponent} from '../../componentes/comentarios-negocio/comentarios-negocio.component';
 
 @Component({
-  selector: 'app-perfil-negocio',
-  templateUrl: './perfil-negocio.page.html',
-  styleUrls: ['./perfil-negocio.page.scss'],
+  selector: "app-perfil-negocio",
+  templateUrl: "./perfil-negocio.page.html",
+  styleUrls: ["./perfil-negocio.page.scss"],
 })
 export class PerfilNegocioPage implements OnInit {
 
@@ -63,13 +63,13 @@ export class PerfilNegocioPage implements OnInit {
   public banderaS: any;
   public banderaP: any;
   public diasArray = [
-    { id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null },
-    { id: 2, dia: 'Martes', horarios: [], hi: null, hf: null },
-    { id: 3, dia: 'Miércoles', horarios: [], hi: null, hf: null },
-    { id: 4, dia: 'Jueves', horarios: [], hi: null, hf: null },
-    { id: 5, dia: 'Viernes', horarios: [], hi: null, hf: null },
-    { id: 6, dia: 'Sábado', horarios: [], hi: null, hf: null },
-    { id: 7, dia: 'Domingo', horarios: [], hi: null, hf: null },
+    { id: 1, dia: "Lunes", horarios: [], hi: null, hf: null },
+    { id: 2, dia: "Martes", horarios: [], hi: null, hf: null },
+    { id: 3, dia: "Miércoles", horarios: [], hi: null, hf: null },
+    { id: 4, dia: "Jueves", horarios: [], hi: null, hf: null },
+    { id: 5, dia: "Viernes", horarios: [], hi: null, hf: null },
+    { id: 6, dia: "Sábado", horarios: [], hi: null, hf: null },
+    { id: 7, dia: "Domingo", horarios: [], hi: null, hf: null },
   ];
   private detalle: any;
   public bolsa: any;
@@ -82,8 +82,8 @@ export class PerfilNegocioPage implements OnInit {
   public ruta;
   public contador: number;
   public navegacion: any;
-  public user: any;
-  public siEsta: any;
+  public user:any;
+  public siEsta:any;
   constructor(
       private navctrl: NavController,
       private route: ActivatedRoute,
@@ -116,7 +116,7 @@ export class PerfilNegocioPage implements OnInit {
           if (dato) {
             this.modal.dismiss();
           } else {
-            if (this.contador === 0) {
+            if (this.contador===0) {
               this.contador = this.contador + 1;
               this.salir();
             }
@@ -128,14 +128,14 @@ export class PerfilNegocioPage implements OnInit {
     this.banderaP = null;
     this.navegacion = false;
     this.user = this.util.getUserData();
-    this.siEsta = true;
+    this.siEsta=true;
   }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       if (params.cancel && params){
-        const all = JSON.parse(JSON.stringify(params));
-        const objeto = JSON.parse(all.cancel);
+        let all = JSON.parse(JSON.stringify(params));
+        let objeto = JSON.parse(all.cancel);
         this.ruta = objeto.ruta;
         if (objeto.cancel){
           this.mensajeRuta();
@@ -170,11 +170,11 @@ export class PerfilNegocioPage implements OnInit {
     if (
         this.negocio !== undefined &&
         this.negocio !== null &&
-        this.negocio !== ''
+        this.negocio !== ""
     ) {
       this.obtenerInformacionNegocio();
     } else {
-      this.notificacionService.error('Ocurrio un error con este negocio');
+      this.notificacionService.error("Ocurrio un error con este negocio");
       this.location.back();
     }
     this.getCurrentPosition();
@@ -225,7 +225,7 @@ export class PerfilNegocioPage implements OnInit {
           }, 100);
         },
         (error) => {
-          confirm('Error al cargar');
+          confirm("Error al cargar");
           this.loader = false;
         }
     );
@@ -276,7 +276,7 @@ export class PerfilNegocioPage implements OnInit {
               }
             },
             (error) => {
-              confirm('Error al o¿btener los productos');
+              confirm("Error al o¿btener los productos");
             }
         );
   }
@@ -307,11 +307,12 @@ export class PerfilNegocioPage implements OnInit {
                     }
                   });
                   this.informacionNegocio.catServicos = cats;
+                  //console.log(this.informacionNegocio);
                 }
               }
             },
             (error) => {
-              confirm('Error al o¿btener los servicios');
+              confirm("Error al o¿btener los servicios");
             }
         );
   }
@@ -319,14 +320,14 @@ export class PerfilNegocioPage implements OnInit {
   loadMap() {
     const lat = this.informacionNegocio.det_domicilio.latitud;
     const lng = this.informacionNegocio.det_domicilio.longitud;
-    this.map = new Map('mapId').setView([lat, lng], 16);
-    tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '',
+    this.map = new Map("mapId").setView([lat, lng], 16);
+    tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "",
     }).addTo(this.map);
 
-    const myIcon = icon({
+    var myIcon = icon({
       iconUrl:
-          'https://ecoevents.blob.core.windows.net/comprandoando/marker.png',
+          "https://ecoevents.blob.core.windows.net/comprandoando/marker.png",
       iconSize: [45, 41],
       iconAnchor: [13, 41],
     });
@@ -336,7 +337,7 @@ export class PerfilNegocioPage implements OnInit {
 
   async configToad(mensaje) {
     const toast = await this.toadController.create({
-      color: 'red',
+      color: "red",
       duration: 2000,
       message: mensaje,
     });
@@ -344,7 +345,7 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   cambio() {
-    if (this.seccion === 'ubicacion') {
+    if (this.seccion === "ubicacion") {
       setTimeout((it) => {
         this.loadMap();
       }, 100);
@@ -357,36 +358,36 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   enviarWhasapp(celular: any) {
-    this.abrirVentana('https://api.whatsapp.com/send?phone=+52' + celular);
+    this.abrirVentana("https://api.whatsapp.com/send?phone=+52" + celular);
   }
 
   llamar(telefono) {
-    this.abrirVentana('tel:' + telefono);
+    this.abrirVentana("tel:" + telefono);
   }
 
   abrirVentana(ruta) {
     window.open(
         ruta,
-        '_blank',
-        'toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400'
+        "_blank",
+        "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400"
     );
   }
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
-      header: 'Negocio',
+      header: "Negocio",
       buttons: [
         {
-          text: 'Denunciar',
-          icon: 'receipt-outline',
+          text: "Denunciar",
+          icon: "receipt-outline",
           handler: () => {
             this.abrirModalDenuncia();
           },
         },
         {
-          text: 'Cancelar',
-          icon: 'close',
-          role: 'cancel',
+          text: "Cancelar",
+          icon: "close",
+          role: "cancel",
           handler: () => {},
         },
       ],
@@ -449,14 +450,14 @@ export class PerfilNegocioPage implements OnInit {
   async compartir() {
     this.url_negocio = this.url + this.informacionNegocio.url_negocio;
     await Share.share({
-      title: 'Ver cosas interesantes',
+      title: "Ver cosas interesantes",
       text:
-          'Te recomiendo este negocio ' +
+          "Te recomiendo este negocio " +
           this.informacionNegocio.nombre_comercial,
       url: this.url_negocio,
-      dialogTitle: 'Compartir con Amigos',
+      dialogTitle: "Compartir con Amigos",
     })
-        .then(() => console.log('Se compartio exitosamente'))
+        .then(() => console.log("Se compartio exitosamente"))
         .catch((error) => this.notificacionService.error(error));
   }
 
@@ -528,19 +529,19 @@ export class PerfilNegocioPage implements OnInit {
 
   valorEstrellas() {
     setTimeout((it) => {
-      const numeroEstrella = this.informacionNegocio.promedio.toString();
-      const estrellas = document.getElementsByName('estrellas') as any;
+      let numeroEstrella = this.informacionNegocio.promedio.toString();
+      let estrellas = <any>document.getElementsByName("estrellas");
       for (let i = 0; i < estrellas.length; i++) {
         if (estrellas[i].value === numeroEstrella) {
-          const estrellaValor = estrellas[i];
-          estrellaValor.setAttribute('checked', true);
+          let estrellaValor = estrellas[i];
+          estrellaValor.setAttribute("checked", true);
         }
       }
     }, 500);
   }
 
   private horarios(negocio: any) {
-    this.estatus = { tipo: 0, mensaje: 'No abre hoy' };
+    this.estatus = { tipo: 0, mensaje: "No abre hoy" };
 
     const hros = negocio.horarios;
     let hoy: any;
@@ -556,7 +557,7 @@ export class PerfilNegocioPage implements OnInit {
               horarioTmp.hora_fin !== undefined
           ) {
             const dato = {
-              texto: horarioTmp.hora_inicio + ' a ' + horarioTmp.hora_fin,
+              texto: horarioTmp.hora_inicio + " a " + horarioTmp.hora_fin,
               hi: horarioTmp.hora_inicio,
               hf: horarioTmp.hora_fin,
             };
@@ -581,7 +582,7 @@ export class PerfilNegocioPage implements OnInit {
           const listaAux = [];
           if (dia.horarios.length !== 0) {
             dia.horarios.map((item, i) => {
-              const inicio = item.hi.split(':');
+              const inicio = item.hi.split(":");
               // tslint:disable-next-line:radix
               const fi = new Date(
                   1995,
@@ -592,7 +593,7 @@ export class PerfilNegocioPage implements OnInit {
                   0,
                   0
               );
-              const fin = item.hf.split(':');
+              const fin = item.hf.split(":");
               let aux = 18;
               // tslint:disable-next-line:radix
               if (parseInt(inicio[0]) > parseInt(fin[0])) {
@@ -620,7 +621,7 @@ export class PerfilNegocioPage implements OnInit {
             if (abieto) {
               this.estatus = {
                 tipo: 1,
-                mensaje: 'Cierra a las ' + dia.horarios[index].hf,
+                mensaje: "Cierra a las " + dia.horarios[index].hf,
               };
             } else {
               let listaValores: Array<number> = [];
@@ -646,7 +647,7 @@ export class PerfilNegocioPage implements OnInit {
                 });
                 this.estatus = {
                   tipo: 0,
-                  mensaje: 'Abre a las ' + dia.horarios[index].hi,
+                  mensaje: "Abre a las " + dia.horarios[index].hi,
                 };
               } else {
                 listaAux.map((item) => {
@@ -656,17 +657,17 @@ export class PerfilNegocioPage implements OnInit {
                 });
                 this.estatus = {
                   tipo: 0,
-                  mensaje: 'Cerró a las ' + dia.horarios[index].hf,
+                  mensaje: "Cerró a las " + dia.horarios[index].hf,
                 };
               }
             }
           } else {
-            this.estatus = { tipo: 0, mensaje: 'No abre hoy' };
+            this.estatus = { tipo: 0, mensaje: "No abre hoy" };
           }
         }
       });
       this.diasArray = diasArray;
-      // console.log(this.diasArray);
+      //console.log(this.diasArray);
     }
   }
 
@@ -675,8 +676,8 @@ export class PerfilNegocioPage implements OnInit {
     this.bolsa.map((it) => {
       if (it.idProducto === dato.idProducto) {
         existe = true;
-        if (dato.cantidad > 1){
-          it.cantidad = dato.cantidad;
+        if (dato.cantidad>1){
+          it.cantidad=dato.cantidad;
         } else{
           it.cantidad++;
         }
@@ -697,7 +698,7 @@ export class PerfilNegocioPage implements OnInit {
       if (this.navegacion){
         console.log('aqui');
         this.location.back();
-        this.navegacion = false;
+        this.navegacion=false;
       } else{
        /* console.log('aca');
         this.location.back();*/
@@ -715,23 +716,23 @@ export class PerfilNegocioPage implements OnInit {
 
   async mensajeRuta() {
     const alert = await this.alertController.create({
-      header: 'Advertencia',
+      header: "Advertencia",
       message:
-          'Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!',
+          "Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!",
       buttons: [
         {
-          text: 'Cancelar',
+          text: "Cancelar",
           handler: () => {
             this.blockk.tf = false;
-            this.router.navigate(['/tabs/negocio/' + this.negocio]);
+            this.router.navigate(['/tabs/negocio/'+this.negocio]);
           }
         },
         {
-          text: 'Salir',
+          text: "Salir",
           handler: () => {
             this.blockk.tf = true;
             this.bolsa = [];
-            if (this.ruta === '/tabs/home/perfil'){
+            if (this.ruta==="/tabs/home/perfil"){
               this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
             } else {
               this.router.navigate([this.ruta]);
@@ -760,19 +761,19 @@ export class PerfilNegocioPage implements OnInit {
 
 
     const alert = await this.alertController.create({
-      header: 'Advertencia',
+      header: "Advertencia",
       message:
-          'Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!',
+          "Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!",
       buttons: [
         {
-          text: 'Cancelar',
+          text: "Cancelar",
           handler: () => {
             this.blockk.tf = false;
             this.contador = 0;
           }
         },
         {
-          text: 'Salir',
+          text: "Salir",
           handler: () => {
             this.bolsa = [];
             this.blockk.tf = true;
@@ -819,16 +820,16 @@ export class PerfilNegocioPage implements OnInit {
       };
       this.llenarBolsa(producto);
     } else {
-      this.router.navigate(['/tabs/login']);
+      this.router.navigate(["/tabs/login"]);
     }
   }
 
   irRedSocial(palabra: string) {
     if (
-        palabra.substring(0, 7) !== 'http://' &&
-        palabra.substring(0, 8) !== 'https://'
+        palabra.substring(0, 7) !== "http://" &&
+        palabra.substring(0, 8) !== "https://"
     ) {
-      palabra = 'https://' + palabra;
+      palabra = "https://" + palabra;
     }
     this.abrirVentana(palabra);
   }
@@ -889,7 +890,7 @@ export class PerfilNegocioPage implements OnInit {
   eliminar(inde) {
     for (let index = 0; index < this.bolsa.length; index++) {
       const element = this.bolsa[index];
-      if (element.idProducto === inde.idProducto) {
+      if (element.idProducto===inde.idProducto) {
         this.bolsa.splice(index, 1);
       }
     }
@@ -924,16 +925,16 @@ export class PerfilNegocioPage implements OnInit {
         }
       },
       (error) => {
-        this.notificacionService.error('Error, intentelo más tarde');
+        this.notificacionService.error("Error, intentelo más tarde");
       }
     );
-    // }
+    //}
   }
   async presentError() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: '',
-      mode: 'ios',
+      mode:'ios',
       backdropDismiss : true,
       message: '<strong>La Url del negocio no existe</strong>!!!',
       buttons: [
@@ -955,7 +956,7 @@ export class PerfilNegocioPage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: '',
-      mode: 'ios',
+      mode:'ios',
       backdropDismiss : true,
       message: '<strong>Este negocio está deshabilitado o ya no existe</strong>!!!',
       buttons: [
@@ -977,11 +978,11 @@ export class PerfilNegocioPage implements OnInit {
     this.negocioService.visteMiNegocio(id_negocio).subscribe(
       response => {
         if (response.data !== null) {
-
+          console.log(response.data);
         }
       },
       error => {
-
+        console.log(error);
       }
     );
   }
@@ -997,13 +998,13 @@ export class PerfilNegocioPage implements OnInit {
           }
         },
         error => {
-
+          console.log(error);
         }
     );
   }
 
   public productoImagen(imagen: any){
-    if (Array.isArray(imagen)){
+    if(Array.isArray(imagen)){
       return imagen[0];
     }
     return imagen;

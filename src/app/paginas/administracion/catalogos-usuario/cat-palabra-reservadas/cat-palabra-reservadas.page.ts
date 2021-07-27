@@ -117,6 +117,7 @@ export class CatPalabraReservadasPage implements OnInit {
         this.notificaciones.exito('El registro se actualizó con éxito');
       },
       error => {
+        console.log(error);
         palabra.activo = palabra.activo === 1 ? 0 : 1;
         this.notificaciones.error('Ocurrio un error al actualizar el registro intente nuevamente');
       }

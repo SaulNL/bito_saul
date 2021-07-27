@@ -52,9 +52,11 @@ export class CardNegocioPage implements OnInit {
     this.negocioServico.buscarNegocio(this.negocioTO.id_negocio).subscribe(
       (response) => {
         this.negocioTO = response.data;
+        console.log(this.negocioTO);
         this.btload = true;
       },
       (error) => {
+        console.log(error);
       }
     );
   }
@@ -164,6 +166,7 @@ export class CardNegocioPage implements OnInit {
   }
 
   solicitarValidacion(){
+    console.log(this.negocioTO.id_negocio);
     this.negocioServico.solicitarValidacionNegocio(this.negocioTO.id_negocio).subscribe(
         response => {
           if (response.code === 200) {

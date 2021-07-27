@@ -50,7 +50,7 @@ export class CategoriasPage implements OnInit {
       response=>{
         this.listaCategorias=response.data;
     },error=>{
-
+      console.log(error);
     });
   }
 
