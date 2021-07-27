@@ -1,4 +1,3 @@
-import { ToadNotificacionService } from './../../api/toad-notificacion.service';
 import {Component, Input, OnInit} from '@angular/core';
 import {ModalController} from '@ionic/angular';
 import {NegocioService} from '../../api/negocio.service';
@@ -16,7 +15,6 @@ export class ComentariosNegocioComponent implements OnInit {
   constructor(
       private modalController: ModalController,
       private negocioService: NegocioService,
-      private notificaciones: ToadNotificacionService
   ) { }
 
   ngOnInit() {
@@ -44,7 +42,7 @@ export class ComentariosNegocioComponent implements OnInit {
           }
         },
         error => {
-          this.notificaciones.error('Error al buscar comentarios');
+          console.log(error);
         }
     );
   }

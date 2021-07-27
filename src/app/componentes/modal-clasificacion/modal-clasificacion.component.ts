@@ -52,11 +52,11 @@ export class ModalClasificacionComponent implements OnInit {
       }
       this.modalEditarCat.id_proveedor = this.datosNegocio.idProveedor;
       this.modalEditarCat.id_negocio = this.datosNegocio.id_negocio;
-
+      console.log(this.modalEditarCat);
 
       this.sercicioNegocio.modificarCategoria(this.modalEditarCat).subscribe(
         repsuesta => {
-          
+          console.log(repsuesta);
           const categoriaMod = this.listaVista.find(cat => cat.id_categoria === this.modalEditarCat.id_categoria);
           categoriaMod.nombre = this.modalEditarCat.nombre;
           categoriaMod.activo = this.modalEditarCat.activo;
@@ -70,7 +70,7 @@ export class ModalClasificacionComponent implements OnInit {
               });
             }
           }
-
+  
           this.notificacionService.exito('Se actualizó la categoría con éxito');
           this.dismiss();
         },

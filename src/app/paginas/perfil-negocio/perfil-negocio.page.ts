@@ -104,7 +104,7 @@ export class PerfilNegocioPage implements OnInit {
       private navBarServiceService: NavBarServiceService,
       private servicioProductos: ProductosService,
   ) {
-    this.seccion = 'ubicacion';
+    this.seccion = 'productos';
     this.loader = true;
     this.existeSesion = util.existe_sesion();
     this.estatusCalificacion = true;
@@ -201,7 +201,6 @@ export class PerfilNegocioPage implements OnInit {
         (response) => {
           if (response.data !== null) {
             this.informacionNegocio = response.data;
-            console.log(response.data);
             if (!this.informacionNegocio.activo) {
               this.presentExit();
               this.siEsta = false;
@@ -261,6 +260,15 @@ export class PerfilNegocioPage implements OnInit {
                 }
               }
               if (response.code === 200) {
+                if ((response.data.productos === undefined || response.data.productos.length === 0)
+                    && response.data.servicios !== undefined && response.data.servicios.length > 0){
+                  this.seccion = 'servicios';
+                }
+                if ((response.data.productos === undefined || response.data.productos.length === 0)
+                    && (response.data.servicios === undefined || response.data.servicios.length === 0)){
+                  this.seccion = 'ubicacion';
+                }
+
                 this.informacionNegocio.cartaProducto = response.data.cartaProducto;
                 this.informacionNegocio.cartaServicio = response.data.cartaServicio;
                 this.informacionNegocio.tagsProductos = response.data.productoTags;
@@ -687,10 +695,13 @@ export class PerfilNegocioPage implements OnInit {
     } else {
       this.blockk.tf = true;
       if (this.navegacion){
+        console.log('aqui');
         this.location.back();
         this.navegacion = false;
       } else{
-        this.router.navigate(['/tabs/inicio']);
+       /* console.log('aca');
+        this.location.back();*/
+        this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
       }
 
       // this.subscribe.unsubscribe();

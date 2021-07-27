@@ -80,7 +80,7 @@ export class GeneralServicesService {
    * Servicio para obtener la lista de de negocios por id's
    */
   public obtenerNegocios(ids: any): Observable<any> {
-    const body = JSON.stringify({id_negocios: ids});
+    const body = JSON.stringify({id_negocios: ids});    
     this.http.setDataSerializer("utf8");
     return from(this.http.post(`${this.url}api/servicio/lista/mapaNegocios`,body,AppSettings.getHeaders())
     .then((data) => {
@@ -88,21 +88,21 @@ export class GeneralServicesService {
     })
     .catch((error) => {
       return error;
-    }));
+    }));  
   }
-
+  
   /**
    * Servicio para obtener el tiempo de espera por sms
    */
   public obtenerTiempoTemporizador(): Observable<any> {
     const body = JSON.stringify({});
-
+    console.log(body);
     this.http.setDataSerializer("utf8");
     return from(this.http.post(
       this.url+'api/catalogo/tiempoTemporizador',
       body,AppSettings.getHeaders())
       .then((data) => {
-
+        console.log(data);
         return JSON.parse(data.data);
       })
       .catch((error) => {
@@ -112,13 +112,13 @@ export class GeneralServicesService {
 
   obtenerListaCategopriasProducto(id: any, tipo: number): Observable<any> {
     const body = JSON.stringify({id_categoria_negocio: id, tipo: tipo});
-
+    console.log(body);
     this.http.setDataSerializer("utf8");
     return from(this.http.post(
       this.url+'api/buscar/categorias/producto',
       body,AppSettings.getHeadersToken())
       .then((data) => {
-        
+        console.log(data);
         return JSON.parse(data.data);
       })
       .catch((error) => {

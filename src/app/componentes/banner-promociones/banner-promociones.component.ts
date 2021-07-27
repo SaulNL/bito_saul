@@ -1,4 +1,3 @@
-import { ToadNotificacionService } from './../../api/toad-notificacion.service';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { PromocionesService } from '../../api/busqueda/proveedores/promociones.service';
 import { IonSlides } from '@ionic/angular';
@@ -38,8 +37,7 @@ export class BannerPromocionesComponent implements OnInit {
     private navBarServiceService: NavBarServiceService,
     private _router: Router,
     public alertController: AlertController,
-    private geolocation: Geolocation,
-    private notificacion: ToadNotificacionService
+    private geolocation: Geolocation
   ) {
     this.lstPromociones = [];
     this.lstAvisos = [];
@@ -73,9 +71,11 @@ export class BannerPromocionesComponent implements OnInit {
       this.geolocation.getCurrentPosition().then((reponse)=> {
         this.miUbicacionlatitud = reponse.coords.latitude;
         this.miUbicacionlongitud = reponse.coords.longitude;
+        console.log(this.miUbicacionlatitud);
+        console.log(this.miUbicacionlongitud );
 
       }).catch((error) => {
-      this.notificacion.error("No se pudo obtener la ubicación");
+        console.log('Errorlocation', error);
       });
   }
   /**

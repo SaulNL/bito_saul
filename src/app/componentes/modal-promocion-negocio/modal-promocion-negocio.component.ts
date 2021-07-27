@@ -13,12 +13,12 @@ export class ModalPromocionNegocioComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    
+    console.log(this.promocionTO);
   }
-
+  
   cerrar() {
     this.modalController.dismiss();
     this.promocionTO = new PromocionesModel();
   }
-
+  
 }
