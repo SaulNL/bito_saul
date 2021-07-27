@@ -40,6 +40,7 @@ export class InicioPage implements OnInit {
   user: any;
   public existeSesion: boolean;
 
+
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -67,6 +68,11 @@ export class InicioPage implements OnInit {
       this.buscarNegocios();
     });
     this.buscarNegocios();
+
+    /*this.route.queryParams.subscribe(params => {
+      if (!params.special && !params){
+      }
+    });*/
   }
 
   public recargar(event: any) {
@@ -111,7 +117,7 @@ export class InicioPage implements OnInit {
         this.Filtros.tipoBusqueda === 0
       ) {
       } else {
-        this.borrarFiltros();
+       /* this.borrarFiltros();*/
       }
     }
   }
@@ -122,7 +128,6 @@ export class InicioPage implements OnInit {
     if (usr.id_persona !== undefined) {
       this.Filtros.id_persona = usr.id_persona;
     }
-    console.log(this.Filtros);
     this.principalSercicio.obtenerDatos(this.Filtros).subscribe(
       (respuesta) => {
         this.listaCategorias = respuesta.data;
@@ -176,6 +181,7 @@ export class InicioPage implements OnInit {
   }
 
   private buscarSeleccionado(seleccionado: any) {
+    console.log('bucarSeleccionadp');
     this.seleccionado = seleccionado;
     this.Filtros = new FiltrosModel();
     this.Filtros.idCategoriaNegocio = [seleccionado.id_categoria];
@@ -211,8 +217,7 @@ export class InicioPage implements OnInit {
   borrarFiltros() {
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
-    this.Filtros.idGiro =
-      this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];
+   /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
     this.filtroActivo = false;
     this.buscarNegocios();
   }
