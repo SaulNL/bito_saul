@@ -160,8 +160,10 @@ export class ConfirmaRegistroPage implements OnInit {
   }
   validarInputCodigo() {
     if (this.usuario_sistema.codigo !== null && this.usuario_sistema.codigo !== '' && this.usuario_sistema.codigo.length === 5) {
+      console.log('true');
       return true;
     } else {
+      console.log('false');
       return false;
     }
   }

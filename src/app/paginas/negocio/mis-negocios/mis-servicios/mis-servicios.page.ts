@@ -182,7 +182,7 @@ export class MisServiciosPage implements OnInit {
               this.datosNegocio = response.data;
             },
             error => {
-
+              console.log(error);
             }
           );
         }
@@ -212,18 +212,22 @@ export class MisServiciosPage implements OnInit {
   }
 
   public subirCarta(event) {
+    console.log(event);
     this.fileImgGaleria = event.target.files;
     const fileName = this.fileImgGaleria[0].name;
     const file = this.fileImgGaleria[0];
+    console.log(file.size);
     if (file.size < 3145728) {
     let file64: any;
     const utl = new UtilsCls();
+      console.log('llegue');
     utl.getBase64(file).then(
       data => {
         file64 = data;
         const archivo = new ArchivoComunModel();
         archivo.nombre_archivo = this.utilscls.convertir_nombre(fileName);
         archivo.archivo_64 = file64;
+        console.log(archivo);
         this.datosNegocio.cartaServicio = archivo;
         this.guardarDatos();
       }
@@ -355,7 +359,7 @@ export class MisServiciosPage implements OnInit {
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
-
+            console.log('cancelar');
           }
         },
         {
@@ -397,6 +401,8 @@ export class MisServiciosPage implements OnInit {
 
   public mostrarProductos(item) {
     this.listaServicios = item;
+    console.log(item);
+    console.log(this.listaVista);
     this.mostrarListaServicios = !this.mostrarListaServicios;
   }
 
@@ -481,6 +487,7 @@ export class MisServiciosPage implements OnInit {
     }
     this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
       response => {
+        console.log(response);
         this.buscarCategoriasProductos();
         this.datosNegocio = response.data;
         this.listaVista.map(item => {

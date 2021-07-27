@@ -54,11 +54,7 @@ export class ToolbarBusquedaComponent implements OnInit {
   }
 
   buscar() {
-<<<<<<< HEAD
 
-=======
-    //console.log(this.strBuscar)
->>>>>>> parent of bb19431 (log quitados)
     this.buscarEmit.emit(this.strBuscar);
   }
 

@@ -206,6 +206,7 @@ export class SolicitudPage implements OnInit {
           this.obtenerMiUbicacion();
         },
         error => {
+          console.log(error);
         }, {enableHighAccuracy : true, maximumAge : 60000, timeout : 10000 });
     }
   }

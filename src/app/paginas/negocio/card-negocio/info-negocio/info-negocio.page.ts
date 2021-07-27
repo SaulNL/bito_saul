@@ -139,7 +139,7 @@ export class InfoNegocioPage implements OnInit {
           this.subcategorias({ value: this.negocioTO.id_giro });
         },
         error => {
-
+          console.log(error);
         }
       );
     }
@@ -159,7 +159,7 @@ export class InfoNegocioPage implements OnInit {
       },
       error => {
         this.listTipoNegocio = [];
-
+        console.log(error);
       }
     );
     
@@ -340,6 +340,7 @@ export class InfoNegocioPage implements OnInit {
         this.notificaciones.alerta('Agregue la foto de su negocio');
     }else{
       this.datos();
+      console.log(this.negocioGuardar);
       this.negocioServico.guardar(this.negocioGuardar).subscribe(
         response => {        
           if (response.code === 200) {
