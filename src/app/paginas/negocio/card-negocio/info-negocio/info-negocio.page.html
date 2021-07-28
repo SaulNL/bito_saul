@@ -124,10 +124,12 @@
                                                [value]="org.id_organizacion">{{org.nombre}}</ion-select-option>
                         </ion-select>
                     </ion-item>
+
                     <ion-label>Ayudanos a que la busqueda de tu negocio sea mas efectiva</ion-label>
                     <ion-item>
                         <app-input-tags [tags]="negocioTO.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
                     </ion-item>
+
                     <ion-label>Horiario de antención</ion-label>
                     <ion-item>
                         <ion-label stacked>
@@ -205,33 +207,51 @@
                     <span *ngIf="urlNegocioLibre === true" style="font-size: 11px; margin-left: 11px; font-weight: bolder;">https://www.bitoo.com.mx/@{{negocioTO.url_negocio}}</span>
                     <span *ngIf="urlNegocioLibre === false" style="font-size: 11px; margin-left: 11px; font-weight: bolder;">Url ya existe, sugerencia: https://www.bitoo.com.mx/@{{negocioTO.url_negocio}}</span>-->
                     <ion-item>
-                        <ion-button color="light" size="small" (click)="consumoSitioAlert()">
-                            <ion-icon name="information-circle-outline"></ion-icon>
-                        </ion-button>
-                        <ion-label>Consumo en sitio<span style="color: red">*</span></ion-label>
-                        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idConsumoNegocio" required
-                                    #consuNegocio="ngModel" [(ngModel)]="negocioTO.consumo_sitio">
+                        <ion-label>Negocio físico<span style="color: red">*</span></ion-label>
+                        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idNegocioFisico" required
+                                    #negocioFisico="ngModel" [(ngModel)]="negocioTO.negocio_fisico"
+                                    (ionChange)="esNegocioFisico($event)">
                             <ion-select-option *ngFor="let ent of entregas"
                                                [value]="ent.id">{{ent.respuesta}}</ion-select-option>
                         </ion-select>
                     </ion-item>
-                    <div *ngIf="consuNegocio.invalid" class="alert">
-                        <div>Seleccione el campo consumo en sitio</div>
+                    <div *ngIf="negocioFisico.invalid" class="alert">
+                        <div>Seleccione el campo negocio físico</div>
                     </div>
-                    <ion-item>
-                        <ion-button color="light" size="small" (click)="entregaSitioAlert()">
-                            <ion-icon name="information-circle-outline"></ion-icon>
-                        </ion-button>
-                        <ion-label>Entregas en sitio: <span style="color: red">*</span></ion-label>
-                        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idEntregaNegocio" required
-                                    #entregaNegocio="ngModel" [(ngModel)]="negocioTO.entrega_sitio">
-                            <ion-select-option *ngFor="let ent of entregas"
-                                               [value]="ent.id">{{ent.respuesta}}</ion-select-option>
-                        </ion-select>
-                    </ion-item>
-                    <div *ngIf="entregaNegocio.invalid" class="alert">
-                        <div>Seleccione el campo entregas en sitio</div>
+
+
+                    <div *ngIf="blnActivaNegocioFisico">
+                        <ion-item>
+                            <ion-button color="light" size="small" (click)="consumoSitioAlert()">
+                                <ion-icon name="information-circle-outline"></ion-icon>
+                            </ion-button>
+                            <ion-label>Consumo en sitio<span style="color: red">*</span></ion-label>
+                            <ion-select ok-text="Ok" cancel-text="Cancelar" name="idConsumoNegocio" required
+                                        #consuNegocio="ngModel" [(ngModel)]="negocioTO.consumo_sitio">
+                                <ion-select-option *ngFor="let ent of entregas"
+                                                   [value]="ent.id">{{ent.respuesta}}</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                        <div *ngIf="consuNegocio.invalid" class="alert">
+                            <div>Seleccione el campo consumo en sitio</div>
+                        </div>
+                        <ion-item>
+                            <ion-button color="light" size="small" (click)="entregaSitioAlert()">
+                                <ion-icon name="information-circle-outline"></ion-icon>
+                            </ion-button>
+                            <ion-label>Entregas en sitio: <span style="color: red">*</span></ion-label>
+                            <ion-select ok-text="Ok" cancel-text="Cancelar" name="idEntregaNegocio" required
+                                        #entregaNegocio="ngModel" [(ngModel)]="negocioTO.entrega_sitio">
+                                <ion-select-option *ngFor="let ent of entregas"
+                                                   [value]="ent.id">{{ent.respuesta}}</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                        <div *ngIf="entregaNegocio.invalid" class="alert">
+                            <div>Seleccione el campo entregas en sitio</div>
+                        </div>
                     </div>
+
+
                     <ion-item>
                         <ion-button color="light" size="small" (click)="entregaDomicilioAlert()">
                             <ion-icon name="information-circle-outline"></ion-icon>
@@ -265,20 +285,16 @@
                                        #negoCostoEntrega="ngModel" required
                                        [(ngModel)]="negocioTO.costo_entrega"></ion-input>
                         </ion-item>
-
                     </div>
 
-                    <ion-item>
-                        <ion-label>Negocio físico<span style="color: red">*</span></ion-label>
-                        <ion-select ok-text="Ok" cancel-text="Cancelar" name="idNegocioFisico" required
-                                    #negocioFisico="ngModel" [(ngModel)]="negocioTO.negocio_fisico">
-                            <ion-select-option *ngFor="let ent of entregas"
-                                               [value]="ent.id">{{ent.respuesta}}</ion-select-option>
-                        </ion-select>
-                    </ion-item>
-                    <div *ngIf="negocioFisico.invalid" class="alert">
-                        <div>Seleccione el campo negocio físico</div>
+                    <div *ngIf="!blnActivaNegocioFisico">
+                        <ion-label>Lugares de entrega</ion-label>
+                        <ion-item>
+                            <app-input-lugares-entrega [lugaresEntrega]="negocioTO.lugares_entrega" (_enviarLugaresEntrega)="agregarLugaresEntrega($event)"> </app-input-lugares-entrega>
+                        </ion-item>
                     </div>
+
+
 
                     <ion-item>
                         <ion-label>Métodos de pago<span style="color: red">*</span></ion-label>

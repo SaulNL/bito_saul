@@ -84,6 +84,7 @@ export class PerfilNegocioPage implements OnInit {
   public navegacion: any;
   public user:any;
   public siEsta:any;
+  public arrayLugaresEntrega: any;
   constructor(
       private navctrl: NavController,
       private route: ActivatedRoute,
@@ -201,6 +202,12 @@ export class PerfilNegocioPage implements OnInit {
         (response) => {
           if (response.data !== null) {
             this.informacionNegocio = response.data;
+            if (this.informacionNegocio.lugares_entrega !== null){
+              this.arrayLugaresEntrega = this.informacionNegocio.lugares_entrega.split(',');
+            }else{
+              this.arrayLugaresEntrega = null;
+            }
+            console.log(this.informacionNegocio);
             if (!this.informacionNegocio.activo) {
               this.presentExit();
               this.siEsta = false;

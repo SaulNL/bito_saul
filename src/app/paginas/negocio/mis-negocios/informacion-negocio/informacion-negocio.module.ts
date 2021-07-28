@@ -12,6 +12,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import {RecorteImagenComponent} from "../../../../components/recorte-imagen/recorte-imagen.component";
 
 import { InputTagsComponent } from '../../../../components/input-tags/input-tags.component';
+import {InputLugaresEntregaComponent} from '../../../../components/input-lugares-entrega/input-lugares-entrega.component';
 
 
 @NgModule({
@@ -22,6 +23,6 @@ import { InputTagsComponent } from '../../../../components/input-tags/input-tags
     InformacionNegocioPageRoutingModule,
     ImageCropperModule
   ],
-  declarations: [InformacionNegocioPage, RecorteImagenComponent, InputTagsComponent]
+  declarations: [InformacionNegocioPage, RecorteImagenComponent, InputTagsComponent, InputLugaresEntregaComponent]
 })
 export class InformacionNegocioPageModule {}

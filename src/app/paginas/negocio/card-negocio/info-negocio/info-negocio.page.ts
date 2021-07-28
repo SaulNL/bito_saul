@@ -22,6 +22,7 @@ import { AlertController } from '@ionic/angular';
 export class InfoNegocioPage implements OnInit {
   public negocioTO: any;
   public negtag: boolean;
+  public negLugar: boolean;
   public listTipoNegocio: any;
   public listCategorias: any;
   public listaSubCategorias: any;
@@ -33,6 +34,7 @@ export class InfoNegocioPage implements OnInit {
     { id: false, respuesta: 'No' }
   ];
   public tags: string;
+  public lugaresEntrega: string;
   public lstOrganizaciones: Array<CatOrganizacionesModel>;
   public urlNegocioLibre = true;
   public controladorTiempo: any;
@@ -66,6 +68,7 @@ export class InfoNegocioPage implements OnInit {
   public tipoGiroAux: any;
   public tipoSubAux: any;
   public tipoOrgAux: any;
+  public blnActivaNegocioFisico: boolean;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -80,6 +83,7 @@ export class InfoNegocioPage implements OnInit {
     this.listTipoNegocio = [];
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
     this.negtag = false;
+    this.negLugar = false;
     this.negocioGuardar = new NegocioModel();
     this.nuevoHorario = new HorarioNegocioModel();
     this.blnActivaHoraF = true;
@@ -88,14 +92,17 @@ export class InfoNegocioPage implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.negocioTO);
     this.obtenerTipoNegocio();
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.specialune) {
         //this.negocioTO = JSON.parse(params.specialune);
         this.negocioTO = new NegocioModel();
         this.negocioTO.tags = [];
+        this.negocioTO.lugares_entrega = [];
         this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
         this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
+        this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
         this.obtenerTipoNegocio();
       }
     });
@@ -105,6 +112,7 @@ export class InfoNegocioPage implements OnInit {
         this.negocioTO = datos.info;
         this.negocioGuardar = datos.pys;
         this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
+        this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
         this.obtenerTipoNegocio();
       }
     });
@@ -287,8 +295,14 @@ export class InfoNegocioPage implements OnInit {
     return data;
   }
   agregarTags(tags: string[]) {
+    console.log(tags);
     this.negtag = true;
     this.tags = tags.join();
+  }
+  agregarLugaresEntrega(lugaresEntrega: string[]) {
+    console.log(lugaresEntrega);
+    this.negLugar = true;
+    this.lugaresEntrega = lugaresEntrega.join();
   }
   public obtenerCatOrganizaciones() {
     this.negocioServico.obtenerCatOrganizaciones().subscribe((response) => {
@@ -363,6 +377,9 @@ export class InfoNegocioPage implements OnInit {
   entregasDomicilio(evento){
     this.blnActivaEntregas = evento.detail.value;
   }
+  esNegocioFisico(evento){
+    this.blnActivaNegocioFisico = evento.detail.value;
+  }
   diasSeleccionado(evento) {
     if(evento.detail.value.length > 0){
       this.nuevoHorario.dias = evento.detail.value;
@@ -425,6 +442,7 @@ agregarHorario() {
   }
   datos(){
     this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
+    this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
     this.negocioGuardar = new NegocioModel();
     this.negocioGuardar.id_negocio = this.negocioTO.id_negocio;
     this.negocioGuardar.rfc = this.negocioTO.rfc;
@@ -459,6 +477,13 @@ agregarHorario() {
       let convertir;
       convertir =JSON.parse(JSON.stringify(this.negocioTO));
       this.negocioGuardar.tags = convertir.tags.join();
+    }
+    if (this.negLugar == true) {
+      this.negocioGuardar.lugares_entrega = this.lugaresEntrega;
+    } else {
+      let convertir;
+      convertir =JSON.parse(JSON.stringify(this.negocioTO));
+      this.negocioGuardar.lugares_entrega = convertir.lugares_entrega.join();
     }
     this.negocioGuardar.descripcion = this.negocioTO.descripcion;
     this.negocioGuardar.entrega_domicilio = this.negocioTO.entrega_domicilio;
@@ -632,4 +657,6 @@ agregarHorario() {
     let navigationExtras = JSON.stringify(objetoAux);
     this.router.navigate(['/tabs/home/negocio/card-negocio/info-negocio/solicitud-cambio-url'], { queryParams: {special: navigationExtras}  });
   }
+
+
 }
