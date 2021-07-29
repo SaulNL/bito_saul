@@ -23,6 +23,7 @@ export class ProductosFavoritosPage implements OnInit {
   public motrarContacto: boolean;
   public tamanoLista: number;
   public loader: boolean;
+  public msj = 'Cargando';
 
   constructor(
     private util: UtilsCls,

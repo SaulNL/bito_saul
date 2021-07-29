@@ -31,6 +31,7 @@ export class DatosCategoriaPage implements OnInit {
   public loader: any;
   public blnActivoSubcategorias: boolean;
   public blnActivoCategoria: boolean;
+  public msj = 'Guardando';
   constructor(
     private servicioUsuarios: AdministracionService,
     public actionSheetController: ActionSheetController,
@@ -44,6 +45,7 @@ export class DatosCategoriaPage implements OnInit {
     this.lstCatTipoNego = [];
     this.blnActivoSubcategorias = false;
     this.blnActivoCategoria = true;
+    this.loader = false;
   }
 
   ngOnInit() {
@@ -56,13 +58,7 @@ export class DatosCategoriaPage implements OnInit {
     this.getTipoNego();
 
   }
-  async presentLoading() {
-    this.loader = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'por favor espera...'
-    });
-    return this.loader.present();
-  }
+
   getTipoNego() {
     this.servicioUsuarios.listarTipoNego().subscribe(
       response => {
@@ -109,22 +105,20 @@ export class DatosCategoriaPage implements OnInit {
     //this.admin.blnActivaDatosCategoria = true;
   }
   eliminarCategoria() {
-    this.presentLoading();
+    this.loader = true;
     this.servicioUsuarios.eliminarCategoria(this.categoriaTO.id_giro).subscribe(
       response => {
         if (response.code === 200) {
-          this.loader.dismiss();
+          this.loader = false;
           this.regresar();
-          //this.admin.blnActivaDatosCategoria = true;
-          //this.admin.getCategoria();
           this._notificacionService.exito('se elimino correctamente');
         } else {
-          this.loader.dismiss();
+          this.loader = false;
           this._notificacionService.error(response.message);
         }
       },
       error => {
-        this.loader.dismiss();
+        this.loader = false;
         this._notificacionService.error(error);
       }
     );
@@ -228,23 +222,21 @@ export class DatosCategoriaPage implements OnInit {
     }
   }
   actualizarDatos(formBasicos: NgForm) {
-    this.presentLoading();
+    this.loader = true;
     this.servicioUsuarios.guardarCategoria(this.categoriaTO).subscribe(
       data => {
         if (data.code === 200) {
           this._notificacionService.exito('Los datos se guardaron correctamente');
-          this.loader.dismiss();
+          this.loader = false;
           this.router.navigate(['/tabs/home/cat-categoria'], { queryParams: {special: true}  });
-          //this.admin.getCategoria();
-          //this.admin.blnActivaDatosCategoria = true;
         } else {
-          this.loader.dismiss();
+          this.loader = false;
           this._notificacionService.error(data.message);
         }
       },
       error => {
+        this.loader = false;
         this._notificacionService.error(error);
-        this.loader.dismiss();
       }
     );
   }

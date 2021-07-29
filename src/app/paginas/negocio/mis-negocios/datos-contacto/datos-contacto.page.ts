@@ -32,6 +32,7 @@ export class DatosContactoPage implements OnInit {
   public negocioGuardar: any;
   public nuevoPS: any;
   public loader : boolean;
+  public msj = 'Guardando';
   constructor(
     private platform: Platform,
     private router: Router,

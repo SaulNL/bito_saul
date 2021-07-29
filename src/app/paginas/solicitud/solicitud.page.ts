@@ -42,7 +42,7 @@ export class SolicitudPage implements OnInit {
   public miUbicacionlatitud: number;
   public strUbicacionActual: Array<UbicacionActualModel>;
   public numeroVistas: number;
-
+  public cargando = 'Cargando';
   constructor(
     private filtrosService: FiltrosService,
     private serviceProveedores: ProveedorServicioService,

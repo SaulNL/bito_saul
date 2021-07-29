@@ -39,7 +39,7 @@ export class InicioPage implements OnInit {
   filtroActivo: boolean;
   user: any;
   public existeSesion: boolean;
-
+  public msj = 'Cargando';
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,

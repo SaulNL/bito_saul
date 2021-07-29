@@ -37,6 +37,9 @@ export class PedidoNegocioComponent implements OnInit {
   blnCostoLetra: boolean;
   public subscribe;
   public modal;
+  public loader : any;
+  public msj = 'Realizando pedido';
+
   constructor(
     private utilsCls: UtilsCls,
     private modalController: ModalController,
@@ -51,6 +54,7 @@ export class PedidoNegocioComponent implements OnInit {
     this.lng = -98.19982;
     this.subscribe = this.platform.backButton.subscribe(() => {
     this.cerrarModal();
+    this.loader = false;
     });
   }
 
@@ -126,6 +130,7 @@ export class PedidoNegocioComponent implements OnInit {
   }
 
   public realizarPedido() {
+    this.loader = true;
     const pedido = {
       direccion: this.estasUbicacion,
       idNegocio:  this.lista[0].idNegocio,
@@ -139,14 +144,18 @@ export class PedidoNegocioComponent implements OnInit {
     if(this.tipoEnvio !== null){
       this.negocioService.registrarPedido(pedido).subscribe(
         res => {
+          this.loader = false;
           this.mesajes.exito('Pedido realizado éxito')
           this.lista = [];
+          this.guard.tf = true;
           this.cerrarModal();
         }, error => {
+          this.loader = false;
           this.mesajes.error('Ocurrio un error al generar el pedido')
         }
       );
     }else{
+      this.loader = false;
       this.presentAlert("Debe seleccionar el Tipo de Entrega");
     }
 

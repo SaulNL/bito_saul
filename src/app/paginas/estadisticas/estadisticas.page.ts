@@ -21,6 +21,7 @@ export class EstadisticasPage implements OnInit {
     public scroll: boolean;
     public mensaje: any;
     public listaNegociosOriginal: any;
+    public msj = 'Cargando';
 
     constructor(
         private servicioNegocios: NegocioService,

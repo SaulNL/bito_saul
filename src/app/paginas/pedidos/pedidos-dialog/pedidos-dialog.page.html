@@ -8,7 +8,7 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<app-spinner [loader]="loading(loaderB, loaderBs)"></app-spinner>
+<app-spinner [loader]="loading(loaderB, loaderBs)" [message]="cargando"></app-spinner>
 <ion-content
   *ngIf="!loaderB && !loaderBs"
   [scrollEvents]="true"

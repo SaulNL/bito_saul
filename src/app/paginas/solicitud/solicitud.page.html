@@ -1,5 +1,5 @@
 <app-toolbar-busqueda placeHolder="Buscar solicitudes..." (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
-<app-spinner [loader]="loader"></app-spinner>
+<app-spinner [loader]="loader" [message]="cargando"></app-spinner>
 <ion-content *ngIf="!loader">
 
     <ion-card *ngIf="lstSolicitudes.length <= 0 " style="background-color: red; color: white;">
@@ -47,7 +47,5 @@
         </div>
       </div>
     </div>
-
-  </div>
 
 </ion-content>

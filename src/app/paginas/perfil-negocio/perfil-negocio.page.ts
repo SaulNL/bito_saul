@@ -83,7 +83,8 @@ export class PerfilNegocioPage implements OnInit {
   public contador: number;
   public navegacion: any;
   public user:any;
-  public siEsta:any;
+  public msj = 'Cargando';
+  public siEsta : any;
   constructor(
       private navctrl: NavController,
       private route: ActivatedRoute,
@@ -443,6 +444,7 @@ export class PerfilNegocioPage implements OnInit {
     await modal.onDidDismiss().then((r) => {
       if (r.data.data !== undefined) {
         this.bolsa = r.data.data;
+        console.log(r);
       }
     });
   }
@@ -1008,5 +1010,8 @@ export class PerfilNegocioPage implements OnInit {
       return imagen[0];
     }
     return imagen;
+  }
+   public loading(pc: any, pr: any) {
+    return pc === true || pr === false;
   }
 }

@@ -34,7 +34,6 @@ export class FormSolicitudPage implements OnInit {
   public list_cat_localidad: Array<CatLocalidadModel>;
   public blnImgCuadrada: boolean;
   public usuario: any;
-  public loader: any;
   private marker: Marker<any>;
   public tags = [];
   public btnEstado: boolean;
@@ -53,6 +52,8 @@ export class FormSolicitudPage implements OnInit {
   public muniAux: any;
   public locaAux: any;
   public data: any;
+  public loader: boolean;
+  public cargando = 'Guardando';
 
   constructor(
     private _general_service: GeneralServicesService,
@@ -71,6 +72,7 @@ export class FormSolicitudPage implements OnInit {
     this.btnEstado = false;
     this.btnMuncipio = true;
     this.btnLocalidad = true;
+    this.loader = false;
   }
   ngOnInit() {
     this.obtenerTipoNegocio();
@@ -89,13 +91,6 @@ export class FormSolicitudPage implements OnInit {
     this.blnImgCuadrada = true;
     this.blnImgCuadrada = !(this.actualTO.url_imagen !== undefined);
   }
-  async presentLoading() {
-    this.loader = await this.loadingController.create({
-      cssClass: "my-custom-class",
-      message: "por favor espera...",
-    });
-    return this.loader.present();
-  }
   regresar() {
     this.router.navigate(["/tabs/home/solicitudes"], {
       queryParams: { special: true },
@@ -111,6 +106,7 @@ export class FormSolicitudPage implements OnInit {
    * @author Omar
    */
   guardar(form: NgForm) {
+      this.loader = true;
     if (
       (this.actualTO.imagen === undefined || this.actualTO.imagen === null) &&
       (this.actualTO.url_imagen === undefined ||
@@ -122,16 +118,16 @@ export class FormSolicitudPage implements OnInit {
       return;
     }
     if (form.valid) {
-      this.presentLoading();
+
       this.actualTO.id_persona = this.usuario.id_persona;
       if (this.actualTO.id_giro === 12) {
         this.actualTO.id_categoria = 9999;
       }
-      console.log(this.actualTO);
+
       this.solicitudesService.guardar(this.actualTO).subscribe(
         (response) => {
           if (this._utils_cls.is_success_response(response.code)) {
-            this.loader.dismiss();
+            this.loader = false;
             this.notificaciones.exito("Los datos se guardaron correctamente");
             form.resetForm();
             this.regresar();
@@ -139,7 +135,7 @@ export class FormSolicitudPage implements OnInit {
           // this.notificaciones.alerta(response.message + ',' + response.code);
         },
         (error) => {
-          this.loader.dismiss();
+          this.loader = false;
           this.notificaciones.error(error);
         }
       );

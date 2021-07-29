@@ -6,8 +6,8 @@
     <ion-title>Crea tu Cuenta</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loader">
   <ion-card>
     <ion-card-header>
       <div class="ion-text-center">
@@ -25,13 +25,13 @@
               <ion-col>
                   <ion-avatar (click)="loginGoogle()">
                     <img src="../../../assets/images/google.png">
-                  </ion-avatar>            
+                  </ion-avatar>
             </ion-col>
             <ion-col></ion-col>
             </ion-row>
           </ion-grid>
         </ion-item>
-        
+
         <label>- O -</label>
         <br>
         <label>Puedes usar tu número de celular para crear tu cuenta

@@ -14,6 +14,7 @@ export class CalificarNegocioComponent implements OnInit {
   public numeroEstrellas: number;
   public comentarioCalificacion: string;
   public loader: any;
+  public msj = 'Calificando';
 
 
   constructor(
@@ -27,13 +28,6 @@ export class CalificarNegocioComponent implements OnInit {
   ngOnInit() {
     this.comentarioCalificacion = '';
     this.numeroEstrellas = 0;
-  }
-  async presentLoading() {
-    this.loader = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'por favor espera...'
-    });
-    return this.loader.present();
   }
 
   cerrarModal() {
@@ -55,14 +49,14 @@ export class CalificarNegocioComponent implements OnInit {
   enviarCalificacion() {
     this.valorEstrella();
     if(this.numeroEstrellas > 1 || this.comentarioCalificacion !== ''){
-    this.presentLoading();
+      this.loader = true;
     this.actualTO.calificacion = this.numeroEstrellas;
     this.actualTO.comentario = this.comentarioCalificacion;
     this.serviceProveedores.enviarCalificacionNegocio(this.actualTO).subscribe(
       response => {
         if (response.code === 200) {
           this.notificaciones.exito(response.message);
-          this.loader.dismiss();
+          this.loader = false;
           //  this.estatusCalificacion = true;
           this.actualTO.numCalificaciones = response.data.numCalificaciones;
           this.actualTO.promedio = response.data.promedio;
@@ -75,9 +69,10 @@ export class CalificarNegocioComponent implements OnInit {
       },
       error => {
         this.notificaciones.error(error);
-        this.loader.dismiss();
+        this.loader = false;
       });
     }else{
+      this.loader = false;
       this.notificaciones.alerta('Para poder calificar este negocio, necesitas seleccionar una estrella ó realizar un comentario');
     }
   }

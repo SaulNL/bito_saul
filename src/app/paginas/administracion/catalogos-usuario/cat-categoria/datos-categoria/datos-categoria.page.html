@@ -16,8 +16,8 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
-<ion-content >
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loader">
 <ion-card >
 <!--<ion-card-header>-->
 <form #formBasicos="ngForm" (ngSubmit)="actualizarDatos(formBasicos)">
@@ -107,7 +107,7 @@
 </div>
  <!--</ion-item>-->
   <!--<ion-item>-->
-    <div class="form-group" style="display: flex; justify-content: center; align-items: center;"> 
+    <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
     <div class="avatar-upload">
       <div id="giroEdit" class="avatar-edit">
         <input type='file' id="imageSepaUploadLocal" accept="image/*" (change)="subirArchivo($event, 5)" />

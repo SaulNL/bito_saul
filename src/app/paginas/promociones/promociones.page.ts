@@ -29,6 +29,7 @@ export class PromocionesPage implements OnInit {
   public imagenSeparadorCategoria: string;
   public mensaje: string;
   public banner: string;
+  public cargando = 'Cargando';
 
   constructor(
     private _promociones: PromocionesService,

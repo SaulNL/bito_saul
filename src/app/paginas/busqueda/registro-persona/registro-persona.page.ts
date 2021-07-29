@@ -16,7 +16,7 @@ import { Login } from "../../../Modelos/login";
 import { AppSettings } from "../../../AppSettings";
 import { NavController } from "@ionic/angular";
 import { SideBarService } from "../../../api/busqueda/side-bar-service";
-import { LoadingController,Platform } from "@ionic/angular";
+import { LoadingController, Platform } from "@ionic/angular";
 
 @Component({
   selector: "app-registro-persona",
@@ -31,6 +31,7 @@ export class RegistroPersonaPage implements OnInit {
   public loader: any;
   private passFace: any;
   private passGogl: any;
+  public msj: "Creando cuenta";
 
   constructor(
     private router: Router,
@@ -47,6 +48,7 @@ export class RegistroPersonaPage implements OnInit {
     private platform: Platform
   ) {
     this.usuario = new Login();
+    this.loader = false;
     //   this.condiciones_servicio = false;
     registerWebPlugin(FacebookLogin);
   }
@@ -89,25 +91,30 @@ export class RegistroPersonaPage implements OnInit {
     }
   }
 
-  async loginGoogle() {
+   async loginGoogle() {
+    this.loader = true;
     let res;
-    if (this.platform.is('android')) {
+    if (this.platform.is("android")) {
       res = await this.googlePlus.login({
         webClientId:
-        "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
+          "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
         offline: true,
       });
-  } else if (this.platform.is('ios')) {
-    res = await this.googlePlus.login({
-      webClientId:
-      "315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com",
-      offline: true,
-    });
-
-  } else {
-    this.notificacion.alerta('Error Login Google');
+      this.processLoginGoogle(res);
+    } else if (this.platform.is("ios")) {
+      res = await this.googlePlus.login({
+        webClientId:
+          "315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com",
+        offline: true,
+      });
+      this.processLoginGoogle(res);
+    } else {
+      this.loader = false;
+      this.notificacion.alerta("Error Login Google");
+    }
   }
-    this.presentLoading();
+
+  async processLoginGoogle(res: any) {
     const resConfirmed = await this.afAuth.auth.signInWithCredential(
       firebase.auth.GoogleAuthProvider.credential(res.idToken)
     );
@@ -115,6 +122,7 @@ export class RegistroPersonaPage implements OnInit {
   }
 
   async loginFacebook() {
+    this.loader = true;
     const res: FacebookLoginResponse = await this.fb.login([
       "public_profile",
       "user_friends",
@@ -123,7 +131,6 @@ export class RegistroPersonaPage implements OnInit {
     const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
       res.authResponse.accessToken
     );
-    this.presentLoading();
     const resConfirmed = await this.afAuth.auth.signInWithCredential(
       facebookCredential
     );
@@ -132,42 +139,26 @@ export class RegistroPersonaPage implements OnInit {
   }
 
   doLogin() {
-    //this.loader = true;
-    //console.log(this.usuario);
-
     this.loginService.login(this.usuario).subscribe(
       (respuesta) => {
-        //console.log(respuesta);
-
         if (respuesta.code === 200) {
           const actualizado = AppSettings.setTokenUser(respuesta);
-          //console.log(respuesta.data);
-          // this.sideBarService.actualizarSide();
-          // this.loader = false;
           this.sideBarService.publishSomeData("");
           localStorage.setItem("isRedirected", "false");
-          this.loader.dismiss();
+          this.loader = false;
           this.router.navigate(["/tabs/inicio"]);
           this.notificacion.exito(respuesta.message);
         }
         if (respuesta.code === 402) {
-          this.loader.dismiss();
+          this.loader = false;
           this.notificacion.alerta("Usuario y/o contraseña incorrectos");
         }
       },
       (error) => {
-        this.loader.dismiss();
+        this.loader = false;
         this.notificacion.error(error);
       }
     );
-  }
-  async presentLoading() {
-    this.loader = await this.loadingController.create({
-      spinner: "crescent",
-      cssClass: "my-custom-class",
-      message: "Creando Cuenta...",
-    });
-    await this.loader.present();
   }
 
   /**
@@ -175,16 +166,20 @@ export class RegistroPersonaPage implements OnInit {
    */
   public validationfg(inform, forg) {
     const resConfirmed = inform;
-    if ( typeof resConfirmed.user.providerData[0].uid === "undefined" || resConfirmed.user.providerData[0].uid === null || resConfirmed.user.providerData[0].uid === "undefined") {
+    if (
+      typeof resConfirmed.user.providerData[0].uid === "undefined" ||
+      resConfirmed.user.providerData[0].uid === null ||
+      resConfirmed.user.providerData[0].uid === "undefined"
+    ) {
       switch (forg) {
         case 1:
-          this.loader.dismiss();
+           this.loader = false;
           this.notificacion.error(
             "Se perdio la conexión con el servicio de Facebook, Reintentar"
           );
           break;
         case 2:
-          this.loader.dismiss();
+           this.loader = false;
           this.notificacion.error(
             "Se perdio la conexión con el servicio de Google, Reintentar"
           );
@@ -225,12 +220,12 @@ export class RegistroPersonaPage implements OnInit {
           //console.log(this.usuario);
           this.doLogin();
         } else {
-          this.loader.dismiss();
+           this.loader = false;
           this.notificacion.alerta(response.data.message);
         }
       },
       (error) => {
-        this.loader.dismiss();
+         this.loader = false;
         this.notificacion.alerta(error);
       }
     );
@@ -265,23 +260,14 @@ export class RegistroPersonaPage implements OnInit {
           //console.log(this.usuario);
           this.doLogin();
         } else {
-          this.loader.dismiss();
+           this.loader = false;
           this.notificacion.alerta(response.data.message);
         }
       },
       (error) => {
-        this.loader.dismiss();
+         this.loader = false;
         this.notificacion.alerta(error);
       }
     );
-    /*
-    this.picture = user.photoURL;
-    this.name = user.displayName;
-    this.email = user.email;
-    this.uid = user.uid;
-    this.usuario.password = user.providerData[0].uid;
-    this.usuario.usuario = this.email;
-    console.log(user);
-    this.doLogin();*/
   }
 }

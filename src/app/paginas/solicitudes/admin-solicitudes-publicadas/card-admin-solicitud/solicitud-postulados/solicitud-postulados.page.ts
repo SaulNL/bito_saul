@@ -14,11 +14,15 @@ export class SolicitudPostuladosPage implements OnInit {
   public lstPostulados: Array<PostuladosModel>;
   public numeroPostulados: number;
   public solicitudPostulado: SolicitudesModel;
+  public msj = 'Cargando';
+  public loader : any;
   constructor(
     private solicitudesService: SolicitudesService,
     private activatedRoute: ActivatedRoute,
     private router: Router
-  ) { }
+  ) {
+    this.loader = false;
+  }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
@@ -31,12 +35,15 @@ export class SolicitudPostuladosPage implements OnInit {
   }
 
   obtenerPostulados() {
+    this.loader = true;
     this.solicitudesService.obtenerPostulados(this.solicitudPostulado.id_solicitud).subscribe(
       response => {
         this.lstPostulados = response.data;
         this.numeroPostulados = this.lstPostulados.length;
+        this.loader = false;
       },
       error => {
+        this.loader = false;
       }
     );
   }

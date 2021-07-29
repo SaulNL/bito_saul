@@ -17,23 +17,19 @@ export class DenunciaNegocioPage implements OnInit {
   public user: any;
   public preguntaUno: any;
   public loader: any;
+  public msj = 'Guardando';
   constructor(
     private modalController: ModalController,
     private _serviceAdministracion: AdministracionService,
     private notificaciones: ToadNotificacionService,
     public loadingController: LoadingController
-  ) { }
+  ) {
+    this.loader = false;
+  }
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('u_data'));
     this.denunciaTO = new DenunciaModel();
-  }
-  async presentLoading() {
-    this.loader = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'por favor espera...'
-    });
-    return this.loader.present();
   }
 
   cerrarModal() {
@@ -41,6 +37,7 @@ export class DenunciaNegocioPage implements OnInit {
   }
 
   guardarDenuncia() {
+
     if (this.user.id_persona !== undefined) {
       this.denunciaTO.preguntas = Array<PreguntaModel>();
       this.denunciaTO.id_persona = this.user.id_persona;
@@ -65,27 +62,29 @@ export class DenunciaNegocioPage implements OnInit {
         pregunta4.checked === true ||
         pregunta5.checked === true ||
         pregunta6.value !== '') {
-        this.presentLoading();
+        this.loader = true;
         this._serviceAdministracion.guardarDenunciaNegocio(this.denunciaTO).subscribe(
           data => {
             if (data.code === 200) {
-              this.loader.dismiss();
+              this.loader = false;
               this.notificaciones.exito('se guardo correctamente la denuncia');
               this.cerrarModal();
             } else {
-              this.loader.dismiss();
+              this.loader = false;
               this.notificaciones.error(data.message);
             }
           },
           error => {
             this.notificaciones.error(error);
-            this.loader.dismiss();
+            this.loader = false;
           }
         );
       } else {
+        this.loader = false;
         this.notificaciones.alerta('Para poder denunciar este negocio, necesitas seleccionar una pregunta ó realizar un comentario');
       }
     } else {
+      this.loader = false;
       this.notificaciones.alerta('Para poder denunciar este negocio, necesitas ser usuario logeado');
     }
   }

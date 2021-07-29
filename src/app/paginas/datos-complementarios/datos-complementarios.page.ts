@@ -43,6 +43,7 @@ export class DatosComplementariosPage implements OnInit {
   public estaAux: any;
   public muniAux: any;
   public locaAux: any;
+  public msj = 'Cargando';
   constructor(
     private _general_service: GeneralServicesService,
     private _utils_cls: UtilsCls,
@@ -61,6 +62,7 @@ export class DatosComplementariosPage implements OnInit {
     this.select_municipio = false;
     this.nombreArchivo = '';
     this.nombreArchivo2 = '';
+    this.loader = false;
   }
 
   ngOnInit() {
@@ -73,13 +75,7 @@ export class DatosComplementariosPage implements OnInit {
       this.get_list_cat_localidad({ value: this.proveedorTO.det_domicilio.id_municipio });
     }
   }
-  async presentLoading() {
-    this.loader = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'por favor espera...'
-    });
-    return this.loader.present();
-  }
+
   private load_cat_estados() {
     this._general_service.getEstadosWS().subscribe(
       response => {
@@ -88,7 +84,7 @@ export class DatosComplementariosPage implements OnInit {
           this.list_cat_estado.forEach(element => {
             if (element.id_estado==this.proveedorTO.det_domicilio.id_estado) {
               this.estaAux = element.nombre;
-              
+
             }
           });
         }
@@ -123,7 +119,7 @@ export class DatosComplementariosPage implements OnInit {
             this.list_cat_municipio.forEach(element => {
               if (element.id_municipio==this.proveedorTO.det_domicilio.id_municipio) {
                 this.muniAux = element.nombre;
-                
+
               }
             });
             this.select_estado = true;
@@ -165,7 +161,7 @@ export class DatosComplementariosPage implements OnInit {
             this.list_cat_localidad.forEach(element => {
               if (element.id_localidad==this.proveedorTO.det_domicilio.id_localidad) {
                 this.locaAux = element.nombre;
-                
+
               }
             });
             this.select_municipio = true;
@@ -186,12 +182,12 @@ export class DatosComplementariosPage implements OnInit {
     }
   }
   actualizarDatos(formBasicos: NgForm) {
-    this.presentLoading();
+    this.loader = true;
     const miPrimeraPromise = new Promise((resolve, reject) => {
       this.servicioPersona.guardar(this.proveedorTO).subscribe(
         data => {
           if (data.code === 200) {
-            this.loader.dismiss();
+            this.loader = false;
             this.router.navigate(['/tabs/home/perfil']);
             this.notificaciones.exito('Los datos se actualizaron');
             const resultado = this.sesionUtl.actualizarSesion();
@@ -201,14 +197,14 @@ export class DatosComplementariosPage implements OnInit {
             this.notificaciones.alerta(data.message);
             const resultado = this.sesionUtl.actualizarSesion();
             this.router.navigate(['/tabs/home/perfil']);
-            this.loader.dismiss();
+            this.loader = false;
             resolve(resultado);
           }
-          this.loader.dismiss();
+          this.loader = false;
         },
         error => {
           this.notificaciones.error(error);
-          this.loader.dismiss();
+          this.loader = false;
         });
     });
     miPrimeraPromise.then((successMessage) => {

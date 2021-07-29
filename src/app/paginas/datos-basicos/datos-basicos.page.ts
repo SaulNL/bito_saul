@@ -25,11 +25,11 @@ import {SessionUtil} from './../../utils/sessionUtil';
 })
 export class DatosBasicosPage implements OnInit {
   public usuarioSistema: MsPersonaModel;
-  public loader: any;
+  public loader: boolean;
   public minDate: any;
   public maxDate: any;
   private file_img_galeria: FileList;
-
+public msj = 'Cargando';
   imageChangedEvent: any = '';
   croppedImage: any = '';
   resizeToWidth: number = 0;
@@ -51,32 +51,27 @@ export class DatosBasicosPage implements OnInit {
     this.maxDate = new Date(currentYear - 18, 0, 0);
     this.minDate = moment.parseZone(this.minDate).format("YYYY-MM-DD");
     this.maxDate = moment.parseZone(this.maxDate).format("YYYY-MM-DD");
+    this.loader = false;
   }
 
   ngOnInit() {
     this.usuarioSistema = new MsPersonaModel();
     this.actualizarUsuario();
   }
-  async presentLoading() {
-    this.loader = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'por favor espera...'
-    });
-    return this.loader.present();
-  }
+
   private actualizarUsuario() {
     this.usuarioSistema = JSON.parse(localStorage.getItem('u_data'));
     this.usuarioSistema.fecha_nacimiento = this.usuarioSistema.fecha_nacimiento !== null ? new Date(this.usuarioSistema.fecha_nacimiento) : null;
   }
   actualizarDatos(formBasicos: NgForm) {
-    this.presentLoading();
+    this.loader = true;
     const miPrimeraPromise = new Promise((resolve, reject) => {
       this.servicioPersona.guardar(this.usuarioSistema).subscribe(
         data => {
           if (data.code === 200) {
             const resultado = this.sesionUtl.actualizarSesion();
             this.router.navigate(['/tabs/home/perfil']);
-            this.loader.dismiss();
+            this.loader = false;
             this.notificaciones.exito(data.data.mensaje);
             resolve(resultado);
             setTimeout(() => {
@@ -85,7 +80,7 @@ export class DatosBasicosPage implements OnInit {
           }
         },
         error => {
-          this.loader.dismiss();
+          this.loader = false;
           this.notificaciones.error(error);
           // this.lstPrincipal = new Array();
 
@@ -167,6 +162,7 @@ export class DatosBasicosPage implements OnInit {
         IdInput: 'selfie'
       }
     });
+
     await modal.present();
     const { data } = await modal.onDidDismiss().then(r => {
       return r;

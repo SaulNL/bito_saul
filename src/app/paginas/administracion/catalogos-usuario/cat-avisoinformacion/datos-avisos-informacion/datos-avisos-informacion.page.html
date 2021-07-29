@@ -13,8 +13,8 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loader">
   <form #formBasicos="ngForm" (ngSubmit)="actualizarDatos(formBasicos)">
     <div style="height: 100%;">
       <ion-item>
@@ -59,7 +59,7 @@
               <label for="imageUploadLocal"><ion-icon name="camera-outline"></ion-icon></label>
           </div>
           <div id="giro" class="avatar-preview ionicon s-ion-icon" >
-              <div *ngIf="avisoTO.imagen_previa === null || avisoTO.imagen_previa === undefined" id="imageUploadLocal" [ngStyle]="avisoTO.imagen_previa !== null ? 
+              <div *ngIf="avisoTO.imagen_previa === null || avisoTO.imagen_previa === undefined" id="imageUploadLocal" [ngStyle]="avisoTO.imagen_previa !== null ?
               {'background-image': 'url('+avisoTO.imagen+')'} : ''">
               </div>
               <div *ngIf="avisoTO.imagen_previa !== null && avisoTO.imagen_previa !== undefined" [ngStyle]="{
@@ -67,10 +67,10 @@
               </div>
           </div>
       </div>
-        
+
       </ion-item>
     </div>
     <ion-button class="bg-rosa" type=" submit " *ngIf="avisoTO.id_aviso === null || avisoTO.id_aviso  === undefined" [disabled]=" loader ||formBasicos.invalid">Guardar</ion-button>
-    <ion-button class="bg-rosa" type=" submit " *ngIf="valida ===true" [disabled]=" loader ||formBasicos.invalid">Actualizar</ion-button>    
+    <ion-button class="bg-rosa" type=" submit " *ngIf="valida ===true" [disabled]=" loader ||formBasicos.invalid">Actualizar</ion-button>
   </form>
 </ion-content>

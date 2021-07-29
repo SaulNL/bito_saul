@@ -9,7 +9,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<app-spinner [loader]="loader" [message]="inciarSesion"></app-spinner>
+
+<ion-content class="ion-padding" *ngIf="!loader">
   <div class="ion-justify-content-center ion-text-center ion-align-items-center">
       <img width="150" height="150" src="https://ecoevents.blob.core.windows.net/comprandoando/logos%2Flogo%201.0.png">
   </div>
@@ -41,7 +43,7 @@
         <ion-col>
             <ion-avatar  (click)="loginGoogle()">
               <img src="../../../assets/images/google.png">
-            </ion-avatar>            
+            </ion-avatar>
       </ion-col>
       <ion-col></ion-col>
       </ion-row>

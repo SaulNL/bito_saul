@@ -29,7 +29,7 @@ export class PedidosDialogPage implements OnInit {
   public subscribe;
   public navegacion: any;
   public loaderSearch = false;
-
+public cargando = 'Cargando';
   constructor(
     private route: ActivatedRoute,
     private location: Location,

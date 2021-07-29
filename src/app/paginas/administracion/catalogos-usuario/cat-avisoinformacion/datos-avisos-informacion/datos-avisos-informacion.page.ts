@@ -1,87 +1,95 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FiltroCatAvisosInfoModel } from '../../../../../Modelos/catalogos/FiltroCatAvisosInfoModel';
+import { Component, OnInit, Input } from "@angular/core";
+import { FiltroCatAvisosInfoModel } from "../../../../../Modelos/catalogos/FiltroCatAvisosInfoModel";
 import { AdministracionService } from "../../../../../api/administracion-service.service";
-import { ActionSheetController, AlertController, LoadingController } from '@ionic/angular';
-import { NgForm } from '@angular/forms';
+import {
+  ActionSheetController,
+  AlertController,
+  LoadingController,
+} from "@ionic/angular";
+import { NgForm } from "@angular/forms";
 import { UtilsCls } from "../../../../../utils/UtilsCls";
 import { ArchivoComunModel } from "../../../../../Modelos/ArchivoComunModel";
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from "@angular/router";
 import { ToadNotificacionService } from "../../../../../api/toad-notificacion.service";
 
 @Component({
-  selector: 'app-datos-avisos-informacion',
-  templateUrl: './datos-avisos-informacion.page.html',
-  styleUrls: ['./datos-avisos-informacion.page.scss'],
+  selector: "app-datos-avisos-informacion",
+  templateUrl: "./datos-avisos-informacion.page.html",
+  styleUrls: ["./datos-avisos-informacion.page.scss"],
 })
 export class DatosAvisosInformacionPage implements OnInit {
   public actualTO: FiltroCatAvisosInfoModel;
   public avisoTO: FiltroCatAvisosInfoModel;
   private file_img_galeria: FileList;
-  btnCargarNuevaImagen:boolean;
+  btnCargarNuevaImagen: boolean;
   public activos = [
-    { id: 0, activo: 'No' },
-    { id: 1, activo: 'Si' },
+    { id: 0, activo: "No" },
+    { id: 1, activo: "Si" },
   ];
-  public tipos = [
-    { id: 1, tipo: 'Aviso' }
-  ];
-
-  public valida:boolean;
+  public tipos = [{ id: 1, tipo: "Aviso" }];
+  public loader: any;
+  public msj: "Guardando";
+  public valida: boolean;
 
   constructor(
     private servicioAdminitracion: AdministracionService,
     private actionSheetController: ActionSheetController,
     public alertController: AlertController,
-    private noti:  ToadNotificacionService,
+    private noti: ToadNotificacionService,
     public loadingController: LoadingController,
     private _utils_cls: UtilsCls,
     private router: Router,
     private active: ActivatedRoute
-  ) { 
-    this.valida=false;
-    this.btnCargarNuevaImagen=false;
+  ) {
+    this.valida = false;
+    this.btnCargarNuevaImagen = false;
+    this.loader = false;
   }
 
   ngOnInit() {
-    this.active.queryParams.subscribe(params => {
+    this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.actualTO = JSON.parse(params.special);
-        this.avisoTO=this.actualTO;
+        this.avisoTO = this.actualTO;
       }
     });
-    
   }
 
   actualizarDatos(formBasicos: NgForm) {
-    if(this.btnCargarNuevaImagen === true){
-      this.presentLoading(10500); 
-    }else{
-      this.presentLoading(500);
+    if (this.btnCargarNuevaImagen === true) {
+      this.loader = true;
+    } else {
+      this.loader = true;
     }
     this.servicioAdminitracion.guardarAviso(this.avisoTO).subscribe(
-      data => {
+      (data) => {
         if (data.code === 200) {
+          this.loader = false;
           this.regresar();
           this.noti.exito("Los datos se guardaron correctamente");
         } else {
+          this.loader = false;
           this.noti.error(data.message);
         }
       },
-      error => {
+      (error) => {
+        this.loader = false;
         this.noti.error(error);
       }
     );
   }
   regresar() {
-    this.router.navigate(['/tabs/home/cat-avisos'], { queryParams: {special: true}  });
+    this.router.navigate(["/tabs/home/cat-avisos"], {
+      queryParams: { special: true },
+    });
   }
 
   public subirArchivo(event) {
-    this.btnCargarNuevaImagen=true;
+    this.btnCargarNuevaImagen = true;
     let height;
     let width;
     for (const archivo of event.target.files) {
-      const reader =  this._utils_cls.getFileReader();
+      const reader = this._utils_cls.getFileReader();
       reader.readAsDataURL(archivo);
       reader.onload = () => {
         const img = new Image();
@@ -97,18 +105,17 @@ export class DatosAvisosInformacionPage implements OnInit {
             const file = this.file_img_galeria[0];
             let file_64: any;
             const utl = new UtilsCls();
-            utl.getBase64(file).then(
-              data => {
-                file_64 = data;
-                const archivo = new ArchivoComunModel();
-                archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
-                archivo.archivo_64 = file_64;
-                // archivo.extension = file_type.slice((file_type.lastIndexOf('/') - 1 >>> 0) + 2);
-                this.avisoTO.imagen_previa = archivo;
-              }
-            );
+            utl.getBase64(file).then((data) => {
+              file_64 = data;
+              const archivo = new ArchivoComunModel();
+              archivo.nombre_archivo =
+                this._utils_cls.convertir_nombre(file_name);
+              archivo.archivo_64 = file_64;
+              // archivo.extension = file_type.slice((file_type.lastIndexOf('/') - 1 >>> 0) + 2);
+              this.avisoTO.imagen_previa = archivo;
+            });
           } else {
-            this.noti.alerta('La imagen no cumple con el formato 1500 * 300');
+            this.noti.alerta("La imagen no cumple con el formato 1500 * 300");
           }
         };
       };
@@ -117,7 +124,7 @@ export class DatosAvisosInformacionPage implements OnInit {
 
   eliminarAviso() {
     this.servicioAdminitracion.eliminarAviso(this.avisoTO.id_aviso).subscribe(
-      response => {
+      (response) => {
         if (response.code === 200) {
           this.regresar();
           this.noti.exito("se elimino correctamente");
@@ -125,36 +132,38 @@ export class DatosAvisosInformacionPage implements OnInit {
           this.noti.error(response.message);
         }
       },
-      error => {
-        this.noti.error(error); 
+      (error) => {
+        this.noti.error(error);
       }
     );
   }
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
-      header: 'Opciones',
-      cssClass: 'my-custom-class',
-      buttons: [{
-        text: 'Borrar',
-        role: 'destructive',
-        handler: () => {
-          this.presentAlertMultipleButtons();
-        }
-      },{
-        text: 'Editar',
-        role: 'edit',
-        handler: () => {
-          this.editarorno();
-        }
-      },{
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-        }
-      }
-    ]
+      header: "Opciones",
+      cssClass: "my-custom-class",
+      buttons: [
+        {
+          text: "Borrar",
+          role: "destructive",
+          handler: () => {
+            this.presentAlertMultipleButtons();
+          },
+        },
+        {
+          text: "Editar",
+          role: "edit",
+          handler: () => {
+            this.editarorno();
+          },
+        },
+        {
+          text: "Cancel",
+          icon: "close",
+          role: "cancel",
+          handler: () => {},
+        },
+      ],
     });
     await actionSheet.present();
   }
@@ -168,9 +177,7 @@ export class DatosAvisosInformacionPage implements OnInit {
         {
           text: "Cancelar",
           role: "No",
-          handler: (blah) => {
-            
-          },
+          handler: (blah) => {},
         },
         {
           text: "Confirmar",
@@ -184,15 +191,7 @@ export class DatosAvisosInformacionPage implements OnInit {
     await alert.present();
   }
 
-  async presentLoading(tiempo:number) {
-    const loading = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      duration: tiempo
-    });
-    await loading.present();
-  }
-
-  editarorno(){
-    this.valida= true;
+  editarorno() {
+    this.valida = true;
   }
 }

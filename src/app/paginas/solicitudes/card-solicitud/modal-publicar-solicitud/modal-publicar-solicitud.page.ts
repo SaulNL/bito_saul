@@ -20,7 +20,7 @@ export class ModalPublicarSolicitudPage implements OnInit {
   public fechafin: any;
   public publicacionesHechas: number;
   public publicacionesPermitidas: number;
-
+  public mensaje: any;
   public maxDate: any;
   public diasPermitidos: number;
   public blnSelectFecha: boolean;
@@ -38,6 +38,8 @@ export class ModalPublicarSolicitudPage implements OnInit {
     const currentYear = new Date().getFullYear();
     this.maxDate = new Date(currentYear - -30, 0, 0);
     this.maxDate = moment.parseZone(this.maxDate).format("YYYY-MM-DD");
+    this.mensaje = 'Cargando';
+    this.loader = false;
   }
 
   ngOnInit() {
@@ -54,13 +56,7 @@ export class ModalPublicarSolicitudPage implements OnInit {
     this.obtenerDiasPublicacionesSolicitud();
     this.publicacion = new PublicacionesModel();
   }
-  async presentLoading() {
-    this.loader = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'por favor espera...'
-    });
-    return this.loader.present();
-  }
+
   regresar() {
     this.solicituPublicada =  JSON.parse(JSON.stringify(this.solicituPublicada));
     let navigationExtras = JSON.stringify(this.solicituPublicada);
@@ -79,6 +75,7 @@ export class ModalPublicarSolicitudPage implements OnInit {
   }
 
  obtenerNumeroPublicacionesSolicitud() {
+   this.loader = true;
   this.solicitudesService.obtenerNumeroPublicacionesSolicitud(this.solicituPublicada.id_persona).subscribe(
     response => {
       this.publicacionesHechas = response.data.numPublicacionesSoli;
@@ -110,8 +107,8 @@ export class ModalPublicarSolicitudPage implements OnInit {
   }
 
   guardarPublicacion(form: NgForm) {
-    this.presentLoading();
-
+    this.mensaje = 'Guardando';
+    this.loader = true;
     let fechaInicio = Date.parse(this.fechaini);
     this.fechaini = new Date(fechaInicio);
     let fechaFinal = Date.parse(this.fechafin);
@@ -129,20 +126,20 @@ export class ModalPublicarSolicitudPage implements OnInit {
         this.solicitudesService.guardarPublicacion(this.publicacion).subscribe(
           (response: any) => {
             if (response.code === 200) {
-              this.loader.dismiss();
+              this.loader = false;
               this.notificaciones.exito('Se público correctamente la solicitud');
               this.router.navigate(['/tabs/home/solicitudes']);
               form.resetForm();
             //  this.buscar();
             } else {
-              this.loader.dismiss();
+              this.loader = false;
               this.notificaciones.alerta(response.message);
             }
 
             // this.loaderBtn = false;
           },
           error => {
-            this.loader.dismiss();
+            this.loader = false;
             this.notificaciones.error(error);
           }
         );

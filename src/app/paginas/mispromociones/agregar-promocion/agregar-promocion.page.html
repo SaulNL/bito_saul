@@ -7,8 +7,8 @@
     <ion-title>Agregar anuncio o promoción</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loader">
   <form #formVariable="ngForm" (ngSubmit)="guardar(formVariable)">
     <ion-card>
       <ion-card-content>

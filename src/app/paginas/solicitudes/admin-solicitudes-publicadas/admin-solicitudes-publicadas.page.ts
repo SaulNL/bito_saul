@@ -19,6 +19,8 @@ export class AdminSolicitudesPublicadasPage implements OnInit {
   public filtro: any;
   public solicitud: SolicitudesModel;
   public numeroPublicadas: number;
+  public loader: any;
+  public msj = 'Cargando';
   constructor(
     private solicitudesService: SolicitudesService,
     private router: Router,
@@ -42,24 +44,30 @@ export class AdminSolicitudesPublicadasPage implements OnInit {
     });
   }
   public obtenerSolcitudesPublicadas() {
+    this.loader = true;
     this.seleccionTO.id_proveedor = this.id_proveedor;
     this.seleccionTO.id_persona = this.id_persona;
     this.solicitudesService.obtenerSolcitudesPublicadas(this.seleccionTO).subscribe(response => {
       this.lstSolicitudesPublicadas = response.data;
       this.numeroPublicadas = this.lstSolicitudesPublicadas.length;
       this.lstSolicitudesPublicadasBK = response.data;
+      this.loader = false;
     },
       error => {
+        this.loader = false;
              this.notificaciones.error(error);
       });
   }
   btnBuscar(e) {
+    this.loader = true;
+    this.msj = 'Buscando';
     this.filtro = e.target.value;
     this.lstSolicitudesPublicadas = this.lstSolicitudesPublicadasBK;
     this.lstSolicitudesPublicadas = this.lstSolicitudesPublicadas.filter(element => {
       return element.solicitud.toLowerCase().indexOf(this.filtro.toString().toLowerCase()) > -1
         || element.descripcion.toLowerCase().indexOf(this.filtro.toString().toLowerCase()) > -1;
     });
+    this.loader = false;
   }
   selecAdminPublicada(solicitud: any) {
     this.solicitud = JSON.parse(JSON.stringify(solicitud));

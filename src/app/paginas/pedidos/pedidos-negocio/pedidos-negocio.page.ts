@@ -29,7 +29,7 @@ export class PedidosNegocioPage implements OnInit {
   public loaderSearch = false;
   public loaderBus = false;
   public loaderEst = false;
-
+  public cargando = 'Cargando';
   constructor(
     private location: Location,
     private pedidosServicios: PedidosService,

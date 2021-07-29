@@ -1,3 +1,4 @@
+import { SpinnerModule } from './../../componentes/spinner/spinner.module';
 import { TabsPageModule } from 'src/app/paginas/tabs/tabs.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,7 +17,8 @@ import { DatosBasicosPage } from './datos-basicos.page';
     FormsModule,
     IonicModule,
     DatosBasicosPageRoutingModule,
-    TabsPageModule
+    TabsPageModule,
+    SpinnerModule
 
   ],
   declarations: [DatosBasicosPage]

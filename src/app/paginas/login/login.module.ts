@@ -1,3 +1,4 @@
+import { SpinnerModule } from './../../componentes/spinner/spinner.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +18,8 @@ import { RecuperarContraseniaPage } from './recuperar-contrasenia/recuperar-cont
     CommonModule,
     FormsModule,
     IonicModule,
-    LoginPageRoutingModule
+    LoginPageRoutingModule,
+    SpinnerModule
   ],
   declarations: [LoginPage, RecuperarContraseniaPage],
   providers:[SideBarService,UtilsCls]

@@ -45,7 +45,7 @@ export class LoginPage implements OnInit {
   lastname;
   uid;
   public EnterUser:any;
-
+  public inciarSesion: any;
   constructor(
     private navctrl: NavController,
     private loginService: LoginService,
@@ -71,6 +71,7 @@ export class LoginPage implements OnInit {
     registerWebPlugin(FacebookLogin);
     this.userFG = new Login();
     this.EnterUser= false;
+    this.inciarSesion = 'Iniciando sesión';
   }
 
   ngOnInit(): void {}
@@ -83,30 +84,28 @@ export class LoginPage implements OnInit {
     this.backButtonSub.unsubscribe();
   }
   enterlogin() {
+    this.loader = true;
     this.EnterUser = true;
-    this.presentLoading();
+    this.present();
   }
   doLogin(data) {
-    this.loader = true;
     this.loginService.login(data).subscribe(
       (respuesta) => {
         if (respuesta.code === 200) {
           const actualizado = AppSettings.setTokenUser(respuesta);
-          // this.sideBarService.actualizarSide();
-          // this.loader = false;
+          this.loader = false;
           this.sideBarService.publishSomeData("");
           localStorage.setItem("isRedirected", "false");
-          this.loadion.dismiss();
           location.assign("/tabs/inicio");
           this.notifi.exito(respuesta.message);
         }
         if (respuesta.code === 402) {
-          this.loadion.dismiss();
+          this.loader = false;
           this.notifi.alerta("Usuario y/o contraseña incorrectos");
         }
       },
       (error) => {
-        this.loadion.dismiss();
+        this.loader = false;
         this.notifi.error(error);
       }
     );
@@ -144,6 +143,7 @@ export class LoginPage implements OnInit {
    * Login Android
    */
   async loginGoogleAndroid() {
+    this.loader = true;
     let res;
     if (this.platform.is('android')) {
       res = await this.googlePlus.login({
@@ -159,23 +159,15 @@ export class LoginPage implements OnInit {
     });
 
   } else {
+    this.loader = false;
     this.notifi.alerta('Error Login Google');
   }
 
-    this.presentLoading();
+    this.present();
     const resConfirmed = await this.afAuth.auth.signInWithCredential(
       firebase.auth.GoogleAuthProvider.credential(res.idToken)
     );
     this.validationfg(resConfirmed);
-    /*const user = resConfirmed.user;
-    this.picture = user.photoURL;
-    this.name = user.displayName;
-    this.email = user.email;
-    //this.uid = user.uid;
-    this.userFG.password = user.providerData[0].uid;
-    this.userFG.usuario = this.email;
-    this.doLogin(this.userFG);
-    */
   }
 
   /**
@@ -214,6 +206,7 @@ export class LoginPage implements OnInit {
    * Login Android
    */
   async loginFacebookAndroid() {
+    this.loader = true;
     const res: FacebookLoginResponse = await this.fb.login([
       "public_profile",
       "user_friends",
@@ -222,7 +215,7 @@ export class LoginPage implements OnInit {
     const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
       res.authResponse.accessToken
     );
-    this.presentLoading();
+    this.present();
     const resConfirmed = await this.afAuth.auth.signInWithCredential(
       facebookCredential
     );
@@ -234,20 +227,19 @@ export class LoginPage implements OnInit {
    * validationfg
    */
   public validationfg(inform) {
+     this.loader = true;
     const resConfirmed = inform;
     if (
       typeof resConfirmed.user.providerData[0].uid === "undefined" ||
       resConfirmed.user.providerData[0].uid === null ||
       resConfirmed.user.providerData[0].uid === "undefined"
     ) {
-      this.loadion.dismiss();
+      this.loader = false;
       this.notifi.error(
-        "Se perdio la conexión con el servicio de Google, Reintentar"
+        "Se perdio la conexión con el servicio, Reintentar"
       );
     } else {
       const user = resConfirmed.user;
-      //this.picture = user.photoURL;
-      //this.name = user.displayName;
       this.email = user.email;
       this.userFG.password = user.providerData[0].uid;
       this.userFG.usuario = this.email;
@@ -291,13 +283,7 @@ export class LoginPage implements OnInit {
     this.location.back();
   }
 
-  async presentLoading() {
-    this.loadion = await this.loadingController.create({
-      spinner: "crescent",
-      cssClass: "my-custom-class",
-      message: "Iniciando Sesión...",
-    });
-    await this.loadion.present();
+  async present() {
     if (this.EnterUser) {
       this.EnterUser=false;
       this.doLogin(this.usuario);

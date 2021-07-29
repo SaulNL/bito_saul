@@ -9,7 +9,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<app-spinner [loader]="loader" [message]="recupe"></app-spinner>
+<ion-content *ngIf="!loader">
 <ion-card>
   <ion-card-header>
     <form #formContra="ngForm" (ngSubmit)="resetPass(formContra)">

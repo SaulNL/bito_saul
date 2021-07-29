@@ -52,6 +52,7 @@ export class ProductosPage {
   public lstProductosOriginal: any;
   public scroll: boolean;
   public mensaje: any;
+  public cargando = 'Cargando';
   constructor(
     public loadingController: LoadingController,
     private _router: Router,

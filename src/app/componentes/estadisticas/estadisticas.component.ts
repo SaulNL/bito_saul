@@ -27,6 +27,7 @@ export class EstadisticasComponent implements OnInit {
     public totalProductos: number;
     public productos: any;
     loader: any;
+    public msj = 'Cargando';
 
 
     constructor(

@@ -18,19 +18,16 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+
+<app-spinner [loader]="loader" [message]="cargando"></app-spinner>
+<ion-content *ngIf="!loader">
   <ion-card style="margin-bottom: 15%">
     <ion-card-content>
-      <form
-        #formVariable="ngForm"
-        class="form-horizontal"
-        (ngSubmit)="guardar(formVariable)"
-      >
+      <form #formVariable="ngForm" class="form-horizontal" (ngSubmit)="guardar(formVariable)">
         <ion-list>
           <ion-item>
             <ion-label position="stacked"
-              >¿Qué esta buscando o solicitando?</ion-label
-            >
+              >¿Qué esta buscando o solicitando?</ion-label>
             <ion-input
               id="idCompNombre"
               name="idCompNombre"

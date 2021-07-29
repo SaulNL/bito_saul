@@ -31,7 +31,7 @@ export class ConfirmaRegistroPage implements OnInit {
   public blnGuardar = false;
   public nuevasFunciones: boolean;
   public loader: any;
-
+  public msj = 'Creando cuenta';
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -59,17 +59,9 @@ export class ConfirmaRegistroPage implements OnInit {
     this.obtenerCodigoSMS();
   }
 
-  async presentLoading() {
-    this.loader = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'por favor espera...'
-    });
-    return this.loader.present();
-  }
-
   /*
    * Funcion para obtener el codigo (envio sms) y obtener el el id
-   * 
+   *
   */
   public obtenerCodigoSMS() {
     this.blnEnviarSms = true;
@@ -171,7 +163,7 @@ export class ConfirmaRegistroPage implements OnInit {
     this.blnGuardar = this.validarInputCodigo();
   }
   public crear_cuenta_admin() {
-    this.presentLoading();
+    this.loader = true;
     this._usuario_service.create_account_admin_salon(this.usuario_sistema).subscribe(
       response => {
         if (this._utils_cls.is_success_response(response.code)) {
@@ -184,29 +176,29 @@ export class ConfirmaRegistroPage implements OnInit {
             this.notificaciones.alerta(data.message);
             if (data.code === 200) {
               AppSettings.setTokenUser(data);
-              this.loader.dismiss();
+              this.loader = false;
               this.notificaciones.exito('Bienvenido a Bitoo');
               this.router.navigate(['/tabs/inicio']);
               setTimeout(() => {
                 location.reload();
               }, 1300);
             } else {
-              this.loader.dismiss();
+              this.loader = false;
               this.notificaciones.alerta(data.message);
             }
           }, error => {
-            this.loader.dismiss();
+            this.loader = false;
             this.notificaciones.error(error);
           });
         } else {
-          this.loader.dismiss();
+          this.loader = false;
           this.notificaciones.alerta(response.message);
         }
         // this.procesando = false;
         // this.btnloader = false;
       },
       error => {
-        this.loader.dismiss();
+        this.loader = false;
         this.notificaciones.error(error);
         //  this.status_save = 'error';
         //  this._notificacionService.pushError(error);

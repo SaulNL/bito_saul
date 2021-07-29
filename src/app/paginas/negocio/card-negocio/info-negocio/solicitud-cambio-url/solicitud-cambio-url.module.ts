@@ -1,3 +1,4 @@
+import { SpinnerModule } from './../../../../../componentes/spinner/spinner.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +14,8 @@ import { SolicitudCambioUrlPage } from './solicitud-cambio-url.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    SolicitudCambioUrlPageRoutingModule
+    SolicitudCambioUrlPageRoutingModule,
+    SpinnerModule
   ],
   declarations: [SolicitudCambioUrlPage]
 })

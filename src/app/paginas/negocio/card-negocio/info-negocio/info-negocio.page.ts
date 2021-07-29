@@ -66,6 +66,7 @@ public loader: boolean;
   public tipoGiroAux: any;
   public tipoSubAux: any;
   public tipoOrgAux: any;
+  public msj = 'Guardando';
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,

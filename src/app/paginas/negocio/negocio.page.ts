@@ -25,6 +25,7 @@ export class NegocioPage implements OnInit {
   public width: number;
   public colorLight: any;
   public colorDark: any;
+  public msj = 'Cargando';
 
   constructor(
     private servicioNegocios: NegocioService,

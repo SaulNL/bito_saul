@@ -39,6 +39,7 @@ export class DatosDomicilioPage implements OnInit {
   public localiAux: any;
   public loadion : any;
   public loader: boolean;
+  public msj = 'Guardando';
   constructor(
     private platform: Platform,
     private router: Router,

@@ -29,7 +29,7 @@ export class QuieroVenderPage implements OnInit {
 
   public firstFormGroup: FormGroup;
   public secondFormGroup: FormGroup;
-
+  public loader : boolean;
   public actualTO: any;
   public procesando_img: boolean;
   public proveedorTO: MsPersonaModel;
@@ -44,7 +44,7 @@ export class QuieroVenderPage implements OnInit {
   public select_municipio: boolean;
   public list_cat_municipio: Array<CatMunicipioModel>;
   public list_cat_localidad: Array<CatLocalidadModel>;
-
+  public msj = 'Guardando';
   public sexos = [
     { id: 1, sexo: 'Hombre' },
     { id: 2, sexo: 'Mujer' }
@@ -88,6 +88,7 @@ export class QuieroVenderPage implements OnInit {
     this.select_municipio = false;
     this.list_cat_municipio = [];
     this.list_cat_localidad = [];
+    this.loader = false;
   }
 
   ngOnInit() {
@@ -245,18 +246,23 @@ export class QuieroVenderPage implements OnInit {
   }
 
   guardar() {
+    this.loader = true;
       if (this.proveedorTO.selfie === null || this.proveedorTO.selfie === undefined) {
         this._notificacionService.alerta('Ingrese foto de perfil');
+        this.loader = false;
       } else {
         if (this.proveedorTO.ine1 === null || this.proveedorTO.ine1 === undefined) {
           this._notificacionService.alerta('Ingrese imagen delantera de su INE');
+          this.loader = false;
         } else {
           if (this.proveedorTO.ine2 === null || this.proveedorTO.ine2 === undefined) {
             this._notificacionService.alerta('Ingrese imagen trasera de su INE');
+            this.loader = false;
           } else {
             this.formulario1 = false;
             this.formulario2 = true;
             this.finalizar = false;
+            this.loader = false;
           }
         }
       }
@@ -347,18 +353,22 @@ export class QuieroVenderPage implements OnInit {
   }
 
   guardar2() {
+    this.loader = true;
     if (this.secondFormGroup.invalid) {
       return Object.values(this.secondFormGroup.controls).forEach(control => {
         if (control instanceof FormGroup) {
           Object.values(control.controls).forEach(con => con.markAsTouched());
+          this.loader = false;
         } else {
           control.markAsTouched();
+          this.loader = false;
         }
       });
     } else {
       this.formulario1 = false;
       this.formulario2 = false;
       this.finalizar = true;
+      this.loader = false;
     }
   }
 
@@ -369,7 +379,7 @@ export class QuieroVenderPage implements OnInit {
   }
 
   public guardarProveedor() {
-    this.presentLoading();
+    this.loader = true;
     this.proveedorTO.convertir_proveedor = true;
     const miPrimeraPromise = new Promise((resolve, reject) => {
       this.servicioPersona.guardar(this.proveedorTO).subscribe(
@@ -377,11 +387,11 @@ export class QuieroVenderPage implements OnInit {
           this.mostrarMensaje(data);
           const resultado = this.sesionUtl.actualizarSesion();
           resolve(resultado);
-          this.loadion.dismiss();
+          this.loader = false;
         },
         error => {
           this._notificacionService.error(error);
-          this.loadion.dismiss();
+          this.loader = false;
         }
       );
     });
@@ -418,13 +428,5 @@ export class QuieroVenderPage implements OnInit {
     let ms = Date.parse(fecha);
     fecha = new Date(ms);
     this.proveedorTO.fecha_nacimiento = fecha;
-  }
-  async presentLoading() {
-    this.loadion = await this.loadingController.create({
-      spinner: "crescent",
-      cssClass: "my-custom-class",
-      message: "Guardando...",
-    });
-    await this.loadion.present();  
   }
 }

@@ -5,8 +5,8 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loader">
   <ion-card style="background-color: #f64f7a; color: white;">
     <ion-card-content  class="ion-text-center">
       <h1>¡Hola!</h1>
@@ -19,7 +19,7 @@
         <ion-card-content  class="ion-text-center">
           <h2>Información General</h2>
         </ion-card-content>
-        <ion-grid>        
+        <ion-grid>
          <ion-row>
             <ion-col size='12'>
               <div class="contenedor">
@@ -130,7 +130,7 @@
               </div>
               <label for="imageUpload" class="col-form-label ">INE (Frente)</label>
           </div>
-          </ion-item> 
+          </ion-item>
           <ion-item>
             <div class="avatar-uploadIne">
               <div class="avatar-editIne">

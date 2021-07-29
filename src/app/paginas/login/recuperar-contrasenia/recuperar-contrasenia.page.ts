@@ -15,6 +15,7 @@ import { ModalController } from '@ionic/angular';
 export class RecuperarContraseniaPage implements OnInit {
   public correo: string;
   public loader: any;
+  public recupe : any;
   constructor(
     public notificaciones: ToadNotificacionService,
     public _Login: LoginService,
@@ -23,25 +24,20 @@ export class RecuperarContraseniaPage implements OnInit {
     public modalController: ModalController
   ) {
     this.correo = '';
+    this.loader = false;
+    this.recupe = 'Recuperando';
   }
 
   ngOnInit() {
-  }
-  async presentLoading() {
-    this.loader = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'Por favor espera...'
-    });
-    return this.loader.present();
   }
   cerrarModal() {
     this.modalController.dismiss();
   }
   public resetPass(form: NgForm) {
+    this.loader = true;
     if (form.valid) {
-      this.presentLoading();
       this._Login.resetPassword(this.correo).subscribe(response => {
-        this.loader.dismiss();
+        this.loader = false;
         if (response.code === 200) {
           this.notificaciones.exito(response.message);
           this.cerrarModal();
@@ -50,11 +46,11 @@ export class RecuperarContraseniaPage implements OnInit {
         }
       },
         error => {
-          this.loader.dismiss();
+          this.loader = false;
           this.notificaciones.error(error);
         });
     } else {
-      this.loader.dismiss();
+      this.loader = false;
       this.notificaciones.alerta('Es requerido que llenes todos los campos obligatorios');
     }
   }

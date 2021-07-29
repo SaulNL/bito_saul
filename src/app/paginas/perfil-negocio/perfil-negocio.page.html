@@ -20,11 +20,7 @@
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding" *ngIf="loader || !siEsta" fullscreen>
-    <div class="spin">
-        <ion-spinner></ion-spinner>
-    </div>
-</ion-content>
+<app-spinner [loader]="loading(loader, siEsta)" [message]="msj"></app-spinner>
 <ion-content *ngIf="!loader && siEsta">
     <ng-container
             *ngIf="(informacionNegocio.promociones !== undefined && informacionNegocio.promociones !== null && informacionNegocio.promociones.length > 0)">

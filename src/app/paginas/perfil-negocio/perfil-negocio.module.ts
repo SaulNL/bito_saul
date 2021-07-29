@@ -1,3 +1,6 @@
+import { PedidoNegocioModule } from './../../componentes/pedido-negocio/pedido-negocio.module';
+import { CalificarNegocioModule } from './../../componentes/calificar-negocio/calificar-negocio.module';
+import { SpinnerModule } from './../../componentes/spinner/spinner.module';
 import { DetalleProductoModule } from './../../componentes/detalle-producto/detalle-producto.module';
 import { DarLikeProductoModule } from './../../componentes/dar-like-producto/dar-like-producto.module';
 import { NgModule } from '@angular/core';
@@ -24,8 +27,11 @@ import {DarLikeNegocioModule} from '../../componentes/dar-like-negocio/dar-like-
         PerfilNegocioPageRoutingModule,
         DarLikeProductoModule,
         DetalleProductoModule,
-        DarLikeNegocioModule
+        DarLikeNegocioModule,
+        SpinnerModule,
+        CalificarNegocioModule,
+        PedidoNegocioModule
     ],
-  declarations: [PerfilNegocioPage, CalificarNegocioComponent,  PedidoNegocioComponent, ComentariosNegocioComponent ]
+  declarations: [PerfilNegocioPage, ComentariosNegocioComponent ]
 })
 export class PerfilNegocioPageModule {}
