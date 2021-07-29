@@ -43,7 +43,10 @@
                 </ion-col>
                 <ion-col size="12">
                     <ion-text class="ion-align-items-center ion-text-center ion-justify-content-center">
-                        <h1>{{informacionNegocio.nombre_comercial}} <ion-icon *ngIf="informacionNegocio.verificado" class="text-rosa" name="checkmark-circle"></ion-icon></h1>
+                        <h1>{{informacionNegocio.nombre_comercial}}
+                            <ion-icon *ngIf="informacionNegocio.verificado" class="text-rosa"
+                                      name="checkmark-circle"></ion-icon>
+                        </h1>
                     </ion-text>
                 </ion-col>
             </ion-row>
@@ -53,7 +56,8 @@
                     <ion-card-content class="ion-text-center">
                         {{informacionNegocio.descripcion}}
                         <div class="div-like">
-                            <app-dar-like-negocio [negocio]="informacionNegocio" [usuario]="user" [mostrarLike]="existeSesion"> </app-dar-like-negocio>
+                            <app-dar-like-negocio [negocio]="informacionNegocio" [usuario]="user"
+                                                  [mostrarLike]="existeSesion"></app-dar-like-negocio>
                         </div>
                         <br *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0">
                         <br *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0">
@@ -86,7 +90,7 @@
                                 <ion-col>
                                     <p>Métodos de pago</p>
                                     <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito===0 && informacionNegocio.tipo_pago_tarjeta_debito===0) && informacionNegocio.tipo_pago_transferencia==0">
-                                        Este negocio solo se acepta pago en efectivo
+                                        Este negocio solo acepta pago en efectivo
                                     </p>
                                     <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito) && informacionNegocio.tipo_pago_transferencia">
                                         Este negocio acepta pagos en efectivo, pagos con tarjeta y transferencia
@@ -98,8 +102,14 @@
                                     <p *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito) && informacionNegocio.tipo_pago_transferencia===0">
                                         Este negocio solo acepta pagos con tarjeta
                                     </p>
-                                    <p *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito===0 || informacionNegocio.tipo_pago_tarjeta_debito===0) && informacionNegocio.tipo_pago_transferencia===0">
+                                    <p *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito===0 && informacionNegocio.tipo_pago_tarjeta_debito===0) && informacionNegocio.tipo_pago_transferencia">
                                         Este negocio solo acepta pagos con transferencia electrónica
+                                    </p>
+                                    <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito===0 && informacionNegocio.tipo_pago_tarjeta_debito===0)&& informacionNegocio.tipo_pago_transferencia">
+                                        Este negocio acepta pagos en efectivo y transferencia electrónica
+                                    </p>
+                                    <p *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito)&& informacionNegocio.tipo_pago_transferencia">
+                                        Este negocio acepta pagos con tarjeta y transferencia electrónica
                                     </p>
                                 </ion-col>
                             </ion-row>
@@ -263,7 +273,8 @@
                     </ion-card>
                 </ion-row>
                 <ion-row *ngIf="existeSesion">
-                    <ion-col size="12">
+                    <ion-col size="12"
+                             *ngIf="informacionNegocio.tipo_negocio || informacionNegocio.tipo_negocio === null; else online">
                         <p>
                             Dirección: {{informacionNegocio.det_domicilio.calle}}
                             {{informacionNegocio.det_domicilio.numero_ext}} {{informacionNegocio.det_domicilio.colonia}}
@@ -275,6 +286,15 @@
                             <b class="texto-resaltado">A {{distanciaNegocio}} Km Cerca de tí</b>
                         </p>
                     </ion-col>
+                    <ng-template #online>
+                        <ion-col size="12" *ngIf="arrayLugaresEntrega === null">
+                            <p>Este es un negocio online.</p>
+                        </ion-col>
+                        <ion-col size="12" *ngIf="arrayLugaresEntrega !== null">
+                            <p>Este es un negocio online y hace entregas en:</p>
+                            <ion-badge class="bg-rosa" style="margin-right: 10px;" *ngFor="let lugar of arrayLugaresEntrega">{{lugar}}</ion-badge>
+                        </ion-col>
+                    </ng-template>
                     <!--<ion-col>
                         <ion-button expand="block" size="small"
                                     href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
@@ -310,7 +330,9 @@
                         <ion-col size="6" *ngFor="let producto of cat.productos; let i = index">
                             <ion-card class="m-0 fixed cardsps">
                                 <div (click)="irAlDetalle(producto)">
-                                    <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png" [srcset]="productoImagen(producto.imagen)" alt="Falla al cargar la imagen">
+                                    <img class="img-card-w"
+                                         src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+                                         [srcset]="productoImagen(producto.imagen)" alt="Falla al cargar la imagen">
                                     <ion-card-header class="ion-card-cara">
                                         <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
                                         <ion-badge *ngIf="producto.precio !== null" color="success">
@@ -324,7 +346,8 @@
                                 </div>
                                 <div>
                                     <div class="likeProducto">
-                                        <app-dar-like-producto [producto]="producto" [usuario]="user" [mostrarLike]="existeSesion"></app-dar-like-producto>
+                                        <app-dar-like-producto [producto]="producto" [usuario]="user"
+                                                               [mostrarLike]="existeSesion"></app-dar-like-producto>
                                     </div>
                                 </div>
                                 <div *ngIf="mostrarBoton(producto.precio) && this.informacionNegocio.abierto === 'ABIERTO'">
@@ -379,7 +402,6 @@
                                 </ion-chip>
                             </div>
                         </div>
-                        <p><br></p>
                     </ion-col>
                 </ion-row>
                 <ion-row *ngFor="let cat of informacionNegocio.catServicos">
@@ -392,7 +414,9 @@
                         <ion-col size="6" *ngFor="let producto of cat.servicios">
                             <ion-card class="m-0 cardsps fixed">
                                 <div (click)="irAlDetalle(producto)">
-                                    <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"  [srcset]="productoImagen(producto.imagen)" alt="Falla al cargar la imagen">
+                                    <img class="img-card-w"
+                                         src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+                                         [srcset]="productoImagen(producto.imagen)" alt="Falla al cargar la imagen">
                                     <ion-card-header class="ion-card-cara">
                                         <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
                                         <ion-badge *ngIf="producto.precio !== null" color="success">
@@ -404,9 +428,10 @@
                                         </div>
                                     </ion-card-content>
                                 </div>
-                                <div >
+                                <div>
                                     <div class="likeProducto">
-                                        <app-dar-like-producto [producto]="producto" [usuario]="user" [mostrarLike]="existeSesion"></app-dar-like-producto>
+                                        <app-dar-like-producto [producto]="producto" [usuario]="user"
+                                                               [mostrarLike]="existeSesion"></app-dar-like-producto>
                                     </div>
                                 </div>
                             </ion-card>
@@ -414,12 +439,12 @@
                     </ng-container>
                 </ion-row>
             </ion-grid>
-        </div>
+    </div>
     </div>
     <ion-fab *ngIf="existeSesion" horizontal="end" vertical="bottom" slot="fixed">
-        <ion-fab-button size="small"
+        <ion-fab-button size="small" *ngIf="informacionNegocio.tipo_negocio || informacionNegocio.tipo_negocio === null;"
                         href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
-                       target="_blank">
+                        target="_blank">
             <ion-icon name="navigate" style="color: royalblue;"></ion-icon>
         </ion-fab-button>
         <ion-fab-button size="small"

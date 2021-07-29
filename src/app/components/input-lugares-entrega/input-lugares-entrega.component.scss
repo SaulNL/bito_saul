@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.container {
+  width: 100%;
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lugar-container {
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.lugar-container .lugar {
+  padding: 5px;
+  border: 1px solid #ccc;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  background: #f2f2f2;
+}
+
+.lugar i {
+  font-size: 16px;
+  margin-left: 5px;
+}
+
+.container input-lugar {
+  flex: 1;
+  font-size: 16px;
+  padding: 5px;
+  outline: none;
+  border: 1px solid blue;
+}
