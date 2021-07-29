@@ -93,11 +93,11 @@ export class LoginPage implements OnInit {
       (respuesta) => {
         if (respuesta.code === 200) {
           const actualizado = AppSettings.setTokenUser(respuesta);
-          this.loader = false;
           this.sideBarService.publishSomeData("");
           localStorage.setItem("isRedirected", "false");
           location.assign("/tabs/inicio");
           this.notifi.exito(respuesta.message);
+          this.loader = false;
         }
         if (respuesta.code === 402) {
           this.loader = false;

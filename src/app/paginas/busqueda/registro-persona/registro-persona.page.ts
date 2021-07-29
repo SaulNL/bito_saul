@@ -145,9 +145,9 @@ export class RegistroPersonaPage implements OnInit {
           const actualizado = AppSettings.setTokenUser(respuesta);
           this.sideBarService.publishSomeData("");
           localStorage.setItem("isRedirected", "false");
-          this.loader = false;
           this.router.navigate(["/tabs/inicio"]);
           this.notificacion.exito(respuesta.message);
+          this.loader = false;
         }
         if (respuesta.code === 402) {
           this.loader = false;
