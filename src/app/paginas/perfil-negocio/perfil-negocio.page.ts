@@ -133,6 +133,12 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   ngOnInit() {
+    /*this.route.queryParams.subscribe(params => {
+      console.log('0');
+      if (params.vengoDeInicio && params){
+        this.obtenerInformacionNegocio();
+      }
+    });*/
     this.route.queryParams.subscribe(params => {
       if (params.cancel && params){
         let all = JSON.parse(JSON.stringify(params));
@@ -167,17 +173,19 @@ export class PerfilNegocioPage implements OnInit {
 
     this.route.params.subscribe((params) => {
       this.negocio = params.negocio;
+      if (
+          this.negocio !== undefined &&
+          this.negocio !== null &&
+          this.negocio !== ""
+      ) {
+        this.obtenerInformacionNegocio();
+      } else {
+        this.notificacionService.error("Ocurrio un error con este negocio");
+        this.location.back();
+      }
     });
-    if (
-        this.negocio !== undefined &&
-        this.negocio !== null &&
-        this.negocio !== ""
-    ) {
-      this.obtenerInformacionNegocio();
-    } else {
-      this.notificacionService.error("Ocurrio un error con este negocio");
-      this.location.back();
-    }
+
+
     this.getCurrentPosition();
   }
   ionViewWillEnter() {
@@ -207,7 +215,7 @@ export class PerfilNegocioPage implements OnInit {
             }else{
               this.arrayLugaresEntrega = null;
             }
-            console.log(this.informacionNegocio);
+           /* console.log(this.informacionNegocio);*/
             if (!this.informacionNegocio.activo) {
               this.presentExit();
               this.siEsta = false;
@@ -703,7 +711,6 @@ export class PerfilNegocioPage implements OnInit {
     } else {
       this.blockk.tf = true;
       if (this.navegacion){
-        console.log('aqui');
         this.location.back();
         this.navegacion=false;
       } else{

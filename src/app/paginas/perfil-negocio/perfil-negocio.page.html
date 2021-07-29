@@ -94,7 +94,7 @@
                                 <ion-col>
                                     <p>Métodos de pago</p>
                                     <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito===0 && informacionNegocio.tipo_pago_tarjeta_debito===0) && informacionNegocio.tipo_pago_transferencia==0">
-                                        Este negocio solo se acepta pago en efectivo
+                                        Este negocio solo acepta pago en efectivo
                                     </p>
                                     <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito) && informacionNegocio.tipo_pago_transferencia">
                                         Este negocio acepta pagos en efectivo, pagos con tarjeta y transferencia
@@ -106,8 +106,14 @@
                                     <p *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito) && informacionNegocio.tipo_pago_transferencia===0">
                                         Este negocio solo acepta pagos con tarjeta
                                     </p>
-                                    <p *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito===0 || informacionNegocio.tipo_pago_tarjeta_debito===0) && informacionNegocio.tipo_pago_transferencia===0">
+                                    <p *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito===0 && informacionNegocio.tipo_pago_tarjeta_debito===0) && informacionNegocio.tipo_pago_transferencia">
                                         Este negocio solo acepta pagos con transferencia electrónica
+                                    </p>
+                                    <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito===0 && informacionNegocio.tipo_pago_tarjeta_debito===0)&& informacionNegocio.tipo_pago_transferencia">
+                                        Este negocio acepta pagos en efectivo y transferencia electrónica
+                                    </p>
+                                    <p *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito)&& informacionNegocio.tipo_pago_transferencia">
+                                        Este negocio acepta pagos con tarjeta y transferencia electrónica
                                     </p>
                                 </ion-col>
                             </ion-row>

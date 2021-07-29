@@ -92,7 +92,6 @@ export class InfoNegocioPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.negocioTO);
     this.obtenerTipoNegocio();
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.specialune) {
@@ -295,12 +294,10 @@ export class InfoNegocioPage implements OnInit {
     return data;
   }
   agregarTags(tags: string[]) {
-    console.log(tags);
     this.negtag = true;
     this.tags = tags.join();
   }
   agregarLugaresEntrega(lugaresEntrega: string[]) {
-    console.log(lugaresEntrega);
     this.negLugar = true;
     this.lugaresEntrega = lugaresEntrega.join();
   }
@@ -354,7 +351,6 @@ export class InfoNegocioPage implements OnInit {
         this.notificaciones.alerta('Agregue la foto de su negocio');
     }else{
       this.datos();
-      console.log(this.negocioGuardar);
       this.negocioServico.guardar(this.negocioGuardar).subscribe(
         response => {
           if (response.code === 200) {
@@ -566,7 +562,7 @@ agregarHorario() {
     this.negocioTO.tipo_pago_transferencia = transferencia;
     this.negocioTO.tipo_pago_tarjeta_credito = credito;
     this.negocioTO.tipo_pago_tarjeta_debito = debito;
-    this.negocioTO.tipo_pago_tarjeta_debito = efectivo;
+    this.negocioTO.tipo_pago_efectivo = efectivo;
   }
   setarPago(){
     this.metodosPago.forEach(i => {
