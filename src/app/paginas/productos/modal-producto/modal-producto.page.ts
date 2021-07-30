@@ -18,6 +18,7 @@ export class ModalProductoPage implements OnInit {
   public negocio: any;
   public informacionNegocio: any;
   public comprarB: any;
+  public mensajeCompra = 'Agregar';
 
   constructor(
     private servicioProductos: ProductosService,
@@ -25,7 +26,7 @@ export class ModalProductoPage implements OnInit {
     private negocioServico: NegocioService,
     private router: Router,
     private notificaciones: ToadNotificacionService
-  ) { }
+  ) {}
 
   ngOnInit() {
     console.log(this.unoProducto);
@@ -70,51 +71,60 @@ export class ModalProductoPage implements OnInit {
           console.log(response.code);
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
   public agregar(producto: any) {
-        const contenido = JSON.parse(JSON.stringify(producto));
-        const enviar = {
-          producto: contenido,
-          agregado: true,
-        };
-        this.router.navigate(["/tabs/negocio/" + this.negocio.url_negocio], {
-          queryParams: { carrito: JSON.stringify(enviar) },
-        });
-        this.modalCtrl.dismiss({
-          dismissed: true,
-        });
+    const contenido = JSON.parse(JSON.stringify(producto));
+    const enviar = {
+      producto: contenido,
+      agregado: true,
+    };
+    this.router.navigate(["/tabs/negocio/" + this.negocio.url_negocio], {
+      queryParams: { carrito: JSON.stringify(enviar) },
+    });
+    this.modalCtrl.dismiss({
+      dismissed: true,
+    });
   }
   obtenerInformacionNegocio() {
-     this.negocioServico.buscarNegocio(this.unoProducto.negocio.idNegocio).subscribe(
-      (response) => {
-        console.log(response);
-            this.negocio = response.data;
-            this.negocioUrl(response.data);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.negocioServico
+      .buscarNegocio(this.unoProducto.negocio.idNegocio)
+      .subscribe(
+        (response) => {
+          console.log(response);
+          this.negocio = response.data;
+          this.negocioUrl(response.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
-  public negocioUrl(negocioT: any){
-     this.negocioServico.obteneretalleNegocio(negocioT.url_negocio, this.user.id_persona).subscribe(
+  public negocioUrl(negocioT: any) {
+    this.negocioServico
+      .obteneretalleNegocio(negocioT.url_negocio, this.user.id_persona)
+      .subscribe(
         (response) => {
           console.log(response);
           console.log(response.data);
-            this.informacionNegocio = response.data;
-            console.log(this.informacionNegocio);
-            this.mostrarBoton();
+          this.informacionNegocio = response.data;
+          console.log(this.informacionNegocio);
+          this.mostrarBoton();
         },
-        (error) => {
-
-        }
-    );
+        (error) => {}
+      );
   }
 
   public mostrarBoton() {
-    this.comprarB = ( (this.informacionNegocio.entrega_domicilio === 1 || this.informacionNegocio.entrega_sitio === 1 ||
-    this.informacionNegocio.consumo_sitio === 1) && parseInt(this.unoProducto.precio) > 0 );
+    this.comprarB =
+      (this.informacionNegocio.entrega_domicilio === 1 ||
+        this.informacionNegocio.entrega_sitio === 1 ||
+        this.informacionNegocio.consumo_sitio === 1) &&
+      parseInt(this.unoProducto.precio) > 0;
+  }
+
+  public noEstaAbierto(){
+    this.mensajeCompra = 'Este negocio se encuentra cerrado';
   }
 }

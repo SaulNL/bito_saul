@@ -10,53 +10,112 @@
 </ion-header>
 
 <ion-content fullscreen>
-
   <ion-card>
     <div>
       <app-imagenes-slide [imagen]="unoProducto"></app-imagenes-slide>
-      <p class="restriccion">*Algunas imágenes sólamente son usadas con fines ilustrativos. El producto final puede no estár representado con exactitud por las mismas</p>
+      <p class="restriccion">
+        *Algunas imágenes sólamente son usadas con fines ilustrativos. El
+        producto final puede no estár representado con exactitud por las mismas
+      </p>
     </div>
 
     <ion-card-header>
       <ion-card-subtitle>{{unoProducto.categoria.nombre}}</ion-card-subtitle>
       <ion-card-title><strong>{{unoProducto.nombre}}</strong> </ion-card-title>
     </ion-card-header>
-    <ion-card-content>
-      {{unoProducto.descripcion}}
-    </ion-card-content>
-    <ion-row >
-      <app-dar-like-producto [producto]="unoProducto" [usuario]="user" [mostrarLike]="existeSesion"></app-dar-like-producto>
+    <ion-card-content> {{unoProducto.descripcion}} </ion-card-content>
+    <ion-row>
+      <app-dar-like-producto
+        [producto]="unoProducto"
+        [usuario]="user"
+        [mostrarLike]="existeSesion"
+      ></app-dar-like-producto>
     </ion-row>
     <ion-card-content>
-      <label class="precio text-rosa"
-        *ngIf="unoProducto.precio !== undefined && unoProducto.precio !== null && unoProducto.precio !== '' && unoProducto.precio !== '0'">
-        <h2 class="m-0">{{unoProducto.precio |currency}}</h2>
-      </label><br>
-      <label class="precio"
-        *ngIf="unoProducto.precio === undefined || unoProducto.precio === null || unoProducto.precio === '' || unoProducto.precio === '0'">Contactar
-        precio con el proveedor</label>
+      <label
+        class="precio text-rosa"
+        *ngIf="unoProducto.precio !== undefined && unoProducto.precio !== null && unoProducto.precio !== '' && unoProducto.precio !== '0'"
+      >
+        <h2 class="m-0">{{unoProducto.precio |currency}}</h2> </label
+      ><br />
+      <label
+        class="precio"
+        *ngIf="unoProducto.precio === undefined || unoProducto.precio === null || unoProducto.precio === '' || unoProducto.precio === '0'"
+        >Contactar precio con el proveedor</label
+      >
     </ion-card-content>
-    <ion-card-content >
-          <label class="existencia" *ngIf="unoProducto.existencia">Aún en existencia</label>
-          <label class="existencia" *ngIf="!unoProducto.existencia">Sin existencia</label>
+    <ion-card-content>
+      <label class="existencia" *ngIf="unoProducto.existencia"
+        >Aún en existencia</label
+      >
+      <label class="existencia" *ngIf="!unoProducto.existencia"
+        >Sin existencia</label
+      >
     </ion-card-content>
     <ion-row *ngIf="existeSesion">
-      <ion-chip outline="" class="ion-color text-rosa bordeo ion-color-primary ios chip-outline ion-activatable hydrated" (click)="agregar(unoProducto)" *ngIf="comprarB && informacionNegocio.abierto === 'ABIERTO'">
-          <ion-icon aria-label="pin" class="ios hydrated text-rosa" role="img" name="bag-add-outline"></ion-icon>
-          <ion-label class="sc-ion-label-ios-h sc-ion-label-ios-s ios hydrated">Agregar</ion-label>
+      <ion-chip
+        outline=""
+        class="
+          ion-color
+          text-rosa
+          bordeo
+          ion-color-primary
+          ios
+          chip-outline
+          ion-activatable
+          hydrated
+        "
+        (click)="agregar(unoProducto)"
+        *ngIf="comprarB && informacionNegocio.abierto === 'ABIERTO' ;else bolsaOculta"
+      >
+        <ion-icon
+          aria-label="pin"
+          class="ios hydrated text-rosa"
+          role="img"
+          name="bag-add-outline"
+        ></ion-icon>
+        <ion-label class="sc-ion-label-ios-h sc-ion-label-ios-s ios hydrated"
+          >Agregar</ion-label
+        >
+      </ion-chip>
+      <ng-template #bolsaOculta>
+        <ion-chip  (click)="noEstaAbierto()"
+          outline=""
+          class="
+            ion-color
+            text-grey
+            bordeo
+            ion-color-primary
+            ios
+            chip-outline
+            ion-activatable
+            hydrated
+          "
+          disabled
+        >
+          <ion-icon
+            aria-label="pin"
+            class="ios hydrated text-grey"
+            role="img"
+            name="bag-add-outline"
+          ></ion-icon>
+          <ion-label class="sc-ion-label-ios-h sc-ion-label-ios-s ios hydrated text-grey"
+            >{{ mensajeCompra }}</ion-label
+          >
         </ion-chip>
+      </ng-template>
     </ion-row>
     <ion-card-content *ngIf="!existeSesion" class="ion-text-center">
       Inicia sesión para poder ir a la información de este negocio
       <ion-button expand="block" (click)="login()"> Iniciar Sesión</ion-button>
-  </ion-card-content>
+    </ion-card-content>
     <label *ngIf="existeSesion" class="negocio">
       <p>Vendido por</p>
       <ion-icon class="iconoss" slot="end" name="open-outline"></ion-icon>
     </label>
-    <hr>
-    <ion-item *ngIf="existeSesion" (click)="verMas(unoProducto)">
-      <label>{{unoProducto.negocio.nombre}}  </label>
+    <hr />
+    <ion-item *ngIf="existeSesion && informacionNegocio != undefined" (click)="verMas(unoProducto)">
+      <label> {{ informacionNegocio.nombre_comercial }}  </label>
       <ion-icon slot="end" class="blanco" name="storefront-outline"></ion-icon>
     </ion-item>
   </ion-card>

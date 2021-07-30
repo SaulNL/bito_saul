@@ -36,6 +36,7 @@ export class SolicitudesPage implements OnInit {
   public solicitud: SolicitudesModel;
   public numeroPublicadas: number;
   public cargando = 'cargando';
+  public textoDeBusqueda = 'Buscar Solicitud';
 
   constructor(
     private solicitudesService: SolicitudesService,

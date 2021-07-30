@@ -48,7 +48,7 @@
       </ion-chip>
     </div>
     <ion-card-header *ngIf="numeroPublicadas > 0">
-    <ion-searchbar (ionInput)="btnBuscar($event)" [(ngModel)]="filtro" type="text"></ion-searchbar>
+    <ion-searchbar [placeholder]="textoDeBusqueda" (ionInput)="btnBuscar($event)" [(ngModel)]="filtro" type="text"></ion-searchbar>
     <br>
     <ion-list *ngFor="let soliPubli of lstSolicitudesPublicadas; index as is">
       <ion-item (click)="selecAdminPublicada(soliPubli)">

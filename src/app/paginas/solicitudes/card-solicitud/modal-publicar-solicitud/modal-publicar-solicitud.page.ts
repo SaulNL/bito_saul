@@ -107,7 +107,7 @@ export class ModalPublicarSolicitudPage implements OnInit {
   }
 
   guardarPublicacion(form: NgForm) {
-    this.mensaje = 'Guardando';
+    this.mensaje = 'Publicando';
     this.loader = true;
     let fechaInicio = Date.parse(this.fechaini);
     this.fechaini = new Date(fechaInicio);
@@ -126,14 +126,14 @@ export class ModalPublicarSolicitudPage implements OnInit {
         this.solicitudesService.guardarPublicacion(this.publicacion).subscribe(
           (response: any) => {
             if (response.code === 200) {
-              this.loader = false;
               this.notificaciones.exito('Se público correctamente la solicitud');
               this.router.navigate(['/tabs/home/solicitudes']);
+              this.loader = false;
               form.resetForm();
             //  this.buscar();
             } else {
-              this.loader = false;
               this.notificaciones.alerta(response.message);
+              this.loader = false;
             }
 
             // this.loaderBtn = false;
@@ -144,9 +144,11 @@ export class ModalPublicarSolicitudPage implements OnInit {
           }
         );
       } else {
+        this.loader = false;
         this.mensajePublicacion = true;
       }
     } else {
+      this.loader = false;
       this.mensajeValidacion = true;
     }
   }
