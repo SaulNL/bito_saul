@@ -3,7 +3,7 @@
 	<ion-buttons slot="start">
 		<ion-menu-button></ion-menu-button>
 	  </ion-buttons>
-	<ion-title>Mis promociones</ion-title>
+	<ion-title>Mis anuncios y promociones</ion-title>
 	<ion-buttons slot="end">
 		<ion-button (click)="agregar()">
 			<ion-icon name="add-outline"></ion-icon>
@@ -26,9 +26,14 @@
 									</div>
 									<div *ngFor="let promocion of lstPromociones" >
 										<ion-item (click)="seleccionarPromocion(promocion)">
-											<ion-avatar slot="start">
-												<img  [src]="promocion.url_imagen" [alt]="promocion.promocion">
+											<ion-avatar slot="start" *ngIf="promocion.url_imagen === ''; else imagen">
+												<img  [src]="promocion.url_imagen_banner" [alt]="promocion.promocion">
 											</ion-avatar>
+											<ng-template #imagen>
+												<ion-avatar slot="start" >
+													<img  [src]="promocion.url_imagen" [alt]="promocion.promocion">
+												</ion-avatar>
+											</ng-template>
 											<ion-label class="ion-text-wrap">
 												<p>{{promocion.promocion}}</p>
 											</ion-label>
