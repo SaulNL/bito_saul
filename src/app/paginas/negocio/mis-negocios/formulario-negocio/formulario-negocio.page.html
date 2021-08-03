@@ -35,7 +35,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="segmentModel === 'informacion'">
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="segmentModel === 'informacion' && !loader">
   <ion-card>
     <ion-card-content>
       <form #formNegocio="ngForm" (ngSubmit)="guardar(formNegocio)">
@@ -573,7 +574,7 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
-<ion-content *ngIf="segmentModel === 'domicilio'">
+<ion-content *ngIf="segmentModel === 'domicilio' && !loader">
   <ion-card>
     <ion-card-content>
       <form
@@ -732,7 +733,7 @@
           >
           <ion-grid>
             <ion-row>
-              <ion-col>
+              <ion-col >
                 <div id="mapId" style="height: 200px"></div>
               </ion-col>
             </ion-row>
@@ -760,7 +761,7 @@
           >
             <span
               *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined"
-              >Guardar</span
+              >º</span
             >
             <span
               *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined"
@@ -773,7 +774,7 @@
   </ion-card>
 </ion-content>
 
-<ion-content *ngIf="segmentModel === 'contacto'">
+<ion-content *ngIf="segmentModel === 'contacto' && !loader" >
   <ion-card>
     <ion-card-content>
       <form #formNegoContacto="ngForm" (ngSubmit)="guardar(formNegoContacto)">

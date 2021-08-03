@@ -1,3 +1,4 @@
+import { SpinnerModule } from './../../../../componentes/spinner/spinner.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +16,8 @@ import {TabsPageModule} from '../../../tabs/tabs.module';
         FormsModule,
         IonicModule,
         FormularioNegocioPageRoutingModule,
-        TabsPageModule
+        TabsPageModule,
+        SpinnerModule
     ],
   declarations: [FormularioNegocioPage]
 })
