@@ -19,15 +19,15 @@
       [(ngModel)]="segmentModel"
       (ionChange)="segmentChanged($event)"
     >
-      <ion-segment-button value="informacion">
+      <ion-segment-button  value="informacion">
       <!--  <ion-label>Info. negocio</ion-label>-->
-        <ion-icon name="storefront-outline"></ion-icon>
+        <ion-icon [style]="colorInfo" name="storefront-outline"></ion-icon>
       </ion-segment-button>
       <ion-segment-button value="domicilio">
         <!--<ion-label>Domicilio</ion-label>-->
         <ion-icon name="location-outline"></ion-icon>
       </ion-segment-button>
-      <ion-segment-button value="contacto">
+      <ion-segment-button  value="contacto">
         <!--<ion-label>Contacto</ion-label>-->
         <ion-icon name="call-outline"></ion-icon>
       </ion-segment-button>
@@ -564,7 +564,7 @@
             expand="block"
             type="submit"
             class="bg-rosa"
-            [disabled]="formNegocio.invalid"
+            [disabled]="infoInvalid(formNegocio.invalid)"
             *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)"
             >Actualizar
           </ion-button>

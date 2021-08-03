@@ -95,6 +95,7 @@ export class FormularioNegocioPage implements OnInit {
   public localiAux: any;
   public loadion: any;
   public cargadoMapa: any;
+  public colorInfo: any;
   constructor(
     private alertController: AlertController,
     private router: Router,
@@ -149,6 +150,13 @@ export class FormularioNegocioPage implements OnInit {
         this.negocioGuardar = datos.pys;
         this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
         this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
+        if (this.negocioTO.lugares_entrega !== null){
+          this.negocioTO.lugares_entrega = this.negocioTO.lugares_entrega.filter(function(lugar){
+            return lugar !== '';
+          });
+        }else{
+          this.negocioTO.lugares_entrega = null;
+        }
       }
     });
 
@@ -728,6 +736,8 @@ export class FormularioNegocioPage implements OnInit {
   }
 
   guardar() {
+    const formularioInfo = document.getElementById('formNegocio');
+    console.log(formularioInfo);
     this.loader = true;
     if (this.negocioTO.logo === null ||
         this.negocioTO.logo === undefined ||
@@ -834,6 +844,13 @@ export class FormularioNegocioPage implements OnInit {
       this.negocioGuardar.det_domicilio.id_domicilio = this.negocioTO.det_domicilio.id_domicilio;
     }
     this.negocioGuardar.dias = this.negocioTO.dias;
+  }
+
+  public infoInvalid(form){
+    if (form === true){
+      this.colorInfo = 'color: red';
+    }
+    return form;
   }
 
 }
