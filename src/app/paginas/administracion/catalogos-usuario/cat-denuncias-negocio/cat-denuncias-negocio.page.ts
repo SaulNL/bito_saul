@@ -26,7 +26,7 @@ export class CatDenunciasNegocioPage implements OnInit {
     private notificaciones: ToadNotificacionService,
     private router: Router,
     private active: ActivatedRoute
-  ) { 
+  ) {
     this.blnActivaComentarios = false;
     this.filtro = '';
     this.listaDenunciaNegocio = [];
@@ -52,7 +52,7 @@ export class CatDenunciasNegocioPage implements OnInit {
     }
     this.filtro = '';
   }
-  
+
   setBlnFiltro() {
     this.blnBtnFiltro = this.validarFiltros();
   }
@@ -79,7 +79,7 @@ export class CatDenunciasNegocioPage implements OnInit {
   public busquedaNegocio() {
     if (this.validarFiltros()) {
       //this.loadbuscar = true;
-      //console.log(this.filtro);
+      
       this.adminServicio.busquedaNegocioDenuncias(this.filtro).subscribe(
         response => {
           //this.loadbuscar = false;

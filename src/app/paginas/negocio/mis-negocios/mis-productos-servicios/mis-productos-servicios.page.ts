@@ -417,7 +417,7 @@ export class MisProductosServiciosPage implements OnInit {
           text: "Cancelar",
           role: "cancel",
           handler: () => {
-            console.log("cancelar");
+
           },
         },
         {
@@ -656,11 +656,11 @@ export class MisProductosServiciosPage implements OnInit {
         this.blnEditando = true;
         this.indexModificar = this.productoNuevo.index;
         this.productoE = this.productoNuevo;
-        console.log(this.productoNuevo);
+
          this.actualizar(this.productoNuevo);
       }
       if (this.opcion === 1) {
-        console.log(this.productoNuevo);
+
          this.agregar(this.listaProductos);
       }
     }
@@ -848,7 +848,7 @@ export class MisProductosServiciosPage implements OnInit {
   }
 
   editarRegistro(produc: any) {
-    console.log(produc);
+
     this.mostrarListaProductos = !this.mostrarListaProductos;
     this.agregarProducto = true;
     this.almacenarRegistro = JSON.parse(JSON.stringify(produc));
@@ -859,7 +859,7 @@ export class MisProductosServiciosPage implements OnInit {
       this.productoNuevo.imagen = [imagens];
     }
     this.opcion = 2;
-    console.log(this.productoNuevo);
+
   }
 
   actualizar(produc) {
@@ -915,12 +915,12 @@ export class MisProductosServiciosPage implements OnInit {
     );
   }
   public subirImgs(event: any){
-    console.log(event);
+
     this.subirArchivo(event);
   }
 
   public subirArchivo(event: any) {
-    console.log(event);
+    
     this.subir_imagen_cuadrada(event);
   }
   public updateBorrado(event: any){

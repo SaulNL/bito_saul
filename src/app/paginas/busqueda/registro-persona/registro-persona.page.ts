@@ -211,13 +211,13 @@ export class RegistroPersonaPage implements OnInit {
     };
     this.usuarioSistema.crearCuantaAdminFacebook(data).subscribe(
       (response) => {
-        //console.log(response.data);
+
         if (response.data.code === 200) {
-          // console.log(this.passFace);
-          // console.log(this.usuario);
+
+
           this.usuario.password = this.passFace;
           this.usuario.usuario = data.email;
-          //console.log(this.usuario);
+
           this.doLogin();
         } else {
            this.loader = false;
@@ -229,19 +229,12 @@ export class RegistroPersonaPage implements OnInit {
         this.notificacion.alerta(error);
       }
     );
-    /*
-      this.picture = user.photoURL;
-      this.name = user.displayName;
-      this.email = user.email;
-      this.usuario.password = user.providerData[0].uid;
-      this.usuario.usuario = this.email;
-      console.log(user);
-      this.doLogin();*/
+
   }
   google(datosGoogle) {
     const resConfirmed = datosGoogle;
     const user = resConfirmed.user;
-    //console.log(user);
+
     this.passGogl = user.providerData[0].uid;
     let data = {
       firstName: user.providerData[0].displayName,
@@ -251,13 +244,12 @@ export class RegistroPersonaPage implements OnInit {
     };
     this.usuarioSistema.crearCuantaAdminGoogle(data).subscribe(
       (response) => {
-        //console.log(response.data);
+
         if (response.data.code === 200) {
-          //console.log(this.passGogl);
-          //console.log(this.usuario);
+
           this.usuario.password = this.passGogl;
           this.usuario.usuario = data.email;
-          //console.log(this.usuario);
+          
           this.doLogin();
         } else {
            this.loader = false;

@@ -128,15 +128,14 @@ export class LoginPage implements OnInit {
       new firebase.auth.GoogleAuthProvider()
     );
     const user = res.user;
-    console.log("Datos de usuario Google:", user.providerData);
+
     this.picture = user.photoURL;
     this.name = user.displayName;
     this.email = user.email;
     this.uid = user.uid;
     this.userFG.password = user.providerData[0].uid;
     this.userFG.usuario = this.email;
-    //console.log(this.usuario);
-    //this.doLogin();
+
   }
 
   /**
@@ -175,12 +174,7 @@ export class LoginPage implements OnInit {
    */
   loginGoogle() {
     this.loginGoogleAndroid();
-   /* if (this.platform.is("ios")) {
-      //this.loginGoogleAndroid();
-      console.log("Entro a la plataforma de Ios");
-    } else {
-      this.loginGoogleWeb();
-    }*/
+
   }
 
   /**
@@ -191,15 +185,12 @@ export class LoginPage implements OnInit {
       new firebase.auth.FacebookAuthProvider()
     );
     const user = res.user;
-    //console.log("Datos de usuario Facebook:", user);
-    //this.picture = user.photoURL;
-    //this.name = user.displayName;
+
     this.email = user.email;
     //this.uid = user.uid;
     this.userFG.password = user.providerData[0].uid;
     this.userFG.usuario = this.email;
-    //console.log(this.usuario);
-    //this.doLogin();
+    
   }
 
   /**

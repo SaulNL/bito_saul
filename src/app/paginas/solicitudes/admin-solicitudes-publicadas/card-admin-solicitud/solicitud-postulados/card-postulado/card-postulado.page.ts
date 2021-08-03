@@ -126,7 +126,7 @@ export class CardPostuladoPage implements OnInit {
                 title: this.solicitudPostulado.nombre + "_Archivo_Postulado",
                 url: response.nativeURL,
               }).then((resShare) => {
-                console.log(resShare);
+
               });
             })
             .catch((error) => this.notificaciones.error(error));
@@ -137,16 +137,16 @@ export class CardPostuladoPage implements OnInit {
   }
   getMimetype(name) {
     if (name.indexOf("pdf") >= 0) {
-      console.log("este archivo es pdf");
+
       return "application/pdf";
     } else if (name.indexOf("png") >= 0) {
-      console.log("este archivo es png");
+
       return "image/png";
     } else if (name.indexOf("jpeg") >= 0) {
-      console.log("este archivo es jpeg");
+
       return "image/jpeg";
     } else if (name.indexOf("jpg") >= 0) {
-      console.log("este archivo es jpg");
+      
       return "image/jpg";
     }
   }

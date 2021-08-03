@@ -11,7 +11,7 @@ import { Platform } from '@ionic/angular';
 const { App } = Plugins;
 
 App.addListener('backButton', (data: AppUrlOpen) => {
-  console.log("Hola mundo");
+  
 });
 
 @Component({

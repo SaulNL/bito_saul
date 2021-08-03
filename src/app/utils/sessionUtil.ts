@@ -37,7 +37,7 @@ export class SessionUtil {
       // No tiene por qué ser un string, pero si solo es un mensaje de éxito, probablemente lo sea.
 
       if( AppSettings.actualizarDatos(data)){
-        console.log("Actualizar datos");
+        
         this.sideBarService.actualizarSide();
        result = true;
       }else{

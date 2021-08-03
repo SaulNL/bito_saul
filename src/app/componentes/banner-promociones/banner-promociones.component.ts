@@ -71,11 +71,11 @@ export class BannerPromocionesComponent implements OnInit {
       this.geolocation.getCurrentPosition().then((reponse)=> {
         this.miUbicacionlatitud = reponse.coords.latitude;
         this.miUbicacionlongitud = reponse.coords.longitude;
-        console.log(this.miUbicacionlatitud);
-        console.log(this.miUbicacionlongitud );
+
+
 
       }).catch((error) => {
-        console.log('Errorlocation', error);
+        
       });
   }
   /**

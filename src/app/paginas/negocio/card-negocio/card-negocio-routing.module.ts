@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { CardNegocioPage } from './card-negocio.page';
 
 const routes: Routes = [
@@ -9,8 +8,8 @@ const routes: Routes = [
     component: CardNegocioPage
   },
   {
-    path: 'info-negocio',
-    loadChildren: () => import('./info-negocio/info-negocio.module').then( m => m.InfoNegocioPageModule)
+    path: 'formulario-negocio',
+    loadChildren: () => import('./../mis-negocios/formulario-negocio/formulario-negocio.module').then(m => m.FormularioNegocioPageModule )
   }
 ];
 

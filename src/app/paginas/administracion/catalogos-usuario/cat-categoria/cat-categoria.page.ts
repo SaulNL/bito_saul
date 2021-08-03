@@ -83,11 +83,11 @@ export class CatCategoriaPage implements OnInit {
     }
   }
   getCategoria() {
-    
+
     this.servicioUsuarios.listarCategoria().subscribe(
       response => {
         this.lstCatCategoria = response.data;
-        console.log(this.lstCatCategoria);
+        
       },
       error => {
         this.notificaciones.error(error);

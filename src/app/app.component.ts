@@ -38,14 +38,14 @@ export class AppComponent {
       this.splashScreen.hide();
       this.setupDeeplinks();
       this.obtenerPlataforma();
-    }); 
-    this.obtenerIP(); 
+    });
+    this.obtenerIP();
   }
 
   setupDeeplinks() {
     this.deeplinks.routeWithNavController(this.navController, {}).subscribe(
       (match) => {
-        console.log('Successfully matched route');
+
         const url:any = match.$link["url"].split("/");
         if(url[2] === match.$link["host"]){
           this.zone.run(() => {
@@ -58,7 +58,7 @@ export class AppComponent {
               this.router.navigateByUrl('/tabs/negocio'+match.$link["path"]);
             }
           });
-        }        
+        }
        }, (nomatch) => {
         console.error('Got a deeplink that didn\'t match', nomatch);
        });
@@ -71,7 +71,7 @@ export class AppComponent {
         }
       },
       error => {
-        console.log(error);
+
       }
     );
   }
@@ -83,7 +83,7 @@ export class AppComponent {
         }
       },
       error => {
-        console.log(error);
+
       }
     );
   }
@@ -96,8 +96,8 @@ export class AppComponent {
 }
 obtenerIP(){
   this.negocioService.obtenerIP().subscribe( res => {
-      this.visitasBitooModel.usuario_ip = res.ip; 
-      this.getCurrentPosition(); 
+      this.visitasBitooModel.usuario_ip = res.ip;
+      this.getCurrentPosition();
   }, error => {});
 }
 async getCurrentPosition() {
@@ -114,9 +114,9 @@ async getCurrentPosition() {
 
 registrarVisitas(){
     this.negocioService.guardarRegistro(this.visitasBitooModel).subscribe( data => {
-         console.log(data);
+
     },(error) =>{
-        console.log(error);
+        
     });
 }
 }

@@ -63,7 +63,7 @@ export class FiltrosBusquedaComponent implements OnInit {
     async getCurrentPosition() {
         let gpsOptions = {maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true};
         const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
-            //console.log(res);
+
             this.blnUbicacion = true;
             this.miUbicacionlatitud = res.coords.latitude;
             this.miUbicacionlongitud = res.coords.longitude;
@@ -74,10 +74,10 @@ export class FiltrosBusquedaComponent implements OnInit {
                 this.filtros.tipoBusqueda = 1;
                 this.geocodeLatLng();
             } catch (e) {
-                console.error(e);
+
             }
         }).catch(error => {
-            console.log(error, 'asdasdsad');
+
             this.blnUbicacion = false;
             this.ubicacion = 'localidad';
             this.filtros.tipoBusqueda = 0;
@@ -113,8 +113,8 @@ export class FiltrosBusquedaComponent implements OnInit {
             this.subCategoria = this.filtros.idCategoriaNegocio;
         }
         if(this.filtros.kilometros <=10 ){
-            this.kilometrosSlider = this.filtros.kilometros;            
-        }     
+            this.kilometrosSlider = this.filtros.kilometros;
+        }
     }
 
     public obtenergiros() {
@@ -124,7 +124,7 @@ export class FiltrosBusquedaComponent implements OnInit {
                 this.lstCatTipoProducto.forEach(element => {
                     if (element.id_giro==this.categoria) {
                       this.categoriaAux = element.nombre;
-                      
+
                     }
                   });
             },
@@ -179,8 +179,7 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     selectEstado(event) {
-        //console.log(event.detail.value);
-        //this.estado=parseInt(event.detail.value);
+
         this.filtros.idEstado = this.estado;
         this.obtenerCatMunicipio();
     }
@@ -224,10 +223,10 @@ export class FiltrosBusquedaComponent implements OnInit {
                     this.estasUbicacion = results[0].formatted_address;
                     this.filtros.strMunicipio = results[0].address_components[posicion].long_name;
                 } else {
-                    //console.log('No results found');
+
                 }
             } else {
-                //console.log('Geocoder failed due to: ' + status);
+                
                 //this.loader = false;
             }
         });
@@ -244,7 +243,7 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     selectCategoria() {
-        this.filtros.idGiro = [this.categoria];        
+        this.filtros.idGiro = [this.categoria];
         this.subCategorias();
     }
 
@@ -273,7 +272,7 @@ export class FiltrosBusquedaComponent implements OnInit {
         );
     }
 
-    selectSubCategoria() {        
+    selectSubCategoria() {
         this.filtros.idCategoriaNegocio = this.subCategoria;
     }
 

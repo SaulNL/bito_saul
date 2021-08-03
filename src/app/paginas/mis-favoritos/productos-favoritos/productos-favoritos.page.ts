@@ -98,9 +98,7 @@ export class ProductosFavoritosPage implements OnInit {
       return enterAnimation(baseEl).direction("reverse");
     };
 
-    console.log(this.unoProducto);
-    console.log(this.existeSesion);
-    console.log(this.user);
+    
 
     const modal = await this.modalController.create({
       component: ModalProductoPage,

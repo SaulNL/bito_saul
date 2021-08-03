@@ -121,7 +121,7 @@ export class PublicarPromocionPage implements OnInit {
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
-            console.log('cancelar');
+            
           }
         },
         {

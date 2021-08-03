@@ -22,7 +22,7 @@ export class CategoriasPage implements OnInit {
     private busquedaService:BusquedaService,
     private sideBarService: SideBarService,
     private router:Router,
-    ) { 
+    ) {
       this.Filtros = new FiltrosModel();
       this.Filtros.idEstado = 29;
     }
@@ -36,21 +36,21 @@ export class CategoriasPage implements OnInit {
     }
   }
 
-  @HostListener('window:resize', ['$event']) 
+  @HostListener('window:resize', ['$event'])
     onResize(event){
       if(window.innerWidth<=768){
         this.imgMobil=true;
       }else{
         this.imgMobil=false;
       }
-    } 
-  
+    }
+
   obtenerCategorias(){
     this.busquedaService.obtenerCategorias().subscribe(
       response=>{
         this.listaCategorias=response.data;
     },error=>{
-      console.log(error);
+      
     });
   }
 

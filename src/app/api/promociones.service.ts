@@ -129,9 +129,9 @@ export class PromocionesService {
   }
 
   obtenerPromocinesPublicadas(promocion: PromocionesModel): Observable<any> {
-    console.log(promocion);
+
     const body = JSON.stringify(promocion);
-    console.log(body);
+
     this. http.setDataSerializer('utf8');
     return from(this.http.post(this.url + 'api/promociones/obtener/publicadas', body, AppSettings.getHeadersToken())
     .then((data) => {
@@ -143,9 +143,9 @@ export class PromocionesService {
   }
 
   quitarPublicacionPromocion(variable: PromocionesModel) {
-    console.log(variable);
+    
     const body = JSON.stringify(variable);
-    console.log(body);
+    
     this. http.setDataSerializer('utf8');
     return from(this.http.post(this.url + 'api/promociones/eliminar/publicacion', body, AppSettings.getHeadersToken())
     .then((data) => {
@@ -170,7 +170,7 @@ export class PromocionesService {
 
   obtenerNumeroQuienVioPublicacion(id_promocion): Observable<any>{
     const body = JSON.stringify({id_promocion: id_promocion});
-    console.log(body);
+    
     this. http.setDataSerializer('utf8');
     return from(this.http.post(this.url + 'api/promociones/obtener/numero_viste_mi_promocion', body, AppSettings.getHeadersToken())
     .then((data) => {
@@ -182,9 +182,9 @@ export class PromocionesService {
   }
 
   guardar(variable: PromocionesModel): Observable<any> {
-    console.log(variable);
+    
     const body = JSON.stringify(variable);
-    console.log(body);
+    
     this. http.setDataSerializer('utf8');
     return from(this.http.post(this.url + 'api/promociones/guardar', body, AppSettings.getHeadersToken())
     .then((data) => {
@@ -196,9 +196,9 @@ export class PromocionesService {
   }
 
   eliminar(variable: PromocionesModel) {
-    console.log(variable);
+    
     const body = JSON.stringify(variable);
-    console.log(body);
+    
     this. http.setDataSerializer('utf8');
     return from(this.http.post(this.url + 'api/promociones/eliminar', body, AppSettings.getHeadersToken())
     .then((data) => {
@@ -210,9 +210,9 @@ export class PromocionesService {
   }
 
   guardarPublicacion(publicacion: PublicacionesModel): Observable<any> {
-    console.log(publicacion);
+    
     const body = JSON.stringify(publicacion);
-    console.log(body);
+    
     this. http.setDataSerializer('utf8');
     return from(this.http.post(this.url + 'api/promocion/publicar', body, AppSettings.getHeadersToken())
     .then((data) => {

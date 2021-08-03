@@ -69,15 +69,14 @@ export class CatAvisoinformacionPage implements OnInit {
 
   datosAviso(aviso: FiltroCatAvisosInfoModel) {
     if (aviso.tipo_aviso === 1) {
-      //console.log('1');
-      //console.log(aviso.tipo_aviso);
+
+      
       this.selectTO = JSON.parse(JSON.stringify(aviso));
       let navigationExtras = JSON.stringify(this.selectTO);
   this.router.navigate(['/tabs/home/cat-avisos/datos-avisos-informacion'], { queryParams: {special: navigationExtras}  });
       //window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      //console.log('2');
-      //console.log(aviso.tipo_aviso);
+
       this.selectTO = JSON.parse(JSON.stringify(aviso));
       let navigationExtras = JSON.stringify(this.selectTO);
   this.router.navigate(['/tabs/home/cat-avisos/datos-popover'], { queryParams: {special: navigationExtras}  });

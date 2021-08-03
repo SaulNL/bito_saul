@@ -191,7 +191,7 @@ export class NegocioService {
 
     obtenerComentariosNegocio(idNegocio: number): Observable<any> {
         const body = JSON.stringify({id_negocio: idNegocio});
-        console.log(body);
+
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/negocio/negocio_comentarios',
@@ -398,8 +398,8 @@ export class NegocioService {
         this._http.setDataSerializer('utf8');
         return from(this._http.post(`${this.url}api/visitas/RegistrarEntrasteABitoo`, body, AppSettings.getHeaders())
             .then((data) => {
-                console.log('entro aqui al servicio ');
-                console.log(JSON.parse(data.data));
+
+                
                 return JSON.parse(data.data);
             })
             .catch((error) => {
