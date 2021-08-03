@@ -94,7 +94,6 @@ export class FormularioNegocioPage implements OnInit {
   public municiAux: any;
   public localiAux: any;
   public loadion: any;
-  public cargadoMapa: any;
   constructor(
     private alertController: AlertController,
     private router: Router,
@@ -126,7 +125,6 @@ export class FormularioNegocioPage implements OnInit {
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
     this.list_cat_localidad = new Array<CatLocalidadModel>();
-    this.cargadoMapa = true;
   }
 
   ngOnInit() {
@@ -229,12 +227,11 @@ export class FormularioNegocioPage implements OnInit {
   }
 
   segmentChanged(event: any) {
-    if (event.detail.value === "domicilio" && this.cargadoMapa) {
+    if (event.detail.value === "domicilio") {
       this.cagarMapa();
-      this.cargadoMapa = false;
     }
 
-    console.log(this.segmentModel);
+
   }
 
   public buscarNegocio(id: any) {
