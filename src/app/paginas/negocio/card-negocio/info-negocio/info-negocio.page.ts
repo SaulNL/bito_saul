@@ -122,7 +122,7 @@ export class InfoNegocioPage implements OnInit {
     });
 
     this.activatedRoute.queryParams.subscribe(params => {
-      if (params && params.specialune) {
+      if (params && params.nuevoNegocio) {
         this.negocioTO = new NegocioModel();
         this.negocioTO.tags = [];
         this.negocioTO.lugares_entrega = [];

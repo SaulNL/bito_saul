@@ -130,6 +130,17 @@ export class FormularioNegocioPage implements OnInit {
   ngOnInit() {
 
     this.activatedRoute.queryParams.subscribe(params => {
+      if (params && params.specialune) {
+        this.negocioTO = new NegocioModel();
+        this.negocioTO.tags = [];
+        this.negocioTO.lugares_entrega = [];
+        this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
+        this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
+        this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
+      }
+    });
+
+    this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.special) {
         const datos = JSON.parse(params.special);
         this.negocioTO = datos.info;
