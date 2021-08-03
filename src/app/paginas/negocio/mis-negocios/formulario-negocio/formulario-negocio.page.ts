@@ -94,7 +94,7 @@ export class FormularioNegocioPage implements OnInit {
   public municiAux: any;
   public localiAux: any;
   public loadion: any;
-
+  public cargadoMapa: any;
   constructor(
     private alertController: AlertController,
     private router: Router,
@@ -126,6 +126,7 @@ export class FormularioNegocioPage implements OnInit {
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
     this.list_cat_localidad = new Array<CatLocalidadModel>();
+    this.cargadoMapa = true;
   }
 
   ngOnInit() {
@@ -228,13 +229,20 @@ export class FormularioNegocioPage implements OnInit {
   }
 
   segmentChanged(event: any) {
-    console.log(event);
+    if (event.detail.value === "domicilio" && this.cargadoMapa) {
+      this.cagarMapa();
+      this.cargadoMapa = false;
+    }
+
     console.log(this.segmentModel);
   }
 
   public buscarNegocio(id: any) {
     if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
-      console.log('Es un nuevo negocio');
+      //this.negocioTO = new NegocioModel();
+      //this.negocioTO.tags = "";
+      this.categoriaPrincipal({ value: 0 });
+      this.subcategorias({ value: 0 });
     } else {
       this.negocioServico.buscarNegocio(id).subscribe(
         response => {
