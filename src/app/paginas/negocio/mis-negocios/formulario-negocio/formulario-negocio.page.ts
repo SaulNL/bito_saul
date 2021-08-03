@@ -96,6 +96,8 @@ export class FormularioNegocioPage implements OnInit {
   public loadion: any;
   public cargadoMapa: any;
   public colorInfo: any;
+  public colorDomicilio: any;
+  public colorContacto: any;
   constructor(
     private alertController: AlertController,
     private router: Router,
@@ -849,8 +851,28 @@ export class FormularioNegocioPage implements OnInit {
   public infoInvalid(form){
     if (form === true){
       this.colorInfo = 'color: red';
+    }else {
+      this.colorInfo = '';
     }
     return form;
   }
+
+  public domicilioInvalid(form){
+    if (form === true){
+      this.colorDomicilio = 'color: red';
+    }else {
+      this.colorDomicilio = '';
+    }
+    return form;
+  }
+  public contactoInvalid(form){
+    if (form === true){
+      this.colorContacto = 'color: red';
+    }else {
+      this.colorContacto = '';
+    }
+    return form;
+  }
+
 
 }

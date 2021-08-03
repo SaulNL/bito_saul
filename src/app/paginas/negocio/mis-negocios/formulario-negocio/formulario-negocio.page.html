@@ -25,11 +25,11 @@
       </ion-segment-button>
       <ion-segment-button value="domicilio">
         <!--<ion-label>Domicilio</ion-label>-->
-        <ion-icon name="location-outline"></ion-icon>
+        <ion-icon [style]="colorDomicilio" name="location-outline"></ion-icon>
       </ion-segment-button>
       <ion-segment-button  value="contacto">
         <!--<ion-label>Contacto</ion-label>-->
-        <ion-icon name="call-outline"></ion-icon>
+        <ion-icon [style]="colorContacto" name="call-outline"></ion-icon>
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -756,7 +756,7 @@
             expand="block"
             type="submit"
             class="bg-rosa"
-            [disabled]="formDomicilio.invalid"
+            [disabled]="domicilioInvalid(formDomicilio.invalid)"
           >
             <span
               *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined"
@@ -880,7 +880,7 @@
           </ion-item>
         </ion-list>
         <ion-button
-          [disabled]="formNegoContacto.invalid"
+          [disabled]="contactoInvalid(formNegoContacto.invalid)"
           expand="block"
           type="submit"
           class="bg-rosa"
