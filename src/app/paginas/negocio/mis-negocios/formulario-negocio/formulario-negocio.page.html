@@ -1,6 +1,8 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    <ion-title> Información Negocio </ion-title>
+    <ion-title *ngIf="segmentModel === 'informacion'"> Información Negocio </ion-title>
+    <ion-title *ngIf="segmentModel === 'domicilio'"> Domicilio </ion-title>
+    <ion-title *ngIf="segmentModel === 'contacto'"> Contacto </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cancelar()">
         <ion-icon name="close-outline"></ion-icon>
@@ -18,15 +20,15 @@
       (ionChange)="segmentChanged($event)"
     >
       <ion-segment-button value="informacion">
-        <ion-label>Info. negocio</ion-label>
+      <!--  <ion-label>Info. negocio</ion-label>-->
         <ion-icon name="storefront-outline"></ion-icon>
       </ion-segment-button>
       <ion-segment-button value="domicilio">
-        <ion-label>Domicilio</ion-label>
+        <!--<ion-label>Domicilio</ion-label>-->
         <ion-icon name="location-outline"></ion-icon>
       </ion-segment-button>
       <ion-segment-button value="contacto">
-        <ion-label>Contacto</ion-label>
+        <!--<ion-label>Contacto</ion-label>-->
         <ion-icon name="call-outline"></ion-icon>
       </ion-segment-button>
     </ion-segment>

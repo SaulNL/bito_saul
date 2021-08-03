@@ -122,8 +122,8 @@ export class NegocioPage implements OnInit {
     this.selectTO = new NegocioModel();
     this.selectTO.det_domicilio = new DetDomicilioModel();
     let navigationExtras = JSON.stringify(this.selectTO);
-    this.router.navigate(['/tabs/home/negocio/card-negocio/info-negocio'], {
-      queryParams: { specialune: navigationExtras },
+    this.router.navigate(['/tabs/home/negocio/card-negocio/formulario-negocio'], {
+      queryParams: { nuevoNegocio: navigationExtras },
     });
   }
 
