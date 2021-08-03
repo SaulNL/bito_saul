@@ -160,7 +160,6 @@ export class FormularioNegocioPage implements OnInit {
     ];
     this.setarPago();
     this.load_cat_estados();
-    this.cagarMapa();
   }
   setarPago() {
     this.metodosPago.forEach(i => {
@@ -227,8 +226,13 @@ export class FormularioNegocioPage implements OnInit {
   }
 
   segmentChanged(event: any) {
-    console.log(event);
+    console.log(event.detail.value);
+    if(event.detail.value === "domicilio"){
+      this.cagarMapa();
+    }
+
     console.log(this.segmentModel);
+  }
   }
 
   public buscarNegocio(id: any) {
