@@ -98,6 +98,16 @@ export class FormularioNegocioPage implements OnInit {
 
   ngOnInit() {
 
+    this.activatedRoute.queryParams.subscribe(params => {
+            if (params && params.special) {
+                let datos = JSON.parse(params.special);
+                this.negocioTO = datos.info;
+                this.negocioGuardar = datos.pys;
+                this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
+                this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
+            }
+        });
+
     this.buscarNegocio(this.negocioTO.id_negocio);
     this.metodosPago = [
       { id: 1, metodo: "Transferencia Electrónica", value: this.negocioTO.tipo_pago_transferencia },

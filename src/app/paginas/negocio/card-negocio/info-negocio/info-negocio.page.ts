@@ -149,13 +149,9 @@ export class InfoNegocioPage implements OnInit {
     ]
     this.setarPago();
   }
-  public buscarNegocio(id) {
-
+  public buscarNegocio(id: any) {
     if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
-      //this.negocioTO = new NegocioModel();
-      //this.negocioTO.tags = "";
-      // this.categoriaPrincipal({ value: 0 });
-      // this.subcategorias({ value: 0 });
+      this.notificaciones.error('No se pudo cargar tu negocio');
     } else {
       this.negocioServico.buscarNegocio(id).subscribe(
         response => {
@@ -176,8 +172,8 @@ export class InfoNegocioPage implements OnInit {
         }
       );
     }
-
   }
+
   public obtenerTipoNegocio() {
     this.negocioServico.obtnerTipoNegocio().subscribe(
       response => {

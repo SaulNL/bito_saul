@@ -14,7 +14,7 @@ export class UtilsCls {
     $("#panel-loading").fadeOut(100);
   }
 
-  getIdUsuario(): number {
+  getIdUsuario() {
     let id_usuario = 0;
     try {
       const persona = JSON.parse(localStorage.getItem("u_data"));

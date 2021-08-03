@@ -1,11 +1,12 @@
+import { ArchivoComunModel } from './../../../../Modelos/ArchivoComunModel';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NegocioModel } from "./../../../../Modelos/NegocioModel";
 import { ActionSheetController } from "@ionic/angular";
+import { ActionSheetController } from "@ionic/angular";
 import { NegocioService } from "../../../../api/negocio.service";
 import { DetDomicilioModel } from "../../../../Modelos/DetDomicilioModel";
 import { UtilsCls } from './../../../../utils/UtilsCls';
-import { ArchivoComunModel } from 'src/app/Modelos/ArchivoComunModel';
 import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
 import { ModalController } from '@ionic/angular';
 import { RecorteImagenComponent } from "../../../../components/recorte-imagen/recorte-imagen.component";
@@ -151,7 +152,7 @@ export class InformacionNegocioPage implements OnInit {
       },
       error => {
         this.listTipoNegocio = [];
-        
+
       }
     );
   }
