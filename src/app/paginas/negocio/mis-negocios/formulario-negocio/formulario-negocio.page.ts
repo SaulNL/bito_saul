@@ -13,6 +13,14 @@ import { RecorteImagenComponent } from '../../../../components/recorte-imagen/re
 import { ActionSheetController } from '@ionic/angular';
 import { HorarioNegocioModel } from '../../../../Modelos/HorarioNegocioModel';
 import * as moment from 'moment';
+import { CatLocalidadModel } from './../../../../Modelos/CatLocalidadModel';
+import { CatMunicipioModel } from './../../../../Modelos/CatMunicipioModel';
+import { CatEstadoModel } from './../../../../Modelos/CatEstadoModel';
+import { Map, tileLayer, marker, Marker } from 'leaflet';
+import { Plugins } from '@capacitor/core';
+const { Geolocation } = Plugins;
+import { GeneralServicesService } from './../../../../api/general-services.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-formulario-negocio',
@@ -71,7 +79,21 @@ export class FormularioNegocioPage implements OnInit {
   public tipoOrgAux: any;
   public blnActivaNegocioFisico: boolean;
   public msj = 'Guardando';
-
+  public valido: boolean;
+  private marker: Marker<any>;
+  map: Map;
+  public latitud: any;
+  public longitud: any;
+  public list_cat_estado: Array<CatEstadoModel>;
+  public list_cat_municipio: Array<CatMunicipioModel>;
+  public list_cat_localidad: Array<CatLocalidadModel>;
+  public btnEstado: boolean;
+  public btnMuncipio: boolean;
+  public btnLocalidad: boolean;
+  public estadoAux: any;
+  public municiAux: any;
+  public localiAux: any;
+  public loadion: any;
   constructor(
     private alertController: AlertController,
     private router: Router,
@@ -80,8 +102,10 @@ export class FormularioNegocioPage implements OnInit {
     private actionSheetController: ActionSheetController,
     private _utils_cls: UtilsCls,
     private notificaciones: ToadNotificacionService,
-    public modalController: ModalController
+    public modalController: ModalController,
+    private _general_service: GeneralServicesService,
   ) {
+    this.valido = false;
     this.listCategorias = [];
     this.listTipoNegocio = [];
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
@@ -93,19 +117,27 @@ export class FormularioNegocioPage implements OnInit {
     this.blnActivaDias = true;
     this.blnActivaHorario = true;
     this.loader = false;
+    this.latitud = 19.4166896;
+    this.longitud = -98.1467336;
+    this.btnEstado = false;
+    this.btnMuncipio = true;
+    this.btnLocalidad = true;
+    this.list_cat_estado = new Array<CatEstadoModel>();
+    this.list_cat_municipio = new Array<CatMunicipioModel>();
+    this.list_cat_localidad = new Array<CatLocalidadModel>();
   }
 
   ngOnInit() {
 
     this.activatedRoute.queryParams.subscribe(params => {
-            if (params && params.special) {
-                const datos = JSON.parse(params.special);
-                this.negocioTO = datos.info;
-                this.negocioGuardar = datos.pys;
-                this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
-                this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
-            }
-        });
+      if (params && params.special) {
+        const datos = JSON.parse(params.special);
+        this.negocioTO = datos.info;
+        this.negocioGuardar = datos.pys;
+        this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
+        this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
+      }
+    });
 
     this.buscarNegocio(this.negocioTO.id_negocio);
     this.metodosPago = [
@@ -115,6 +147,8 @@ export class FormularioNegocioPage implements OnInit {
       { id: 4, metodo: 'Efectivo', value: this.negocioTO.tipo_pago_efectivo }
     ];
     this.setarPago();
+    this.cagarMapa();
+    this.load_cat_estados();
   }
 
   setarPago() {
@@ -489,26 +523,186 @@ export class FormularioNegocioPage implements OnInit {
   }
 
   async presentAlertEliminar(i) {
-  const alert = await this.alertController.create({
-    cssClass: 'my-custom-class',
-    header: '¿Esta seguro que desa Eliminar el registro?',
-    message: 'Recuerde que la acción es ireversible',
-    buttons: [
-      {
-        text: 'Cancel',
-        role: 'cancel',
-        cssClass: 'secondary',
-        handler: (blah) => {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '¿Esta seguro que desa Eliminar el registro?',
+      message: 'Recuerde que la acción es ireversible',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          }
+        }, {
+          role: 'destructive',
+          text: 'Confirmar',
+          handler: () => {
+            this.eliminarHorario(i);
+          }
         }
-      }, {
-        role: 'destructive',
-        text: 'Confirmar',
-        handler: () => {
-          this.eliminarHorario(i);
-        }
+      ]
+    });
+    await alert.present();
+  }
+  /**
+ * Funcion para cargar el mapa
+ */
+  public cagarMapa() {
+    setTimeout(it => {
+      // this.map = new Map("mapId").setView([this.latitud, this.longitud], 16);
+      this.map = new Map("mapId").setView([this.latitud, this.longitud], 12);
+      this.map.on('click', respuesta => {
+        this.getLatLong(respuesta);
+      })
+      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
+      this.marker = marker([this.latitud, this.longitud], {
+        draggable:
+          true
+      }).addTo(this.map);
+      if (this.negocioTO.det_domicilio.latitud !== null) {
+        this.localizacionTiempo(2);
       }
-    ]
-  });
-  await alert.present();
-}
+    }, 500);
+  }
+  getLatLong(e) {
+    let latitude = e.latlng.lat;
+    this.negocioTO.det_domicilio.latitud = latitude;
+    let longitude = e.latlng.lng;
+    this.negocioTO.det_domicilio.longitud = longitude;
+    this.map.panTo([latitude, longitude]);
+    this.marker.setLatLng([latitude, longitude]);
+
+  }
+  /**
+   * Funcion para obtener la ubicacion actual
+   */
+  async localizacionTiempo(tipo: number) {
+    let latitude;
+    let longitude;
+    const coordinates = await Geolocation.getCurrentPosition().then(res => {
+      if (tipo === 1) {
+        this.negocioTO.det_domicilio.latitud = res.coords.latitude;
+        latitude = res.coords.latitude;
+        this.negocioTO.det_domicilio.longitud = res.coords.longitude;
+        longitude = res.coords.longitude;
+        this.map.panTo([latitude, longitude]);
+        this.marker.setLatLng([latitude, longitude]);
+      } else {
+        latitude = this.negocioTO.det_domicilio.latitud;
+        longitude = this.negocioTO.det_domicilio.longitud;
+        this.map.setView([latitude, longitude], 12);
+        this.marker.setLatLng([latitude, longitude]);
+      }
+    }).catch(error => {
+      this.notificaciones.error(error);
+    }
+    );
+  }
+  /**
+* Funcion para obtener el estado
+*/
+  private load_cat_estados() {
+    this._general_service.getEstadosWS().subscribe(
+      response => {
+        if (this._utils_cls.is_success_response(response.code)) {
+          this.list_cat_estado = response.data.list_cat_estado;
+          this.list_cat_estado.forEach(element => {
+            if (element.id_estado == this.negocioTO.det_domicilio.id_estado) {
+              this.estadoAux = element.nombre;
+
+            }
+          });
+          //this.loader = false;
+          if (this.negocioTO.det_domicilio.id_estado > 0) {
+            this.get_list_cat_municipio({ value: this.negocioTO.det_domicilio.id_estado });
+          }
+        }
+      },
+      error => {
+        this.notificaciones.error(error);
+      }
+    );
+  }
+  /**
+  * Funcion para obtener los municipios
+  */
+  public get_list_cat_municipio(evento) {
+    let idE;
+    if (evento.type === 'ionChange') {
+      this.negocioTO.det_domicilio.id_municipio = [];
+      idE = evento.detail.value;
+    } else {
+      idE = evento.value;
+    }
+    if (idE > 0) {
+      // this.loaderMunicipio = true;
+      this._general_service.getMunicipios(idE).subscribe(
+        response => {
+          if (this._utils_cls.is_success_response(response.code)) {
+            this.list_cat_municipio = response.data.list_cat_municipio;
+            this.list_cat_municipio.forEach(element => {
+              if (element.id_municipio == this.negocioTO.det_domicilio.id_municipio) {
+                this.municiAux = element.nombre;
+
+
+              }
+            });
+            this.btnMuncipio = false;
+            if (this.negocioTO.det_domicilio.id_municipio > 0) {
+              this.btnMuncipio = false;
+              this.get_list_cat_localidad({ value: this.negocioTO.det_domicilio.id_municipio });
+            }
+          }
+        },
+        error => {
+          this.notificaciones.error(error);
+        },
+        () => {
+          //  this.loaderMunicipio = false;
+        }
+      );
+    } else {
+      this.list_cat_municipio = [];
+    }
+  }
+  /**
+ * Obtener localidad
+ */
+  public get_list_cat_localidad(evento) {
+    let idE;
+    if (evento.type === 'ionChange') {
+      this.negocioTO.det_domicilio.id_localidad = [];
+      idE = evento.detail.value;
+    } else {
+      idE = evento.value;
+    }
+    if (idE > 0) {
+      // this.loaderLocalidad = true;
+
+      this._general_service.getLocalidad(idE).subscribe(
+        response => {
+          if (this._utils_cls.is_success_response(response.code)) {
+            this.btnLocalidad = false;
+            this.list_cat_localidad = response.data.list_cat_localidad;
+            this.list_cat_localidad.forEach(element => {
+              if (element.id_localidad == this.negocioTO.det_domicilio.id_localidad) {
+                this.localiAux = element.nombre;
+
+              }
+            });
+          }
+        },
+        error => {
+          //   this._notificacionService.pushError(error);
+          this.notificaciones.error(error);
+        },
+        () => {
+          //  this.loaderLocalidad = false;
+        }
+      );
+    } else {
+      this.list_cat_localidad = [];
+    }
+  }
 }

@@ -1,3 +1,6 @@
+import { CatLocalidadModel } from './../../../../Modelos/CatLocalidadModel';
+import { CatMunicipioModel } from './../../../../Modelos/CatMunicipioModel';
+import { CatEstadoModel } from './../../../../Modelos/CatEstadoModel';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NegocioModel } from "./../../../../Modelos/NegocioModel";
@@ -9,9 +12,6 @@ import { Plugins } from '@capacitor/core';
 const { Geolocation } = Plugins;
 import { GeneralServicesService } from './../../../../api/general-services.service';
 import { UtilsCls } from './../../../../utils/UtilsCls';
-import { CatEstadoModel } from 'src/app/Modelos/busqueda/CatEstadoModel';
-import { CatMunicipioModel } from 'src/app/Modelos/busqueda/CatMunicipioModel';
-import { CatLocalidadModel } from 'src/app/Modelos/busqueda/CatLocalidadModel';
 import { Platform } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 
@@ -76,7 +76,7 @@ export class DatosDomicilioPage implements OnInit {
     this.cagarMapa();
     this.load_cat_estados();
 
-    
+
   }
 
   datosD() {
