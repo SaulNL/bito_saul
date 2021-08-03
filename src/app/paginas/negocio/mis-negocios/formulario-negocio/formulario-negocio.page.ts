@@ -217,6 +217,7 @@ export class FormularioNegocioPage implements OnInit {
 
   segmentChanged(event: any) {
     console.log(event);
+    console.log(this.segmentModel);
   }
 
   public buscarNegocio(id: any) {
