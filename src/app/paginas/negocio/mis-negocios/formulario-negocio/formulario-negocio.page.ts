@@ -129,7 +129,6 @@ export class FormularioNegocioPage implements OnInit {
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
     this.list_cat_localidad = new Array<CatLocalidadModel>();
-    this.cargadoMapa = true;
   }
 
   ngOnInit() {
@@ -239,18 +238,17 @@ export class FormularioNegocioPage implements OnInit {
   }
 
   segmentChanged(event: any) {
-    if (event.detail.value === "domicilio" && this.cargadoMapa) {
+    if (event.detail.value === "domicilio") {
       this.cagarMapa();
-      this.cargadoMapa = false;
     }
 
-    console.log(this.segmentModel);
+
   }
 
   public buscarNegocio(id: any) {
     if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
-      //this.negocioTO = new NegocioModel();
-      //this.negocioTO.tags = "";
+      this.obtenerTipoNegocio();
+      this.obtenerCatOrganizaciones();
       this.categoriaPrincipal({ value: 0 });
       this.subcategorias({ value: 0 });
     } else {
@@ -259,7 +257,6 @@ export class FormularioNegocioPage implements OnInit {
           this.negocioTO = response.data;
           this.obtenerTipoNegocio();
           this.obtenerCatOrganizaciones();
-          console.log(this.negocioTO);
           const archivo = new ArchivoComunModel();
           archivo.archivo_64 = this.negocioTO.url_logo;
           archivo.nombre_archivo = this.negocioTO.id_negocio.toString();
@@ -742,29 +739,29 @@ export class FormularioNegocioPage implements OnInit {
     console.log(formularioInfo);
     this.loader = true;
     if (this.negocioTO.logo === null ||
-        this.negocioTO.logo === undefined ||
-        this.negocioTO.logo.archivo_64 === '' ||
-        this.negocioTO.logo.archivo_64 === null ||
-        this.negocioTO.logo.archivo_64 === undefined ) {
+      this.negocioTO.logo === undefined ||
+      this.negocioTO.logo.archivo_64 === '' ||
+      this.negocioTO.logo.archivo_64 === null ||
+      this.negocioTO.logo.archivo_64 === undefined) {
       this.notificaciones.alerta('Agregue la foto de su negocio');
       this.loader = false;
     } else {
       this.datos();
       this.negocioServico.guardar(this.negocioGuardar).subscribe(
-          response => {
-            if (response.code === 200) {
-              this.notificaciones.exito('Tu negocio se guardo exitosamente');
-              this.loader = false;
-              this.router.navigate(['/tabs/home/negocio']);
-            } else {
-              this.notificaciones.alerta('Error al guardar, intente nuevamente');
-              this.loader = false;
-            }
-          },
-          error => {
-            this.notificaciones.error(error);
+        response => {
+          if (response.code === 200) {
+            this.notificaciones.exito('Tu negocio se guardo exitosamente');
+            this.loader = false;
+            this.router.navigate(['/tabs/home/negocio']);
+          } else {
+            this.notificaciones.alerta('Error al guardar, intente nuevamente');
             this.loader = false;
           }
+        },
+        error => {
+          this.notificaciones.error(error);
+          this.loader = false;
+        }
       );
     }
   }
@@ -804,14 +801,14 @@ export class FormularioNegocioPage implements OnInit {
       this.negocioGuardar.tags = this.tags;
     } else {
       let convertir;
-      convertir =JSON.parse(JSON.stringify(this.negocioTO));
+      convertir = JSON.parse(JSON.stringify(this.negocioTO));
       this.negocioGuardar.tags = convertir.tags.join();
     }
     if (this.negLugar == true) {
       this.negocioGuardar.lugares_entrega = this.lugaresEntrega;
     } else {
       let convertir;
-      convertir =JSON.parse(JSON.stringify(this.negocioTO));
+      convertir = JSON.parse(JSON.stringify(this.negocioTO));
       this.negocioGuardar.lugares_entrega = convertir.lugares_entrega.join();
     }
     this.negocioGuardar.descripcion = this.negocioTO.descripcion;
