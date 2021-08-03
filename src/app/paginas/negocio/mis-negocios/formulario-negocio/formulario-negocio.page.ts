@@ -131,7 +131,7 @@ export class FormularioNegocioPage implements OnInit {
   ngOnInit() {
 
     this.activatedRoute.queryParams.subscribe(params => {
-      if (params && params.specialune) {
+      if (params && params.nuevoNegocio) {
         this.negocioTO = new NegocioModel();
         this.negocioTO.tags = [];
         this.negocioTO.lugares_entrega = [];
@@ -159,8 +159,9 @@ export class FormularioNegocioPage implements OnInit {
       { id: 4, metodo: 'Efectivo', value: this.negocioTO.tipo_pago_efectivo }
     ];
     this.setarPago();
-    this.load_cat_estados();
     this.cagarMapa();
+    this.load_cat_estados();
+
   }
   setarPago() {
     this.metodosPago.forEach(i => {
@@ -233,7 +234,7 @@ export class FormularioNegocioPage implements OnInit {
 
   public buscarNegocio(id: any) {
     if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
-      this.notificaciones.error('No se pudo cargar tu negocio');
+      console.log('Es un nuevo negocio');
     } else {
       this.negocioServico.buscarNegocio(id).subscribe(
         response => {
@@ -575,7 +576,7 @@ export class FormularioNegocioPage implements OnInit {
       if (this.negocioTO.det_domicilio.latitud !== null) {
         this.localizacionTiempo(2);
       }
-    }, 500);
+    }, 1000);
   }
   getLatLong(e) {
     let latitude = e.latlng.lat;
