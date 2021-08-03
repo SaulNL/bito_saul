@@ -726,4 +726,114 @@ export class FormularioNegocioPage implements OnInit {
       this.list_cat_localidad = [];
     }
   }
+
+  guardar() {
+    this.loader = true;
+    if (this.negocioTO.logo === null ||
+        this.negocioTO.logo === undefined ||
+        this.negocioTO.logo.archivo_64 === '' ||
+        this.negocioTO.logo.archivo_64 === null ||
+        this.negocioTO.logo.archivo_64 === undefined ) {
+      this.notificaciones.alerta('Agregue la foto de su negocio');
+      this.loader = false;
+    } else {
+      this.datos();
+      this.negocioServico.guardar(this.negocioGuardar).subscribe(
+          response => {
+            if (response.code === 200) {
+              this.notificaciones.exito('Tu negocio se guardo exitosamente');
+              this.loader = false;
+              this.router.navigate(['/tabs/home/negocio']);
+            } else {
+              this.notificaciones.alerta('Error al guardar, intente nuevamente');
+              this.loader = false;
+            }
+          },
+          error => {
+            this.notificaciones.error(error);
+            this.loader = false;
+          }
+      );
+    }
+  }
+
+  datos() {
+    this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
+    this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
+    this.negocioGuardar = new NegocioModel();
+    this.negocioGuardar.id_negocio = this.negocioTO.id_negocio;
+    this.negocioGuardar.rfc = this.negocioTO.rfc;
+    this.negocioGuardar.id_proveedor = this.usuario.proveedor.id_proveedor;
+    this.negocioGuardar.det_domicilio.latitud = this.negocioTO.det_domicilio.latitud;
+    this.negocioGuardar.det_domicilio.longitud = this.negocioTO.det_domicilio.longitud;
+
+    this.negocioGuardar.logo = this.negocioTO.logo;
+    this.negocioGuardar.local = this.negocioTO.local;
+    this.negocioGuardar.nombre_comercial = this.negocioTO.nombre_comercial;
+    this.negocioGuardar.id_tipo_negocio = this.negocioTO.id_tipo_negocio;
+    this.negocioGuardar.id_giro = this.negocioTO.id_giro;
+    this.negocioGuardar.otra_categoria = this.negocioTO.otra_categoria;
+    let tem = this.negocioTO.url_negocio;
+    let ten = tem.replace(/\s+/g, '');
+    this.negocioGuardar.url_negocio = ten.replace(/[^a-zA-Z0-9 ]/g, "");
+
+    if (this.negocioGuardar.id_giro === 12) {
+      this.negocioGuardar.id_categoria_negocio = 100;
+    } else {
+      this.negocioGuardar.id_categoria_negocio = this.negocioTO.id_categoria_negocio;
+    }
+    this.negocioGuardar.otra_subcategoria = '';
+    this.negocioGuardar.organizaciones = this.negocioTO.organizaciones;
+    this.negocioGuardar.nombre_organizacion = '';
+    if (this.negocioGuardar.organizaciones !== undefined && this.negocioGuardar.organizaciones.length > 0) {
+      this.negocioGuardar.nombre_organizacion = this.negocioTO.nombre_organizacion;
+    }
+    if (this.negtag == true) {
+      this.negocioGuardar.tags = this.tags;
+    } else {
+      let convertir;
+      convertir =JSON.parse(JSON.stringify(this.negocioTO));
+      this.negocioGuardar.tags = convertir.tags.join();
+    }
+    if (this.negLugar == true) {
+      this.negocioGuardar.lugares_entrega = this.lugaresEntrega;
+    } else {
+      let convertir;
+      convertir =JSON.parse(JSON.stringify(this.negocioTO));
+      this.negocioGuardar.lugares_entrega = convertir.lugares_entrega.join();
+    }
+    this.negocioGuardar.descripcion = this.negocioTO.descripcion;
+    this.negocioGuardar.entrega_domicilio = this.negocioTO.entrega_domicilio;
+    this.negocioGuardar.consumo_sitio = this.negocioTO.consumo_sitio;
+    this.negocioGuardar.entrega_sitio = this.negocioTO.entrega_sitio;
+    this.negocioGuardar.negocio_fisico = this.negocioTO.negocio_fisico;
+    this.negocioGuardar.alcance_entrega = this.negocioTO.alcance_entrega;
+    this.negocioGuardar.tiempo_entrega_kilometro = this.negocioTO.tiempo_entrega_kilometro;
+    this.negocioGuardar.costo_entrega = this.negocioTO.costo_entrega;
+    this.negocioGuardar.telefono = this.negocioTO.telefono;
+    this.negocioGuardar.celular = this.negocioTO.celular;
+    this.negocioGuardar.correo = this.negocioTO.correo;
+    this.negocioGuardar.id_facebook = this.negocioTO.id_facebook;
+    this.negocioGuardar.twitter = this.negocioTO.twitter;
+    this.negocioGuardar.instagram = this.negocioTO.instagram;
+    this.negocioGuardar.youtube = this.negocioTO.youtube;
+    this.negocioGuardar.tiktok = this.negocioTO.tiktok;
+    this.negocioGuardar.det_domicilio.calle = this.negocioTO.det_domicilio.calle;
+    this.negocioGuardar.det_domicilio.numero_int = this.negocioTO.det_domicilio.numero_int;
+    this.negocioGuardar.det_domicilio.numero_ext = this.negocioTO.det_domicilio.numero_ext;
+    this.negocioGuardar.det_domicilio.id_estado = this.negocioTO.det_domicilio.id_estado;
+    this.negocioGuardar.det_domicilio.id_municipio = this.negocioTO.det_domicilio.id_municipio;
+    this.negocioGuardar.det_domicilio.id_localidad = this.negocioTO.det_domicilio.id_localidad;
+    this.negocioGuardar.det_domicilio.colonia = this.negocioTO.det_domicilio.colonia;
+    this.negocioGuardar.tipo_pago_transferencia = this.negocioTO.tipo_pago_transferencia;
+    this.negocioGuardar.tipo_pago_tarjeta_credito = this.negocioTO.tipo_pago_tarjeta_credito;
+    this.negocioGuardar.tipo_pago_tarjeta_debito = this.negocioTO.tipo_pago_tarjeta_debito;
+    this.negocioGuardar.tipo_pago_efectivo = this.negocioTO.tipo_pago_efectivo;
+
+    if (this.negocioTO.det_domicilio.id_domicilio != null) {
+      this.negocioGuardar.det_domicilio.id_domicilio = this.negocioTO.det_domicilio.id_domicilio;
+    }
+    this.negocioGuardar.dias = this.negocioTO.dias;
+  }
+
 }
