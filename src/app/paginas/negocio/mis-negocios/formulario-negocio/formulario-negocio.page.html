@@ -11,7 +11,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-header>
+<ion-header *ngIf="!loader">
   <ion-toolbar>
     <ion-segment
       color="tertiary"
@@ -23,13 +23,13 @@
       <!--  <ion-label>Info. negocio</ion-label>-->
         <ion-icon name="storefront-outline"></ion-icon>
       </ion-segment-button>
-      <ion-segment-button value="domicilio">
-        <!--<ion-label>Domicilio</ion-label>-->
-        <ion-icon name="location-outline"></ion-icon>
-      </ion-segment-button>
       <ion-segment-button value="contacto">
         <!--<ion-label>Contacto</ion-label>-->
         <ion-icon name="call-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="domicilio">
+        <!--<ion-label>Domicilio</ion-label>-->
+        <ion-icon name="location-outline"></ion-icon>
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -761,7 +761,7 @@
           >
             <span
               *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined"
-              >º</span
+              >Guardar</span
             >
             <span
               *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined"
