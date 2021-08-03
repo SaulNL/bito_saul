@@ -77,7 +77,7 @@ export class CardNegocioPage implements OnInit {
     };
     console.log(all);
     let navigationExtras = JSON.stringify(all);
-    this.router.navigate(['/tabs/home/negocio/card-negocio/formulario-negocio/info-negocio'], {
+    this.router.navigate(['/tabs/home/negocio/card-negocio/formulario-negocio'], {
       queryParams: { special: navigationExtras }
     });
   }

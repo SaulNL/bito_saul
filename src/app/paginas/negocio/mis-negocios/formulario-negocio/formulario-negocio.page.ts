@@ -1,17 +1,16 @@
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
-import { FormularioNegocioGuard } from './../../../../api/formulario-negocio-guard.service';
 import { ArchivoComunModel } from './../../../../Modelos/ArchivoComunModel';
 import { CatOrganizacionesModel } from './../../../../Modelos/CatOrganizacionesModel';
 import { ActivatedRoute } from '@angular/router';
-import { NegocioModel } from "./../../../../Modelos/NegocioModel";
-import { NegocioService } from "../../../../api/negocio.service";
+import { NegocioModel } from '../../../../Modelos/NegocioModel';
+import { NegocioService } from '../../../../api/negocio.service';
 import { UtilsCls } from './../../../../utils/UtilsCls';
 import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
 import { ModalController } from '@ionic/angular';
-import { RecorteImagenComponent } from "../../../../components/recorte-imagen/recorte-imagen.component";
-import { ActionSheetController } from "@ionic/angular";
+import { RecorteImagenComponent } from '../../../../components/recorte-imagen/recorte-imagen.component';
+import { ActionSheetController } from '@ionic/angular';
 import { HorarioNegocioModel } from '../../../../Modelos/HorarioNegocioModel';
 import * as moment from 'moment';
 
@@ -28,8 +27,8 @@ export class FormularioNegocioPage implements OnInit {
   public listTipoNegocio: any;
   public listCategorias: any;
   public listaSubCategorias: any;
-  public resizeToWidth: number = 0;
-  public resizeToHeight: number = 0;
+  public resizeToWidth = 0;
+  public resizeToHeight = 0;
   private usuario: any;
   public entregas = [
     { id: true, respuesta: 'Si' },
@@ -51,11 +50,11 @@ export class FormularioNegocioPage implements OnInit {
     { id: 7, dia: 'Domingo', horarios: [], hi: null, hf: null },
   ];
   public metodosPago = [
-    { id: 1, metodo: "Transferencia Electrónica", value: null },
-    { id: 2, metodo: "Tajeta de Crédito", value: null },
-    { id: 3, metodo: "Tajeta de Débito", value: null },
-    { id: 4, metodo: "Efectivo", value: null }
-  ]
+    { id: 1, metodo: 'Transferencia Electrónica', value: null },
+    { id: 2, metodo: 'Tajeta de Crédito', value: null },
+    { id: 3, metodo: 'Tajeta de Débito', value: null },
+    { id: 4, metodo: 'Efectivo', value: null }
+  ];
   public copyPago = [];
   public loader: boolean;
   public negocioGuardar: any;
@@ -85,7 +84,7 @@ export class FormularioNegocioPage implements OnInit {
   ) {
     this.listCategorias = [];
     this.listTipoNegocio = [];
-    this.usuario = JSON.parse(this._utils_cls.getIdUsuario());
+    this.usuario = JSON.parse(localStorage.getItem('u_data'));
     this.negtag = false;
     this.negLugar = false;
     this.negocioGuardar = new NegocioModel();
@@ -100,7 +99,7 @@ export class FormularioNegocioPage implements OnInit {
 
     this.activatedRoute.queryParams.subscribe(params => {
             if (params && params.special) {
-                let datos = JSON.parse(params.special);
+                const datos = JSON.parse(params.special);
                 this.negocioTO = datos.info;
                 this.negocioGuardar = datos.pys;
                 this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
@@ -110,11 +109,11 @@ export class FormularioNegocioPage implements OnInit {
 
     this.buscarNegocio(this.negocioTO.id_negocio);
     this.metodosPago = [
-      { id: 1, metodo: "Transferencia Electrónica", value: this.negocioTO.tipo_pago_transferencia },
-      { id: 2, metodo: "Tajeta de Crédito", value: this.negocioTO.tipo_pago_tarjeta_credito },
-      { id: 3, metodo: "Tajeta de Débito", value: this.negocioTO.tipo_pago_tarjeta_debito },
-      { id: 4, metodo: "Efectivo", value: this.negocioTO.tipo_pago_efectivo }
-    ]
+      { id: 1, metodo: 'Transferencia Electrónica', value: this.negocioTO.tipo_pago_transferencia },
+      { id: 2, metodo: 'Tajeta de Crédito', value: this.negocioTO.tipo_pago_tarjeta_credito },
+      { id: 3, metodo: 'Tajeta de Débito', value: this.negocioTO.tipo_pago_tarjeta_debito },
+      { id: 4, metodo: 'Efectivo', value: this.negocioTO.tipo_pago_efectivo }
+    ];
     this.setarPago();
   }
 
@@ -155,7 +154,7 @@ export class FormularioNegocioPage implements OnInit {
   abrirModalCambio() {
     let objetoAux;
     objetoAux = JSON.parse(JSON.stringify(this.negocioTO));
-    let navigationExtras = JSON.stringify(objetoAux);
+    const navigationExtras = JSON.stringify(objetoAux);
     this.router.navigate(['/tabs/home/negocio/card-negocio/info-negocio/solicitud-cambio-url'], { queryParams: { special: navigationExtras } });
   }
 
@@ -317,7 +316,7 @@ export class FormularioNegocioPage implements OnInit {
                     archivo.archivo_64 = r.data;
                   this.negocioTO.logo = archivo;
                   this.negocioTO.local = archivo;
-                  //this.blnImgCuadrada = false;
+                  // this.blnImgCuadrada = false;
                 }
               }
               );
@@ -382,7 +381,7 @@ export class FormularioNegocioPage implements OnInit {
     }
     clearTimeout(this.controladorTiempo);
     this.controladorTiempo = setTimeout(() => {
-      let tem = cadena.replace(/[^a-zA-Z0-9 ]/g, "");
+      const tem = cadena.replace(/[^a-zA-Z0-9 ]/g, '');
       this.negocioServico.verificarUrlNegocio(tem).subscribe(
         repuesta => {
           if (repuesta.code === 200) {

@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NegocioModel } from "./../../../../Modelos/NegocioModel";
 import { ActionSheetController } from "@ionic/angular";
-import { ActionSheetController } from "@ionic/angular";
 import { NegocioService } from "../../../../api/negocio.service";
 import { DetDomicilioModel } from "../../../../Modelos/DetDomicilioModel";
 import { UtilsCls } from './../../../../utils/UtilsCls';
