@@ -94,6 +94,7 @@ export class FormularioNegocioPage implements OnInit {
   public municiAux: any;
   public localiAux: any;
   public loadion: any;
+
   constructor(
     private alertController: AlertController,
     private router: Router,
@@ -147,10 +148,9 @@ export class FormularioNegocioPage implements OnInit {
       { id: 4, metodo: 'Efectivo', value: this.negocioTO.tipo_pago_efectivo }
     ];
     this.setarPago();
-    this.cagarMapa();
     this.load_cat_estados();
+    this.cagarMapa();
   }
-
   setarPago() {
     this.metodosPago.forEach(i => {
       if (i.value === 1) {
