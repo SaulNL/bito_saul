@@ -41,7 +41,7 @@ export class ModalPromocionComponent implements OnInit {
   public anyFiltros    : FiltrosModel;
   public loader        : boolean = false;
 
-  constructor(public modalController: ModalController, private router: Router, private _promociones: PromocionesService, private _haversineService: HaversineService ) { 
+  constructor(public modalController: ModalController, private router: Router, private _promociones: PromocionesService, private _haversineService: HaversineService ) {
   }
 
   ngOnInit() {
@@ -75,7 +75,7 @@ export class ModalPromocionComponent implements OnInit {
     this._promociones.buscarPromocinesPublicadasModulo(this.anyFiltros).subscribe(
       response => {
         if(response.code === 402){
-          console.log('402');
+          
         }
         if (response.data !== null) {
           this.lstPromociones = response.data;

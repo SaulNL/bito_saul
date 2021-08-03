@@ -47,7 +47,7 @@ export class DetalleProductoComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this.datos);
+
         if (this.bolsa.length > 0) {
             this.bolsa.forEach(element => {
                 if (element.idProducto === this.datos.idProducto) {
@@ -83,7 +83,7 @@ export class DetalleProductoComponent implements OnInit {
         }
     }
     agragarproducto() {
-        //console.log(this.cantidad);
+
         if (this.existeSesion) {
             const producto = {
                 idProducto: this.datos.idProducto,
@@ -124,7 +124,7 @@ export class DetalleProductoComponent implements OnInit {
          "id_producto": producto.idProducto //idProducto
        };
        this.servicioProductos.quienVioProdu(objectoVio).subscribe(
-       response => { if (response.code === 200) { console.log(response.code); }},error => {});
+       response => { if (response.code === 200) { }},error => {});
      }
     async avisoNegocioCerrado() {
         const alert = await this.alertController.create({

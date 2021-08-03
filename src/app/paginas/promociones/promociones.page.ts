@@ -115,7 +115,7 @@ export class PromocionesPage implements OnInit {
   }
 
   buscarToolbar(respuesta) {
-    if(respuesta !== null ){ console.log('entro');this.blnBtnMap = true}
+    if(respuesta !== null ){ this.blnBtnMap = true}
     this.idGiro = null;
     this.anyFiltros = new FiltrosModel();
     this.mostrarDetalle = false;

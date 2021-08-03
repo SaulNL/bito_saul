@@ -1,11 +1,7 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar class="tolbar">
     <ion-title>
       Información Negocio
-      <!--
-            <span *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined" class="">Agregar</span>
-            <span *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined" class="">Modificar</span>
-            -->
     </ion-title>
     <ion-buttons
       *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined"
@@ -21,7 +17,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <app-spinner [loader]="loader" [message]="msj"></app-spinner>
 <ion-content *ngIf="!loader">

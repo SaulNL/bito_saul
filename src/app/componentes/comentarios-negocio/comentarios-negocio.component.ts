@@ -42,7 +42,7 @@ export class ComentariosNegocioComponent implements OnInit {
           }
         },
         error => {
-          console.log(error);
+          
         }
     );
   }

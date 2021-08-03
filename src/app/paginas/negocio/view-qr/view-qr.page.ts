@@ -4,7 +4,7 @@ import { NegocioModel } from "./../../../Modelos/NegocioModel";
 import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
 import { AppSettings} from "../../../AppSettings";
 import { Platform } from '@ionic/angular';
-import { Plugins, FilesystemDirectory } from '@capacitor/core'; 
+import { Plugins, FilesystemDirectory } from '@capacitor/core';
 import { File } from '@ionic-native/file/ngx';
 const { Filesystem } = Plugins;
 const { Share } = Plugins;
@@ -20,8 +20,8 @@ export class ViewQrPage implements OnInit {
   public level: "L" | "M" | "Q" | "H";
   public scale: number;
   public width: number;
-  public colorLight: any; 
-  public colorDark: any; 
+  public colorLight: any;
+  public colorDark: any;
 
   constructor(
     private router: Router,
@@ -75,21 +75,21 @@ export class ViewQrPage implements OnInit {
         let base64Imagen = document.querySelectorAll('.qrcode img')[0] as any;
         let base64Ima = base64Imagen.getAttribute("src");
         const parts = base64Ima.split(';base64,');
-      
+
         // Hold the content type
         const imageType = parts[0].split(':')[1];
-      
+
         // Decode Base64 string
         const decodedData = window.atob(parts[1]);
-      
+
         // Create UNIT8ARRAY of size same as row data length
         const uInt8Array = new Uint8Array(decodedData.length);
-      
+
         // Insert all character code into uInt8Array
         for (let i = 0; i < decodedData.length; ++i) {
           uInt8Array[i] = decodedData.charCodeAt(i);
         }
-      
+
         // Return BLOB image after conversion
         return new Blob([uInt8Array], { type: imageType });
       }
@@ -101,18 +101,18 @@ export class ViewQrPage implements OnInit {
               title: fileName,
               url: res.nativeURL,
           }).then(resShare => {
-              console.log(resShare);
+
           });
       }, err => {
-          console.log('Error dataDirectory: ', err);
+
       });
       }
   descargar(){
    if(this.platform.is('ios')){
-      console.log('este dispositivo es IOS');
+
       this.descargarIOS(this.negocioTO);
     }else{
-      console.log('este dispositivo es ANDROID');
+      
       this.descargarAndroid( this.negocioTO);
     }
   }

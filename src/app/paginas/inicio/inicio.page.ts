@@ -180,7 +180,7 @@ export class InicioPage implements OnInit {
   }
 
   private buscarSeleccionado(seleccionado: any) {
-    console.log('bucarSeleccionadp');
+    
     this.seleccionado = seleccionado;
     this.Filtros = new FiltrosModel();
     this.Filtros.idCategoriaNegocio = [seleccionado.id_categoria];

@@ -1,3 +1,4 @@
+import { FormularioNegocioGuard } from './../../../../api/formulario-negocio-guard.service';
 import { ArchivoComunModel } from './../../../../Modelos/ArchivoComunModel';
 import { CatOrganizacionesModel } from './../../../../Modelos/CatOrganizacionesModel';
 import { Component, OnInit } from '@angular/core';
@@ -49,13 +50,13 @@ export class InfoNegocioPage implements OnInit {
     { id: 7, dia: 'Domingo', horarios: [], hi: null, hf: null },
   ];
   public metodosPago = [
-    {id: 1, metodo: "Transferencia Electrónica", value: null},
-    {id: 2, metodo: "Tajeta de Crédito", value:null},
-    {id: 3, metodo: "Tajeta de Débito", value:null},
-    {id: 4, metodo: "Efectivo", value:null}
+    { id: 1, metodo: "Transferencia Electrónica", value: null },
+    { id: 2, metodo: "Tajeta de Crédito", value: null },
+    { id: 3, metodo: "Tajeta de Débito", value: null },
+    { id: 4, metodo: "Efectivo", value: null }
   ]
   public copyPago = [];
-public loader: boolean;
+  public loader: boolean;
   public negocioGuardar: any;
   public horarioini: string;
   public horariofin: string;
@@ -70,6 +71,8 @@ public loader: boolean;
   public tipoOrgAux: any;
   public blnActivaNegocioFisico: boolean;
   public msj = 'Guardando';
+  public rutaActual: any;
+  public rutaNueva: any;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -78,12 +81,14 @@ public loader: boolean;
     private _utils_cls: UtilsCls,
     private notificaciones: ToadNotificacionService,
     public modalController: ModalController,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public rutaFormGuard: FormularioNegocioGuard
   ) {
     this.listCategorias = [];
     this.listTipoNegocio = [];
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
     this.negtag = false;
+    this.rutaFormGuard.activeForm = true;
     this.negLugar = false;
     this.negocioGuardar = new NegocioModel();
     this.nuevoHorario = new HorarioNegocioModel();
@@ -94,17 +99,36 @@ public loader: boolean;
   }
 
   ngOnInit() {
-    this.obtenerTipoNegocio();
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params && params.rutaUpdate) {
+        console.log('Actualizando objeto');
+        console.log(this.negocioTO);
+      }
+    });
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params && params.rutaGuardian) {
+        let guardian = JSON.parse(params.rutaGuardian);
+        console.log('Diferentes formas de mostrar');
+        console.log(guardian);
+        console.log(guardian.info);
+        console.log(guardian.active);
+        console.log(guardian.nuevaUrl);
+          this.negocioTO = guardian.info;
+          this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
+          this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
+      }
+    });
+
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.specialune) {
-        //this.negocioTO = JSON.parse(params.specialune);
         this.negocioTO = new NegocioModel();
         this.negocioTO.tags = [];
         this.negocioTO.lugares_entrega = [];
         this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
         this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
         this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
-        this.obtenerTipoNegocio();
       }
     });
     this.activatedRoute.queryParams.subscribe(params => {
@@ -114,16 +138,14 @@ public loader: boolean;
         this.negocioGuardar = datos.pys;
         this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
         this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
-        this.obtenerTipoNegocio();
       }
     });
-    this.obtenerCatOrganizaciones();
     this.buscarNegocio(this.negocioTO.id_negocio);
     this.metodosPago = [
-      {id: 1, metodo: "Transferencia Electrónica", value: this.negocioTO.tipo_pago_transferencia},
-      {id: 2, metodo: "Tajeta de Crédito", value:this.negocioTO.tipo_pago_tarjeta_credito},
-      {id: 3, metodo: "Tajeta de Débito", value:this.negocioTO.tipo_pago_tarjeta_debito},
-      {id: 4, metodo: "Efectivo", value:this.negocioTO.tipo_pago_efectivo}
+      { id: 1, metodo: "Transferencia Electrónica", value: this.negocioTO.tipo_pago_transferencia },
+      { id: 2, metodo: "Tajeta de Crédito", value: this.negocioTO.tipo_pago_tarjeta_credito },
+      { id: 3, metodo: "Tajeta de Débito", value: this.negocioTO.tipo_pago_tarjeta_debito },
+      { id: 4, metodo: "Efectivo", value: this.negocioTO.tipo_pago_efectivo }
     ]
     this.setarPago();
   }
@@ -132,13 +154,15 @@ public loader: boolean;
     if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
       //this.negocioTO = new NegocioModel();
       //this.negocioTO.tags = "";
-      this.categoriaPrincipal({ value: 0 });
-      this.subcategorias({ value: 0 });
+      // this.categoriaPrincipal({ value: 0 });
+      // this.subcategorias({ value: 0 });
     } else {
       this.negocioServico.buscarNegocio(id).subscribe(
         response => {
           this.negocioTO = response.data;
-
+          this.obtenerTipoNegocio();
+          this.obtenerCatOrganizaciones();
+          console.log(this.negocioTO);
           const archivo = new ArchivoComunModel();
           archivo.archivo_64 = this.negocioTO.url_logo;
           archivo.nombre_archivo = this.negocioTO.id_negocio.toString();
@@ -148,7 +172,7 @@ public loader: boolean;
           this.subcategorias({ value: this.negocioTO.id_giro });
         },
         error => {
-          console.log(error);
+
         }
       );
     }
@@ -168,7 +192,7 @@ public loader: boolean;
       },
       error => {
         this.listTipoNegocio = [];
-        console.log(error);
+
       }
     );
 
@@ -187,7 +211,7 @@ public loader: boolean;
         this.listCategorias = respuesta.data;
         if (this.negocioTO.id_negocio != null) {
           this.listCategorias.forEach(element => {
-            if (element.id_giro==this.negocioTO.id_giro) {
+            if (element.id_giro == this.negocioTO.id_giro) {
               this.tipoGiroAux = element.nombre;
             }
           });
@@ -209,7 +233,7 @@ public loader: boolean;
         if (respuesta.code === 200) {
           this.listaSubCategorias = respuesta.data;
           this.listaSubCategorias.forEach(element => {
-            if (element.id_categoria==this.negocioTO.id_categoria_negocio) {
+            if (element.id_categoria == this.negocioTO.id_categoria_negocio) {
               this.tipoSubAux = element.nombre;
 
             }
@@ -347,12 +371,12 @@ public loader: boolean;
   }
   guardar() {
     this.loader = true;
-    if(this.negocioTO.logo === null ||
-       this.negocioTO.logo === undefined ||
-       this.negocioTO.logo.archivo_64 === '' ||
-       this.negocioTO.logo.archivo_64 === null){
-        this.notificaciones.alerta('Agregue la foto de su negocio');
-    }else{
+    if (this.negocioTO.logo === null ||
+      this.negocioTO.logo === undefined ||
+      this.negocioTO.logo.archivo_64 === '' ||
+      this.negocioTO.logo.archivo_64 === null) {
+      this.notificaciones.alerta('Agregue la foto de su negocio');
+    } else {
       this.datos();
       this.negocioServico.guardar(this.negocioGuardar).subscribe(
         response => {
@@ -373,31 +397,31 @@ public loader: boolean;
     }
 
   }
-  entregasDomicilio(evento){
+  entregasDomicilio(evento) {
     this.blnActivaEntregas = evento.detail.value;
   }
-  esNegocioFisico(evento){
+  esNegocioFisico(evento) {
     this.blnActivaNegocioFisico = evento.detail.value;
   }
   diasSeleccionado(evento) {
-    if(evento.detail.value.length > 0){
+    if (evento.detail.value.length > 0) {
       this.nuevoHorario.dias = evento.detail.value;
       this.blnActivaHorario = false;
-    }else{
+    } else {
       this.blnActivaHorario = true;
     }
   }
 
-agregarHorario() {
+  agregarHorario() {
     if (this.nuevoHorario.id_horario === null || this.nuevoHorario.id_horario === undefined) {
       this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
       this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
       this.nuevoHorario.activo = true;
       this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
       this.nuevoHorario.id_horario = null;
-      if(this.posicionHorario >=  0){
+      if (this.posicionHorario >= 0) {
         this.negocioTO.dias[this.posicionHorario] = this.nuevoHorario;
-      }else{
+      } else {
         this.negocioTO.dias.push(this.nuevoHorario);
       }
       this.horarioini = '';
@@ -418,7 +442,7 @@ agregarHorario() {
     }
   }
 
-  next(){
+  next() {
     this.datos();
     this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
     this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
@@ -427,19 +451,19 @@ agregarHorario() {
       pys: this.negocioGuardar
     };
     let navigationExtras = JSON.stringify(all);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios/datos-contacto",],{
-        queryParams: { special: navigationExtras },
-      }
+    this.router.navigate(["/tabs/home/negocio/mis-negocios/datos-contacto",], {
+      queryParams: { special: navigationExtras },
+    }
     );
   }
-  regresar(){
-     this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
+  regresar() {
+    this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
     let navigationExtras = JSON.stringify(this.negocioTO);
     this.router.navigate(["/tabs/home/negocio/card-negocio"], {
       queryParams: { special: navigationExtras },
     });
   }
-  datos(){
+  datos() {
     this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
     this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
     this.negocioGuardar = new NegocioModel();
@@ -543,22 +567,22 @@ agregarHorario() {
       this.blnActivaDias = false;
     }
   }
-  cancelarHorario(){
+  cancelarHorario() {
     this.horarioini = '';
     this.horariofin = '';
     this.nuevoHorario = new HorarioNegocioModel;
   }
   cambiarPago(event) {
     let lista = event.detail.value;
-    let credito=0,debito=0,efectivo=0,transferencia = 0;
+    let credito = 0, debito = 0, efectivo = 0, transferencia = 0;
     lista.forEach(element => {
-      if(element.id === 1){
+      if (element.id === 1) {
         transferencia = 1;
-      }else if(element.id === 2){
+      } else if (element.id === 2) {
         credito = 1;
-      }else if(element.id === 3){
+      } else if (element.id === 3) {
         debito = 1;
-      }else if(element.id === 4){
+      } else if (element.id === 4) {
         efectivo = 1;
       }
     });
@@ -567,9 +591,9 @@ agregarHorario() {
     this.negocioTO.tipo_pago_tarjeta_debito = debito;
     this.negocioTO.tipo_pago_efectivo = efectivo;
   }
-  setarPago(){
+  setarPago() {
     this.metodosPago.forEach(i => {
-      if(i.value === 1){
+      if (i.value === 1) {
         this.copyPago.push(i);
       }
     });
@@ -612,7 +636,7 @@ agregarHorario() {
         }, {
           text: 'Confirmar',
           handler: () => {
-            this.router.navigate(['/tabs/home/negocio'], { queryParams: {special: true}});
+            this.router.navigate(['/tabs/home/negocio'], { queryParams: { special: true } });
           }
         }
       ]
@@ -650,11 +674,11 @@ agregarHorario() {
 
     await alert.present();
   }
-  abrirModalCambio(){
+  abrirModalCambio() {
     let objetoAux;
-    objetoAux=  JSON.parse(JSON.stringify(this.negocioTO));
+    objetoAux = JSON.parse(JSON.stringify(this.negocioTO));
     let navigationExtras = JSON.stringify(objetoAux);
-    this.router.navigate(['/tabs/home/negocio/card-negocio/info-negocio/solicitud-cambio-url'], { queryParams: {special: navigationExtras}  });
+    this.router.navigate(['/tabs/home/negocio/card-negocio/info-negocio/solicitud-cambio-url'], { queryParams: { special: navigationExtras } });
   }
 
 

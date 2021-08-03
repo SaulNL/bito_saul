@@ -134,12 +134,7 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   ngOnInit() {
-    /*this.route.queryParams.subscribe(params => {
-      console.log('0');
-      if (params.vengoDeInicio && params){
-        this.obtenerInformacionNegocio();
-      }
-    });*/
+
     this.route.queryParams.subscribe(params => {
       if (params.cancel && params){
         let all = JSON.parse(JSON.stringify(params));
@@ -216,7 +211,7 @@ export class PerfilNegocioPage implements OnInit {
             }else{
               this.arrayLugaresEntrega = null;
             }
-           /* console.log(this.informacionNegocio);*/
+
             if (!this.informacionNegocio.activo) {
               this.presentExit();
               this.siEsta = false;
@@ -323,7 +318,7 @@ export class PerfilNegocioPage implements OnInit {
                     }
                   });
                   this.informacionNegocio.catServicos = cats;
-                  //console.log(this.informacionNegocio);
+
                 }
               }
             },
@@ -459,7 +454,7 @@ export class PerfilNegocioPage implements OnInit {
     await modal.onDidDismiss().then((r) => {
       if (r.data.data !== undefined) {
         this.bolsa = r.data.data;
-        console.log(r);
+
       }
     });
   }
@@ -474,8 +469,7 @@ export class PerfilNegocioPage implements OnInit {
       url: this.url_negocio,
       dialogTitle: "Compartir con Amigos",
     })
-        .then(() => console.log("Se compartio exitosamente"))
-        .catch((error) => this.notificacionService.error(error));
+        .then().catch((error) => this.notificacionService.error(error));
   }
 
   async abrirModalCalifica() {
@@ -684,7 +678,7 @@ export class PerfilNegocioPage implements OnInit {
         }
       });
       this.diasArray = diasArray;
-      //console.log(this.diasArray);
+
     }
   }
 
@@ -712,17 +706,12 @@ export class PerfilNegocioPage implements OnInit {
       this.mensajeBolsa();
     } else {
       this.blockk.tf = true;
-      if (this.navegacion){
+      if (this.navegacion) {
         this.location.back();
         this.navegacion=false;
-      } else{
-       /* console.log('aca');
-        this.location.back();*/
+      } else {
         this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
       }
-
-      // this.subscribe.unsubscribe();
-      // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
     }
   }
 
@@ -993,12 +982,10 @@ export class PerfilNegocioPage implements OnInit {
   guardarQuienVioNegocio(id_negocio: number){
     this.negocioService.visteMiNegocio(id_negocio).subscribe(
       response => {
-        if (response.data !== null) {
-          console.log(response.data);
-        }
+        
       },
       error => {
-        console.log(error);
+
       }
     );
   }
@@ -1014,7 +1001,7 @@ export class PerfilNegocioPage implements OnInit {
           }
         },
         error => {
-          console.log(error);
+
         }
     );
   }

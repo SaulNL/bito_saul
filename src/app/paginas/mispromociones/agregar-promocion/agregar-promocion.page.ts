@@ -59,7 +59,7 @@ export class AgregarPromocionPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log('init');
+
     this.route.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.seleccionTo = JSON.parse(params.special);
@@ -110,13 +110,13 @@ export class AgregarPromocionPage implements OnInit {
   }
 
   public subir_imagen_cuadrada(event) {
-    console.log('hola');
+
     if (event.target.files && event.target.files.length) {
-      console.log('entro al if');
+
       let height;
       let width;
       for (const archivo of event.target.files) {
-        console.log('entra al for');
+
         const reader = this._utils_cls.getFileReader();
         reader.readAsDataURL(archivo);
         reader.onload = () => {
@@ -126,15 +126,15 @@ export class AgregarPromocionPage implements OnInit {
           img.onload = () => {
             height = img.naturalHeight;
             width = img.naturalWidth;
-            console.log(height, width);
+
             if (width === 400 && height === 400) {
-              console.log('400x400');
+
               this.procesando_img = true;
-              console.log(archivo);
-              console.log(file_name);
+
+
               const file = archivo;
               if (file.size < 3145728) {
-                console.log('size');
+
                 let file_64: any;
                 const utl = new UtilsCls();
                 utl.getBase64(file).then((data) => {
@@ -142,7 +142,7 @@ export class AgregarPromocionPage implements OnInit {
                   const imagen = new ArchivoComunModel();
                   imagen.nombre_archivo =
                     this._utils_cls.convertir_nombre(file_name);
-                  console.log(imagen.nombre_archivo);
+
                   imagen.archivo_64 = file_64;
                   this.seleccionTo.imagen = imagen;
                   this.procesando_img = false;
@@ -290,7 +290,7 @@ export class AgregarPromocionPage implements OnInit {
       if (this.seleccionTo.tags.length === 0) {
         this.seleccionTo.tags = [];
       }
-      console.log(this.seleccionTo);
+      
       this._promociones_service.guardar(this.seleccionTo).subscribe(
         (response) => {
           if (this._utils_cls.is_success_response(response.code)) {
