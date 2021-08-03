@@ -85,7 +85,7 @@ export class FormularioNegocioPage implements OnInit {
   ) {
     this.listCategorias = [];
     this.listTipoNegocio = [];
-    this.usuario = JSON.parse(this._utils_cls.getIdUsuario());
+    this.usuario = JSON.parse(localStorage.getItem("u_data"));
     this.negtag = false;
     this.negLugar = false;
     this.negocioGuardar = new NegocioModel();
@@ -99,14 +99,14 @@ export class FormularioNegocioPage implements OnInit {
   ngOnInit() {
 
     this.activatedRoute.queryParams.subscribe(params => {
-            if (params && params.special) {
-                let datos = JSON.parse(params.special);
-                this.negocioTO = datos.info;
-                this.negocioGuardar = datos.pys;
-                this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
-                this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
-            }
-        });
+      if (params && params.special) {
+        let datos = JSON.parse(params.special);
+        this.negocioTO = datos.info;
+        this.negocioGuardar = datos.pys;
+        this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
+        this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
+      }
+    });
 
     this.buscarNegocio(this.negocioTO.id_negocio);
     this.metodosPago = [
@@ -394,4 +394,122 @@ export class FormularioNegocioPage implements OnInit {
       clearTimeout(this.controladorTiempo);
     }, 1000);
   }
+
+  entregasDomicilio(evento) {
+    this.blnActivaEntregas = evento.detail.value;
+  }
+  esNegocioFisico(evento) {
+    this.blnActivaNegocioFisico = evento.detail.value;
+  }
+  diasSeleccionado(evento) {
+    if (evento.detail.value.length > 0) {
+      this.nuevoHorario.dias = evento.detail.value;
+      this.blnActivaHorario = false;
+    } else {
+      this.blnActivaHorario = true;
+    }
+  }
+  agregarHorario() {
+    if (this.nuevoHorario.id_horario === null || this.nuevoHorario.id_horario === undefined) {
+      this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
+      this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
+      this.nuevoHorario.activo = true;
+      this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
+      this.nuevoHorario.id_horario = null;
+      if (this.posicionHorario >= 0) {
+        this.negocioTO.dias[this.posicionHorario] = this.nuevoHorario;
+      } else {
+        this.negocioTO.dias.push(this.nuevoHorario);
+      }
+      this.horarioini = '';
+      this.horariofin = '';
+      this.nuevoHorario = new HorarioNegocioModel;
+      this.posicionHorario = -1;
+    } else {
+      this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
+      this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
+      this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
+      this.nuevoHorario.dias = this.nuevoHorario.dias;
+      this.nuevoHorario.activo = true;
+      this.negocioTO.dias[this.posicionHorario] = this.nuevoHorario;
+      this.horarioini = '';
+      this.horariofin = '';
+      this.nuevoHorario = new HorarioNegocioModel;
+      this.posicionHorario = -1;
+    }
+  }
+
+  eliminarHorario(i) {
+    this.negocioTO.dias.splice(i);
+  }
+  editarHorario(horario, i) {
+    let objFecha = new Date();
+    this.posicionHorario = i;
+    this.horarioini = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_inicio + ":ssZ");
+    this.horariofin = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_fin + ":ssZ");
+    this.nuevoHorario.dias = horario.dias;
+    this.nuevoHorario.id_horario = horario.id_horario;
+  }
+  validarHoraInicio(evento) {
+    if (evento.detail.value !== '' ||
+      evento.detail.value !== undefined ||
+      evento.detail.value !== null) {
+      this.blnActivaHoraF = false;
+    }
+  }
+  validarHoraFinal(evento) {
+    if (evento.detail.value !== '' ||
+      evento.detail.value !== undefined ||
+      evento.detail.value !== null) {
+      this.blnActivaDias = false;
+    }
+  }
+  cancelarHorario() {
+    this.horarioini = '';
+    this.horariofin = '';
+    this.nuevoHorario = new HorarioNegocioModel;
+  }
+  cambiarPago(event) {
+    let lista = event.detail.value;
+    let credito = 0, debito = 0, efectivo = 0, transferencia = 0;
+    lista.forEach(element => {
+      if (element.id === 1) {
+        transferencia = 1;
+      } else if (element.id === 2) {
+        credito = 1;
+      } else if (element.id === 3) {
+        debito = 1;
+      } else if (element.id === 4) {
+        efectivo = 1;
+      }
+    });
+    this.negocioTO.tipo_pago_transferencia = transferencia;
+    this.negocioTO.tipo_pago_tarjeta_credito = credito;
+    this.negocioTO.tipo_pago_tarjeta_debito = debito;
+    this.negocioTO.tipo_pago_efectivo = efectivo;
+  }
+
+  async presentAlertEliminar(i) {
+  const alert = await this.alertController.create({
+    cssClass: 'my-custom-class',
+    header: '¿Esta seguro que desa Eliminar el registro?',
+    message: 'Recuerde que la acción es ireversible',
+    buttons: [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: (blah) => {
+        }
+      }, {
+        role: 'destructive',
+        text: 'Confirmar',
+        handler: () => {
+          this.eliminarHorario(i);
+        }
+      }
+    ]
+  });
+  await alert.present();
+}
 }
