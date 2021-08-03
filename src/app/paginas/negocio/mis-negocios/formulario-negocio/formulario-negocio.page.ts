@@ -233,7 +233,6 @@ export class FormularioNegocioPage implements OnInit {
 
     console.log(this.segmentModel);
   }
-  }
 
   public buscarNegocio(id: any) {
     if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
