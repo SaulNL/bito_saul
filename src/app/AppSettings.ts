@@ -1,10 +1,10 @@
 
 export class AppSettings {
 
-    // public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
-    // public static URL_REGISTRO = 'https://bitoo.com.mx/registro';
-    // public static URL_FRONT = 'https://bitoo.com.mx/';
-    // public static URL_MOVIL = 'https://app-bitoo.com.mx/tabs/negocio/';
+    //  public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
+    //  public static URL_REGISTRO = 'https://bitoo.com.mx/registro';
+    //  public static URL_FRONT = 'https://bitoo.com.mx/';
+    //  public static URL_MOVIL = 'https://app-bitoo.com.mx/tabs/negocio/';
 
     public static API_ENDPOINT = 'https://beta-bitoo-back.azurewebsites.net/';
     public static URL_REGISTRO = 'https://beta-bitoo.azurewebsites.net/registro';
@@ -56,10 +56,8 @@ export class AppSettings {
     }
 
     public static getToken(): string {
-
         const token = localStorage.getItem('tk_str');
-
-        return token;
+        return String(token);
     }
 
     public static setTokenUser(data): boolean {

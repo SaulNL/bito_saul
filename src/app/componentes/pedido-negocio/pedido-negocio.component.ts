@@ -142,8 +142,11 @@ export class PedidoNegocioComponent implements OnInit {
       detalle: this.detalle
     };
     if(this.tipoEnvio !== null){
+      console.log(pedido);
       this.negocioService.registrarPedido(pedido).subscribe(
         res => {
+          console.log("Respuesta de pedido");
+          console.log(res);
           this.loader = false;
           this.mesajes.exito('Pedido realizado éxito')
           this.lista = [];
@@ -200,7 +203,7 @@ export class PedidoNegocioComponent implements OnInit {
       this.marker.setLatLng([this.lat, this.lng]);
       this.geocodeLatLng();
      }).catch((error) => {
-       
+
      });
 
   }
