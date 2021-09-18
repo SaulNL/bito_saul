@@ -1,3 +1,4 @@
+import { PlazasAfiliacionesComponent } from './../../componentes/plazas-afiliaciones/plazas-afiliaciones.component';
 import { BotonTopComponent } from "./../../componentes/boton-top/boton-top.component";
 import { IonicModule } from "@ionic/angular";
 import { NgModule } from "@angular/core";
@@ -31,7 +32,8 @@ import {InputLugaresEntregaComponent} from '../../components/input-lugares-entre
     InputLugaresEntregaComponent,
     ModalClasificacionComponent,
     RecorteImagenComponent,
-    FiltrosBusquedaComponent
+    FiltrosBusquedaComponent,
+    PlazasAfiliacionesComponent
   ],
   exports: [
     BannerPromocionesComponent,
@@ -41,7 +43,8 @@ import {InputLugaresEntregaComponent} from '../../components/input-lugares-entre
     InputLugaresEntregaComponent,
     ModalClasificacionComponent,
     RecorteImagenComponent,
-    FiltrosBusquedaComponent
+    FiltrosBusquedaComponent,
+    PlazasAfiliacionesComponent
   ],
 })
 export class TabsPageModule {}

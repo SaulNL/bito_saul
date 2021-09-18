@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -25,101 +25,100 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-
-
 /*Custom css*/
-.d-block{
+.d-block {
   display: block;
 }
 
-.w-100{
+.w-100 {
   width: 100%;
 }
 
-.h-100{
+.h-100 {
   width: 100%;
 }
 
-ion-back-button{
+ion-back-button {
   --color: white;
 }
 
-.tolbar{
-  --background: linear-gradient(90deg,#fa4f72,#a74eef) !important;
+.tolbar {
+  --background: linear-gradient(90deg, #fa4f72, #a74eef) !important;
   --color: white !important;
 }
 
-ion-menu-button{
- color: white;
+ion-menu-button {
+  color: white;
 }
 
-.tolbar ion-button{
+.tolbar ion-button {
   --color: white;
 }
 
-ion-content{
---background: #f2f2f2;
-}
-.bg-gris{
+ion-content {
   --background: #f2f2f2;
 }
-.bgs-gris{
+.bg-gris {
+  --background: #f2f2f2;
+}
+.bgs-gris {
   background: #f2f2f2;
 }
-.backgroundgris{
+.backgroundgris {
   --background: #f2f2f2;
 }
 
-.searchbar-left-aligned.sc-ion-searchbar-ios-h .searchbar-input.sc-ion-searchbar-ios{
+.searchbar-left-aligned.sc-ion-searchbar-ios-h .searchbar-input.sc-ion-searchbar-ios {
   background: white;
 }
-.blanco{
-  --color:white;
+.blanco {
+  --color: white;
 }
 
-.texto-blanco{
-  color:white;
-}
-
-.bg-rosa{
-  --background: linear-gradient(90deg,#fa4f72,#a74eef);
+.texto-blanco {
   color: white;
 }
-.searchbar-input-container.sc-ion-searchbar-md{
-  --border-radius: 9em ;
-    color: #fa4f72;
+
+.bg-rosa {
+  --background: linear-gradient(90deg, #fa4f72, #a74eef);
+  color: white;
 }
-.searchbar-input-container.sc-ion-searchbar-ios{
+.searchbar-input-container.sc-ion-searchbar-md {
+  --border-radius: 9em;
+  color: #fa4f72;
+}
+.searchbar-input-container.sc-ion-searchbar-ios {
   height: 36px;
   position: relative;
   bottom: -8px;
   --border-radius: 9em;
-    color: #fa4f72;
-}
-.searchbar-search-icon.sc-ion-searchbar-md, .searchbar-cancel-button.sc-ion-searchbar-md{
   color: #fa4f72;
 }
-.searchbar-search-icon.sc-ion-searchbar-ios, .searchbar-cancel-button.sc-ion-searchbar-ios{
+.searchbar-search-icon.sc-ion-searchbar-md,
+.searchbar-cancel-button.sc-ion-searchbar-md {
+  color: #fa4f72;
+}
+.searchbar-search-icon.sc-ion-searchbar-ios,
+.searchbar-cancel-button.sc-ion-searchbar-ios {
   color: #fa4f72;
 }
 
-.searchbar-clear-icon.sc-ion-searchbar-md{
+.searchbar-clear-icon.sc-ion-searchbar-md {
   color: #a74eef;
 }
 
-.searchbar-clear-icon.sc-ion-searchbar-ios{
+.searchbar-clear-icon.sc-ion-searchbar-ios {
   color: #a74eef;
 }
 
-ion-avatar.md.hydrated{
+ion-avatar.md.hydrated {
   --border-radius: 50%;
   width: 52px;
   height: 52px;
   position: relative;
 }
 
-
-.spin{
+.spin {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -132,18 +131,17 @@ ion-spinner {
   fill: #222;
 }
 
-.m-0{
+.m-0 {
   margin: 0px 0px 10px 0px;
 }
 
-.fixed{
+.fixed {
   height: 350px;
 }
 
-.img-card-w{
+.img-card-w {
   width: 100%;
 }
-
 
 ion-fab {
   z-index: 99999;
@@ -152,27 +150,27 @@ ion-fab {
 .ui-search-item__title {
   display: -webkit-box;
   overflow: hidden;
-    overflow-x: hidden;
-    overflow-y: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   word-break: break-word;
 }
-.grus{
+.grus {
   --background: grey !important;
 }
 
-.heartNotLike{
+.heartNotLike {
   color: grey !important;
 }
 
-.heartLike{
+.heartLike {
   color: red !important;
 }
 
-.textolikeNego{
-font-size: 1rem;
+.textolikeNego {
+  font-size: 1rem;
 }
 
 .likegegi {
@@ -181,5 +179,8 @@ font-size: 1rem;
 }
 
 .text-rosa {
-  color: #FA4F72 !important;
+  color: #fa4f72 !important;
+}
+.custom-modal-plazas-afiliaciones .modal-wrapper {
+  height: 50%;
 }

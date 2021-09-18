@@ -15,6 +15,16 @@
                 <ion-label>Borrar Filtros</ion-label>
             </ion-chip>
         </ion-buttons>
+        <ion-buttons *ngIf="!selectionAP">
+                <ion-button (click)="openPlazasAfiliacionesModal()"> Afiliaciones y plazas
+                </ion-button>
+            </ion-buttons>
+            <ion-buttons *ngIf="selectionAP">
+                <ion-chip (click)="regresarBitoo()" color="danger">
+                    <ion-icon name="log-out-outline"></ion-icon>
+                    <ion-label>Regresar a bitoo</ion-label>
+                </ion-chip>
+            </ion-buttons>
         <ion-buttons slot="end">
             <ion-button (click)="abrirFiltros()">Filtrar
                 <ion-icon name="filter-outline"></ion-icon>

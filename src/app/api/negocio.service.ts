@@ -251,6 +251,19 @@ export class NegocioService {
                 return error;
             }));
     }
+    obtenerPlazas(): Observable<any> {
+        const body = JSON.stringify({});
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/catalogo/plazas/obtenerTodas',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
 
     /**
      * Servicio para validar disponivilidad de url del negocio
@@ -399,7 +412,7 @@ export class NegocioService {
         return from(this._http.post(`${this.url}api/visitas/RegistrarEntrasteABitoo`, body, AppSettings.getHeaders())
             .then((data) => {
 
-                
+
                 return JSON.parse(data.data);
             })
             .catch((error) => {

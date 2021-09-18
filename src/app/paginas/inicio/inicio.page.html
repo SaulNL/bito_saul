@@ -1,14 +1,24 @@
 <app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
-<ion-content [fullscreen]="true" [scrollEvents]="true"  (ionScroll)="cordenada = $event.detail.scrollTop">
-    <app-boton-top [content]="content" [cordenada]="cordenada" ></app-boton-top>
+<ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+    <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
     <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
     <app-spinner [loader]="loader" [message]="msj"></app-spinner>
     <div *ngIf="!loader">
         <ion-item>
-            <ion-buttons  *ngIf=" filtroActivo" slot="start">
+            <ion-buttons *ngIf=" filtroActivo" slot="start">
                 <ion-chip (click)="borrarFiltros()" color="danger">
                     <ion-icon name="trash-outline" color="danger"></ion-icon>
                     <ion-label>Borrar Filtros</ion-label>
+                </ion-chip>
+            </ion-buttons>
+            <ion-buttons *ngIf="!selectionAP">
+                <ion-button (click)="openPlazasAfiliacionesModal()"> Afiliaciones y plazas
+                </ion-button>
+            </ion-buttons>
+            <ion-buttons *ngIf="selectionAP">
+                <ion-chip (click)="regresarBitoo()" color="danger">
+                    <ion-icon name="log-out-outline"></ion-icon>
+                    <ion-label>Regresar a bitoo</ion-label>
                 </ion-chip>
             </ion-buttons>
             <ion-buttons slot="end">
@@ -23,7 +33,7 @@
                     <ion-button size="small" class="bg-rosa" type="button" (click)="abrirModalMapa()">
                         <ion-icon name="map-outline"></ion-icon>
                         Mapa
-                      </ion-button>
+                    </ion-button>
                 </ion-col>
             </ion-row>
         </ion-grid>
@@ -36,22 +46,25 @@
                 <ion-col sizeLg="3" sizeXs="6" sizeSm="4" sizeMd="4" *ngFor="let proveedor of cat.negocios">
                     <ion-card class="m-0 fixed">
                         <div (click)="negocioRuta(proveedor.url_negocio)">
-                            <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
-                            [srcset]="proveedor.url_logo"
-                             alt="Falla al cargar la imagen">
-                        <ion-card-header>
-                            <ion-card-subtitle>{{proveedor.nombre_comercial}} <ion-icon *ngIf="proveedor.verificado" class="text-rosa" name="checkmark-circle"></ion-icon></ion-card-subtitle>
-                            <ion-badge *ngIf="proveedor.abierto == 'ABIERTO'" color="success">Abierto</ion-badge>
-                            <ion-badge *ngIf="proveedor.abierto !== 'ABIERTO'" color="danger">Cerrado</ion-badge>
-                        </ion-card-header>
-                        <ion-card-content >
-                            <div class="ui-search-item__title">
-                                {{proveedor.descripcion}}
-                            </div>
-                        </ion-card-content>
+                            <img class="img-card-w"
+                                src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
+                                [srcset]="proveedor.url_logo" alt="Falla al cargar la imagen">
+                            <ion-card-header>
+                                <ion-card-subtitle>{{proveedor.nombre_comercial}} <ion-icon *ngIf="proveedor.verificado"
+                                        class="text-rosa" name="checkmark-circle"></ion-icon>
+                                </ion-card-subtitle>
+                                <ion-badge *ngIf="proveedor.abierto == 'ABIERTO'" color="success">Abierto</ion-badge>
+                                <ion-badge *ngIf="proveedor.abierto !== 'ABIERTO'" color="danger">Cerrado</ion-badge>
+                            </ion-card-header>
+                            <ion-card-content>
+                                <div class="ui-search-item__title">
+                                    {{proveedor.descripcion}}
+                                </div>
+                            </ion-card-content>
                         </div>
                         <div *ngIf="existeSesion" class="likegegi">
-                            <app-dar-like-negocio [negocio]="proveedor" [usuario]="user" [mostrarLike]="existeSesion"> </app-dar-like-negocio>
+                            <app-dar-like-negocio [negocio]="proveedor" [usuario]="user" [mostrarLike]="existeSesion">
+                            </app-dar-like-negocio>
                         </div>
                     </ion-card>
                 </ion-col>
@@ -66,5 +79,3 @@
 
 
 </ion-content>
-
-

@@ -1,10 +1,13 @@
+import { PlazasAfiliacionesComponent } from './../../componentes/plazas-afiliaciones/plazas-afiliaciones.component';
+import { AfiliacionPlazaModel } from './../../Modelos/AfiliacionPlazaModel';
+import { Auth0Service } from './../../api/busqueda/auth0.service';
 import { Component, EventEmitter, OnInit, ViewChild } from "@angular/core";
 import {
   IonContent,
   LoadingController,
   MenuController,
   ModalController,
-  ToastController,
+  ToastController
 } from "@ionic/angular";
 import { BusquedaService } from "../../api/busqueda.service";
 import { FiltrosModel } from "../../Modelos/FiltrosModel";
@@ -31,6 +34,7 @@ export class InicioPage implements OnInit {
   private Filtros: FiltrosModel;
   public listaCategorias: any;
   private modal: any;
+  public selectionAP: boolean;
   public anyFiltros: FiltrosModel;
   strBuscar: any;
   private seleccionado: any;
@@ -40,6 +44,7 @@ export class InicioPage implements OnInit {
   user: any;
   public existeSesion: boolean;
   public msj = 'Cargando';
+  private objectSelectAfiliacionPlaza: AfiliacionPlazaModel;
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -50,7 +55,8 @@ export class InicioPage implements OnInit {
     private eventosServicios: SideBarService,
     private ruta: Router,
     private serviceProveedores: ProveedorServicioService,
-    private util: UtilsCls
+    private util: UtilsCls,
+    private auth0Service: Auth0Service
   ) {
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
@@ -59,9 +65,15 @@ export class InicioPage implements OnInit {
     this.listaIdsMapa = [];
     this.user = this.util.getUserData();
     this.existeSesion = this.util.existe_sesion();
+    this.selectionAP = false;
   }
 
   ngOnInit(): void {
+    const selected = localStorage.getItem('org');
+    if (selected != null) {
+      this.selectionAP = true;
+      this.objectSelectAfiliacionPlaza = JSON.parse(String(localStorage.getItem('org')));
+    }
     this.user = this.util.getUserData();
     this.eventosServicios.eventBuscar().subscribe((data) => {
       this.buscarNegocios();
@@ -116,7 +128,7 @@ export class InicioPage implements OnInit {
         this.Filtros.tipoBusqueda === 0
       ) {
       } else {
-       /* this.borrarFiltros();*/
+        /* this.borrarFiltros();*/
       }
     }
   }
@@ -127,6 +139,7 @@ export class InicioPage implements OnInit {
     if (usr.id_persona !== undefined) {
       this.Filtros.id_persona = usr.id_persona;
     }
+    (this.selectionAP) ? this.Filtros.organizacion = this.objectSelectAfiliacionPlaza.id_organizacion : '';
     this.principalSercicio.obtenerDatos(this.Filtros).subscribe(
       (respuesta) => {
         this.listaCategorias = respuesta.data;
@@ -173,14 +186,36 @@ export class InicioPage implements OnInit {
       component: FiltrosBusquedaComponent,
       componentProps: {
         buscarPorFiltros: eventEmitter,
-        filtros: this.Filtros,
+        filtros: this.Filtros
       },
     });
     return await this.modal.present();
   }
+  public openPlazasAfiliacionesModal() {
+    this.presentModalPlazasAfiliaciones();
+  }
+ async presentModalPlazasAfiliaciones() {
+   let persona = null;
+   let permisos = null;
+   if(this.util.existSession()){
+     persona = this.util.getIdPersona();
+     permisos = this.auth0Service.getUserPermisos();
+   }
+    this.modal = await this.modalController.create(
+      {
+        component: PlazasAfiliacionesComponent,
+        cssClass: 'custom-modal-plazas-afiliaciones',
+        componentProps: {
+          idUsuario: persona,
+          permisos : permisos
+        }
+      }
+    );
 
+    return await this.modal.present();
+  }
   private buscarSeleccionado(seleccionado: any) {
-    
+
     this.seleccionado = seleccionado;
     this.Filtros = new FiltrosModel();
     this.Filtros.idCategoriaNegocio = [seleccionado.id_categoria];
@@ -212,11 +247,14 @@ export class InicioPage implements OnInit {
     }
     this.listaIdsMapa = listaIdNegocio;
   }
-
+  public regresarBitoo() {
+    localStorage.removeItem('org');
+    location.reload();
+  }
   borrarFiltros() {
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
-   /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
+    /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
     this.filtroActivo = false;
     this.buscarNegocios();
   }

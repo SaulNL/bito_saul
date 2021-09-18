@@ -19,67 +19,68 @@
       </ion-list>
       <ion-list-header>Administracion</ion-list-header>
       <ion-list id="labels-list">
-            <ion-item *ngIf="ver_negocio" menuclose lines="none" [routerLink]="['/tabs/home/negocio']">
-              <ion-icon slot="start" ios="briefcase-outline" md="briefcase"></ion-icon>
-              Mis Negocios
-            </ion-item>
-        <ion-item *ngIf="admin" lines="none" (click)="isRemainder === true ? isRemainder = false : isRemainder = true">
+        <ion-item *ngIf="ver_negocio" menuclose lines="none" [routerLink]="['/tabs/home/negocio']">
+          <ion-icon slot="start" ios="briefcase-outline" md="briefcase"></ion-icon>
+          Mis Negocios
+        </ion-item>
+        <!-- <ion-item *ngIf="admin" lines="none" (click)="isRemainder === true ? isRemainder = false : isRemainder = true">
           <ion-icon slot="start" ios="folder-open-outline" md="folder-open-sharp"></ion-icon>
           Catalogos
           <ion-icon slot="end" [name]="isRemainder? 'caret-down-outline' : 'caret-forward-outline'"></ion-icon>
-        </ion-item>
+        </ion-item> -->
         <ion-menu-toggle auto-hide="false">
-          <ion-list lines="none">
-            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-variable']"
+          <!-- <ion-list lines="none"> -->
+            <!-- <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-variable']"
               [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
               <ion-icon name="ellipse-sharp"></ion-icon>
               <ion-list-header>Variables</ion-list-header>
-            </ion-item>
-            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-organizaciones']"
+            </ion-item> -->
+            <!-- <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-organizaciones']"
               [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
               <ion-icon name="ellipse-sharp"></ion-icon>
               <ion-list-header>Organizacion</ion-list-header>
-            </ion-item>
-            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-rol']"
+            </ion-item> -->
+            <!-- <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-rol']"
               [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
               <ion-icon name="ellipse-sharp"></ion-icon>
               <ion-list-header>Rol</ion-list-header>
-            </ion-item>
-            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-tipo-venta']"
+            </ion-item> -->
+            <!-- <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-tipo-venta']"
               [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
               <ion-icon name="ellipse-sharp"></ion-icon>
               <ion-list-header>Tipo venta</ion-list-header>
-            </ion-item>
-            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-categoria']"
+            </ion-item> -->
+            <!-- <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-categoria']"
               [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
               <ion-icon name="ellipse-sharp"></ion-icon>
               <ion-list-header>Categoria</ion-list-header>
-            </ion-item>
-            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder"
+            </ion-item> -->
+            <!-- <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder"
               [routerLink]="['/tabs/home/cat-palabra-reservadas']" [queryParams]="{ type: 'birthday' }" menuClose
               class="sub-menu">
               <ion-icon name="ellipse-sharp"></ion-icon>
               <ion-list-header>Palabras Restringidas</ion-list-header>
-            </ion-item>
-            <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-avisos']"
+            </ion-item> -->
+            <!-- <ion-item *ngIf="admin" menuclose [hidden]="!isRemainder" [routerLink]="['/tabs/home/cat-avisos']"
               [queryParams]="{ type: 'birthday' }" menuClose class="sub-menu">
               <ion-icon name="ellipse-sharp"></ion-icon>
               <ion-list-header>Avisos</ion-list-header>
-            </ion-item>
-          </ion-list>
+            </ion-item> -->
+          <!-- </ion-list> -->
           <ion-item *ngIf="ver_negocio" lines="none" [routerLink]="['/tabs/home/solicitudes']">
             <ion-icon slot="start" ios="document-text-outline" md="document-text-outline"></ion-icon>
             Mis solicitudes
           </ion-item>
-         <ion-item *ngIf="ver_negocio" lines="none" [routerLink]="['/tabs/home/promociones']">
-            <ion-icon slot="start"  ios="pricetags-outline" md="pricetags-outline" name="pricetags-outline"></ion-icon>
+          <ion-item *ngIf="ver_negocio" lines="none" [routerLink]="['/tabs/home/promociones']">
+            <ion-icon slot="start" ios="pricetags-outline" md="pricetags-outline" name="pricetags-outline"></ion-icon>
             Anuncios y promociones
           </ion-item>
-          <ion-item lines="none"  [routerLink]="['/tabs/home/ser-proveedor']" *ngIf="!ver_negocio">
-            <ion-icon slot="start"  ios="cart-outline" md="cart-outline" name="pricetags-outline" name="cart-outline"></ion-icon>
+          <ion-item lines="none" [routerLink]="['/tabs/home/ser-proveedor']" *ngIf="!ver_negocio">
+            <ion-icon slot="start" ios="cart-outline" md="cart-outline" name="pricetags-outline" name="cart-outline">
+            </ion-icon>
             Quiero vender
           </ion-item>
-         <!-- <ion-item lines="none" [routerLink]="['/tabs/home/solicitud']">
+          <!-- <ion-item lines="none" [routerLink]="['/tabs/home/solicitud']">
             <ion-icon slot="start" ios="document-text-outline" md="document-text-outline"></ion-icon>
             Solicitudes
           </ion-item>-->
@@ -92,14 +93,14 @@
             Estadísticas
           </ion-item>
         </ion-menu-toggle>
-        <ion-menu-toggle auto-hide="false">
+        <!-- <ion-menu-toggle auto-hide="false">
           <ion-list lines="none">
             <ion-item *ngIf="admin" menuclose lines="none" [routerLink]="['/tabs/home/cat-denuncias-negocio']">
               <ion-icon slot="start" ios="alert-circle-outline" md="alert-circle"></ion-icon>
               Denuncias
             </ion-item>
           </ion-list>
-        </ion-menu-toggle>
+        </ion-menu-toggle> -->
       </ion-list>
     </ion-content>
   </ion-menu>

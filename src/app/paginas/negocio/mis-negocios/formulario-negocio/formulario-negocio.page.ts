@@ -45,6 +45,7 @@ export class FormularioNegocioPage implements OnInit {
   public tags: string;
   public lugaresEntrega: string;
   public lstOrganizaciones: Array<CatOrganizacionesModel>;
+  public lstPlazas: Array<CatOrganizacionesModel>;
   public urlNegocioLibre = true;
   public controladorTiempo: any;
   public blnActivaEntregas: boolean;
@@ -77,6 +78,7 @@ export class FormularioNegocioPage implements OnInit {
   public tipoGiroAux: any;
   public tipoSubAux: any;
   public tipoOrgAux: any;
+  public tipoPlzAux: any;
   public blnActivaNegocioFisico: boolean;
   public msj = 'Guardando';
   public valido: boolean;
@@ -249,6 +251,7 @@ export class FormularioNegocioPage implements OnInit {
     if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
       this.obtenerTipoNegocio();
       this.obtenerCatOrganizaciones();
+      this.obtenerCaPlazas();
       this.categoriaPrincipal({ value: 0 });
       this.subcategorias({ value: 0 });
     } else {
@@ -257,6 +260,7 @@ export class FormularioNegocioPage implements OnInit {
           this.negocioTO = response.data;
           this.obtenerTipoNegocio();
           this.obtenerCatOrganizaciones();
+          this.obtenerCaPlazas();
           const archivo = new ArchivoComunModel();
           archivo.archivo_64 = this.negocioTO.url_logo;
           archivo.nombre_archivo = this.negocioTO.id_negocio.toString();
@@ -422,6 +426,21 @@ export class FormularioNegocioPage implements OnInit {
           this.negocioTO.organizaciones.forEach((elements) => {
             if (element.id_organizacion == elements) {
               this.tipoOrgAux = element.nombre;
+            }
+          });
+        });
+      }
+    });
+  }
+
+  public obtenerCaPlazas() {
+    this.negocioServico.obtenerPlazas().subscribe((response) => {
+      this.lstPlazas = Object.values(response.data);
+      if (this.negocioTO.id_negocio != null) {
+        this.lstPlazas.forEach((element) => {
+          this.negocioTO.organizaciones.forEach((elements) => {
+            if (element.id_organizacion == elements) {
+              this.tipoPlzAux = element.nombre;
             }
           });
         });

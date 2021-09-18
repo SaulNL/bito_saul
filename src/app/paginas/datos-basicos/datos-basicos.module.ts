@@ -1,5 +1,5 @@
 import { SpinnerModule } from './../../componentes/spinner/spinner.module';
-import { TabsPageModule } from 'src/app/paginas/tabs/tabs.module';
+import { TabsPageModule } from './../tabs/tabs.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

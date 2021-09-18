@@ -53,7 +53,8 @@ export class TabsPage implements OnInit{
         localStorage.setItem('resetFiltro', '0');
     }
     solicitudes(){
-        this.router.navigate(['/tabs/home/solicitud']);
+        this.router.navigate(['/tabs/home/mis-favoritos']);
+        // this.router.navigate(['/tabs/home/solicitud']);
     }
 
     productos() {
@@ -64,7 +65,7 @@ export class TabsPage implements OnInit{
     perfil(){
         sessionStorage.setItem('isRedirected', 'false');
         localStorage.setItem('resetFiltro', '0');
-        
+
         this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
     }
 }

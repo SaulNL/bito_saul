@@ -1,3 +1,4 @@
+import { AfiliacionPlazaModel } from './../../Modelos/AfiliacionPlazaModel';
 import { Component, OnInit } from "@angular/core";
 import { PromocionesService } from "../../api/promociones.service";
 import { LoadingController } from "@ionic/angular";
@@ -30,7 +31,7 @@ export class PromocionesPage implements OnInit {
   public mensaje: string;
   public banner: string;
   public cargando = 'Cargando';
-
+  private plazaAfiliacion : AfiliacionPlazaModel | null;
   constructor(
     private _promociones: PromocionesService,
     public loadingController: LoadingController,
@@ -90,8 +91,11 @@ export class PromocionesPage implements OnInit {
   }
 
   public obtenerPromocionesServicio() {
-    this._promociones
-      .buscarPromocinesPublicadasModulo(this.anyFiltros)
+    this.plazaAfiliacion = JSON.parse(localStorage.getItem('org'));
+    if (this.plazaAfiliacion != null) {
+      this.anyFiltros.organizacion = this.plazaAfiliacion.id_organizacion;
+    }
+    this._promociones.buscarPromocinesPublicadasModulo(this.anyFiltros)
       .subscribe(
         (response) => {
           if (response.code === 402) {
@@ -115,7 +119,7 @@ export class PromocionesPage implements OnInit {
   }
 
   buscarToolbar(respuesta) {
-    if(respuesta !== null ){ this.blnBtnMap = true}
+    if (respuesta !== null) { this.blnBtnMap = true }
     this.idGiro = null;
     this.anyFiltros = new FiltrosModel();
     this.mostrarDetalle = false;

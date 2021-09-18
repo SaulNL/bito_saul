@@ -2,8 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { MenuController } from "@ionic/angular";
 import { UtilsCls } from "../../../utils/UtilsCls";
 import { AppSettings } from "../../../AppSettings";
-import { SideBarService } from "src/app/api/busqueda/side-bar-service";
-import { Auth0Service } from "src/app/api/busqueda/auth0.service";
+import { SideBarService } from "./../../../api/busqueda/side-bar-service";
+import { Auth0Service } from "./../../../api/busqueda/auth0.service";
 
 @Component({
   selector: "app-dashboard",
@@ -27,10 +27,10 @@ export class DashboardPage implements OnInit {
   public admin: boolean;
 
   constructor(
-     private util: UtilsCls,
-     private menuController: MenuController,
-     private auth0: Auth0Service,
-     private sideBarService: SideBarService,) {
+    private util: UtilsCls,
+    private menuController: MenuController,
+    private auth0: Auth0Service,
+    private sideBarService: SideBarService,) {
     this.user = this.util.getUserData();
     this.obtenerPermisos();
     const ls = localStorage.getItem("nav");

@@ -15,7 +15,7 @@ export class FiltrosModel {
     public tipoBusqueda: number;
     public idNegocio: number;
     public abierto: any;
-    public organizacion: number;
+    public organizacion: number | null;
     public id_persona: number;
     public user: any;
     constructor(strBuscar: string = '',
@@ -31,7 +31,7 @@ export class FiltrosModel {
                 idGiro: number = null,
                 abierto: number = null,
                 id_persona: number = null,
-                organizacion: number = null
+                organizacion: number | null = null
     ) {
         this.strBuscar = strBuscar;
         this.intEstado = intEstado;

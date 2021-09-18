@@ -23,7 +23,7 @@
       <!--  <ion-label>Info. negocio</ion-label>-->
         <ion-icon [style]="colorInfo" name="storefront-outline"></ion-icon>
       </ion-segment-button>
-     
+
       <ion-segment-button  value="contacto">
         <!--<ion-label>Contacto</ion-label>-->
         <ion-icon [style]="colorContacto" name="call-outline"></ion-icon>
@@ -223,7 +223,25 @@
               >
             </ion-select>
           </ion-item>
-
+          <ion-item>
+            <ion-label position="stacked">Se encuentra en la Plaza: </ion-label>
+            <ion-select
+              ok-text="Ok"
+              cancel-text="Cancelar"
+              multiple
+              id="idPlaza"
+              name="idPlaza"
+              #plazas="ngModel"
+              [(ngModel)]="negocioTO.plazas"
+              placeholder="{{ tipoPlzAux }}"
+            >
+              <ion-select-option
+                *ngFor="let plz of lstPlazas"
+                [value]="plz.id_organizacion"
+                >{{plz.nombre}}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
           <ion-label
             >Ayudanos a que la busqueda de tu negocio sea mas
             efectiva</ion-label
