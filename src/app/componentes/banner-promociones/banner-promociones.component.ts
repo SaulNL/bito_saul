@@ -1,3 +1,5 @@
+import { Auth0Service } from './../../api/busqueda/auth0.service';
+import { AfiliacionPlazaModel } from './../../Modelos/AfiliacionPlazaModel';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { PromocionesService } from '../../api/busqueda/proveedores/promociones.service';
 import { IonSlides } from '@ionic/angular';
@@ -16,6 +18,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 })
 export class BannerPromocionesComponent implements OnInit {
   @Input() anyFiltros: any;
+  @Input() tieneFiltro: any;
   filtro: any;
   lstPromociones: any;
   public lstAvisos: any;
@@ -32,12 +35,14 @@ export class BannerPromocionesComponent implements OnInit {
   public miUbicacionlatitud: number;
   public miUbicacionlongitud: number;
   public ubicacion = new UbicacionModel();
+  private plazaAfiliacion: AfiliacionPlazaModel;
   constructor(
     private servicioPromociones: PromocionesService,
     private navBarServiceService: NavBarServiceService,
     private _router: Router,
     public alertController: AlertController,
-    private geolocation: Geolocation
+    private geolocation: Geolocation,
+    private autho: Auth0Service
   ) {
     this.lstPromociones = [];
     this.lstAvisos = [];
@@ -68,23 +73,47 @@ export class BannerPromocionesComponent implements OnInit {
    * @author Omar
    */
   public obtenerGeolocalizacion() {
-      this.geolocation.getCurrentPosition().then((reponse)=> {
-        this.miUbicacionlatitud = reponse.coords.latitude;
-        this.miUbicacionlongitud = reponse.coords.longitude;
+    this.geolocation.getCurrentPosition().then((reponse) => {
+      this.miUbicacionlatitud = reponse.coords.latitude;
+      this.miUbicacionlongitud = reponse.coords.longitude;
 
 
 
-      }).catch((error) => {
-        
-      });
+    }).catch((error) => {
+
+    });
   }
   /**
      * Funcion para obtener las promociones
      * @author Omar
      */
   public obtenerPromociones(filtro: any) {
+    if(!this.tieneFiltro){
+      filtro.strBuscar='';
+      filtro.intEstado = null;
+      filtro.strMunicipio = null;
+        filtro.kilometros = 10;
+        filtro.latitud = 0;
+        filtro.longitud = 0;
+        filtro.idTipoNegocio = null;
+        filtro.blnEntrega = null;
+        filtro.idGiro = null;
+        filtro.idCategoriaNegocio = null;
+        filtro.idEstado = null;
+        filtro.idMunicipio = null;
+        filtro.idLocalidad = null;
+        filtro.abierto = null;
+        filtro.tipoBusqueda = 0;
+        filtro.id_persona = null;
+    }
+    this.plazaAfiliacion = JSON.parse(localStorage.getItem('org'));
+    if (this.plazaAfiliacion != null) {
+      filtro.organizacion = this.plazaAfiliacion.id_organizacion;
+    }
+    console.log(filtro);
     this.servicioPromociones.buscarPromocinesPublicadasFiltros(filtro).subscribe(
       response => {
+        console.log(response);
         this.lstPromociones = response.data;
         //this.loaderPromo = false;
       },
@@ -98,7 +127,7 @@ export class BannerPromocionesComponent implements OnInit {
 */
   public obtenerAvisos() {
     // this.loaderPromo = true;
-    this.servicioPromociones.obtenerAvisos().subscribe(
+    this.servicioPromociones.obtenerAvisos(this.autho.getIdPersona()).subscribe(
       response => {
         this.lstAvisos = response.data;
         // this.loaderPromo = false;
@@ -114,7 +143,7 @@ export class BannerPromocionesComponent implements OnInit {
   * @author Omar
   */
   accionPromocion(promocion) {
-    this.urlNegocio = 'tabs/negocio/'+ promocion.url_negocio;
+    this.urlNegocio = 'tabs/negocio/' + promocion.url_negocio;
     this.promocion = promocion;
     this.visteMiPromocion(promocion);
     this.quienNumeroVioPublicacion(promocion.id_promocion);

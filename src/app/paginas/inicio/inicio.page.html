@@ -1,7 +1,7 @@
 <app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
 <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
     <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
-    <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
+    <app-banner-promociones [anyFiltros]="Filtros" [tieneFiltro]="tFiltro"></app-banner-promociones>
     <app-spinner [loader]="loader" [message]="msj"></app-spinner>
     <div *ngIf="!loader">
         <ion-item>

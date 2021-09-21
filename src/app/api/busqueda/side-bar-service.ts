@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
-import {Subject} from "rxjs";
+import { Subject } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -19,13 +19,16 @@ export class SideBarService {
     return this.fooSubject;
   }
 
-  buscar(data: any){
-      this.buscarNegocios.next(data)
+
+
+
+  buscar(data: any) {
+    this.buscarNegocios.next(data)
 
   }
 
-  eventBuscar(): Subject<any>{
-    
+  eventBuscar(): Subject<any> {
+
     return this.buscarNegocios;
   }
   actualizarSide() {

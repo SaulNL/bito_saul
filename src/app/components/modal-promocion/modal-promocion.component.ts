@@ -1,3 +1,4 @@
+import { AfiliacionPlazaModel } from './../../Modelos/AfiliacionPlazaModel';
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import * as moment from 'moment';
@@ -26,6 +27,7 @@ export class ModalPromocionComponent implements OnInit {
   public miLat: any;
   public miLng: any;
   public fechaHoy = moment();
+  private plazaAfiliacion : AfiliacionPlazaModel;
   public diasArray = [
     {id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null},
     {id: 2, dia: 'Martes', horarios: [], hi: null, hf: null},
@@ -72,10 +74,14 @@ export class ModalPromocionComponent implements OnInit {
   }
 
   public obtenerPromocionesServicio() {
+    this.plazaAfiliacion = JSON.parse(localStorage.getItem('org'));
+    if (this.plazaAfiliacion != null) {
+      this.anyFiltros.organizacion = this.plazaAfiliacion.id_organizacion;
+    }
     this._promociones.buscarPromocinesPublicadasModulo(this.anyFiltros).subscribe(
       response => {
         if(response.code === 402){
-          
+
         }
         if (response.data !== null) {
           this.lstPromociones = response.data;

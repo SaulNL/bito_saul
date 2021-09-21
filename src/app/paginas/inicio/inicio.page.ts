@@ -31,7 +31,7 @@ import { MsNegocioModel } from "../../Modelos/busqueda/MsNegocioModel";
 export class InicioPage implements OnInit {
   @ViewChild(IonContent) content: IonContent;
   public cordenada: number;
-  private Filtros: FiltrosModel;
+  public Filtros: FiltrosModel;
   public listaCategorias: any;
   private modal: any;
   public selectionAP: boolean;
@@ -44,6 +44,7 @@ export class InicioPage implements OnInit {
   user: any;
   public existeSesion: boolean;
   public msj = 'Cargando';
+  public tFiltro: boolean;
   private objectSelectAfiliacionPlaza: AfiliacionPlazaModel;
   constructor(
     public loadingController: LoadingController,
@@ -66,8 +67,22 @@ export class InicioPage implements OnInit {
     this.user = this.util.getUserData();
     this.existeSesion = this.util.existe_sesion();
     this.selectionAP = false;
+    this.tFiltro = false;
+    // this.reloadOnEnterApp();
   }
-
+  // private reloadOnEnterApp() {
+    // const reloadOnCharge = localStorage.getItem('tempOK');
+    // if (reloadOnCharge != null) {
+      // localStorage.removeItem('tempOK');
+      // location.reload();
+    // } else {
+      // localStorage.setItem('tempOK', 'ok');
+      // const temp = localStorage.getItem('tempK');
+      // if (temp === "t") {
+        // localStorage.removeItem('tempK');
+      // }
+    // }
+  // }
   ngOnInit(): void {
     const selected = localStorage.getItem('org');
     if (selected != null) {
@@ -104,7 +119,7 @@ export class InicioPage implements OnInit {
       localStorage.setItem("resetFiltro", "1");
       estatusFiltro = localStorage.getItem("resetFiltro");
       this.Filtros = new FiltrosModel();
-      this.Filtros.idGiro = [dato.idGiro != null ? dato.idGiro : 1];
+      // this.Filtros.idGiro = [dato.idGiro != null ? dato.idGiro : 1];
       this.Filtros.idCategoriaNegocio = [dato.id_categoria];
       this.buscarNegocios();
       localStorage.removeItem("seleccionado");
@@ -165,6 +180,7 @@ export class InicioPage implements OnInit {
   buscarToolbar(event) {
     this.Filtros = new FiltrosModel();
     this.Filtros.strBuscar = event;
+    this.tFiltro = true;
     this.buscarNegocios();
   }
 
@@ -194,20 +210,20 @@ export class InicioPage implements OnInit {
   public openPlazasAfiliacionesModal() {
     this.presentModalPlazasAfiliaciones();
   }
- async presentModalPlazasAfiliaciones() {
-   let persona = null;
-   let permisos = null;
-   if(this.util.existSession()){
-     persona = this.util.getIdPersona();
-     permisos = this.auth0Service.getUserPermisos();
-   }
+  async presentModalPlazasAfiliaciones() {
+    let persona = null;
+    let permisos = null;
+    if (this.util.existSession()) {
+      persona = this.util.getIdPersona();
+      permisos = this.auth0Service.getUserPermisos();
+    }
     this.modal = await this.modalController.create(
       {
         component: PlazasAfiliacionesComponent,
         cssClass: 'custom-modal-plazas-afiliaciones',
         componentProps: {
           idUsuario: persona,
-          permisos : permisos
+          permisos: permisos
         }
       }
     );
