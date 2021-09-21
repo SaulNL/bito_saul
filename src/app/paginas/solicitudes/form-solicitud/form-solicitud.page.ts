@@ -42,6 +42,7 @@ export class FormSolicitudPage implements OnInit {
   public tipoNegoAux: any;
   public tipoGiroAux: any;
   public tipoSubAux: any;
+  public tipoOrg: any;
   public listTipoNegocio: any;
   public listCategorias: any;
   public listaSubCategorias: any;
@@ -54,6 +55,8 @@ export class FormSolicitudPage implements OnInit {
   public data: any;
   public loader: boolean;
   public cargando = 'Guardando';
+  public lstOrganizaciones: any;
+  public mostrarAfiliacion: boolean;
 
   constructor(
     private _general_service: GeneralServicesService,
@@ -76,11 +79,13 @@ export class FormSolicitudPage implements OnInit {
   }
   ngOnInit() {
     this.obtenerTipoNegocio();
+    this.obtenerCatOrganizaciones();
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.data = JSON.parse(params.special);
         this.actualTO = JSON.parse(params.special);
         this.obtenerTipoNegocio();
+        this.obtenerCatOrganizaciones();
       }
     });
     this.list_cat_estado = new Array<CatEstadoModel>();
@@ -106,7 +111,7 @@ export class FormSolicitudPage implements OnInit {
    * @author Omar
    */
   guardar(form: NgForm) {
-      this.loader = true;
+    this.loader = true;
     if (
       (this.actualTO.imagen === undefined || this.actualTO.imagen === null) &&
       (this.actualTO.url_imagen === undefined ||
@@ -453,4 +458,31 @@ export class FormSolicitudPage implements OnInit {
     );
     this.categoriaPrincipal({ value: 0 });
   }
+  public obtenerCatOrganizaciones() {
+    this.mostrarAfiliacion = false;
+    this._general_service.obtenerOrganizacionesPorUsuario(this._utils_cls.getIdPersona()).subscribe(
+      response => {
+        if (response.code === 200) {
+          this.lstOrganizaciones = Object.values(response.data);
+          if (this.lstOrganizaciones.length > 0) {
+            this.mostrarAfiliacion = true;
+            this.lstOrganizaciones.forEach((element) => {
+              this.actualTO.organizaciones.forEach((elements) => {
+                if (element.id_organizacion == elements) {
+                  this.tipoOrg = element.nombre;
+                }
+              });
+            });
+          }
+        } else {
+          this.mostrarAfiliacion = false;
+          this.lstOrganizaciones = [];
+        }
+      }, (error) => {
+        this.mostrarAfiliacion = false;
+        this.lstOrganizaciones = [];
+      }
+    );
+  }
+
 }

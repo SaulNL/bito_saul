@@ -68,21 +68,7 @@ export class InicioPage implements OnInit {
     this.existeSesion = this.util.existe_sesion();
     this.selectionAP = false;
     this.tFiltro = false;
-    // this.reloadOnEnterApp();
   }
-  // private reloadOnEnterApp() {
-    // const reloadOnCharge = localStorage.getItem('tempOK');
-    // if (reloadOnCharge != null) {
-      // localStorage.removeItem('tempOK');
-      // location.reload();
-    // } else {
-      // localStorage.setItem('tempOK', 'ok');
-      // const temp = localStorage.getItem('tempK');
-      // if (temp === "t") {
-        // localStorage.removeItem('tempK');
-      // }
-    // }
-  // }
   ngOnInit(): void {
     const selected = localStorage.getItem('org');
     if (selected != null) {

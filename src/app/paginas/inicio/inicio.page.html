@@ -12,7 +12,9 @@
                 </ion-chip>
             </ion-buttons>
             <ion-buttons *ngIf="!selectionAP">
-                <ion-button (click)="openPlazasAfiliacionesModal()"> Afiliaciones y plazas
+                <ion-button (click)="openPlazasAfiliacionesModal()">
+                    Afiliaciones y plazas
+                    <ion-icon name="caret-down-outline"></ion-icon>
                 </ion-button>
             </ion-buttons>
             <ion-buttons *ngIf="selectionAP">

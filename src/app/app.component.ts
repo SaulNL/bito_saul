@@ -41,8 +41,6 @@ export class AppComponent {
       this.splashScreen.hide();
       this.setupDeeplinks();
       this.obtenerPlataforma();
-      // const reloadOnCharge = localStorage.getItem('tempOK');
-      // (reloadOnCharge) ? localStorage.setItem('tempK', 'y') : localStorage.setItem('tempK', 't');
     });
     this.obtenerIP();
   }
@@ -105,9 +103,9 @@ export class AppComponent {
     this.access.plazaAcceso(url).subscribe(
       (response) => {
         if (response.code === 200) {
-
           localStorage.setItem('org', JSON.stringify(response.data.plz));
           this.router.navigate(['/tabs/inicio']);
+          location.reload();
         } else {
           this.router.navigate(['/tabs/inicio']);
         }

@@ -35,11 +35,9 @@ export class AjustesPage implements OnInit {
     this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.usuario = JSON.parse(localStorage.getItem('u_data'));
-        if (params.special) {
           if (localStorage.getItem("isRedirected") === "false") {
             localStorage.setItem("isRedirected", "true");
             location.reload();
-          }
         }
       }
     });
@@ -88,7 +86,7 @@ export class AjustesPage implements OnInit {
               });
               location.reload();
               localStorage.clear();
-              
+
             }
           },
         },
