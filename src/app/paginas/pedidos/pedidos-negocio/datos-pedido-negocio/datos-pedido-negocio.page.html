@@ -4,7 +4,7 @@
       <ion-button (click)="regresar()">
         <ion-icon name="arrow-back-outline"></ion-icon>
       </ion-button>
-      </ion-buttons>
+    </ion-buttons>
     <ion-title>Datos Pedido</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -21,7 +21,8 @@
           <div *ngIf="pedido.id_estatus_pedido === 4">
             <ion-badge [style]="{'background': pedido.color}">
               <ion-icon name="checkmark-circle-outline"></ion-icon>
-              Pedido entregado</ion-badge>
+              Pedido entregado
+            </ion-badge>
           </div>
         </ion-col>
         <ion-col></ion-col>
@@ -31,7 +32,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-item >
+    <ion-item>
       <ion-grid>
         <ion-row>
           <ion-col size="3">
@@ -52,15 +53,17 @@
         </ion-row>
       </ion-grid>
     </ion-item>
-    <div id="mapId" style="height:200px"></div>
+    <div id="mapId" style="height:200px" *ngIf="pedido.id_tipo_pedido === 2"></div>
     <ion-grid>
       <ion-row>
-        <ion-col  class="ion-align-self-center"><h3>Artículos:</h3></ion-col>
+        <ion-col class="ion-align-self-center">
+          <h3>Artículos:</h3>
+        </ion-col>
       </ion-row>
     </ion-grid>
     <ion-item *ngFor="let producto of pedido.productos">
       <ion-grid>
-        <ion-row >
+        <ion-row>
           <ion-col>
             <ion-avatar>
               <ion-img [src]="producto.logo_producto"></ion-img>
@@ -85,23 +88,27 @@
     </ion-item>
 
     <div *ngIf="!blnCancelar">
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2 && pedido.id_tipo_pedido === 2" href="https://api.whatsapp.com/send?phone=+52{{numeroSolicitud}}" target="_blank"
-              
-              color="primary">
+      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2 && pedido.id_tipo_pedido === 2"
+        href="https://api.whatsapp.com/send?phone=+52{{numeroSolicitud}}" target="_blank" color="primary">
         <ion-icon name="logo-whatsapp"></ion-icon> Solicitar repartidor
       </ion-button>
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="cancelar()" [disabled]="loaderBtn" color="light">Cancelar</ion-button>
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 1" (click)="perpararPedido(pedido)" color="danger" [disabled]="loaderBtn">
+      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="cancelar()" [disabled]="loaderBtn"
+        color="light">Cancelar</ion-button>
+      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 1" (click)="perpararPedido(pedido)" color="danger"
+        [disabled]="loaderBtn">
         Preparar
       </ion-button>
-      
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2" (click)="enviarPedido(pedido)"
-              [disabled]="loaderBtn"
-              color="danger"> Enviar
+
+      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2 && pedido.id_tipo_pedido === 2"
+        (click)="enviarPedido(pedido)" [disabled]="loaderBtn" color="danger"> Enviar
       </ion-button>
+
+      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2 && pedido.id_tipo_pedido !== 2"
+        (click)="enviarPedido(pedido)" [disabled]="loaderBtn" color="danger"> Preparando
+      </ion-button>
+
       <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 3" (click)="entregarPedido(pedido)"
-              [disabled]="loaderBtn"
-              color="danger"> Entregado
+        [disabled]="loaderBtn" color="danger"> Entregado
       </ion-button>
       <!-- <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 4">
         <ion-icon name="checkmark-circle-outline" [style]="{'color': pedido.color}"></ion-icon><span> Pedido entregado</span>
@@ -118,9 +125,11 @@
         <ion-icon *ngIf="motivo" (click)="motivo=''" name="close-outline"></ion-icon>
       </ion-item>
       <div align="end">
-        <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="setBlnCancelar(false)" color="light">Regresar
+        <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="setBlnCancelar(false)" color="light">
+          Regresar
         </ion-button>
-        <ion-button expand="full" [disabled]="!motivo || loaderBtn" (click)="cancelarPedido(pedido)" color="danger"> Cancelar pedido
+        <ion-button expand="full" [disabled]="!motivo || loaderBtn" (click)="cancelarPedido(pedido)" color="danger">
+          Cancelar pedido
         </ion-button>
       </div>
     </div>

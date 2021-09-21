@@ -551,27 +551,6 @@
           <div *ngIf="negocioFisico.invalid" class="alert">
             <div>Seleccione el campo negocio físico</div>
           </div>
-
-          <ion-item>
-            <ion-label
-              >Métodos de pago<span style="color: red">*</span></ion-label
-            >
-            <ion-select
-              ok-text="Ok"
-              cancel-text="Cancelar"
-              multiple
-              #pago="ngModel"
-              name="pago"
-              required
-              #metodoPago="ngModel"
-              (ionChange)="cambiarPago($event)"
-              [(ngModel)]="copyPago"
-            >
-              <ion-select-option *ngFor="let item of metodosPago" [value]="item"
-                >{{item.metodo}}</ion-select-option
-              >
-            </ion-select>
-          </ion-item>
           <div *ngIf="metodoPago.invalid" class="alert">
             <div>Seleccione el campo métodos de pago</div>
           </div>

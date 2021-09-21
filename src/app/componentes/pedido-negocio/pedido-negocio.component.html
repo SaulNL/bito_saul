@@ -23,17 +23,17 @@
       </ion-list-header>
 
       <ion-item *ngIf="_entregaDomicilio === 1">
-        <ion-label>Envio a domicilio</ion-label>
+        <ion-label> <strong>Envio a domicilio</strong></ion-label>
         <ion-radio [value]="2" ></ion-radio>
       </ion-item>
 
       <ion-item *ngIf="_entregaSitio === 1">
-        <ion-label>Recoger en sucursal</ion-label>
+        <ion-label><strong>Recoger en sucursal</strong> </ion-label>
         <ion-radio [value]="3"></ion-radio>
       </ion-item>
 
       <ion-item *ngIf="_consumoSitio === 1">
-        <ion-label>Consumo en sitio</ion-label>
+        <ion-label> <strong>Consumo en sitio</strong></ion-label>
         <ion-radio [value]="1"></ion-radio>
       </ion-item>
     </ion-radio-group>
