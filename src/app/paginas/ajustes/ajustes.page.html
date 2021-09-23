@@ -30,7 +30,7 @@
     <ion-card-content>
       <ion-grid>
         <ion-row>
-          <ion-col *ngIf="usuario.proveedor !== null"  [routerLink]="['/tabs/home/negocio']" >
+          <ion-col *ngIf="misNegocios"  [routerLink]="['/tabs/home/negocio']" >
             <ion-card>
               <ion-card-content>
                 <div class="ion-text-center">
@@ -40,7 +40,7 @@
               </ion-card-content>
             </ion-card>
           </ion-col>
-          <ion-col *ngIf="usuario.proveedor !== null" (click)="misPromociones()">
+          <ion-col *ngIf="misAPromociones" (click)="misPromociones()">
             <ion-card>
               <ion-card-content>
                 <div class="ion-text-center">
@@ -50,7 +50,7 @@
               </ion-card-content>
             </ion-card>
           </ion-col>
-          <ion-col *ngIf="usuario.proveedor !== null" (click)="misSolicitudes()">
+          <ion-col *ngIf="generarSolicitud" (click)="misSolicitudes()">
             <ion-card>
               <ion-card-content>
                 <div class="ion-text-center" >
@@ -60,7 +60,7 @@
               </ion-card-content>
             </ion-card>
           </ion-col>
-          <ion-col *ngIf="usuario.proveedor !== null">
+          <ion-col *ngIf="misVentas">
             <ion-card>
               <ion-card-content>
                 <div class="ion-text-center" [routerLink]="['/tabs/home/ventas']">
@@ -72,7 +72,7 @@
               </ion-card-content>
             </ion-card>
           </ion-col>
-          <ion-col>
+          <ion-col *ngIf="misCompras">
             <ion-card>
               <ion-card-content>
                 <div class="ion-text-center" [routerLink]="['/tabs/home/compras']">
@@ -82,7 +82,7 @@
               </ion-card-content>
             </ion-card>
           </ion-col>
-          <ion-col *ngIf="usuario.proveedor !== null">
+          <ion-col *ngIf="solicitudes">
             <ion-card>
               <ion-card-content>
                 <div class="ion-text-center" [routerLink]="['/tabs/home/solicitud']">
@@ -93,7 +93,7 @@
               </ion-card-content>
             </ion-card>
           </ion-col>
-          <ion-col *ngIf="usuario.proveedor !== null">
+          <ion-col *ngIf="estadisticas">
             <ion-card>
               <ion-card-content>
                 <div class="ion-text-center" [routerLink]="['/tabs/home/estadisticas']">

@@ -840,8 +840,7 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   mostrarBoton(precio) {
-    return (
-        (this.informacionNegocio.entrega_domicilio === 1 ||
+    return ((this.informacionNegocio.entrega_domicilio === 1 ||
             this.informacionNegocio.entrega_sitio === 1 ||
             this.informacionNegocio.consumo_sitio === 1) &&
         parseInt(precio) > 0
@@ -859,7 +858,7 @@ export class PerfilNegocioPage implements OnInit {
   mostrarOcultar() {
     this.motrarContacto = !this.motrarContacto;
   }
-  mostrarProducto(nombreCat) {
+  mostrarProducto(nombreCat: any) {
     if (!this.negocioSub) {
       if (this.banderaP === nombreCat) {
         this.negocioSub = !this.negocioSub;
@@ -982,7 +981,7 @@ export class PerfilNegocioPage implements OnInit {
   guardarQuienVioNegocio(id_negocio: number){
     this.negocioService.visteMiNegocio(id_negocio).subscribe(
       response => {
-        
+
       },
       error => {
 

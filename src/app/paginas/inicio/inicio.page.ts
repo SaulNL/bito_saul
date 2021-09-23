@@ -21,6 +21,8 @@ import { Router } from "@angular/router";
 import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveedor-servicio.service";
 import { UtilsCls } from "../../utils/UtilsCls";
 import { MsNegocioModel } from "../../Modelos/busqueda/MsNegocioModel";
+import { PermisoModel } from 'src/app/Modelos/PermisoModel';
+import { ValidarPermisoService } from './../../api/validar-permiso.service';
 
 @Component({
   selector: "app-tab3",
@@ -46,6 +48,9 @@ export class InicioPage implements OnInit {
   public msj = 'Cargando';
   public tFiltro: boolean;
   private objectSelectAfiliacionPlaza: AfiliacionPlazaModel;
+  public persona: number | null;
+  public permisos: Array<PermisoModel> | null;
+  public afiliacion: boolean;
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -57,7 +62,8 @@ export class InicioPage implements OnInit {
     private ruta: Router,
     private serviceProveedores: ProveedorServicioService,
     private util: UtilsCls,
-    private auth0Service: Auth0Service
+    private auth0Service: Auth0Service,
+    private validarPermiso: ValidarPermisoService
   ) {
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
@@ -68,6 +74,7 @@ export class InicioPage implements OnInit {
     this.existeSesion = this.util.existe_sesion();
     this.selectionAP = false;
     this.tFiltro = false;
+    this.afiliacion = false;
   }
   ngOnInit(): void {
     const selected = localStorage.getItem('org');
@@ -81,10 +88,11 @@ export class InicioPage implements OnInit {
     });
     this.buscarNegocios();
 
-    /*this.route.queryParams.subscribe(params => {
-      if (!params.special && !params){
-      }
-    });*/
+    if (this.util.existSession()) {
+      this.persona = this.util.getIdPersona();
+      this.permisos = this.auth0Service.getUserPermisos();
+      this.afiliacion = this.validarPermiso.isChecked(this.permisos, 'ver_afiliacion')
+    }
   }
 
   public recargar(event: any) {
@@ -197,19 +205,13 @@ export class InicioPage implements OnInit {
     this.presentModalPlazasAfiliaciones();
   }
   async presentModalPlazasAfiliaciones() {
-    let persona = null;
-    let permisos = null;
-    if (this.util.existSession()) {
-      persona = this.util.getIdPersona();
-      permisos = this.auth0Service.getUserPermisos();
-    }
     this.modal = await this.modalController.create(
       {
         component: PlazasAfiliacionesComponent,
         cssClass: 'custom-modal-plazas-afiliaciones',
         componentProps: {
-          idUsuario: persona,
-          permisos: permisos
+          idUsuario: this.persona,
+          permisos: this.permisos
         }
       }
     );

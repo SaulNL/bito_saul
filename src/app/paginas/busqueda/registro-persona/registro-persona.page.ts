@@ -32,7 +32,9 @@ export class RegistroPersonaPage implements OnInit {
   private passFace: any;
   private passGogl: any;
   public msj: "Creando cuenta";
-
+  public blnTelefono: boolean;
+  public blnCorreo: boolean;
+  private medio: number | null;
   constructor(
     private router: Router,
     private active: ActivatedRoute,
@@ -49,6 +51,8 @@ export class RegistroPersonaPage implements OnInit {
   ) {
     this.usuario = new Login();
     this.loader = false;
+    this.blnCorreo = true;
+    this.blnTelefono = true;
     //   this.condiciones_servicio = false;
     registerWebPlugin(FacebookLogin);
   }
@@ -64,6 +68,7 @@ export class RegistroPersonaPage implements OnInit {
     );
   }
   confirmacionRegistro(formRegistroPersona: NgForm) {
+    this.usuario_sistema.medio = this.medio;
     let navigationExtras = JSON.stringify(this.usuario_sistema);
     this.router.navigate(["/tabs/registro-persona/confirma-registro"], {
       queryParams: { special: navigationExtras },
@@ -91,7 +96,7 @@ export class RegistroPersonaPage implements OnInit {
     }
   }
 
-   async loginGoogle() {
+  async loginGoogle() {
     this.loader = true;
     let res;
     if (this.platform.is("android")) {
@@ -173,13 +178,13 @@ export class RegistroPersonaPage implements OnInit {
     ) {
       switch (forg) {
         case 1:
-           this.loader = false;
+          this.loader = false;
           this.notificacion.error(
             "Se perdio la conexión con el servicio de Facebook, Reintentar"
           );
           break;
         case 2:
-           this.loader = false;
+          this.loader = false;
           this.notificacion.error(
             "Se perdio la conexión con el servicio de Google, Reintentar"
           );
@@ -220,12 +225,12 @@ export class RegistroPersonaPage implements OnInit {
 
           this.doLogin();
         } else {
-           this.loader = false;
+          this.loader = false;
           this.notificacion.alerta(response.data.message);
         }
       },
       (error) => {
-         this.loader = false;
+        this.loader = false;
         this.notificacion.alerta(error);
       }
     );
@@ -249,17 +254,33 @@ export class RegistroPersonaPage implements OnInit {
 
           this.usuario.password = this.passGogl;
           this.usuario.usuario = data.email;
-          
+
           this.doLogin();
         } else {
-           this.loader = false;
+          this.loader = false;
           this.notificacion.alerta(response.data.message);
         }
       },
       (error) => {
-         this.loader = false;
+        this.loader = false;
         this.notificacion.alerta(error);
       }
     );
+  }
+  public obtenerCorreo(evento: any) {
+    if ((evento !== '' || evento !== undefined) && evento.length >= 1) {
+      this.blnTelefono = false;
+      this.medio = 2;
+    } else {
+      this.blnTelefono = true;
+    }
+  }
+  public obtenerNumeroCelular(evento: any) {
+    if ((evento !== '' || evento !== undefined) && evento.length === 10) {
+      this.blnCorreo = false;
+      this.medio = 1;
+    } else {
+      this.blnCorreo = true;
+    }
   }
 }

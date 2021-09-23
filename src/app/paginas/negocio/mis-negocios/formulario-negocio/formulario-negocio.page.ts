@@ -627,8 +627,10 @@ export class FormularioNegocioPage implements OnInit {
   async localizacionTiempo(tipo: number) {
     let latitude;
     let longitude;
+
     const coordinates = await Geolocation.getCurrentPosition().then(res => {
       if (tipo === 1) {
+        console.log(res);
         this.negocioTO.det_domicilio.latitud = res.coords.latitude;
         latitude = res.coords.latitude;
         this.negocioTO.det_domicilio.longitud = res.coords.longitude;
@@ -642,6 +644,7 @@ export class FormularioNegocioPage implements OnInit {
         this.marker.setLatLng([latitude, longitude]);
       }
     }).catch(error => {
+      console.log(error);
       this.notificaciones.error(error);
     }
     );
@@ -812,10 +815,12 @@ export class FormularioNegocioPage implements OnInit {
     }
     this.negocioGuardar.otra_subcategoria = '';
     this.negocioGuardar.organizaciones = this.negocioTO.organizaciones;
+    this.negocioGuardar.organizaciones = this.negocioTO.plazas;
     this.negocioGuardar.nombre_organizacion = '';
     if (this.negocioGuardar.organizaciones !== undefined && this.negocioGuardar.organizaciones.length > 0) {
       this.negocioGuardar.nombre_organizacion = this.negocioTO.nombre_organizacion;
     }
+
     if (this.negtag == true) {
       this.negocioGuardar.tags = this.tags;
     } else {

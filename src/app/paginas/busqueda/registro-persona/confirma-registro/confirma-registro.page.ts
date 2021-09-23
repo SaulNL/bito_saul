@@ -21,9 +21,9 @@ import { SideBarService } from "../../../../api/busqueda/side-bar-service";
 })
 export class ConfirmaRegistroPage implements OnInit {
   public usuario_sistema: UsuarioSistemaModel;
-  public numeroCelular: string;
-
-
+  public numeroCelular: string | null;
+  public correo: string | null;
+  public medio: number;
   public tiempoTemporizador: number;
   public timer: any;
   public blnEnviarSms = false;
@@ -56,6 +56,8 @@ export class ConfirmaRegistroPage implements OnInit {
     });
     this.obtenerTiempoTemporizador();
     this.numeroCelular = this.usuario_sistema.ms_persona.telefono_celular;
+    this.correo = this.usuario_sistema.ms_persona.correo;
+    this.medio = this.usuario_sistema.medio;
     this.obtenerCodigoSMS();
   }
 
@@ -65,14 +67,22 @@ export class ConfirmaRegistroPage implements OnInit {
   */
   public obtenerCodigoSMS() {
     this.blnEnviarSms = true;
-    if (this.numeroCelular.length === 10 && this.numeroCelular !== undefined) {
-      this._usuario_service.obtenerCodigoSMS(this.numeroCelular).subscribe(response => {
+    if ((this.numeroCelular.length === 10 && this.numeroCelular !== undefined) || (this.correo !== '' && this.correo !== undefined)) {
+      this._usuario_service.obtenerCodigoSMS(this.numeroCelular, this.correo, this.medio).subscribe(response => {
         this.usuario_sistema.idCode = response.data;
         this.IniciaTemporizador();
       });
     } else {
-      //  this._notificacionService.pushError('Número incorrecto');
+      this.notificaciones.error('Número incorrecto');
     }
+    // if (this.numeroCelular.length === 10 && this.numeroCelular !== undefined) {
+    //   this._usuario_service.obtenerCodigoSMS(this.numeroCelular).subscribe(response => {
+    //     this.usuario_sistema.idCode = response.data;
+    //     this.IniciaTemporizador();
+    //   });
+    // } else {
+    //  this._notificacionService.pushError('Número incorrecto');
+    // }
   }
   regresarRegistro() {
     this.detenerTemeporizador();
@@ -155,7 +165,7 @@ export class ConfirmaRegistroPage implements OnInit {
 
       return true;
     } else {
-      
+
       return false;
     }
   }
@@ -168,7 +178,7 @@ export class ConfirmaRegistroPage implements OnInit {
       response => {
         if (this._utils_cls.is_success_response(response.code)) {
           const usuarioLogin = {
-            usuario: this.usuario_sistema.ms_persona.telefono_celular,
+            usuario: (this.medio === 1) ? this.numeroCelular : this.correo,
             password: this.usuario_sistema.password
           };
 

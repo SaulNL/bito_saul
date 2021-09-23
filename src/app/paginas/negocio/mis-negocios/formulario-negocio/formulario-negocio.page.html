@@ -353,6 +353,7 @@
               </ion-item>
             </ion-list>
           </ion-card>
+
           <ion-item>
             <ion-label
               >Negocio físico<span style="color: red">*</span></ion-label
@@ -377,16 +378,10 @@
 
           <div *ngIf="blnActivaNegocioFisico">
             <ion-item>
-              <ion-button
-                color="light"
-                size="small"
-                (click)="consumoSitioAlert()"
-              >
+              <ion-button color="light" size="small" (click)="consumoSitioAlert()">
                 <ion-icon name="information-circle-outline"></ion-icon>
               </ion-button>
-              <ion-label
-                >Consumo en sitio<span style="color: red">*</span></ion-label
-              >
+              <ion-label>Consumo en sitio<span style="color: red">*</span></ion-label>
               <ion-select
                 ok-text="Ok"
                 cancel-text="Cancelar"
@@ -501,16 +496,13 @@
             <ion-item>
               <app-input-lugares-entrega
                 [lugaresEntrega]="negocioTO.lugares_entrega"
-                (_enviarLugaresEntrega)="agregarLugaresEntrega($event)"
-              >
+                (_enviarLugaresEntrega)="agregarLugaresEntrega($event)">
               </app-input-lugares-entrega>
             </ion-item>
           </div>
 
           <ion-item>
-            <ion-label
-              >Métodos de pago<span style="color: red">*</span></ion-label
-            >
+            <ion-label>Métodos de pago<span style="color: red">*</span></ion-label>
             <ion-select
               ok-text="Ok"
               cancel-text="Cancelar"
@@ -527,30 +519,6 @@
               >
             </ion-select>
           </ion-item>
-          <div *ngIf="metodoPago.invalid" class="alert">
-            <div>Seleccione el campo métodos de pago</div>
-          </div>
-
-          <ion-item>
-            <ion-label
-              >Negocio físico<span style="color: red">*</span></ion-label
-            >
-            <ion-select
-              ok-text="Ok"
-              cancel-text="Cancelar"
-              name="idNegocioFisico"
-              required
-              #negocioFisico="ngModel"
-              [(ngModel)]="negocioTO.negocio_fisico"
-            >
-              <ion-select-option *ngFor="let ent of entregas" [value]="ent.id"
-                >{{ent.respuesta}}</ion-select-option
-              >
-            </ion-select>
-          </ion-item>
-          <div *ngIf="negocioFisico.invalid" class="alert">
-            <div>Seleccione el campo negocio físico</div>
-          </div>
           <div *ngIf="metodoPago.invalid" class="alert">
             <div>Seleccione el campo métodos de pago</div>
           </div>
@@ -725,13 +693,8 @@
             </div>
           </div>
           <br />
-          <ion-label
-            >Selecciona la ubicación de tu negocio en este mapa<span
-              style="color: red"
-              >(ESTE PUNTO ES OBLIGATORIO) * </span
-            >:</ion-label
-          >
-          <ion-grid>
+          <ion-label *ngIf="blnActivaNegocioFisico">Selecciona la ubicación de tu negocio en este mapa <span style="color: red">(ESTE PUNTO ES OBLIGATORIO) * </span>:</ion-label>
+          <ion-grid *ngIf="blnActivaNegocioFisico">
             <ion-row>
               <ion-col >
                 <div id="mapId" style="height: 200px"></div>

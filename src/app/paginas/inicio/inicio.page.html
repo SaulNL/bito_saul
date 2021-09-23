@@ -13,7 +13,7 @@
             </ion-buttons>
             <ion-buttons *ngIf="!selectionAP">
                 <ion-button (click)="openPlazasAfiliacionesModal()">
-                    Afiliaciones y plazas
+                    Plazas <span *ngIf="afiliacion"> y Afiliaciones</span>
                     <ion-icon name="caret-down-outline"></ion-icon>
                 </ion-button>
             </ion-buttons>

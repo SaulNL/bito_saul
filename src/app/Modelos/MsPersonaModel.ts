@@ -10,10 +10,10 @@ export class MsPersonaModel{
   public materno:string;
   public rfc:string;
   public telefono_casa:string;
-  public telefono_celular:string;
+  public telefono_celular:string | null;
   public celular:string;
   public telefono_otro:string;
-  public correo:string;
+  public correo:string | null;
   public fecha_nacimiento:any;
   public genero:any;
   public id_facebook:string;

@@ -1,9 +1,9 @@
 import { ToadNotificacionService } from './../../api/toad-notificacion.service';
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AlertController, ModalController, Platform} from "@ionic/angular";
-import {UtilsCls} from "../../utils/UtilsCls";
-import {ProductoModel} from "../../Modelos/ProductoModel";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController, ModalController, Platform } from "@ionic/angular";
+import { UtilsCls } from "../../utils/UtilsCls";
+import { ProductoModel } from "../../Modelos/ProductoModel";
 import { ProductosService } from "../../api/productos.service";
 
 @Component({
@@ -27,7 +27,7 @@ export class DetalleProductoComponent implements OnInit {
     public subscribe;
     public modal;
     public existeSesion: boolean;
-    public cantidad : number;
+    public cantidad: number;
 
     constructor(
         private utilsCls: UtilsCls,
@@ -51,11 +51,11 @@ export class DetalleProductoComponent implements OnInit {
         if (this.bolsa.length > 0) {
             this.bolsa.forEach(element => {
                 if (element.idProducto === this.datos.idProducto) {
-                    this.cantidad= element.cantidad;
+                    this.cantidad = element.cantidad;
                 }
             });
         }
-        if (this.existeSesion){
+        if (this.existeSesion) {
             this.loVio(this.datos);
         }
     }
@@ -70,16 +70,24 @@ export class DetalleProductoComponent implements OnInit {
         this.subscribe.unsubscribe();
     }
 
-    get mostrarComponente() {
-        return (this._entregaDomicilio === 1 || this._entregaSitio === 1 || this._consumoSitio === 1) && this.utilsCls.existe_sesion() && parseInt(this.datos.precio) > 0 && this._abierto === 'ABIERTO';
+    // get mostrarComponente() {
+    // return (this._entregaDomicilio === 1 || this._entregaSitio === 1 || this._consumoSitio === 1) && this.utilsCls.existe_sesion() && parseInt(this.datos.precio) > 0 && this._abierto === 'ABIERTO';
+    // }
+    get opciones() {
+        return (this.option() && this.existeSesion);
     }
-
-    aumentar(){
-        this.cantidad = this.cantidad+1;
+    get estaAbierto() {
+        return this._abierto === 'ABIERTO';
     }
-    disminuir(){
-        if( this.cantidad > 1){
-            this.cantidad = this.cantidad-1;
+    private option() {
+        return ((this._entregaDomicilio === 1 || this._entregaSitio === 1 || this._consumoSitio === 1) && parseInt(this.datos.precio) > 0);
+    }
+    aumentar() {
+        this.cantidad = this.cantidad + 1;
+    }
+    disminuir() {
+        if (this.cantidad > 1) {
+            this.cantidad = this.cantidad - 1;
         }
     }
     agragarproducto() {
@@ -103,36 +111,40 @@ export class DetalleProductoComponent implements OnInit {
     }
     public darLike(producto: ProductoModel) {
         this.servicioProductos.darLike(producto, this.user).subscribe(
-          (response) => {
-            if (response.code === 200) {
-              producto.likes = response.data;
-              this.notificacionService.exito(response.message);
-            } else{
-              this.notificacionService.alerta(response.message);
+            (response) => {
+                if (response.code === 200) {
+                    producto.likes = response.data;
+                    this.notificacionService.exito(response.message);
+                } else {
+                    this.notificacionService.alerta(response.message);
+                }
+            },
+            (error) => {
+                this.notificacionService.error("Error, intentelo más tarde");
             }
-          },
-          (error) => {
-            this.notificacionService.error("Error, intentelo más tarde");
-          }
         );
         //}
-      }
+    }
 
-      public loVio(producto) {
+    public loVio(producto) {
         let objectoVio = {
-         "id_persona": this.user.id_persona, //usuario
-         "id_producto": producto.idProducto //idProducto
-       };
-       this.servicioProductos.quienVioProdu(objectoVio).subscribe(
-       response => { if (response.code === 200) { }},error => {});
-     }
+            "id_persona": this.user.id_persona, //usuario
+            "id_producto": producto.idProducto //idProducto
+        };
+        this.servicioProductos.quienVioProdu(objectoVio).subscribe(
+            response => { if (response.code === 200) { } }, error => { });
+    }
+
     async avisoNegocioCerrado() {
         const alert = await this.alertController.create({
-          header: 'Aviso',
-          message: 'Este negocio está cerrado, revisa sus horarios para hacer un pedido cuando se encuentre abierto',
-          buttons: ['OK']
+            header: 'Aviso',
+            message: 'Este negocio está cerrado, revisa sus horarios para hacer un pedido cuando se encuentre abierto',
+            buttons: ['OK']
         });
 
         await alert.present();
-      }
+    }
+    public login() {
+        this.router.navigate(["/tabs/login"]);
+    }
 }
