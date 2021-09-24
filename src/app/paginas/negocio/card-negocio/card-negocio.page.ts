@@ -55,7 +55,6 @@ export class CardNegocioPage implements OnInit {
     this.negocioServico.buscarNegocio(this.negocioTO.id_negocio).subscribe(
       (response) => {
         this.negocioTO = response.data;
-        console.log(this.negocioTO);
         this.btload = true;
       },
       (error) => {
@@ -67,7 +66,6 @@ export class CardNegocioPage implements OnInit {
 
   inforNegocio() {
     const negocio = this.negocioTO;
-    console.log(negocio);
     this.guard.activeForm = true;
     this.negocioTO = JSON.parse(JSON.stringify(negocio));
     this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
@@ -75,7 +73,6 @@ export class CardNegocioPage implements OnInit {
       info: this.negocioTO,
       pys: this.negocioGuardar,
     };
-    console.log(all);
     let navigationExtras = JSON.stringify(all);
     this.router.navigate(['/tabs/home/negocio/card-negocio/formulario-negocio'], {
       queryParams: { special: navigationExtras }
@@ -95,7 +92,7 @@ export class CardNegocioPage implements OnInit {
     };
     let navigationExtras = JSON.stringify(all);
     this.router.navigate(
-      ["/tabs/home/negocio/mis-negocios/mis-productos-servicios"],
+      ["/tabs/home/negocio/card-negocio/mis-productos-servicios"],
       {
         queryParams: { special: navigationExtras },
       }

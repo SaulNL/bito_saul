@@ -143,12 +143,10 @@ export class GeneralServicesService {
   obtenerPlazas(): Observable<any> {
     this.http.setDataSerializer("utf8");
     const body = JSON.stringify({});
-    console.log("obteniendo plazas");
     return from(this.http.post(
       this.url + 'api/catalogo/plazas/obtenerPlazas',
       body, AppSettings.getHeaders())
       .then((data) => {
-        console.log(data);
         return JSON.parse(data.data);
       })
       .catch((error) => {

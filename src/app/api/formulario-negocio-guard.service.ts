@@ -20,21 +20,15 @@ export class FormularioNegocioGuard implements CanActivate {
   }
 
   canActivate(route: any): boolean {
-    console.log("Entro al can active");
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.special) {
         this.contenido = JSON.parse(params.special);
         this.negocio.buscarNegocio(this.contenido.id_negocio).subscribe(
           (response) => {
             this.content = response.data;
-            console.log(this.content);
 
             const nuevaRuta = this.transformacionUrl(route._routerState.url);
             const rutaActual = this.transformacionUrl(this.rutaActual);
-            console.log(this.rutaActual);
-            console.log(nuevaRuta);
-            console.log(rutaActual);
-            console.log(this.content);
             if (rutaActual === "/tabs/home/negocio/card-negocio") {
               if (nuevaRuta === '/tabs/home/negocio/card-negocio/formulario-negocio/info-negocio') {
                 this.irRuta(nuevaRuta, this.content);
@@ -55,10 +49,6 @@ export class FormularioNegocioGuard implements CanActivate {
       if (params && params.navegation) {
         let nuevaRutaByForm = params.navegation;
         let rutaActualByForm = this.transformacionUrl(this.rutaActual);
-        console.log(this.rutaActual);
-        console.log(nuevaRutaByForm);
-        console.log(rutaActualByForm);
-
         if (rutaActualByForm === "/tabs/home/negocio/card-negocio") {
           rutaActualByForm = '/tabs/home/negocio/card-negocio/formulario-negocio/info-negocio';
           if (nuevaRutaByForm === '/tabs/home/negocio/card-negocio/formulario-negocio/info-negocio') {

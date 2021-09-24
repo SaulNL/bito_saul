@@ -53,7 +53,7 @@ export class TabsPage implements OnInit{
         localStorage.setItem('resetFiltro', '0');
     }
     solicitudes(){
-        this.router.navigate(['/tabs/home/mis-favoritos']);
+        this.router.navigate(['/tabs/mis-favoritos']);
         // this.router.navigate(['/tabs/home/solicitud']);
     }
 

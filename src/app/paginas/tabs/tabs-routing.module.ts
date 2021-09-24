@@ -13,6 +13,10 @@ const routes: Routes = [
         loadChildren: () => import('../productos/productos.module').then(m => m.Tab1PageModule), canActivate: [AuthGuardService]
       },
       {
+        path: 'mis-favoritos',
+        loadChildren: () => import('../mis-favoritos/mis-favoritos.module').then(m => m.MisFavoritosPageModule)
+      },
+      {
         path: 'promociones',
         loadChildren: () => import('../promociones/promociones.module').then(m => m.Tab2PageModule), canActivate: [AuthGuardService]
       },

@@ -110,10 +110,8 @@ export class BannerPromocionesComponent implements OnInit {
     if (this.plazaAfiliacion != null) {
       filtro.organizacion = this.plazaAfiliacion.id_organizacion;
     }
-    console.log(filtro);
     this.servicioPromociones.buscarPromocinesPublicadasFiltros(filtro).subscribe(
       response => {
-        console.log(response);
         this.lstPromociones = response.data;
         //this.loaderPromo = false;
       },

@@ -28,6 +28,7 @@ export class DetalleProductoComponent implements OnInit {
     public modal;
     public existeSesion: boolean;
     public cantidad: number;
+    public activeSelectedProduct: boolean;
 
     constructor(
         private utilsCls: UtilsCls,
@@ -44,6 +45,7 @@ export class DetalleProductoComponent implements OnInit {
             this.cerrarModal();
         });
         this.cantidad = 1;
+        this.activeSelectedProduct = false;
     }
 
     ngOnInit() {
@@ -52,6 +54,7 @@ export class DetalleProductoComponent implements OnInit {
             this.bolsa.forEach(element => {
                 if (element.idProducto === this.datos.idProducto) {
                     this.cantidad = element.cantidad;
+                    this.activeSelectedProduct = true;
                 }
             });
         }
