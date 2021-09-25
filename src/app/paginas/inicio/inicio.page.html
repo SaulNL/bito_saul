@@ -39,7 +39,9 @@
                 </ion-col>
             </ion-row>
         </ion-grid>
-        <app-recargar (respuesta)="recargar($event)"></app-recargar>
+        <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+            <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
         <ion-grid *ngIf="listaCategorias.length !== 0">
             <ion-row *ngFor="let cat of listaCategorias">
                 <ion-text class="w-100">

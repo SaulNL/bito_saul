@@ -41,10 +41,22 @@ export class AppComponent {
       this.splashScreen.hide();
       this.setupDeeplinks();
       this.obtenerPlataforma();
+      if (this.isAuthenticated()) {
+        this.updatePermisosByUser(this.getIdUsuarioSistema());
+      }
     });
     this.obtenerIP();
   }
-
+  private getIdUsuarioSistema(): number {
+    let id_usuario = 0;
+    try {
+      const usuario_sistema = JSON.parse(localStorage.getItem("u_sistema"));
+      id_usuario = usuario_sistema.id_usuario_sistema;
+      return id_usuario;
+    } catch (e) {
+      return 0;
+    }
+  }
   setupDeeplinks() {
     this.deeplinks.routeWithNavController(this.navController, {}).subscribe(
       (match) => {
@@ -193,5 +205,16 @@ export class AppComponent {
       return data.id_persona;
     }
     return 0;
+  }
+
+  private updatePermisosByUser(userSistem: number) {
+    this.access.permisos(userSistem).subscribe(
+      response => {
+        localStorage.removeItem('u_permisos');
+        localStorage.setItem('u_permisos', JSON.stringify(response.data));
+      }, error => {
+        console.log("error");
+      }
+    )
   }
 }

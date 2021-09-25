@@ -96,9 +96,10 @@ export class InicioPage implements OnInit {
   }
 
   public recargar(event: any) {
-    if (event.active) {
-      this.buscarNegocios();
-    }
+    setTimeout(() => {
+      event.target.complete();
+      this.ngOnInit();
+    }, 2000);
   }
 
   ionViewWillEnter() {

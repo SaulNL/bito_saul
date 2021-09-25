@@ -5,6 +5,7 @@ import { NegocioService } from "../../../api/negocio.service";
 import { Router } from "@angular/router";
 import { ProductosService } from "../../../api/productos.service";
 import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
+import { OptionBackLogin } from "src/app/Modelos/OptionBackLoginModel";
 
 @Component({
   selector: "app-modal-producto",
@@ -19,17 +20,17 @@ export class ModalProductoPage implements OnInit {
   public informacionNegocio: any;
   public comprarB: any;
   public mensajeCompra = 'Agregar';
-
+  public typeLogin: OptionBackLogin;
   constructor(
     private servicioProductos: ProductosService,
     public modalCtrl: ModalController,
     private negocioServico: NegocioService,
     private router: Router,
     private notificaciones: ToadNotificacionService
-  ) {}
+  ) { }
 
   ngOnInit() {
-
+    this.typeLogin = new OptionBackLogin();
     if (this.existeSesion) {
       this.obtenerInformacionNegocio();
       this.loVio(this.unoProducto);
@@ -55,7 +56,12 @@ export class ModalProductoPage implements OnInit {
     );
   }
   login() {
-    this.router.navigate(["/tabs/login"]);
+    this.typeLogin.type = 'producto';
+    console.log(this.typeLogin);
+    const body = JSON.stringify(this.typeLogin);
+    this.router.navigate(["/tabs/login"], {
+      queryParams: { productos:  body}
+    });
     this.modalCtrl.dismiss({
       dismissed: true,
     });
@@ -71,7 +77,7 @@ export class ModalProductoPage implements OnInit {
 
         }
       },
-      (error) => {}
+      (error) => { }
     );
   }
   public agregar(producto: any) {
@@ -108,10 +114,10 @@ export class ModalProductoPage implements OnInit {
         (response) => {
 
           this.informacionNegocio = response.data;
-          
+
           this.mostrarBoton();
         },
-        (error) => {}
+        (error) => { }
       );
   }
 
@@ -123,7 +129,7 @@ export class ModalProductoPage implements OnInit {
       parseInt(this.unoProducto.precio) > 0;
   }
 
-  public noEstaAbierto(){
+  public noEstaAbierto() {
     this.mensajeCompra = 'Este negocio se encuentra cerrado';
   }
 }

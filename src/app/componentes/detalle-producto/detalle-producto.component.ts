@@ -1,3 +1,4 @@
+import { OptionBackLogin } from './../../Modelos/OptionBackLoginModel';
 import { ToadNotificacionService } from './../../api/toad-notificacion.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -24,12 +25,13 @@ export class DetalleProductoComponent implements OnInit {
     @Output() llenarLista: EventEmitter<any> = new EventEmitter();
     @Input() bolsa: any;
     @Input() user: any;
+    @Input() url: string;
     public subscribe;
     public modal;
     public existeSesion: boolean;
     public cantidad: number;
     public activeSelectedProduct: boolean;
-
+    public typeLogin: OptionBackLogin;
     constructor(
         private utilsCls: UtilsCls,
         private modalController: ModalController,
@@ -40,6 +42,7 @@ export class DetalleProductoComponent implements OnInit {
         private servicioProductos: ProductosService,
         public alertController: AlertController
     ) {
+        this.typeLogin = new OptionBackLogin();
         this.existeSesion = utilsCls.existe_sesion();
         this.subscribe = this.platform.backButton.subscribe(() => {
             this.cerrarModal();
@@ -109,7 +112,11 @@ export class DetalleProductoComponent implements OnInit {
                 'data': producto,
             });
         } else {
-            this.router.navigate(['/tabs/login'])
+            this.typeLogin.type = 'perfil';
+            this.typeLogin.url = this.url;
+            this.modalController.dismiss({
+                'goLogin': this.typeLogin
+            });
         }
     }
     public darLike(producto: ProductoModel) {
@@ -148,6 +155,10 @@ export class DetalleProductoComponent implements OnInit {
         await alert.present();
     }
     public login() {
-        this.router.navigate(["/tabs/login"]);
+        this.typeLogin.type = 'perfil';
+        this.typeLogin.url = this.url;
+        this.modalController.dismiss({
+            'goLogin': this.typeLogin
+        });
     }
 }

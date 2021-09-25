@@ -1,3 +1,4 @@
+import { OptionBackLogin } from './../../Modelos/OptionBackLoginModel';
 import { Component, OnInit } from "@angular/core";
 import { Login } from "../../Modelos/login";
 import { LoginService } from "../../api/login.service";
@@ -39,12 +40,13 @@ export class LoginPage implements OnInit {
   userData: any = {};
   private userFG: Login;
   public loadion: any;
+  public optionBack: OptionBackLogin;
   picture;
   name;
   email;
   lastname;
   uid;
-  public EnterUser:any;
+  public EnterUser: any;
   public inciarSesion: any;
   constructor(
     private navctrl: NavController,
@@ -70,15 +72,37 @@ export class LoginPage implements OnInit {
     this.ionViewWillLeave();
     registerWebPlugin(FacebookLogin);
     this.userFG = new Login();
-    this.EnterUser= false;
+    this.EnterUser = false;
     this.inciarSesion = 'Iniciando sesión';
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.rot.queryParams.subscribe(params => {
+      if (params.productos && params) {
+        this.optionBack = JSON.parse(params.productos);
+      }
+    });
+
+    this.rot.queryParams.subscribe(params => {
+      if (params.perfil && params) {
+        this.optionBack = JSON.parse(params.perfil);
+      }
+    });
+
+  }
+
   ionViewDidEnter() {
     this.backButtonSub = this.platform.backButton.subscribe(() => {
       this.back();
     });
+  }
+
+  negocioRuta(negocioURL) {
+    if (negocioURL == "") {
+      this._router.navigate(["/tabs/inicio"]);
+    } else {
+      this._router.navigate(["/tabs/negocio/" + negocioURL]);
+    }
   }
   ionViewWillLeave() {
     this.backButtonSub.unsubscribe();
@@ -147,20 +171,20 @@ export class LoginPage implements OnInit {
     if (this.platform.is('android')) {
       res = await this.googlePlus.login({
         webClientId:
-        "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
+          "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
         offline: true,
       });
-  } else if (this.platform.is('ios')) {
-    res = await this.googlePlus.login({
-      webClientId:
-      "315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com",
-      offline: true,
-    });
+    } else if (this.platform.is('ios')) {
+      res = await this.googlePlus.login({
+        webClientId:
+          "315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com",
+        offline: true,
+      });
 
-  } else {
-    this.loader = false;
-    this.notifi.alerta('Error Login Google');
-  }
+    } else {
+      this.loader = false;
+      this.notifi.alerta('Error Login Google');
+    }
 
     this.present();
     const resConfirmed = await this.afAuth.auth.signInWithCredential(
@@ -190,7 +214,7 @@ export class LoginPage implements OnInit {
     //this.uid = user.uid;
     this.userFG.password = user.providerData[0].uid;
     this.userFG.usuario = this.email;
-    
+
   }
 
   /**
@@ -218,7 +242,7 @@ export class LoginPage implements OnInit {
    * validationfg
    */
   public validationfg(inform) {
-     this.loader = true;
+    this.loader = true;
     const resConfirmed = inform;
     if (
       typeof resConfirmed.user.providerData[0].uid === "undefined" ||
@@ -271,14 +295,24 @@ export class LoginPage implements OnInit {
     await modal.present();
   }
   public back() {
-    this.location.back();
+    switch (this.optionBack.type) {
+        case 'producto':
+          this.location.back();
+          break;
+        case 'perfil':
+          this.negocioRuta(this.optionBack.url);
+          break;
+        default:
+          this.location.back();
+          break;
+      }
   }
 
   async present() {
     if (this.EnterUser) {
-      this.EnterUser=false;
+      this.EnterUser = false;
       this.doLogin(this.usuario);
     }
-    this.EnterUser=false;
+    this.EnterUser = false;
   }
 }

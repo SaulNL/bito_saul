@@ -371,14 +371,13 @@
                                         </ion-fab-button>
                                     </ion-fab>
                                 </div>
-                                <!-- <div
-                                    *ngIf="mostrarBoton(producto.precio) && !(this.informacionNegocio.abierto === 'ABIERTO')">
+                                <!-- <div*ngIf="mostrarBoton(producto.precio) && !(this.informacionNegocio.abierto === 'ABIERTO')">
                                     <ion-fab class="bolsita agregarBolda" (click)="avisoNegocioCerrado()">
                                         <ion-fab-button disabled="true" class="bosar">
                                             <ion-icon name="bag-add-outline"></ion-icon>
                                         </ion-fab-button>
                                     </ion-fab>
-                                </div> -->
+                                </div*ngIf=> -->
                                 <div class="alado">
                                     <div *ngFor="let item of bolsa; let i = index">
                                         <div *ngIf="item.idProducto === producto.idProducto">

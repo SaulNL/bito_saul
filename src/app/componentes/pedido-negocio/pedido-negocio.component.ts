@@ -32,12 +32,12 @@ export class PedidoNegocioComponent implements OnInit {
   sumaTotal: number;
   cantidad: number;
   costoEntrega: number;
-  detalle:string;
+  detalle: string;
   blnCosto: boolean;
   blnCostoLetra: boolean;
   public subscribe;
   public modal;
-  public loader : any;
+  public loader: any;
   public msj = 'Realizando pedido';
 
   constructor(
@@ -53,8 +53,8 @@ export class PedidoNegocioComponent implements OnInit {
     this.lat = 19.31905;
     this.lng = -98.19982;
     this.subscribe = this.platform.backButton.subscribe(() => {
-    this.cerrarModal();
-    this.loader = false;
+      this.cerrarModal();
+      this.loader = false;
     });
   }
 
@@ -85,9 +85,9 @@ export class PedidoNegocioComponent implements OnInit {
         iconAnchor: [13, 41],
       });
       this.marker = marker([lat, lng], { icon: myIcon, draggable: true }).addTo(this.map);
-      this.marker.on("dragend", () =>{
+      this.marker.on("dragend", () => {
 
-        this.getLatLong({latlng: this.marker.getLatLng()});
+        this.getLatLong({ latlng: this.marker.getLatLng() });
       });
     }, 500);
   }
@@ -108,7 +108,7 @@ export class PedidoNegocioComponent implements OnInit {
     if (this.suma === 0) {
       this.lista = [];
       this.cerrarModal();
-        this.guard.tf = true;
+      this.guard.tf = true;
     }
   }
 
@@ -130,10 +130,12 @@ export class PedidoNegocioComponent implements OnInit {
   }
 
   public realizarPedido() {
+    const datos = JSON.parse(localStorage.getItem('u_data'));
+    const telefono_usuario = datos.celular;
     this.loader = true;
     const pedido = {
       direccion: this.estasUbicacion,
-      idNegocio:  this.lista[0].idNegocio,
+      idNegocio: this.lista[0].idNegocio,
       idPersona: this.utilsCls.getIdPersona(),
       idTipoPedido: this.tipoEnvio,
       latitud: this.lat,
@@ -141,10 +143,9 @@ export class PedidoNegocioComponent implements OnInit {
       pedido: this.lista,
       detalle: this.detalle
     };
-    if(this.tipoEnvio !== null){
+    if (this.tipoEnvio !== null) {
       this.negocioService.registrarPedido(pedido).subscribe(
         res => {
-          this.loader = false;
           this.mesajes.exito('Pedido realizado éxito')
           this.lista = [];
           this.guard.tf = true;
@@ -152,9 +153,19 @@ export class PedidoNegocioComponent implements OnInit {
         }, error => {
           this.loader = false;
           this.mesajes.error('Ocurrio un error al generar el pedido')
+        },
+        () => {
+          this.negocioService.enviarMensajePedido(telefono_usuario, this.lista[0].idNegocio).subscribe(
+            respuesta => {
+              if (respuesta.code === 500) {
+                this.mesajes.error(respuesta.message);
+              }
+            }
+          );
+          this.loader = false;
         }
       );
-    }else{
+    } else {
       this.loader = false;
       this.presentAlert("Debe seleccionar el Tipo de Entrega");
     }
@@ -194,14 +205,14 @@ export class PedidoNegocioComponent implements OnInit {
     */
   async localizacionTiempo() {
     this.geolocation.getCurrentPosition().then((resp) => {
-      this.lat =  resp.coords.latitude
-      this.lng =  resp.coords.longitude
+      this.lat = resp.coords.latitude
+      this.lng = resp.coords.longitude
       this.map.panTo([this.lat, this.lng]);
       this.marker.setLatLng([this.lat, this.lng]);
       this.geocodeLatLng();
-     }).catch((error) => {
+    }).catch((error) => {
 
-     });
+    });
 
   }
   getLatLong(e) {
@@ -246,7 +257,7 @@ export class PedidoNegocioComponent implements OnInit {
     });
     await alert.present();
   }
-  async presentAlert(texto:string) {
+  async presentAlert(texto: string) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Aviso',
@@ -294,8 +305,8 @@ export class PedidoNegocioComponent implements OnInit {
     this.guard.tf = true;
     this.cerrarModal();
   }
-    public productoImagen(imagen: any){
-    if(Array.isArray(imagen)){
+  public productoImagen(imagen: any) {
+    if (Array.isArray(imagen)) {
       return imagen[0];
     }
     return imagen;

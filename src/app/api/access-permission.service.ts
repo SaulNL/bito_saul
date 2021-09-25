@@ -58,4 +58,17 @@ export class AccessPermissionService {
       }));
   }
 
+  permisos(usuarioSistema: number): Observable<any> {
+    const body = JSON.stringify({ "id_usuario_sistema": usuarioSistema });
+    return from(this.http.post(this.url + 'api/user/permisos', body,
+      AppSettings.getHeadersToken())
+      .then(data => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      })).pipe(map(data => {
+        return data;
+      }));
+  }
 }
