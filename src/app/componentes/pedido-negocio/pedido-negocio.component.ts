@@ -148,21 +148,19 @@ export class PedidoNegocioComponent implements OnInit {
         res => {
           this.mesajes.exito('Pedido realizado éxito')
           this.lista = [];
-          this.guard.tf = true;
-          this.cerrarModal();
-        }, error => {
-          this.loader = false;
-          this.mesajes.error('Ocurrio un error al generar el pedido')
-        },
-        () => {
           this.negocioService.enviarMensajePedido(telefono_usuario, this.lista[0].idNegocio).subscribe(
             respuesta => {
               if (respuesta.code === 500) {
                 this.mesajes.error(respuesta.message);
               }
+              this.loader = false;
+              this.guard.tf = true;
+              this.cerrarModal();
             }
           );
+        }, error => {
           this.loader = false;
+          this.mesajes.error('Ocurrio un error al generar el pedido')
         }
       );
     } else {
