@@ -67,18 +67,20 @@ export class DetalleProductoComponent implements OnInit {
     }
 
     cerrarModal() {
-        this.modalController.dismiss({
+        if(this.activeSelectedProduct){
+            this.agragarproducto();
+        } else {
+            this.modalController.dismiss({
             'data': null,
         });
+        }
+
     }
 
     ionViewDidLeave() {
         this.subscribe.unsubscribe();
     }
 
-    // get mostrarComponente() {
-    // return (this._entregaDomicilio === 1 || this._entregaSitio === 1 || this._consumoSitio === 1) && this.utilsCls.existe_sesion() && parseInt(this.datos.precio) > 0 && this._abierto === 'ABIERTO';
-    // }
     get opciones() {
         return (this.option() && this.existeSesion);
     }
