@@ -437,7 +437,6 @@ export class PerfilNegocioPage implements OnInit {
     });
     await modal.present();
     await modal.onDidDismiss().then((r) => {
-      console.log(r.data);
       if (r.data.data != undefined && r.data.data !== null) {
         this.llenarBolsa(r.data.data);
       }
@@ -698,14 +697,13 @@ export class PerfilNegocioPage implements OnInit {
     this.bolsa.map((it) => {
       if (it.idProducto === dato.idProducto) {
         existe = true;
-        if (dato.cantidad > 1) {
+        // if (dato.cantidad > 1) {
           it.cantidad = dato.cantidad;
-        } else {
-          it.cantidad++;
-        }
+        // } else {
+          // it.cantidad++;
+        // }
       }
     });
-
     if (!existe) {
       this.bolsa.push(dato);
     }
@@ -838,7 +836,7 @@ export class PerfilNegocioPage implements OnInit {
     } else {
       this.typeLogin.type = 'perfil';
       this.typeLogin.url = this.negocio;
-      console.log(this.typeLogin);
+
       const body = JSON.stringify(this.typeLogin);
       this.router.navigate(["/tabs/login"], {
         queryParams: { perfil: body }

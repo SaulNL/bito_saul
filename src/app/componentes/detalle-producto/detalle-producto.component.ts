@@ -99,7 +99,6 @@ export class DetalleProductoComponent implements OnInit {
         }
     }
     agragarproducto() {
-
         if (this.existeSesion) {
             const producto = {
                 idProducto: this.datos.idProducto,
@@ -111,7 +110,7 @@ export class DetalleProductoComponent implements OnInit {
                 descripcion: this.datos.descripcion
             };
             this.modalController.dismiss({
-                'data': producto,
+                'data': producto
             });
         } else {
             this.typeLogin.type = 'perfil';

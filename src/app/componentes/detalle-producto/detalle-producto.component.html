@@ -59,12 +59,10 @@
                     </div>
                 </ion-row>
                 <ion-row>
-                    <ion-col>
+                    <ion-col *ngIf="!activeSelectedProduct">
                         <ion-button expand="block" (click)="agragarproducto()">
-                            <span *ngIf="activeSelectedProduct">Regresar </span>
                             <span *ngIf="!activeSelectedProduct">Agregar a la bolsa </span>
                             <ion-icon *ngIf="!activeSelectedProduct" name="bag-add-outline"></ion-icon>
-                            <ion-icon *ngIf="activeSelectedProduct" name="close-outline"></ion-icon>
                         </ion-button>
                     </ion-col>
                 </ion-row>
