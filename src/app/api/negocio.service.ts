@@ -326,7 +326,7 @@ export class NegocioService {
             }));
     }
 
-    enviarMensajePedido(telefono_usuario: string, id_negocio: number): Observable<any> {
+    enviarMensajePedido(telefono_usuario: number, id_negocio: number): Observable<any> {
         const body = JSON.stringify({ telefono_usuario: telefono_usuario, id_negocio: id_negocio });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(

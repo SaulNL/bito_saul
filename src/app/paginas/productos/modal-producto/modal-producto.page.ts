@@ -57,7 +57,7 @@ export class ModalProductoPage implements OnInit {
   }
   login() {
     this.typeLogin.type = 'producto';
-    console.log(this.typeLogin);
+    
     const body = JSON.stringify(this.typeLogin);
     this.router.navigate(["/tabs/login"], {
       queryParams: { productos:  body}

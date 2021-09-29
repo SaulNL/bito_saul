@@ -128,7 +128,23 @@ export class PedidoNegocioComponent implements OnInit {
       }
     });
   }
-
+  private enviarSms(telefono: number , idNegocio: number) {
+    this.negocioService.enviarMensajePedido(telefono, idNegocio).subscribe(
+      respuesta => {
+        if (respuesta.code === 500) {
+          this.mesajes.error(respuesta.message);
+        }
+        this.loader = false;
+        this.guard.tf = true;
+        this.mesajes.exito('Pedido realizado éxito');
+        this.lista = [];
+        this.cerrarModal();
+      }, error => {
+        this.loader = false;
+        this.mesajes.error('Ocurrio un error al generar el pedido');
+      }
+    );
+  }
   public realizarPedido() {
     const datos = JSON.parse(localStorage.getItem('u_data'));
     const telefono_usuario = datos.celular;
@@ -146,18 +162,7 @@ export class PedidoNegocioComponent implements OnInit {
     if (this.tipoEnvio !== null) {
       this.negocioService.registrarPedido(pedido).subscribe(
         res => {
-          this.mesajes.exito('Pedido realizado éxito')
-          this.lista = [];
-          this.negocioService.enviarMensajePedido(telefono_usuario, this.lista[0].idNegocio).subscribe(
-            respuesta => {
-              if (respuesta.code === 500) {
-                this.mesajes.error(respuesta.message);
-              }
-              this.loader = false;
-              this.guard.tf = true;
-              this.cerrarModal();
-            }
-          );
+          this.enviarSms(telefono_usuario, this.lista[0].idNegocio);
         }, error => {
           this.loader = false;
           this.mesajes.error('Ocurrio un error al generar el pedido')

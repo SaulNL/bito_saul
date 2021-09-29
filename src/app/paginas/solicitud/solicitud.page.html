@@ -1,10 +1,10 @@
-<app-toolbar-busqueda placeHolder="Buscar solicitudes..." (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
+<app-toolbar-busqueda placeHolder="Buscar requerimientos de compra..." (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
 <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
 <ion-content *ngIf="!loader">
 
     <ion-card *ngIf="lstSolicitudes.length <= 0 " style="background-color: red; color: white;">
       <ion-card-content>
-        <strong>Lo sentimos!</strong> No hay solicitudes relacionadas con tu busqueda en <strong>{{mensaje}}</strong>...
+        <strong>Lo sentimos!</strong> No hay requerimientos de compra relacionadas con tu busqueda en <strong>{{mensaje}}</strong>...
       </ion-card-content>
     </ion-card>
 

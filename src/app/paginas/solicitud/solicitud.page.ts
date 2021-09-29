@@ -85,7 +85,7 @@ export class SolicitudPage implements OnInit {
     this.mostrarDetalle = false;
     this.reiniciarFiltro();
     this.obtenerCatagorias(null);
-    this.mensaje = 'Todas las solicitudes';
+    this.mensaje = 'Todos los requerimientos de compra';
     this.anyFiltros.strBuscar = JSON.parse(JSON.stringify(respuesta));
     this.banner = respuesta;
     this.obtenerSolicitudes();

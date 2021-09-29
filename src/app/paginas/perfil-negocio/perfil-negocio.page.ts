@@ -88,6 +88,7 @@ export class PerfilNegocioPage implements OnInit {
   public siEsta: any;
   public arrayLugaresEntrega: any;
   public typeLogin: OptionBackLogin;
+  public promociones: any;
   constructor(
     private navctrl: NavController,
     private route: ActivatedRoute,
@@ -98,7 +99,6 @@ export class PerfilNegocioPage implements OnInit {
     private util: UtilsCls,
     private sideBarService: SideBarService,
     private actionSheetController: ActionSheetController,
-    private _router: Router,
     public modalController: ModalController,
     private serviceProveedores: ProveedorServicioService,
     public alertController: AlertController,
@@ -109,16 +109,17 @@ export class PerfilNegocioPage implements OnInit {
     private servicioProductos: ProductosService,
   ) {
     this.seccion = 'productos';
-    this.loader = true;
+    this.loader = false;
     this.typeLogin = new OptionBackLogin();
     this.existeSesion = util.existe_sesion();
     this.estatusCalificacion = true;
     this.bolsa = [];
+    this.promociones = [];
     this.contador = 0;
     this.route.queryParams.subscribe((params) => {
       this.subscribe = this.platform.backButton.subscribe(() => {
         this.modal = this.modalController.getTop().then((dato) => {
-          if (dato) {
+          if (dato !== undefined) {
             this.modal.dismiss();
           } else {
             if (this.contador === 0) {
@@ -137,7 +138,6 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   ngOnInit() {
-
     this.route.queryParams.subscribe(params => {
       if (params.cancel && params) {
         let all = JSON.parse(JSON.stringify(params));
@@ -171,6 +171,7 @@ export class PerfilNegocioPage implements OnInit {
     });
 
     this.route.params.subscribe((params) => {
+
       this.negocio = params.negocio;
       if (
         this.negocio !== undefined &&
@@ -183,8 +184,6 @@ export class PerfilNegocioPage implements OnInit {
         this.location.back();
       }
     });
-
-
     this.getCurrentPosition();
   }
   ionViewWillEnter() {
@@ -209,12 +208,12 @@ export class PerfilNegocioPage implements OnInit {
       (response) => {
         if (response.data !== null) {
           this.informacionNegocio = response.data;
+          this.promociones = this.informacionNegocio.promociones;
           if (this.informacionNegocio.lugares_entrega !== null) {
             this.arrayLugaresEntrega = this.informacionNegocio.lugares_entrega.split(',');
           } else {
             this.arrayLugaresEntrega = null;
           }
-
           if (!this.informacionNegocio.activo) {
             this.presentExit();
             this.siEsta = false;
@@ -234,16 +233,17 @@ export class PerfilNegocioPage implements OnInit {
           this.presentError();
         }
         this.loader = false;
-        setTimeout((it) => {
-          this.loadMap();
-        }, 100);
+        // setTimeout((it) => {
+        // this.loadMap();
+        // }, 100);
       },
       (error) => {
+        console.log(error);
         confirm("Error al cargar");
         this.loader = false;
       }
     );
-    this.loader = false;
+    // this.loader = false;
   }
 
   obtenerProductos() {
@@ -297,6 +297,7 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   obtenerServicios() {
+
     this.negocioService
       .obtenerDetalleDeNegocio(this.informacionNegocio.id_negocio, 1, this.user.id_persona)
       .subscribe(
@@ -332,23 +333,26 @@ export class PerfilNegocioPage implements OnInit {
       );
   }
 
-  loadMap() {
-    const lat = this.informacionNegocio.det_domicilio.latitud;
-    const lng = this.informacionNegocio.det_domicilio.longitud;
-    this.map = new Map("mapId").setView([lat, lng], 16);
-    tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "",
-    }).addTo(this.map);
+  // loadMap() {
+  //   if (this.informacionNegocio.det_domicilio.latitud !== '0' && this.informacionNegocio.det_domicilio.longitud !== '0') {
+  //     const lat = this.informacionNegocio.det_domicilio.latitud;
+  //     const lng = this.informacionNegocio.det_domicilio.longitud;
+  //     this.map = new Map("mapId").setView([lat, lng], 16);
+  //     tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  //       attribution: "",
+  //     }).addTo(this.map);
 
-    var myIcon = icon({
-      iconUrl:
-        "https://ecoevents.blob.core.windows.net/comprandoando/marker.png",
-      iconSize: [45, 41],
-      iconAnchor: [13, 41],
-    });
+  //     var myIcon = icon({
+  //       iconUrl:
+  //         "https://ecoevents.blob.core.windows.net/comprandoando/marker.png",
+  //       iconSize: [45, 41],
+  //       iconAnchor: [13, 41],
+  //     });
 
-    marker([lat, lng], { icon: myIcon }).addTo(this.map);
-  }
+  //     marker([lat, lng], { icon: myIcon }).addTo(this.map);
+  //   }
+
+  // }
 
   async configToad(mensaje) {
     const toast = await this.toadController.create({
@@ -359,13 +363,13 @@ export class PerfilNegocioPage implements OnInit {
     return await toast.present();
   }
 
-  cambio() {
-    if (this.seccion === "ubicacion") {
-      setTimeout((it) => {
-        this.loadMap();
-      }, 100);
-    }
-  }
+  // cambio() {
+  // if (this.seccion === "ubicacion") {
+  // setTimeout((it) => {
+  // this.loadMap();
+  // }, 100);
+  // }
+  // }
 
   irAlDetalle(producto: any) {
     this.detalle = producto;
@@ -442,9 +446,7 @@ export class PerfilNegocioPage implements OnInit {
       }
       if (r.data.goLogin != undefined) {
         const body = JSON.stringify(r.data.goLogin);
-        this.router.navigate(["/tabs/login"], {
-          queryParams: { perfil: body }
-        });
+        this.router.navigate(["/tabs/login"], { queryParams: { perfil: body } });
       }
     });
   }
@@ -521,6 +523,7 @@ export class PerfilNegocioPage implements OnInit {
    * @author Omar
    */
   obtenerEstatusCalificacion() {
+
     //  this.loaderEstatusCalifi = true;
     if (this.existeSesion) {
       this.serviceProveedores
@@ -562,6 +565,7 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   private horarios(negocio: any) {
+
     this.estatus = { tipo: 0, mensaje: "No abre hoy" };
 
     const hros = negocio.horarios;
@@ -698,9 +702,9 @@ export class PerfilNegocioPage implements OnInit {
       if (it.idProducto === dato.idProducto) {
         existe = true;
         // if (dato.cantidad > 1) {
-          it.cantidad = dato.cantidad;
+        it.cantidad = dato.cantidad;
         // } else {
-          // it.cantidad++;
+        // it.cantidad++;
         // }
       }
     });
@@ -714,12 +718,16 @@ export class PerfilNegocioPage implements OnInit {
     if (this.bolsa.length > 0) {
       this.mensajeBolsa();
     } else {
+
       this.blockk.tf = true;
       if (this.navegacion) {
         this.location.back();
         this.navegacion = false;
       } else {
-        this.router.navigate(['/tabs/inicio'], { queryParams: { special: true } });
+        // this.router.navigate(['/tabs/inicio']);
+        this.router.navigateByUrl('/tabs/inicio');
+        // this.router.navigate(['/tabs/inicio'], { queryParams: { special: true } });
+        this.contador = 0;
       }
     }
   }
@@ -807,6 +815,7 @@ export class PerfilNegocioPage implements OnInit {
     await alert.present();
   }
   calcularDistancia() {
+
     setTimeout(() => {
       const start = {
         latitude: this.miLat,
@@ -823,7 +832,7 @@ export class PerfilNegocioPage implements OnInit {
 
   agregarBolsaDeta(pro) {
     if (this.existeSesion) {
-      const producto = {
+      let producto = {
         idProducto: pro.idProducto,
         precio: pro.precio,
         imagen: pro.imagen,
@@ -832,7 +841,22 @@ export class PerfilNegocioPage implements OnInit {
         nombre: pro.nombre,
         descripcion: pro.descripcion,
       };
-      this.llenarBolsa(producto);
+      let existe = false;
+      this.bolsa.map((it) => {
+        if (it.idProducto === producto.idProducto) {
+          existe = true;
+          if (producto.cantidad > 1) {
+            it.cantidad = producto.cantidad;
+          } else {
+            it.cantidad++;
+          }
+        }
+      });
+      if (!existe) {
+        this.bolsa.push(producto);
+      }
+      this.blockk.tf = false;
+      this.blockk.url = this.negocio;
     } else {
       this.typeLogin.type = 'perfil';
       this.typeLogin.url = this.negocio;
@@ -843,7 +867,14 @@ export class PerfilNegocioPage implements OnInit {
       });
     }
   }
-
+  loginGo() {
+    this.typeLogin.type = 'perfil';
+    this.typeLogin.url = this.negocio;
+    const body = JSON.stringify(this.typeLogin);
+    this.router.navigate(["/tabs/login"], {
+      queryParams: { perfil: body }
+    });
+  }
   irRedSocial(palabra: string) {
     if (
       palabra.substring(0, 7) !== "http://" &&
@@ -994,6 +1025,7 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   guardarQuienVioNegocio(id_negocio: number) {
+
     this.negocioService.visteMiNegocio(id_negocio).subscribe(
       response => {
 
@@ -1005,6 +1037,7 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   comentariosNegocio(idNegocio: number) {
+
     this.negocioService.obtenerComentariosNegocio(idNegocio).subscribe(
       response => {
         if (response.data !== null && response.data != undefined) {
@@ -1028,5 +1061,9 @@ export class PerfilNegocioPage implements OnInit {
   }
   public loading(pc: any, pr: any) {
     return pc === true || pr === false;
+  }
+  public ifPromocion(promociones: any) {
+    
+    return (promociones !== undefined && promociones !== null && promociones.length > 0);
   }
 }

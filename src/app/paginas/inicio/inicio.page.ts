@@ -51,6 +51,7 @@ export class InicioPage implements OnInit {
   public persona: number | null;
   public permisos: Array<PermisoModel> | null;
   public afiliacion: boolean;
+  public byLogin : boolean;
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -65,6 +66,7 @@ export class InicioPage implements OnInit {
     private auth0Service: Auth0Service,
     private validarPermiso: ValidarPermisoService
   ) {
+    this.byLogin = false;
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.filtroActivo = false;
@@ -77,6 +79,11 @@ export class InicioPage implements OnInit {
     this.afiliacion = false;
   }
   ngOnInit(): void {
+     this.route.queryParams.subscribe(params => {
+      if (params.bylogin && params) {
+        this.negocioRutaByLogin(params.bylogin);
+      }
+    });
     const selected = localStorage.getItem('org');
     if (selected != null) {
       this.selectionAP = true;
@@ -271,6 +278,15 @@ export class InicioPage implements OnInit {
       );
     } else {
       this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
+    }
+  }
+  negocioRutaByLogin(url){
+    if (url == "") {
+      this.notificaciones.error(
+        "Este negocio aún no cumple los requisitos mínimos"
+      );
+    } else {
+      this.ruta.navigate(["/tabs/negocio/" + url]);
     }
   }
 }

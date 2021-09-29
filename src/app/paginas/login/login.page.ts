@@ -98,11 +98,7 @@ export class LoginPage implements OnInit {
   }
 
   negocioRuta(negocioURL) {
-    if (negocioURL == "") {
-      this._router.navigate(["/tabs/inicio"]);
-    } else {
-      this._router.navigate(["/tabs/negocio/" + negocioURL]);
-    }
+    this._router.navigate(["/tabs/inicio"], { queryParams: { bylogin: negocioURL } });
   }
   ionViewWillLeave() {
     this.backButtonSub.unsubscribe();
@@ -296,16 +292,16 @@ export class LoginPage implements OnInit {
   }
   public back() {
     switch (this.optionBack.type) {
-        case 'producto':
-          this.location.back();
-          break;
-        case 'perfil':
-          this.negocioRuta(this.optionBack.url);
-          break;
-        default:
-          this.location.back();
-          break;
-      }
+      case 'producto':
+        this.location.back();
+        break;
+      case 'perfil':
+        this.negocioRuta(this.optionBack.url);
+        break;
+      default:
+        this.location.back();
+        break;
+    }
   }
 
   async present() {

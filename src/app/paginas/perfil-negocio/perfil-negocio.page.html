@@ -25,9 +25,9 @@
 <app-spinner [loader]="loading(loader, siEsta)" [message]="msj"></app-spinner>
 <ion-content *ngIf="!loader && siEsta">
     <ng-container
-        *ngIf="(informacionNegocio.promociones !== undefined && informacionNegocio.promociones !== null && informacionNegocio.promociones.length > 0)">
+        *ngIf="ifPromocion(promociones)">
         <ion-slides class="ion-margin-bottom" [options]="slideOptsOne" #mySlider>
-            <ion-slide *ngFor="let promocion of informacionNegocio.promociones;">
+            <ion-slide *ngFor="let promocion of promociones;">
                 <img src="{{(promocion.url_imagen_banner)==='' || (promocion.url_imagen_banner)==null?promocionDefault:promocion.url_imagen_banner}}"
                     class="d-block img-fluid" alt="Cargando imagen..."
                     onerror="this.onerror=null;this.src=promocionDefault;" (click)="abrirModalPromocion(promocion)">
@@ -262,7 +262,8 @@
         <div class="separacion-arriba">
             <ion-grid>
                 <ion-row style="background: white;">
-                    <ion-segment value="productos" color="tertiary" [(ngModel)]="seccion" (ionChange)="cambio()">
+                <!-- (ionChange)="cambio()" -->
+                    <ion-segment value="productos" color="tertiary" [(ngModel)]="seccion" >
                         <ion-segment-button value="productos" *ngIf="informacionNegocio.catProductos.length > 0">
                             Productos
                         </ion-segment-button>
@@ -278,7 +279,7 @@
                     <ion-card class="w-100">
                         <ion-card-content class="ion-text-center">
                             Inicia sesión para poder ir la información de este negocio
-                            <ion-button expand="block" [routerLink]="['/tabs/login']"> Iniciar Sesión</ion-button>
+                            <ion-button expand="block" (click)="loginGo()"> Iniciar Sesión</ion-button>
                         </ion-card-content>
                     </ion-card>
                 </ion-row>

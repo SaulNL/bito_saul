@@ -6,7 +6,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-button>
     </ion-buttons>
-    <ion-title>Mis Solicitudes</ion-title>
+    <ion-title>Mis requerimientos de compra</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="agregar()">
         <ion-icon name="add-outline"></ion-icon>
@@ -19,11 +19,11 @@
    <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
   <ion-card>
     <div class="ion-text-center ion-margin-top">
-      <strong>Solicitudes Creadas</strong>
+      <strong>Requerimientos de compra creados</strong>
     </div>
     <div *ngIf="numeroSolicitudes == 0">
       <ion-chip color="warning">
-        <ion-label><strong>Lo sentimos!</strong> Aún no tiene ninguna solicitud creada.</ion-label>
+        <ion-label><strong>Lo sentimos!</strong> Aún no tiene ningun requerimiento de compra creado.</ion-label>
       </ion-chip>
     </div>
     <ion-card-header *ngIf="numeroSolicitudes > 0">
@@ -40,11 +40,11 @@
   </ion-card>
   <ion-card>
     <div class="ion-text-center ion-margin-top">
-      <strong>Solicitudes Publicadas </strong>
+      <strong>Requerimientos de compra publicados </strong>
     </div>
     <div *ngIf="numeroPublicadas == 0">
       <ion-chip color="warning">
-        <ion-label><strong>Lo sentimos!</strong> Aún no tiene ninguna solicitud publicada.</ion-label>
+        <ion-label><strong>Lo sentimos!</strong> Aún no tiene ningun requerimiento de compra publicado.</ion-label>
       </ion-chip>
     </div>
     <ion-card-header *ngIf="numeroPublicadas > 0">

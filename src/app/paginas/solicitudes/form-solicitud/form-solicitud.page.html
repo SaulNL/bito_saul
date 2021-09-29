@@ -18,13 +18,13 @@
       <form #formVariable="ngForm" class="form-horizontal" (ngSubmit)="guardar(formVariable)">
         <ion-list>
           <ion-item>
-            <ion-label position="stacked">¿Qué esta buscando o solicitando?</ion-label>
+            <ion-label position="stacked">¿Qué esta buscando o requiriendo?</ion-label>
             <ion-input id="idCompNombre" name="idCompNombre" #compSolicitud="ngModel" [(ngModel)]="actualTO.solicitud"
               required></ion-input>
           </ion-item>
           <div *ngIf="compSolicitud.touched  && compSolicitud.invalid" class="alert">
             <div *ngIf="compSolicitud.errors.required">
-              Agregue nombre de su solicitud
+              Agregue nombre de su requerimiento de compra
             </div>
           </div>
           <ion-item>
@@ -34,7 +34,7 @@
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Los siguientes campos ayudarán a clasificar y que encuentren tu
-              solicitud más rapido.
+              requerimiento de compra más rapido.
             </ion-label>
           </ion-item>
           <ion-item>
@@ -82,7 +82,7 @@
               [(ngModel)]="actualTO.descripcion" required></ion-input>
           </ion-item>
           <ion-item *ngIf="mostrarAfiliacion">
-            <ion-label position="stacked">Mostrar solicitud solo para:</ion-label>
+            <ion-label position="stacked">Mostrar requerimiento de compra solo para:</ion-label>
             <ion-select placeholder="{{ tipoOrg }}" name="organizaciones" required #organizaciones="ngModel"
               ok-text="Ok" cancel-text="Cancelar" [(ngModel)]="actualTO.organizaciones" multiple>
               <ng-container *ngFor="let item of lstOrganizaciones">
