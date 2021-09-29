@@ -72,6 +72,18 @@
         </ion-row>
       </ion-grid>
     </div>
+    <div *ngIf="tipoEnvio === 1">
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col class="ion-text-center">
+            <ion-label class="size-title"><strong>Numero de Mesas</strong></ion-label>
+            <ion-icon class="ion-text-center" (click)="numeroMesaMenos()" style="margin: 6px; background: #bbbbbb;" name="remove-outline"></ion-icon>
+            <span class="ion-text-center" style="position: relative; top: -9px;">{{numeroMesa}}</span>
+            <ion-icon class="ion-text-center" (click)="numeroMesaMas()"  style="margin: 6px; background: #bbbbbb;" name="add-outline"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
     <h3 class="ion-text-center">Lista de artículos</h3>
     <ion-item *ngFor="let p of lista; let i = index">
      <ion-grid>

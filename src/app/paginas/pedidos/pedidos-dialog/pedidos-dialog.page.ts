@@ -29,7 +29,7 @@ export class PedidosDialogPage implements OnInit {
   public subscribe;
   public navegacion: any;
   public loaderSearch = false;
-public cargando = 'Cargando';
+  public cargando = 'Cargando';
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -78,6 +78,10 @@ public cargando = 'Cargando';
         (res) => {
           //this.loader = false;
           this.listaNegocioPedididos = res.data;
+          this.listaNegocioPedididos.map(negocio => {
+            return negocio.pedidos.sort((a, b) => a.id_pedido_negocio - b.id_pedido_negocio).reverse();
+          });
+          this.listaNegocioPedididos = this.listaNegocioPedididos.sort((a, b) => a.pedidos[0].id_pedido_negocio - b.pedidos[0].id_pedido_negocio).reverse();
           this.loaderB = false;
           this.loaderSearch = false;
         },
@@ -131,7 +135,7 @@ public cargando = 'Cargando';
 
   regresar() {
 
-     this.location.back();
+    this.location.back();
 
     // if (this.navegacion) {
     //   this.location.back();

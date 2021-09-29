@@ -69,6 +69,7 @@ export class PedidosNegocioPage implements OnInit {
       .subscribe(
         (res) => {
           this.listaNegocioPedididos = res.data;
+          console.log(this.listaNegocioPedididos);
           this.listaNegocioPedididos.map(negocio => {
           return negocio.pedidos.sort((a, b) => a.id_pedido_negocio - b.id_pedido_negocio).reverse();
         });

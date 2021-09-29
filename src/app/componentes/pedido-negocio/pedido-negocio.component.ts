@@ -1,3 +1,4 @@
+import { PedidoNegocioModel } from './../../Modelos/PedidoNegocioModel';
 import { Component, Input, OnInit } from '@angular/core';
 import { UtilsCls } from "../../utils/UtilsCls";
 import { AlertController, ModalController, Platform } from "@ionic/angular";
@@ -39,7 +40,8 @@ export class PedidoNegocioComponent implements OnInit {
   public modal;
   public loader: any;
   public msj = 'Realizando pedido';
-
+  public numeroMesa: number;
+  private pedido: PedidoNegocioModel;
   constructor(
     private utilsCls: UtilsCls,
     private modalController: ModalController,
@@ -51,6 +53,7 @@ export class PedidoNegocioComponent implements OnInit {
     private geolocation: Geolocation
   ) {
     this.lat = 19.31905;
+    this.numeroMesa = 1;
     this.lng = -98.19982;
     this.subscribe = this.platform.backButton.subscribe(() => {
       this.cerrarModal();
@@ -128,7 +131,7 @@ export class PedidoNegocioComponent implements OnInit {
       }
     });
   }
-  private enviarSms(telefono: number , idNegocio: number) {
+  private enviarSms(telefono: number, idNegocio: number) {
     this.negocioService.enviarMensajePedido(telefono, idNegocio).subscribe(
       respuesta => {
         if (respuesta.code === 500) {
@@ -145,29 +148,38 @@ export class PedidoNegocioComponent implements OnInit {
       }
     );
   }
-  public realizarPedido() {
+  private registrarPedigo(pedido: PedidoNegocioModel) {
     const datos = JSON.parse(localStorage.getItem('u_data'));
     const telefono_usuario = datos.celular;
+    console.log(pedido);
+    this.negocioService.registrarPedido(pedido).subscribe(
+      res => {
+        this.enviarSms(telefono_usuario, this.lista[0].idNegocio);
+      }, error => {
+        this.loader = false;
+        this.mesajes.error('Ocurrio un error al generar el pedido')
+      }
+    );
+  }
+  public realizarPedido() {
     this.loader = true;
-    const pedido = {
-      direccion: this.estasUbicacion,
-      idNegocio: this.lista[0].idNegocio,
-      idPersona: this.utilsCls.getIdPersona(),
-      idTipoPedido: this.tipoEnvio,
-      latitud: this.lat,
-      longitud: this.lng,
-      pedido: this.lista,
-      detalle: this.detalle
-    };
+    this.pedido = new PedidoNegocioModel(this.lista[0].idNegocio, this.utilsCls.getIdPersona(), this.tipoEnvio, this.lista);
     if (this.tipoEnvio !== null) {
-      this.negocioService.registrarPedido(pedido).subscribe(
-        res => {
-          this.enviarSms(telefono_usuario, this.lista[0].idNegocio);
-        }, error => {
-          this.loader = false;
-          this.mesajes.error('Ocurrio un error al generar el pedido')
-        }
-      );
+      switch (this.tipoEnvio) {
+        case 1:
+          this.pedido.numeroMesa = this.numeroMesa;
+          this.registrarPedigo(this.pedido);
+          break;
+        case 2:
+          this.pedido.direccion = this.estasUbicacion;
+          this.pedido.latitud = this.lat;
+          this.pedido.longitud = this.lng;
+          this.registrarPedigo(this.pedido);
+          break;
+        case 3:
+          this.registrarPedigo(this.pedido);
+          break;
+      }
     } else {
       this.loader = false;
       this.presentAlert("Debe seleccionar el Tipo de Entrega");
@@ -313,5 +325,15 @@ export class PedidoNegocioComponent implements OnInit {
       return imagen[0];
     }
     return imagen;
+  }
+
+  public numeroMesaMas() {
+    this.numeroMesa = this.numeroMesa + 1;
+  }
+
+  public numeroMesaMenos() {
+    if (this.numeroMesa > 1) {
+      this.numeroMesa = this.numeroMesa - 1;
+    }
   }
 }
