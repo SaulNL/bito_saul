@@ -53,7 +53,7 @@ export class PedidoNegocioComponent implements OnInit {
     private geolocation: Geolocation
   ) {
     this.lat = 19.31905;
-    this.numeroMesa = 1;
+    this.numeroMesa = 0;
     this.lng = -98.19982;
     this.subscribe = this.platform.backButton.subscribe(() => {
       this.cerrarModal();
@@ -151,7 +151,7 @@ export class PedidoNegocioComponent implements OnInit {
   private registrarPedigo(pedido: PedidoNegocioModel) {
     const datos = JSON.parse(localStorage.getItem('u_data'));
     const telefono_usuario = datos.celular;
-    
+
     this.negocioService.registrarPedido(pedido).subscribe(
       res => {
         this.enviarSms(telefono_usuario, this.lista[0].idNegocio);
@@ -335,5 +335,8 @@ export class PedidoNegocioComponent implements OnInit {
     if (this.numeroMesa > 1) {
       this.numeroMesa = this.numeroMesa - 1;
     }
+  }
+  public rTantidad(cantidad : number) {
+    return cantidad === 0;
   }
 }

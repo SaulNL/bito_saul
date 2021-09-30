@@ -29,7 +29,7 @@ export class QuieroVenderPage implements OnInit {
 
   public firstFormGroup: FormGroup;
   public secondFormGroup: FormGroup;
-  public loader : boolean;
+  public loader: boolean;
   public actualTO: any;
   public procesando_img: boolean;
   public proveedorTO: MsPersonaModel;
@@ -69,7 +69,7 @@ export class QuieroVenderPage implements OnInit {
     private servicioPersona: PersonaService,
     private _router: Router,
     private sesionUtl: SessionUtil,
-    private loadingController : LoadingController
+    private loadingController: LoadingController
   ) {
 
     this.proveedorTO = new MsPersonaModel();
@@ -135,7 +135,7 @@ export class QuieroVenderPage implements OnInit {
     this.formulario1 = true;
     this.formulario2 = false;
     this.finalizar = false;
-    
+
   }
 
   public subir_imagen_cuadrada(event) {
@@ -247,25 +247,15 @@ export class QuieroVenderPage implements OnInit {
 
   guardar() {
     this.loader = true;
-      if (this.proveedorTO.selfie === null || this.proveedorTO.selfie === undefined) {
-        this._notificacionService.alerta('Ingrese foto de perfil');
-        this.loader = false;
-      } else {
-        if (this.proveedorTO.ine1 === null || this.proveedorTO.ine1 === undefined) {
-          this._notificacionService.alerta('Ingrese imagen delantera de su INE');
-          this.loader = false;
-        } else {
-          if (this.proveedorTO.ine2 === null || this.proveedorTO.ine2 === undefined) {
-            this._notificacionService.alerta('Ingrese imagen trasera de su INE');
-            this.loader = false;
-          } else {
-            this.formulario1 = false;
-            this.formulario2 = true;
-            this.finalizar = false;
-            this.loader = false;
-          }
-        }
-      }
+    if (this.proveedorTO.selfie === null || this.proveedorTO.selfie === undefined) {
+      this._notificacionService.alerta('Ingrese foto de perfil');
+      this.loader = false;
+    } else {
+      this.formulario1 = false;
+      this.formulario2 = true;
+      this.finalizar = false;
+      this.loader = false;
+    }
   }
 
   public get_list_cat_municipio(evento) {
