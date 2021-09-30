@@ -1,7 +1,7 @@
 import { AccessPermissionService } from './api/access-permission.service';
 import { Component } from '@angular/core';
 
-import { NavController, Platform } from '@ionic/angular';
+import { ModalController, NavController, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
@@ -27,7 +27,8 @@ export class AppComponent {
     private zone: NgZone,
     private navController: NavController,
     private negocioService: NegocioService,
-    private access: AccessPermissionService
+    private access: AccessPermissionService,
+    public modalController: ModalController
 
   ) {
     this.initializeApp();
@@ -60,7 +61,9 @@ export class AppComponent {
   setupDeeplinks() {
     this.deeplinks.routeWithNavController(this.navController, {}).subscribe(
       (match) => {
+        console.log(match);
         const url: any = match.$link["url"].split("/");
+        console.log(url);
         if (url[2] === match.$link["host"]) {
           this.zone.run(() => {
             let url_negocio: string;
@@ -68,6 +71,7 @@ export class AppComponent {
               url_negocio = match.$link.path.slice(0, -2);
               this.router.navigateByUrl('/tabs/negocio' + url_negocio);
               this.obtenerIdNegocioUrl(url_negocio.slice(1));
+              this.modalController.dismiss();
             } else {
               if (match.$link.path.includes('miafiliacion')) {
                 let urlTempA = match.$link.path.slice(1);
@@ -79,6 +83,7 @@ export class AppComponent {
                 this.obtenerPlaza(urlPlaza);
               } else {
                 this.router.navigateByUrl('/tabs/negocio' + match.$link["path"]);
+                this.modalController.dismiss();
               }
             }
           });

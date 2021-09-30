@@ -29,7 +29,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="@string/custom_url_scheme" />
-                <data android:scheme="https" android:host="beta-bitoo.azurewebsites.net"/>
+                <data android:scheme="https" android:host="bitoo.com.mx"/>
             </intent-filter>
 
         </activity>

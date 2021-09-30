@@ -27,12 +27,13 @@ export class DatosPedidoNegocioPage implements OnInit {
     this.loaderBtn = false;
    }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.special) {
         this.pedido = JSON.parse(params.special);
-      }      
-    });    
+        console.log(this.pedido);
+      }
+    });
     if(this.pedido.id_tipo_pedido === 2){
       this.loadMap();
     }
@@ -67,7 +68,7 @@ export class DatosPedidoNegocioPage implements OnInit {
       },
       error => {
         //this.loaderBtn = false;
-        this.notificaciones.error(error.message);    
+        this.notificaciones.error(error.message);
       });
   }
   perpararPedido(pedido) {
