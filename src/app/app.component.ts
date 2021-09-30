@@ -61,9 +61,9 @@ export class AppComponent {
   setupDeeplinks() {
     this.deeplinks.routeWithNavController(this.navController, {}).subscribe(
       (match) => {
-        console.log(match);
+
         const url: any = match.$link["url"].split("/");
-        console.log(url);
+        
         if (url[2] === match.$link["host"]) {
           this.zone.run(() => {
             let url_negocio: string;

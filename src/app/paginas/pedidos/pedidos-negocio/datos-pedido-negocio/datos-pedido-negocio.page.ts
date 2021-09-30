@@ -31,7 +31,7 @@ export class DatosPedidoNegocioPage implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.special) {
         this.pedido = JSON.parse(params.special);
-        console.log(this.pedido);
+        
       }
     });
     if(this.pedido.id_tipo_pedido === 2){

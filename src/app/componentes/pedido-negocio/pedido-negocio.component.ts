@@ -151,7 +151,7 @@ export class PedidoNegocioComponent implements OnInit {
   private registrarPedigo(pedido: PedidoNegocioModel) {
     const datos = JSON.parse(localStorage.getItem('u_data'));
     const telefono_usuario = datos.celular;
-    console.log(pedido);
+    
     this.negocioService.registrarPedido(pedido).subscribe(
       res => {
         this.enviarSms(telefono_usuario, this.lista[0].idNegocio);
