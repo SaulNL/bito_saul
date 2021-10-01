@@ -43,6 +43,7 @@ export class TabsPage implements OnInit{
     }
 
     inicio() {
+        localStorage.setItem('isRedirected', 'false');
         this.router.navigate(['/tabs/inicio']);
         this.inicioPage.buscarNegocios()
         localStorage.setItem('resetFiltro', '0');
@@ -63,9 +64,8 @@ export class TabsPage implements OnInit{
 
     }
     perfil(){
-        sessionStorage.setItem('isRedirected', 'false');
+        // localStorage.setItem('isRedirected', 'false');
         localStorage.setItem('resetFiltro', '0');
-
         this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
     }
 }

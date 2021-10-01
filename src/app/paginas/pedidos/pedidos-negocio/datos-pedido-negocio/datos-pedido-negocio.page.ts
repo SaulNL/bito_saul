@@ -17,6 +17,9 @@ export class DatosPedidoNegocioPage implements OnInit {
   public loaderBtn: boolean;
   map: any;
   public mapView: string;
+  public total: number;
+  public domicilioEnvio: boolean;
+  public domicilioEnvioMessage: any;
   constructor(
     private pedidosServicios: PedidosService,
     private activatedRoute: ActivatedRoute,
@@ -27,22 +30,39 @@ export class DatosPedidoNegocioPage implements OnInit {
     this.blnCancelar = false;
     this.loaderBtn = false;
     this.mapView = 'block';
+    this.domicilioEnvio = false;
+    this.domicilioEnvioMessage = '';
+    this.total = 0;
   }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.special) {
-        this.pedido = JSON.parse(params.special);
+        const body = JSON.parse(params.special);
+        this.pedido = body.pedido;
         if (this.pedido.id_tipo_pedido === 2) {
+          this.textoDomicilio(body.precioEntrega);
           this.loadMap();
+          this.domicilioEnvio = true;
         } else {
           this.mapView = 'none';
         }
+        this.pedido.productos.forEach(element => {
+          this.total += Number(element.costo);
+        });
       }
     });
     this.buscarNumeroRepartidor();
   }
-
+  public textoDomicilio(domicilioEnvioMessage: any) {
+    const temp = Number(domicilioEnvioMessage);
+    if (isNaN(temp)) {
+      this.domicilioEnvioMessage = '+ Costo de envio : ' + domicilioEnvioMessage;
+    } else {
+      this.domicilioEnvioMessage = '+ $' + temp + 'pesos del envio';
+    }
+    console.log(this.domicilioEnvioMessage);
+  }
   cancelar() {
     this.blnCancelar = true;
   }

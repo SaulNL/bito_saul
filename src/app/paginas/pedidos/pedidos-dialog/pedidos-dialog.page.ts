@@ -125,8 +125,12 @@ export class PedidosDialogPage implements OnInit {
     this.buscar();
   }
 
-  datosPedido(pedido: any) {
-    this.selectTO = JSON.parse(JSON.stringify(pedido));
+  datosPedido(pedido: any, negocio: any) {
+    const body = {
+      'pedido' : pedido,
+      'negocio' : negocio.precioEntrega
+    }
+    this.selectTO = JSON.parse(JSON.stringify(body));
     let navigationExtras = JSON.stringify(this.selectTO);
     this.router.navigate(["/tabs/home/compras/datos-pedido-dialog"], {
       queryParams: { special: navigationExtras },

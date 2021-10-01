@@ -61,7 +61,7 @@
           style="margin: 15px; border-bottom: 1px solid gray"
           lines="none"
           *ngFor="let pedido of negocio.pedidos"
-          (click)="datosPedido(pedido)"
+          (click)="datosPedido(pedido, negocio)"
         >
           <ion-grid>
             <ion-row>

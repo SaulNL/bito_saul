@@ -69,7 +69,7 @@ export class PedidosNegocioPage implements OnInit {
       .subscribe(
         (res) => {
           this.listaNegocioPedididos = res.data;
-          
+
           this.listaNegocioPedididos.map(negocio => {
           return negocio.pedidos.sort((a, b) => a.id_pedido_negocio - b.id_pedido_negocio).reverse();
         });
@@ -117,7 +117,12 @@ export class PedidosNegocioPage implements OnInit {
   }
 
   datosPedido(pedido: any) {
-    this.selectTO = JSON.parse(JSON.stringify(pedido));
+    this.listaNegocioPedididos[0].precioEntrega;
+    const body = {
+      'pedido' :  pedido,
+      'precioEntrega' : this.listaNegocioPedididos[0].precioEntrega
+    };
+    this.selectTO = JSON.parse(JSON.stringify(body));
     let navigationExtras = JSON.stringify(this.selectTO);
     this.visto(pedido.id_pedido_negocio);
     this.router.navigate(["/tabs/home/ventas/datos-pedido-negocio"], {
