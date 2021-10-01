@@ -53,9 +53,7 @@
         </ion-row>
       </ion-grid>
     </ion-item>
-    <div *ngIf="pedido.id_tipo_pedido === 2">
-      <div id="mapId" style="height:200px"></div>
-    </div>
+      <div id="mapId" style="height:200px" [ngStyle]="{display: mapView}"></div>
     <ion-grid>
       <ion-row>
         <ion-col class="ion-align-self-center">
