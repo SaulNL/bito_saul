@@ -10,6 +10,8 @@ import { NgZone } from '@angular/core';
 import { NegocioService } from './api/negocio.service';
 import { VistasBitooModel } from 'src/app/Modelos/vistasBitooModel';
 import { Plugins } from '@capacitor/core';
+import { VersionAndroidService } from './api/version-android.service';
+import { AppSettings } from './AppSettings';
 const { Geolocation } = Plugins;
 @Component({
   selector: 'app-root',
@@ -18,6 +20,8 @@ const { Geolocation } = Plugins;
 })
 export class AppComponent {
   visitasBitooModel: VistasBitooModel
+  public version: number;
+  public versionActualSistema: number;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -28,23 +32,23 @@ export class AppComponent {
     private navController: NavController,
     private negocioService: NegocioService,
     private access: AccessPermissionService,
-    public modalController: ModalController
+    public modalController: ModalController,
+    private android: VersionAndroidService
 
   ) {
     this.initializeApp();
     this.visitasBitooModel = new VistasBitooModel();
     // location.reload();
+    this.version = 0;
+    this.versionActualSistema = AppSettings.VERSION_SISTEMA;
+
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.setupDeeplinks();
-      this.obtenerPlataforma();
-      if (this.isAuthenticated()) {
-        this.updatePermisosByUser(this.getIdUsuarioSistema());
-      }
+      this.obtenerVersion();
     });
     this.obtenerIP();
   }
@@ -63,7 +67,7 @@ export class AppComponent {
       (match) => {
 
         const url: any = match.$link["url"].split("/");
-        
+
         if (url[2] === match.$link["host"]) {
           this.zone.run(() => {
             let url_negocio: string;
@@ -114,6 +118,30 @@ export class AppComponent {
 
       }
     );
+  }
+  obtenerVersion() {
+    this.android.obtenerVersion().subscribe(
+      (response) => {
+        this.version = response.data;
+        this.verificarVersion(response.data);
+      }, (error) => {
+        this.router.navigate(['/actualizar-version']);
+      }
+    );
+  }
+
+  verificarVersion(version: number) {
+    console.log(this.versionActualSistema);
+    console.log(version);
+    if (this.versionActualSistema != version) {
+      this.router.navigate(['/actualizar-version']);
+    } else {
+      this.setupDeeplinks();
+      this.obtenerPlataforma();
+      if (this.isAuthenticated()) {
+        this.updatePermisosByUser(this.getIdUsuarioSistema());
+      }
+    }
   }
 
   obtenerPlaza(url: string) {

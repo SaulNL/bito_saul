@@ -43,7 +43,7 @@ export class TabsPage implements OnInit{
     }
 
     inicio() {
-        localStorage.setItem('isRedirected', 'false');
+        // localStorage.setItem('isRedirected', 'false');
         this.router.navigate(['/tabs/inicio']);
         this.inicioPage.buscarNegocios()
         localStorage.setItem('resetFiltro', '0');
