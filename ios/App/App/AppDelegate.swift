@@ -1,24 +1,14 @@
 import UIKit
 import Capacitor
-import FBSDKCoreKit
-import Firebase
-
 
 @UIApplicationMain
-
-
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
 
-   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-    let handled = FBSDKCoreKit.ApplicationDelegate.shared.application(app, open: url, options: options)
-    return handled
-}
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
-    FirebaseApp.configure()
     return true
   }
 
@@ -44,6 +34,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
   }
 
+  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    // Called when the app was launched with a url. Feel free to add additional processing here,
+    // but if you want the App API to support tracking app url opens, make sure to keep this call
+    return CAPBridge.handleOpenUrl(url, options)
+  }
   
   func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
     // Called when the app was launched with an activity, including Universal Links.
@@ -51,7 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // tracking app url opens, make sure to keep this call
     return CAPBridge.handleContinueActivity(userActivity, restorationHandler)
   }
-  
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     super.touchesBegan(touches, with: event)
@@ -63,6 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       NotificationCenter.default.post(CAPBridge.statusBarTappedNotification)
     }
   }
+
   #if USE_PUSH
 
   func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
