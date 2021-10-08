@@ -278,7 +278,7 @@ export class InicioPage implements OnInit {
         "Este negocio aún no cumple los requisitos mínimos"
       );
     } else {
-      localStorage.setItem("isRedirected", "false");
+      // localStorage.setItem("isRedirected", "false");
       this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
     }
   }

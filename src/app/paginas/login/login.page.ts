@@ -77,11 +77,11 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit(): void {
-    if (localStorage.getItem("isRedirected") === "false") {
-      localStorage.setItem("isRedirected", "true");
-      location.reload();
-      // window.location.assign(this.router.url);
-    }
+    // if (localStorage.getItem("isRedirected") === "false") {
+    //   localStorage.setItem("isRedirected", "true");
+    //   location.reload();
+
+    // }
     this.rot.queryParams.subscribe(params => {
       if (params.productos && params) {
         this.optionBack = JSON.parse(params.productos);
