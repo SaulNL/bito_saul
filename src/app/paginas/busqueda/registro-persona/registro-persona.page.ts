@@ -149,8 +149,15 @@ export class RegistroPersonaPage implements OnInit {
         if (respuesta.code === 200) {
           const actualizado = AppSettings.setTokenUser(respuesta);
           this.sideBarService.publishSomeData("");
+          const optionLogin = localStorage.getItem('optionLogin');
           localStorage.setItem("isRedirected", "false");
-          this.router.navigate(["/tabs/inicio"]);
+            if(optionLogin != null ){
+              const perfil = JSON.parse(optionLogin);
+            this.negocioRuta(perfil.url);
+          } else {
+              this.router.navigate(["/tabs/inicio"]);
+            // this.location.assign("/tabs/inicio");
+          }
           this.notificacion.exito(respuesta.message);
           this.loader = false;
         }
@@ -218,8 +225,6 @@ export class RegistroPersonaPage implements OnInit {
       (response) => {
 
         if (response.data.code === 200) {
-
-
           this.usuario.password = this.passFace;
           this.usuario.usuario = data.email;
 
@@ -282,5 +287,9 @@ export class RegistroPersonaPage implements OnInit {
     } else {
       this.blnCorreo = true;
     }
+  }
+
+  negocioRuta(negocioURL) {
+    this.router.navigate(["/tabs/inicio"], { queryParams: { bylogin: negocioURL } });
   }
 }

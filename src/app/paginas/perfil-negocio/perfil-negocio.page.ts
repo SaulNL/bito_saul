@@ -57,7 +57,7 @@ export class PerfilNegocioPage implements OnInit {
   public estatusCalificacion: boolean;
   public hoy: number;
   public estatus: { tipo: number; mensaje: string };
-  public motrarContacto = true;
+  public motrarContacto: boolean;
   public backButton = true;
   public subscribe;
   public modal;
@@ -108,7 +108,9 @@ export class PerfilNegocioPage implements OnInit {
     private navBarServiceService: NavBarServiceService,
     private servicioProductos: ProductosService,
   ) {
+    this.motrarContacto = true;
     this.seccion = 'productos';
+    // this.segmentModel = 'productos';
     this.loader = false;
     this.typeLogin = new OptionBackLogin();
     this.existeSesion = util.existe_sesion();
@@ -136,8 +138,12 @@ export class PerfilNegocioPage implements OnInit {
     this.user = this.util.getUserData();
     this.siEsta = true;
   }
-
   ngOnInit() {
+    if (localStorage.getItem("isRedirected") === "false") {
+      localStorage.setItem("isRedirected", "true");
+      location.reload();
+      // window.location.assign(this.router.url);
+    }
     this.route.queryParams.subscribe(params => {
       if (params.cancel && params) {
         let all = JSON.parse(JSON.stringify(params));
@@ -204,10 +210,12 @@ export class PerfilNegocioPage implements OnInit {
 
   obtenerInformacionNegocio() {
     this.loader = true;
+
     this.negocioService.obteneretalleNegocio(this.negocio, this.user.id_persona).subscribe(
       (response) => {
         if (response.data !== null) {
           this.informacionNegocio = response.data;
+
           this.promociones = this.informacionNegocio.promociones;
           if (this.informacionNegocio.lugares_entrega !== null) {
             this.arrayLugaresEntrega = this.informacionNegocio.lugares_entrega.split(',');
@@ -247,11 +255,13 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   obtenerProductos() {
+
     this.negocioService
       .obtenerDetalleDeNegocio(this.informacionNegocio.id_negocio, 0, this.user.id_persona)
       .subscribe(
         (response) => {
           if (response.code === 200 && response.agrupados != null) {
+
             const productos = response.agrupados;
             const cats = [];
 
@@ -303,6 +313,7 @@ export class PerfilNegocioPage implements OnInit {
       .subscribe(
         (response) => {
           if (response.code === 200 && response.agrupados != null) {
+
             const servicios = response.agrupados;
             const cats = [];
 
@@ -445,6 +456,7 @@ export class PerfilNegocioPage implements OnInit {
         this.llenarBolsa(r.data.data);
       }
       if (r.data.goLogin != undefined) {
+        localStorage.setItem("isRedirected", "false");
         const body = JSON.stringify(r.data.goLogin);
         this.router.navigate(["/tabs/login"], { queryParams: { perfil: body } });
       }
@@ -860,7 +872,7 @@ export class PerfilNegocioPage implements OnInit {
     } else {
       this.typeLogin.type = 'perfil';
       this.typeLogin.url = this.negocio;
-
+      localStorage.setItem("isRedirected", "false");
       const body = JSON.stringify(this.typeLogin);
       this.router.navigate(["/tabs/login"], {
         queryParams: { perfil: body }
@@ -868,6 +880,7 @@ export class PerfilNegocioPage implements OnInit {
     }
   }
   loginGo() {
+    localStorage.setItem("isRedirected", "false");
     this.typeLogin.type = 'perfil';
     this.typeLogin.url = this.negocio;
     const body = JSON.stringify(this.typeLogin);
@@ -921,6 +934,7 @@ export class PerfilNegocioPage implements OnInit {
 
   }
   mostrarServicio(nombreCat) {
+    this.motrarContacto = true;
     if (!this.servicioSub) {
 
       if (this.banderaS === nombreCat) {
@@ -1063,7 +1077,17 @@ export class PerfilNegocioPage implements OnInit {
     return pc === true || pr === false;
   }
   public ifPromocion(promociones: any) {
-    
+
     return (promociones !== undefined && promociones !== null && promociones.length > 0);
+  }
+
+  public segmentChanged(event) {
+    this.motrarContacto = true;
+    this.servicioSub = true;
+    this.negocioSub = true;
+    this.seccion = event.detail.value;
+    this.motrarContacto = true;
+    this.servicioSub = true;
+    this.negocioSub = true;
   }
 }

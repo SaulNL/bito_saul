@@ -143,6 +143,7 @@ export class FormularioNegocioPage implements OnInit {
         this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
         this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
         this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
+        // this.setearDireccion();
       }
     });
 
@@ -174,6 +175,17 @@ export class FormularioNegocioPage implements OnInit {
     // this.cagarMapa();
     this.load_cat_estados();
 
+  }
+
+  setearDireccion() {
+    this.usuario = JSON.parse(localStorage.getItem('u_data'));
+    if (this.usuario != null) {
+      this.negocioTO.det_domicilio = this.usuario.domicilio;
+      this.negocioTO.det_domicilio.id_domicilio = null;
+      this.negocioTO.det_domicilio.latitud = this.negocioTO.det_domicilio.latitud;
+      this.negocioTO.det_domicilio.longitud = this.negocioTO.det_domicilio.longitud;
+      this.load_cat_estados();
+    }
   }
   setarPago() {
     this.metodosPago.forEach(i => {
@@ -691,7 +703,7 @@ export class FormularioNegocioPage implements OnInit {
   public get_list_cat_municipio(evento) {
     let idE;
     if (evento.type === 'ionChange') {
-      this.negocioTO.det_domicilio.id_municipio = [];
+      // this.negocioTO.det_domicilio.id_municipio = [];
       idE = evento.detail.value;
     } else {
       idE = evento.value;
@@ -733,7 +745,7 @@ export class FormularioNegocioPage implements OnInit {
   public get_list_cat_localidad(evento) {
     let idE;
     if (evento.type === 'ionChange') {
-      this.negocioTO.det_domicilio.id_localidad = [];
+      // this.negocioTO.det_domicilio.id_localidad = [];
       idE = evento.detail.value;
     } else {
       idE = evento.value;

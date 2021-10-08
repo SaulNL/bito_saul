@@ -299,7 +299,8 @@
             <ion-label>Los campos con <span style="color: red">*</span>son
               obligatorios</ion-label>
           </ion-item>
-          <ion-button expand="block" type="submit" class="bg-rosa" [disabled]="infoInvalid(formNegocio.invalid, negocioTO.dias)"
+          <ion-button expand="block" type="submit" class="bg-rosa"
+            [disabled]="infoInvalid(formNegocio.invalid, negocioTO.dias)"
             *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar
           </ion-button>
         </ion-list>
@@ -311,7 +312,14 @@
   <ion-card>
     <ion-card-content>
       <form #formDomicilio="ngForm" (ngSubmit)="guardar(formDomicilio)">
+        <ion-item>
+          <ion-button (click)="setearDireccion()" expand="small" class="bg-rosa" slot="end">
+            <span> Usar domicilio personal </span>
+          </ion-button>
+        </ion-item>
         <ion-list>
+          <ion-label class="texto-info-domicilio">Esta información es de control interno. No se mostrará en el perfil
+            del negocio.</ion-label>
           <ion-item>
             <ion-label position="stacked">Calle: <span style="color: red">*</span></ion-label>
             <ion-input id="calle" name="calle" type="text" #calleNego="ngModel"
@@ -405,7 +413,8 @@
             <ion-label>Los campos con <span style="color: red">*</span> son
               obligatorios</ion-label>
           </ion-item>
-          <ion-button expand="block" type="submit" class="bg-rosa" [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
+          <ion-button expand="block" type="submit" class="bg-rosa"
+            [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
             <span *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined">Guardar</span>
             <span *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined">Actualizar</span>
           </ion-button>
@@ -479,8 +488,9 @@
             <ion-label>Los campos con * son obligatorios</ion-label>
           </ion-item>
         </ion-list>
-        <ion-button [disabled]="contactoInvalid(formNegoContacto.invalid, negocioTO.dias)" expand="block" type="submit" class="bg-rosa"
-          *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</ion-button>
+        <ion-button [disabled]="contactoInvalid(formNegoContacto.invalid, negocioTO.dias)" expand="block" type="submit"
+          class="bg-rosa" *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar
+        </ion-button>
       </form>
     </ion-card-content>
   </ion-card>
