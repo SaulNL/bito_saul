@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
 import { AuthGuardService } from "../../api/auth-guard.service";
+import { GuardLoginService } from 'src/app/api/busqueda/guard-login.service';
 
 const routes: Routes = [
   {
@@ -38,7 +39,7 @@ const routes: Routes = [
       },
       {
         path: 'login',
-        loadChildren: () => import('../login/login.module').then(m => m.LoginPageModule)
+        loadChildren: () => import('../login/login.module').then(m => m.LoginPageModule) , canActivate: [GuardLoginService]
       },
       {
         path: 'ajustes',

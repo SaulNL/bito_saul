@@ -64,8 +64,12 @@ export class TabsPage implements OnInit{
 
     }
     perfil(){
-        // localStorage.setItem('isRedirected', 'false');
+        localStorage.setItem('isRedirected', 'false');
         localStorage.setItem('resetFiltro', '0');
         this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
+    }
+    login(){
+        localStorage.setItem('isRedirected', 'false');
+        this.router.navigate(['/tabs/login']);
     }
 }

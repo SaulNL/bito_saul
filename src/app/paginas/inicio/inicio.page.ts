@@ -151,6 +151,7 @@ export class InicioPage implements OnInit {
   }
 
   buscarNegocios() {
+    console.log("entro a buscar negocios");
     this.loader = true;
     const usr = this.user;
     if (usr.id_persona !== undefined) {
@@ -277,6 +278,7 @@ export class InicioPage implements OnInit {
         "Este negocio aún no cumple los requisitos mínimos"
       );
     } else {
+      localStorage.setItem("isRedirected", "false");
       this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
     }
   }

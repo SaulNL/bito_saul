@@ -77,6 +77,11 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit(): void {
+    if (localStorage.getItem("isRedirected") === "false") {
+      localStorage.setItem("isRedirected", "true");
+      location.reload();
+      // window.location.assign(this.router.url);
+    }
     this.rot.queryParams.subscribe(params => {
       if (params.productos && params) {
         this.optionBack = JSON.parse(params.productos);
@@ -86,6 +91,7 @@ export class LoginPage implements OnInit {
     this.rot.queryParams.subscribe(params => {
       if (params.perfil && params) {
         this.optionBack = JSON.parse(params.perfil);
+        localStorage.setItem('optionLogin', params.perfil);
       }
     });
 
@@ -115,7 +121,13 @@ export class LoginPage implements OnInit {
           const actualizado = AppSettings.setTokenUser(respuesta);
           this.sideBarService.publishSomeData("");
           localStorage.setItem("isRedirected", "false");
-          location.assign("/tabs/inicio");
+          const optionLogin = localStorage.getItem('optionLogin');
+          if(optionLogin != null ){
+            this.negocioRuta(this.optionBack.url);
+          } else {
+            window.location.assign("/tabs/inicio");
+            // this.location.assign("/tabs/inicio");
+          }
           this.notifi.exito(respuesta.message);
           this.loader = false;
         }

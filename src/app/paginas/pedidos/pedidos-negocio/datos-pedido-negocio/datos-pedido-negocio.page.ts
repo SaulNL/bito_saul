@@ -61,7 +61,7 @@ export class DatosPedidoNegocioPage implements OnInit {
     } else {
       this.domicilioEnvioMessage = '+ $' + temp + 'pesos del envio';
     }
-    console.log(this.domicilioEnvioMessage);
+    
   }
   cancelar() {
     this.blnCancelar = true;

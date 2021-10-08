@@ -41,7 +41,6 @@ export class AppComponent {
     // location.reload();
     this.version = 0;
     this.versionActualSistema = AppSettings.VERSION_SISTEMA;
-
   }
 
   initializeApp() {
@@ -131,8 +130,6 @@ export class AppComponent {
   }
 
   verificarVersion(version: number) {
-    console.log(this.versionActualSistema);
-    console.log(version);
     if (this.versionActualSistema != version) {
       this.router.navigate(['/actualizar-version']);
     } else {
