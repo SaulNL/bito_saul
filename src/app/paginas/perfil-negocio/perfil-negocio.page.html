@@ -190,30 +190,28 @@
                 </ion-col>
             </ion-row>
         </ion-grid>
-
-
         <div>
             <ion-grid>
                 <ion-row>
                     <ion-col size=12>
                         <div>
-                            <div (click)="mostrarOcultar()" style="background: white; border-radius: 1em 1em 0em 0em;"
-                                 class="ion-text-center">
-                                <ion-title
-                                        class="ion-align-items-center ion-text-center ion-justify-content-center ion-padding">
+                            <div (click)="mostrarOcultar()" style="background: white; border-radius: 1em 1em 0em 0em;" class="ion-text-center">
+                                <ion-title class="ion-align-items-center ion-text-center ion-justify-content-center ion-padding">
                                     Horarios de atención
                                 </ion-title>
-                                <ion-chip *ngIf="estatus.tipo === 1" color="success">
-                                    <ion-label>Abierto</ion-label>
-                                </ion-chip>
-                                <ion-chip *ngIf="estatus.tipo === 0" color="danger">
-                                    <ion-label>Cerrado</ion-label>
-                                </ion-chip>
-                                <ion-label>{{ estatus.mensaje}}</ion-label>
-                                <ion-icon style="margin-left: 2px;" *ngIf="!motrarContacto"
-                                          name="arrow-up-outline"></ion-icon>
-                                <ion-icon style="margin-left: 2px;" *ngIf="motrarContacto"
-                                          name="arrow-down-outline"></ion-icon>
+                                <div><br>
+                                    <ion-chip *ngIf="estatus.tipo === 1" color="success">
+                                        <ion-label>Abierto</ion-label>
+                                    </ion-chip>
+                                    <ion-chip *ngIf="estatus.tipo === 0" color="danger">
+                                        <ion-label>Cerrado</ion-label>
+                                    </ion-chip>
+                                    <ion-label>{{ estatus.mensaje}}</ion-label>
+                                    <ion-icon style="margin-left: 2px;" *ngIf="!motrarContacto"
+                                              name="arrow-up-outline"></ion-icon>
+                                    <ion-icon style="margin-left: 2px;" *ngIf="motrarContacto"
+                                              name="arrow-down-outline"></ion-icon>
+                                </div>
                             </div>
                             <div *ngIf="!motrarContacto && estatus!==undefined">
                                 <ion-list style="border-radius: 0em 0em 1em 1em;">
