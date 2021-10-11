@@ -39,7 +39,7 @@ export class MapaNegociosComponent implements OnInit {
    */
   public cagarMapa() {
     setTimeout(it => {
-      this.map = new Map("mapaId", {dragging: !L.Browser.mobile, touchZoom: true}).setView([this.latitud, this.longitud], 10, );
+      this.map = new Map("mapaId", {dragging: !L.Browser.mobile, touchZoom: true,  tap: !L.Browser.mobile}).setView([this.latitud, this.longitud], 10, );
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: ''}).addTo(this.map);
       this.getListaNegocios();
     }, 500);
