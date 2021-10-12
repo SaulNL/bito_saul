@@ -184,3 +184,18 @@ ion-fab {
 .custom-modal-plazas-afiliaciones .modal-wrapper {
   height: 50%;
 }
+
+.btn-flotante{
+  animation-name: slidein;
+  animation-duration: 0.3s;
+}
+
+@keyframes slidein {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0%);
+  }
+}

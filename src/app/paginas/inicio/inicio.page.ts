@@ -6,7 +6,7 @@ import {
   IonContent,
   LoadingController,
   MenuController,
-  ModalController,
+  ModalController, Platform,
   ToastController
 } from "@ionic/angular";
 import { BusquedaService } from "../../api/busqueda.service";
@@ -52,6 +52,7 @@ export class InicioPage implements OnInit {
   public permisos: Array<PermisoModel> | null;
   public afiliacion: boolean;
   public byLogin : boolean;
+  public isIOS: boolean = false;
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -64,7 +65,8 @@ export class InicioPage implements OnInit {
     private serviceProveedores: ProveedorServicioService,
     private util: UtilsCls,
     private auth0Service: Auth0Service,
-    private validarPermiso: ValidarPermisoService
+    private validarPermiso: ValidarPermisoService,
+    private platform: Platform
   ) {
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
@@ -77,6 +79,11 @@ export class InicioPage implements OnInit {
     this.selectionAP = false;
     this.tFiltro = false;
     this.afiliacion = false;
+    if(this.platform.is('ios')) {
+      this.isIOS = true;
+    }else{
+      this.isIOS = false;
+    }
   }
   ngOnInit(): void {
      this.route.queryParams.subscribe(params => {
@@ -98,8 +105,16 @@ export class InicioPage implements OnInit {
     if (this.util.existSession()) {
       this.persona = this.util.getIdPersona();
       this.permisos = this.auth0Service.getUserPermisos();
-      this.afiliacion = this.validarPermiso.isChecked(this.permisos, 'ver_afiliacion')
+      this.afiliacion = this.validarPermiso.isChecked(this.permisos, 'ver_afiliacion');
     }
+  }
+
+  /**
+   * Scroll
+   * @author Omar
+   */
+  scrollToTop() {
+    this.content.scrollToTop(500).then(r => {});
   }
 
   public recargar(event: any) {

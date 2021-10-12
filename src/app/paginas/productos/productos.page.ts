@@ -4,7 +4,7 @@ import { ProductoModel } from "../../Modelos/ProductoModel";
 import {
   IonContent,
   LoadingController,
-  ModalController,
+  ModalController, Platform,
   ToastController,
 } from "@ionic/angular";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -57,6 +57,7 @@ export class ProductosPage {
   public mensaje: any;
   public cargando = 'Cargando';
   private plazaAfiliacion: AfiliacionPlazaModel | null;
+  public isIOS: boolean = false;
   constructor(
     public loadingController: LoadingController,
     private _router: Router,
@@ -67,12 +68,18 @@ export class ProductosPage {
     private notificaciones: ToadNotificacionService,
     private active: ActivatedRoute,
     public animationCtrl: AnimationController,
-    private util: UtilsCls
+    private util: UtilsCls,
+    private platform: Platform
   ) {
     this.user = this.util.getUserData();
     this.existeSesion = util.existe_sesion();
     this.mensaje = "Cargando más productos...";
     this.selectionAP = false;
+    if(this.platform.is('ios')) {
+      this.isIOS = true;
+    }else{
+      this.isIOS = false;
+    }
   }
 
   ngOnInit(): void {
@@ -111,6 +118,14 @@ export class ProductosPage {
       }
     });
     this.existeSesion = this.util.existe_sesion();
+  }
+
+  /**
+   * Scroll
+   * @author Omar
+   */
+  scrollToTop() {
+    this.content.scrollToTop(500).then(r => {});
   }
 
   /**
