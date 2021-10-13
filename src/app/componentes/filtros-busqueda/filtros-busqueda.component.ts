@@ -61,7 +61,7 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     async getCurrentPosition() {
-        let gpsOptions = {maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true};
+        const gpsOptions = {maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true};
         const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
 
             this.blnUbicacion = true;
@@ -280,7 +280,7 @@ export class FiltrosBusquedaComponent implements OnInit {
         if (evento.detail.checked === true) {
             this.listaTipoNegocio.push(parseInt(evento.detail.value));
         }else if(evento.detail.checked === false){
-            let index=this.listaTipoNegocio.indexOf(parseInt(evento.detail.value));
+            const index=this.listaTipoNegocio.indexOf(parseInt(evento.detail.value));
             this.listaTipoNegocio.splice(index, 1);
         }
         if (parseInt(evento.detail.value) === 3 && evento.detail.checked === true) {

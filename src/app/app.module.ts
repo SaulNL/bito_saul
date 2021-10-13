@@ -24,23 +24,26 @@ import { firebaseConfig } from '../environments/environment';
 import { File } from '@ionic-native/file/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule,HttpClientModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, AngularFireModule.initializeApp(firebaseConfig),AngularFireAuthModule],
+  imports: [BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule],
   providers: [
     StatusBar,
     SplashScreen,
     HaversineService,
     Downloader,
     Platform,
-    HTTP, 
+    HTTP,
     GooglePlus,
     Facebook,
     File,
     Geolocation,
   { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy },
-    Deeplinks
+    Deeplinks,
+    OneSignal
 ],
   bootstrap: [AppComponent]
 })

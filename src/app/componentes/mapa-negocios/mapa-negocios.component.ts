@@ -4,6 +4,7 @@ import { Map, tileLayer, marker, Marker, icon } from 'leaflet';
 import { AppSettings } from 'src/app/AppSettings';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
 import { ModalController } from '@ionic/angular';
+import * as L from 'leaflet';
 
 @Component({
   selector: 'app-mapa-negocios',
@@ -38,7 +39,7 @@ export class MapaNegociosComponent implements OnInit {
    */
   public cagarMapa() {
     setTimeout(it => {
-      this.map = new Map("mapaId").setView([this.latitud, this.longitud], 10);
+      this.map = new Map("mapaId", {dragging: !L.Browser.mobile, touchZoom: true,  tap: !L.Browser.mobile}).setView([this.latitud, this.longitud], 10, );
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: ''}).addTo(this.map);
       this.getListaNegocios();
     }, 500);
