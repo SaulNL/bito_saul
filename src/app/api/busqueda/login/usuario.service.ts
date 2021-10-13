@@ -18,8 +18,8 @@ export class UsuarioService {
    * @param numeroCelular
    * @author Omar
    */
-  public obtenerCodigoSMS(numeroCelular): Observable<any> {
-    const body = JSON.stringify({ numero: numeroCelular });
+  public obtenerCodigoSMS(numeroCelular, correo, medio): Observable<any>{
+    const body = JSON.stringify({numero: numeroCelular, correo: correo, medioEnvio: medio});
     this.http.setDataSerializer("utf8");
     return from(this.http.post(this.url + 'api/proveedoresUsuario/obtener/codigo',body,
     AppSettings.getHeaders())

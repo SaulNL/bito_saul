@@ -1,3 +1,4 @@
+import { SpinnerModule } from './../../../componentes/spinner/spinner.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,7 +15,8 @@ import { RegistroPersonaPage } from './registro-persona.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    RegistroPersonaPageRoutingModule
+    RegistroPersonaPageRoutingModule,
+    SpinnerModule
   ],
   declarations: [RegistroPersonaPage]
 })

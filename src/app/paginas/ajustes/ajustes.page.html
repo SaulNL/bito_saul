@@ -30,7 +30,7 @@
     <ion-card-content>
       <ion-grid>
         <ion-row>
-          <ion-col *ngIf="usuario.proveedor !== null"  [routerLink]="['/tabs/home/negocio']" >
+          <ion-col *ngIf="misNegocios"  [routerLink]="['/tabs/home/negocio']" >
             <ion-card>
               <ion-card-content>
                 <div class="ion-text-center">
@@ -40,7 +40,7 @@
               </ion-card-content>
             </ion-card>
           </ion-col>
-          <ion-col *ngIf="usuario.proveedor !== null" (click)="misPromociones()">
+          <ion-col *ngIf="misAPromociones" (click)="misPromociones()">
             <ion-card>
               <ion-card-content>
                 <div class="ion-text-center">
@@ -50,29 +50,29 @@
               </ion-card-content>
             </ion-card>
           </ion-col>
-          <ion-col *ngIf="usuario.proveedor !== null" (click)="misSolicitudes()">
+          <ion-col *ngIf="generarSolicitud" (click)="misSolicitudes()">
             <ion-card>
               <ion-card-content>
                 <div class="ion-text-center" >
                   <ion-icon name="document-text-outline"></ion-icon>
-                  <h2>Mis solicitudes</h2>
+                  <h2>Mis requerimientos de compra</h2>
                 </div>
               </ion-card-content>
             </ion-card>
           </ion-col>
-          <ion-col *ngIf="usuario.proveedor !== null">
+          <ion-col *ngIf="misVentas">
             <ion-card>
               <ion-card-content>
                 <div class="ion-text-center" [routerLink]="['/tabs/home/ventas']">
                   <ion-icon name="receipt-outline"></ion-icon>
-                  <h2>Mis 
+                  <h2>Mis
                     <br>
                     ventas</h2>
                 </div>
               </ion-card-content>
             </ion-card>
           </ion-col>
-          <ion-col>
+          <ion-col *ngIf="misCompras">
             <ion-card>
               <ion-card-content>
                 <div class="ion-text-center" [routerLink]="['/tabs/home/compras']">
@@ -82,17 +82,18 @@
               </ion-card-content>
             </ion-card>
           </ion-col>
-          <ion-col *ngIf="usuario.proveedor !== null">
+          <ion-col *ngIf="solicitudes">
             <ion-card>
               <ion-card-content>
-                <div class="ion-text-center" [routerLink]="['/tabs/home/mis-favoritos']">
-                  <ion-icon name="heart-outline"></ion-icon>
-                  <h2>Mis favoritos</h2>
+                <div class="ion-text-center" [routerLink]="['/tabs/home/solicitud']">
+                <ion-icon name="receipt-outline"></ion-icon>
+                  <!-- <ion-icon name="heart-outline"></ion-icon> -->
+                  <h2>Requerimientos de compra</h2>
                 </div>
               </ion-card-content>
             </ion-card>
           </ion-col>
-          <ion-col *ngIf="usuario.proveedor !== null">
+          <ion-col *ngIf="estadisticas">
             <ion-card>
               <ion-card-content>
                 <div class="ion-text-center" [routerLink]="['/tabs/home/estadisticas']">

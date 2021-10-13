@@ -1,3 +1,5 @@
+import { PermisoModel } from 'src/app/Modelos/PermisoModel';
+import { ValidarPermisoService } from './../../api/validar-permiso.service';
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UtilsCls } from "../../utils/UtilsCls";
@@ -18,6 +20,13 @@ export class AjustesPage implements OnInit {
   usuario: any;
   public url_user: string;
   public logon: any;
+  public misNegocios: boolean;
+  public misAPromociones: boolean;
+  public solicitudes: boolean;
+  public misVentas: boolean;
+  public misCompras: boolean;
+  public generarSolicitud: boolean;
+  public estadisticas: boolean;
 
   constructor(
     private util: UtilsCls,
@@ -26,32 +35,48 @@ export class AjustesPage implements OnInit {
     private _router: Router,
     private navctrl: NavController,
     private active: ActivatedRoute,
-    private auth0: Auth0Service
+    private auth0: Auth0Service,
+    private validarPermisos: ValidarPermisoService
   ) {
     this.usuario = this.auth0.getUserData();
+    if (this.util.existSession()) {
+      this.validar(JSON.parse(String(localStorage.getItem('u_permisos'))));
+    }
   }
 
   ngOnInit() {
     this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.usuario = JSON.parse(localStorage.getItem('u_data'));
-        if (params.special) {
-          if (localStorage.getItem("isRedirected") === "false") {
-            localStorage.setItem("isRedirected", "true");
-            location.reload();
-          }
+        if (localStorage.getItem("isRedirected") === "false") {
+          localStorage.setItem("isRedirected", "true");
+          location.reload();
         }
       }
     });
-  //  this.usuario = this.util.getData();
-  this.sideBarService.change.subscribe(isOpen => {
-    this.usuario = this.auth0.getUserData();
-  });
+    //  this.usuario = this.util.getData();
+    this.sideBarService.change.subscribe(isOpen => {
+      if (this.util.existSession()) {
+        this.validar(JSON.parse(String(localStorage.getItem('u_permisos'))));
+      }
+      this.usuario = this.auth0.getUserData();
+    });
     if (this.usuario === null) {
       this.navctrl.navigateRoot("tabs/inicio");
     }
     this.url_user = AppSettings.API_ENDPOINT + "img/user.png";
   }
+
+  private validar(permisos: Array<PermisoModel>) {
+    this.misNegocios = this.validarPermisos.isChecked(permisos, 'mis_negocios');
+    this.misAPromociones = this.validarPermisos.isChecked(permisos, 'anuncios_promociones');
+    this.solicitudes = this.validarPermisos.isChecked(permisos, 'ver_solicitudes');
+    this.misVentas = this.validarPermisos.isChecked(permisos, 'ventas');
+    this.misCompras = this.validarPermisos.isChecked(permisos, 'compras');
+    this.generarSolicitud = this.validarPermisos.isChecked(permisos, 'mis_solicitudes');
+    this.estadisticas = this.validarPermisos.isChecked(permisos, 'estadisticas');
+  }
+
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       header: "Perfil",
@@ -88,6 +113,7 @@ export class AjustesPage implements OnInit {
               });
               location.reload();
               localStorage.clear();
+
             }
           },
         },
@@ -95,7 +121,7 @@ export class AjustesPage implements OnInit {
           text: "Cancelar",
           icon: "close",
           role: "cancel",
-          handler: () => {},
+          handler: () => { },
         },
       ],
     });

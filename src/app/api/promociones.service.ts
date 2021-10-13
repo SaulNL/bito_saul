@@ -129,9 +129,9 @@ export class PromocionesService {
   }
 
   obtenerPromocinesPublicadas(promocion: PromocionesModel): Observable<any> {
-    
+
     const body = JSON.stringify(promocion);
-    
+
     this. http.setDataSerializer('utf8');
     return from(this.http.post(this.url + 'api/promociones/obtener/publicadas', body, AppSettings.getHeadersToken())
     .then((data) => {

@@ -50,6 +50,7 @@ export class MispromocionesPage implements OnInit {
   public numeroVisto: number;
   public blnActivaPromocion: boolean;
   public mostrarListaPromocionesPublicadas = true;
+  public msj = 'Cargando';
 
   constructor(
     private _promociones_service: PromocionesService,
@@ -361,7 +362,8 @@ export class MispromocionesPage implements OnInit {
     let radiobuttons = document.getElementsByTagName("ion-toggle");
     for (let j = 0; j < radiobuttons.length; j++) {
       if (parseInt(radiobuttons[j].value) === i) {
-        radiobuttons[j].setAttribute("checked", "true");
+        
+        radiobuttons[j].setAttribute('checked', 'true');
       }
     }
   }

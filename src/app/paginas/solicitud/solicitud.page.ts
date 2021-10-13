@@ -1,3 +1,4 @@
+import { AfiliacionPlazaModel } from './../../Modelos/AfiliacionPlazaModel';
 import { Component, OnInit } from '@angular/core';
 import { FiltrosModel } from '../../Modelos/FiltrosModel';
 import { FiltrosService } from '../../api/filtros.service';
@@ -11,7 +12,7 @@ import { ModalInfoSolicitudComponent } from '../../componentes/modal-info-solici
 import { ModalController } from '@ionic/angular';
 import { Router } from "@angular/router";
 import { UbicacionModel } from '../../Modelos/UbicacionModel';
-import { UbicacionActualModel   } from '../../Modelos/UbicacionActualModel';
+import { UbicacionActualModel } from '../../Modelos/UbicacionActualModel';
 
 @Component({
   selector: 'app-solicitud',
@@ -42,7 +43,8 @@ export class SolicitudPage implements OnInit {
   public miUbicacionlatitud: number;
   public strUbicacionActual: Array<UbicacionActualModel>;
   public numeroVistas: number;
-
+  public cargando = 'Cargando';
+  private plazaAfiliacion: AfiliacionPlazaModel;
   constructor(
     private filtrosService: FiltrosService,
     private serviceProveedores: ProveedorServicioService,
@@ -83,7 +85,7 @@ export class SolicitudPage implements OnInit {
     this.mostrarDetalle = false;
     this.reiniciarFiltro();
     this.obtenerCatagorias(null);
-    this.mensaje = 'Todas las solicitudes';
+    this.mensaje = 'Todos los requerimientos de compra';
     this.anyFiltros.strBuscar = JSON.parse(JSON.stringify(respuesta));
     this.banner = respuesta;
     this.obtenerSolicitudes();
@@ -101,7 +103,7 @@ export class SolicitudPage implements OnInit {
   }
 
   public obtenerCatagorias(buscar) {
-    this.listaCategorias=[];
+    this.listaCategorias = [];
     this.serviceProveedores.obtenerCategoriasGiro(buscar).subscribe(
       response => {
         this.listaCategorias = response.data;
@@ -119,16 +121,16 @@ export class SolicitudPage implements OnInit {
   public obtenerSolicitudes() {
     if (navigator.geolocation && this.anyFiltros.tipoBusqueda === 1) {
       navigator.geolocation.getCurrentPosition(posicion => {
-          this.anyFiltros.latitud = posicion.coords.latitude;
-          this.anyFiltros.longitud = posicion.coords.longitude;
-          this.obtenerSolicitudesServicio();
-        },
+        this.anyFiltros.latitud = posicion.coords.latitude;
+        this.anyFiltros.longitud = posicion.coords.longitude;
+        this.obtenerSolicitudesServicio();
+      },
         error => {
           this._notificacionService.error('error bisqueda');
           this.lstSolicitudes = [];
-          window.scrollTo({top: 0, behavior: 'smooth'});
+          window.scrollTo({ top: 0, behavior: 'smooth' });
           this.loader = false;
-        }, {enableHighAccuracy : true, maximumAge : 60000, timeout : 10000 });
+        }, { enableHighAccuracy: true, maximumAge: 60000, timeout: 10000 });
     } else {
       this.anyFiltros.tipoBusqueda = 0;
       this.obtenerSolicitudesServicio();
@@ -138,6 +140,10 @@ export class SolicitudPage implements OnInit {
   public obtenerSolicitudesServicio() {
     this.loader = true;
     this.mostrarDetalle = false;
+    this.plazaAfiliacion = JSON.parse(localStorage.getItem('org'));
+    if (this.plazaAfiliacion != null) {
+      this.anyFiltros.organizacion = this.plazaAfiliacion.id_organizacion;
+    }
     this.servicioSolicitudes.obtenerSolicitudesPublicadas(this.anyFiltros).subscribe(
       response => {
         if (response.data !== null) {
@@ -152,25 +158,25 @@ export class SolicitudPage implements OnInit {
         this.lstSolicitudes = [];
       },
       () => {
-        window.scrollTo({top: 0, behavior: 'smooth'});
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         this.loader = false;
       }
     );
   }
 
-  masInformacion( solicitud: any) {
+  masInformacion(solicitud: any) {
     this.mostrarSolicitud = this._utils_cls.existe_sesion();
-    if(this.mostrarSolicitud){
+    if (this.mostrarSolicitud) {
       this.accionSolicitud(solicitud);
       this.modalDetalleSolicitud(solicitud);
-    }else {
+    } else {
       this._router.navigate(['/tabs/login']);
     }
   }
 
   async modalDetalleSolicitud(solicitud: any) {
     const modal = await this.modalController.create({
-      component:  ModalInfoSolicitudComponent ,
+      component: ModalInfoSolicitudComponent,
       cssClass: 'my-custom-class',
       componentProps: {
         solicitud: solicitud
@@ -201,12 +207,13 @@ export class SolicitudPage implements OnInit {
   public obtenerGeolocalizacion() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(posicion => {
-          this.miUbicacionlatitud = posicion.coords.latitude;
-          this.miUbicacionlongitud = posicion.coords.longitude;
-          this.obtenerMiUbicacion();
-        },
+        this.miUbicacionlatitud = posicion.coords.latitude;
+        this.miUbicacionlongitud = posicion.coords.longitude;
+        this.obtenerMiUbicacion();
+      },
         error => {
-        }, {enableHighAccuracy : true, maximumAge : 60000, timeout : 10000 });
+
+        }, { enableHighAccuracy: true, maximumAge: 60000, timeout: 10000 });
     }
   }
 

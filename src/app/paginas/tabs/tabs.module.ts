@@ -1,3 +1,4 @@
+import { PlazasAfiliacionesComponent } from './../../componentes/plazas-afiliaciones/plazas-afiliaciones.component';
 import { BotonTopComponent } from "./../../componentes/boton-top/boton-top.component";
 import { IonicModule } from "@ionic/angular";
 import { NgModule } from "@angular/core";
@@ -12,6 +13,7 @@ import { RecorteImagenComponent } from "../../components/recorte-imagen/recorte-
 import { ImageCropperModule } from "ngx-image-cropper";
 import { TabsPage } from "./tabs.page";
 import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/filtros-busqueda.component";
+import {InputLugaresEntregaComponent} from '../../components/input-lugares-entrega/input-lugares-entrega.component';
 
 @NgModule({
   imports: [
@@ -27,18 +29,22 @@ import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/fil
     ToolbarBusquedaComponent,
     BotonTopComponent,
     InputTagsComponent,
+    InputLugaresEntregaComponent,
     ModalClasificacionComponent,
     RecorteImagenComponent,
-    FiltrosBusquedaComponent
+    FiltrosBusquedaComponent,
+    PlazasAfiliacionesComponent
   ],
   exports: [
     BannerPromocionesComponent,
     ToolbarBusquedaComponent,
     BotonTopComponent,
     InputTagsComponent,
+    InputLugaresEntregaComponent,
     ModalClasificacionComponent,
     RecorteImagenComponent,
-    FiltrosBusquedaComponent
+    FiltrosBusquedaComponent,
+    PlazasAfiliacionesComponent
   ],
 })
 export class TabsPageModule {}

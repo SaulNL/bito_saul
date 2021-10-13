@@ -21,9 +21,9 @@ import { SideBarService } from "../../../../api/busqueda/side-bar-service";
 })
 export class ConfirmaRegistroPage implements OnInit {
   public usuario_sistema: UsuarioSistemaModel;
-  public numeroCelular: string;
-
-
+  public numeroCelular: string | null;
+  public correo: string | null;
+  public medio: number;
   public tiempoTemporizador: number;
   public timer: any;
   public blnEnviarSms = false;
@@ -31,7 +31,7 @@ export class ConfirmaRegistroPage implements OnInit {
   public blnGuardar = false;
   public nuevasFunciones: boolean;
   public loader: any;
-
+  public msj = 'Creando cuenta';
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -56,31 +56,33 @@ export class ConfirmaRegistroPage implements OnInit {
     });
     this.obtenerTiempoTemporizador();
     this.numeroCelular = this.usuario_sistema.ms_persona.telefono_celular;
+    this.correo = this.usuario_sistema.ms_persona.correo;
+    this.medio = this.usuario_sistema.medio;
     this.obtenerCodigoSMS();
-  }
-
-  async presentLoading() {
-    this.loader = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'por favor espera...'
-    });
-    return this.loader.present();
   }
 
   /*
    * Funcion para obtener el codigo (envio sms) y obtener el el id
-   * 
+   *
   */
   public obtenerCodigoSMS() {
     this.blnEnviarSms = true;
-    if (this.numeroCelular.length === 10 && this.numeroCelular !== undefined) {
-      this._usuario_service.obtenerCodigoSMS(this.numeroCelular).subscribe(response => {
+    if ((this.numeroCelular.length === 10 && this.numeroCelular !== undefined) || (this.correo !== '' && this.correo !== undefined)) {
+      this._usuario_service.obtenerCodigoSMS(this.numeroCelular, this.correo, this.medio).subscribe(response => {
         this.usuario_sistema.idCode = response.data;
         this.IniciaTemporizador();
       });
     } else {
-      //  this._notificacionService.pushError('Número incorrecto');
+      this.notificaciones.error('Número incorrecto');
     }
+    // if (this.numeroCelular.length === 10 && this.numeroCelular !== undefined) {
+    //   this._usuario_service.obtenerCodigoSMS(this.numeroCelular).subscribe(response => {
+    //     this.usuario_sistema.idCode = response.data;
+    //     this.IniciaTemporizador();
+    //   });
+    // } else {
+    //  this._notificacionService.pushError('Número incorrecto');
+    // }
   }
   regresarRegistro() {
     this.detenerTemeporizador();
@@ -160,8 +162,10 @@ export class ConfirmaRegistroPage implements OnInit {
   }
   validarInputCodigo() {
     if (this.usuario_sistema.codigo !== null && this.usuario_sistema.codigo !== '' && this.usuario_sistema.codigo.length === 5) {
+
       return true;
     } else {
+
       return false;
     }
   }
@@ -169,12 +173,12 @@ export class ConfirmaRegistroPage implements OnInit {
     this.blnGuardar = this.validarInputCodigo();
   }
   public crear_cuenta_admin() {
-    this.presentLoading();
+    this.loader = true;
     this._usuario_service.create_account_admin_salon(this.usuario_sistema).subscribe(
       response => {
         if (this._utils_cls.is_success_response(response.code)) {
           const usuarioLogin = {
-            usuario: this.usuario_sistema.ms_persona.telefono_celular,
+            usuario: (this.medio === 1) ? this.numeroCelular : this.correo,
             password: this.usuario_sistema.password
           };
 
@@ -182,29 +186,29 @@ export class ConfirmaRegistroPage implements OnInit {
             this.notificaciones.alerta(data.message);
             if (data.code === 200) {
               AppSettings.setTokenUser(data);
-              this.loader.dismiss();
+              this.loader = false;
               this.notificaciones.exito('Bienvenido a Bitoo');
               this.router.navigate(['/tabs/inicio']);
               setTimeout(() => {
                 location.reload();
               }, 1300);
             } else {
-              this.loader.dismiss();
+              this.loader = false;
               this.notificaciones.alerta(data.message);
             }
           }, error => {
-            this.loader.dismiss();
+            this.loader = false;
             this.notificaciones.error(error);
           });
         } else {
-          this.loader.dismiss();
+          this.loader = false;
           this.notificaciones.alerta(response.message);
         }
         // this.procesando = false;
         // this.btnloader = false;
       },
       error => {
-        this.loader.dismiss();
+        this.loader = false;
         this.notificaciones.error(error);
         //  this.status_save = 'error';
         //  this._notificacionService.pushError(error);

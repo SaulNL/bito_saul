@@ -1,16 +1,10 @@
-<ion-content>
+<app-toolbar-busqueda placeHolder="Buscar requerimientos de compra..." (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
+<app-spinner [loader]="loader" [message]="cargando"></app-spinner>
+<ion-content *ngIf="!loader">
 
-  <app-toolbar-busqueda placeHolder="Buscar solicitudes..." (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
-  
-  <div style="margin-top: 20px;">
-
-    <div *ngIf="loader" style="display: flex; justify-content: center; align-items: center;">
-      <ion-spinner name="bubbles"></ion-spinner>
-    </div>
-
-    <ion-card *ngIf="lstSolicitudes.length <= 0 && !loader" style="background-color: red; color: white;">
+    <ion-card *ngIf="lstSolicitudes.length <= 0 " style="background-color: red; color: white;">
       <ion-card-content>
-        <strong>Lo sentimos!</strong> No hay solicitudes relacionadas con tu busqueda en <strong>{{mensaje}}</strong>...
+        <strong>Lo sentimos!</strong> No hay requerimientos de compra relacionadas con tu busqueda en <strong>{{mensaje}}</strong>...
       </ion-card-content>
     </ion-card>
 
@@ -21,7 +15,6 @@
               <img  src="{{(solicitud.url_imagen==null || solicitud.imagen == '')?productoDefault:solicitud.url_imagen}}" style="width: 100%;">
               <ion-card-content>
                 <ion-grid>
-
                   <ion-row>
                     <ion-col size="12">
                       <div style="text-align: center;">
@@ -54,7 +47,5 @@
         </div>
       </div>
     </div>
-
-  </div>
 
 </ion-content>

@@ -5,8 +5,8 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loader">
   <ion-card style="background-color: #f64f7a; color: white;">
     <ion-card-content  class="ion-text-center">
       <h1>¡Hola!</h1>
@@ -19,7 +19,7 @@
         <ion-card-content  class="ion-text-center">
           <h2>Información General</h2>
         </ion-card-content>
-        <ion-grid>        
+        <ion-grid>
          <ion-row>
             <ion-col size='12'>
               <div class="contenedor">
@@ -121,7 +121,7 @@
                   </label>
               </div>
               <div class="avatar-previewIne">
-                  <div *ngIf="proveedorTO.ine1 === null || proveedorTO.ine1 === undefined " id="imagePreview" [ngStyle]="{
+                  <div *ngIf="proveedorTO.ine1 === null || proveedorTO.ine1 === undefined "  [ngStyle]="{
          'background-image': 'url('+proveedorTO.ineFrente+')'}">
                   </div>
                   <div *ngIf="proveedorTO.ine1 !== null && proveedorTO.ine1 !== undefined" [ngStyle]="{
@@ -130,7 +130,7 @@
               </div>
               <label for="imageUpload" class="col-form-label ">INE (Frente)</label>
           </div>
-          </ion-item> 
+          </ion-item>
           <ion-item>
             <div class="avatar-uploadIne">
               <div class="avatar-editIne">
@@ -143,7 +143,7 @@
                   </label>
               </div>
               <div class="avatar-previewIne">
-                  <div *ngIf="proveedorTO.ine2 === null || proveedorTO.ine2 === undefined" id="imagePreviewLocal" [ngStyle]="{
+                  <div *ngIf="proveedorTO.ine2 === null || proveedorTO.ine2 === undefined"  [ngStyle]="{
          'background-image': 'url('+proveedorTO.ineAtras+')'}">
                   </div>
                   <div *ngIf="proveedorTO.ine2 !== null && proveedorTO.ine2 !== undefined" [ngStyle]="{

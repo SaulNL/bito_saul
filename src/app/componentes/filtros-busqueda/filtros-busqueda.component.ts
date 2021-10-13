@@ -74,9 +74,10 @@ export class FiltrosBusquedaComponent implements OnInit {
                 this.filtros.tipoBusqueda = 1;
                 this.geocodeLatLng();
             } catch (e) {
-                console.error(e);
+
             }
         }).catch(error => {
+
             this.blnUbicacion = false;
             this.ubicacion = 'localidad';
             this.filtros.tipoBusqueda = 0;
@@ -178,6 +179,7 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     selectEstado(event) {
+
         this.filtros.idEstado = this.estado;
         this.obtenerCatMunicipio();
     }
@@ -224,7 +226,8 @@ export class FiltrosBusquedaComponent implements OnInit {
 
                 }
             } else {
-
+                
+                //this.loader = false;
             }
         });
     }

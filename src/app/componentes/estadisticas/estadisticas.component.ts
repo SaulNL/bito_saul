@@ -1,9 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ModalController, PopoverController} from '@ionic/angular';
-import {FiltroEstadisticaModel} from '../../Modelos/FiltroEstadisticaModel';
-import {NegocioService} from '../../api/negocio.service';
-import {ToadNotificacionService} from '../../api/toad-notificacion.service';
-import {PopoverVistasComponent} from './popover-vistas/popover-vistas.component';
+import { Component, Input, OnInit } from '@angular/core';
+import { ModalController, PopoverController } from '@ionic/angular';
+import { FiltroEstadisticaModel } from '../../Modelos/FiltroEstadisticaModel';
+import { NegocioService } from '../../api/negocio.service';
+import { ToadNotificacionService } from '../../api/toad-notificacion.service';
+import { PopoverVistasComponent } from './popover-vistas/popover-vistas.component';
 import * as moment from 'moment';
 
 @Component({
@@ -27,6 +27,7 @@ export class EstadisticasComponent implements OnInit {
     public totalProductos: number;
     public productos: any;
     loader: any;
+    public msj = 'Cargando';
 
 
     constructor(
@@ -55,7 +56,7 @@ export class EstadisticasComponent implements OnInit {
         this.obtenerTodasEstadisticas();
     }
 
-    public obtenerTodasEstadisticas(){
+    public obtenerTodasEstadisticas() {
         this.loader = true;
         this.obtenerVisitasQR();
         this.obtenerVisitasUrl();
@@ -67,7 +68,7 @@ export class EstadisticasComponent implements OnInit {
 
     }
 
-    public filtroEstadistica(evento){
+    public filtroEstadistica(evento) {
         let filtro;
         filtro = evento.detail.value;
 
@@ -180,9 +181,9 @@ export class EstadisticasComponent implements OnInit {
     public obtenerPromocionesNegocio() {
         this.servicioNegocio.estadisticaPromocionesNegocio(this.filtroGrafica).subscribe(
             response => {
-                    this.totalPromociones = response.data.length;
-                    this.promociones = response.data;
-                    if (this.totalPromociones === 0) {
+                this.totalPromociones = response.data.length;
+                this.promociones = response.data;
+                if (this.totalPromociones === 0) {
                     this.totalPromociones = 0;
                 }
             },

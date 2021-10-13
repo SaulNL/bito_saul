@@ -1,63 +1,62 @@
 .estrella {
-    width: 250px;
-    margin: 0 auto;
-    height: 50px;
-  }
+  width: 250px;
+  margin: 0 auto;
+  height: 50px;
+}
 
-  .estrella div {
-    text-align: center;
-  }
+.estrella div {
+  text-align: center;
+}
 
-  .estrella label {
-    font-size: 20px;
-  }
+.estrella label {
+  font-size: 20px;
+}
 
-  input[type="radio"] {
-    display: none;
-  }
+input[type="radio"] {
+  display: none;
+}
 
-  label {
-    color: grey;
-    font-size: 28px;
+label {
+  color: grey;
+  font-size: 28px;
+}
 
-  }
+.clasificacion {
+  direction: rtl;
+  unicode-bidi: bidi-override;
+}
 
-  .clasificacion {
-    direction: rtl;
-    unicode-bidi: bidi-override;
-  }
-
-  input[type="radio"]:checked ~ label {
-    color: orange;
-  }
+input[type="radio"]:checked ~ label {
+  color: orange;
+}
 
 ul {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 ul li {
-    list-style: none;
+  list-style: none;
 }
 
 .lista {
-    display: flex;
-    justify-content: space-between;
-    padding: 7px 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 0;
 }
 
 .list {
-    -webkit-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
-    box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.2);
-    border-radius: 20px;
-    background-color: white;
-    margin-bottom: 10px;
+  -webkit-box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  background-color: white;
+  margin-bottom: 10px;
 }
 
 .negritas {
-    color: black;
-    font-weight: bolder;
+  color: black;
+  font-weight: bolder;
 }
 
 .scrolling-wrapper-flexbox {
@@ -68,11 +67,11 @@ ul li {
   .item {
     flex: 0 0 auto;
   }
-  .active{
+  .active {
     box-shadow: 0px 5px 0px blue;
   }
 }
-.fab-horizontal-end{
+.fab-horizontal-end {
   right: calc(1.5px + var(--ion-safe-area-right, 0px)) !important;
 }
 
@@ -80,7 +79,7 @@ ul li {
   height: 100%;
 }
 @media (max-width: 500px) {
-  .fab-button-small{
+  .fab-button-small {
     margin: 6px !important;
     width: 12vw !important;
     height: 12vw !important;
@@ -91,80 +90,83 @@ ul li {
   img.img-card-w {
     height: 32vw !important;
   }
-  .bosar{
+  .bosar {
     width: 13vw;
     height: 13vw;
   }
 }
-  @media (min-width: 501px)and  (max-width: 1300px) {
-    .fab-button-small{
-      margin: 6px !important;
-      width: 10vw !important;
-      height: 10vw !important;
-    }
-    ion-fab-button img {
-      width: 6vw !important;
-    }
-    img.img-card-w {
-      height: 33vw;
-    }
-    .bosar{
-      width: 8vw;
-      height: 8vw;
-    }
+@media (min-width: 501px) and (max-width: 1300px) {
+  .fab-button-small {
+    margin: 6px !important;
+    width: 10vw !important;
+    height: 10vw !important;
   }
-.bolsita{
+  ion-fab-button img {
+    width: 6vw !important;
+  }
+  img.img-card-w {
+    height: 33vw;
+  }
+  .bosar {
+    width: 8vw;
+    height: 8vw;
+  }
+}
+.bolsita {
   top: 3px;
   right: 3px;
 }
-.bosar{
+.bosar {
   --background: white;
   --color: #fa4f72;
-
 }
-ion-fab-button {--background: white;}
+ion-fab-button {
+  --background: white;
+}
 
 .agregarBolda {
   z-index: 1;
 }
 
-.telefono{
+.telefono {
   color: #a74eef;
 }
 
-.arriba{
+.arriba {
   position: relative;
   top: -7px;
 }
-.alado{
+.alado {
   position: relative;
   left: 1px;
 }
-.iconAla{
-margin: 4px;
-    /* background: #bbbbbb; */
-    position: relative;
-    bottom: 14px;
-    border-style: outset;
-    color: red;
-  }
-  .swiper-slide img{
-    height: 15vh !important;
+.iconAla {
+  margin: 4px;
+  /* background: #bbbbbb; */
+  position: relative;
+  bottom: 14px;
+  border-style: outset;
+  color: red;
 }
-.swiper-zoom-container>img, .swiper-zoom-container>svg, .swiper-zoom-container>canvas{
-    object-fit: unset;
+.swiper-slide img {
+  height: 15vh !important;
 }
-.like{
+.swiper-zoom-container > img,
+.swiper-zoom-container > svg,
+.swiper-zoom-container > canvas {
+  object-fit: unset;
+}
+.like {
   border-radius: 40%;
-    position: absolute;
-    bottom: 5rem;
-    right: -4rem;
+  position: absolute;
+  bottom: 5rem;
+  right: -4rem;
 }
-.bolsi{
+.bolsi {
   top: 3px;
   left: 3px;
 }
-.bosa{
+.bosa {
   --background: white !important;
   --color: grey !important;
 }
@@ -172,14 +174,30 @@ margin: 4px;
 .ion-card-cara {
   padding-top: 3.5rem;
 }
-.likeProducto{
-      top: 8rem;
-      position: absolute;
+.likeProducto {
+  top: 8rem;
+  position: absolute;
 }
 
+.div-like {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
 
-.div-like{
-    position: absolute;
-    right: 5px;
-    top: 5px;
+.separacion-arriba {
+  padding-top: 2rem;
+}
+.bolsita-pintada {
+  -webkit-box-shadow: -8px 11px 43px 0px rgb(0 0 0) !important;
+}
+
+.info-descripcion{
+  position: relative;
+  top: 8px;
+}
+
+.direccion-entrega{
+  position: relative;
+  top: 1em;
 }

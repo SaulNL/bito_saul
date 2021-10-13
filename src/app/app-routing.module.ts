@@ -8,9 +8,12 @@ const routes: Routes = [
   },
   {
     path: 'categorias',
-    loadChildren: () => import('./paginas/categorias/categorias.module').then( m => m.CategoriasPageModule)
+    loadChildren: () => import('./paginas/categorias/categorias.module').then(m => m.CategoriasPageModule)
   },
-
+  {
+    path: 'actualizar-version',
+    loadChildren: () => import('./paginas/actualizar-version/actualizar-version.module').then(m => m.ActualizarVersionPageModule)
+  }
 ];
 @NgModule({
   imports: [
@@ -18,4 +21,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

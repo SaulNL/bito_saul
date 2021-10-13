@@ -76,8 +76,7 @@ export class MapaNegociosComponent implements OnInit {
           iconUrl:  this.iconoMarker,
           shadowUrl: 'assets/leaflet/marker-shadow.png'
         })
-      }).addTo(this.map)
-        .bindPopup("<strong>" + this.lstNegocios[i].nombre_comercial + "</strong>" + "<br>"
+      }).addTo(this.map).bindPopup("<strong>" + this.lstNegocios[i].nombre_comercial + "</strong>" + "<br>"
           + "<a href=" + this.urlNegocio + ">" + "Ver más</a>" + "<br>"
           + "<img src=" + this.lstNegocios[i].url_logo + " width='100' height='80'>");
     }

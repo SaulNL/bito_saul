@@ -1,15 +1,20 @@
 
 export class AppSettings {
 
-    // public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
-    // public static URL_REGISTRO = 'https://bitoo.com.mx/registro';
-    // public static URL_FRONT = 'https://bitoo.com.mx/';
-    // public static URL_MOVIL = 'https://app-bitoo.com.mx/tabs/negocio/';
+    //  public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
+    //  public static URL_REGISTRO = 'https://bitoo.com.mx/registro';
+    //  public static URL_FRONT = 'https://bitoo.com.mx/';
+    //  public static URL_MOVIL = 'https://bitoo.com.mx/';     // public static URL_MOVIL = 'https://app-bitoo.com.mx/tabs/negocio/';
 
     public static API_ENDPOINT = 'https://beta-bitoo-back.azurewebsites.net/';
     public static URL_REGISTRO = 'https://beta-bitoo.azurewebsites.net/registro';
     public static URL_FRONT = 'https://beta-bitoo.azurewebsites.net/';
-    public static URL_MOVIL = 'tabs/negocio/';
+    public static URL_MOVIL = 'https://beta-bitoo.azurewebsites.net/';
+
+    // public static API_ENDPOINT = 'https://dev-back-bitoo.azurewebsites.net/';
+    // public static URL_REGISTRO = 'https://dev-front-bitoo.azurewebsites.net/registro';
+    // public static URL_FRONT = 'https://dev-front-bitoo.azurewebsites.net/';
+    // public static URL_MOVIL = 'tabs/negocio/';
     // public static URL_MOVIL = 'http://app-bitoo.com.mx/tabs/negocio/';
     // public static API_ENDPOINT = 'http://127.0.0.1:8000/';
     // public static URL_REGISTRO = 'http://127.0.0.1:8000/registro';
@@ -23,7 +28,7 @@ export class AppSettings {
     public static IMG_ERROR_SOLICITUD = 'https://ecoevents.blob.core.windows.net/comprandoando/img_default/Promo%20banner.png';
     public static IMG_CATEGORIAS_TODAS = 'https://ecoevents.blob.core.windows.net/comprandoando/Categor%C3%ADas/Separador%20categor%C3%ADa%20web/Todas%20las%20categor%C3%ADas.png';
 
-    public static VERSION_SISTEMA = '27';
+    public static VERSION_SISTEMA = 27;
     public static ES_MOVIL = false;
     public static NUEVAS_FUNCIONES = true;
     public static APP_DOWNLOAD = 'https://play.google.com/store/apps/details?id=mx.com.softura.bitoo&hl=es';
@@ -56,10 +61,8 @@ export class AppSettings {
     }
 
     public static getToken(): string {
-
         const token = localStorage.getItem('tk_str');
-
-        return token;
+        return String(token);
     }
 
     public static setTokenUser(data): boolean {

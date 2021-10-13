@@ -28,7 +28,8 @@ export class PedidosDialogPage implements OnInit {
   public selectTO: any;
   public subscribe;
   public navegacion: any;
-
+  public loaderSearch = false;
+  public cargando = 'Cargando';
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -77,10 +78,16 @@ export class PedidosDialogPage implements OnInit {
         (res) => {
           //this.loader = false;
           this.listaNegocioPedididos = res.data;
+          this.listaNegocioPedididos.map(negocio => {
+            return negocio.pedidos.sort((a, b) => a.id_pedido_negocio - b.id_pedido_negocio).reverse();
+          });
+          this.listaNegocioPedididos = this.listaNegocioPedididos.sort((a, b) => a.pedidos[0].id_pedido_negocio - b.pedidos[0].id_pedido_negocio).reverse();
           this.loaderB = false;
+          this.loaderSearch = false;
         },
         (error) => {
           this.loaderB = false;
+          this.loaderSearch = false;
           //this.loader = false;
         }
       );
@@ -107,6 +114,7 @@ export class PedidosDialogPage implements OnInit {
   }
 
   buscarPorestatus(estatus: any) {
+    this.loaderSearch = true;
     estatus.seleccionado = !estatus.seleccionado;
     this.lstFiltroEstatus = [];
     this.listaEstatus.map((it) => {
@@ -117,8 +125,12 @@ export class PedidosDialogPage implements OnInit {
     this.buscar();
   }
 
-  datosPedido(pedido: any) {
-    this.selectTO = JSON.parse(JSON.stringify(pedido));
+  datosPedido(pedido: any, negocio: any) {
+    const body = {
+      'pedido' : pedido,
+      'negocio' : negocio.precioEntrega
+    }
+    this.selectTO = JSON.parse(JSON.stringify(body));
     let navigationExtras = JSON.stringify(this.selectTO);
     this.router.navigate(["/tabs/home/compras/datos-pedido-dialog"], {
       queryParams: { special: navigationExtras },
@@ -127,8 +139,8 @@ export class PedidosDialogPage implements OnInit {
 
   regresar() {
 
-     this.location.back();
-     
+    this.location.back();
+
     // if (this.navegacion) {
     //   this.location.back();
     //   this.navegacion = false;

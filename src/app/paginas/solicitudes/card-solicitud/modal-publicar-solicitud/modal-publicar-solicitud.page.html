@@ -3,11 +3,12 @@
     <ion-buttons slot="start" >
       <ion-back-button  text="" (click)="regresar()"></ion-back-button>
     </ion-buttons>
-    <ion-title>Publicar Solicitud</ion-title>
+    <ion-title>Publicar requerimiento de compra</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<app-spinner [loader]="loader" [message]="mensaje"></app-spinner>
+<ion-content *ngIf="!loader">
   <ion-card>
     <br>
     <ion-card-header>
@@ -20,7 +21,7 @@
           <ion-label stacked>
             Fecha inicial
           </ion-label>
-          <ion-datetime name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="fechaini" required (ionChange)="calcularRangoFechas()" [min]="minDate" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Inicio" ></ion-datetime>
+          <ion-datetime name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="fechaini" required  [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Inicio" ></ion-datetime>
         </ion-item>
         <div *ngIf="fechaInicio.touched  && fechaInicio.invalid">
           <div *ngIf="fechaInicio.errors.required">Fecha de Inicio es requerido
@@ -30,8 +31,8 @@
           <ion-label stacked>
             Fecha final
           </ion-label>
-          <ion-datetime  name="fechaFinal" #fechaFinal="ngModel" [(ngModel)]="fechafin" required (ionChange)="calcularRangoFechas()" [min]="minDate" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Final"></ion-datetime>
-        </ion-item> 
+          <ion-datetime  name="fechaFinal" #fechaFinal="ngModel" [(ngModel)]="fechafin" required (ionChange)="calcularRangoFechas()" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Final"></ion-datetime>
+        </ion-item>
        <div *ngIf="fechaFinal.touched  && fechaFinal.invalid">
           <div *ngIf="fechaFinal.errors.required">Fecha Final es requerido
           </div>

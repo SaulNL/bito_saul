@@ -1,4 +1,4 @@
-<app-spinner [loader]="loader"></app-spinner>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
 <ion-content *ngIf="!loader" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
     <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
     <ion-grid style="background-color: white;" *ngIf="tamanoLista === 0">
@@ -27,7 +27,7 @@
             </ion-label>
 
             <ion-chip class="ion-margin-start  ion-activatable hydrated" (click)="darDislike(producto)"
-                      *ngIf="motrarContacto">
+                *ngIf="motrarContacto">
                 <ion-icon class="text-rosa heartLike hydrated" role="img" name="heart" aria-label="dollar">
                 </ion-icon>
                 <ion-label class="hydrated">{{ producto.likes }}</ion-label>

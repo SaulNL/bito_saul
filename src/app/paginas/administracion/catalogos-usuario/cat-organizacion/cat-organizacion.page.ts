@@ -20,7 +20,7 @@ export class CatOrganizacionPage implements OnInit {
     private administracionService: AdministracionService,
     private router: Router,
     private active: ActivatedRoute
-  ) { 
+  ) {
     this.blnActivaDatosOrganizacion = false;
     this.filtro = new FiltroCatOrgModel();
     this.blnMensajeFiltro = false;
@@ -56,10 +56,10 @@ export class CatOrganizacionPage implements OnInit {
     this.administracionService.listarOrganizaciones().subscribe(
       response => {
         this.lstCatOrganizaciones = response.data;
-        //this.loaderGiro = false;     
+        //this.loaderGiro = false;
       },
       error => {
-        //this._notificacionService.pushError(error);        
+        //this._notificacionService.pushError(error);
       }
     );
   }
@@ -87,6 +87,7 @@ export class CatOrganizacionPage implements OnInit {
 
   setBlnFiltro() {
     this.blnBtnFiltro = this.validarFiltros();
+    
   }
 
   limpiarFiltro() {

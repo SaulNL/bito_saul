@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { PedidosService } from '../../../../api/pedidos.service';
 import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
@@ -10,34 +10,47 @@ import { ToadNotificacionService } from '../../../../api/toad-notificacion.servi
   styleUrls: ['./datos-pedido-dialog.page.scss'],
 })
 export class DatosPedidoDialogPage implements OnInit {
-  public pedido:any;
+  public pedido: any;
   blnCancelar: boolean;
   motivo: any;
-
-
+  public total: number;
+  public domicilioEnvio: boolean;
+  public domicilioEnvioMessage: any;
   constructor(
     private pedidosServicios: PedidosService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private notificaciones: ToadNotificacionService,
     public alertController: AlertController
-  ) { }
+  ) {
+    this.total = 0;
+    this.domicilioEnvio = false;
+    this.domicilioEnvioMessage = '';
+  }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.special) {
-        this.pedido = JSON.parse(params.special);
-      }      
-    });    
+        const body = JSON.parse(params.special);
+        this.pedido = body.pedido;
+        this.pedido.productos.forEach(element => {
+          this.total += Number(element.costo);
+        });
+        if (this.pedido.id_tipo_pedido === 2) {
+          this.domicilioEnvio = true;
+          this.textoDomicilio(body.precioEntrega);
+        }
+      }
+    });
   }
   cancelar() {
     this.blnCancelar = true;
   }
-  btnRegresar(){
+  btnRegresar() {
     this.blnCancelar = false;
   }
-  regresar(){
-    this.router.navigate(['/tabs/home/compras'], { queryParams: {special: true}  });
+  regresar() {
+    this.router.navigate(['/tabs/home/compras'], { queryParams: { special: true } });
   }
   cancelarPedido(pedido: any) {
     //this.loaderBtn = true;
@@ -53,7 +66,7 @@ export class DatosPedidoDialogPage implements OnInit {
       },
       error => {
         //this.loaderBtn = false;
-        this.notificaciones.error(error.message); 
+        this.notificaciones.error(error.message);
       });
   }
 
@@ -65,12 +78,21 @@ export class DatosPedidoDialogPage implements OnInit {
       buttons: ['Cerrar']
     });
     await alert.present();
- }
-  validarMotivoCancelacion(pedido: any){
+  }
+  validarMotivoCancelacion(pedido: any) {
     if (this.motivo) {
       this.cancelarPedido(pedido);
-  }else{
-    this.presentAlert();
+    } else {
+      this.presentAlert();
+    }
   }
-}
+  public textoDomicilio(domicilioEnvioMessage: any) {
+    const temp = Number(domicilioEnvioMessage);
+    if (isNaN(temp)) {
+      this.domicilioEnvioMessage = '+ Costo de envio : ' + domicilioEnvioMessage;
+    } else {
+      this.domicilioEnvioMessage = '+ $' + temp + 'pesos del envio';
+    }
+    
+  }
 }

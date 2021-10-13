@@ -1,10 +1,10 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { UtilsCls } from "../../../utils/UtilsCls";
 import { PersonaService } from "../../../api/persona.service";
 import { Router } from "@angular/router";
 import { ProductoModel } from "../../../Modelos/ProductoModel";
 import { ModalProductoPage } from "../../productos/modal-producto/modal-producto.page";
-import {AnimationController, IonContent, ModalController} from '@ionic/angular';
+import { AnimationController, IonContent, ModalController } from '@ionic/angular';
 import { ProductosService } from "../../../api/productos.service";
 import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
 
@@ -23,6 +23,7 @@ export class ProductosFavoritosPage implements OnInit {
   public motrarContacto: boolean;
   public tamanoLista: number;
   public loader: boolean;
+  public msj = 'Cargando';
 
   constructor(
     private util: UtilsCls,
@@ -54,8 +55,8 @@ export class ProductosFavoritosPage implements OnInit {
             if (response.code === 200) {
               this.listaProductos = response.data.data;
               this.tamanoLista = this.listaProductos.length;
-              this.loader = false;
             }
+            this.loader = false;
           },
           (error) => {
             this.tamanoLista = 0;
@@ -96,6 +97,8 @@ export class ProductosFavoritosPage implements OnInit {
     const leaveAnimation = (baseEl: any) => {
       return enterAnimation(baseEl).direction("reverse");
     };
+
+
 
     const modal = await this.modalController.create({
       component: ModalProductoPage,
@@ -141,7 +144,7 @@ export class ProductosFavoritosPage implements OnInit {
   }
 
   regresar() {
-    this.router.navigate(["/tabs/home/mis-favoritos"]);
+    this.router.navigate(["/tabs/mis-favoritos"]);
   }
 
   public productoImagen(imagen: any) {

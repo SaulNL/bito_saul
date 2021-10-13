@@ -1,3 +1,4 @@
+import { SpinnerModule } from './../../../../../componentes/spinner/spinner.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +14,8 @@ import { DatosAvisosInformacionPage } from './datos-avisos-informacion.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    DatosAvisosInformacionPageRoutingModule
+    DatosAvisosInformacionPageRoutingModule,
+    SpinnerModule
   ],
   declarations: [DatosAvisosInformacionPage]
 })

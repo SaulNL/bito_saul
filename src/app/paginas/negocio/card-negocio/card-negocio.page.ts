@@ -1,3 +1,4 @@
+import { FormularioNegocioGuard } from './../../../api/formulario-negocio-guard.service';
 import { Component, OnInit } from "@angular/core";
 import { NegocioModel } from "./../../../Modelos/NegocioModel";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -24,17 +25,19 @@ export class CardNegocioPage implements OnInit {
     private router: Router,
     private negocioServico: NegocioService,
     private notification: ToadNotificacionService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private guard: FormularioNegocioGuard
   ) {
     this.negocioGuardar = new NegocioModel();
     this.btload = false;
+    this.guard.activeForm = false;
   }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.negocioTO = JSON.parse(params.special);
-        if (this.negocioTO.id_negocio == null) {
+        if (this.negocioTO.id_negocio === null) {
           this.router.navigate(["/tabs/home/negocio"]);
         } else {
           this.buscarNegocio();
@@ -55,12 +58,15 @@ export class CardNegocioPage implements OnInit {
         this.btload = true;
       },
       (error) => {
+
       }
     );
   }
-  
 
-  inforNegocio(negocio: NegocioModel) {
+
+  inforNegocio() {
+    const negocio = this.negocioTO;
+    this.guard.activeForm = true;
     this.negocioTO = JSON.parse(JSON.stringify(negocio));
     this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
     let all = {
@@ -68,10 +74,11 @@ export class CardNegocioPage implements OnInit {
       pys: this.negocioGuardar,
     };
     let navigationExtras = JSON.stringify(all);
-    this.router.navigate(["/tabs/home/negocio/card-negocio/info-negocio"], {
-      queryParams: { special: navigationExtras },
+    this.router.navigate(['/tabs/home/negocio/card-negocio/formulario-negocio'], {
+      queryParams: { special: navigationExtras }
     });
   }
+
   regresar() {
     this.router.navigate(["/tabs/home/negocio"], {
       queryParams: { special: true },
@@ -85,7 +92,7 @@ export class CardNegocioPage implements OnInit {
     };
     let navigationExtras = JSON.stringify(all);
     this.router.navigate(
-      ["/tabs/home/negocio/mis-negocios/mis-productos-servicios"],
+      ["/tabs/home/negocio/card-negocio/mis-productos-servicios"],
       {
         queryParams: { special: navigationExtras },
       }
@@ -164,6 +171,7 @@ export class CardNegocioPage implements OnInit {
   }
 
   solicitarValidacion(){
+
     this.negocioServico.solicitarValidacionNegocio(this.negocioTO.id_negocio).subscribe(
         response => {
           if (response.code === 200) {

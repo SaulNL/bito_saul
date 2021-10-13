@@ -1,41 +1,42 @@
-import { AppSettings } from './../../AppSettings';
-import { Component, EventEmitter, OnInit } from '@angular/core';
-import { Map, tileLayer, marker, icon } from 'leaflet';
-import { ActivatedRoute, Router } from '@angular/router';
+import { AppSettings } from "./../../AppSettings";
+import { Component, EventEmitter, OnInit } from "@angular/core";
+import { Map, tileLayer, marker, icon } from "leaflet";
+import { ActivatedRoute, Router } from "@angular/router";
 import {
   AlertController,
   NavController,
   Platform,
   ToastController,
-} from '@ionic/angular';
-import { NegocioService } from '../../api/negocio.service';
-import { Geolocation } from '@capacitor/core';
-import { ToadNotificacionService } from '../../api/toad-notificacion.service';
-import { Location } from '@angular/common';
-import { UtilsCls } from '../../utils/UtilsCls';
-import { SideBarService } from '../../api/busqueda/side-bar-service';
-import { ActionSheetController } from '@ionic/angular';
-import { ModalController } from '@ionic/angular';
-import { DenunciaNegocioPage } from './denuncia-negocio/denuncia-negocio.page';
-import { Plugins } from '@capacitor/core';
-import { CalificarNegocioComponent } from '../../componentes/calificar-negocio/calificar-negocio.component';
-import { ProveedorServicioService } from '../../api/busqueda/proveedores/proveedor-servicio.service';
-import { DetalleProductoComponent } from '../../componentes/detalle-producto/detalle-producto.component';
-import { PedidoNegocioComponent } from '../../componentes/pedido-negocio/pedido-negocio.component';
-import { AuthGuardService } from '../../api/auth-guard.service';
-import { NavBarServiceService } from 'src/app/api/busqueda/nav-bar-service.service';
-import { PromocionesModel } from 'src/app/Modelos/busqueda/PromocionesModel';
+} from "@ionic/angular";
+import { NegocioService } from "../../api/negocio.service";
+import { Geolocation } from "@capacitor/core";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { Location } from "@angular/common";
+import { UtilsCls } from "../../utils/UtilsCls";
+import { SideBarService } from "../../api/busqueda/side-bar-service";
+import { ActionSheetController } from "@ionic/angular";
+import { ModalController } from "@ionic/angular";
+import { DenunciaNegocioPage } from "./denuncia-negocio/denuncia-negocio.page";
+import { Plugins } from "@capacitor/core";
+import { CalificarNegocioComponent } from "../../componentes/calificar-negocio/calificar-negocio.component";
+import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveedor-servicio.service";
+import { DetalleProductoComponent } from "../../componentes/detalle-producto/detalle-producto.component";
+import { PedidoNegocioComponent } from "../../componentes/pedido-negocio/pedido-negocio.component";
+import { AuthGuardService } from "../../api/auth-guard.service";
+import { NavBarServiceService } from "src/app/api/busqueda/nav-bar-service.service";
+import { PromocionesModel } from "src/app/Modelos/busqueda/PromocionesModel";
 const { Share } = Plugins;
-const haversineCalculator = require('haversine-calculator');
-import { ModalPromocionNegocioComponent } from 'src/app/componentes/modal-promocion-negocio/modal-promocion-negocio.component';
-import {ProductoModel} from '../../Modelos/ProductoModel';
-import { ProductosService } from '../../api/productos.service';
-import {ComentariosNegocioComponent} from '../../componentes/comentarios-negocio/comentarios-negocio.component';
+const haversineCalculator = require("haversine-calculator");
+import { ModalPromocionNegocioComponent } from "src/app/componentes/modal-promocion-negocio/modal-promocion-negocio.component";
+import { ProductoModel } from "../../Modelos/ProductoModel";
+import { ProductosService } from "../../api/productos.service";
+import { ComentariosNegocioComponent } from '../../componentes/comentarios-negocio/comentarios-negocio.component';
+import { OptionBackLogin } from "src/app/Modelos/OptionBackLoginModel";
 
 @Component({
-  selector: 'app-perfil-negocio',
-  templateUrl: './perfil-negocio.page.html',
-  styleUrls: ['./perfil-negocio.page.scss'],
+  selector: "app-perfil-negocio",
+  templateUrl: "./perfil-negocio.page.html",
+  styleUrls: ["./perfil-negocio.page.scss"],
 })
 export class PerfilNegocioPage implements OnInit {
 
@@ -56,20 +57,20 @@ export class PerfilNegocioPage implements OnInit {
   public estatusCalificacion: boolean;
   public hoy: number;
   public estatus: { tipo: number; mensaje: string };
-  public motrarContacto = true;
+  public motrarContacto: boolean;
   public backButton = true;
   public subscribe;
   public modal;
   public banderaS: any;
   public banderaP: any;
   public diasArray = [
-    { id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null },
-    { id: 2, dia: 'Martes', horarios: [], hi: null, hf: null },
-    { id: 3, dia: 'Miércoles', horarios: [], hi: null, hf: null },
-    { id: 4, dia: 'Jueves', horarios: [], hi: null, hf: null },
-    { id: 5, dia: 'Viernes', horarios: [], hi: null, hf: null },
-    { id: 6, dia: 'Sábado', horarios: [], hi: null, hf: null },
-    { id: 7, dia: 'Domingo', horarios: [], hi: null, hf: null },
+    { id: 1, dia: "Lunes", horarios: [], hi: null, hf: null },
+    { id: 2, dia: "Martes", horarios: [], hi: null, hf: null },
+    { id: 3, dia: "Miércoles", horarios: [], hi: null, hf: null },
+    { id: 4, dia: "Jueves", horarios: [], hi: null, hf: null },
+    { id: 5, dia: "Viernes", horarios: [], hi: null, hf: null },
+    { id: 6, dia: "Sábado", horarios: [], hi: null, hf: null },
+    { id: 7, dia: "Domingo", horarios: [], hi: null, hf: null },
   ];
   private detalle: any;
   public bolsa: any;
@@ -83,37 +84,44 @@ export class PerfilNegocioPage implements OnInit {
   public contador: number;
   public navegacion: any;
   public user: any;
+  public msj = 'Cargando';
   public siEsta: any;
+  public arrayLugaresEntrega: any;
+  public typeLogin: OptionBackLogin;
+  public promociones: any;
   constructor(
-      private navctrl: NavController,
-      private route: ActivatedRoute,
-      private toadController: ToastController,
-      private negocioService: NegocioService,
-      private notificacionService: ToadNotificacionService,
-      private location: Location,
-      private util: UtilsCls,
-      private sideBarService: SideBarService,
-      private actionSheetController: ActionSheetController,
-      private _router: Router,
-      public modalController: ModalController,
-      private serviceProveedores: ProveedorServicioService,
-      public alertController: AlertController,
-      private router: Router,
-      private platform: Platform,
-      private blockk: AuthGuardService,
-      private navBarServiceService: NavBarServiceService,
-      private servicioProductos: ProductosService,
+    private navctrl: NavController,
+    private route: ActivatedRoute,
+    private toadController: ToastController,
+    private negocioService: NegocioService,
+    private notificacionService: ToadNotificacionService,
+    private location: Location,
+    private util: UtilsCls,
+    private sideBarService: SideBarService,
+    private actionSheetController: ActionSheetController,
+    public modalController: ModalController,
+    private serviceProveedores: ProveedorServicioService,
+    public alertController: AlertController,
+    private router: Router,
+    private platform: Platform,
+    private blockk: AuthGuardService,
+    private navBarServiceService: NavBarServiceService,
+    private servicioProductos: ProductosService,
   ) {
-    this.seccion = 'ubicacion';
-    this.loader = true;
+    this.motrarContacto = true;
+    this.seccion = 'productos';
+    // this.segmentModel = 'productos';
+    this.loader = false;
+    this.typeLogin = new OptionBackLogin();
     this.existeSesion = util.existe_sesion();
     this.estatusCalificacion = true;
     this.bolsa = [];
+    this.promociones = [];
     this.contador = 0;
     this.route.queryParams.subscribe((params) => {
       this.subscribe = this.platform.backButton.subscribe(() => {
         this.modal = this.modalController.getTop().then((dato) => {
-          if (dato) {
+          if (dato !== undefined) {
             this.modal.dismiss();
           } else {
             if (this.contador === 0) {
@@ -130,20 +138,24 @@ export class PerfilNegocioPage implements OnInit {
     this.user = this.util.getUserData();
     this.siEsta = true;
   }
-
   ngOnInit() {
+    // if (localStorage.getItem("isRedirected") === "false") {
+    //   localStorage.setItem("isRedirected", "true");
+    //   location.reload();
+    //   // window.location.assign(this.router.url);
+    // }
     this.route.queryParams.subscribe(params => {
-      if (params.cancel && params){
-        const all = JSON.parse(JSON.stringify(params));
-        const objeto = JSON.parse(all.cancel);
+      if (params.cancel && params) {
+        let all = JSON.parse(JSON.stringify(params));
+        let objeto = JSON.parse(all.cancel);
         this.ruta = objeto.ruta;
-        if (objeto.cancel){
+        if (objeto.cancel) {
           this.mensajeRuta();
         }
       }
     });
     this.route.queryParams.subscribe(params => {
-      if (params.route && params){
+      if (params.route && params) {
         this.navegacion = true;
       }
     });
@@ -154,7 +166,7 @@ export class PerfilNegocioPage implements OnInit {
         const agregarProducto = JSON.parse(params.carrito);
         if (agregarProducto.agregado) {
           setTimeout(() => {
-          this.agregarBolsaDeta(agregarProducto.producto);
+            this.agregarBolsaDeta(agregarProducto.producto);
           }, 2000);
         }
       }
@@ -165,18 +177,19 @@ export class PerfilNegocioPage implements OnInit {
     });
 
     this.route.params.subscribe((params) => {
+
       this.negocio = params.negocio;
-    });
-    if (
+      if (
         this.negocio !== undefined &&
         this.negocio !== null &&
-        this.negocio !== ''
-    ) {
-      this.obtenerInformacionNegocio();
-    } else {
-      this.notificacionService.error('Ocurrio un error con este negocio');
-      this.location.back();
-    }
+        this.negocio !== ""
+      ) {
+        this.obtenerInformacionNegocio();
+      } else {
+        this.notificacionService.error("Ocurrio un error con este negocio");
+        this.location.back();
+      }
+    });
     this.getCurrentPosition();
   }
   ionViewWillEnter() {
@@ -186,162 +199,188 @@ export class PerfilNegocioPage implements OnInit {
   }
   async getCurrentPosition() {
     const coordinates = await Geolocation.getCurrentPosition()
-        .then((res) => {
-          this.miLat = res.coords.latitude;
-          this.miLng = res.coords.longitude;
-        })
-        .catch((error) => {
-          this.permisoUbicacionCancelado = true;
-        });
+      .then((res) => {
+        this.miLat = res.coords.latitude;
+        this.miLng = res.coords.longitude;
+      })
+      .catch((error) => {
+        this.permisoUbicacionCancelado = true;
+      });
   }
 
   obtenerInformacionNegocio() {
     this.loader = true;
+
     this.negocioService.obteneretalleNegocio(this.negocio, this.user.id_persona).subscribe(
-        (response) => {
-          if (response.data !== null) {
-            this.informacionNegocio = response.data;
-            console.log(response.data);
-            if (!this.informacionNegocio.activo) {
-              this.presentExit();
-              this.siEsta = false;
-            } else{
-              this.informacionNegocio.catProductos = [];
-              this.informacionNegocio.catServicos = [];
-              // this.obtenerPromociones();
-              this.obtenerProductos();
-              this.obtenerServicios();
-              this.obtenerEstatusCalificacion();
-              this.guardarQuienVioNegocio(this.informacionNegocio.id_negocio);
-              this.comentariosNegocio(this.informacionNegocio.id_negocio);
-              this.horarios(this.informacionNegocio);
-              this.calcularDistancia();
-            }
+      (response) => {
+        if (response.data !== null) {
+          this.informacionNegocio = response.data;
+
+          this.promociones = this.informacionNegocio.promociones;
+          if (this.informacionNegocio.lugares_entrega !== null) {
+            this.arrayLugaresEntrega = this.informacionNegocio.lugares_entrega.split(',');
           } else {
-            this.presentError();
+            this.arrayLugaresEntrega = null;
           }
-          this.loader = false;
-          setTimeout((it) => {
-            this.loadMap();
-          }, 100);
-        },
-        (error) => {
-          confirm('Error al cargar');
-          this.loader = false;
+          if (!this.informacionNegocio.activo) {
+            this.presentExit();
+            this.siEsta = false;
+          } else {
+            this.informacionNegocio.catProductos = [];
+            this.informacionNegocio.catServicos = [];
+            // this.obtenerPromociones();
+            this.obtenerProductos();
+            this.obtenerServicios();
+            this.obtenerEstatusCalificacion();
+            this.guardarQuienVioNegocio(this.informacionNegocio.id_negocio);
+            this.comentariosNegocio(this.informacionNegocio.id_negocio);
+            this.horarios(this.informacionNegocio);
+            this.calcularDistancia();
+          }
+        } else {
+          this.presentError();
         }
+        this.loader = false;
+        // setTimeout((it) => {
+        // this.loadMap();
+        // }, 100);
+      },
+      (error) => {
+        console.log(error);
+        confirm("Error al cargar");
+        this.loader = false;
+      }
     );
+    // this.loader = false;
   }
 
   obtenerProductos() {
+
     this.negocioService
-        .obtenerDetalleDeNegocio(this.informacionNegocio.id_negocio, 0, this.user.id_persona)
-        .subscribe(
-            (response) => {
-              if (response.code === 200 && response.agrupados != null) {
-                const productos = response.agrupados;
-                const cats = [];
+      .obtenerDetalleDeNegocio(this.informacionNegocio.id_negocio, 0, this.user.id_persona)
+      .subscribe(
+        (response) => {
+          if (response.code === 200 && response.agrupados != null) {
 
-                if (productos !== undefined) {
-                  productos.map((catprod) => {
-                    if (catprod.activo) {
-                      const productos3 = [];
-                      catprod.productos.map((pro) => {
-                        if (pro.existencia) {
-                          productos3.push(pro);
-                        }
-                      });
-                      catprod.productos = productos3;
+            const productos = response.agrupados;
+            const cats = [];
 
-                      if (productos3.length > 0) {
-                        cats.push(catprod);
-                      }
+            if (productos !== undefined) {
+              productos.map((catprod) => {
+                if (catprod.activo) {
+                  const productos3 = [];
+                  catprod.productos.map((pro) => {
+                    if (pro.existencia) {
+                      productos3.push(pro);
                     }
                   });
-                  this.informacionNegocio.catProductos = cats;
+                  catprod.productos = productos3;
+
+                  if (productos3.length > 0) {
+                    cats.push(catprod);
+                  }
                 }
-              }
-              if (response.code === 200) {
-                this.informacionNegocio.cartaProducto = response.data.cartaProducto;
-                this.informacionNegocio.cartaServicio = response.data.cartaServicio;
-                this.informacionNegocio.tagsProductos = response.data.productoTags;
-                this.informacionNegocio.tagsServicios = response.data.serviciosTags;
-              }
-            },
-            (error) => {
-              confirm('Error al o¿btener los productos');
+              });
+              this.informacionNegocio.catProductos = cats;
             }
-        );
+          }
+          if (response.code === 200) {
+            if ((response.data.productos === undefined || response.data.productos.length === 0)
+              && response.data.servicios !== undefined && response.data.servicios.length > 0) {
+              this.seccion = 'servicios';
+            }
+            if ((response.data.productos === undefined || response.data.productos.length === 0)
+              && (response.data.servicios === undefined || response.data.servicios.length === 0)) {
+              this.seccion = 'ubicacion';
+            }
+
+            this.informacionNegocio.cartaProducto = response.data.cartaProducto;
+            this.informacionNegocio.cartaServicio = response.data.cartaServicio;
+            this.informacionNegocio.tagsProductos = response.data.productoTags;
+            this.informacionNegocio.tagsServicios = response.data.serviciosTags;
+          }
+        },
+        (error) => {
+          confirm("Error al o¿btener los productos");
+        }
+      );
   }
 
   obtenerServicios() {
+
     this.negocioService
-        .obtenerDetalleDeNegocio(this.informacionNegocio.id_negocio, 1, this.user.id_persona)
-        .subscribe(
-            (response) => {
-              if (response.code === 200 && response.agrupados != null) {
-                const servicios = response.agrupados;
-                const cats = [];
+      .obtenerDetalleDeNegocio(this.informacionNegocio.id_negocio, 1, this.user.id_persona)
+      .subscribe(
+        (response) => {
+          if (response.code === 200 && response.agrupados != null) {
 
-                if (servicios !== undefined) {
-                  servicios.map((catprod) => {
-                    if (catprod.activo) {
-                      const servicios3 = [];
-                      catprod.servicios.map((ser) => {
-                        if (ser.existencia) {
-                          servicios3.push(ser);
-                        }
-                      });
-                      catprod.servicios = servicios3;
+            const servicios = response.agrupados;
+            const cats = [];
 
-                      if (servicios3.length > 0) {
-                        cats.push(catprod);
-                      }
+            if (servicios !== undefined) {
+              servicios.map((catprod) => {
+                if (catprod.activo) {
+                  const servicios3 = [];
+                  catprod.servicios.map((ser) => {
+                    if (ser.existencia) {
+                      servicios3.push(ser);
                     }
                   });
-                  this.informacionNegocio.catServicos = cats;
+                  catprod.servicios = servicios3;
+
+                  if (servicios3.length > 0) {
+                    cats.push(catprod);
+                  }
                 }
-              }
-            },
-            (error) => {
-              confirm('Error al o¿btener los servicios');
+              });
+              this.informacionNegocio.catServicos = cats;
+
             }
-        );
+          }
+        },
+        (error) => {
+          confirm("Error al o¿btener los servicios");
+        }
+      );
   }
 
-  loadMap() {
-    const lat = this.informacionNegocio.det_domicilio.latitud;
-    const lng = this.informacionNegocio.det_domicilio.longitud;
-    this.map = new Map('mapId').setView([lat, lng], 16);
-    tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '',
-    }).addTo(this.map);
+  // loadMap() {
+  //   if (this.informacionNegocio.det_domicilio.latitud !== '0' && this.informacionNegocio.det_domicilio.longitud !== '0') {
+  //     const lat = this.informacionNegocio.det_domicilio.latitud;
+  //     const lng = this.informacionNegocio.det_domicilio.longitud;
+  //     this.map = new Map("mapId").setView([lat, lng], 16);
+  //     tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  //       attribution: "",
+  //     }).addTo(this.map);
 
-    const myIcon = icon({
-      iconUrl:
-          'https://ecoevents.blob.core.windows.net/comprandoando/marker.png',
-      iconSize: [45, 41],
-      iconAnchor: [13, 41],
-    });
+  //     var myIcon = icon({
+  //       iconUrl:
+  //         "https://ecoevents.blob.core.windows.net/comprandoando/marker.png",
+  //       iconSize: [45, 41],
+  //       iconAnchor: [13, 41],
+  //     });
 
-    marker([lat, lng], { icon: myIcon }).addTo(this.map);
-  }
+  //     marker([lat, lng], { icon: myIcon }).addTo(this.map);
+  //   }
+
+  // }
 
   async configToad(mensaje) {
     const toast = await this.toadController.create({
-      color: 'red',
+      color: "red",
       duration: 2000,
       message: mensaje,
     });
     return await toast.present();
   }
 
-  cambio() {
-    if (this.seccion === 'ubicacion') {
-      setTimeout((it) => {
-        this.loadMap();
-      }, 100);
-    }
-  }
+  // cambio() {
+  // if (this.seccion === "ubicacion") {
+  // setTimeout((it) => {
+  // this.loadMap();
+  // }, 100);
+  // }
+  // }
 
   irAlDetalle(producto: any) {
     this.detalle = producto;
@@ -349,37 +388,37 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   enviarWhasapp(celular: any) {
-    this.abrirVentana('https://api.whatsapp.com/send?phone=+52' + celular);
+    this.abrirVentana("https://api.whatsapp.com/send?phone=+52" + celular);
   }
 
   llamar(telefono) {
-    this.abrirVentana('tel:' + telefono);
+    this.abrirVentana("tel:" + telefono);
   }
 
   abrirVentana(ruta) {
     window.open(
-        ruta,
-        '_blank',
-        'toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400'
+      ruta,
+      "_blank",
+      "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400"
     );
   }
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
-      header: 'Negocio',
+      header: "Negocio",
       buttons: [
         {
-          text: 'Denunciar',
-          icon: 'receipt-outline',
+          text: "Denunciar",
+          icon: "receipt-outline",
           handler: () => {
             this.abrirModalDenuncia();
           },
         },
         {
-          text: 'Cancelar',
-          icon: 'close',
-          role: 'cancel',
-          handler: () => {},
+          text: "Cancelar",
+          icon: "close",
+          role: "cancel",
+          handler: () => { },
         },
       ],
     });
@@ -407,14 +446,19 @@ export class PerfilNegocioPage implements OnInit {
         _costoEntrega: this.informacionNegocio.costo_entrega,
         _abierto: this.informacionNegocio.abierto,
         bolsa: this.bolsa,
-        user: this.user
+        user: this.user,
+        url: this.informacionNegocio.url_negocio
       },
     });
     await modal.present();
     await modal.onDidDismiss().then((r) => {
-      if (r.data.data !== null) {
-
+      if (r.data.data != undefined && r.data.data !== null) {
         this.llenarBolsa(r.data.data);
+      }
+      if (r.data.goLogin != undefined) {
+        // localStorage.setItem("isRedirected", "false");
+        const body = JSON.stringify(r.data.goLogin);
+        this.router.navigate(["/tabs/login"], { queryParams: { perfil: body } });
       }
     });
   }
@@ -434,6 +478,7 @@ export class PerfilNegocioPage implements OnInit {
     await modal.onDidDismiss().then((r) => {
       if (r.data.data !== undefined) {
         this.bolsa = r.data.data;
+
       }
     });
   }
@@ -441,15 +486,14 @@ export class PerfilNegocioPage implements OnInit {
   async compartir() {
     this.url_negocio = this.url + this.informacionNegocio.url_negocio;
     await Share.share({
-      title: 'Ver cosas interesantes',
+      title: "Ver cosas interesantes",
       text:
-          'Te recomiendo este negocio ' +
-          this.informacionNegocio.nombre_comercial,
+        "Te recomiendo este negocio " +
+        this.informacionNegocio.nombre_comercial,
       url: this.url_negocio,
-      dialogTitle: 'Compartir con Amigos',
+      dialogTitle: "Compartir con Amigos",
     })
-        .then(() => console.log('Se compartio exitosamente'))
-        .catch((error) => this.notificacionService.error(error));
+      .then().catch((error) => this.notificacionService.error(error));
   }
 
   async abrirModalCalifica() {
@@ -491,27 +535,28 @@ export class PerfilNegocioPage implements OnInit {
    * @author Omar
    */
   obtenerEstatusCalificacion() {
+
     //  this.loaderEstatusCalifi = true;
     if (this.existeSesion) {
       this.serviceProveedores
-          .obtenerEstatusCalificacionUsuario(this.informacionNegocio)
-          .subscribe(
-              (response) => {
-                if (response.code === 200) {
-                  this.estatusCalificacion = true;
-                  this.valorEstrellas();
-                } else {
-                  this.estatusCalificacion = false;
-                  this.valorEstrellas();
-                }
-              },
-              (error) => {
-                //      this.loaderEstatusCalifi = false;
-              },
-              () => {
-                //     this.loaderEstatusCalifi = false;
-              }
-          );
+        .obtenerEstatusCalificacionUsuario(this.informacionNegocio)
+        .subscribe(
+          (response) => {
+            if (response.code === 200) {
+              this.estatusCalificacion = true;
+              this.valorEstrellas();
+            } else {
+              this.estatusCalificacion = false;
+              this.valorEstrellas();
+            }
+          },
+          (error) => {
+            //      this.loaderEstatusCalifi = false;
+          },
+          () => {
+            //     this.loaderEstatusCalifi = false;
+          }
+        );
     } else {
       this.estatusCalificacion = false;
       //   this.loaderEstatusCalifi = false;
@@ -520,19 +565,20 @@ export class PerfilNegocioPage implements OnInit {
 
   valorEstrellas() {
     setTimeout((it) => {
-      const numeroEstrella = this.informacionNegocio.promedio.toString();
-      const estrellas = document.getElementsByName('estrellas') as any;
+      let numeroEstrella = this.informacionNegocio.promedio.toString();
+      let estrellas = <any>document.getElementsByName("estrellas");
       for (let i = 0; i < estrellas.length; i++) {
         if (estrellas[i].value === numeroEstrella) {
-          const estrellaValor = estrellas[i];
-          estrellaValor.setAttribute('checked', true);
+          let estrellaValor = estrellas[i];
+          estrellaValor.setAttribute("checked", true);
         }
       }
     }, 500);
   }
 
   private horarios(negocio: any) {
-    this.estatus = { tipo: 0, mensaje: 'No abre hoy' };
+
+    this.estatus = { tipo: 0, mensaje: "No abre hoy" };
 
     const hros = negocio.horarios;
     let hoy: any;
@@ -543,12 +589,12 @@ export class PerfilNegocioPage implements OnInit {
       hros.forEach((horarioTmp) => {
         diasArray.map((dia) => {
           if (
-              horarioTmp.dias.includes(dia.dia) &&
-              horarioTmp.hora_inicio !== undefined &&
-              horarioTmp.hora_fin !== undefined
+            horarioTmp.dias.includes(dia.dia) &&
+            horarioTmp.hora_inicio !== undefined &&
+            horarioTmp.hora_fin !== undefined
           ) {
             const dato = {
-              texto: horarioTmp.hora_inicio + ' a ' + horarioTmp.hora_fin,
+              texto: horarioTmp.hora_inicio + " a " + horarioTmp.hora_fin,
               hi: horarioTmp.hora_inicio,
               hf: horarioTmp.hora_fin,
             };
@@ -560,31 +606,31 @@ export class PerfilNegocioPage implements OnInit {
       diasArray.map((dia) => {
         if (dia.id === this.hoy) {
           const now = new Date(
-              1995,
-              11,
-              18,
-              hoy.getHours(),
-              hoy.getMinutes(),
-              0,
-              0
+            1995,
+            11,
+            18,
+            hoy.getHours(),
+            hoy.getMinutes(),
+            0,
+            0
           );
           let abieto = null;
           let index = null;
           const listaAux = [];
           if (dia.horarios.length !== 0) {
             dia.horarios.map((item, i) => {
-              const inicio = item.hi.split(':');
+              const inicio = item.hi.split(":");
               // tslint:disable-next-line:radix
               const fi = new Date(
-                  1995,
-                  11,
-                  18,
-                  parseInt(inicio[0]),
-                  parseInt(inicio[1]),
-                  0,
-                  0
+                1995,
+                11,
+                18,
+                parseInt(inicio[0]),
+                parseInt(inicio[1]),
+                0,
+                0
               );
-              const fin = item.hf.split(':');
+              const fin = item.hf.split(":");
               let aux = 18;
               // tslint:disable-next-line:radix
               if (parseInt(inicio[0]) > parseInt(fin[0])) {
@@ -592,13 +638,13 @@ export class PerfilNegocioPage implements OnInit {
               }
               // tslint:disable-next-line:radix
               const ff = new Date(
-                  1995,
-                  11,
-                  aux,
-                  parseInt(fin[0]),
-                  parseInt(fin[1]),
-                  0,
-                  0
+                1995,
+                11,
+                aux,
+                parseInt(fin[0]),
+                parseInt(fin[1]),
+                0,
+                0
               );
               listaAux.push({
                 valor: (fi.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
@@ -612,7 +658,7 @@ export class PerfilNegocioPage implements OnInit {
             if (abieto) {
               this.estatus = {
                 tipo: 1,
-                mensaje: 'Cierra a las ' + dia.horarios[index].hf,
+                mensaje: "Cierra a las " + dia.horarios[index].hf,
               };
             } else {
               let listaValores: Array<number> = [];
@@ -638,7 +684,7 @@ export class PerfilNegocioPage implements OnInit {
                 });
                 this.estatus = {
                   tipo: 0,
-                  mensaje: 'Abre a las ' + dia.horarios[index].hi,
+                  mensaje: "Abre a las " + dia.horarios[index].hi,
                 };
               } else {
                 listaAux.map((item) => {
@@ -648,17 +694,17 @@ export class PerfilNegocioPage implements OnInit {
                 });
                 this.estatus = {
                   tipo: 0,
-                  mensaje: 'Cerró a las ' + dia.horarios[index].hf,
+                  mensaje: "Cerró a las " + dia.horarios[index].hf,
                 };
               }
             }
           } else {
-            this.estatus = { tipo: 0, mensaje: 'No abre hoy' };
+            this.estatus = { tipo: 0, mensaje: "No abre hoy" };
           }
         }
       });
       this.diasArray = diasArray;
-      // console.log(this.diasArray);
+
     }
   }
 
@@ -667,14 +713,13 @@ export class PerfilNegocioPage implements OnInit {
     this.bolsa.map((it) => {
       if (it.idProducto === dato.idProducto) {
         existe = true;
-        if (dato.cantidad > 1){
-          it.cantidad = dato.cantidad;
-        } else{
-          it.cantidad++;
-        }
+        // if (dato.cantidad > 1) {
+        it.cantidad = dato.cantidad;
+        // } else {
+        // it.cantidad++;
+        // }
       }
     });
-
     if (!existe) {
       this.bolsa.push(dato);
     }
@@ -685,16 +730,17 @@ export class PerfilNegocioPage implements OnInit {
     if (this.bolsa.length > 0) {
       this.mensajeBolsa();
     } else {
+
       this.blockk.tf = true;
-      if (this.navegacion){
+      if (this.navegacion) {
         this.location.back();
         this.navegacion = false;
-      } else{
-        this.router.navigate(['/tabs/inicio']);
+      } else {
+        // this.router.navigate(['/tabs/inicio']);
+        this.router.navigateByUrl('/tabs/inicio');
+        // this.router.navigate(['/tabs/inicio'], { queryParams: { special: true } });
+        this.contador = 0;
       }
-
-      // this.subscribe.unsubscribe();
-      // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
     }
   }
 
@@ -704,24 +750,24 @@ export class PerfilNegocioPage implements OnInit {
 
   async mensajeRuta() {
     const alert = await this.alertController.create({
-      header: 'Advertencia',
+      header: "Advertencia",
       message:
-          'Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!',
+        "Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!",
       buttons: [
         {
-          text: 'Cancelar',
+          text: "Cancelar",
           handler: () => {
             this.blockk.tf = false;
             this.router.navigate(['/tabs/negocio/' + this.negocio]);
           }
         },
         {
-          text: 'Salir',
+          text: "Salir",
           handler: () => {
             this.blockk.tf = true;
             this.bolsa = [];
-            if (this.ruta === '/tabs/home/perfil'){
-              this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
+            if (this.ruta === "/tabs/home/perfil") {
+              this.router.navigate(['/tabs/home/perfil'], { queryParams: { special: true } });
             } else {
               this.router.navigate([this.ruta]);
             }
@@ -749,25 +795,25 @@ export class PerfilNegocioPage implements OnInit {
 
 
     const alert = await this.alertController.create({
-      header: 'Advertencia',
+      header: "Advertencia",
       message:
-          'Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!',
+        "Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!",
       buttons: [
         {
-          text: 'Cancelar',
+          text: "Cancelar",
           handler: () => {
             this.blockk.tf = false;
             this.contador = 0;
           }
         },
         {
-          text: 'Salir',
+          text: "Salir",
           handler: () => {
             this.bolsa = [];
             this.blockk.tf = true;
             if (this.navegacion) {
               this.location.back();
-            } else{
+            } else {
               this.router.navigate(['/tabs/inicio']);
             }
 
@@ -781,6 +827,7 @@ export class PerfilNegocioPage implements OnInit {
     await alert.present();
   }
   calcularDistancia() {
+
     setTimeout(() => {
       const start = {
         latitude: this.miLat,
@@ -797,7 +844,7 @@ export class PerfilNegocioPage implements OnInit {
 
   agregarBolsaDeta(pro) {
     if (this.existeSesion) {
-      const producto = {
+      let producto = {
         idProducto: pro.idProducto,
         precio: pro.precio,
         imagen: pro.imagen,
@@ -806,28 +853,56 @@ export class PerfilNegocioPage implements OnInit {
         nombre: pro.nombre,
         descripcion: pro.descripcion,
       };
-      this.llenarBolsa(producto);
+      let existe = false;
+      this.bolsa.map((it) => {
+        if (it.idProducto === producto.idProducto) {
+          existe = true;
+          if (producto.cantidad > 1) {
+            it.cantidad = producto.cantidad;
+          } else {
+            it.cantidad++;
+          }
+        }
+      });
+      if (!existe) {
+        this.bolsa.push(producto);
+      }
+      this.blockk.tf = false;
+      this.blockk.url = this.negocio;
     } else {
-      this.router.navigate(['/tabs/login']);
+      this.typeLogin.type = 'perfil';
+      this.typeLogin.url = this.negocio;
+      // localStorage.setItem("isRedirected", "false");
+      const body = JSON.stringify(this.typeLogin);
+      this.router.navigate(["/tabs/login"], {
+        queryParams: { perfil: body }
+      });
     }
   }
-
+  loginGo() {
+    // localStorage.setItem("isRedirected", "false");
+    this.typeLogin.type = 'perfil';
+    this.typeLogin.url = this.negocio;
+    const body = JSON.stringify(this.typeLogin);
+    this.router.navigate(["/tabs/login"], {
+      queryParams: { perfil: body }
+    });
+  }
   irRedSocial(palabra: string) {
     if (
-        palabra.substring(0, 7) !== 'http://' &&
-        palabra.substring(0, 8) !== 'https://'
+      palabra.substring(0, 7) !== "http://" &&
+      palabra.substring(0, 8) !== "https://"
     ) {
-      palabra = 'https://' + palabra;
+      palabra = "https://" + palabra;
     }
     this.abrirVentana(palabra);
   }
 
   mostrarBoton(precio) {
-    return (
-        (this.informacionNegocio.entrega_domicilio === 1 ||
-            this.informacionNegocio.entrega_sitio === 1 ||
-            this.informacionNegocio.consumo_sitio === 1) &&
-        parseInt(precio) > 0
+    return ((this.informacionNegocio.entrega_domicilio === 1 ||
+      this.informacionNegocio.entrega_sitio === 1 ||
+      this.informacionNegocio.consumo_sitio === 1) &&
+      parseInt(precio) > 0
     ); // && parseInt(precio) > 0
   }
   aumentarDismuir(cantidad: number, index: number, operacion: number) {
@@ -842,7 +917,7 @@ export class PerfilNegocioPage implements OnInit {
   mostrarOcultar() {
     this.motrarContacto = !this.motrarContacto;
   }
-  mostrarProducto(nombreCat) {
+  mostrarProducto(nombreCat: any) {
     if (!this.negocioSub) {
       if (this.banderaP === nombreCat) {
         this.negocioSub = !this.negocioSub;
@@ -859,6 +934,7 @@ export class PerfilNegocioPage implements OnInit {
 
   }
   mostrarServicio(nombreCat) {
+    this.motrarContacto = true;
     if (!this.servicioSub) {
 
       if (this.banderaS === nombreCat) {
@@ -882,15 +958,15 @@ export class PerfilNegocioPage implements OnInit {
         this.bolsa.splice(index, 1);
       }
     }
-    if (Object.keys(this.bolsa).length === 0){
+    if (Object.keys(this.bolsa).length === 0) {
       this.blockk.tf = true;
     }
   }
   public detallePromocion(promocion: PromocionesModel) {
     if (promocion !== new PromocionesModel()) {
-    setTimeout(() => {
-      this.abrirModalPromocion(promocion);
-    }, 200);
+      setTimeout(() => {
+        this.abrirModalPromocion(promocion);
+      }, 200);
     }
   }
   async abrirModalPromocion(promo: PromocionesModel) {
@@ -908,22 +984,22 @@ export class PerfilNegocioPage implements OnInit {
         if (response.code === 200) {
           producto.likes = response.data;
           this.notificacionService.exito(response.message);
-        } else{
+        } else {
           this.notificacionService.alerta(response.message);
         }
       },
       (error) => {
-        this.notificacionService.error('Error, intentelo más tarde');
+        this.notificacionService.error("Error, intentelo más tarde");
       }
     );
-    // }
+    //}
   }
   async presentError() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: '',
       mode: 'ios',
-      backdropDismiss : true,
+      backdropDismiss: true,
       message: '<strong>La Url del negocio no existe</strong>!!!',
       buttons: [
         {
@@ -945,7 +1021,7 @@ export class PerfilNegocioPage implements OnInit {
       cssClass: 'my-custom-class',
       header: '',
       mode: 'ios',
-      backdropDismiss : true,
+      backdropDismiss: true,
       message: '<strong>Este negocio está deshabilitado o ya no existe</strong>!!!',
       buttons: [
         {
@@ -962,11 +1038,27 @@ export class PerfilNegocioPage implements OnInit {
     await alert.present();
   }
 
-  guardarQuienVioNegocio(id_negocio: number){
+  guardarQuienVioNegocio(id_negocio: number) {
+
     this.negocioService.visteMiNegocio(id_negocio).subscribe(
       response => {
-        if (response.data !== null) {
 
+      },
+      error => {
+
+      }
+    );
+  }
+
+  comentariosNegocio(idNegocio: number) {
+
+    this.negocioService.obtenerComentariosNegocio(idNegocio).subscribe(
+      response => {
+        if (response.data !== null && response.data != undefined) {
+          this.listaComentarios = response.data;
+          if (this.listaComentarios.length > 0) {
+            this.mostrarComentarios = true;
+          }
         }
       },
       error => {
@@ -975,26 +1067,27 @@ export class PerfilNegocioPage implements OnInit {
     );
   }
 
-  comentariosNegocio(idNegocio: number){
-    this.negocioService.obtenerComentariosNegocio(idNegocio).subscribe(
-        response => {
-          if (response.data !== null) {
-            this.listaComentarios = response.data;
-            if (this.listaComentarios.length > 0){
-              this.mostrarComentarios = true;
-            }
-          }
-        },
-        error => {
-
-        }
-    );
-  }
-
-  public productoImagen(imagen: any){
-    if (Array.isArray(imagen)){
+  public productoImagen(imagen: any) {
+    if (Array.isArray(imagen)) {
       return imagen[0];
     }
     return imagen;
+  }
+  public loading(pc: any, pr: any) {
+    return pc === true || pr === false;
+  }
+  public ifPromocion(promociones: any) {
+
+    return (promociones !== undefined && promociones !== null && promociones.length > 0);
+  }
+
+  public segmentChanged(event) {
+    this.motrarContacto = true;
+    this.servicioSub = true;
+    this.negocioSub = true;
+    this.seccion = event.detail.value;
+    this.motrarContacto = true;
+    this.servicioSub = true;
+    this.negocioSub = true;
   }
 }

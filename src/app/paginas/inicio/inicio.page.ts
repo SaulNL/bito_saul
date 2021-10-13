@@ -1,10 +1,13 @@
+import { PlazasAfiliacionesComponent } from './../../componentes/plazas-afiliaciones/plazas-afiliaciones.component';
+import { AfiliacionPlazaModel } from './../../Modelos/AfiliacionPlazaModel';
+import { Auth0Service } from './../../api/busqueda/auth0.service';
 import { Component, EventEmitter, OnInit, ViewChild } from "@angular/core";
 import {
   IonContent,
   LoadingController,
   MenuController,
   ModalController,
-  ToastController,
+  ToastController
 } from "@ionic/angular";
 import { BusquedaService } from "../../api/busqueda.service";
 import { FiltrosModel } from "../../Modelos/FiltrosModel";
@@ -18,6 +21,8 @@ import { Router } from "@angular/router";
 import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveedor-servicio.service";
 import { UtilsCls } from "../../utils/UtilsCls";
 import { MsNegocioModel } from "../../Modelos/busqueda/MsNegocioModel";
+import { PermisoModel } from 'src/app/Modelos/PermisoModel';
+import { ValidarPermisoService } from './../../api/validar-permiso.service';
 
 @Component({
   selector: "app-tab3",
@@ -28,9 +33,10 @@ import { MsNegocioModel } from "../../Modelos/busqueda/MsNegocioModel";
 export class InicioPage implements OnInit {
   @ViewChild(IonContent) content: IonContent;
   public cordenada: number;
-  private Filtros: FiltrosModel;
+  public Filtros: FiltrosModel;
   public listaCategorias: any;
   private modal: any;
+  public selectionAP: boolean;
   public anyFiltros: FiltrosModel;
   strBuscar: any;
   private seleccionado: any;
@@ -39,7 +45,13 @@ export class InicioPage implements OnInit {
   filtroActivo: boolean;
   user: any;
   public existeSesion: boolean;
-
+  public msj = 'Cargando';
+  public tFiltro: boolean;
+  private objectSelectAfiliacionPlaza: AfiliacionPlazaModel;
+  public persona: number | null;
+  public permisos: Array<PermisoModel> | null;
+  public afiliacion: boolean;
+  public byLogin : boolean;
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -50,8 +62,11 @@ export class InicioPage implements OnInit {
     private eventosServicios: SideBarService,
     private ruta: Router,
     private serviceProveedores: ProveedorServicioService,
-    private util: UtilsCls
+    private util: UtilsCls,
+    private auth0Service: Auth0Service,
+    private validarPermiso: ValidarPermisoService
   ) {
+    this.byLogin = false;
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.filtroActivo = false;
@@ -59,20 +74,39 @@ export class InicioPage implements OnInit {
     this.listaIdsMapa = [];
     this.user = this.util.getUserData();
     this.existeSesion = this.util.existe_sesion();
+    this.selectionAP = false;
+    this.tFiltro = false;
+    this.afiliacion = false;
   }
-
   ngOnInit(): void {
+     this.route.queryParams.subscribe(params => {
+      if (params.bylogin && params) {
+        this.negocioRutaByLogin(params.bylogin);
+      }
+    });
+    const selected = localStorage.getItem('org');
+    if (selected != null) {
+      this.selectionAP = true;
+      this.objectSelectAfiliacionPlaza = JSON.parse(String(localStorage.getItem('org')));
+    }
     this.user = this.util.getUserData();
     this.eventosServicios.eventBuscar().subscribe((data) => {
       this.buscarNegocios();
     });
     this.buscarNegocios();
+
+    if (this.util.existSession()) {
+      this.persona = this.util.getIdPersona();
+      this.permisos = this.auth0Service.getUserPermisos();
+      this.afiliacion = this.validarPermiso.isChecked(this.permisos, 'ver_afiliacion')
+    }
   }
 
   public recargar(event: any) {
-    if (event.active) {
-      this.buscarNegocios();
-    }
+    setTimeout(() => {
+      event.target.complete();
+      this.ngOnInit();
+    }, 2000);
   }
 
   ionViewWillEnter() {
@@ -87,7 +121,7 @@ export class InicioPage implements OnInit {
       localStorage.setItem("resetFiltro", "1");
       estatusFiltro = localStorage.getItem("resetFiltro");
       this.Filtros = new FiltrosModel();
-      this.Filtros.idGiro = [dato.idGiro != null ? dato.idGiro : 1];
+      // this.Filtros.idGiro = [dato.idGiro != null ? dato.idGiro : 1];
       this.Filtros.idCategoriaNegocio = [dato.id_categoria];
       this.buscarNegocios();
       localStorage.removeItem("seleccionado");
@@ -111,17 +145,19 @@ export class InicioPage implements OnInit {
         this.Filtros.tipoBusqueda === 0
       ) {
       } else {
-        this.borrarFiltros();
+        /* this.borrarFiltros();*/
       }
     }
   }
 
   buscarNegocios() {
+    console.log("entro a buscar negocios");
     this.loader = true;
     const usr = this.user;
     if (usr.id_persona !== undefined) {
       this.Filtros.id_persona = usr.id_persona;
     }
+    (this.selectionAP) ? this.Filtros.organizacion = this.objectSelectAfiliacionPlaza.id_organizacion : '';
     this.principalSercicio.obtenerDatos(this.Filtros).subscribe(
       (respuesta) => {
         this.listaCategorias = respuesta.data;
@@ -147,6 +183,7 @@ export class InicioPage implements OnInit {
   buscarToolbar(event) {
     this.Filtros = new FiltrosModel();
     this.Filtros.strBuscar = event;
+    this.tFiltro = true;
     this.buscarNegocios();
   }
 
@@ -168,13 +205,30 @@ export class InicioPage implements OnInit {
       component: FiltrosBusquedaComponent,
       componentProps: {
         buscarPorFiltros: eventEmitter,
-        filtros: this.Filtros,
+        filtros: this.Filtros
       },
     });
     return await this.modal.present();
   }
+  public openPlazasAfiliacionesModal() {
+    this.presentModalPlazasAfiliaciones();
+  }
+  async presentModalPlazasAfiliaciones() {
+    this.modal = await this.modalController.create(
+      {
+        component: PlazasAfiliacionesComponent,
+        cssClass: 'custom-modal-plazas-afiliaciones',
+        componentProps: {
+          idUsuario: this.persona,
+          permisos: this.permisos
+        }
+      }
+    );
 
+    return await this.modal.present();
+  }
   private buscarSeleccionado(seleccionado: any) {
+
     this.seleccionado = seleccionado;
     this.Filtros = new FiltrosModel();
     this.Filtros.idCategoriaNegocio = [seleccionado.id_categoria];
@@ -206,12 +260,14 @@ export class InicioPage implements OnInit {
     }
     this.listaIdsMapa = listaIdNegocio;
   }
-
+  public regresarBitoo() {
+    localStorage.removeItem('org');
+    location.reload();
+  }
   borrarFiltros() {
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
-    this.Filtros.idGiro =
-      this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];
+    /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
     this.filtroActivo = false;
     this.buscarNegocios();
   }
@@ -222,7 +278,17 @@ export class InicioPage implements OnInit {
         "Este negocio aún no cumple los requisitos mínimos"
       );
     } else {
+      // localStorage.setItem("isRedirected", "false");
       this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
+    }
+  }
+  negocioRutaByLogin(url){
+    if (url == "") {
+      this.notificaciones.error(
+        "Este negocio aún no cumple los requisitos mínimos"
+      );
+    } else {
+      this.ruta.navigate(["/tabs/negocio/" + url]);
     }
   }
 }

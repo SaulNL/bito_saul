@@ -1,11 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UtilsCls } from "../../../utils/UtilsCls";
 import { PersonaService } from "../../../api/persona.service";
 import { Router } from "@angular/router";
 import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
 import { MsNegocioModel } from "../../../Modelos/busqueda/MsNegocioModel";
 import { ProveedorServicioService } from "../../../api/busqueda/proveedores/proveedor-servicio.service";
-import {IonContent} from '@ionic/angular';
+import { IonContent } from '@ionic/angular';
 
 @Component({
   selector: "app-negocios-favoritos",
@@ -20,6 +20,7 @@ export class NegociosFavoritosPage implements OnInit {
   public motrarContacto: boolean;
   public tamanoLista: number;
   public loader: boolean;
+  public msj = 'Cargando';
 
   constructor(
     private util: UtilsCls,
@@ -47,8 +48,8 @@ export class NegociosFavoritosPage implements OnInit {
             if (response.code === 200) {
               this.listaNegocios = response.data;
               this.tamanoLista = this.listaNegocios.length;
-              this.loader = false;
             }
+            this.loader = false;
           },
           (error) => {
             this.tamanoLista = 0;
@@ -86,11 +87,11 @@ export class NegociosFavoritosPage implements OnInit {
           this.notificaciones.alerta(response.message);
         }
       },
-      (error) => {}
+      (error) => { }
     );
   }
 
   regresar() {
-    this.router.navigate(["/tabs/home/mis-favoritos"]);
+    this.router.navigate(["/tabs/mis-favoritos"]);
   }
 }

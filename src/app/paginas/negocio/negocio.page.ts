@@ -5,7 +5,7 @@ import { NegocioModel } from "./../../Modelos/NegocioModel";
 import { NegocioService } from "./../../api/negocio.service";
 import { ModalController } from "@ionic/angular";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
-import { DetDomicilioModel } from 'src/app/Modelos/busqueda/DetDomicilioModel';
+import { DetDomicilioModel } from './../../Modelos/busqueda/DetDomicilioModel';
 @Component({
   selector: "app-negocio",
   templateUrl: "./negocio.page.html",
@@ -25,6 +25,7 @@ export class NegocioPage implements OnInit {
   public width: number;
   public colorLight: any;
   public colorDark: any;
+  public msj = 'Cargando';
 
   constructor(
     private servicioNegocios: NegocioService,
@@ -71,6 +72,7 @@ export class NegocioPage implements OnInit {
     });
     await actionSheet.present();
   }
+  
   public buscarLista() {
     this.loader = true;
     if (this.usuario.proveedor != null) {
@@ -92,6 +94,7 @@ export class NegocioPage implements OnInit {
       this.loader = false;
     }
   }
+
   viewQr(negocio: NegocioModel) {
     this.selectTO = JSON.parse(JSON.stringify(negocio));
     if (this.selectTO.url_negocio == null || this.selectTO.url_negocio == undefined) {
@@ -103,6 +106,7 @@ export class NegocioPage implements OnInit {
       });
     }
   }
+
   datosNegocio(negocio: NegocioModel) {
     this.selectTO = JSON.parse(JSON.stringify(negocio));
     let navigationExtras = JSON.stringify(this.selectTO);
@@ -110,19 +114,13 @@ export class NegocioPage implements OnInit {
       queryParams: { special: navigationExtras },
     });
   }
-  datosNegocios(negocio: NegocioModel) {
-    this.selectTO = JSON.parse(JSON.stringify(negocio));
-    let navigationExtras = JSON.stringify(this.selectTO);
-    this.router.navigate(["/tabs/home/negocio/mis-negocios"], {
-      queryParams: { special: navigationExtras },
-    });
-  }
+
   agregarNegocio() {
     this.selectTO = new NegocioModel();
     this.selectTO.det_domicilio = new DetDomicilioModel();
     let navigationExtras = JSON.stringify(this.selectTO);
-    this.router.navigate(['/tabs/home/negocio/card-negocio/info-negocio'], {
-      queryParams: { specialune: navigationExtras },
+    this.router.navigate(['/tabs/home/negocio/card-negocio/formulario-negocio'], {
+      queryParams: { nuevoNegocio: navigationExtras },
     });
   }
 

@@ -7,10 +7,12 @@
         </ion-buttons>
         <ion-title>Información</ion-title>
         <ion-buttons slot="end">
-            <ion-button (click)="abrirModalpedido()" *ngIf="bolsa.length > 0">
-                <ion-icon name="bag-handle-outline"></ion-icon>
-                <ion-badge>{{bolsa.length}}</ion-badge>
-            </ion-button>
+            <strong class="bolsita-pintada">
+                <ion-button (click)="abrirModalpedido()" *ngIf="bolsa.length > 0">
+                    <ion-icon name="bag-handle-outline"></ion-icon>
+                    <ion-badge>{{bolsa.length}}</ion-badge>
+                </ion-button>
+            </strong>
             <ion-button (click)="compartir()" *ngIf="existeSesion">
                 <ion-icon name="share-social-outline"></ion-icon>
             </ion-button>
@@ -20,19 +22,14 @@
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding" *ngIf="loader || !siEsta" fullscreen>
-    <div class="spin">
-        <ion-spinner></ion-spinner>
-    </div>
-</ion-content>
+<app-spinner [loader]="loading(loader, siEsta)" [message]="msj"></app-spinner>
 <ion-content *ngIf="!loader && siEsta">
-    <ng-container
-            *ngIf="(informacionNegocio.promociones !== undefined && informacionNegocio.promociones !== null && informacionNegocio.promociones.length > 0)">
+    <ng-container *ngIf="ifPromocion(promociones)">
         <ion-slides class="ion-margin-bottom" [options]="slideOptsOne" #mySlider>
-            <ion-slide *ngFor="let promocion of informacionNegocio.promociones;">
+            <ion-slide *ngFor="let promocion of promociones;">
                 <img src="{{(promocion.url_imagen_banner)==='' || (promocion.url_imagen_banner)==null?promocionDefault:promocion.url_imagen_banner}}"
-                     class="d-block img-fluid" alt="Cargando imagen..."
-                     onerror="this.onerror=null;this.src=promocionDefault;" (click)="abrirModalPromocion(promocion)">
+                    class="d-block img-fluid" alt="Cargando imagen..."
+                    onerror="this.onerror=null;this.src=promocionDefault;" (click)="abrirModalPromocion(promocion)">
             </ion-slide>
         </ion-slides>
     </ng-container>
@@ -42,12 +39,15 @@
                 <ion-col class="ion-align-items-center ion-justify-content-center" size="12">
                     <ion-avatar style="height: auto; width: 150px; margin: auto">
                         <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
-                             [srcset]="informacionNegocio.url_logo">
+                            [srcset]="informacionNegocio.url_logo">
                     </ion-avatar>
                 </ion-col>
                 <ion-col size="12">
                     <ion-text class="ion-align-items-center ion-text-center ion-justify-content-center">
-                        <h1>{{informacionNegocio.nombre_comercial}} <ion-icon *ngIf="informacionNegocio.verificado" class="text-rosa" name="checkmark-circle"></ion-icon></h1>
+                        <h1>{{informacionNegocio.nombre_comercial}}
+                            <ion-icon *ngIf="informacionNegocio.verificado" class="text-rosa" name="checkmark-circle">
+                            </ion-icon>
+                        </h1>
                     </ion-text>
                 </ion-col>
             </ion-row>
@@ -55,14 +55,17 @@
 
                 <ion-card class="w-100">
                     <ion-card-content class="ion-text-center">
-                        {{informacionNegocio.descripcion}}
+                        <br>
+                        <span class="info-descripcion">{{informacionNegocio.descripcion}}</span>
+                        <br>
                         <div class="div-like">
-                            <app-dar-like-negocio [negocio]="informacionNegocio" [usuario]="user" [mostrarLike]="existeSesion"> </app-dar-like-negocio>
+                            <app-dar-like-negocio [negocio]="informacionNegocio" [usuario]="user"
+                                [mostrarLike]="existeSesion"></app-dar-like-negocio>
                         </div>
                         <br *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0">
                         <br *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0">
                         <ion-label
-                                *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0">
+                            *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0">
                             <strong>
                                 <ion-icon name="pizza-outline"></ion-icon>
                                 Consumo en Sitio
@@ -70,15 +73,16 @@
                         </ion-label>
                         <br *ngIf="informacionNegocio.entrega_sitio !== null && informacionNegocio.entrega_sitio > 0">
                         <ion-label
-                                *ngIf="informacionNegocio.entrega_sitio !== null && informacionNegocio.entrega_sitio > 0">
+                            *ngIf="informacionNegocio.entrega_sitio !== null && informacionNegocio.entrega_sitio > 0">
                             <strong>
                                 <ion-icon name="storefront-outline"></ion-icon>
                                 Entregas en Sitio
                             </strong>
                         </ion-label>
-                        <br *ngIf="informacionNegocio.entrega_domicilio !== null && informacionNegocio.entrega_domicilio > 0">
+                        <br
+                            *ngIf="informacionNegocio.entrega_domicilio !== null && informacionNegocio.entrega_domicilio > 0">
                         <ion-label
-                                *ngIf="informacionNegocio.entrega_domicilio !== null && informacionNegocio.entrega_domicilio > 0">
+                            *ngIf="informacionNegocio.entrega_domicilio !== null && informacionNegocio.entrega_domicilio > 0">
                             <strong>
                                 <ion-icon name="bicycle-outline"></ion-icon>
                                 Entregas a Domicilio
@@ -89,21 +93,34 @@
                             <ion-row>
                                 <ion-col>
                                     <p>Métodos de pago</p>
-                                    <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito===0 && informacionNegocio.tipo_pago_tarjeta_debito===0) && informacionNegocio.tipo_pago_transferencia==0">
-                                        Este negocio solo se acepta pago en efectivo
+                                    <p
+                                        *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito===0 && informacionNegocio.tipo_pago_tarjeta_debito===0) && informacionNegocio.tipo_pago_transferencia==0">
+                                        Este negocio solo acepta pago en efectivo
                                     </p>
-                                    <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito) && informacionNegocio.tipo_pago_transferencia">
+                                    <p
+                                        *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito) && informacionNegocio.tipo_pago_transferencia">
                                         Este negocio acepta pagos en efectivo, pagos con tarjeta y transferencia
                                         electrónica
                                     </p>
-                                    <p *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito)&& informacionNegocio.tipo_pago_transferencia===0">
+                                    <p
+                                        *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito)&& informacionNegocio.tipo_pago_transferencia===0">
                                         Este negocio acepta pagos en efectivo y pagos con tarjeta
                                     </p>
-                                    <p *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito) && informacionNegocio.tipo_pago_transferencia===0">
+                                    <p
+                                        *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito) && informacionNegocio.tipo_pago_transferencia===0">
                                         Este negocio solo acepta pagos con tarjeta
                                     </p>
-                                    <p *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito===0 || informacionNegocio.tipo_pago_tarjeta_debito===0) && informacionNegocio.tipo_pago_transferencia===0">
+                                    <p
+                                        *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito===0 && informacionNegocio.tipo_pago_tarjeta_debito===0) && informacionNegocio.tipo_pago_transferencia">
                                         Este negocio solo acepta pagos con transferencia electrónica
+                                    </p>
+                                    <p
+                                        *ngIf="informacionNegocio.tipo_pago_efectivo && (informacionNegocio.tipo_pago_tarjeta_credito===0 && informacionNegocio.tipo_pago_tarjeta_debito===0)&& informacionNegocio.tipo_pago_transferencia">
+                                        Este negocio acepta pagos en efectivo y transferencia electrónica
+                                    </p>
+                                    <p
+                                        *ngIf="informacionNegocio.tipo_pago_efectivo===0 && (informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito)&& informacionNegocio.tipo_pago_transferencia">
+                                        Este negocio acepta pagos con tarjeta y transferencia electrónica
                                     </p>
                                 </ion-col>
                             </ion-row>
@@ -112,12 +129,12 @@
                             <ion-row style="display: flex; justify-content: center; align-items: center;">
                                 <ion-col>
                                     <div class="estrella"
-                                         style="display: flex; justify-content: center; align-items: center;">
+                                        style="display: flex; justify-content: center; align-items: center;">
                                         <h3 class="text-rosa"
                                             style="display: flex; justify-content: center; align-items: center;">
                                             Calificación del negocio</h3>
                                         <div class="clasificacion"
-                                             style="display: flex; justify-content: center; align-items: center;">
+                                            style="display: flex; justify-content: center; align-items: center;">
                                             {{informacionNegocio.numCalificaciones}}
                                             <ion-icon name="person-outline"></ion-icon>
                                             <input disabled id="radio1" type="radio" name="estrellas" value="5">
@@ -139,7 +156,7 @@
                                 <ion-col>
                                     <div>
                                         <div *ngIf="!estatusCalificacion" class="ion-text-center"
-                                             (click)="abrirModalCalifica()">
+                                            (click)="abrirModalCalifica()">
                                             <ion-button expand="block" size="small" type="submit" class="bg-rosa">
                                                 Calificar
                                             </ion-button>
@@ -157,7 +174,7 @@
                                 <ion-col>
                                     <div>
                                         <div *ngIf="mostrarComentarios" class="ion-text-center"
-                                             (click)="abrirModalComentarios()">
+                                            (click)="abrirModalComentarios()">
                                             <ion-button expand="block" size="small" type="submit" class="bg-rosa">
                                                 Ver comentarios
                                             </ion-button>
@@ -171,113 +188,286 @@
                 </ion-card>
             </ion-row>
         </ion-grid>
+        <ion-grid>
+            <ion-row>
+                <ion-col size=12>
+                    <div style="background: white; border-radius: 1em 1em 0em 0em;" class="ion-text-center">
+                        <p>
+                            <ion-title class="ion-align-items-center ion-text-center ion-justify-content-center ion-padding">
+                                Horarios de atención
+                            </ion-title>
+                            <br>
+                        </p>
+                        <ion-chip (click)="mostrarOcultar()" *ngIf="estatus.tipo === 1" color="success">
+                            <ion-label>Abierto</ion-label>
+                        </ion-chip>
+                        <ion-chip (click)="mostrarOcultar()" *ngIf="estatus.tipo === 0" color="danger">
+                            <ion-label>Cerrado</ion-label>
+                        </ion-chip>
+                        <ion-label (click)="mostrarOcultar()">{{ estatus.mensaje}}</ion-label>
+                        <ion-icon (click)="mostrarOcultar()" style="margin-left: 2px;" *ngIf="!motrarContacto"
+                            name="arrow-up-outline">
+                        </ion-icon>
+                        <ion-icon (click)="mostrarOcultar()" style="margin-left: 2px;" *ngIf="motrarContacto"
+                            name="arrow-down-outline">
+                        </ion-icon>
+                    </div>
+                    <div *ngIf="!motrarContacto && estatus!==undefined">
+                        <ion-list style="border-radius: 0em 0em 1em 1em;">
+                            <ion-item *ngFor="let dia of diasArray">
+                                <ion-grid>
+                                    <ion-row>
+                                        <ion-col>
+                                            <p [ngClass]="{'negritas':dia.id === hoy}">{{ dia.dia }}</p>
+                                        </ion-col>
+                                        <ion-col *ngIf="dia.horarios.length > 0">
+                                            <span *ngFor="let h of dia.horarios ">
+                                                <p class="negritas">{{h.texto}}</p>
+                                            </span>
+                                        </ion-col>
+                                        <ion-col *ngIf="dia.horarios.length === 0"
+                                            style="display: flex; justify-content: center; align-items: center;">
+                                            <ion-badge color="danger">Cerrado</ion-badge>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </ion-item>
+                        </ion-list>
+                    </div>
 
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <br>
         <ion-grid>
             <ion-row>
                 <ion-col>
                     <ion-button shape="round"
-                                *ngIf="informacionNegocio.cartaProducto !== undefined && informacionNegocio.cartaProducto !== null && informacionNegocio.cartaProducto !== ''"
-                                (click)="abrirVentana(informacionNegocio.cartaProducto)" expand="full" class="bg-rosa">
+                        *ngIf="informacionNegocio.cartaProducto !== undefined && informacionNegocio.cartaProducto !== null && informacionNegocio.cartaProducto !== ''"
+                        (click)="abrirVentana(informacionNegocio.cartaProducto)" expand="full" class="bg-rosa">
                         Ver carta de
                         productos
                     </ion-button>
                     <ion-button shape="round"
-                                *ngIf="informacionNegocio.cartaServicio !== undefined && informacionNegocio.cartaServicio !== null&& informacionNegocio.cartaServicio !== ''"
-                                (click)="abrirVentana(informacionNegocio.cartaServicio)" expand="full" class="bg-rosa">
+                        *ngIf="informacionNegocio.cartaServicio !== undefined && informacionNegocio.cartaServicio !== null&& informacionNegocio.cartaServicio !== ''"
+                        (click)="abrirVentana(informacionNegocio.cartaServicio)" expand="full" class="bg-rosa">
                         Ver carta de
                         servicios
                     </ion-button>
                 </ion-col>
             </ion-row>
         </ion-grid>
-        <div>
-            <ion-grid>
-                <ion-row>
-                    <ion-col size=12>
-                        <div>
-                            <div (click)="mostrarOcultar()" style="background: white; border-radius: 1em 1em 0em 0em;" class="ion-text-center">
-                                <ion-title class="ion-align-items-center ion-text-center ion-justify-content-center ion-padding">
-                                    Horarios de atención
-                                </ion-title>
-                                <div><br>
-                                    <ion-chip *ngIf="estatus.tipo === 1" color="success">
-                                        <ion-label>Abierto</ion-label>
-                                    </ion-chip>
-                                    <ion-chip *ngIf="estatus.tipo === 0" color="danger">
-                                        <ion-label>Cerrado</ion-label>
-                                    </ion-chip>
-                                    <ion-label>{{ estatus.mensaje}}</ion-label>
-                                    <ion-icon style="margin-left: 2px;" *ngIf="!motrarContacto"
-                                              name="arrow-up-outline"></ion-icon>
-                                    <ion-icon style="margin-left: 2px;" *ngIf="motrarContacto"
-                                              name="arrow-down-outline"></ion-icon>
+        <br>
+        <br>
+        <ion-grid style="margin-top: 1em;">
+            <ion-row style="background: white;">
+                <ion-segment (ionChange)="segmentChanged($event)" value="productos" color="tertiary">
+                    <ion-segment-button value="productos" *ngIf="informacionNegocio.catProductos.length > 0">
+                        Productos
+                    </ion-segment-button>
+                    <ion-segment-button value="servicios" *ngIf="informacionNegocio.catServicos.length > 0">
+                        Servicios
+                    </ion-segment-button>
+                    <ion-segment-button value="ubicacion">Ubicación</ion-segment-button>
+                </ion-segment>
+            </ion-row>
+        </ion-grid>
+
+        <ion-grid *ngIf="seccion === 'productos'">
+            <ion-row
+                *ngIf="informacionNegocio.tagsProductos !== undefined && informacionNegocio.tagsProductos.length > 0">
+                <ion-col>
+                    <ion-text style="font-size: 0.8em">Etiquetas:</ion-text>
+                    <div id="abcedario" class="scrolling-wrapper-flexbox">
+                        <div class="item" *ngFor="let item of informacionNegocio.tagsProductos; let i = index;">
+                            <ion-chip style="pointer-events: none;">
+                                <ion-label style="font-size: 0.8em">{{item}}</ion-label>
+                            </ion-chip>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngFor="let cat of informacionNegocio.catProductos; let i = index">
+                <ion-item class="w-100 bg-gris">
+                    <h2 (click)="mostrarProducto(cat.nombre)">{{cat.nombre}}</h2>
+                    <ion-icon (click)="mostrarProducto(cat.nombre)" slot="end"
+                        [name]="negocioSub?'caret-forward-outline' : 'caret-down-outline'">
+                    </ion-icon>
+                </ion-item>
+                <ng-container *ngIf="!negocioSub &&  nameSub === cat.nombre">
+                    <ion-col size="6" *ngFor="let producto of cat.productos; let i = index">
+                        <ion-card class="m-0 fixed cardsps">
+                            <div (click)="irAlDetalle(producto)">
+                                <img class="img-card-w"
+                                    src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+                                    [srcset]="productoImagen(producto.imagen)" alt="Falla al cargar la imagen">
+                                <ion-card-header class="ion-card-cara">
+                                    <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
+                                    <ion-badge *ngIf="producto.precio !== null" color="success">
+                                        $ {{producto.precio}}</ion-badge>
+                                </ion-card-header>
+                                <ion-card-content>
+                                    <div class="ui-search-item__title">
+                                        {{producto.descripcion}}
+                                    </div>
+                                </ion-card-content>
+                            </div>
+                            <div>
+                                <div class="likeProducto">
+                                    <app-dar-like-producto [producto]="producto" [usuario]="user"
+                                        [mostrarLike]="existeSesion"></app-dar-like-producto>
                                 </div>
                             </div>
-                            <div *ngIf="!motrarContacto && estatus!==undefined">
-                                <ion-list style="border-radius: 0em 0em 1em 1em;">
-                                    <ion-item *ngFor="let dia of diasArray">
-                                        <ion-grid>
-                                            <ion-row>
-                                                <ion-col>
-                                                    <p [ngClass]="{'negritas':dia.id === hoy}">{{ dia.dia }}</p>
-                                                </ion-col>
-                                                <ion-col *ngIf="dia.horarios.length > 0">
-                                                <span *ngFor="let h of dia.horarios ">
-                                                    <p class="negritas">{{h.texto}}</p>
-                                                </span>
-                                                </ion-col>
-                                                <ion-col *ngIf="dia.horarios.length === 0"
-                                                         style="display: flex; justify-content: center; align-items: center;">
-                                                    <ion-badge color="danger">Cerrado</ion-badge>
-                                                </ion-col>
-                                            </ion-row>
-                                        </ion-grid>
-                                    </ion-item>
-                                </ion-list>
+                            <div *ngIf="mostrarBoton(producto.precio) && this.informacionNegocio.abierto === 'ABIERTO'">
+                                <ion-fab class="bolsita agregarBolda" (click)="agregarBolsaDeta(producto)">
+                                    <ion-fab-button class="bosar">
+                                        <ion-icon name="bag-add-outline"></ion-icon>
+                                    </ion-fab-button>
+                                </ion-fab>
                             </div>
+                            <!-- <div*ngIf="mostrarBoton(producto.precio) && !(this.informacionNegocio.abierto === 'ABIERTO')">
+                                    <ion-fab class="bolsita agregarBolda" (click)="avisoNegocioCerrado()">
+                                        <ion-fab-button disabled="true" class="bosar">
+                                            <ion-icon name="bag-add-outline"></ion-icon>
+                                        </ion-fab-button>
+                                    </ion-fab>
+                                </div*ngIf=> -->
+                            <div class="alado">
+                                <div *ngFor="let item of bolsa; let i = index">
+                                    <div *ngIf="item.idProducto === producto.idProducto">
+                                        <ion-icon class="ion-text-center iconAla" name="trash-outline"
+                                            (click)="eliminar(item)"></ion-icon>
+                                        <ion-label class="arriba"><strong>Cantidad</strong></ion-label>
+                                        <ion-icon class="ion-text-center"
+                                            (click)="aumentarDismuir(item.cantidad, i , 2)"
+                                            style="margin: 4px; background: #bbbbbb;" name="remove-outline">
+                                        </ion-icon>
+                                        <span class="ion-text-center" class="arriba">
+                                            {{ item.cantidad }}
+                                        </span>
+                                        <ion-icon class="ion-text-center"
+                                            (click)="aumentarDismuir(item.cantidad, i , 1)"
+                                            style="margin: 4px; background: #bbbbbb;" name="add-outline"></ion-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </ion-card>
+                    </ion-col>
+                </ng-container>
+            </ion-row>
+        </ion-grid>
+        <ion-grid *ngIf="seccion === 'servicios'">
+            <ion-row
+                *ngIf="informacionNegocio.tagsServicios !== undefined && informacionNegocio.tagsServicios.length > 0">
+                <ion-col>
+                    <ion-text style="font-size: 0.8em">Etiquetas:</ion-text>
+                    <div id="abcedario" class="scrolling-wrapper-flexbox">
+                        <div *ngFor="let item of informacionNegocio.tagsServicios; let i = index;">
+                            <ion-chip style="pointer-events: none;">
+                                <ion-label style="font-size: 0.8em">{{item}}</ion-label>
+                            </ion-chip>
                         </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngFor="let cat of informacionNegocio.catServicos">
+                <ion-item class="w-100 bg-gris">
+                    <h2 (click)="mostrarServicio(cat.nombre)">{{cat.nombre}}</h2>
+                    <ion-icon (click)="mostrarServicio(cat.nombre)" slot="end"
+                        [name]="servicioSub? 'caret-forward-outline' : 'caret-down-outline'">
+                    </ion-icon>
+                </ion-item>
+                <ng-container *ngIf="!servicioSub &&  namelesSub === cat.nombre">
+                    <ion-col size="6" *ngFor="let producto of cat.servicios">
+                        <ion-card class="m-0 cardsps fixed">
+                            <div (click)="irAlDetalle(producto)">
+                                <img class="img-card-w"
+                                    src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+                                    [srcset]="productoImagen(producto.imagen)" alt="Falla al cargar la imagen">
+                                <ion-card-header class="ion-card-cara">
+                                    <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
+                                    <ion-badge *ngIf="producto.precio !== null" color="success">
+                                        $ {{producto.precio}}</ion-badge>
+                                </ion-card-header>
+                                <ion-card-content>
+                                    <div class="ui-search-item__title">
+                                        {{producto.descripcion}}
+                                    </div>
+                                </ion-card-content>
+                            </div>
+                            <div>
+                                <div class="likeProducto">
+                                    <app-dar-like-producto [producto]="producto" [usuario]="user"
+                                        [mostrarLike]="existeSesion"></app-dar-like-producto>
+                                </div>
+                            </div>
+                            <div *ngIf="mostrarBoton(producto.precio) && this.informacionNegocio.abierto === 'ABIERTO'">
+                                <ion-fab class="bolsita agregarBolda" (click)="agregarBolsaDeta(producto)">
+                                    <ion-fab-button class="bosar">
+                                        <ion-icon name="bag-add-outline"></ion-icon>
+                                    </ion-fab-button>
+                                </ion-fab>
+                            </div>
+                            <div class="alado">
+                                <div *ngFor="let item of bolsa; let i = index">
+                                    <div *ngIf="item.idProducto === producto.idProducto">
+                                        <ion-icon class="ion-text-center iconAla" name="trash-outline"
+                                            (click)="eliminar(item)"></ion-icon>
+                                        <ion-label class="arriba"><strong>Cantidad</strong></ion-label>
+                                        <ion-icon class="ion-text-center"
+                                            (click)="aumentarDismuir(item.cantidad, i , 2)"
+                                            style="margin: 4px; background: #bbbbbb;" name="remove-outline">
+                                        </ion-icon>
+                                        <span class="ion-text-center" class="arriba">
+                                            {{ item.cantidad }}
+                                        </span>
+                                        <ion-icon class="ion-text-center"
+                                            (click)="aumentarDismuir(item.cantidad, i , 1)"
+                                            style="margin: 4px; background: #bbbbbb;" name="add-outline"></ion-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </ion-card>
                     </ion-col>
-                </ion-row>
-            </ion-grid>
-        </div>
-
-        <div>
-            <ion-grid>
-                <ion-row style="background: white;">
-                    <ion-segment color="tertiary" [(ngModel)]="seccion" (ionChange)="cambio()">
-                        <ion-segment-button value="ubicacion">Ubicación</ion-segment-button>
-                        <ion-segment-button value="productos" *ngIf="informacionNegocio.catProductos.length > 0">
-                            Productos
-                        </ion-segment-button>
-                        <ion-segment-button value="servicios" *ngIf="informacionNegocio.catServicos.length > 0">
-                            Servicios
-                        </ion-segment-button>
-                    </ion-segment>
-                </ion-row>
-            </ion-grid>
-            <ion-grid *ngIf="seccion === 'ubicacion'">
-                <ion-row *ngIf="!existeSesion">
-                    <ion-card class="w-100">
-                        <ion-card-content class="ion-text-center">
-                            Inicia sesión para poder ir la información de este negocio
-                            <ion-button expand="block" [routerLink]="['/tabs/login']"> Iniciar Sesión</ion-button>
-                        </ion-card-content>
-                    </ion-card>
-                </ion-row>
-                <ion-row *ngIf="existeSesion">
-                    <ion-col size="12">
-                        <p>
-                            Dirección: {{informacionNegocio.det_domicilio.calle}}
-                            {{informacionNegocio.det_domicilio.numero_ext}} {{informacionNegocio.det_domicilio.colonia}}
-                            ,
-                            {{informacionNegocio.det_domicilio.nombre_localidad !== undefined ? informacionNegocio.det_domicilio.nombre_localidad + ', ' : ''}}{{informacionNegocio.det_domicilio.nombre_municipio}}
-                            ,
-                            {{informacionNegocio.det_domicilio.nombre_estado}}</p>
-                        <p *ngIf="!permisoUbicacionCancelado && miLat && miLng && distanciaNegocio !== 'NaN'">
-                            <b class="texto-resaltado">A {{distanciaNegocio}} Km Cerca de tí</b>
-                        </p>
+                </ng-container>
+            </ion-row>
+        </ion-grid>
+        <ion-grid *ngIf="seccion === 'ubicacion'">
+            <ion-row *ngIf="!existeSesion">
+                <ion-card class="w-100">
+                    <ion-card-content class="ion-text-center">
+                        Inicia sesión para poder ir la información de este negocio
+                        <ion-button expand="block" (click)="loginGo()"> Iniciar Sesión</ion-button>
+                    </ion-card-content>
+                </ion-card>
+            </ion-row>
+            <ion-row *ngIf="existeSesion">
+                <ion-col size="12"
+                    *ngIf="informacionNegocio.tipo_negocio || informacionNegocio.tipo_negocio === null; else online">
+                    <p>
+                        Dirección: {{informacionNegocio.det_domicilio.calle}}
+                        {{informacionNegocio.det_domicilio.numero_ext}} {{informacionNegocio.det_domicilio.colonia}}
+                        ,
+                        {{informacionNegocio.det_domicilio.nombre_localidad !== undefined ?
+                        informacionNegocio.det_domicilio.nombre_localidad + ', ' :
+                        ''}}{{informacionNegocio.det_domicilio.nombre_municipio}}
+                        ,
+                        {{informacionNegocio.det_domicilio.nombre_estado}}</p>
+                    <p *ngIf="!permisoUbicacionCancelado && miLat && miLng && distanciaNegocio !== 'NaN'">
+                        <b class="texto-resaltado">A {{distanciaNegocio}} Km Cerca de tí</b>
+                    </p>
+                </ion-col>
+                <ng-template #online>
+                    <ion-col size="12" *ngIf="arrayLugaresEntrega === null">
+                        <p>Este es un negocio online.</p>
                     </ion-col>
-                    <ion-col>
+                    <ion-col size="12" *ngIf="arrayLugaresEntrega !== null">
+                        <p>Este es un negocio online y hace entregas en:</p>
+                        <ion-badge class="bg-rosa" style="margin-right: 10px;"
+                            *ngFor="let lugar of arrayLugaresEntrega">{{lugar}}</ion-badge>
+                    </ion-col>
+                </ng-template>
+                <!--<ion-col>
                         <ion-button expand="block" size="small"
                                     href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
                                     target="_blank">
@@ -285,174 +475,49 @@
                             <ion-icon name="navigate-outline"></ion-icon>
                         </ion-button>
                         <div id="mapId" style="height:200px"></div>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-            <ion-grid *ngIf="seccion === 'productos'">
-                <ion-row
-                        *ngIf="informacionNegocio.tagsProductos !== undefined && informacionNegocio.tagsProductos.length > 0">
-                    <ion-col>
-                        <ion-text style="font-size: 0.8em">Etiquetas:</ion-text>
-                        <div id="abcedario" class="scrolling-wrapper-flexbox">
-                            <div class="item" *ngFor="let item of informacionNegocio.tagsProductos; let i = index;">
-                                <ion-chip style="pointer-events: none;">
-                                    <ion-label style="font-size: 0.8em">{{item}}</ion-label>
-                                </ion-chip>
-                            </div>
-                        </div>
-                        <p><br></p>
-                    </ion-col>
-                </ion-row>
-                <ion-row *ngFor="let cat of informacionNegocio.catProductos; let i = index">
-                    <ion-item (click)="mostrarProducto(cat.nombre)" class="w-100 bg-gris">
-                        <h2>{{cat.nombre}}</h2>
-                        <ion-icon slot="end"
-                                  [name]="negocioSub?'caret-forward-outline' : 'caret-down-outline'"></ion-icon>
-                    </ion-item>
-                    <ng-container *ngIf="!negocioSub &&  nameSub === cat.nombre">
-                        <ion-col size="6" *ngFor="let producto of cat.productos; let i = index">
-                            <ion-card class="m-0 fixed cardsps">
-                                <div (click)="irAlDetalle(producto)">
-                                    <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png" [srcset]="productoImagen(producto.imagen)" alt="Falla al cargar la imagen">
-                                    <ion-card-header class="ion-card-cara">
-                                        <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
-                                        <ion-badge *ngIf="producto.precio !== null" color="success">
-                                            $ {{producto.precio}}</ion-badge>
-                                    </ion-card-header>
-                                    <ion-card-content>
-                                        <div class="ui-search-item__title">
-                                            {{producto.descripcion}}
-                                        </div>
-                                    </ion-card-content>
-                                </div>
-                                <div>
-                                    <div class="likeProducto">
-                                        <app-dar-like-producto [producto]="producto" [usuario]="user" [mostrarLike]="existeSesion"></app-dar-like-producto>
-                                    </div>
-                                </div>
-                                <div *ngIf="mostrarBoton(producto.precio) && this.informacionNegocio.abierto === 'ABIERTO'">
-                                    <ion-fab class="bolsita agregarBolda" (click)="agregarBolsaDeta(producto)">
-                                        <ion-fab-button class="bosar">
-                                            <ion-icon name="bag-add-outline"></ion-icon>
-                                        </ion-fab-button>
-                                    </ion-fab>
-                                </div>
-                                <div *ngIf="mostrarBoton(producto.precio) && !(this.informacionNegocio.abierto === 'ABIERTO')">
-                                    <ion-fab class="bolsita agregarBolda" (click)="avisoNegocioCerrado()">
-                                        <ion-fab-button disabled="true" class="bosar">
-                                            <ion-icon name="bag-add-outline"></ion-icon>
-                                        </ion-fab-button>
-                                    </ion-fab>
-                                </div>
-                                <div class="alado">
-                                    <div *ngFor="let item of bolsa; let i = index">
-                                        <div *ngIf="item.idProducto === producto.idProducto">
-                                            <ion-icon class="ion-text-center iconAla" name="trash-outline"
-                                                      (click)="eliminar(item)"></ion-icon>
-                                            <ion-label class="arriba"><strong>Cantidad</strong></ion-label>
-                                            <ion-icon class="ion-text-center"
-                                                      (click)="aumentarDismuir(item.cantidad, i , 2)"
-                                                      style="margin: 4px; background: #bbbbbb;"
-                                                      name="remove-outline"></ion-icon>
-                                            <span class="ion-text-center" class="arriba">
-                                {{ item.cantidad }}
-                            </span>
-                                            <ion-icon class="ion-text-center"
-                                                      (click)="aumentarDismuir(item.cantidad, i , 1)"
-                                                      style="margin: 4px; background: #bbbbbb;"
-                                                      name="add-outline"></ion-icon>
-                                        </div>
-                                    </div>
-                                </div>
-                            </ion-card>
-                        </ion-col>
-                    </ng-container>
-                </ion-row>
-            </ion-grid>
-
-            <ion-grid *ngIf="seccion === 'servicios'">
-                <ion-row
-                        *ngIf="informacionNegocio.tagsServicios !== undefined && informacionNegocio.tagsServicios.length > 0">
-                    <ion-col>
-                        <ion-text style="font-size: 0.8em">Etiquetas:</ion-text>
-                        <div id="abcedario" class="scrolling-wrapper-flexbox">
-                            <div *ngFor="let item of informacionNegocio.tagsServicios; let i = index;">
-                                <ion-chip style="pointer-events: none;">
-                                    <ion-label style="font-size: 0.8em">{{item}}</ion-label>
-                                </ion-chip>
-                            </div>
-                        </div>
-                        <p><br></p>
-                    </ion-col>
-                </ion-row>
-                <ion-row *ngFor="let cat of informacionNegocio.catServicos">
-                    <ion-item (click)="mostrarServicio(cat.nombre)" class="w-100 bg-gris">
-                        <h2>{{cat.nombre}}</h2>
-                        <ion-icon slot="end"
-                                  [name]="servicioSub? 'caret-forward-outline' : 'caret-down-outline'"></ion-icon>
-                    </ion-item>
-                    <ng-container *ngIf="!servicioSub &&  namelesSub === cat.nombre">
-                        <ion-col size="6" *ngFor="let producto of cat.servicios">
-                            <ion-card class="m-0 cardsps fixed">
-                                <div (click)="irAlDetalle(producto)">
-                                    <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"  [srcset]="productoImagen(producto.imagen)" alt="Falla al cargar la imagen">
-                                    <ion-card-header class="ion-card-cara">
-                                        <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
-                                        <ion-badge *ngIf="producto.precio !== null" color="success">
-                                            $ {{producto.precio}}</ion-badge>
-                                    </ion-card-header>
-                                    <ion-card-content>
-                                        <div class="ui-search-item__title">
-                                            {{producto.descripcion}}
-                                        </div>
-                                    </ion-card-content>
-                                </div>
-                                <div >
-                                    <div class="likeProducto">
-                                        <app-dar-like-producto [producto]="producto" [usuario]="user" [mostrarLike]="existeSesion"></app-dar-like-producto>
-                                    </div>
-                                </div>
-                            </ion-card>
-                        </ion-col>
-                    </ng-container>
-                </ion-row>
-            </ion-grid>
-        </div>
+                    </ion-col>-->
+            </ion-row>
+        </ion-grid>
     </div>
     <ion-fab *ngIf="existeSesion" horizontal="end" vertical="bottom" slot="fixed">
         <ion-fab-button size="small"
-                        *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''"
-                        (click)="irRedSocial(informacionNegocio.youtube)" target="_blank">
+            *ngIf="informacionNegocio.tipo_negocio || informacionNegocio.tipo_negocio === null;"
+            href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
+            target="_blank">
+            <ion-icon name="navigate" style="color: royalblue;"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button size="small" *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''"
+            (click)="irRedSocial(informacionNegocio.youtube)" target="_blank">
             <img src="../../../assets/images/yt.png">
         </ion-fab-button>
         <ion-fab-button size="small" color="light"
-                        *ngIf="informacionNegocio.tiktok !== null && informacionNegocio.tiktok !== ''"
-                        (click)="irRedSocial(informacionNegocio.tiktok)" target="_blank">
+            *ngIf="informacionNegocio.tiktok !== null && informacionNegocio.tiktok !== ''"
+            (click)="irRedSocial(informacionNegocio.tiktok)" target="_blank">
             <img src="../../../assets/images/tt.png">
         </ion-fab-button>
         <ion-fab-button size="small" color="light"
-                        *ngIf="informacionNegocio.instagram !== null && informacionNegocio.instagram !== ''"
-                        (click)="irRedSocial(informacionNegocio.instagram)" target="_blank">
+            *ngIf="informacionNegocio.instagram !== null && informacionNegocio.instagram !== ''"
+            (click)="irRedSocial(informacionNegocio.instagram)" target="_blank">
             <img src="../../../assets/images/insta.png">
         </ion-fab-button>
         <ion-fab-button size="small" color="light"
-                        *ngIf="informacionNegocio.twitter !== null && informacionNegocio.twitter !== ''"
-                        (click)="irRedSocial(informacionNegocio.twitter)" target="_blank">
+            *ngIf="informacionNegocio.twitter !== null && informacionNegocio.twitter !== ''"
+            (click)="irRedSocial(informacionNegocio.twitter)" target="_blank">
             <img src="../../../assets/images/tw.png">
         </ion-fab-button>
         <ion-fab-button size="small" color="light"
-                        *ngIf="informacionNegocio.id_facebook !== null && informacionNegocio.id_facebook !== ''"
-                        (click)="irRedSocial(informacionNegocio.id_facebook)" target="_blank">
+            *ngIf="informacionNegocio.id_facebook !== null && informacionNegocio.id_facebook !== ''"
+            (click)="irRedSocial(informacionNegocio.id_facebook)" target="_blank">
             <img src="../../../assets/images/fb.png">
         </ion-fab-button>
         <ion-fab-button size="small" color="light"
-                        *ngIf="informacionNegocio.celular !== null && informacionNegocio.celular !== ''"
-                        (click)="enviarWhasapp(informacionNegocio.celular)">
+            *ngIf="informacionNegocio.celular !== null && informacionNegocio.celular !== ''"
+            (click)="enviarWhasapp(informacionNegocio.celular)">
             <img src="../../../assets/images/wp.png">
         </ion-fab-button>
         <ion-fab-button size="small" color="light"
-                        *ngIf="informacionNegocio.telefono !== null && informacionNegocio.telefono !== ''"
-                        (click)="llamar(informacionNegocio.telefono)">
+            *ngIf="informacionNegocio.telefono !== null && informacionNegocio.telefono !== ''"
+            (click)="llamar(informacionNegocio.telefono)">
             <ion-icon class="telefono" name="call"></ion-icon>
         </ion-fab-button>
     </ion-fab>

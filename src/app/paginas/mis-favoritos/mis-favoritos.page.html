@@ -1,34 +1,33 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    <ion-buttons slot="start">
-      <ion-button>
-        <ion-menu-button></ion-menu-button>
-      </ion-button>
-    </ion-buttons>
+    
     <ion-title>Mis favoritos</ion-title>
   </ion-toolbar>
 </ion-header>
 
+
+<ion-header>
+  <ion-toolbar >
+    <ion-segment
+            value="productos"
+            scrollable="true"
+            [(ngModel)]="segmentModel"
+            (ionChange)="segmentChanged($event)"
+    >
+      <ion-segment-button value="productos">Productos y servicios</ion-segment-button>
+      <ion-segment-button value="negocios">Negocios</ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-toolbar>
-        <ion-segment
-          value="productos"
-          scrollable="true"
-          [(ngModel)]="segmentModel"
-          (ionChange)="segmentChanged($event)"
-        >
-          <ion-segment-button value="productos">Productos</ion-segment-button>
-          <ion-segment-button value="negocios">Negocios</ion-segment-button>
-        </ion-segment>
-      </ion-toolbar>
-    </ion-row>
-  </ion-grid>
-  <app-productos-favoritos
-    *ngIf="segmentModel === 'productos'"
-  ></app-productos-favoritos>
-  <app-negocios-favoritos
-    *ngIf="segmentModel === 'negocios'"
-  ></app-negocios-favoritos>
+      <app-productos-favoritos
+              *ngIf="segmentModel === 'productos'"
+      ></app-productos-favoritos>
+      <app-negocios-favoritos
+              *ngIf="segmentModel === 'negocios'"
+      ></app-negocios-favoritos>
 </ion-content>
+
+
+

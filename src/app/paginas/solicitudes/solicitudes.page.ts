@@ -35,6 +35,8 @@ export class SolicitudesPage implements OnInit {
   //Admin Solicitudes Publicadas
   public solicitud: SolicitudesModel;
   public numeroPublicadas: number;
+  public cargando = 'cargando';
+  public textoDeBusqueda = 'Buscar Solicitud';
 
   constructor(
     private solicitudesService: SolicitudesService,
@@ -62,13 +64,6 @@ export class SolicitudesPage implements OnInit {
         }
       }
     });
-  }
-  async presentLoading() {
-    this.loader = await this.loadingController.create({
-      cssClass: "my-custom-class",
-      message: "por favor espera...",
-    });
-    return this.loader.present();
   }
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({

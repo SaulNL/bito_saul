@@ -1,3 +1,4 @@
+import { AfiliacionPlazaModel } from './../../Modelos/AfiliacionPlazaModel';
 import { Component, EventEmitter, ViewChild } from "@angular/core";
 import { ProductoModel } from "../../Modelos/ProductoModel";
 import {
@@ -18,6 +19,7 @@ import { AnimationController } from "@ionic/angular";
 import { ModalProductosComponent } from "../../components/modal-productos/modal-productos.component";
 import { UtilsCls } from "../../utils/UtilsCls";
 import { AppSettings } from "../../AppSettings";
+import { PlazasAfiliacionesComponent } from 'src/app/componentes/plazas-afiliaciones/plazas-afiliaciones.component';
 
 @Component({
   selector: "app-tab1",
@@ -36,6 +38,7 @@ export class ProductosPage {
   public motrarContacto: boolean;
   public loaderLike: boolean;
   public user: any;
+  public selectionAP: boolean;
   public filtroABC: Array<FiltroABCModel>;
   public filtroCheckend: number;
   public producto: any;
@@ -52,6 +55,8 @@ export class ProductosPage {
   public lstProductosOriginal: any;
   public scroll: boolean;
   public mensaje: any;
+  public cargando = 'Cargando';
+  private plazaAfiliacion: AfiliacionPlazaModel | null;
   constructor(
     public loadingController: LoadingController,
     private _router: Router,
@@ -67,9 +72,14 @@ export class ProductosPage {
     this.user = this.util.getUserData();
     this.existeSesion = util.existe_sesion();
     this.mensaje = "Cargando más productos...";
+    this.selectionAP = false;
   }
 
   ngOnInit(): void {
+    const selected = localStorage.getItem('org');
+    if (selected != null) {
+      this.selectionAP = true;
+    }
     this.mensaje = "Cargando más productos...";
     this.anyFiltros = new FiltrosModel();
     this.anyFiltros.idEstado = 29;
@@ -110,6 +120,10 @@ export class ProductosPage {
   public obtenerProductos() {
     this.loader = true;
     this.anyFiltros.user = this.user;
+    this.plazaAfiliacion = JSON.parse(localStorage.getItem('org'));
+    if (this.plazaAfiliacion != null) {
+      this.anyFiltros.organizacion = this.plazaAfiliacion.id_organizacion;
+    }
     this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
       (response) => {
         this.lstProductos = response.data.lstProductos;
@@ -389,5 +403,33 @@ export class ProductosPage {
       return imagen[0];
     }
     return imagen;
+  }
+  public regresarBitoo() {
+    localStorage.removeItem('org');
+    location.reload();
+  }
+
+  public openPlazasAfiliacionesModal() {
+    this.presentModalPlazasAfiliaciones();
+  }
+ async presentModalPlazasAfiliaciones() {
+   let persona = null;
+   let permisos = null;
+   if(this.util.existSession()){
+     persona = this.util.getIdPersona();
+     permisos = this.util.getUserPermisos();
+   }
+    this.modal = await this.modalController.create(
+      {
+        component: PlazasAfiliacionesComponent,
+        cssClass: 'custom-modal-plazas-afiliaciones',
+        componentProps: {
+          idUsuario: persona,
+          permisos : permisos
+        }
+      }
+    );
+
+    return await this.modal.present();
   }
 }

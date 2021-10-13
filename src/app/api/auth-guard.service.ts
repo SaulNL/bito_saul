@@ -1,7 +1,5 @@
 import { Injectable } from "@angular/core";
 import { Router, CanActivate, ActivatedRouteSnapshot } from "@angular/router";
-import { AlertController } from "@ionic/angular";
-import { Subject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -15,8 +13,6 @@ export class AuthGuardService implements CanActivate {
   }
 
   canActivate(route): boolean {
-    
-
     if (this.tf === false) {
       let cancell = "true";
       let ruta = route._routerState.url;

@@ -1,6 +1,6 @@
 <ion-header translucent>
   <ion-toolbar class="tolbar">
-    <ion-title>Detalle solicitud</ion-title>
+    <ion-title>Detalle de requerimiento de compra</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismiss()">Cerrar</ion-button>
     </ion-buttons>
@@ -15,7 +15,7 @@
 
         <ion-item>
           <ion-label class="ion-text-wrap">
-            <h2 style="font-weight: bolder; text-align: center">Solicitan:</h2>
+            <h2 style="font-weight: bolder; text-align: center">Requerimiento de compra:</h2>
             <h3 style="text-align: center;">{{ solicitud.solicitud }}</h3>
           </ion-label>
         </ion-item>
@@ -63,7 +63,7 @@
             Subir Archivo <ion-icon name="folder-outline" style="margin-left: 10px;"></ion-icon>
           </div>
         </label>
-        
+
         <input type="file" id="archivo" name="archivo" (change)="subir_archivo($event)" maxsize=10 hidden>
 
         <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">

@@ -21,6 +21,7 @@ export class EstadisticasPage implements OnInit {
     public scroll: boolean;
     public mensaje: any;
     public listaNegociosOriginal: any;
+    public msj = 'Cargando';
 
     constructor(
         private servicioNegocios: NegocioService,
@@ -43,6 +44,7 @@ export class EstadisticasPage implements OnInit {
         for (let index = 0; index < this.datosRoles.length; index++) {
             if (this.datosRoles[index].id_rol === 1) {
                 this.rol = 1;
+                
             }
         }
     }

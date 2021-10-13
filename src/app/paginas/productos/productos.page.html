@@ -1,6 +1,6 @@
-<app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
+<app-toolbar-busqueda placeHolder="Buscar productos" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
 
-<app-spinner [loader]="loader"></app-spinner>
+<app-spinner [loader]="loader" [message]="cargando"></app-spinner>
 <ion-content *ngIf="!loader" [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
     <app-recargar (respuesta)="recargar($event)"></app-recargar>
     <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
@@ -15,6 +15,17 @@
                 <ion-label>Borrar Filtros</ion-label>
             </ion-chip>
         </ion-buttons>
+        <ion-buttons *ngIf="!selectionAP">
+                <ion-button (click)="openPlazasAfiliacionesModal()"> Afiliaciones y plazas
+                     <ion-icon name="caret-down-outline"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+            <ion-buttons *ngIf="selectionAP">
+                <ion-chip (click)="regresarBitoo()" color="danger">
+                    <ion-icon name="log-out-outline"></ion-icon>
+                    <ion-label>Regresar a bitoo</ion-label>
+                </ion-chip>
+            </ion-buttons>
         <ion-buttons slot="end">
             <ion-button (click)="abrirFiltros()">Filtrar
                 <ion-icon name="filter-outline"></ion-icon>

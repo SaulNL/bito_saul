@@ -5,6 +5,7 @@ import { NegocioService } from "../../../api/negocio.service";
 import { Router } from "@angular/router";
 import { ProductosService } from "../../../api/productos.service";
 import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
+import { OptionBackLogin } from "src/app/Modelos/OptionBackLoginModel";
 
 @Component({
   selector: "app-modal-producto",
@@ -18,7 +19,8 @@ export class ModalProductoPage implements OnInit {
   public negocio: any;
   public informacionNegocio: any;
   public comprarB: any;
-
+  public mensajeCompra = 'Agregar';
+  public typeLogin: OptionBackLogin;
   constructor(
     private servicioProductos: ProductosService,
     public modalCtrl: ModalController,
@@ -28,6 +30,7 @@ export class ModalProductoPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.typeLogin = new OptionBackLogin();
     if (this.existeSesion) {
       this.obtenerInformacionNegocio();
       this.loVio(this.unoProducto);
@@ -53,7 +56,12 @@ export class ModalProductoPage implements OnInit {
     );
   }
   login() {
-    this.router.navigate(["/tabs/login"]);
+    this.typeLogin.type = 'producto';
+    // localStorage.setItem("isRedirected", "false");
+    const body = JSON.stringify(this.typeLogin);
+    this.router.navigate(["/tabs/login"], {
+      queryParams: { productos:  body}
+    });
     this.modalCtrl.dismiss({
       dismissed: true,
     });
@@ -73,42 +81,55 @@ export class ModalProductoPage implements OnInit {
     );
   }
   public agregar(producto: any) {
-        const contenido = JSON.parse(JSON.stringify(producto));
-        const enviar = {
-          producto: contenido,
-          agregado: true,
-        };
-        this.router.navigate(["/tabs/negocio/" + this.negocio.url_negocio], {
-          queryParams: { carrito: JSON.stringify(enviar) },
-        });
-        this.modalCtrl.dismiss({
-          dismissed: true,
-        });
+    const contenido = JSON.parse(JSON.stringify(producto));
+    const enviar = {
+      producto: contenido,
+      agregado: true,
+    };
+    this.router.navigate(["/tabs/negocio/" + this.negocio.url_negocio], {
+      queryParams: { carrito: JSON.stringify(enviar) },
+    });
+    this.modalCtrl.dismiss({
+      dismissed: true,
+    });
   }
   obtenerInformacionNegocio() {
-     this.negocioServico.buscarNegocio(this.unoProducto.negocio.idNegocio).subscribe(
-      (response) => {
-            this.negocio = response.data;
-            this.negocioUrl(response.data);
-      },
-      (error) => {
-      }
-    );
-  }
-  public negocioUrl(negocioT: any){
-     this.negocioServico.obteneretalleNegocio(negocioT.url_negocio, this.user.id_persona).subscribe(
+    this.negocioServico
+      .buscarNegocio(this.unoProducto.negocio.idNegocio)
+      .subscribe(
         (response) => {
-            this.informacionNegocio = response.data;
-            this.mostrarBoton();
+
+          this.negocio = response.data;
+          this.negocioUrl(response.data);
         },
         (error) => {
 
         }
-    );
+      );
+  }
+  public negocioUrl(negocioT: any) {
+    this.negocioServico
+      .obteneretalleNegocio(negocioT.url_negocio, this.user.id_persona)
+      .subscribe(
+        (response) => {
+
+          this.informacionNegocio = response.data;
+
+          this.mostrarBoton();
+        },
+        (error) => { }
+      );
   }
 
   public mostrarBoton() {
-    this.comprarB = ( (this.informacionNegocio.entrega_domicilio === 1 || this.informacionNegocio.entrega_sitio === 1 ||
-    this.informacionNegocio.consumo_sitio === 1) && parseInt(this.unoProducto.precio) > 0 );
+    this.comprarB =
+      (this.informacionNegocio.entrega_domicilio === 1 ||
+        this.informacionNegocio.entrega_sitio === 1 ||
+        this.informacionNegocio.consumo_sitio === 1) &&
+      parseInt(this.unoProducto.precio) > 0;
+  }
+
+  public noEstaAbierto() {
+    this.mensajeCompra = 'Este negocio se encuentra cerrado';
   }
 }

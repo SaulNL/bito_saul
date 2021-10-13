@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
 import { AuthGuardService } from "../../api/auth-guard.service";
+import { GuardLoginService } from 'src/app/api/busqueda/guard-login.service';
 
 const routes: Routes = [
   {
@@ -10,19 +11,23 @@ const routes: Routes = [
     children: [
       {
         path: 'productos',
-        loadChildren: () => import('../productos/productos.module').then(m => m.Tab1PageModule),canActivate: [AuthGuardService]
+        loadChildren: () => import('../productos/productos.module').then(m => m.Tab1PageModule), canActivate: [AuthGuardService]
+      },
+      {
+        path: 'mis-favoritos',
+        loadChildren: () => import('../mis-favoritos/mis-favoritos.module').then(m => m.MisFavoritosPageModule)
       },
       {
         path: 'promociones',
-        loadChildren: () => import('../promociones/promociones.module').then(m => m.Tab2PageModule) ,canActivate: [AuthGuardService]
+        loadChildren: () => import('../promociones/promociones.module').then(m => m.Tab2PageModule), canActivate: [AuthGuardService]
       },
       {
         path: 'inicio',
-        loadChildren: () => import('../inicio/inicio.module').then(m => m.Tab3PageModule) ,canActivate: [AuthGuardService]
+        loadChildren: () => import('../inicio/inicio.module').then(m => m.Tab3PageModule), canActivate: [AuthGuardService]
       },
       {
         path: 'categorias',
-        loadChildren: () => import('../categorias/categorias.module').then(m => m.CategoriasPageModule),canActivate: [AuthGuardService]
+        loadChildren: () => import('../categorias/categorias.module').then(m => m.CategoriasPageModule), canActivate: [AuthGuardService]
       },
       {
         path: 'negocio/:negocio',
@@ -34,7 +39,7 @@ const routes: Routes = [
       },
       {
         path: 'login',
-        loadChildren: () => import('../login/login.module').then( m => m.LoginPageModule)
+        loadChildren: () => import('../login/login.module').then(m => m.LoginPageModule) , canActivate: [GuardLoginService]
       },
       {
         path: 'ajustes',
@@ -44,17 +49,17 @@ const routes: Routes = [
         path: 'datos-basicos',
         loadChildren: () => import('../datos-basicos/datos-basicos.module').then(m => m.DatosBasicosPageModule)
       },
-       {
+      {
         path: 'cambio-contrasenia',
-        loadChildren: () => import('../cambio-contrasenia/cambio-contrasenia.module').then( m => m.CambioContraseniaPageModule)
+        loadChildren: () => import('../cambio-contrasenia/cambio-contrasenia.module').then(m => m.CambioContraseniaPageModule)
       },
       {
         path: 'datos-complementarios',
-        loadChildren: () => import('../datos-complementarios/datos-complementarios.module').then( m => m.DatosComplementariosPageModule)
+        loadChildren: () => import('../datos-complementarios/datos-complementarios.module').then(m => m.DatosComplementariosPageModule)
       },
       {
         path: 'registro-persona',
-        loadChildren: () => import('../busqueda/registro-persona/registro-persona.module').then( m => m.RegistroPersonaPageModule)
+        loadChildren: () => import('../busqueda/registro-persona/registro-persona.module').then(m => m.RegistroPersonaPageModule)
       },
       {
         path: '',

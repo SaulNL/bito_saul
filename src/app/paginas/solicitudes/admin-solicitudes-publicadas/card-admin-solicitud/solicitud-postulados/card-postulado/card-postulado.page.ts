@@ -42,25 +42,19 @@ export class CardPostuladoPage implements OnInit {
       }
     });
   }
-  async presentLoading() {
-    this.loader = await this.loadingController.create({
-      cssClass: "my-custom-class",
-      message: "por favor espera...",
-    });
-    return this.loader.present();
-  }
+
   public checkSolicitud(postulado: PostuladosModel) {
-    this.presentLoading();
+    this.loader = true;
     this.solicitudesService.checkendPostulacion(postulado).subscribe(
       (response) => {
         if (response.code === 200) {
           this.lstPostulados = response.data;
-          this.loader.dismiss();
+          this.loader = false;
         }
-        this.loader.dismiss();
+        this.loader = false;
       },
       (error) => {
-        this.loader.dismiss();
+        this.loader = false;
       }
     );
   }
@@ -69,7 +63,7 @@ export class CardPostuladoPage implements OnInit {
   }
   descargarAndroid() {
     this.extensionArchivo();
-    this.presentLoading();
+    this.loader = true;
     setTimeout(() => {
       var request: DownloadRequest = {
         uri: this.solicitudPostulado.url_archivo,
@@ -89,11 +83,11 @@ export class CardPostuladoPage implements OnInit {
       };
       this.downloader
         .download(request)
-        .then(
-          () => this.notificaciones.exito("El Archivo se descargo con exito"),
-          this.loader.dismiss()
-        )
+        .then( () =>
+        this.notificaciones.exito("El Archivo se descargo con exito")
+        ,)
         .catch((error) => this.notificaciones.error(error));
+        this.loader = false;
     }, 700);
   }
 
@@ -111,6 +105,7 @@ export class CardPostuladoPage implements OnInit {
   }
   descargarIOS() {
     this.extensionArchivo();
+    this.loader = true;
     setTimeout(() => {
       const options: any = {
         method: "get",
@@ -131,26 +126,27 @@ export class CardPostuladoPage implements OnInit {
                 title: this.solicitudPostulado.nombre + "_Archivo_Postulado",
                 url: response.nativeURL,
               }).then((resShare) => {
-                console.log(resShare);
+
               });
             })
             .catch((error) => this.notificaciones.error(error));
         })
         .catch((error) => this.notificaciones.error(error));
+        this.loader = false;
     }, 700);
   }
   getMimetype(name) {
     if (name.indexOf("pdf") >= 0) {
-      console.log("este archivo es pdf");
+
       return "application/pdf";
     } else if (name.indexOf("png") >= 0) {
-      console.log("este archivo es png");
+
       return "image/png";
     } else if (name.indexOf("jpeg") >= 0) {
-      console.log("este archivo es jpeg");
+
       return "image/jpeg";
     } else if (name.indexOf("jpg") >= 0) {
-      console.log("este archivo es jpg");
+      
       return "image/jpg";
     }
   }

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { CardNegocioPage } from './card-negocio.page';
 
 const routes: Routes = [
@@ -9,8 +8,12 @@ const routes: Routes = [
     component: CardNegocioPage
   },
   {
-    path: 'info-negocio',
-    loadChildren: () => import('./info-negocio/info-negocio.module').then( m => m.InfoNegocioPageModule)
+    path: 'formulario-negocio',
+    loadChildren: () => import('./../formulario-negocio/formulario-negocio.module').then(m => m.FormularioNegocioPageModule)
+  },
+  {
+    path: 'mis-productos-servicios',
+    loadChildren: () => import('./../mis-productos-servicios/mis-productos-servicios.module').then(m => m.MisProductosServiciosPageModule)
   }
 ];
 
@@ -18,4 +21,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CardNegocioPageRoutingModule {}
+export class CardNegocioPageRoutingModule { }

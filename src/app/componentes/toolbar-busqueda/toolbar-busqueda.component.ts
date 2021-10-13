@@ -54,7 +54,6 @@ export class ToolbarBusquedaComponent implements OnInit {
   }
 
   buscar() {
-
     this.buscarEmit.emit(this.strBuscar);
   }
 
@@ -83,14 +82,7 @@ export class ToolbarBusquedaComponent implements OnInit {
       });
   }
 
-  // verCompras(){
-  //   this.router.navigate(['/tabs/home/compras'], { queryParams: {special: true, route: true}});
-  // }
-  // verVentas(){
-  //   this.router.navigate(['/tabs/home/ventas'], { queryParams: {special: true}});
-  // }
-
   verSolicitudes(){
-    this.router.navigate(['/tabs/home/solicitud']);
+    this.router.navigate(['/tabs/categorias']);
   }
 }

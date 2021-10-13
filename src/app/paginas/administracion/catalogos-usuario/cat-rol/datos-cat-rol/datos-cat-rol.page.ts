@@ -90,10 +90,10 @@ export class DatosCatRolPage implements OnInit {
         //   this.loaderGiro = false;
         this.variableTO = respuesta.data;
         this.getPermiso();
-        // console.log(this.rolTO);
+
       },
       (error) => {
-        //console.log(error);
+        
       },
       () => { }
     );
@@ -209,7 +209,7 @@ export class DatosCatRolPage implements OnInit {
     );
   }
   validarCheck(evento) {
-  
+
     if (evento.detail.checked) {
       this.variableTO.activo = 1;
     } else {

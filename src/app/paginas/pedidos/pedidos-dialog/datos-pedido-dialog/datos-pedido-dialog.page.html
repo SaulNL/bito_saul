@@ -66,7 +66,9 @@
         </ion-row>
       </ion-grid>
     </ion-item>
-
+    <ion-item lines="none">
+      <ion-label>Total : ${{total}}  <span *ngIf="domicilioEnvio">{{domicilioEnvioMessage}}</span></ion-label>
+    </ion-item>
     <div *ngIf="!blnCancelar">
       <ion-button  expand="block" *ngIf="pedido.id_estatus_pedido < 4" (click)="cancelar()" color="medium">Cancelar mi pedido</ion-button>
       <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 5 || pedido.id_estatus_pedido === 6">

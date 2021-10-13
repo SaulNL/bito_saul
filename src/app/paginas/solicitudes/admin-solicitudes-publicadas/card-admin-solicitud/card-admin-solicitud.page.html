@@ -3,7 +3,7 @@
     <ion-buttons slot="start" >
       <ion-back-button text="" defaultHref="tabs/home/solicitudes"></ion-back-button>
     </ion-buttons>
-    <ion-title>Solicitud</ion-title>
+    <ion-title>Requerimientos de compra</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -33,8 +33,8 @@
       <br>
       <br>
       <ion-label>{{seleccionadoAdmin.fecha_inicio_public}} <strong>al</strong> {{seleccionadoAdmin.fecha_fin_public}}</ion-label>
-      <ion-button type="button" class="bg-rosa" expand="block" (click)="abrirModalPostulados(seleccionadoAdmin)">Postulados</ion-button>     
-      <ion-button  type="button"  color="warning" expand="block" [disabled]="seleccionadoAdmin.activo_public !== 1" (click)="presentAlertConfirm()">Despublicar</ion-button>  
+      <ion-button type="button" class="bg-rosa" expand="block" (click)="abrirModalPostulados(seleccionadoAdmin)">Postulados</ion-button>
+      <ion-button  type="button"  color="warning" expand="block" [disabled]="seleccionadoAdmin.activo_public !== 1" (click)="presentAlertConfirm()">Despublicar</ion-button>
       </ion-card-header>
   </ion-card>
 </ion-content>

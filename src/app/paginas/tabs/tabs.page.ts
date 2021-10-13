@@ -39,10 +39,11 @@ export class TabsPage implements OnInit{
           })
         this.usuario = this.util.getData();
 
-        
+
     }
 
     inicio() {
+        // localStorage.setItem('isRedirected', 'false');
         this.router.navigate(['/tabs/inicio']);
         this.inicioPage.buscarNegocios()
         localStorage.setItem('resetFiltro', '0');
@@ -51,18 +52,24 @@ export class TabsPage implements OnInit{
     promociones() {
         this.router.navigate(['/tabs/promociones']);
         localStorage.setItem('resetFiltro', '0');
-        
+    }
+    solicitudes(){
+        this.router.navigate(['/tabs/mis-favoritos']);
+        // this.router.navigate(['/tabs/home/solicitud']);
     }
 
     productos() {
          this.router.navigate(['/tabs/productos']);
          localStorage.setItem('resetFiltro', '0');
-         
+
     }
-    perfil(){        
-        sessionStorage.setItem('isRedirected', 'false');
+    perfil(){
+        localStorage.setItem('isRedirected', 'false');
         localStorage.setItem('resetFiltro', '0');
-        //console.log(sessionStorage.getItem('isRedirected'));
         this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
+    }
+    login(){
+        localStorage.setItem('isRedirected', 'false');
+        this.router.navigate(['/tabs/login']);
     }
 }

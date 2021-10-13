@@ -11,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class CatPalabraReservadasPage implements OnInit {
   public isToggled: boolean;
-  
+
   public blnBtnFiltro: boolean;
   public lstCatPalabras: Array<any>;
   selectTO: FiltroCatPalabrasResModel;
@@ -20,7 +20,7 @@ export class CatPalabraReservadasPage implements OnInit {
   public botonAgregar: boolean;
   public cambios: number;
   constructor(
-    
+
     private notificaciones: ToadNotificacionService,
     private servicioUsuarios: AdministracionService,
     private router: Router,
@@ -31,7 +31,7 @@ export class CatPalabraReservadasPage implements OnInit {
     this.blnActivaDatosPalabra = false;
     this.lstCatPalabras = [];
     this.botonAgregar = false;
-    
+
   }
 
   ngOnInit() {
@@ -107,8 +107,8 @@ export class CatPalabraReservadasPage implements OnInit {
     this.selectTO = new FiltroCatPalabrasResModel();
     let navigationExtras = JSON.stringify(this.selectTO);
   this.router.navigate(['/tabs/home/cat-palabra-reservadas/datos-palabra-reservadas'], { queryParams: {special: navigationExtras}  });
-  
-  
+
+
   }
   validarActivo(palabra: FiltroCatPalabrasResModel) {
     palabra.activo = palabra.activo === 1 ? 0 : 1;
@@ -117,6 +117,7 @@ export class CatPalabraReservadasPage implements OnInit {
         this.notificaciones.exito('El registro se actualizó con éxito');
       },
       error => {
+        
         palabra.activo = palabra.activo === 1 ? 0 : 1;
         this.notificaciones.error('Ocurrio un error al actualizar el registro intente nuevamente');
       }

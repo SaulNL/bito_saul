@@ -3,7 +3,8 @@
     <ion-title>Código de Seguridad</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loader">
 <ion-card>
   <ion-card-header>
     <div class="ion-text-center">

@@ -20,6 +20,7 @@ export class CargarImagenesSlideComponent implements OnInit {
   };
 
   ngOnInit() {
+
   }
 
   public subirImagenUno(event: any) {

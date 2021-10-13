@@ -25,18 +25,15 @@ export class ImagenesSlideComponent implements OnInit {
     this.slidesOptions;
     this.multiImagen = true;
     if (!Array.isArray(this.imagen.imagen)) {
-      
-      
+
       this.multiImagen = false;
       this.lstImagen = this.imagen.imagen;
     } else {
       if (this.imagen.imagen.length > 1) {
-        
-        
+
         this.multiImagen = true;
         this.lstImagene = this.imagen.imagen;
       } else {
-        
         
         this.multiImagen = false;
         this.lstImagen = this.imagen.imagen[0];

@@ -1,3 +1,4 @@
+import { PedidoNegocioModel } from './../../Modelos/PedidoNegocioModel';
 import { Component, Input, OnInit } from '@angular/core';
 import { UtilsCls } from "../../utils/UtilsCls";
 import { AlertController, ModalController, Platform } from "@ionic/angular";
@@ -32,11 +33,15 @@ export class PedidoNegocioComponent implements OnInit {
   sumaTotal: number;
   cantidad: number;
   costoEntrega: number;
-  detalle:string;
+  detalle: string;
   blnCosto: boolean;
   blnCostoLetra: boolean;
   public subscribe;
   public modal;
+  public loader: any;
+  public msj = 'Realizando pedido';
+  public numeroMesa: number;
+  private pedido: PedidoNegocioModel;
   constructor(
     private utilsCls: UtilsCls,
     private modalController: ModalController,
@@ -48,9 +53,11 @@ export class PedidoNegocioComponent implements OnInit {
     private geolocation: Geolocation
   ) {
     this.lat = 19.31905;
+    this.numeroMesa = 0;
     this.lng = -98.19982;
     this.subscribe = this.platform.backButton.subscribe(() => {
-    this.cerrarModal();
+      this.cerrarModal();
+      this.loader = false;
     });
   }
 
@@ -81,9 +88,9 @@ export class PedidoNegocioComponent implements OnInit {
         iconAnchor: [13, 41],
       });
       this.marker = marker([lat, lng], { icon: myIcon, draggable: true }).addTo(this.map);
-      this.marker.on("dragend", () =>{
+      this.marker.on("dragend", () => {
 
-        this.getLatLong({latlng: this.marker.getLatLng()});
+        this.getLatLong({ latlng: this.marker.getLatLng() });
       });
     }, 500);
   }
@@ -104,7 +111,7 @@ export class PedidoNegocioComponent implements OnInit {
     if (this.suma === 0) {
       this.lista = [];
       this.cerrarModal();
-        this.guard.tf = true;
+      this.guard.tf = true;
     }
   }
 
@@ -124,29 +131,57 @@ export class PedidoNegocioComponent implements OnInit {
       }
     });
   }
-
-  public realizarPedido() {
-    const pedido = {
-      direccion: this.estasUbicacion,
-      idNegocio:  this.lista[0].idNegocio,
-      idPersona: this.utilsCls.getIdPersona(),
-      idTipoPedido: this.tipoEnvio,
-      latitud: this.lat,
-      longitud: this.lng,
-      pedido: this.lista,
-      detalle: this.detalle
-    };
-    if(this.tipoEnvio !== null){
-      this.negocioService.registrarPedido(pedido).subscribe(
-        res => {
-          this.mesajes.exito('Pedido realizado éxito')
-          this.lista = [];
-          this.cerrarModal();
-        }, error => {
-          this.mesajes.error('Ocurrio un error al generar el pedido')
+  private enviarSms(telefono: number, idNegocio: number) {
+    this.negocioService.enviarMensajePedido(telefono, idNegocio).subscribe(
+      respuesta => {
+        if (respuesta.code === 500) {
+          this.mesajes.error(respuesta.message);
         }
-      );
-    }else{
+        this.loader = false;
+        this.guard.tf = true;
+        this.mesajes.exito('Pedido realizado éxito');
+        this.lista = [];
+        this.cerrarModal();
+      }, error => {
+        this.loader = false;
+        this.mesajes.error('Ocurrio un error al generar el pedido');
+      }
+    );
+  }
+  private registrarPedigo(pedido: PedidoNegocioModel) {
+    const datos = JSON.parse(localStorage.getItem('u_data'));
+    const telefono_usuario = datos.celular;
+
+    this.negocioService.registrarPedido(pedido).subscribe(
+      res => {
+        this.enviarSms(telefono_usuario, this.lista[0].idNegocio);
+      }, error => {
+        this.loader = false;
+        this.mesajes.error('Ocurrio un error al generar el pedido')
+      }
+    );
+  }
+  public realizarPedido() {
+    this.loader = true;
+    this.pedido = new PedidoNegocioModel(this.lista[0].idNegocio, this.utilsCls.getIdPersona(), this.tipoEnvio, this.lista);
+    if (this.tipoEnvio !== null) {
+      switch (this.tipoEnvio) {
+        case 1:
+          this.pedido.numeroMesa = this.numeroMesa;
+          this.registrarPedigo(this.pedido);
+          break;
+        case 2:
+          this.pedido.direccion = this.estasUbicacion;
+          this.pedido.latitud = this.lat;
+          this.pedido.longitud = this.lng;
+          this.registrarPedigo(this.pedido);
+          break;
+        case 3:
+          this.registrarPedigo(this.pedido);
+          break;
+      }
+    } else {
+      this.loader = false;
       this.presentAlert("Debe seleccionar el Tipo de Entrega");
     }
 
@@ -185,14 +220,14 @@ export class PedidoNegocioComponent implements OnInit {
     */
   async localizacionTiempo() {
     this.geolocation.getCurrentPosition().then((resp) => {
-      this.lat =  resp.coords.latitude
-      this.lng =  resp.coords.longitude
+      this.lat = resp.coords.latitude
+      this.lng = resp.coords.longitude
       this.map.panTo([this.lat, this.lng]);
       this.marker.setLatLng([this.lat, this.lng]);
       this.geocodeLatLng();
-     }).catch((error) => {
-       
-     });
+    }).catch((error) => {
+
+    });
 
   }
   getLatLong(e) {
@@ -237,7 +272,7 @@ export class PedidoNegocioComponent implements OnInit {
     });
     await alert.present();
   }
-  async presentAlert(texto:string) {
+  async presentAlert(texto: string) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Aviso',
@@ -285,10 +320,23 @@ export class PedidoNegocioComponent implements OnInit {
     this.guard.tf = true;
     this.cerrarModal();
   }
-    public productoImagen(imagen: any){
-    if(Array.isArray(imagen)){
+  public productoImagen(imagen: any) {
+    if (Array.isArray(imagen)) {
       return imagen[0];
     }
     return imagen;
+  }
+
+  public numeroMesaMas() {
+    this.numeroMesa = this.numeroMesa + 1;
+  }
+
+  public numeroMesaMenos() {
+    if (this.numeroMesa > 1) {
+      this.numeroMesa = this.numeroMesa - 1;
+    }
+  }
+  public rTantidad(cantidad : number) {
+    return cantidad === 0;
   }
 }

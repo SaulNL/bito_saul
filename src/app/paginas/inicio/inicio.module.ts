@@ -1,4 +1,4 @@
-import { RecargarModule } from './../../componentes/recargar/recargar.module';
+import { SpinnerModule } from './../../componentes/spinner/spinner.module';
 import { DarLikeNegocioModule } from './../../componentes/dar-like-negocio/dar-like-negocio.module';
 import {IonicModule, LoadingController} from '@ionic/angular';
 import { RouterModule } from '@angular/router';
@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InicioPage } from './inicio.page';
 import { ExploreContainerComponentModule } from '../../explore-container/explore-container.module';
-
 import { Tab3PageRoutingModule } from './inicio-routing.module'
 import {FiltrosBusquedaModule} from "../../componentes/filtros-busqueda/filtros-busqueda.module";
 import {TabsPageModule} from '../tabs/tabs.module';
@@ -20,7 +19,7 @@ import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-nego
     FormsModule,
     ExploreContainerComponentModule,
     DarLikeNegocioModule,
-    RecargarModule,
+    SpinnerModule,
     RouterModule.forChild([{ path: '', component: InicioPage }]),
     Tab3PageRoutingModule,
       FiltrosBusquedaModule,
