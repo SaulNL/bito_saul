@@ -1,10 +1,9 @@
 {
-  "appId": "mx.com.softura.bitoo.produccion",
+  "appId": "io.ionic.starter",
   "appName": "Bitoo",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
-
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 3000

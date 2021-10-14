@@ -1,6 +1,12 @@
 <app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
 <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
-    <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
+    <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
+    <app-boton-top [content]="content" [cordenada]="cordenada" *ngIf="!isIOS"></app-boton-top>
+    <ion-fab *ngIf="isIOS" horizontal="end" vertical="bottom" slot="fixed" class="btn-flotante" (click)="scrollToTop()">
+        <ion-fab-button class="bg-rosa" *ngIf="cordenada >= 100">
+            <ion-icon name="chevron-up-outline"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
     <app-banner-promociones [anyFiltros]="Filtros" [tieneFiltro]="tFiltro"></app-banner-promociones>
     <app-spinner [loader]="loader" [message]="msj"></app-spinner>
     <div *ngIf="!loader">

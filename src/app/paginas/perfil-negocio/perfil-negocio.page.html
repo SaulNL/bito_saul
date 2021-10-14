@@ -192,10 +192,12 @@
             <ion-row>
                 <ion-col size=12>
                     <div style="background: white; border-radius: 1em 1em 0em 0em;" class="ion-text-center">
-                        <ion-title
-                            class="ion-align-items-center ion-text-center ion-justify-content-center ion-padding">
-                            Horarios de atención
-                        </ion-title>
+                        <p>
+                            <ion-title class="ion-align-items-center ion-text-center ion-justify-content-center ion-padding">
+                                Horarios de atención
+                            </ion-title>
+                            <br>
+                        </p>
                         <ion-chip (click)="mostrarOcultar()" *ngIf="estatus.tipo === 1" color="success">
                             <ion-label>Abierto</ion-label>
                         </ion-chip>
