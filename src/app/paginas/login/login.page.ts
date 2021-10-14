@@ -48,6 +48,7 @@ export class LoginPage implements OnInit {
   uid;
   public EnterUser: any;
   public inciarSesion: any;
+  public isIOS: boolean = false;
   constructor(
     private navctrl: NavController,
     private loginService: LoginService,
@@ -74,13 +75,14 @@ export class LoginPage implements OnInit {
     this.userFG = new Login();
     this.EnterUser = false;
     this.inciarSesion = 'Iniciando sesión';
+    this.isIOS = this.platform.is('ios');
   }
 
   ngOnInit(): void {
-    // if (localStorage.getItem("isRedirected") === "false") {
-    //   localStorage.setItem("isRedirected", "true");
-    //   location.reload();
-    // }
+    if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
+      localStorage.setItem("isRedirected", "true");
+      location.reload();
+    }
     this.rot.queryParams.subscribe(params => {
       if (params.productos && params) {
         this.optionBack = JSON.parse(params.productos);

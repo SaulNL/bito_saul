@@ -1,6 +1,6 @@
-import { PlazasAfiliacionesComponent } from './../../componentes/plazas-afiliaciones/plazas-afiliaciones.component';
-import { AfiliacionPlazaModel } from './../../Modelos/AfiliacionPlazaModel';
-import { Auth0Service } from './../../api/busqueda/auth0.service';
+import { PlazasAfiliacionesComponent } from '../../componentes/plazas-afiliaciones/plazas-afiliaciones.component';
+import { AfiliacionPlazaModel } from '../../Modelos/AfiliacionPlazaModel';
+import { Auth0Service } from '../../api/busqueda/auth0.service';
 import { Component, EventEmitter, OnInit, ViewChild } from "@angular/core";
 import {
   IonContent,
@@ -22,7 +22,7 @@ import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveed
 import { UtilsCls } from "../../utils/UtilsCls";
 import { MsNegocioModel } from "../../Modelos/busqueda/MsNegocioModel";
 import { PermisoModel } from 'src/app/Modelos/PermisoModel';
-import { ValidarPermisoService } from './../../api/validar-permiso.service';
+import { ValidarPermisoService } from '../../api/validar-permiso.service';
 
 @Component({
   selector: "app-tab3",
@@ -79,11 +79,7 @@ export class InicioPage implements OnInit {
     this.selectionAP = false;
     this.tFiltro = false;
     this.afiliacion = false;
-    if(this.platform.is('ios')) {
-      this.isIOS = true;
-    }else{
-      this.isIOS = false;
-    }
+    this.isIOS = this.platform.is('ios');
   }
   ngOnInit(): void {
      this.route.queryParams.subscribe(params => {
@@ -166,7 +162,6 @@ export class InicioPage implements OnInit {
   }
 
   buscarNegocios() {
-    console.log("entro a buscar negocios");
     this.loader = true;
     const usr = this.user;
     if (usr.id_persona !== undefined) {

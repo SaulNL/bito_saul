@@ -1,4 +1,4 @@
-import { AfiliacionPlazaModel } from './../../Modelos/AfiliacionPlazaModel';
+import { AfiliacionPlazaModel } from '../../Modelos/AfiliacionPlazaModel';
 import { Component, EventEmitter, ViewChild } from "@angular/core";
 import { ProductoModel } from "../../Modelos/ProductoModel";
 import {
@@ -75,14 +75,16 @@ export class ProductosPage {
     this.existeSesion = util.existe_sesion();
     this.mensaje = "Cargando más productos...";
     this.selectionAP = false;
-    if(this.platform.is('ios')) {
-      this.isIOS = true;
-    }else{
-      this.isIOS = false;
-    }
+    this.isIOS = this.platform.is('ios');
   }
 
   ngOnInit(): void {
+
+    if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
+      localStorage.setItem("isRedirected", "true");
+      location.reload();
+    }
+
     const selected = localStorage.getItem('org');
     if (selected != null) {
       this.selectionAP = true;

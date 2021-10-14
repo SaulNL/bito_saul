@@ -1,16 +1,16 @@
 
 export class AppSettings {
 
-     public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
-     public static URL_REGISTRO = 'https://bitoo.com.mx/registro';
-     public static URL_FRONT = 'https://bitoo.com.mx/';
-     public static URL_MOVIL = 'https://bitoo.com.mx/';
+     // public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
+     // public static URL_REGISTRO = 'https://bitoo.com.mx/registro';
+     // public static URL_FRONT = 'https://bitoo.com.mx/';
+     // public static URL_MOVIL = 'https://bitoo.com.mx/';
     // public static URL_MOVIL = 'https://app-bitoo.com.mx/tabs/negocio/';
 
-    // public static API_ENDPOINT = 'https://beta-bitoo-back.azurewebsites.net/';
-    // public static URL_REGISTRO = 'https://beta-bitoo.azurewebsites.net/registro';
-    // public static URL_FRONT = 'https://beta-bitoo.azurewebsites.net/';
-    // public static URL_MOVIL = 'https://beta-bitoo.azurewebsites.net/';
+    public static API_ENDPOINT = 'https://beta-bitoo-back.azurewebsites.net/';
+    public static URL_REGISTRO = 'https://beta-bitoo.azurewebsites.net/registro';
+    public static URL_FRONT = 'https://beta-bitoo.azurewebsites.net/';
+    public static URL_MOVIL = 'https://beta-bitoo.azurewebsites.net/';
 
     // public static API_ENDPOINT = 'https://dev-back-bitoo.azurewebsites.net/';
     // public static URL_REGISTRO = 'https://dev-front-bitoo.azurewebsites.net/registro';

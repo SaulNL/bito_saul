@@ -45,11 +45,12 @@ export class TabsPage implements OnInit{
     inicio() {
         // localStorage.setItem('isRedirected', 'false');
         this.router.navigate(['/tabs/inicio']);
-        this.inicioPage.buscarNegocios()
+        this.inicioPage.buscarNegocios();
         localStorage.setItem('resetFiltro', '0');
     }
 
     promociones() {
+        localStorage.setItem('isRedirected', 'false');
         this.router.navigate(['/tabs/promociones']);
         localStorage.setItem('resetFiltro', '0');
     }
@@ -59,6 +60,7 @@ export class TabsPage implements OnInit{
     }
 
     productos() {
+        localStorage.setItem('isRedirected', 'false');
          this.router.navigate(['/tabs/productos']);
          localStorage.setItem('resetFiltro', '0');
 

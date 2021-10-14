@@ -89,6 +89,7 @@ export class PerfilNegocioPage implements OnInit {
   public arrayLugaresEntrega: any;
   public typeLogin: OptionBackLogin;
   public promociones: any;
+  public isIOS: boolean = false;
   constructor(
     private navctrl: NavController,
     private route: ActivatedRoute,
@@ -137,13 +138,14 @@ export class PerfilNegocioPage implements OnInit {
     this.navegacion = false;
     this.user = this.util.getUserData();
     this.siEsta = true;
+    this.isIOS = this.platform.is('ios');
   }
   ngOnInit() {
-    // if (localStorage.getItem("isRedirected") === "false") {
-      // localStorage.setItem("isRedirected", "true");
-      // location.reload();
-    //   // window.location.assign(this.router.url);
-    // }
+    if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
+      localStorage.setItem("isRedirected", "true");
+      location.reload();
+      // window.location.assign(this.router.url);
+    }
     this.route.queryParams.subscribe(params => {
       if (params.cancel && params) {
         let all = JSON.parse(JSON.stringify(params));

@@ -1,23 +1,32 @@
-.float-padre{
+.float-padre {
   position: fixed;
 }
-.flotante {
-  position: fixed;
-  bottom: 5em;
+
+.flotante-ios {
+
   height: 40px;
   width: 40px;
   right: 3vw;
+
+}
+
+.flotante-android {
+  // no tiene
+}
+
+.flotante {
+  bottom: 5em;
+  position: fixed;
   z-index: 1;
   animation-name: slidein;
   animation-duration: 0.3s;
+}
+@keyframes slidein {
+  from {
+    transform: translateX(100%);
   }
 
-  @keyframes slidein {
-    from {
-      transform: translateX(100%);
-    }
-  
-    to {
-      transform: translateX(0%);
-    }
+  to {
+    transform: translateX(0%);
   }
+}

@@ -4,7 +4,7 @@
 <ion-content *ngIf="!loader" [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
     <app-recargar (respuesta)="recargar($event)"></app-recargar>
     <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
-    <app-boton-top [content]="content" [cordenada]="cordenada" *ngIf="!isIOS"></app-boton-top>
+    <app-boton-top [content]="content" [cordenada]="cordenada" [platform]="isIOS" *ngIf="!isIOS"></app-boton-top>
     <ion-fab *ngIf="isIOS" horizontal="end" vertical="bottom" slot="fixed" class="btn-flotante" (click)="scrollToTop()">
         <ion-fab-button class="bg-rosa" *ngIf="cordenada >= 100">
             <ion-icon name="chevron-up-outline"></ion-icon>
