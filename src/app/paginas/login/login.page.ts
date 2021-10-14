@@ -70,6 +70,8 @@ export class LoginPage implements OnInit {
     this.usuario = new Login();
     this.ionViewDidEnter();
     this.ionViewWillLeave();
+
+    // @ts-ignore
     registerWebPlugin(FacebookLogin);
     this.userFG = new Login();
     this.EnterUser = false;
