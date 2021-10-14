@@ -57,6 +57,12 @@ export class ToolbarBusquedaComponent implements OnInit {
     this.buscarEmit.emit(this.strBuscar);
   }
 
+  searchItems(event){
+    if (event && event.key === 'Enter'){
+      this.buscar();
+    }
+  }
+
   limpiar() {
     this.strBuscar = null;
     this.buscar();
