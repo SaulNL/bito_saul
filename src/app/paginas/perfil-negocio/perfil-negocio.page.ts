@@ -140,8 +140,8 @@ export class PerfilNegocioPage implements OnInit {
   }
   ngOnInit() {
     // if (localStorage.getItem("isRedirected") === "false") {
-    //   localStorage.setItem("isRedirected", "true");
-    //   location.reload();
+      // localStorage.setItem("isRedirected", "true");
+      // location.reload();
     //   // window.location.assign(this.router.url);
     // }
     this.route.queryParams.subscribe(params => {
@@ -456,7 +456,7 @@ export class PerfilNegocioPage implements OnInit {
         this.llenarBolsa(r.data.data);
       }
       if (r.data.goLogin != undefined) {
-        // localStorage.setItem("isRedirected", "false");
+        localStorage.setItem("isRedirected", "false");
         const body = JSON.stringify(r.data.goLogin);
         this.router.navigate(["/tabs/login"], { queryParams: { perfil: body } });
       }
@@ -872,7 +872,7 @@ export class PerfilNegocioPage implements OnInit {
     } else {
       this.typeLogin.type = 'perfil';
       this.typeLogin.url = this.negocio;
-      // localStorage.setItem("isRedirected", "false");
+      localStorage.setItem("isRedirected", "false");
       const body = JSON.stringify(this.typeLogin);
       this.router.navigate(["/tabs/login"], {
         queryParams: { perfil: body }
@@ -880,7 +880,7 @@ export class PerfilNegocioPage implements OnInit {
     }
   }
   loginGo() {
-    // localStorage.setItem("isRedirected", "false");
+    localStorage.setItem("isRedirected", "false");
     this.typeLogin.type = 'perfil';
     this.typeLogin.url = this.negocio;
     const body = JSON.stringify(this.typeLogin);
