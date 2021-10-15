@@ -9,6 +9,7 @@ import {ActivatedRoute} from "@angular/router";
 /* Modelos */
 import {PromocionesModel} from "../../Modelos/PromocionesModel";
 import {FiltrosModel} from "../../Modelos/FiltrosModel";
+import {UtilsCls} from "../../utils/UtilsCls";
 
 @Component({
     selector: "app-tab2",
@@ -33,6 +34,7 @@ export class PromocionesPage implements OnInit {
     public cargando = 'Cargando';
     private plazaAfiliacion: AfiliacionPlazaModel | null;
     public isIOS: boolean = false;
+    public idPersona: number | null;
 
     constructor(
         private _promociones: PromocionesService,
@@ -41,8 +43,10 @@ export class PromocionesPage implements OnInit {
         private serviceProveedores: ProveedorServicioService,
         public _notificacionService: ToadNotificacionService,
         private active: ActivatedRoute,
-        private platform: Platform
+        private platform: Platform,
+        private utils : UtilsCls
     ) {
+        this.idPersona = null;
         this.Filtros = new FiltrosModel();
         this.Filtros.idEstado = 29;
         this.listaCategorias = [];
@@ -54,6 +58,7 @@ export class PromocionesPage implements OnInit {
     }
 
     ngOnInit(): void {
+        this.idPersona = (this.utils.existSession()) ? this.utils.getIdUsuario() : null;
         if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
             localStorage.setItem("isRedirected", "true");
             location.reload();

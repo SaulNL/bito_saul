@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { UbicacionModel } from './../../Modelos/busqueda/UbicacionModel';
 import { AlertController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import {RegistrarPromotionService} from "../../api/registrar-promotion.service";
 
 
 @Component({
@@ -42,7 +43,8 @@ export class BannerPromocionesComponent implements OnInit {
     private _router: Router,
     public alertController: AlertController,
     private geolocation: Geolocation,
-    private autho: Auth0Service
+    private autho: Auth0Service,
+    private vioPromo: RegistrarPromotionService
   ) {
     this.lstPromociones = [];
     this.lstAvisos = [];
@@ -158,14 +160,16 @@ export class BannerPromocionesComponent implements OnInit {
   visteMiPromocion(promocion: PromocionesModel) {
     this.ubicacion.latitud = this.miUbicacionlatitud;
     this.ubicacion.longitud = this.miUbicacionlongitud;
-    this.servicioPromociones.guardarQuienVioPromocion(promocion, this.ubicacion).subscribe(
-      response => {
-        if (response.code === 200) {
-        }
-      },
-      error => {
-      }
-    );
+    this.vioPromo.registrarQuienVio(promocion.id_promocion, this.autho.getExistIdPersona(), this.ubicacion.latitud, this.ubicacion.longitud);
+    // this.servicioPromociones.guardarQuienVioPromocion(promocion, this.ubicacion).subscribe(
+    //   response => {
+    //     if (response.code === 200) {
+    //     }
+    //   },
+    //   error => {
+    //   }
+    // );
+
   }
   /**
  * funcion para obtener el detalle de quien ha visto la publicacion
