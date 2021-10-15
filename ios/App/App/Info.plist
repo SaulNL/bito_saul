@@ -25,10 +25,19 @@
 			<string>com.getcapacitor.capacitor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>capacitor</string>
+				<string>fb378335770215970</string>
 			</array>
 		</dict>
 	</array>
+	<key>FacebookAppID</key>
+  <string>378335770215970</string>
+  <key>FacebookDisplayName</key>
+  <string>BitooApp</string>
+  <key>LSApplicationQueriesSchemes</key>
+  <array>
+  <string>fbapi</string>
+  <string>fbauth2</string>
+  </array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
