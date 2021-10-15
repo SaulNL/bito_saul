@@ -132,7 +132,7 @@ export class LoginPage implements OnInit {
             // this.location.assign("/tabs/inicio");
           }
           this.notifi.exito(respuesta.message);
-          // this.loader = false;
+          this.loader = false;
         }
         if (respuesta.code === 402) {
           this.loader = false;
@@ -189,7 +189,7 @@ export class LoginPage implements OnInit {
       } else if (this.platform.is('ios')) {
         res = await this.googlePlus.login({
           webClientId:
-            "315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com",
+            "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
           offline: true,
         });
 
@@ -204,6 +204,7 @@ export class LoginPage implements OnInit {
       );
       this.validationfg(resConfirmed);
     } catch (error) {
+      console.log(JSON.stringify(error));
       this.loader = false;
       this.notifi.error("Se perdio la conexión con el servicio, Reintentar");
     }
@@ -243,7 +244,7 @@ export class LoginPage implements OnInit {
   async loginFacebookAndroid() {
     try {
       this.loader = true;
-      if(this.platform.is('android')){
+      if(this.platform.is('android') || (this.platform.is('ios'))){
         const res: FacebookLoginResponse = await this.fb.login([
           "public_profile",
           "user_friends",
@@ -256,16 +257,9 @@ export class LoginPage implements OnInit {
         const resConfirmed = await this.afAuth.auth.signInWithCredential(
             facebookCredential
         );
+        this.loader = false;
         this.fb.logout();
         this.validationfg(resConfirmed);
-      }else if (this.platform.is('ios')) {
-        this.fb.login(['public_profile', 'user_friends', 'email'])
-            .then((res: FacebookLoginResponse) => {
-              console.log('Logged into Facebook!', res);
-              console.log(JSON.stringify(res));
-            })
-            .catch(e => console.log('Error logging into Facebook', e));
-
       }
 
     } catch (error) {

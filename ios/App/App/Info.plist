@@ -22,13 +22,17 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.getcapacitor.capacitor</string>
+			<string>REVERSED_CLIENT_ID</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb378335770215970</string>
+				<string>15189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com</string>
 			</array>
+
 		</dict>
 	</array>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>15189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com</string>
 	<key>FacebookAppID</key>
   <string>378335770215970</string>
   <key>FacebookDisplayName</key>
