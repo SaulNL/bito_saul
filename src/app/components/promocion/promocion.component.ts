@@ -11,6 +11,7 @@ import { PromocionesModel } from '../../Modelos/PromocionesModel';
 export class PromocionComponent implements OnInit {
 
   @Input() promocion: PromocionesModel;
+  @Input() idPersona: number | null;
 
   constructor( public modalController: ModalController ) { 
   }
@@ -22,7 +23,8 @@ export class PromocionComponent implements OnInit {
     const modal = await this.modalController.create({
       component: ModalPromocionComponent,
       componentProps: {
-        'promocion': this.promocion
+        'promocion': this.promocion,
+        'idPersona': this.idPersona
       }
     });
     return await modal.present();

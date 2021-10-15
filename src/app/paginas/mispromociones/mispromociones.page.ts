@@ -314,15 +314,13 @@ export class MispromocionesPage implements OnInit {
 
     public abrirModalDetalle(id_promocion, estatus) {
         this.lstQuienVioPublicacionActiva = estatus;
-        console.log(id_promocion);
-        console.log("entre a promociones");
-        console.log(estatus);
+
         this.quienVioPublicacion(id_promocion);
     }
 
     quienVioPublicacion(id_promocion) {
         this.btnLoaderModal = true;
-        console.log("entro a quienNumeroVioPublicacion");
+
         this._promociones_service.obtenerQuienVioPublicacion(id_promocion).subscribe(
                 (response) => {
                     this.lstQuienVioPublicacion = response.data;
