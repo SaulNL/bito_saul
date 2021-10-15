@@ -47,6 +47,7 @@
                 <small class="d-block">Telefono: {{pedido.persona.telefono}}</small>
                 <small class="d-block">Celular: {{pedido.persona.celular}}</small>
                 <small class="d-block">Correo: {{pedido.persona.correo}}</small>
+                <small *ngIf="pedido.id_tipo_pedido === 1" class="d-block">Numero de mesa: {{pedido.mesa}}</small>
               </div>
             </div>
           </ion-col>

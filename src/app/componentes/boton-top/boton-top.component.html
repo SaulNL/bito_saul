@@ -1,5 +1,5 @@
 <div class="padre-float">
-  <ion-fab *ngIf="cordenada >= 100" horizontal="end" vertical="bottom" slot="fixed" class="flotante" (click)="scrollToTop()">
+  <ion-fab *ngIf="cordenada >= 100" horizontal="end" vertical="bottom" slot="fixed" [ngClass]="tipoDevice()" class="flotante" (click)="scrollToTop()">
     <ion-fab-button class="bg-rosa">
       <ion-icon name="chevron-up-outline"></ion-icon>
     </ion-fab-button>

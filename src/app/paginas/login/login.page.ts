@@ -48,6 +48,7 @@ export class LoginPage implements OnInit {
   uid;
   public EnterUser: any;
   public inciarSesion: any;
+  public isIOS: boolean = false;
   constructor(
     private navctrl: NavController,
     private loginService: LoginService,
@@ -76,14 +77,14 @@ export class LoginPage implements OnInit {
     this.userFG = new Login();
     this.EnterUser = false;
     this.inciarSesion = 'Iniciando sesión';
+    this.isIOS = this.platform.is('ios');
   }
 
   ngOnInit(): void {
-    // if (localStorage.getItem("isRedirected") === "false") {
-    //   localStorage.setItem("isRedirected", "true");
-    //   location.reload();
-
-    // }
+    if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
+      localStorage.setItem("isRedirected", "true");
+      location.reload();
+    }
     this.rot.queryParams.subscribe(params => {
       if (params.productos && params) {
         this.optionBack = JSON.parse(params.productos);
@@ -124,14 +125,14 @@ export class LoginPage implements OnInit {
           this.sideBarService.publishSomeData("");
           localStorage.setItem("isRedirected", "false");
           const optionLogin = localStorage.getItem('optionLogin');
-          if(optionLogin != null ){
+          if (optionLogin != null) {
             this.negocioRuta(this.optionBack.url);
           } else {
             window.location.assign("/tabs/inicio");
             // this.location.assign("/tabs/inicio");
           }
           this.notifi.exito(respuesta.message);
-          this.loader = false;
+          // this.loader = false;
         }
         if (respuesta.code === 402) {
           this.loader = false;
@@ -176,31 +177,36 @@ export class LoginPage implements OnInit {
    * Login Android
    */
   async loginGoogleAndroid() {
-    this.loader = true;
-    let res;
-    if (this.platform.is('android')) {
-      res = await this.googlePlus.login({
-        webClientId:
-          "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
-        offline: true,
-      });
-    } else if (this.platform.is('ios')) {
-      res = await this.googlePlus.login({
-        webClientId:
-          "315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com",
-        offline: true,
-      });
+    try {
+      this.loader = true;
+      let res;
+      if (this.platform.is('android')) {
+        res = await this.googlePlus.login({
+          webClientId:
+            "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
+          offline: true,
+        });
+      } else if (this.platform.is('ios')) {
+        res = await this.googlePlus.login({
+          webClientId:
+            "315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com",
+          offline: true,
+        });
 
-    } else {
+      } else {
+        this.loader = false;
+        this.notifi.alerta('Error Login Google');
+      }
+
+      this.present();
+      const resConfirmed = await this.afAuth.auth.signInWithCredential(
+        firebase.auth.GoogleAuthProvider.credential(res.idToken)
+      );
+      this.validationfg(resConfirmed);
+    } catch (error) {
       this.loader = false;
-      this.notifi.alerta('Error Login Google');
+      this.notifi.error("Se perdio la conexión con el servicio, Reintentar");
     }
-
-    this.present();
-    const resConfirmed = await this.afAuth.auth.signInWithCredential(
-      firebase.auth.GoogleAuthProvider.credential(res.idToken)
-    );
-    this.validationfg(resConfirmed);
   }
 
   /**
@@ -215,37 +221,46 @@ export class LoginPage implements OnInit {
    * Login Web
    */
   async loginFacebookWeb() {
-    const res = await this.afAuth.auth.signInWithPopup(
-      new firebase.auth.FacebookAuthProvider()
-    );
-    const user = res.user;
+    try {
+      const res = await this.afAuth.auth.signInWithPopup(
+        new firebase.auth.FacebookAuthProvider()
+      );
+      const user = res.user;
 
-    this.email = user.email;
-    //this.uid = user.uid;
-    this.userFG.password = user.providerData[0].uid;
-    this.userFG.usuario = this.email;
-
+      this.email = user.email;
+      //this.uid = user.uid;
+      this.userFG.password = user.providerData[0].uid;
+      this.userFG.usuario = this.email;
+    } catch (error) {
+      this.loader = false;
+      this.notifi.error("Se perdio la conexión con el servicio, Reintentar");
+    }
   }
 
   /**
    * Login Android
    */
   async loginFacebookAndroid() {
-    this.loader = true;
-    const res: FacebookLoginResponse = await this.fb.login([
-      "public_profile",
-      "user_friends",
-      "email",
-    ]);
-    const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
-      res.authResponse.accessToken
-    );
-    this.present();
-    const resConfirmed = await this.afAuth.auth.signInWithCredential(
-      facebookCredential
-    );
-    this.fb.logout();
-    this.validationfg(resConfirmed);
+    try {
+      this.loader = true;
+      const res: FacebookLoginResponse = await this.fb.login([
+        "public_profile",
+        "user_friends",
+        "email",
+      ]);
+      const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
+        res.authResponse.accessToken
+      );
+      this.present();
+      const resConfirmed = await this.afAuth.auth.signInWithCredential(
+        facebookCredential
+      );
+      this.fb.logout();
+      this.validationfg(resConfirmed);
+    } catch (error) {
+      this.loader = false;
+      this.notifi.error("Se perdio la conexión con el servicio, Reintentar");
+    }
   }
 
   /**
@@ -260,9 +275,7 @@ export class LoginPage implements OnInit {
       resConfirmed.user.providerData[0].uid === "undefined"
     ) {
       this.loader = false;
-      this.notifi.error(
-        "Se perdio la conexión con el servicio, Reintentar"
-      );
+      this.notifi.error("Se perdio la conexión con el servicio, Reintentar");
     } else {
       const user = resConfirmed.user;
       this.email = user.email;

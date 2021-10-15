@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
 import { MsNegocioModel } from "../../../Modelos/busqueda/MsNegocioModel";
 import { ProveedorServicioService } from "../../../api/busqueda/proveedores/proveedor-servicio.service";
-import { IonContent } from '@ionic/angular';
+import {IonContent, Platform} from '@ionic/angular';
 
 @Component({
   selector: "app-negocios-favoritos",
@@ -21,16 +21,18 @@ export class NegociosFavoritosPage implements OnInit {
   public tamanoLista: number;
   public loader: boolean;
   public msj = 'Cargando';
-
+  public isIOS: boolean = false;
   constructor(
     private util: UtilsCls,
     private personaService: PersonaService,
     private router: Router,
     private notificaciones: ToadNotificacionService,
-    private serviceProveedores: ProveedorServicioService
+    private serviceProveedores: ProveedorServicioService,
+    private platform: Platform
   ) {
     this.user = this.util.getUserData();
     this.tamanoLista = 0;
+    this.isIOS = this.platform.is('ios');
   }
 
   ngOnInit() {
