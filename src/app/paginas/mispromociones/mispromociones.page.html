@@ -67,10 +67,10 @@
 									<ion-list>
 										<div *ngFor="let promoPubli of lstPromocionesPublicadas; let i = index;" >
 											<ion-item *ngIf="i < 1 && !mostrarListaPromocionesPublicadas" >
-												<ion-avatar (click)="abrirModalDetalle(promoPubli.id_publicacion, promoPubli.activo_public)">
+												<ion-avatar (click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
 													<img  [src]="promoPubli.url_imagen" [alt]="promoPubli.promocion">
 												</ion-avatar>
-												<ion-label class="ion-text-wrap ion-text-center" style="margin: 5px;" (click)="abrirModalDetalle(promoPubli.id_publicacion, promoPubli.activo_public)">
+												<ion-label class="ion-text-wrap ion-text-center" style="margin: 5px;" (click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
 													<h3 style="text-align: center;">{{ promoPubli.promocion }}</h3>
 													<h4><strong>{{ promoPubli.fecha_inicio }}</strong> al <strong>{{ promoPubli.fecha_fin }}</strong></h4>
 												</ion-label>
@@ -79,10 +79,10 @@
 												</ion-buttons>
 											</ion-item>
 											<ion-item *ngIf="mostrarListaPromocionesPublicadas" >
-												<ion-avatar (click)="abrirModalDetalle(promoPubli.id_publicacion, promoPubli.activo_public)">
+												<ion-avatar (click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
 													<img  [src]="promoPubli.url_imagen" [alt]="promoPubli.promocion">
 												</ion-avatar>
-												<ion-label class="ion-text-wrap ion-text-center" style="margin: 5px;" (click)="abrirModalDetalle(promoPubli.id_publicacion, promoPubli.activo_public)">
+												<ion-label class="ion-text-wrap ion-text-center" style="margin: 5px;" (click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
 													<h3 style="text-align: center;">{{ promoPubli.promocion }}</h3>
 													<h4><strong>{{ promoPubli.fecha_inicio }}</strong> al <strong>{{ promoPubli.fecha_fin }}</strong></h4>
 												</ion-label>

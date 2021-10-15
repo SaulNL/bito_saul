@@ -38,7 +38,8 @@
             </ion-button>
         </ion-buttons>
     </ion-item>
-    <div id="abcedario" class="scrolling-wrapper-flexbox">
+
+    <div *ngIf="!this.abc" id="abcedario" class="scrolling-wrapper-flexbox">
         <div class="item" *ngFor="let filtro of filtroABC">
             <ion-button size="small" color="danger" (click)="filtrarABC(filtro)"
                 [ngClass]="{active:filtro.id === filtroCheckend}" [disabled]="!filtro.activo">
@@ -46,6 +47,7 @@
             </ion-button>
         </div>
     </div>
+
     <ion-list>
         <ion-item *ngFor="let producto of lstProductos" class="item  in-list ion-focusable hydrated item-label">
             <ion-avatar #datos (click)="abrirProducto(producto)" slot="start"><img

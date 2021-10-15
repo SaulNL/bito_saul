@@ -33,6 +33,7 @@
         <ion-col>
           <ion-badge color="primary">{{pedido.tipo}}</ion-badge>
           <small class="d-block"><strong>{{pedido.fc_pedido}}</strong></small>
+          <small *ngIf="pedido.id_tipo_pedido === 1" class="d-block">Numero de mesa: <strong>{{pedido.mesa}}</strong></small>
         </ion-col>
       </ion-row>
     </ion-grid>

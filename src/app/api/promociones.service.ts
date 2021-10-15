@@ -7,6 +7,7 @@ import { FiltrosModel } from '../Modelos/FiltrosModel';
 import { PromocionesModel } from '../Modelos/busqueda/PromocionesModel';
 import { PublicacionesModel } from '../Modelos/PublicacionesModel';
 import { HTTP } from '@ionic-native/http/ngx';
+import {FiltroCatVariableModel} from "../Modelos/catalogos/FiltroCatVariableModel";
 
 @Injectable({
   providedIn: 'root'
@@ -156,30 +157,58 @@ export class PromocionesService {
     }));
   }
 
-  obtenerQuienVioPublicacion(id_promocion, id_persona): Observable<any>{
-    const body = JSON.stringify({id_promocion: id_promocion, id_persona: id_persona});
-    this. http.setDataSerializer('utf8');
-    return from(this.http.post(this.url + 'api/promociones/obtener/viste_mi_promocion', body, AppSettings.getHeadersToken())
-    .then((data) => {
-      return JSON.parse(data.data);
-    })
-    .catch((error) => {
-      return error;
+  // obtenerQuienVioPublicadcion(idPromotion: number): Observable<any>{
+  //   const body = JSON.stringify({id_promocion: idPromotion});
+  //   this. http.setDataSerializer('utf8');
+  //   return from(this.http.post(this.url + 'api/visitas/promocion/obtener', body, AppSettings.getHeaders())
+  //   .then((data) => {
+  //     return JSON.parse(data.data);
+  //   })
+  //    .catch((error) => {
+  //      return error;
+  //    }));
+  //  }
+
+  obtenerQuienVioPublicacion(idPromotion: number): Observable<any> {
+    const body = JSON.stringify({id_promocion: idPromotion});
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post( this.url + 'api/visitas/promocion/obtener',body, AppSettings.getHeaders())
+        .then( data => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        })).pipe(map(data => {
+      return data;
     }));
   }
 
-  obtenerNumeroQuienVioPublicacion(id_promocion): Observable<any>{
-    const body = JSON.stringify({id_promocion: id_promocion});
-    
-    this. http.setDataSerializer('utf8');
-    return from(this.http.post(this.url + 'api/promociones/obtener/numero_viste_mi_promocion', body, AppSettings.getHeadersToken())
-    .then((data) => {
-      return JSON.parse(data.data);
-    })
-    .catch((error) => {
-      return error;
+  obtenerNumeroQuienVioPublicacion(idPromotion: number): Observable<any> {
+    const body = JSON.stringify({id_promocion: idPromotion});
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post( this.url + 'api/promociones/obtener/numero_viste_mi_promocion',body, AppSettings.getHeadersToken())
+        .then( data => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        })).pipe(map(data => {
+      return data;
     }));
   }
+
+  // obtenerNumeroQuienVioPublicacion(id_promocion): Observable<any>{
+  //   const body = JSON.stringify({id_promocion: id_promocion});
+  //
+  //   this. http.setDataSerializer('utf8');
+  //   return from(this.http.post(this.url + 'api/promociones/obtener/numero_viste_mi_promocion', body, AppSettings.getHeadersToken())
+  //   .then((data) => {
+  //     return JSON.parse(data.data);
+  //   })
+  //   .catch((error) => {
+  //     return error;
+  //   }));
+  // }
 
   guardar(variable: PromocionesModel): Observable<any> {
     

@@ -24,10 +24,7 @@
             <ion-label class="ion-text-wrap">
               <p><strong>No.</strong> {{ index + 1 }}</p>
               <p><strong>Nombre: </strong> {{ quien.nombre }}</p>
-              <p><strong>Última ubicación: </strong> {{(quien.ubicacion == null)?'Dato no proporcionado':quien.ubicacion[0].localidad + '. ' +quien.ubicacion[0].municipio}}</p>
-              <p><strong>Edad: </strong> {{(quien.edad == 0)?'Dato no proporcionado':quien.edad}}</p>
-              <p><strong>Visto: </strong> {{quien.cuantas_veces}}</p>
-              <p><strong>Última vista: </strong> {{quien.ultima_vista}}</p>
+              <p><strong>Última vista: </strong> {{quien.fecha}}</p>
             </ion-label>       
           </ion-item>
         </ion-list>
