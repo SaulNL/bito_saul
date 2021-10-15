@@ -13,7 +13,7 @@ import { RecuperarContraseniaPage } from "./recuperar-contrasenia/recuperar-cont
 import { Subscription } from "rxjs";
 import { Capacitor, Plugins, registerWebPlugin } from "@capacitor/core";
 import { NavigationExtras } from "@angular/router";
-import { FacebookLogin } from "@rdlabo/capacitor-facebook-login";
+//import { FacebookLogin } from "@rdlabo/capacitor-facebook-login";
 import { GooglePlus } from "@ionic-native/google-plus/ngx";
 import { AngularFireAuth } from "@angular/fire/auth";
 import * as firebase from "firebase/app";
@@ -73,7 +73,7 @@ export class LoginPage implements OnInit {
     this.ionViewWillLeave();
 
     // @ts-ignore
-    registerWebPlugin(FacebookLogin);
+    //registerWebPlugin(FacebookLogin);
     this.userFG = new Login();
     this.EnterUser = false;
     this.inciarSesion = 'Iniciando sesión';
@@ -243,20 +243,31 @@ export class LoginPage implements OnInit {
   async loginFacebookAndroid() {
     try {
       this.loader = true;
-      const res: FacebookLoginResponse = await this.fb.login([
-        "public_profile",
-        "user_friends",
-        "email",
-      ]);
-      const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
-        res.authResponse.accessToken
-      );
-      this.present();
-      const resConfirmed = await this.afAuth.auth.signInWithCredential(
-        facebookCredential
-      );
-      this.fb.logout();
-      this.validationfg(resConfirmed);
+      if(this.platform.is('android')){
+        const res: FacebookLoginResponse = await this.fb.login([
+          "public_profile",
+          "user_friends",
+          "email",
+        ]);
+        const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
+            res.authResponse.accessToken
+        );
+        this.present();
+        const resConfirmed = await this.afAuth.auth.signInWithCredential(
+            facebookCredential
+        );
+        this.fb.logout();
+        this.validationfg(resConfirmed);
+      }else if (this.platform.is('ios')) {
+        this.fb.login(['public_profile', 'user_friends', 'email'])
+            .then((res: FacebookLoginResponse) => {
+              console.log('Logged into Facebook!', res);
+              console.log(JSON.stringify(res));
+            })
+            .catch(e => console.log('Error logging into Facebook', e));
+
+      }
+
     } catch (error) {
       this.loader = false;
       this.notifi.error("Se perdio la conexión con el servicio, Reintentar");
@@ -275,7 +286,7 @@ export class LoginPage implements OnInit {
       resConfirmed.user.providerData[0].uid === "undefined"
     ) {
       this.loader = false;
-      this.notifi.error("Se perdio la conexión con el servicio, Reintentar");
+      this.notifi.error('Se perdio la conexión con el servicio, Reintentar');
     } else {
       const user = resConfirmed.user;
       this.email = user.email;
@@ -288,11 +299,7 @@ export class LoginPage implements OnInit {
    * Movil o web
    */
   loginFacebook() {
-    if (this.platform.is("capacitor")) {
-      this.loginFacebookAndroid();
-    } else {
-      this.loginFacebookWeb();
-    }
+    this.loginFacebookAndroid();
   }
 
   /**

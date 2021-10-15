@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { UsuarioSistemaModel } from "src/app/Modelos/UsuarioSistemaModel";
 import { Capacitor, Plugins, registerWebPlugin } from "@capacitor/core";
 import { NavigationExtras } from "@angular/router";
-import { FacebookLogin } from "@rdlabo/capacitor-facebook-login";
+//import { FacebookLogin } from "@rdlabo/capacitor-facebook-login";
 import { GooglePlus } from "@ionic-native/google-plus/ngx";
 import { AngularFireAuth } from "@angular/fire/auth";
 import * as firebase from "firebase/app";
@@ -54,7 +54,8 @@ export class RegistroPersonaPage implements OnInit {
     this.blnCorreo = true;
     this.blnTelefono = true;
     //   this.condiciones_servicio = false;
-    registerWebPlugin(FacebookLogin);
+    // @ts-ignore
+    //registerWebPlugin(FacebookLogin);
   }
 
   ngOnInit() {
