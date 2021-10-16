@@ -19,7 +19,7 @@
       </ion-row>
       <ion-row *ngFor="let promocion of categorias.promociones">
         <ion-col size="12">
-          <app-promocion [promocion]="promocion"></app-promocion>
+          <app-promocion [promocion]="promocion" [idPersona]="idPersona"></app-promocion>
         </ion-col>
       </ion-row>
     </ion-grid>

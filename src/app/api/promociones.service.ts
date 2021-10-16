@@ -8,6 +8,7 @@ import { PromocionesModel } from '../Modelos/busqueda/PromocionesModel';
 import { PublicacionesModel } from '../Modelos/PublicacionesModel';
 import { HTTP } from '@ionic-native/http/ngx';
 import {FiltroCatVariableModel} from "../Modelos/catalogos/FiltroCatVariableModel";
+import {RegistrarQuienVioMiPromocionModel} from "../Modelos/RegistrarQuienVioMiPromocionModel";
 
 @Injectable({
   providedIn: 'root'
@@ -173,6 +174,20 @@ export class PromocionesService {
     const body = JSON.stringify({id_promocion: idPromotion});
     this.http.setDataSerializer("utf8");
     return from(this.http.post( this.url + 'api/visitas/promocion/obtener',body, AppSettings.getHeaders())
+        .then( data => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        })).pipe(map(data => {
+      return data;
+    }));
+  }
+
+  quienVioMiPromotion(promotion: RegistrarQuienVioMiPromocionModel): Observable<any> {
+    const body = JSON.stringify(promotion);
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post( this.url + 'api/visitas/promocion/registrar',body, AppSettings.getHeaders())
         .then( data => {
           return JSON.parse(data.data);
         })
