@@ -244,23 +244,31 @@ export class LoginPage implements OnInit {
   async loginFacebookAndroid() {
     try {
       this.loader = true;
-      if(this.platform.is('android') || (this.platform.is('ios'))){
-        const res: FacebookLoginResponse = await this.fb.login([
+      let permissions = [];
+      if(this.platform.is('android')) {
+        permissions = [
           "public_profile",
           "user_friends",
           "email",
-        ]);
-        const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
+        ];
+      }else if (this.platform.is('ios')){
+        permissions = [
+          "public_profile",
+          "email",
+        ];
+      }
+      const res: FacebookLoginResponse = await this.fb.login(permissions);
+      const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
             res.authResponse.accessToken
         );
-        this.present();
-        const resConfirmed = await this.afAuth.auth.signInWithCredential(
+      await this.present();
+      const resConfirmed = await this.afAuth.auth.signInWithCredential(
             facebookCredential
         );
-        this.loader = false;
-        this.fb.logout();
-        this.validationfg(resConfirmed);
-      }
+      this.loader = false;
+      this.fb.logout();
+      this.validationfg(resConfirmed);
+
 
     } catch (error) {
       this.loader = false;
