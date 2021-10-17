@@ -38,5 +38,20 @@
     <param name="ios-package" value="OneSignalPush"/>
   </feature>
 
-  
+  <platform name="ios">
+      <config-file target="*-Debug.plist" parent="com.apple.developer.associated-domains">
+        <array>
+          <string>applinks:bitoo.com.mx</string>
+          <string>applinks:beta-bitoo.azurewebsites.net</string>
+        </array>
+      </config-file>
+
+      <config-file target="*-Release.plist" parent="com.apple.developer.associated-domains">
+        <array>
+          <string>applinks:bitoo.com.mx</string>
+          <string>applinks:beta-bitoo.azurewebsites.net</string>
+        </array>
+      </config-file>
+  </platform>
 </widget>
+
