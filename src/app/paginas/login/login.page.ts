@@ -13,7 +13,7 @@ import { RecuperarContraseniaPage } from "./recuperar-contrasenia/recuperar-cont
 import { Subscription } from "rxjs";
 import { Capacitor, Plugins, registerWebPlugin } from "@capacitor/core";
 import { NavigationExtras } from "@angular/router";
-import { FacebookLogin } from "@rdlabo/capacitor-facebook-login";
+//import { FacebookLogin } from "@rdlabo/capacitor-facebook-login";
 import { GooglePlus } from "@ionic-native/google-plus/ngx";
 import { AngularFireAuth } from "@angular/fire/auth";
 import * as firebase from "firebase/app";
@@ -71,7 +71,9 @@ export class LoginPage implements OnInit {
     this.usuario = new Login();
     this.ionViewDidEnter();
     this.ionViewWillLeave();
-    registerWebPlugin(FacebookLogin);
+
+    // @ts-ignore
+    //registerWebPlugin(FacebookLogin);
     this.userFG = new Login();
     this.EnterUser = false;
     this.inciarSesion = 'Iniciando sesión';
@@ -130,7 +132,7 @@ export class LoginPage implements OnInit {
             // this.location.assign("/tabs/inicio");
           }
           this.notifi.exito(respuesta.message);
-          // this.loader = false;
+          this.loader = false;
         }
         if (respuesta.code === 402) {
           this.loader = false;
@@ -187,7 +189,7 @@ export class LoginPage implements OnInit {
       } else if (this.platform.is('ios')) {
         res = await this.googlePlus.login({
           webClientId:
-            "315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com",
+            "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
           offline: true,
         });
 
@@ -202,6 +204,7 @@ export class LoginPage implements OnInit {
       );
       this.validationfg(resConfirmed);
     } catch (error) {
+      console.log(JSON.stringify(error));
       this.loader = false;
       this.notifi.error("Se perdio la conexión con el servicio, Reintentar");
     }
@@ -241,20 +244,32 @@ export class LoginPage implements OnInit {
   async loginFacebookAndroid() {
     try {
       this.loader = true;
-      const res: FacebookLoginResponse = await this.fb.login([
-        "public_profile",
-        "user_friends",
-        "email",
-      ]);
+      let permissions = [];
+      if(this.platform.is('android')) {
+        permissions = [
+          "public_profile",
+          "user_friends",
+          "email",
+        ];
+      }else if (this.platform.is('ios')){
+        permissions = [
+          "public_profile",
+          "email",
+        ];
+      }
+      const res: FacebookLoginResponse = await this.fb.login(permissions);
       const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
-        res.authResponse.accessToken
-      );
-      this.present();
+            res.authResponse.accessToken
+        );
+      await this.present();
       const resConfirmed = await this.afAuth.auth.signInWithCredential(
-        facebookCredential
-      );
+            facebookCredential
+        );
+      this.loader = false;
       this.fb.logout();
       this.validationfg(resConfirmed);
+
+
     } catch (error) {
       this.loader = false;
       this.notifi.error("Se perdio la conexión con el servicio, Reintentar");
@@ -273,7 +288,7 @@ export class LoginPage implements OnInit {
       resConfirmed.user.providerData[0].uid === "undefined"
     ) {
       this.loader = false;
-      this.notifi.error("Se perdio la conexión con el servicio, Reintentar");
+      this.notifi.error('Se perdio la conexión con el servicio, Reintentar');
     } else {
       const user = resConfirmed.user;
       this.email = user.email;
@@ -286,11 +301,7 @@ export class LoginPage implements OnInit {
    * Movil o web
    */
   loginFacebook() {
-    if (this.platform.is("capacitor")) {
-      this.loginFacebookAndroid();
-    } else {
-      this.loginFacebookWeb();
-    }
+    this.loginFacebookAndroid();
   }
 
   /**

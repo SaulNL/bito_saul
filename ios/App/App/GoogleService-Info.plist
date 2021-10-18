@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>315189899862-khg4l57hapqdldolhjjomneh455rseek.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.315189899862-khg4l57hapqdldolhjjomneh455rseek</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>315189899862-45cu0kuu33hmgfkuv0k4bamop2d60srp.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAHwuCjvNyjojeurZc9iCLjd4WPlWoMcmE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>315189899862</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>mx.com.softura.bitoo.produccion</string>
+	<key>PROJECT_ID</key>
+	<string>app-bitoo</string>
+	<key>STORAGE_BUCKET</key>
+	<string>app-bitoo.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:315189899862:ios:fbc42f8cf04101b7fec1f7</string>
+	<key>DATABASE_URL</key>
+	<string>https://app-bitoo-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

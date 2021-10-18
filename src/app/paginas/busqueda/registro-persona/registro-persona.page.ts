@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { UsuarioSistemaModel } from "src/app/Modelos/UsuarioSistemaModel";
 import { Capacitor, Plugins, registerWebPlugin } from "@capacitor/core";
 import { NavigationExtras } from "@angular/router";
-import { FacebookLogin } from "@rdlabo/capacitor-facebook-login";
+//import { FacebookLogin } from "@rdlabo/capacitor-facebook-login";
 import { GooglePlus } from "@ionic-native/google-plus/ngx";
 import { AngularFireAuth } from "@angular/fire/auth";
 import * as firebase from "firebase/app";
@@ -54,7 +54,8 @@ export class RegistroPersonaPage implements OnInit {
     this.blnCorreo = true;
     this.blnTelefono = true;
     //   this.condiciones_servicio = false;
-    registerWebPlugin(FacebookLogin);
+    // @ts-ignore
+    //registerWebPlugin(FacebookLogin);
   }
 
   ngOnInit() {
@@ -97,25 +98,31 @@ export class RegistroPersonaPage implements OnInit {
   }
 
   async loginGoogle() {
-    this.loader = true;
-    let res;
-    if (this.platform.is("android")) {
-      res = await this.googlePlus.login({
-        webClientId:
-          "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
-        offline: true,
-      });
-      this.processLoginGoogle(res);
-    } else if (this.platform.is("ios")) {
-      res = await this.googlePlus.login({
-        webClientId:
-          "315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com",
-        offline: true,
-      });
-      this.processLoginGoogle(res);
-    } else {
+    try{
+      this.loader = true;
+      let res;
+      if (this.platform.is("android")) {
+        res = await this.googlePlus.login({
+          webClientId:
+            "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
+          offline: true,
+        });
+        this.processLoginGoogle(res);
+      } else if (this.platform.is("ios")) {
+        res = await this.googlePlus.login({
+          webClientId:
+            "315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com",
+          offline: true,
+        });
+        this.processLoginGoogle(res);
+      } else {
+        this.loader = false;
+        this.notificacion.alerta("Error Login Google");
+      }
+    }catch (error) {
+      console.log(JSON.stringify(error));
       this.loader = false;
-      this.notificacion.alerta("Error Login Google");
+      this.notificacion.alerta("Se perdio la conexión con el servicio, Reintentar");
     }
   }
 
@@ -127,20 +134,35 @@ export class RegistroPersonaPage implements OnInit {
   }
 
   async loginFacebook() {
-    this.loader = true;
-    const res: FacebookLoginResponse = await this.fb.login([
-      "public_profile",
-      "user_friends",
-      "email",
-    ]);
-    const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
-      res.authResponse.accessToken
-    );
-    const resConfirmed = await this.afAuth.auth.signInWithCredential(
-      facebookCredential
-    );
-    this.fb.logout();
-    this.validationfg(resConfirmed, 1);
+    try{
+      this.loader = true;
+      let permissions = [];
+      if(this.platform.is('android')) {
+        permissions = [
+          "public_profile",
+          "user_friends",
+          "email",
+        ];
+      }else if (this.platform.is('ios')){
+        permissions = [
+          "public_profile",
+          "email",
+        ];
+      }
+      const res: FacebookLoginResponse = await this.fb.login(permissions);
+      const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
+        res.authResponse.accessToken
+      );
+      const resConfirmed = await this.afAuth.auth.signInWithCredential(
+        facebookCredential
+      );
+      this.fb.logout();
+      this.validationfg(resConfirmed, 1);
+    }catch (error) {
+      console.log(JSON.stringify(error));
+      this.loader = false;
+      this.notificacion.alerta("Se perdio la conexión con el servicio, Reintentar");
+    }
   }
 
   doLogin() {

@@ -1,9 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="mx.com.softura.bitoo.produccion" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <access origin="*" />
   
   <feature name="CordovaHttpPlugin">
     <param name="ios-package" value="CordovaHttpPlugin"/>
+  </feature>
+
+  <feature name="FacebookConnectPlugin">
+    <param name="ios-package" value="FacebookConnectPlugin"/>
+    <param name="onload" value="true"/>
   </feature>
 
   <feature name="FacebookConnectPlugin">
@@ -33,5 +38,20 @@
     <param name="ios-package" value="OneSignalPush"/>
   </feature>
 
-  
+  <platform name="ios">
+      <config-file target="*-Debug.plist" parent="com.apple.developer.associated-domains">
+        <array>
+          <string>applinks:bitoo.com.mx</string>
+          <string>applinks:beta-bitoo.azurewebsites.net</string>
+        </array>
+      </config-file>
+
+      <config-file target="*-Release.plist" parent="com.apple.developer.associated-domains">
+        <array>
+          <string>applinks:bitoo.com.mx</string>
+          <string>applinks:beta-bitoo.azurewebsites.net</string>
+        </array>
+      </config-file>
+  </platform>
 </widget>
+
