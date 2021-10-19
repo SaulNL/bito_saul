@@ -1,16 +1,16 @@
 
 export class AppSettings {
 
-      // public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
-      // public static URL_REGISTRO = 'https://bitoo.com.mx/registro';
-      // public static URL_FRONT = 'https://bitoo.com.mx/';
-      // public static URL_MOVIL = 'https://bitoo.com.mx/';
+      public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
+      public static URL_REGISTRO = 'https://bitoo.com.mx/registro';
+      public static URL_FRONT = 'https://bitoo.com.mx/';
+      public static URL_MOVIL = 'https://bitoo.com.mx/';
     // public static URL_MOVIL = 'https://app-bitoo.com.mx/tabs/negocio/';
 
-    public static API_ENDPOINT = 'https://beta-bitoo-back.azurewebsites.net/';
-    public static URL_REGISTRO = 'https://beta-bitoo.azurewebsites.net/registro';
-    public static URL_FRONT = 'https://beta-bitoo.azurewebsites.net/';
-    public static URL_MOVIL = 'https://beta-bitoo.azurewebsites.net/';
+    // public static API_ENDPOINT = 'https://beta-bitoo-back.azurewebsites.net/';
+    // public static URL_REGISTRO = 'https://beta-bitoo.azurewebsites.net/registro';
+    // public static URL_FRONT = 'https://beta-bitoo.azurewebsites.net/';
+    // public static URL_MOVIL = 'https://beta-bitoo.azurewebsites.net/';
 
     // public static API_ENDPOINT = 'https://dev-back-bitoo.azurewebsites.net/';
     // public static URL_REGISTRO = 'https://dev-front-bitoo.azurewebsites.net/registro';
@@ -29,13 +29,15 @@ export class AppSettings {
     public static IMG_ERROR_SOLICITUD = 'https://ecoevents.blob.core.windows.net/comprandoando/img_default/Promo%20banner.png';
     public static IMG_CATEGORIAS_TODAS = 'https://ecoevents.blob.core.windows.net/comprandoando/Categor%C3%ADas/Separador%20categor%C3%ADa%20web/Todas%20las%20categor%C3%ADas.png';
 
-    public static VERSION_SISTEMA = 28;
+    public static VERSION_SISTEMA = 29;
     public static ES_MOVIL = false;
     public static NUEVAS_FUNCIONES = true;
     public static APP_DOWNLOAD = 'https://play.google.com/store/apps/details?id=mx.com.softura.bitoo&hl=es';
     public static PROVIDER_ID_GOOGLE = '581785024825-fltko80kfanssgi3hqre8fcslk0iv80e.apps.googleusercontent.com';
     public static PROVIDER_ID_FACEBOOK = '378335770215970';
     //public static PROVIDER_ID_FACEBOOK = '740270933494486';
+    public static GOOGLE_ID_BY_ANDROID = '315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com';
+    public static IOS_ID_BY_ANDROID = '315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com';
 
     public static getHeaders() {
         return {
