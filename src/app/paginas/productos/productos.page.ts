@@ -20,6 +20,9 @@ import {ModalProductosComponent} from "../../components/modal-productos/modal-pr
 import {UtilsCls} from "../../utils/UtilsCls";
 import {AppSettings} from "../../AppSettings";
 import {PlazasAfiliacionesComponent} from 'src/app/componentes/plazas-afiliaciones/plazas-afiliaciones.component';
+import {ValidarPermisoService} from "../../api/validar-permiso.service";
+import {Auth0Service} from "../../api/busqueda/auth0.service";
+import {PermisoModel} from "../../Modelos/PermisoModel";
 
 @Component({
     selector: "app-tab1",
@@ -46,6 +49,7 @@ export class ProductosPage {
     public currentModal: HTMLIonModalElement;
     public listaCategorias: any;
     private modal: any;
+    public afiliacion: boolean;
     public strBuscar: any;
     alphaScrollItemTemplate: '<ion-item #datos (click)="abrirModal(producto)"><ion-thumbnail slot="start"><img src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"[srcset]="producto.imagen"></ion-thumbnail><ion-label><h2>{{producto.nombre}}</h2><h3>{{(producto.nombre_categoria1 != null)?producto.nombre_categoria1:\'Sin categoría\'}}</h3><div><ion-text>{{(producto.descripcion != null)?producto.descripcion:\'Sin descripción\'}}</ion-text></div><div><ion-text color="success">${{(producto.precio != \'\')?((producto.precio != null)?producto.precio:\'Sin precio\'):\'Sin precio\'}}</ion-text></div><div><ion-badge color="primary">{{producto.tipo}}</ion-badge><ion-badge color="medium">{{(producto.ubicacion != null)?producto.ubicacion.nombre_localidad:\'Sin ubicación\'}}</ion-badge></div></ion-label></ion-item>\n';
     filtroActivo: any;
@@ -59,6 +63,7 @@ export class ProductosPage {
     private plazaAfiliacion: AfiliacionPlazaModel | null;
     public isIOS: boolean = false;
     public abc: boolean;
+    public permisos: Array<PermisoModel> | null;
 
     constructor(
         public loadingController: LoadingController,
@@ -71,8 +76,11 @@ export class ProductosPage {
         private active: ActivatedRoute,
         public animationCtrl: AnimationController,
         private util: UtilsCls,
-        private platform: Platform
+        private platform: Platform,
+        private validarPermiso: ValidarPermisoService,
+        private auth0Service: Auth0Service
     ) {
+        this.afiliacion = false;
         this.abc = false;
         this.user = this.util.getUserData();
         this.existeSesion = util.existe_sesion();
@@ -123,6 +131,12 @@ export class ProductosPage {
             }
         });
         this.existeSesion = this.util.existe_sesion();
+
+        if (this.existeSesion) {
+            this.permisos = this.auth0Service.getUserPermisos();
+            this.afiliacion = this.validarPermiso.isChecked(this.permisos, 'ver_afiliacion');
+        }
+
     }
 
     /**

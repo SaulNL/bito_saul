@@ -1,7 +1,6 @@
-import { SpinnerModule } from './../../componentes/spinner/spinner.module';
-import { RecargarModule } from './../../componentes/recargar/recargar.module';
+import { SpinnerModule } from '../../componentes/spinner/spinner.module';
+import { RecargarModule } from '../../componentes/recargar/recargar.module';
 import { IonicModule } from '@ionic/angular';
-import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

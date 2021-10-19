@@ -1,5 +1,12 @@
 <ion-content class="content">
-      <a target="_blank" color="danger" class="content-text"><h1 >Actualiza a la versión mas reciente</h1></a>
-      <ion-img *ngif="!isIOS" href="https://play.google.com/store/apps/details?id=mx.com.softura.bitoo.produccion" target="_blank" src="https://ecoevents.blob.core.windows.net/comprandoando/Footer/es-419_badge_web_generic.png"></ion-img>
-      <ion-img *ngif="isIOS" href="https://testflight.apple.com/join/5j2FYXRv" target="_blank" src="https://ecoevents.blob.core.windows.net/comprandoando/logos/iosDisponible.png"></ion-img>
+    <a target="_blank" color="danger" class="content-text"><h1>Actualiza a la versión mas reciente</h1></a>
+    <div *ngIf="!isIOS">
+        <ion-img href="https://play.google.com/store/apps/details?id=mx.com.softura.bitoo.produccion" target="_blank"
+                 src="https://ecoevents.blob.core.windows.net/comprandoando/Footer/es-419_badge_web_generic.png"></ion-img>
+    </div>
+    <div *ngIf="isIOS">
+        <ion-img href="https://testflight.apple.com/join/5j2FYXRv" target="_blank"
+                 src="https://ecoevents.blob.core.windows.net/comprandoando/logos/iosDisponible.png"></ion-img>
+    </div>
+
 </ion-content>
