@@ -19,7 +19,7 @@ const { Geolocation } = Plugins;
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-  visitasBitooModel: VistasBitooModel
+  visitasBitooModel: VistasBitooModel;
   public version: number;
   public versionActualSistema: number;
   constructor(
@@ -64,7 +64,7 @@ export class AppComponent {
   setupDeeplinks() {
     this.deeplinks.routeWithNavController(this.navController, {}).subscribe(
       (match) => {
-
+console.log(JSON.stringify(match));
         const url: any = match.$link["url"].split("/");
 
         if (url[2] === match.$link["host"]) {
@@ -131,7 +131,7 @@ export class AppComponent {
 
   verificarVersion(version: number) {
     if (this.versionActualSistema != version) {
-      this.router.navigate(['/actualizar-version']);
+      //this.router.navigate(['/actualizar-version']);
     } else {
       this.setupDeeplinks();
       this.obtenerPlataforma();
