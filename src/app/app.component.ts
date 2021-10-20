@@ -64,7 +64,7 @@ export class AppComponent {
   setupDeeplinks() {
     this.deeplinks.routeWithNavController(this.navController, {}).subscribe(
       (match) => {
-console.log(JSON.stringify(match));
+
         const url: any = match.$link["url"].split("/");
 
         if (url[2] === match.$link["host"]) {
@@ -131,7 +131,7 @@ console.log(JSON.stringify(match));
 
   verificarVersion(version: number) {
     if (this.versionActualSistema != version) {
-      //this.router.navigate(['/actualizar-version']);
+      this.router.navigate(['/actualizar-version']);
     } else {
       this.setupDeeplinks();
       this.obtenerPlataforma();
