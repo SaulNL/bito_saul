@@ -83,8 +83,8 @@ export class InicioPage implements OnInit {
   }
   ngOnInit(): void {
      this.route.queryParams.subscribe(params => {
-      if (params.bylogin && params) {
-        this.negocioRutaByLogin(params.bylogin);
+      if (params.byLogin && params) {
+        this.negocioRutaByLogin(params.byLogin);
       }
     });
     const selected = localStorage.getItem('org');

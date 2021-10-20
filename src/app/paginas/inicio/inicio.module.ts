@@ -1,6 +1,6 @@
 import { SpinnerModule } from './../../componentes/spinner/spinner.module';
 import { DarLikeNegocioModule } from './../../componentes/dar-like-negocio/dar-like-negocio.module';
-import {IonicModule, LoadingController} from '@ionic/angular';
+import {IonicModule} from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';

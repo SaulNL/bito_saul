@@ -47,6 +47,11 @@ ion-back-button {
   --color: white !important;
 }
 
+.tol-bar {
+  --background: linear-gradient(90deg, #fa4f72, #a74eef) !important;
+  --color: white !important;
+}
+
 ion-menu-button {
   color: white;
 }
@@ -58,12 +63,15 @@ ion-menu-button {
 ion-content {
   --background: #f2f2f2;
 }
+
 .bg-gris {
   --background: #f2f2f2;
 }
+
 .bgs-gris {
   background: #f2f2f2;
 }
+
 .backgroundgris {
   --background: #f2f2f2;
 }
@@ -71,6 +79,7 @@ ion-content {
 .searchbar-left-aligned.sc-ion-searchbar-ios-h .searchbar-input.sc-ion-searchbar-ios {
   background: white;
 }
+
 .blanco {
   --color: white;
 }
@@ -83,10 +92,12 @@ ion-content {
   --background: linear-gradient(90deg, #fa4f72, #a74eef);
   color: white;
 }
+
 .searchbar-input-container.sc-ion-searchbar-md {
   --border-radius: 9em;
   color: #fa4f72;
 }
+
 .searchbar-input-container.sc-ion-searchbar-ios {
   height: 36px;
   position: relative;
@@ -94,10 +105,12 @@ ion-content {
   --border-radius: 9em;
   color: #fa4f72;
 }
+
 .searchbar-search-icon.sc-ion-searchbar-md,
 .searchbar-cancel-button.sc-ion-searchbar-md {
   color: #fa4f72;
 }
+
 .searchbar-search-icon.sc-ion-searchbar-ios,
 .searchbar-cancel-button.sc-ion-searchbar-ios {
   color: #fa4f72;
@@ -124,6 +137,7 @@ ion-avatar.md.hydrated {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 ion-spinner {
   width: 28px;
   height: 28px;
@@ -157,6 +171,7 @@ ion-fab {
   -webkit-box-orient: vertical;
   word-break: break-word;
 }
+
 .grus {
   --background: grey !important;
 }
@@ -181,11 +196,12 @@ ion-fab {
 .text-rosa {
   color: #fa4f72 !important;
 }
+
 .custom-modal-plazas-afiliaciones .modal-wrapper {
   height: 50%;
 }
 
-.btn-flotante{
+.btn-flotante {
   animation-name: slidein;
   animation-duration: 0.3s;
 }

@@ -49,7 +49,7 @@ export class RegistroPersonaPage implements OnInit {
     public loadingController: LoadingController,
     private platform: Platform
   ) {
-    this.usuario = new Login();
+    this.usuario = new Login('', '');
     this.loader = false;
     this.blnCorreo = true;
     this.blnTelefono = true;
@@ -312,6 +312,6 @@ export class RegistroPersonaPage implements OnInit {
   }
 
   negocioRuta(negocioURL) {
-    this.router.navigate(["/tabs/inicio"], { queryParams: { bylogin: negocioURL } });
+    this.router.navigate(["/tabs/inicio"], { queryParams: { byLogin: negocioURL } });
   }
 }

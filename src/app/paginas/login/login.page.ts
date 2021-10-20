@@ -1,350 +1,163 @@
-import { OptionBackLogin } from './../../Modelos/OptionBackLoginModel';
-import { Component, OnInit } from "@angular/core";
-import { Login } from "../../Modelos/login";
-import { LoginService } from "../../api/login.service";
-import { AppSettings } from "../../AppSettings";
-import { Location } from "@angular/common";
-import { SessionUtil } from "../../utils/sessionUtil";
-import { SideBarService } from "../../api/busqueda/side-bar-service";
-import { ModalController, NavController, Platform } from "@ionic/angular";
-import { Router, ActivatedRoute } from "@angular/router";
-import { ToadNotificacionService } from "../../api/toad-notificacion.service";
-import { RecuperarContraseniaPage } from "./recuperar-contrasenia/recuperar-contrasenia.page";
-import { Subscription } from "rxjs";
-import { Capacitor, Plugins, registerWebPlugin } from "@capacitor/core";
-import { NavigationExtras } from "@angular/router";
-//import { FacebookLogin } from "@rdlabo/capacitor-facebook-login";
-import { GooglePlus } from "@ionic-native/google-plus/ngx";
-import { AngularFireAuth } from "@angular/fire/auth";
-import * as firebase from "firebase/app";
-import { Facebook, FacebookLoginResponse } from "@ionic-native/facebook/ngx";
-import { AlertController } from "@ionic/angular";
-import { LoadingController } from "@ionic/angular";
+import {OptionBackLogin} from '../../Modelos/OptionBackLoginModel';
+import {Component, OnInit} from "@angular/core";
+import {Login} from "../../Modelos/login";
+import {LoginService} from "../../api/login.service";
+import {AppSettings} from "../../AppSettings";
+import {Location} from "@angular/common";
+import {SessionUtil} from "../../utils/sessionUtil";
+import {SideBarService} from "../../api/busqueda/side-bar-service";
+import {ModalController, Platform} from "@ionic/angular";
+import {Router, ActivatedRoute} from "@angular/router";
+import {ToadNotificacionService} from "../../api/toad-notificacion.service";
+import {RecuperarContraseniaPage} from "./recuperar-contrasenia/recuperar-contrasenia.page";
+import {Subscription} from "rxjs";
+import {ResponderLogin} from "../../Modelos/ResponderLogin";
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.page.html",
-  styleUrls: ["./login.page.scss"],
-  providers: [SessionUtil],
+    selector: "app-login",
+    templateUrl: "./login.page.html",
+    styleUrls: ["./login.page.scss"],
+    providers: [SessionUtil],
 })
 export class LoginPage implements OnInit {
-  public usuario: Login;
-  public loader: boolean;
-  public subscribe;
-  public backP: null;
-  public backI: null;
-  public validador: number;
-  private backButtonSub: Subscription;
-  public user: any;
-  public logininfo: any;
-  userData: any = {};
-  private userFG: Login;
-  public loadion: any;
-  public optionBack: OptionBackLogin;
-  picture;
-  name;
-  email;
-  lastname;
-  uid;
-  public EnterUser: any;
-  public inciarSesion: any;
-  public isIOS: boolean = false;
-  constructor(
-    private navctrl: NavController,
-    private loginService: LoginService,
-    private location: Location,
-    private sessionUtil: SessionUtil,
-    private sideBarService: SideBarService,
-    private _router: Router,
-    private notifi: ToadNotificacionService,
-    private modalController: ModalController,
-    private rot: ActivatedRoute,
-    private platform: Platform,
-    private router: Router,
-    private googlePlus: GooglePlus,
-    private afAuth: AngularFireAuth,
-    private fb: Facebook,
-    public alertController: AlertController,
-    public loadingController: LoadingController
-  ) {
-    this.loader = false;
-    this.usuario = new Login();
-    this.ionViewDidEnter();
-    this.ionViewWillLeave();
+    public usuario: Login;
+    public loader: boolean;
+    private backButtonPhysical: Subscription;
+    public returnToLocation: OptionBackLogin;
+    public textInitSession: string;
+    public whatPlatformIs: boolean = false;
 
-    // @ts-ignore
-    //registerWebPlugin(FacebookLogin);
-    this.userFG = new Login();
-    this.EnterUser = false;
-    this.inciarSesion = 'Iniciando sesión';
-    this.isIOS = this.platform.is('ios');
-  }
-
-  ngOnInit(): void {
-    if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
-      localStorage.setItem("isRedirected", "true");
-      location.reload();
-    }
-    this.rot.queryParams.subscribe(params => {
-      if (params.productos && params) {
-        this.optionBack = JSON.parse(params.productos);
-      }
-    });
-
-    this.rot.queryParams.subscribe(params => {
-      if (params.perfil && params) {
-        this.optionBack = JSON.parse(params.perfil);
-        localStorage.setItem('optionLogin', params.perfil);
-      }
-    });
-
-  }
-
-  ionViewDidEnter() {
-    this.backButtonSub = this.platform.backButton.subscribe(() => {
-      this.back();
-    });
-  }
-
-  negocioRuta(negocioURL) {
-    this._router.navigate(["/tabs/inicio"], { queryParams: { bylogin: negocioURL } });
-  }
-  ionViewWillLeave() {
-    this.backButtonSub.unsubscribe();
-  }
-  enterlogin() {
-    this.loader = true;
-    this.EnterUser = true;
-    this.present();
-  }
-  doLogin(data) {
-    this.loginService.login(data).subscribe(
-      (respuesta) => {
-        if (respuesta.code === 200) {
-          const actualizado = AppSettings.setTokenUser(respuesta);
-          this.sideBarService.publishSomeData("");
-          localStorage.setItem("isRedirected", "false");
-          const optionLogin = localStorage.getItem('optionLogin');
-          if (optionLogin != null) {
-            this.negocioRuta(this.optionBack.url);
-          } else {
-            window.location.assign("/tabs/inicio");
-            // this.location.assign("/tabs/inicio");
-          }
-          this.notifi.exito(respuesta.message);
-          this.loader = false;
-        }
-        if (respuesta.code === 402) {
-          this.loader = false;
-          this.notifi.alerta("Usuario y/o contraseña incorrectos");
-        }
-      },
-      (error) => {
-        this.loader = false;
-        this.notifi.error(error);
-      }
-    );
-  }
-  registratePersona() {
-    this._router.navigate(["/tabs/registro-persona"]);
-  }
-
-  /**
-   * *****************************************************
-   * Funcion para login por facebook Y Google
-   * @author Omar
-   */
-
-  /**
-   * Login Web
-   */
-  async loginGoogleWeb() {
-    const res = await this.afAuth.auth.signInWithPopup(
-      new firebase.auth.GoogleAuthProvider()
-    );
-    const user = res.user;
-
-    this.picture = user.photoURL;
-    this.name = user.displayName;
-    this.email = user.email;
-    this.uid = user.uid;
-    this.userFG.password = user.providerData[0].uid;
-    this.userFG.usuario = this.email;
-
-  }
-
-  /**
-   * Login Android
-   */
-  async loginGoogleAndroid() {
-    try {
-      this.loader = true;
-      let res;
-      if (this.platform.is('android')) {
-        res = await this.googlePlus.login({
-          webClientId:
-            "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
-          offline: true,
-        });
-      } else if (this.platform.is('ios')) {
-        res = await this.googlePlus.login({
-          webClientId:
-            "315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com",
-          offline: true,
-        });
-
-      } else {
-        this.loader = false;
-        this.notifi.alerta('Error Login Google');
-      }
-
-      this.present();
-      const resConfirmed = await this.afAuth.auth.signInWithCredential(
-        firebase.auth.GoogleAuthProvider.credential(res.idToken)
-      );
-      this.validationfg(resConfirmed);
-    } catch (error) {
-      console.log(JSON.stringify(error));
-      this.loader = false;
-      this.notifi.error("Se perdio la conexión con el servicio, Reintentar");
-    }
-  }
-
-  /**
-   * Movil o web
-   */
-  loginGoogle() {
-    this.loginGoogleAndroid();
-
-  }
-
-  /**
-   * Login Web
-   */
-  async loginFacebookWeb() {
-    try {
-      const res = await this.afAuth.auth.signInWithPopup(
-        new firebase.auth.FacebookAuthProvider()
-      );
-      const user = res.user;
-
-      this.email = user.email;
-      //this.uid = user.uid;
-      this.userFG.password = user.providerData[0].uid;
-      this.userFG.usuario = this.email;
-    } catch (error) {
-      this.loader = false;
-      this.notifi.error("Se perdio la conexión con el servicio, Reintentar");
-    }
-  }
-
-  /**
-   * Login Android
-   */
-  async loginFacebookAndroid() {
-    try {
-      this.loader = true;
-      let permissions = [];
-      if(this.platform.is('android')) {
-        permissions = [
-          "public_profile",
-          "user_friends",
-          "email",
-        ];
-      }else if (this.platform.is('ios')){
-        permissions = [
-          "public_profile",
-          "email",
-        ];
-      }
-      const res: FacebookLoginResponse = await this.fb.login(permissions);
-      const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
-            res.authResponse.accessToken
-        );
-      await this.present();
-      const resConfirmed = await this.afAuth.auth.signInWithCredential(
-            facebookCredential
-        );
-      this.loader = false;
-      this.fb.logout();
-      this.validationfg(resConfirmed);
-
-
-    } catch (error) {
-      this.loader = false;
-      this.notifi.error("Se perdio la conexión con el servicio, Reintentar");
-    }
-  }
-
-  /**
-   * validationfg
-   */
-  public validationfg(inform) {
-    this.loader = true;
-    const resConfirmed = inform;
-    if (
-      typeof resConfirmed.user.providerData[0].uid === "undefined" ||
-      resConfirmed.user.providerData[0].uid === null ||
-      resConfirmed.user.providerData[0].uid === "undefined"
+    constructor(
+        private loginService: LoginService,
+        private location: Location,
+        private sessionUtil: SessionUtil,
+        private sideBarService: SideBarService,
+        private notification: ToadNotificacionService,
+        private activeRoute: ActivatedRoute,
+        private platform: Platform,
+        private route: Router,
+        private modalController: ModalController
     ) {
-      this.loader = false;
-      this.notifi.error('Se perdio la conexión con el servicio, Reintentar');
-    } else {
-      const user = resConfirmed.user;
-      this.email = user.email;
-      this.userFG.password = user.providerData[0].uid;
-      this.userFG.usuario = this.email;
-      this.doLogin(this.userFG);
+        this.whatPlatformIs = this.platform.is('ios');
+        this.loader = false;
+        this.usuario = new Login(null, null);
+        this.ionViewDidEnter();
+        this.ionViewWillLeave();
+        this.textInitSession = 'Iniciando sesión';
     }
-  }
-  /**
-   * Movil o web
-   */
-  loginFacebook() {
-    this.loginFacebookAndroid();
-  }
 
-  /**
-   * Mensaje de error de datos
-   */
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Aviso",
-      subHeader: "",
-      message: "Datos incorrectos, verifique sus credenciales",
-      buttons: ["OK"],
-    });
+    ngOnInit(): void {
+        if (localStorage.getItem("isRedirected") === "false" && !this.whatPlatformIs) {
+            localStorage.setItem("isRedirected", "true");
+            location.reload();
+        }
+        this.activeRoute.queryParams.subscribe(params => {
+            if (params.productos && params) {
+                this.returnToLocation = JSON.parse(params.productos);
+            }
+        });
 
-    await alert.present();
-  }
-
-  async recuerarContrasenia() {
-    // this._router.navigate(['/tabs/login/recuperar-contrasenia']);
-    const modal = await this.modalController.create({
-      component: RecuperarContraseniaPage,
-    });
-    await modal.present();
-  }
-  public back() {
-    switch (this.optionBack.type) {
-      case 'producto':
-        this.location.back();
-        break;
-      case 'perfil':
-        this.negocioRuta(this.optionBack.url);
-        break;
-      default:
-        this.location.back();
-        break;
+        this.activeRoute.queryParams.subscribe(params => {
+            if (params.perfil && params) {
+                this.returnToLocation = JSON.parse(params.perfil);
+                localStorage.setItem('optionLogin', params.perfil);
+            }
+        });
     }
-  }
 
-  async present() {
-    if (this.EnterUser) {
-      this.EnterUser = false;
-      this.doLogin(this.usuario);
+    ionViewDidEnter() {
+        this.backButtonPhysical = this.platform.backButton.subscribe(() => {
+            this.backPhysicalBottom();
+        });
     }
-    this.EnterUser = false;
-  }
+
+
+    ionViewWillLeave() {
+        this.backButtonPhysical.unsubscribe();
+    }
+
+
+    public responseOptions(response: ResponderLogin) {
+        this.loader = true;
+        const credentials = response.body;
+        switch (response.responder) {
+            case 'error':
+                this.loader = false;
+                this.notification.error(response.notification);
+                break;
+            case 'success':
+                if (typeof credentials.user.providerData[0].uid === "undefined" || credentials.user.providerData[0].uid == null) {
+                    this.loader = false;
+                    this.notification.error('Error en la comunicación, datos corruptos');
+                } else {
+                    const userCredentials = new Login(credentials.user.providerData[0].uid, credentials.user.email);
+                    this.login(userCredentials);
+                }
+                break;
+        }
+    }
+
+    public loginCommon() {
+        this.loader = true;
+        const userCommonCredentials = new Login(this.usuario.password, this.usuario.usuario);
+        this.login(userCommonCredentials);
+
+    }
+
+    private login(user: Login) {
+        this.loginService.login(user).subscribe(
+            (response) => {
+                if (response.code === 200) {
+                    AppSettings.setTokenUser(response);
+                    this.sideBarService.publishSomeData("");
+                    localStorage.setItem("isRedirected", "false");
+                    const optionEnterLogin = localStorage.getItem('optionLogin');
+                    if (optionEnterLogin != null) {
+                        this.goToRoute(this.returnToLocation.url);
+                    } else {
+                        window.location.assign("/tabs/inicio");
+                    }
+                    this.notification.exito(response.message);
+                    this.loader = (this.whatPlatformIs);
+                }
+                if (response.code === 402) {
+                    this.loader = false;
+                    this.notification.alerta("Usuario y/o contraseña incorrectos");
+                }
+            }, (error) => {
+                this.loader = false;
+                this.notification.error(error);
+            }
+        );
+        console.log(this.loader);
+    }
+
+    private goToRoute(url) {
+        this.route.navigate([["/tabs/inicio"]], {queryParams: {byLogin: url}});
+    }
+
+    async recoverPassword() {
+        const modal = await this.modalController.create({
+            component: RecuperarContraseniaPage,
+        });
+        await modal.present();
+    }
+
+    public toRegister() {
+        this.route.navigate(["/tabs/registro-persona"]);
+    }
+
+    public backPhysicalBottom() {
+        switch (this.returnToLocation.type) {
+            case 'producto':
+                this.location.back();
+                break;
+            case 'perfil':
+                this.goToRoute(this.returnToLocation.url);
+                break;
+            default:
+                this.location.back();
+                break;
+        }
+    }
 }

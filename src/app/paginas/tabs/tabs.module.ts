@@ -1,5 +1,5 @@
-import { PlazasAfiliacionesComponent } from './../../componentes/plazas-afiliaciones/plazas-afiliaciones.component';
-import { BotonTopComponent } from "./../../componentes/boton-top/boton-top.component";
+import { PlazasAfiliacionesComponent } from '../../componentes/plazas-afiliaciones/plazas-afiliaciones.component';
+import { BotonTopComponent } from "../../componentes/boton-top/boton-top.component";
 import { IonicModule } from "@ionic/angular";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";

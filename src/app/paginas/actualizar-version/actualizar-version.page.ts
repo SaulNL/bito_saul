@@ -14,5 +14,6 @@ export class ActualizarVersionPage implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this.isIOS);
     }
 }
