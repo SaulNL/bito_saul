@@ -4,11 +4,12 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UtilsCls } from "../../utils/UtilsCls";
 import { AppSettings } from "../../AppSettings";
-import { ActionSheetController, NavController } from "@ionic/angular";
+import {ActionSheetController, NavController, Platform} from "@ionic/angular";
 import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Location } from "@angular/common";
 import { Auth0Service } from "src/app/api/auth0.service";
 import { PersonaService } from '../../api/persona.service';
+import {PedidosService} from "../../api/pedidos.service";
 
 @Component({
   selector: "app-ajustes",
@@ -27,6 +28,8 @@ export class AjustesPage implements OnInit {
   public misCompras: boolean;
   public generarSolicitud: boolean;
   public estadisticas: boolean;
+  public totalNoVistos: number;
+  public subscribe;
 
   constructor(
     private util: UtilsCls,
@@ -36,8 +39,11 @@ export class AjustesPage implements OnInit {
     private navctrl: NavController,
     private active: ActivatedRoute,
     private auth0: Auth0Service,
-    private validarPermisos: ValidarPermisoService
+    private validarPermisos: ValidarPermisoService,
+    private pedidos: PedidosService,
+    private platform: Platform
   ) {
+    this.totalNoVistos = 0;
     this.usuario = this.auth0.getUserData();
     if (this.util.existSession()) {
       this.validar(JSON.parse(String(localStorage.getItem('u_permisos'))));
@@ -49,11 +55,27 @@ export class AjustesPage implements OnInit {
       if (params && params.special) {
         this.usuario = JSON.parse(localStorage.getItem('u_data'));
         if (localStorage.getItem("isRedirected") === "false") {
+          console.log("reload app");
           localStorage.setItem("isRedirected", "true");
           location.reload();
         }
       }
     });
+
+    this.subscribe = this.platform.backButton.subscribe(() => {
+      this.subscribe.unsubscribe();
+      console.log("Suscripción activada");
+      this.notificacionesVentas();
+    });
+
+    this.active.queryParams.subscribe((params) => {
+      if (params && params.ventas) {
+        console.log("active compra");
+
+      }
+    });
+
+    this.notificacionesVentas();
     //  this.usuario = this.util.getData();
     this.sideBarService.change.subscribe(isOpen => {
       if (this.util.existSession()) {
@@ -134,5 +156,15 @@ export class AjustesPage implements OnInit {
 
   misSolicitudes() {
     this._router.navigateByUrl("tabs/home/solicitudes");
+  }
+
+  public notificacionesVentas() {
+    const id = this.auth0.getIdProveedor();
+    this.pedidos.noVistos(id).subscribe(
+        res => {
+          this.totalNoVistos = res.data;
+        },
+        error => {
+        });
   }
 }

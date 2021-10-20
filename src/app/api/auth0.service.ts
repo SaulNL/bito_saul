@@ -18,12 +18,14 @@ export class Auth0Service {
 
 
     }
-  getUserPermisos() {
-    if (localStorage.getItem('u_data')) {
-      return JSON.parse(localStorage.getItem('u_permisos'));
+
+    getUserPermisos() {
+        if (localStorage.getItem('u_data')) {
+            return JSON.parse(localStorage.getItem('u_permisos'));
+        }
+        return null;
     }
-    return null;
-  }
+
     getUserData() {
         if (localStorage.getItem('u_data')) {
             return JSON.parse(localStorage.getItem('u_data'));
@@ -31,6 +33,7 @@ export class Auth0Service {
         }
         return new Object({});
     }
+
     getPrivilegio() {
         if (localStorage.getItem('u_sistema')) {
             return JSON.parse(localStorage.getItem('u_sistema'));
@@ -46,6 +49,7 @@ export class Auth0Service {
         }
         return 0;
     }
+
     getIdPersona(): number {
         const data = this.getUserData();
         if (this.isAuthenticated() && data) {
@@ -54,5 +58,14 @@ export class Auth0Service {
         return 0;
     }
 
-
+    getIdProveedor() {
+        let id = 0;
+        try {
+            const persona = JSON.parse(localStorage.getItem('u_data'));
+            id = persona.proveedor.id_proveedor;
+        } catch (e) {
+            return 0;
+        }
+        return id;
+    }
 }

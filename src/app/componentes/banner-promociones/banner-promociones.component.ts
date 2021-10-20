@@ -143,6 +143,7 @@ export class BannerPromocionesComponent implements OnInit {
   * @author Omar
   */
   accionPromocion(promocion) {
+    localStorage.setItem("isRedirected", "false");
     this.urlNegocio = 'tabs/negocio/' + promocion.url_negocio;
     this.promocion = promocion;
     this.visteMiPromocion(promocion);

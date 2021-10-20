@@ -1,149 +1,150 @@
 import {
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-  ViewChild,
+    Component,
+    OnInit,
+    ViewChild,
 } from "@angular/core";
-import { PedidosService } from "../../../api/pedidos.service";
-import { UtilsCls } from "../../../utils/UtilsCls";
-import { IonContent, ModalController, Platform } from "@ionic/angular";
-import { DatosPedidoNegocioPage } from "./datos-pedido-negocio/datos-pedido-negocio.page";
-import { Router, ActivatedRoute } from "@angular/router";
-import { LoadingController } from "@ionic/angular";
-import { Location } from "@angular/common";
+import {PedidosService} from "../../../api/pedidos.service";
+import {UtilsCls} from "../../../utils/UtilsCls";
+import {IonContent, ModalController, Platform} from "@ionic/angular";
+import {Router, ActivatedRoute} from "@angular/router";
+import {LoadingController} from "@ionic/angular";
+import {Location} from "@angular/common";
 
 @Component({
-  selector: "app-pedidos-negocio",
-  templateUrl: "./pedidos-negocio.page.html",
-  styleUrls: ["./pedidos-negocio.page.scss"],
+    selector: "app-pedidos-negocio",
+    templateUrl: "./pedidos-negocio.page.html",
+    styleUrls: ["./pedidos-negocio.page.scss"],
 })
 export class PedidosNegocioPage implements OnInit {
-  @ViewChild(IonContent) content: IonContent;
-  public cordenada: number;
-  listaNegocioPedididos: any;
-  public listaEstatus: any;
-  public lstFiltroEstatus: any;
-  public selectTO: any;
-  public subscribe;
-  public loaderSearch = false;
-  public loaderBus = false;
-  public loaderEst = false;
-  public cargando = 'Cargando';
-  constructor(
-    private location: Location,
-    private pedidosServicios: PedidosService,
-    private utilsCls: UtilsCls,
-    public modalController: ModalController,
-    private router: Router,
-    private active: ActivatedRoute,
-    public loadingController: LoadingController,
-    private platform: Platform
-  ) {
-    this.listaNegocioPedididos = [];
-    this.lstFiltroEstatus = [1, 2, 3, 4, 5, 6];
-  }
+    @ViewChild(IonContent) content: IonContent;
+    public cordenada: number;
+    listaNegocioPedididos: any;
+    public listaEstatus: any;
+    public lstFiltroEstatus: any;
+    public selectTO: any;
+    public subscribe;
+    public loaderSearch = false;
+    public loaderBus = false;
+    public loaderEst = false;
+    public cargando = 'Cargando';
 
-  ngOnInit() {
-    this.loaderBus = true;
-    this.loaderEst = true;
-    this.buscar();
-    this.buscarEstatus();
-    this.active.queryParams.subscribe((params) => {
-      if (params && params.special) {
-        if (params.special) {
-          this.buscar();
-          this.buscarEstatus();
-        }
-      }
-      this.subscribe = this.platform.backButton.subscribe(() => {
-        this.regresar();
-      });
-    });
-  }
+    constructor(
+        private location: Location,
+        private pedidosServicios: PedidosService,
+        private utilsCls: UtilsCls,
+        public modalController: ModalController,
+        private router: Router,
+        private active: ActivatedRoute,
+        public loadingController: LoadingController,
+        private platform: Platform
+    ) {
+        this.listaNegocioPedididos = [];
+        this.lstFiltroEstatus = [1, 2, 3, 4, 5, 6];
+    }
 
-  buscar() {
-    const id = this.utilsCls.getIdProveedor();
-    this.pedidosServicios
-      .pedidosNegocios(null, id, this.lstFiltroEstatus)
-      .subscribe(
-        (res) => {
-          this.listaNegocioPedididos = res.data;
-
-          this.listaNegocioPedididos.map(negocio => {
-          return negocio.pedidos.sort((a, b) => a.id_pedido_negocio - b.id_pedido_negocio).reverse();
+    ngOnInit() {
+        this.loaderBus = true;
+        this.loaderEst = true;
+        this.buscar();
+        this.buscarEstatus();
+        this.active.queryParams.subscribe((params) => {
+            if (params && params.special) {
+                if (params.special) {
+                    this.buscar();
+                    this.buscarEstatus();
+                }
+            }
+            this.subscribe = this.platform.backButton.subscribe(() => {
+                this.subscribe.unsubscribe();
+                this.buscar();
+                this.buscarEstatus();
+            });
         });
-        this.listaNegocioPedididos = this.listaNegocioPedididos.sort((a, b) => a.pedidos[0].id_pedido_negocio - b.pedidos[0].id_pedido_negocio).reverse();
-          this.loaderBus = false;
-          this.loaderSearch = false;
-        },
-        (error) => {
-          this.loaderBus = false;
-          this.loaderSearch = false;
-        }
-      );
-  }
+    }
 
-  buscarEstatus() {
-    const id = this.utilsCls.getIdProveedor();
-    this.pedidosServicios.estatusPedidios(id).subscribe(
-      (res) => {
-        this.listaEstatus = res.data;
+    buscar() {
+        const id = this.utilsCls.getIdProveedor();
+        this.pedidosServicios
+            .pedidosNegocios(null, id, this.lstFiltroEstatus)
+            .subscribe(
+                (res) => {
+                    this.listaNegocioPedididos = res.data;
+
+                    this.listaNegocioPedididos.map(negocio => {
+                        return negocio.pedidos.sort((a, b) => a.id_pedido_negocio - b.id_pedido_negocio).reverse();
+                    });
+                    this.listaNegocioPedididos = this.listaNegocioPedididos.sort((a, b) => a.pedidos[0].id_pedido_negocio - b.pedidos[0].id_pedido_negocio).reverse();
+                    this.loaderBus = false;
+                    this.loaderSearch = false;
+                },
+                (error) => {
+                    this.loaderBus = false;
+                    this.loaderSearch = false;
+                }
+            );
+    }
+
+    buscarEstatus() {
+        const id = this.utilsCls.getIdProveedor();
+        this.pedidosServicios.estatusPedidios(id).subscribe(
+            (res) => {
+                this.listaEstatus = res.data;
+                this.listaEstatus.map((it) => {
+                    it.seleccionado = false;
+                    if (it.id_estatus > 0 && it.id_estatus < 7) {
+                        it.seleccionado = true;
+                    }
+                });
+                this.loaderEst = false;
+            },
+            (error) => {
+                this.loaderEst = false;
+                //this.loader = false;
+            }
+        );
+    }
+
+    buscarPorestatus(estatus: any) {
+        this.loaderSearch = true;
+        estatus.seleccionado = !estatus.seleccionado;
+        this.lstFiltroEstatus = [];
         this.listaEstatus.map((it) => {
-          it.seleccionado = false;
-          if (it.id_estatus > 0 && it.id_estatus < 7) {
-            it.seleccionado = true;
-          }
+            if (it.seleccionado) {
+                this.lstFiltroEstatus.push(it.id_estatus);
+            }
         });
-        this.loaderEst = false;
-      },
-      (error) => {
-        this.loaderEst = false;
-        //this.loader = false;
-      }
-    );
-  }
+        this.buscar();
+    }
 
-  buscarPorestatus(estatus: any) {
-    this.loaderSearch = true;
-    estatus.seleccionado = !estatus.seleccionado;
-    this.lstFiltroEstatus = [];
-    this.listaEstatus.map((it) => {
-      if (it.seleccionado) {
-        this.lstFiltroEstatus.push(it.id_estatus);
-      }
-    });
-    this.buscar();
-  }
+    datosPedido(pedido: any) {
+        this.listaNegocioPedididos[0].precioEntrega;
+        const body = {
+            'pedido': pedido,
+            'precioEntrega': this.listaNegocioPedididos[0].precioEntrega
+        };
+        this.selectTO = JSON.parse(JSON.stringify(body));
+        let navigationExtras = JSON.stringify(this.selectTO);
+        this.visto(pedido.id_pedido_negocio);
+        this.router.navigate(["/tabs/home/ventas/datos-pedido-negocio"], {
+            queryParams: {special: navigationExtras},
+        });
+    }
 
-  datosPedido(pedido: any) {
-    this.listaNegocioPedididos[0].precioEntrega;
-    const body = {
-      'pedido' :  pedido,
-      'precioEntrega' : this.listaNegocioPedididos[0].precioEntrega
-    };
-    this.selectTO = JSON.parse(JSON.stringify(body));
-    let navigationExtras = JSON.stringify(this.selectTO);
-    this.visto(pedido.id_pedido_negocio);
-    this.router.navigate(["/tabs/home/ventas/datos-pedido-negocio"], {
-      queryParams: { special: navigationExtras },
-    });
-  }
+    regresar() {
+        this.subscribe.unsubscribe();
+        this.router.navigate(['/tabs/home/perfil'], {queryParams: {special: true}});
+    }
 
-  regresar() {
-    this.subscribe.unsubscribe();
-     this.location.back();
-    // this.router.navigate(["/tabs/inicio"], { queryParams: { special: true } });
-  }
+    visto(pedido) {
+        this.pedidosServicios.ponerVisto(pedido).subscribe(
+            (respuesta) => {
+            },
+            (error) => {
+            }
+        );
+    }
 
-  visto(pedido) {
-    this.pedidosServicios.ponerVisto(pedido).subscribe(
-      (respuesta) => {},
-      (error) => {}
-    );
-  }
-
-  public loading(pc: any, pr: any) {
-    return pc === true && pr === true ? true : false;
-  }
+    public loading(pc: any, pr: any) {
+        return pc === true && pr === true ? true : false;
+    }
 }
