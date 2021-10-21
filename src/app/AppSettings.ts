@@ -30,6 +30,8 @@ export class AppSettings {
 
     public static VERSION_SISTEMA = 28;
     public static VERSION_ANDROID = 29;
+    public static ID_DB_PLATFORM_ANDROID = 54;
+    public static ID_DB_PLATFORM_IOS = 55;
     public static VERSION_IOS = 1;
     public static ES_MOVIL = false;
     public static NUEVAS_FUNCIONES = true;

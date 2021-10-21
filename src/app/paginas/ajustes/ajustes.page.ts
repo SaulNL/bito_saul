@@ -1,14 +1,12 @@
 import { PermisoModel } from 'src/app/Modelos/PermisoModel';
-import { ValidarPermisoService } from './../../api/validar-permiso.service';
+import { ValidarPermisoService } from '../../api/validar-permiso.service';
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UtilsCls } from "../../utils/UtilsCls";
 import { AppSettings } from "../../AppSettings";
 import {ActionSheetController, NavController, Platform} from "@ionic/angular";
 import { SideBarService } from "../../api/busqueda/side-bar-service";
-import { Location } from "@angular/common";
 import { Auth0Service } from "src/app/api/auth0.service";
-import { PersonaService } from '../../api/persona.service';
 import {PedidosService} from "../../api/pedidos.service";
 
 @Component({
@@ -55,7 +53,6 @@ export class AjustesPage implements OnInit {
       if (params && params.special) {
         this.usuario = JSON.parse(localStorage.getItem('u_data'));
         if (localStorage.getItem("isRedirected") === "false") {
-          console.log("reload app");
           localStorage.setItem("isRedirected", "true");
           location.reload();
         }
@@ -64,20 +61,18 @@ export class AjustesPage implements OnInit {
 
     this.subscribe = this.platform.backButton.subscribe(() => {
       this.subscribe.unsubscribe();
-      console.log("Suscripción activada");
       this.notificacionesVentas();
     });
 
     this.active.queryParams.subscribe((params) => {
       if (params && params.ventas) {
-        console.log("active compra");
-
+        this.notificacionesVentas();
       }
     });
 
     this.notificacionesVentas();
     //  this.usuario = this.util.getData();
-    this.sideBarService.change.subscribe(isOpen => {
+    this.sideBarService.change.subscribe(() => {
       if (this.util.existSession()) {
         this.validar(JSON.parse(String(localStorage.getItem('u_permisos'))));
       }
@@ -164,7 +159,7 @@ export class AjustesPage implements OnInit {
         res => {
           this.totalNoVistos = res.data;
         },
-        error => {
+        () => {
         });
   }
 }
