@@ -9,8 +9,8 @@ import { GooglePlus } from "@ionic-native/google-plus/ngx";
 import { AngularFireAuth } from "@angular/fire/auth";
 import * as firebase from "firebase/app";
 import { Facebook, FacebookLoginResponse } from "@ionic-native/facebook/ngx";
-import { UsuarioService } from "./../../../api/busqueda/login/usuario.service";
-import { ToadNotificacionService } from "./../../../api/toad-notificacion.service";
+import { UsuarioService } from "../../../api/busqueda/login/usuario.service";
+import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
 import { LoginService } from "../../../api/login.service";
 import { Login } from "../../../Modelos/login";
 import { AppSettings } from "../../../AppSettings";
@@ -120,7 +120,6 @@ export class RegistroPersonaPage implements OnInit {
         this.notificacion.alerta("Error Login Google");
       }
     }catch (error) {
-      console.log(JSON.stringify(error));
       this.loader = false;
       this.notificacion.alerta("Se perdio la conexión con el servicio, Reintentar");
     }
@@ -158,8 +157,7 @@ export class RegistroPersonaPage implements OnInit {
       );
       this.fb.logout();
       this.validationfg(resConfirmed, 1);
-    }catch (error) {
-      console.log(JSON.stringify(error));
+    } catch (e) {
       this.loader = false;
       this.notificacion.alerta("Se perdio la conexión con el servicio, Reintentar");
     }

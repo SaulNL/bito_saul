@@ -17,8 +17,8 @@ export class RegistrarPromotionService {
         this.quienVio.latitud = latitud;
         this.quienVio.longitud = longitud;
         this.servicioPromotion.quienVioMiPromotion(this.quienVio).subscribe(
-            response => {}, error => {
-                console.log(error);
+            response => {}, () => {
+
             }
         );
     }

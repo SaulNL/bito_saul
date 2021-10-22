@@ -62,7 +62,7 @@
                     </ion-col>
                     <ion-col *ngIf="misVentas">
                         <ion-card>
-                            <ion-badge class="total-vistos" color="danger">{{totalNoVistos}}</ion-badge>
+                            <ion-badge *ngIf="siNoVistos" class="total-vistos" color="danger">{{totalNoVistos}}</ion-badge>
                             <ion-card-content>
                                 <div class="ion-text-center" [routerLink]="['/tabs/home/ventas']">
                                     <ion-icon name="receipt-outline"></ion-icon>

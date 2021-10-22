@@ -77,4 +77,15 @@ export class Auth0Service {
             return false;
         }
     }
+    getUserSystem() {
+        try {
+            if (this.existSession()) {
+                const usuarioSistema = JSON.parse(localStorage.getItem("u_sistema"));
+                return usuarioSistema.id_usuario_sistema;
+            }
+            return 0;
+        } catch (e) {
+            return 0;
+        }
+    }
 }

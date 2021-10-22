@@ -11,9 +11,11 @@ import {VistasBitooModel} from 'src/app/Modelos/vistasBitooModel';
 import {Plugins} from '@capacitor/core';
 import {VersionAndroidService} from './api/version-android.service';
 import {AppSettings} from './AppSettings';
+import OneSignal from 'onesignal-cordova-plugin';
 
 const {Geolocation} = Plugins;
 import {DeviceInfoModel} from "./Modelos/DeviceInfoModel";
+import {OneSignalNotificationsService} from "./api/one-signal-notifications.service";
 
 @Component({
     selector: 'app-root',
@@ -38,7 +40,8 @@ export class AppComponent {
         private negocioService: NegocioService,
         private access: AccessPermissionService,
         public modalController: ModalController,
-        private android: VersionAndroidService
+        private android: VersionAndroidService,
+        private signal: OneSignalNotificationsService
     ) {
         this.initializeApp();
         this.visitasBitooModel = new VistasBitooModel();
@@ -51,6 +54,9 @@ export class AppComponent {
         this.platform.ready().then(() => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
+            this.signal.inicialiceNotifications();
+            this.signal.unSetUserExternal();
+            this.signal.setUserExternal();
             this.obtenerVersion(this.device);
         });
         this.obtenerIP();
@@ -259,4 +265,6 @@ export class AppComponent {
             }
         )
     }
+
+
 }

@@ -8,6 +8,7 @@ import {ActionSheetController, NavController, Platform} from "@ionic/angular";
 import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Auth0Service } from "src/app/api/auth0.service";
 import {PedidosService} from "../../api/pedidos.service";
+import {OneSignalNotificationsService} from "../../api/one-signal-notifications.service";
 
 @Component({
   selector: "app-ajustes",
@@ -28,6 +29,7 @@ export class AjustesPage implements OnInit {
   public estadisticas: boolean;
   public totalNoVistos: number;
   public subscribe;
+  public siNoVistos: boolean;
 
   constructor(
     private util: UtilsCls,
@@ -39,8 +41,10 @@ export class AjustesPage implements OnInit {
     private auth0: Auth0Service,
     private validarPermisos: ValidarPermisoService,
     private pedidos: PedidosService,
-    private platform: Platform
+    private platform: Platform,
+    private signal: OneSignalNotificationsService
   ) {
+    this.siNoVistos = false;
     this.totalNoVistos = 0;
     this.usuario = this.auth0.getUserData();
     if (this.util.existSession()) {
@@ -125,6 +129,7 @@ export class AjustesPage implements OnInit {
           handler: () => {
             if (AppSettings.resetToken(this._router)) {
               this.sideBarService.publishSomeData("");
+              this.signal.unSetUserExternal();
               this._router.navigate(["/tabs/inicio"], {
                 queryParams: { spe: true },
               });
@@ -158,6 +163,7 @@ export class AjustesPage implements OnInit {
     this.pedidos.noVistos(id).subscribe(
         res => {
           this.totalNoVistos = res.data;
+          this.siNoVistos = (res.data.length > 0);
         },
         () => {
         });

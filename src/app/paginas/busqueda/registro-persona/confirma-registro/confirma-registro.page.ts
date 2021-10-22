@@ -13,6 +13,7 @@ import { Location } from "@angular/common";
 
 import { NavController } from "@ionic/angular";
 import { SideBarService } from "../../../../api/busqueda/side-bar-service";
+import {OneSignalNotificationsService} from "../../../../api/one-signal-notifications.service";
 
 @Component({
   selector: 'app-confirma-registro',
@@ -43,7 +44,8 @@ export class ConfirmaRegistroPage implements OnInit {
     private loadingController: LoadingController,
     private location: Location,
     private sideBarService: SideBarService,
-    private navctrl: NavController
+    private navctrl: NavController,
+    private signal: OneSignalNotificationsService
   ) {
     this.nuevasFunciones = AppSettings.NUEVAS_FUNCIONES;
   }
@@ -188,6 +190,7 @@ export class ConfirmaRegistroPage implements OnInit {
               AppSettings.setTokenUser(data);
               this.loader = false;
               this.notificaciones.exito('Bienvenido a Bitoo');
+              this.signal.setUserExternal();
               this.router.navigate(['/tabs/inicio']);
               setTimeout(() => {
                 location.reload();

@@ -1,15 +1,15 @@
 export class AppSettings {
 
-    // public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
-    // public static URL_REGISTRO = 'https://bitoo.com.mx/registro';
-    // public static URL_FRONT = 'https://bitoo.com.mx/';
-    // public static URL_MOVIL = 'https://bitoo.com.mx/';
-    // public static URL_MOVIL = 'https://app-bitoo.com.mx/tabs/negocio/';
+    public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
+    public static URL_REGISTRO = 'https://bitoo.com.mx/registro';
+    public static URL_FRONT = 'https://bitoo.com.mx/';
+    public static URL_MOVIL = 'https://bitoo.com.mx/';
 
-    public static API_ENDPOINT = 'https://beta-bitoo-back.azurewebsites.net/';
-    public static URL_REGISTRO = 'https://beta-bitoo.azurewebsites.net/registro';
-    public static URL_FRONT = 'https://beta-bitoo.azurewebsites.net/';
-    public static URL_MOVIL = 'https://beta-bitoo.azurewebsites.net/';
+
+    // public static API_ENDPOINT = 'https://beta-bitoo-back.azurewebsites.net/';
+    // public static URL_REGISTRO = 'https://beta-bitoo.azurewebsites.net/registro';
+    // public static URL_FRONT = 'https://beta-bitoo.azurewebsites.net/';
+    // public static URL_MOVIL = 'https://beta-bitoo.azurewebsites.net/';
 
     // public static API_ENDPOINT = 'https://dev-back-bitoo.azurewebsites.net/';
     // public static URL_REGISTRO = 'https://dev-front-bitoo.azurewebsites.net/registro';
@@ -20,6 +20,7 @@ export class AppSettings {
     // public static URL_REGISTRO = 'http://127.0.0.1:8000/registro';
     // public static URL_FRONT = 'https://127.0.0.1:4200/';
 
+    // public static URL_MOVIL = 'https://app-bitoo.com.mx/tabs/negocio/';
     public static IMG_ERROR_PRODUCTO = 'https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png';
     public static IMG_ERROR_SERVICIO = 'https://ecoevents.blob.core.windows.net/comprandoando/img_default/Servicio.png';
     public static IMG_ERROR_PROMOCION = 'https://ecoevents.blob.core.windows.net/comprandoando/img_default/Promo%20cuadrada.png';
@@ -41,6 +42,8 @@ export class AppSettings {
     //public static PROVIDER_ID_FACEBOOK = '740270933494486';
     public static GOOGLE_ID_BY_ANDROID = '315189899862-5hoe16r7spf4gbhik6ihpfccl4j9o71l.apps.googleusercontent.com';
     public static IOS_ID_BY_ANDROID = '315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com';
+    public static TOKEN = 'ZjA1Zjc0NmQtYmVlOC00MTc1LTlmYmQtMDI2ZTdhMTAxMDkz';
+    public static APP_SIGNAL = 'eb9d5e72-fe22-4d59-ab47-5328fd46ae55';
 
     public static getHeaders() {
         return {
@@ -52,6 +55,12 @@ export class AppSettings {
         };
     }
 
+    public static getHeadersNotifications(restApiKey) {
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic {{' + restApiKey + '}}'
+        };
+    }
 
     public static getHeadersToken() {
         return {

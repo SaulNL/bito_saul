@@ -485,6 +485,7 @@ export class PerfilNegocioPage implements OnInit {
                 _entregaSitio: this.informacionNegocio.entrega_sitio,
                 _consumoSitio: this.informacionNegocio.consumo_sitio,
                 _costoEntrega: this.informacionNegocio.costo_entrega,
+                negocioNombre: this.informacionNegocio.nombre_comercial
             },
         });
         await modal.present();

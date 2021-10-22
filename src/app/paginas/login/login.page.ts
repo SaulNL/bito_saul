@@ -12,6 +12,7 @@ import {ToadNotificacionService} from "../../api/toad-notificacion.service";
 import {RecuperarContraseniaPage} from "./recuperar-contrasenia/recuperar-contrasenia.page";
 import {Subscription} from "rxjs";
 import {ResponderLogin} from "../../Modelos/ResponderLogin";
+import {OneSignalNotificationsService} from "../../api/one-signal-notifications.service";
 
 @Component({
     selector: "app-login",
@@ -36,7 +37,8 @@ export class LoginPage implements OnInit {
         private activeRoute: ActivatedRoute,
         private platform: Platform,
         private route: Router,
-        private modalController: ModalController
+        private modalController: ModalController,
+        private signal: OneSignalNotificationsService
     ) {
         this.whatPlatformIs = this.platform.is('ios');
         this.loader = false;
@@ -112,6 +114,7 @@ export class LoginPage implements OnInit {
                     this.sideBarService.publishSomeData("");
                     localStorage.setItem("isRedirected", "false");
                     const optionEnterLogin = localStorage.getItem('optionLogin');
+                    this.signal.setUserExternal();
                     if (optionEnterLogin != null) {
                         this.goToRoute(this.returnToLocation.url);
                     } else {
