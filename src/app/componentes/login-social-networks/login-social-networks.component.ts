@@ -5,6 +5,7 @@ import {AngularFireAuth} from "@angular/fire/auth";
 import {GooglePlus} from "@ionic-native/google-plus/ngx";
 import * as firebase from "firebase";
 import {Platform} from "@ionic/angular";
+import {SignInWithApple, ASAuthorizationAppleIDRequest, AppleSignInResponse, AppleSignInErrorResponse} from "@ionic-native/sign-in-with-apple/ngx";
 
 @Component({
     selector: 'app-login-social-networks',
@@ -15,16 +16,20 @@ export class LoginSocialNetworksComponent implements OnInit {
     private response: ResponderLogin;
     @Output() responseLogin: EventEmitter<any> = new EventEmitter();
     private responseGoogle: any;
+    public isIOS: boolean;
 
     constructor(
         private facebook: Facebook,
         private angularFireAuth: AngularFireAuth,
         private googlePlus: GooglePlus,
-        private platform: Platform
+        private platform: Platform,
+        private signInWithApple: SignInWithApple
     ) {
+        this.isIOS = this.platform.is('ios');
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+    }
 
 
     async loginWithFacebook() {
@@ -72,12 +77,37 @@ export class LoginSocialNetworksComponent implements OnInit {
             this.errorGoogle();
         }
     }
+    async loginAppleId(){
+        try{
+            this.signInWithApple.signin({
+                requestedScopes: [
+                    ASAuthorizationAppleIDRequest.ASAuthorizationScopeFullName,
+                    ASAuthorizationAppleIDRequest.ASAuthorizationScopeEmail
+                ]
+            })
+                .then((res: AppleSignInResponse) => {
+                    if (res.email !== '' || res.email.length > 0){
+                        this.responderSuccess(res, true);
+                    }else{
+                        this.errorAppleID();
+                    }
+                    console.log(JSON.stringify(res));
+                })
+                .catch((error: AppleSignInErrorResponse) => {
+                    this.errorAppleID();
+                    console.error(JSON.stringify(error));
+                });
+        }catch (error){
+            this.errorAppleID();
+        }
+    }
 
 
-    private responderSuccess(credentials: any) {
+    private responderSuccess(credentials: any, isAppleID = false) {
         this.response = new ResponderLogin();
         this.response.responder = 'success';
         this.response.body = credentials;
+        this.response.isAppleID = isAppleID;
         this.responseLogin.emit(this.response);
     }
 
@@ -87,6 +117,10 @@ export class LoginSocialNetworksComponent implements OnInit {
 
     private errorFacebook() {
         this.responderError('Facebook');
+    }
+
+    private errorAppleID() {
+        this.responderError('Apple ID');
     }
 
     private responderError(typeConnection: string) {

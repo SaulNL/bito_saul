@@ -12,6 +12,11 @@
           <img alt="Login with google" src="../../../../assets/images/google.png">
         </ion-avatar>
       </ion-col>
+      <ion-col *ngIf="isIOS">
+        <ion-avatar (click)="loginAppleId()">
+          <img src="../../../assets/images/apple.png">
+        </ion-avatar>
+    </ion-col>
       <ion-col></ion-col>
     </ion-row>
   </ion-grid>

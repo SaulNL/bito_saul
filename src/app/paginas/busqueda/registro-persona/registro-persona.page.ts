@@ -17,6 +17,7 @@ import { AppSettings } from "../../../AppSettings";
 import { NavController } from "@ionic/angular";
 import { SideBarService } from "../../../api/busqueda/side-bar-service";
 import { LoadingController, Platform } from "@ionic/angular";
+import {AppleSignInErrorResponse, AppleSignInResponse, ASAuthorizationAppleIDRequest, SignInWithApple} from "@ionic-native/sign-in-with-apple/ngx";
 
 @Component({
   selector: "app-registro-persona",
@@ -35,6 +36,7 @@ export class RegistroPersonaPage implements OnInit {
   public blnTelefono: boolean;
   public blnCorreo: boolean;
   private medio: number | null;
+  public isIOS: boolean;
   constructor(
     private router: Router,
     private active: ActivatedRoute,
@@ -47,12 +49,14 @@ export class RegistroPersonaPage implements OnInit {
     private navctrl: NavController,
     private sideBarService: SideBarService,
     public loadingController: LoadingController,
-    private platform: Platform
+    private platform: Platform,
+    private signInWithApple: SignInWithApple
   ) {
     this.usuario = new Login('', '');
     this.loader = false;
     this.blnCorreo = true;
     this.blnTelefono = true;
+    this.isIOS = this.platform.is('ios');
     //   this.condiciones_servicio = false;
     // @ts-ignore
     //registerWebPlugin(FacebookLogin);
@@ -159,6 +163,46 @@ export class RegistroPersonaPage implements OnInit {
       this.validationfg(resConfirmed, 1);
     } catch (e) {
       this.loader = false;
+      this.notificacion.alerta("Se perdio la conexión con el servicio, Reintentar");
+    }
+  }
+  async loginAppleId(){
+    try{
+      this.signInWithApple.signin({
+        requestedScopes: [
+          ASAuthorizationAppleIDRequest.ASAuthorizationScopeFullName,
+          ASAuthorizationAppleIDRequest.ASAuthorizationScopeEmail
+        ]
+      })
+          .then((res: AppleSignInResponse) => {
+            if (res.email !== '' || res.email.length > 0){
+
+              this.usuarioSistema.crearCuantaAdminApple(res).subscribe(
+                  (response) => {
+                    if (response.data.code === 200) {
+                      this.usuario.password = res.user;
+                      this.usuario.usuario = res.email;
+                      this.doLogin();
+                    } else {
+                      this.loader = false;
+                      this.notificacion.alerta(response.data.message);
+                    }
+                  },
+                  (error) => {
+                    this.loader = false;
+                    this.notificacion.alerta(error);
+                  }
+              );
+            }else{
+              this.notificacion.alerta("La cuenta no se puede usar en este momento, intente más tarde");
+            }
+            console.log(JSON.stringify(res));
+          })
+          .catch((error: AppleSignInErrorResponse) => {
+            this.notificacion.alerta("Se perdio la conexión con el servicio, Reintentar");
+            console.error(JSON.stringify(error));
+          });
+    }catch (error){
       this.notificacion.alerta("Se perdio la conexión con el servicio, Reintentar");
     }
   }

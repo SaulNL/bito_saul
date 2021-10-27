@@ -11,11 +11,6 @@
     <param name="onload" value="true"/>
   </feature>
 
-  <feature name="FacebookConnectPlugin">
-    <param name="ios-package" value="FacebookConnectPlugin"/>
-    <param name="onload" value="true"/>
-  </feature>
-
   <feature name="File">
     <param name="ios-package" value="CDVFile"/>
     <param name="onload" value="true"/>
@@ -27,6 +22,11 @@
 
   <feature name="GooglePlus">
     <param name="ios-package" value="GooglePlus"/>
+    <param name="onload" value="true"/>
+  </feature>
+
+  <feature name="SignInWithApple">
+    <param name="ios-package" value="SignInWithApple"/>
     <param name="onload" value="true"/>
   </feature>
 
