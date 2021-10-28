@@ -82,11 +82,13 @@ export class LoginSocialNetworksComponent implements OnInit {
             this.signInWithApple.signin({
                 requestedScopes: [
                     ASAuthorizationAppleIDRequest.ASAuthorizationScopeFullName,
-                    ASAuthorizationAppleIDRequest.ASAuthorizationScopeEmail
+                    ASAuthorizationAppleIDRequest.ASAuthorizationScopeEmail,
                 ]
             })
                 .then((res: AppleSignInResponse) => {
                     if (res.email !== '' || res.email.length > 0){
+                        this.responderSuccess(res, true);
+                    }else if(res.user !== '' || res.user.length > 0){
                         this.responderSuccess(res, true);
                     }else{
                         this.errorAppleID();
