@@ -10,8 +10,6 @@ import {SentNotificationModel} from "../Modelos/OneSignalNotificationsModel/Sent
 })
 export class SentPushNotificationService {
 
-    url = `${AppSettings.API_ENDPOINT}`;
-
     constructor(private _http: HTTP) {
     }
 
@@ -30,18 +28,18 @@ export class SentPushNotificationService {
         }));
     }
 
-    getToken() {
+    getTkn(): Observable<any> {
         const body = JSON.stringify({});
-        this._http.setDataSerializer("utf8");
-        return from(this._http.post(this.url + 'api/service/token', body,
-            AppSettings.getHeadersToken())
-            .then(data => {
+        this._http.setDataSerializer('utf8');
+        console.log(`${AppSettings.API_ENDPOINT}` + 'api/service/token');
+        return from(this._http.post(`${AppSettings.API_ENDPOINT}` + 'api/service/token', body, AppSettings.getHeadersToken())
+            .then((data) => {
+                console.log(data);
                 return JSON.parse(data.data);
             })
             .catch((error) => {
+                console.log(error);
                 return error;
-            })).pipe(map(data => {
-            return data;
-        }));
+            }));
     }
 }

@@ -146,8 +146,6 @@ export class AppComponent {
     verificarVersion(deviceInfo: DeviceInfoModel) {
         if (this.versionActualSistema !== deviceInfo.version && deviceInfo.active) {
             this.router.navigate(['/actualizar-version'], {queryParams: {blockedUp: JSON.stringify(deviceInfo)}});
-        } else if (deviceInfo.active) {
-            this.router.navigate(['/actualizar-version'], {queryParams: {blockedUp: JSON.stringify(deviceInfo)}});
         } else {
             this.setupDeeplinks();
             this.obtenerPlataforma();

@@ -551,9 +551,7 @@ export class NegocioService {
     obtenerIdUsuarioByNegocio(negocio: string): Observable<any> {
         const body = JSON.stringify({id_negocio: negocio});
         this._http.setDataSerializer('utf8');
-        return from(this._http.post(
-            this.url + 'api/negocio/information/proveedor',
-            body, AppSettings.getHeadersToken())
+        return from(this._http.post(this.url + 'api/negocio/information/proveedor', body, AppSettings.getHeadersToken())
             .then((data) => {
                 return JSON.parse(data.data);
             })

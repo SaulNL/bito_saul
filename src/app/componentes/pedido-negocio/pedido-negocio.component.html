@@ -50,6 +50,11 @@
         <small *ngIf="rTantidad(numeroMesa)" class="texto-mesa">Se requiere el numero de mesa</small>
       </ion-grid>
     </div>
+    <ion-item *ngIf="tipoEnvio === 2">
+      <ion-label position="floating">Dirección:</ion-label>
+      <ion-textarea type="text" [(ngModel)]="address"></ion-textarea>
+      <ion-icon *ngIf="address" (click)="address=''" name="close-outline" slot="end"></ion-icon>
+    </ion-item>
     <ion-item>
       <ion-label position="floating">Comentario:</ion-label>
       <ion-textarea type="text" [(ngModel)]="detalle"></ion-textarea>

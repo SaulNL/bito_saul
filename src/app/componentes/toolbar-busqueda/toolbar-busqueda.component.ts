@@ -89,6 +89,7 @@ export class ToolbarBusquedaComponent implements OnInit {
   }
 
   verSolicitudes(){
+    localStorage.setItem('isRedirected', 'false');
     this.router.navigate(['/tabs/categorias']);
   }
 }

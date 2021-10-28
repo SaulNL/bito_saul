@@ -67,10 +67,12 @@ ul li {
   .item {
     flex: 0 0 auto;
   }
+
   .active {
     box-shadow: 0px 5px 0px blue;
   }
 }
+
 .fab-horizontal-end {
   right: calc(1.5px + var(--ion-safe-area-right, 0px)) !important;
 }
@@ -78,6 +80,7 @@ ul li {
 .cardsps {
   height: 100%;
 }
+
 @media (max-width: 500px) {
   .fab-button-small {
     margin: 6px !important;
@@ -95,6 +98,7 @@ ul li {
     height: 13vw;
   }
 }
+
 @media (min-width: 501px) and (max-width: 1300px) {
   .fab-button-small {
     margin: 6px !important;
@@ -112,14 +116,17 @@ ul li {
     height: 8vw;
   }
 }
+
 .bolsita {
   top: 3px;
   right: 3px;
 }
+
 .bosar {
   --background: white;
   --color: #fa4f72;
 }
+
 ion-fab-button {
   --background: white;
 }
@@ -136,10 +143,12 @@ ion-fab-button {
   position: relative;
   top: -7px;
 }
+
 .alado {
   position: relative;
   left: 1px;
 }
+
 .iconAla {
   margin: 4px;
   /* background: #bbbbbb; */
@@ -148,24 +157,29 @@ ion-fab-button {
   border-style: outset;
   color: red;
 }
+
 .swiper-slide img {
   height: 15vh !important;
 }
+
 .swiper-zoom-container > img,
 .swiper-zoom-container > svg,
 .swiper-zoom-container > canvas {
   object-fit: unset;
 }
+
 .like {
   border-radius: 40%;
   position: absolute;
   bottom: 5rem;
   right: -4rem;
 }
+
 .bolsi {
   top: 3px;
   left: 3px;
 }
+
 .bosa {
   --background: white !important;
   --color: grey !important;
@@ -174,6 +188,7 @@ ion-fab-button {
 .ion-card-cara {
   padding-top: 3.5rem;
 }
+
 .likeProducto {
   top: 8.8rem;
   position: absolute;
@@ -188,16 +203,21 @@ ion-fab-button {
 .separacion-arriba {
   padding-top: 2rem;
 }
+
 .bolsita-pintada {
   -webkit-box-shadow: -8px 11px 43px 0px rgb(0 0 0) !important;
 }
 
-.info-descripcion{
+.info-descripcion {
   position: relative;
   top: 8px;
 }
 
-.direccion-entrega{
+.direccion-entrega {
   position: relative;
   top: 1em;
+}
+
+.entrega-domicilio {
+  font-size: 12px;
 }

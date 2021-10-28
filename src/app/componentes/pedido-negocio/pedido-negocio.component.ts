@@ -54,6 +54,7 @@ export class PedidoNegocioComponent implements OnInit {
     public sentPushNotification: SentNotificationModel;
     public contents: CommonOneSignalModel;
     public headings: CommonOneSignalModel;
+    public address: string;
 
     constructor(
         private utilsCls: UtilsCls,
@@ -68,6 +69,7 @@ export class PedidoNegocioComponent implements OnInit {
     ) {
         this.lat = 19.31905;
         this.numeroMesa = 0;
+        this.address = '';
         this.lng = -98.19982;
         this.subscribe = this.platform.backButton.subscribe(() => {
             this.cerrarModal();
@@ -172,25 +174,29 @@ export class PedidoNegocioComponent implements OnInit {
                 this.contents = new CommonOneSignalModel('Se registró una venta en ' + this.negocioNombre);
                 this.headings = new CommonOneSignalModel();
                 this.negocioService.obtenerIdUsuarioByNegocio(this.lista[0].idNegocio).subscribe(
-                    (response) => {
-                        this.sentPushNotification = new SentNotificationModel(this.platform.is('android'), this.platform.is('ios'), this.contents, this.headings, [String(response.usuario)]);
-                        this.sendNotification.getToken().subscribe(
+                    (respuesta) => {
+                        this.sentPushNotification = new SentNotificationModel(this.platform.is('android'), this.platform.is('ios'), this.headings, this.contents, [String(respuesta.data.usuario)]);
+                        this.sendNotification.getTkn().subscribe(
                             (response) => {
                                 if (response.code === 200) {
                                     this.sendNotification.sentNotification(this.sentPushNotification, response.data.tkn).subscribe(
-                                        () => {
+                                        (r) => {
+                                            console.log(r);
                                             this.enviarSms(telephoneUsuario, this.lista[0].idNegocio);
-                                        }, () => {
+                                        }, (e) => {
+                                            console.log(e);
                                             this.mesajes.error('Ocurrió un error en el servidor');
                                             this.loader = false;
                                         }
                                     );
                                 } else {
+                                    console.log(response);
                                     this.mesajes.error("Ocurrió un problema al contactar al negocio");
                                     this.loader = false;
                                 }
                             }, (e) => {
-                                this.mesajes.error("Ocurrió un problema al contactar al negocio");
+                                console.log(e);
+                                this.mesajes.error("Error en el servidor");
                                 this.loader = false;
                             }
                         );
@@ -220,6 +226,7 @@ export class PedidoNegocioComponent implements OnInit {
                     this.pedido.direccion = this.estasUbicacion;
                     this.pedido.latitud = this.lat;
                     this.pedido.longitud = this.lng;
+                    this.pedido.direccion = this.address;
                     this.registrarPedido(this.pedido);
                     break;
                 case 3:

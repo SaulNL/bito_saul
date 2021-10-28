@@ -1,8 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {PedidosService} from '../../../../api/pedidos.service';
-import {Map, tileLayer, marker} from 'leaflet';
+// import {Map, tileLayer, marker, icon, Marker} from 'leaflet';
+import {icon, Map, Marker, marker, tileLayer} from "leaflet";
 import {Router, ActivatedRoute} from '@angular/router';
 import {ToadNotificacionService} from '../../../../api/toad-notificacion.service';
+
+declare var google: any;
 
 @Component({
     selector: 'app-datos-pedido-negocio',
@@ -16,10 +19,12 @@ export class DatosPedidoNegocioPage implements OnInit {
     numeroSolicitud: any;
     public loaderBtn: boolean;
     map: any;
+    private marker: Marker<any>;
     public mapView: string;
     public total: number;
     public domicilioEnvio: boolean;
     public domicilioEnvioMessage: any;
+    public estasUbicacion: any;
 
     constructor(
         private pedidosServicios: PedidosService,
@@ -159,12 +164,63 @@ export class DatosPedidoNegocioPage implements OnInit {
             });
     }
 
+    public gLatLng(lat, lng) {
+        const coder = new google.maps.Geocoder;
+        const lnr = {
+            lat: parseFloat(String(lat)),
+            lng: parseFloat(String(lng))
+        };
+        coder.geocode({location: lnr}, (results, status) => {
+            if (status === 'OK') {
+                if (results[0]) {
+                    this.estasUbicacion = results[0].formatted_address;
+                } else {
+                }
+            } else {
+            }
+        });
+    }
+
+    getLatLong(e) {
+        // this.lat =
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+        // this.lng =
+        this.map.panTo([lat, lng]);
+        this.marker.setLatLng([lat, lng]);
+        this.gLatLng(lat, lng);
+    }
+
     loadMap() {
-        const lat = this.pedido.direccion.latitud;
-        const lng = this.pedido.direccion.longitud;
-        this.map = new Map("mapId").setView([lat, lng], 16);
-        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: ''}).addTo(this.map);
-        marker([lat, lng]).addTo(this.map)
+        // const lat = this.pedido.direccion.latitud;
+        // const lng = this.pedido.direccion.longitud;
+        // this.map = new Map("mapId").setView([lat, lng], 16);
+        // tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: ''}).addTo(this.map);
+        // marker([lat, lng]).addTo(this.map);
+
+        //    Cambio de logica
+
+        setTimeout(() => {
+            const lat = this.pedido.direccion.latitud;
+            const lng = this.pedido.direccion.longitud;
+            this.map = new Map("mapId").setView([lat, lng], 16);
+            tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: ''}).addTo(this.map);
+            // const myIcon = icon({iconUrl: 'https://ecoevents.blob.core.windows.net/comprandoando/marker.png', iconSize: [45, 41], iconAnchor: [13, 41],});
+            this.marker = marker([lat, lng], {draggable: true}).addTo(this.map);
+            this.marker.on("dragend", () => {
+                this.getLatLong({latlng: this.marker.getLatLng()});
+            });
+            setTimeout(() => {
+                this.local(lat, lng);
+            }, 500);
+        }, 500);
+    }
+
+
+    async local(lat, lng) {
+        this.map.panTo([lat, lng]);
+        this.marker.setLatLng([lat, lng]);
+        this.gLatLng(lat, lng);
     }
 
     private buscarNumeroRepartidor() {

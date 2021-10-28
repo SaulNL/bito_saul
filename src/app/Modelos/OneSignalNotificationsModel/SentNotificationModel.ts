@@ -13,6 +13,7 @@ export class SentNotificationModel {
     public headings: CommonOneSignalModel;
 
     constructor(isAndroid: boolean = false, isIos: boolean = false, content: CommonOneSignalModel, headings: CommonOneSignalModel, externalUsersId: Array<string>) {
+        // this.app_id = '93413f70-9fe9-4bf6-99a9-a634829c45ea';
         this.app_id = '34f925eb-ac86-4815-99a3-baa667457acb';
         this.channel_for_external_user_ids = 'push';
         this.large_icon = 'https://ecoevents.blob.core.windows.net/comprandoando/logos/Bitoo.png';

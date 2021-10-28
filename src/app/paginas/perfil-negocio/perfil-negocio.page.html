@@ -87,6 +87,10 @@
                                 <ion-icon name="bicycle-outline"></ion-icon>
                                 Entregas a Domicilio
                             </strong>
+                            <br>
+                            <span class="entrega-domicilio">Tiempo de entrega: {{informacionNegocio.tiempo_entrega_kilometro}}</span>
+                            <br>
+                            <span class="entrega-domicilio" *ngIf="costoMayorA(informacionNegocio.costo_entrega)">Costo de entrega: {{informacionNegocio.costo_entrega}}</span>
                         </ion-label>
                         <hr>
                         <ion-grid>

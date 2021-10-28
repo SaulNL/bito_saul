@@ -1122,4 +1122,10 @@ export class PerfilNegocioPage implements OnInit {
         this.servicioSub = true;
         this.negocioSub = true;
     }
+    public costoMayorA(costo) {
+         if(!isNaN(Number(costo)) && Number(costo) === 0) {
+             return false;
+         }
+         return true;
+    }
 }
