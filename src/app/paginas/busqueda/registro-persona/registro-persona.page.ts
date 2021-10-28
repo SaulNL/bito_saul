@@ -168,6 +168,7 @@ export class RegistroPersonaPage implements OnInit {
   }
   async loginAppleId(){
     try{
+      this.loader = true;
       this.signInWithApple.signin({
         requestedScopes: [
           ASAuthorizationAppleIDRequest.ASAuthorizationScopeFullName,
@@ -176,7 +177,6 @@ export class RegistroPersonaPage implements OnInit {
       })
           .then((res: AppleSignInResponse) => {
             if (res.email !== '' || res.email.length > 0){
-
               this.usuarioSistema.crearCuantaAdminApple(res).subscribe(
                   (response) => {
                     if (response.data.code === 200) {
@@ -194,15 +194,18 @@ export class RegistroPersonaPage implements OnInit {
                   }
               );
             }else{
+              this.loader = false;
               this.notificacion.alerta("La cuenta no se puede usar en este momento, intente más tarde");
             }
             console.log(JSON.stringify(res));
           })
           .catch((error: AppleSignInErrorResponse) => {
+            this.loader = false;
             this.notificacion.alerta("Se perdio la conexión con el servicio, Reintentar");
             console.error(JSON.stringify(error));
           });
     }catch (error){
+      this.loader = false;
       this.notificacion.alerta("Se perdio la conexión con el servicio, Reintentar");
     }
   }
