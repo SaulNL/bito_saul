@@ -163,7 +163,7 @@ export class AjustesPage implements OnInit {
     this.pedidos.noVistos(id).subscribe(
         res => {
           this.totalNoVistos = res.data;
-          this.siNoVistos = (res.data.length > 0);
+          this.siNoVistos = (res.data > 0);
         },
         () => {
         });

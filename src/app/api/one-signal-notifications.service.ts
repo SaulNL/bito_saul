@@ -10,8 +10,8 @@ export class OneSignalNotificationsService {
     constructor() {}
 
     inicialiceNotifications() {
-        // OneSignal.setAppId(AppSettings.APP_SIGNAL);
-        OneSignal.setAppId(AppSettings.APP_SIGNAL_BETA);
+        OneSignal.setAppId(AppSettings.APP_SIGNAL);
+        // OneSignal.setAppId(AppSettings.APP_SIGNAL_BETA);
         OneSignal.setNotificationOpenedHandler(function (jsonData) {
         });
         OneSignal.promptForPushNotificationsWithUserResponse(function (accepted) {

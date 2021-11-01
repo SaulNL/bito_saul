@@ -5,6 +5,7 @@ import {UtilsCls} from 'src/app/utils/UtilsCls';
 import {Auth0Service} from '../../api/busqueda/auth0.service';
 import {NavBarServiceService} from '../../api/busqueda/nav-bar-service.service';
 import {SideBarService} from '../../api/busqueda/side-bar-service';
+import {Platform} from "@ionic/angular";
 
 @Component({
     selector: 'app-toolbar-busqueda',
@@ -19,7 +20,7 @@ export class ToolbarBusquedaComponent implements OnInit {
     public permisos: Array<string>;
     public totalNoVistos: number;
     public pescar: boolean;
-
+    public isAndroid = false;
 
     constructor(
         private router: Router,
@@ -28,12 +29,14 @@ export class ToolbarBusquedaComponent implements OnInit {
         private sideBarService: SideBarService,
         private pedidosServicios: PedidosService,
         private _utils_cls: UtilsCls,
-        private active: ActivatedRoute
+        private active: ActivatedRoute,
+        private platform: Platform
     ) {
         this.totalNoVistos = 0;
         this.permisos = [];
         this.permisosList();
         this.pescar = false;
+        this.isAndroid = (this.platform.is('android'));
     }
 
     ngOnInit() {
@@ -62,7 +65,7 @@ export class ToolbarBusquedaComponent implements OnInit {
 
     searchItems(event) {
         if (event && event.key === 'Enter') {
-            this.pescar = true;
+            this.pescar = (this.isAndroid);
             this.showS();
             this.buscar();
         }
@@ -76,27 +79,32 @@ export class ToolbarBusquedaComponent implements OnInit {
     }
 
     showS() {
-        const slides = document.getElementsByClassName('searchbar-search-icon');
-        const slide = slides[0] as HTMLElement;
-        slide.style.display = "none";
+        if (this.isAndroid) {
+            const slides = document.getElementsByClassName('searchbar-search-icon');
+            const slide = slides[0] as HTMLElement;
+            slide.style.display = "none";
+        }
     }
 
     hiddenS() {
-        const slides = document.getElementsByClassName('searchbar-search-icon');
-        const slide = slides[0] as HTMLElement;
-        slide.style.display = "block";
+        if (this.isAndroid) {
+            const slides = document.getElementsByClassName('searchbar-search-icon');
+            const slide = slides[0] as HTMLElement;
+            slide.style.display = "block";
+        }
     }
 
     buscarParch(event: any) {
-
-        if ((event !== '' || event !== undefined) && event.length > 3) {
-            this.showS();
-            this.pescar = true;
-            this.buscar();
-        } else {
-            this.hiddenS();
-            this.pescar = false;
-            this.limpiar();
+        if (this.isAndroid) {
+            if ((event !== '' || event !== undefined) && event.length > 3) {
+                this.showS();
+                this.pescar = true;
+                this.buscar();
+            } else {
+                this.hiddenS();
+                this.pescar = false;
+                this.limpiar();
+            }
         }
     }
 
