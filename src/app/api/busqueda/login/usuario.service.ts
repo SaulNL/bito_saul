@@ -69,4 +69,17 @@ export class UsuarioService {
         return error;
     }));
   }
+
+  crearCuantaAdminApple(register_usuario): Observable<any> {
+    const body = JSON.stringify(register_usuario);
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/proveedoresUsuario/guardarUsuarioApple',body,
+        AppSettings.getHeaders())
+        .then((data) => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        }));
+  }
 }

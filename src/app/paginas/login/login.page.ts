@@ -88,12 +88,18 @@ export class LoginPage implements OnInit {
                 this.notification.error(response.notification);
                 break;
             case 'success':
-                if (typeof credentials.user.providerData[0].uid === "undefined" || credentials.user.providerData[0].uid == null) {
-                    this.loader = false;
-                    this.notification.error('Error en la comunicación, datos corruptos');
-                } else {
-                    const userCredentials = new Login(credentials.user.providerData[0].uid, credentials.user.email);
+                if(response.isAppleID){
+                    const userCredentials = new Login(credentials.user, credentials.email, 'apple');
+                    console.log(JSON.stringify(userCredentials));
                     this.login(userCredentials);
+                }else{
+                    if (typeof credentials.user.providerData[0].uid === "undefined" || credentials.user.providerData[0].uid == null) {
+                        this.loader = false;
+                        this.notification.error('Error en la comunicación, datos corruptos');
+                    } else {
+                        const userCredentials = new Login(credentials.user.providerData[0].uid, credentials.user.email);
+                        this.login(userCredentials);
+                    }
                 }
                 break;
         }

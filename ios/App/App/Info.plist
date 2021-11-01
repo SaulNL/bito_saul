@@ -39,13 +39,13 @@
 			</array>
 		</dict>
 		<dict>
-		    <key>CFBundleURLName</key>
-            <string>com.getcapacitor.capacitor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-            <string>capacitor</string>
-            </array>
-        </dict>
+			<key>CFBundleURLName</key>
+			<string>com.getcapacitor.capacitor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>capacitor</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
@@ -67,10 +67,14 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>To Take Photos and Video</string>
+	<key>NSContactsUsageDescription</key>
+	<string>This app require permission to access details</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Para mejorar sus resultados de busqueda, se requiere saber su ubicación</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Always allow Geolocation?</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Allow Geolocation?</string>
+	<string>Para mejorar sus resultados de busqueda, se requiere saber su ubicación</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>To Record Audio With Video</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

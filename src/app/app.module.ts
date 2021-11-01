@@ -25,6 +25,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { SignInWithApple} from '@ionic-native/sign-in-with-apple/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -43,7 +44,8 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
     Geolocation,
   { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy },
     Deeplinks,
-    OneSignal
+    OneSignal,
+    SignInWithApple,
 ],
   bootstrap: [AppComponent]
 })
