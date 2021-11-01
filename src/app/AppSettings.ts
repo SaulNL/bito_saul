@@ -1,13 +1,13 @@
 export class AppSettings {
 
-    public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
+    // public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
     // public static URL_REGISTRO = 'https://bitoo.com.mx/registro';
-    public static URL_FRONT = 'https://bitoo.com.mx/';
+    // public static URL_FRONT = 'https://bitoo.com.mx/';
     // public static URL_MOVIL = 'https://bitoo.com.mx/';
 
-    // public static API_ENDPOINT = 'https://beta-bitoo-back.azurewebsites.net/';
+    public static API_ENDPOINT = 'https://beta-bitoo-back.azurewebsites.net/';
     // public static URL_REGISTRO = 'https://beta-bitoo.azurewebsites.net/registro';
-    // public static URL_FRONT = 'https://beta-bitoo.azurewebsites.net/';
+    public static URL_FRONT = 'https://beta-bitoo.azurewebsites.net/';
     // public static URL_MOVIL = 'https://beta-bitoo.azurewebsites.net/';
 
     // public static API_ENDPOINT = 'https://dev-back-bitoo.azurewebsites.net/';
@@ -43,8 +43,8 @@ export class AppSettings {
     public static IOS_ID_BY_ANDROID = '315189899862-qtgalndbmc8ollkjft8lnpuboaqap8sa.apps.googleusercontent.com';
     // public static TOKEN = 'ZjA1Zjc0NmQtYmVlOC00MTc1LTlmYmQtMDI2ZTdhMTAxMDkz';
     // public static APP_SIGNAL = 'eb9d5e72-fe22-4d59-ab47-5328fd46ae55';
-    public static APP_SIGNAL = '34f925eb-ac86-4815-99a3-baa667457acb';
-    // public static APP_SIGNAL_BETA = '93413f70-9fe9-4bf6-99a9-a634829c45ea';
+    // public static APP_SIGNAL = '34f925eb-ac86-4815-99a3-baa667457acb';
+    public static APP_SIGNAL_BETA = '93413f70-9fe9-4bf6-99a9-a634829c45ea';
 
     public static getHeaders() {
         return {

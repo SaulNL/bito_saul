@@ -17,7 +17,8 @@ export class UsuarioSistemaModel {
 
     public old_password: string;
     public repeat_password: string;
-
+    public typeMessage: string;
+    public option: string;
     public codigo: string;
     public idCode: number;
     public medio: number | null;

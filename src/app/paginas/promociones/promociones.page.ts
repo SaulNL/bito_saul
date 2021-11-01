@@ -109,6 +109,7 @@ export class PromocionesPage implements OnInit {
         if (this.plazaAfiliacion != null) {
             this.anyFiltros.organizacion = this.plazaAfiliacion.id_organizacion;
         }
+        this.anyFiltros.typeGetOption = true;
         this._promociones.buscarPromocinesPublicadasModulo(this.anyFiltros)
             .subscribe(
                 (response) => {

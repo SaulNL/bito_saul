@@ -18,6 +18,7 @@ export class FiltrosModel {
     public organizacion: number | null;
     public id_persona: number;
     public user: any;
+    public typeGetOption;
     constructor(strBuscar: string = '',
                 intEstado: number = 0,
                 strMunicipio: string = '',
@@ -36,6 +37,7 @@ export class FiltrosModel {
         this.strBuscar = strBuscar;
         this.intEstado = intEstado;
         this.strMunicipio = strMunicipio;
+        this.typeGetOption = false;
         this.kilometros = kilometros;
         this.latitud = latitud;
         this.longitud = longitud;

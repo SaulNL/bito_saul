@@ -35,6 +35,7 @@ export class RegistroPersonaPage implements OnInit {
   public blnTelefono: boolean;
   public blnCorreo: boolean;
   private medio: number | null;
+  public message: string;
   constructor(
     private router: Router,
     private active: ActivatedRoute,
@@ -53,6 +54,7 @@ export class RegistroPersonaPage implements OnInit {
     this.loader = false;
     this.blnCorreo = true;
     this.blnTelefono = true;
+    this.message = 'SMS';
     //   this.condiciones_servicio = false;
     // @ts-ignore
     //registerWebPlugin(FacebookLogin);
@@ -70,6 +72,9 @@ export class RegistroPersonaPage implements OnInit {
   }
   confirmacionRegistro(formRegistroPersona: NgForm) {
     this.usuario_sistema.medio = this.medio;
+    // a tu celular
+    this.usuario_sistema.typeMessage = (this.blnTelefono) ? 'sms a tu celular' : this.message;
+    this.usuario_sistema.option = (this.blnTelefono) ? 'número celular' : 'correo';
     let navigationExtras = JSON.stringify(this.usuario_sistema);
     this.router.navigate(["/tabs/registro-persona/confirma-registro"], {
       queryParams: { special: navigationExtras },
@@ -294,18 +299,22 @@ export class RegistroPersonaPage implements OnInit {
   }
   public obtenerCorreo(evento: any) {
     if ((evento !== '' || evento !== undefined) && evento.length >= 1) {
+      this.message = 'correo';
       this.blnTelefono = false;
       this.medio = 2;
     } else {
       this.blnTelefono = true;
+      this.message = 'SMS';
     }
   }
   public obtenerNumeroCelular(evento: any) {
     if ((evento !== '' || evento !== undefined) && evento.length === 10) {
       this.blnCorreo = false;
       this.medio = 1;
+      this.message = 'SMS';
     } else {
       this.blnCorreo = true;
+      this.message = 'correo';
     }
   }
 

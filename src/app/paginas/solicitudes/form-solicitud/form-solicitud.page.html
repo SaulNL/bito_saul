@@ -83,7 +83,7 @@
           </ion-item>
           <ion-item *ngIf="mostrarAfiliacion">
             <ion-label position="stacked">Mostrar requerimiento de compra solo para:</ion-label>
-            <ion-select placeholder="{{ tipoOrg }}" name="organizaciones" required #organizaciones="ngModel"
+            <ion-select placeholder="{{ tipoOrg }}" name="organizaciones" #organizaciones="ngModel"
               ok-text="Ok" cancel-text="Cancelar" [(ngModel)]="actualTO.organizaciones" multiple>
               <ng-container *ngFor="let item of lstOrganizaciones">
                 <ion-select-option [value]="item.id_organizacion">{{item.nombre}}
