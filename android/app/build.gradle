@@ -6,8 +6,8 @@ android {
         applicationId "mx.com.softura.bitoo.produccion"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
-        versionName '6.7'
+        versionCode 17
+        versionName '6.8'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
