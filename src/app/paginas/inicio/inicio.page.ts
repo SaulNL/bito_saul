@@ -51,8 +51,9 @@ export class InicioPage implements OnInit {
   public persona: number | null;
   public permisos: Array<PermisoModel> | null;
   public afiliacion: boolean;
-  public byLogin : boolean;
+  public byLogin: boolean;
   public isIOS: boolean = false;
+  public subscribe;
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -80,37 +81,68 @@ export class InicioPage implements OnInit {
     this.tFiltro = false;
     this.afiliacion = false;
     this.isIOS = this.platform.is('ios');
+
+    this.route.queryParams.subscribe((params) => {
+      this.subscribe = this.platform.backButton.subscribe(() => {
+        this.backPhysicalBottom();
+      });
+    });
   }
+
+  public backPhysicalBottom() {
+    const option = localStorage.getItem('filter');
+    if (option !== null) {
+      this.Filtros = new FiltrosModel();
+      this.Filtros.idEstado = 29;
+      /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
+      this.filtroActivo = false;
+      localStorage.removeItem('filter');
+      localStorage.setItem('isRedirected', 'false');
+      this.ruta.navigate(['/tabs/categorias']);
+    }
+  }
+
   ngOnInit(): void {
-     this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(
+      params => {
+        if (params.buscarNegocios && params) {
+          this.load();
+        }
+      }
+    );
+
+    this.route.queryParams.subscribe(params => {
       if (params.byLogin && params) {
         this.negocioRutaByLogin(params.byLogin);
       }
     });
+
+    this.user = this.util.getUserData();
+    this.eventosServicios.eventBuscar().subscribe((data) => {
+      this.buscarNegocios();
+    });
+    this.load();
+  }
+
+  private load() {
     const selected = localStorage.getItem('org');
     if (selected != null) {
       this.selectionAP = true;
       this.objectSelectAfiliacionPlaza = JSON.parse(String(localStorage.getItem('org')));
     }
-    this.user = this.util.getUserData();
-    this.eventosServicios.eventBuscar().subscribe((data) => {
-      this.buscarNegocios();
-    });
     this.buscarNegocios();
-
     if (this.util.existSession()) {
       this.persona = this.util.getIdPersona();
       this.permisos = this.auth0Service.getUserPermisos();
       this.afiliacion = this.validarPermiso.isChecked(this.permisos, 'ver_afiliacion');
     }
   }
-
   /**
    * Scroll
    * @author Omar
    */
   scrollToTop() {
-    this.content.scrollToTop(500).then(r => {});
+    this.content.scrollToTop(500).then(r => { });
   }
 
   public recargar(event: any) {
@@ -292,13 +324,8 @@ export class InicioPage implements OnInit {
       this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
     }
   }
-  negocioRutaByLogin(url){
-    if (url == "") {
-      this.notificaciones.error(
-        "Este negocio aún no cumple los requisitos mínimos"
-      );
-    } else {
-      this.ruta.navigate(["/tabs/negocio/" + url]);
-    }
+  negocioRutaByLogin(url: string) {
+    localStorage.setItem("isRedirected", "false");
+    this.ruta.navigate(["/tabs/negocio/" + url]);
   }
 }

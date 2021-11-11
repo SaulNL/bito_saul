@@ -1,18 +1,18 @@
-import {OptionBackLogin} from '../../Modelos/OptionBackLoginModel';
-import {Component, OnInit} from "@angular/core";
-import {Login} from "../../Modelos/login";
-import {LoginService} from "../../api/login.service";
-import {AppSettings} from "../../AppSettings";
-import {Location} from "@angular/common";
-import {SessionUtil} from "../../utils/sessionUtil";
-import {SideBarService} from "../../api/busqueda/side-bar-service";
-import {ModalController, Platform} from "@ionic/angular";
-import {Router, ActivatedRoute} from "@angular/router";
-import {ToadNotificacionService} from "../../api/toad-notificacion.service";
-import {RecuperarContraseniaPage} from "./recuperar-contrasenia/recuperar-contrasenia.page";
-import {Subscription} from "rxjs";
-import {ResponderLogin} from "../../Modelos/ResponderLogin";
-import {OneSignalNotificationsService} from "../../api/one-signal-notifications.service";
+import { OptionBackLogin } from '../../Modelos/OptionBackLoginModel';
+import { Component, OnInit } from "@angular/core";
+import { Login } from "../../Modelos/login";
+import { LoginService } from "../../api/login.service";
+import { AppSettings } from "../../AppSettings";
+import { Location } from "@angular/common";
+import { SessionUtil } from "../../utils/sessionUtil";
+import { SideBarService } from "../../api/busqueda/side-bar-service";
+import { ModalController, Platform } from "@ionic/angular";
+import { Router, ActivatedRoute } from "@angular/router";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { RecuperarContraseniaPage } from "./recuperar-contrasenia/recuperar-contrasenia.page";
+import { Subscription } from "rxjs";
+import { ResponderLogin } from "../../Modelos/ResponderLogin";
+import { OneSignalNotificationsService } from "../../api/one-signal-notifications.service";
 
 @Component({
     selector: "app-login",
@@ -88,11 +88,11 @@ export class LoginPage implements OnInit {
                 this.notification.error(response.notification);
                 break;
             case 'success':
-                if(response.isAppleID){
+                if (response.isAppleID) {
                     const userCredentials = new Login(credentials.user, credentials.email, 'apple');
                     console.log(JSON.stringify(userCredentials));
                     this.login(userCredentials);
-                }else{
+                } else {
                     if (typeof credentials.user.providerData[0].uid === "undefined" || credentials.user.providerData[0].uid == null) {
                         this.loader = false;
                         this.notification.error('Error en la comunicación, datos corruptos');
@@ -122,6 +122,7 @@ export class LoginPage implements OnInit {
                     const optionEnterLogin = localStorage.getItem('optionLogin');
                     this.signal.setUserExternal();
                     if (optionEnterLogin != null) {
+                        this.returnToLocation = JSON.parse(String(optionEnterLogin));
                         this.goToRoute(this.returnToLocation.url);
                     } else {
                         window.location.assign("/tabs/inicio");
@@ -142,7 +143,7 @@ export class LoginPage implements OnInit {
     }
 
     private goToRoute(url) {
-        this.route.navigate([["/tabs/inicio"]], {queryParams: {byLogin: url}});
+        this.route.navigate(["/tabs/inicio"], { queryParams: { byLogin: url } });
     }
 
     async recoverPassword() {
@@ -157,6 +158,8 @@ export class LoginPage implements OnInit {
     }
 
     public backPhysicalBottom() {
+        const optionEnterLogin = localStorage.getItem('optionLogin');
+        this.returnToLocation = JSON.parse(String(optionEnterLogin));
         switch (this.returnToLocation.type) {
             case 'producto':
                 this.location.back();

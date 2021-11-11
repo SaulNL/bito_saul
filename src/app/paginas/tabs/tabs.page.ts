@@ -1,9 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {UtilsCls} from "../../utils/UtilsCls";
-import {SideBarService} from "../../api/busqueda/side-bar-service";
-import {Auth0Service} from "../../api/busqueda/auth0.service";
-import {Router} from "@angular/router";
-import {InicioPage} from "../inicio/inicio.page";
+import { Component, OnInit } from '@angular/core';
+import { UtilsCls } from "../../utils/UtilsCls";
+import { SideBarService } from "../../api/busqueda/side-bar-service";
+import { Auth0Service } from "../../api/busqueda/auth0.service";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-tabs',
@@ -12,19 +11,17 @@ import {InicioPage} from "../inicio/inicio.page";
     providers: [
         UtilsCls,
         SideBarService,
-        Auth0Service,
-        InicioPage
+        Auth0Service
     ]
 })
-export class TabsPage implements OnInit{
+export class TabsPage implements OnInit {
     existeSesion: boolean
     usuario: any
 
     constructor(
         private util: UtilsCls,
         private sideBarService: SideBarService,
-        private router:Router,
-        private inicioPage: InicioPage,
+        private router: Router,
         private auth0: Auth0Service
     ) {
         this.existeSesion = util.existe_sesion();
@@ -36,7 +33,7 @@ export class TabsPage implements OnInit{
         });
         this.sideBarService.change.subscribe(isOpen => {
             this.usuario = this.auth0.getUserData();
-          })
+        })
         this.usuario = this.util.getData();
 
 
@@ -44,8 +41,7 @@ export class TabsPage implements OnInit{
 
     inicio() {
         // localStorage.setItem('isRedirected', 'false');
-        this.router.navigate(['/tabs/inicio']);
-        this.inicioPage.buscarNegocios();
+        this.router.navigate(['/tabs/inicio'], { queryParams: { buscarNegocios: 'buscar' } });
         localStorage.setItem('resetFiltro', '0');
     }
 
@@ -54,23 +50,23 @@ export class TabsPage implements OnInit{
         this.router.navigate(['/tabs/promociones']);
         localStorage.setItem('resetFiltro', '0');
     }
-    solicitudes(){
+    solicitudes() {
         this.router.navigate(['/tabs/mis-favoritos']);
         // this.router.navigate(['/tabs/home/solicitud']);
     }
 
     productos() {
         localStorage.setItem('isRedirected', 'false');
-         this.router.navigate(['/tabs/productos']);
-         localStorage.setItem('resetFiltro', '0');
+        this.router.navigate(['/tabs/productos']);
+        localStorage.setItem('resetFiltro', '0');
 
     }
-    perfil(){
+    perfil() {
         localStorage.setItem('isRedirected', 'false');
         localStorage.setItem('resetFiltro', '0');
-        this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
+        this.router.navigate(['/tabs/home/perfil'], { queryParams: { special: true } });
     }
-    login(){
+    login() {
         localStorage.setItem('isRedirected', 'false');
         this.router.navigate(['/tabs/login']);
     }

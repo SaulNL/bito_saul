@@ -57,14 +57,15 @@ export class CategoriasPage implements OnInit {
       response=>{
         this.listaCategorias=response.data;
     },error=>{
-      
+
     });
   }
 
   seleccionarCategoria(subCategoria){
     localStorage.setItem('seleccionado', JSON.stringify(subCategoria));
     localStorage.removeItem('busqueda');
-    this.router.navigate(['/tabs/inicio']);
+    localStorage.setItem('filter', 'true');
+    this.router.navigate(["/tabs/inicio"]);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 

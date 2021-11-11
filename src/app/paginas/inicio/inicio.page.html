@@ -11,12 +11,6 @@
     <app-spinner [loader]="loader" [message]="msj"></app-spinner>
     <div *ngIf="!loader">
         <ion-item>
-            <ion-buttons *ngIf=" filtroActivo" slot="start">
-                <ion-chip (click)="borrarFiltros()" color="danger">
-                    <ion-icon name="trash-outline" color="danger"></ion-icon>
-                    <ion-label>Borrar Filtros</ion-label>
-                </ion-chip>
-            </ion-buttons>
             <ion-buttons *ngIf="!selectionAP">
                 <ion-button (click)="openPlazasAfiliacionesModal()">
                     Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span>
@@ -29,7 +23,13 @@
                     <ion-label>Regresar a bitoo</ion-label>
                 </ion-chip>
             </ion-buttons>
-            <ion-buttons slot="end">
+            <ion-buttons *ngIf="filtroActivo" slot="end">
+                <ion-chip (click)="borrarFiltros()" color="danger">
+                    <ion-icon name="trash-outline" color="danger"></ion-icon>
+                    <ion-label>Borrar Filtros</ion-label>
+                </ion-chip>
+            </ion-buttons>
+            <ion-buttons slot="end" *ngIf="!filtroActivo">
                 <ion-button (click)="abrirFiltros()">Filtrar
                     <ion-icon name="filter-outline"></ion-icon>
                 </ion-button>
