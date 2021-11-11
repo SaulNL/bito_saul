@@ -1,8 +1,13 @@
+import { AppSettings } from './../../../../AppSettings';
+import { CommonOneSignalModel } from './../../../../Modelos/OneSignalNotificationsModel/CommonOneSignalModel';
+import { NegocioService } from './../../../../api/negocio.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { SentPushNotificationService } from './../../../../api/sent-push-notification.service';
 import { PedidosService } from '../../../../api/pedidos.service';
 import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
+import { SentNotificationModel } from './../../../../Modelos/OneSignalNotificationsModel/SentNotificationModel';
 
 @Component({
   selector: 'app-datos-pedido-dialog',
@@ -16,12 +21,15 @@ export class DatosPedidoDialogPage implements OnInit {
   public total: number;
   public domicilioEnvio: boolean;
   public domicilioEnvioMessage: any;
+  public idNegocio: string;
   constructor(
     private pedidosServicios: PedidosService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private notificaciones: ToadNotificacionService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private negocioService: NegocioService,
+    private sentPushNotificationService: SentPushNotificationService
   ) {
     this.total = 0;
     this.domicilioEnvio = false;
@@ -33,12 +41,13 @@ export class DatosPedidoDialogPage implements OnInit {
       if (params && params.special) {
         const body = JSON.parse(params.special);
         this.pedido = body.pedido;
+        this.idNegocio = body.negocio.id_negocio;
         this.pedido.productos.forEach(element => {
           this.total += Number(element.costo);
         });
         if (this.pedido.id_tipo_pedido === 2) {
           this.domicilioEnvio = true;
-          this.textoDomicilio(body.precioEntrega);
+          this.textoDomicilio(body.negocio.precioEntrega);
         }
       }
     });
@@ -61,7 +70,7 @@ export class DatosPedidoDialogPage implements OnInit {
         pedido.estatus = respuesta.data.estatus;
         pedido.color = respuesta.data.color;
         pedido.motivo = respuesta.data.motivo;
-        this.blnCancelar = false;
+        this.sendNotification(this.idNegocio, this.motivo);
         this.notificaciones.exito(respuesta.message);
       },
       error => {
@@ -93,6 +102,37 @@ export class DatosPedidoDialogPage implements OnInit {
     } else {
       this.domicilioEnvioMessage = '+ $' + temp + 'pesos del envio';
     }
-    
   }
+
+  private sendNotification(idNegocio: string, motivo: string) {
+    this.negocioService.obtenerIdUsuarioByNegocio(idNegocio).subscribe(
+      response => {
+        this.sentPushNotificationService.getTkn().subscribe(
+          res => {
+            let content = new CommonOneSignalModel('El pedido fue cancelado por el usuario por el motivo de : ' + motivo);
+            let headings = new CommonOneSignalModel('Pedido Cancelado');
+            let sentNotification = new SentNotificationModel(content, headings, [String(response.data.usuario)], res.data.api); /* Produccion */
+            // let sentNotification = new SentNotificationModel(content, headings, [String(response.data.usuario)], AppSettings.ONE_SIGNAL); /* Desarrollo Local*/
+            this.sentPushNotificationService.sentNotification(sentNotification, res.data.tkn).subscribe( /* Produccion */
+            // this.sentPushNotificationService.sentNotification(sentNotification).subscribe(  /* Desarrollo Loca*/
+              () => {
+                this.blnLoaderFalse();
+              }, () => {
+                this.blnLoaderFalse();
+              }
+            );
+          }, () => {
+            this.blnLoaderFalse();
+          }
+        );
+      }, () => {
+        this.blnLoaderFalse();
+      }
+    );
+  }
+  private blnLoaderFalse() {
+    this.blnCancelar = false;
+  }
+
+
 }

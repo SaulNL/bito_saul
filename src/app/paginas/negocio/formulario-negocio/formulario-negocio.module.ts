@@ -1,3 +1,4 @@
+import { SolicitarCambioUrlComponent } from './../../../componentes/solicitar-cambio-url/solicitar-cambio-url.component';
 import { SpinnerModule } from './../../../componentes/spinner/spinner.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -19,6 +20,6 @@ import {TabsPageModule} from '../../tabs/tabs.module';
         TabsPageModule,
         SpinnerModule
     ],
-  declarations: [FormularioNegocioPage]
+  declarations: [FormularioNegocioPage, SolicitarCambioUrlComponent]
 })
 export class FormularioNegocioPageModule {}

@@ -48,6 +48,7 @@
                 <small class="d-block">Celular: {{pedido.persona.celular}}</small>
                 <small class="d-block">Correo: {{pedido.persona.correo}}</small>
                 <small *ngIf="pedido.id_tipo_pedido === 1" class="d-block">Numero de mesa: {{pedido.mesa}}</small>
+                <small *ngIf="pedido.id_tipo_pedido === 2" class="d-block">Dirección: {{pedido.direccion.direccion}}</small>
               </div>
             </div>
           </ion-col>
@@ -77,11 +78,10 @@
           </ion-col>
           <ion-col>
             <div class="ion-text-center">
-              <small *ngIf="producto.observaciones === null || producto.observaciones === ''">
+              <small *ngIf="pedido.detalle === null">
                 Sin observaciones
               </small>
-              <small
-                *ngIf="producto.observaciones !== null && producto.observaciones !== ''">{{producto.observaciones}}</small>
+              <small *ngIf="pedido.detalle !== null">{{pedido.detalle}}</small>
             </div>
           </ion-col>
         </ion-row>
@@ -91,10 +91,10 @@
       <ion-label>Total : ${{total}}  <span *ngIf="domicilioEnvio">{{domicilioEnvioMessage}}</span></ion-label>
     </ion-item>
     <div *ngIf="!blnCancelar">
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2 && pedido.id_tipo_pedido === 2"
-        href="https://api.whatsapp.com/send?phone=+52{{numeroSolicitud}}" target="_blank" color="primary">
-        <ion-icon name="logo-whatsapp"></ion-icon> Solicitar repartidor
-      </ion-button>
+      <!--      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2 && pedido.id_tipo_pedido === 2"-->
+      <!--        href="https://api.whatsapp.com/send?phone=+52{{numeroSolicitud}}" target="_blank" color="primary">-->
+      <!--        <ion-icon name="logo-whatsapp"></ion-icon> Solicitar repartidor-->
+      <!--      </ion-button>-->
       <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="cancelar()" [disabled]="loaderBtn"
         color="light">Cancelar</ion-button>
       <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 1" (click)="perpararPedido(pedido)" color="danger"
@@ -102,16 +102,12 @@
         Preparar
       </ion-button>
 
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2 && pedido.id_tipo_pedido === 2"
-        (click)="enviarPedido(pedido)" [disabled]="loaderBtn" color="danger"> Enviar
-      </ion-button>
-
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2 && pedido.id_tipo_pedido !== 2"
-        (click)="enviarPedido(pedido)" [disabled]="loaderBtn" color="danger"> Preparando
+      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2"
+        (click)="enviarPedido(pedido)" [disabled]="loaderBtn" color="danger"> {{ typeSendMessage(pedido.id_tipo_pedido) }}
       </ion-button>
 
       <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 3" (click)="entregarPedido(pedido)"
-        [disabled]="loaderBtn" color="danger"> Entregado
+        [disabled]="loaderBtn" color="danger"> Cerrar Venta
       </ion-button>
       <!-- <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 4">
         <ion-icon name="checkmark-circle-outline" [style]="{'color': pedido.color}"></ion-icon><span> Pedido entregado</span>

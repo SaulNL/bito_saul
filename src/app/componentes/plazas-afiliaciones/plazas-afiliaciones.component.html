@@ -11,7 +11,13 @@
 <ion-content fullscreen>
     <ion-card>
         <ion-card-header>
-            <ion-item lines="none" (click)="shPlaza(showHidenPlaza)" class="fondo-buttom-border">
+            <ion-item *ngIf="!loaderPlz">
+                <ion-label>
+                    <p>Plazas</p>
+                </ion-label>
+                <ion-spinner slot="end" class="spinner-color"></ion-spinner>
+            </ion-item>
+            <ion-item *ngIf="loaderPlz" lines="none" (click)="shPlaza(showHidenPlaza)" class="fondo-buttom-border">
                 <ion-label>
                     <p>Plazas</p>
                 </ion-label>
@@ -37,7 +43,13 @@
     </ion-card>
     <ion-card *ngIf="afiliacion">
         <ion-card-header>
-            <ion-item lines="none" (click)="shAfiliacion(showHidenAfiliacion)" class="fondo-buttom-border">
+            <ion-item *ngIf="!loaderOrg">
+                <ion-label>
+                    <p>Afiliaciones</p>
+                </ion-label>
+                <ion-spinner *ngIf="!loaderOrg" class="spinner-color"></ion-spinner>
+            </ion-item>
+            <ion-item *ngIf="loaderOrg" lines="none" (click)="shAfiliacion(showHidenAfiliacion)" class="fondo-buttom-border">
                 <ion-label>
                     <p>Afiliaciones</p>
                 </ion-label>

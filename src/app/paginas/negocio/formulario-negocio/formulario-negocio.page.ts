@@ -1,3 +1,4 @@
+import { SolicitarCambioUrlComponent } from './../../../componentes/solicitar-cambio-url/solicitar-cambio-url.component';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
@@ -466,7 +467,10 @@ export class FormularioNegocioPage implements OnInit {
      * @author Omar
      */
   confirmarUrlNegocio(evento, entrada = 1) {
-    let cadena = '';
+    console.log(this.negocioTO.id_negocio);
+    // if(isNaN(this.negocioTO.id_negocio)){
+    if(this.negocioTO.id_negocio === null){
+      let cadena = '';
     if (entrada === 2) {
       cadena = evento.detail.value;
     }
@@ -486,6 +490,7 @@ export class FormularioNegocioPage implements OnInit {
       );
       clearTimeout(this.controladorTiempo);
     }, 1000);
+    }
   }
 
   entregasDomicilio(evento) {
@@ -918,5 +923,14 @@ export class FormularioNegocioPage implements OnInit {
     return (dias.length > 0) ? contacto : true;
   }
 
-
+  async solicitarCambioUrl() {
+    const modal = await this.modalController.create({
+      component: SolicitarCambioUrlComponent,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        idNegocio: this.negocioTO.id_negocio
+      }
+    });
+    await modal.present();
+  }
 }

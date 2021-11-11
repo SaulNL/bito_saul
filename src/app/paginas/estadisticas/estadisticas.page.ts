@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {NegocioModel} from '../../Modelos/NegocioModel';
 import {NegocioService} from '../../api/negocio.service';
 import {ActionSheetController, IonContent, ModalController} from '@ionic/angular';
-import {ComentariosNegocioComponent} from '../../componentes/comentarios-negocio/comentarios-negocio.component';
 import {EstadisticasComponent} from '../../componentes/estadisticas/estadisticas.component';
 
 @Component({
@@ -44,7 +43,7 @@ export class EstadisticasPage implements OnInit {
         for (let index = 0; index < this.datosRoles.length; index++) {
             if (this.datosRoles[index].id_rol === 1) {
                 this.rol = 1;
-                
+
             }
         }
     }

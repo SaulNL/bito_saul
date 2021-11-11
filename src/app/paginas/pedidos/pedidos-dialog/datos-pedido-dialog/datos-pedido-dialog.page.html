@@ -57,11 +57,8 @@
           </ion-col>
           <ion-col>
             <div class="ion-text-center">
-              <small *ngIf="producto.observaciones === null || producto.observaciones === ''">
-                Sin observaciones
-              </small>
-              <small
-                *ngIf="producto.observaciones !== null && producto.observaciones !== ''">{{producto.observaciones}}</small>
+              <small *ngIf="pedido.detalle === null"> Sin observaciones </small>
+              <small *ngIf="pedido.detalle !== null">{{pedido.detalle}}</small>
             </div>
           </ion-col>
         </ion-row>

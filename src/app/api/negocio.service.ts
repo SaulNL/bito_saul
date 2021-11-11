@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {AppSettings} from '../AppSettings';
-import {Observable, from} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {DatosNegocios} from '../Modelos/DatosNegocios';
-import {NegocioModel} from '../Modelos/NegocioModel';
-import {HTTP} from '@ionic-native/http/ngx';
-import {FiltroEstadisticaModel} from '../Modelos/FiltroEstadisticaModel';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { AppSettings } from '../AppSettings';
+import { Observable, from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { DatosNegocios } from '../Modelos/DatosNegocios';
+import { NegocioModel } from '../Modelos/NegocioModel';
+import { HTTP } from '@ionic-native/http/ngx';
+import { FiltroEstadisticaModel } from '../Modelos/FiltroEstadisticaModel';
 
 @Injectable({
     providedIn: 'root'
@@ -22,7 +22,7 @@ export class NegocioService {
     url = `${AppSettings.API_ENDPOINT}`;
 
     obteneretalleNegocio(negocioo: string, persona: any): Observable<any> {
-        const body = JSON.stringify({negocio: negocioo, id_persona: persona});
+        const body = JSON.stringify({ negocio: negocioo, id_persona: persona });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + '/proveedor/obtener/detalleNegocio',
@@ -36,7 +36,7 @@ export class NegocioService {
     }
 
     public obtenerDetalleDeNegocio(negocio: number, tip, persona): Observable<any> {
-        const body = JSON.stringify({id_negocio: negocio, tipo: tip, id_persona: persona});
+        const body = JSON.stringify({ id_negocio: negocio, tipo: tip, id_persona: persona });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/lista/producto/negocio',
@@ -50,7 +50,7 @@ export class NegocioService {
     }
 
     misNegocios(id: number): Observable<any> {
-        const body = JSON.stringify({id_proveedor: id});
+        const body = JSON.stringify({ id_proveedor: id });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/buscar/mis-negocios',
@@ -64,7 +64,7 @@ export class NegocioService {
     }
 
     misNegociosEstadisticas(proveedor: number, rol: number): Observable<any> {
-        const body = JSON.stringify({id_proveedor: proveedor, id_rol: rol});
+        const body = JSON.stringify({ id_proveedor: proveedor, id_rol: rol });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/buscar/mis-negocios/estadisticas',
@@ -78,7 +78,7 @@ export class NegocioService {
     }
 
     buscarProductosServios(id: number, tipo: number): Observable<any> {
-        const body = JSON.stringify({id_negocio: id, tipo: tipo});
+        const body = JSON.stringify({ id_negocio: id, tipo: tipo });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/lista/producto/negocio',
@@ -106,7 +106,7 @@ export class NegocioService {
     }
 
     obtenerNumMaxProductos(idNegocio): Observable<any> {
-        const body = JSON.stringify({id: idNegocio});
+        const body = JSON.stringify({ id: idNegocio });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/negocio/numero/max/productos',
@@ -176,7 +176,7 @@ export class NegocioService {
     }
 
     buscarNegocio(idNegocio: any): Observable<any> {
-        const body = JSON.stringify({id: idNegocio});
+        const body = JSON.stringify({ id: idNegocio });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/buscar/negocio',
@@ -189,8 +189,26 @@ export class NegocioService {
             }));
     }
 
+    getUrlNegocioById(id: number) {
+        const body = JSON.stringify({ idNegocio: id });
+        this._http.setDataSerializer('utf8');
+        return from(
+            this._http.post(
+                this.url + 'api/service/urlNegocios', body, AppSettings.getHeaders()
+            ).then(
+                (data) => {
+                    return JSON.parse(data.data);
+                }
+            ).catch(
+                (error) => {
+                    return error;
+                }
+            )
+        );
+    }
+
     obtenerComentariosNegocio(idNegocio: number): Observable<any> {
-        const body = JSON.stringify({id_negocio: idNegocio});
+        const body = JSON.stringify({ id_negocio: idNegocio });
 
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
@@ -206,7 +224,7 @@ export class NegocioService {
 
 
     categoriaPrincipal(id: number): Observable<any> {
-        const body = JSON.stringify({id_tipo_negocio: id});
+        const body = JSON.stringify({ id_tipo_negocio: id });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/servicio/tipoProductoServicio',
@@ -220,7 +238,7 @@ export class NegocioService {
     }
 
     obtenerCategorias(id: any): Observable<any> {
-        const body = JSON.stringify({id_giro: id});
+        const body = JSON.stringify({ id_giro: id });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'buscar/giro/categorias',
@@ -272,7 +290,7 @@ export class NegocioService {
      * @author Omar
      */
     verificarUrlNegocio(url_negocio: string): Observable<any> {
-        const body = JSON.stringify({url_negocio: url_negocio});
+        const body = JSON.stringify({ url_negocio: url_negocio });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/negocio/verificar_url',
@@ -300,7 +318,7 @@ export class NegocioService {
     }
 
     activarDesactivar(id_negocio: number, cambio: boolean): Observable<any> {
-        const body = JSON.stringify({negocio: id_negocio, valor: cambio});
+        const body = JSON.stringify({ negocio: id_negocio, valor: cambio });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/negocio/activar-desactivar',
@@ -328,7 +346,7 @@ export class NegocioService {
     }
 
     enviarMensajePedido(telefono_usuario: number, id_negocio: number): Observable<any> {
-        const body = JSON.stringify({telefono_usuario: telefono_usuario, id_negocio: id_negocio});
+        const body = JSON.stringify({ telefono_usuario: telefono_usuario, id_negocio: id_negocio });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/proveedor/enviar_mensaje_pedido',
@@ -359,7 +377,7 @@ export class NegocioService {
      * Funcion para guardar quien vio mi negocio por qr
      */
     visteMiNegocioQr(id_negocio: number): Observable<any> {
-        const body = JSON.stringify({id_negocio: id_negocio});
+        const body = JSON.stringify({ id_negocio: id_negocio });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/negocio/guardar/viste_mi_negocio_qr',
@@ -376,7 +394,7 @@ export class NegocioService {
      * Funcion para guardar quien vio mi negocio
      */
     visteMiNegocio(id_negocio: number): Observable<any> {
-        const body = JSON.stringify({id_negocio: id_negocio});
+        const body = JSON.stringify({ id_negocio: id_negocio });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/negocio/guardar/viste_mi_negocio',
@@ -393,7 +411,7 @@ export class NegocioService {
      * Funcion para guardar quien vio mi negocio
      */
     obtenerIdNegocioUrl(url_negocio: string): Observable<any> {
-        const body = JSON.stringify({url_negocio: url_negocio});
+        const body = JSON.stringify({ url_negocio: url_negocio });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/negocio/negocio_url',
@@ -408,7 +426,7 @@ export class NegocioService {
 
     public obtenerIP(): Observable<any> {
         let datos = from(this._http.get('https://api.ipify.org?format=json', {},
-            {'Content-Type': 'application/json'})
+            { 'Content-Type': 'application/json' })
             .then(data => {
                 return JSON.parse(data.data);
             })
@@ -437,7 +455,7 @@ export class NegocioService {
 
 
     solicitarValidacionNegocio(idNegocio: any): Observable<any> {
-        const body = JSON.stringify({id_negocio: idNegocio});
+        const body = JSON.stringify({ id_negocio: idNegocio });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/validar/validacionNegocio',
@@ -549,7 +567,7 @@ export class NegocioService {
     }
 
     obtenerIdUsuarioByNegocio(negocio: string): Observable<any> {
-        const body = JSON.stringify({id_negocio: negocio});
+        const body = JSON.stringify({ id_negocio: negocio });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(this.url + 'api/negocio/information/proveedor', body, AppSettings.getHeadersToken())
             .then((data) => {

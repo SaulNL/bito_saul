@@ -110,9 +110,9 @@ export class ModalInfoSolicitudComponent implements OnInit {
     this.postulacionModel.idSolicitud = this.seleccionTO.id_solicitud;
     this.servicioSolicitudes.enviarPostulacion(this.postulacionModel).subscribe(
       response => {
-        this.loaderPostular = false;
         this._notificacionService.exito(response.message);
         this.dismiss();
+        this.loaderPostular = false;
       },
       error => {
       },

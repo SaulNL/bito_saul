@@ -105,16 +105,12 @@
         </ion-chip>
       </ng-template>
     </ion-row>
-    <ion-card-content *ngIf="!existeSesion" class="ion-text-center">
-      Inicia sesión para poder ir a la información de este negocio
-      <ion-button expand="block" (click)="login()"> Iniciar Sesión</ion-button>
-    </ion-card-content>
-    <label *ngIf="existeSesion" class="negocio">
+    <label class="negocio">
       <p>Vendido por</p>
       <ion-icon class="iconoss" slot="end" name="open-outline"></ion-icon>
     </label>
     <hr />
-    <ion-item *ngIf="existeSesion && informacionNegocio != undefined" (click)="verMas(unoProducto)">
+    <ion-item  (click)="verMas(unoProducto)">
       <label> {{ informacionNegocio.nombre_comercial }}  </label>
       <ion-icon slot="end" class="blanco" name="storefront-outline"></ion-icon>
     </ion-item>

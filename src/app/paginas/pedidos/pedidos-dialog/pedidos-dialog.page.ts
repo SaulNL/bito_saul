@@ -78,10 +78,6 @@ export class PedidosDialogPage implements OnInit {
         (res) => {
           //this.loader = false;
           this.listaNegocioPedididos = res.data;
-          this.listaNegocioPedididos.map(negocio => {
-            return negocio.pedidos.sort((a, b) => a.id_pedido_negocio - b.id_pedido_negocio).reverse();
-          });
-          this.listaNegocioPedididos = this.listaNegocioPedididos.sort((a, b) => a.pedidos[0].id_pedido_negocio - b.pedidos[0].id_pedido_negocio).reverse();
           this.loaderB = false;
           this.loaderSearch = false;
         },
@@ -128,7 +124,7 @@ export class PedidosDialogPage implements OnInit {
   datosPedido(pedido: any, negocio: any) {
     const body = {
       'pedido' : pedido,
-      'negocio' : negocio.precioEntrega
+      'negocio' : negocio
     }
     this.selectTO = JSON.parse(JSON.stringify(body));
     let navigationExtras = JSON.stringify(this.selectTO);
@@ -138,9 +134,7 @@ export class PedidosDialogPage implements OnInit {
   }
 
   regresar() {
-
-    this.location.back();
-
+    this.router.navigate(['/tabs/home/perfil'], { queryParams: {special: true}  });
     // if (this.navegacion) {
     //   this.location.back();
     //   this.navegacion = false;

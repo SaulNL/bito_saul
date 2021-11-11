@@ -1,18 +1,18 @@
-import {PedidoNegocioModel} from '../../Modelos/PedidoNegocioModel';
-import {Component, Input, OnInit} from '@angular/core';
-import {UtilsCls} from "../../utils/UtilsCls";
-import {AlertController, ModalController, Platform} from "@ionic/angular";
-import {icon, Map, Marker, marker, tileLayer} from "leaflet";
-import {NegocioService} from "../../api/negocio.service";
-import {ToadNotificacionService} from "../../api/toad-notificacion.service";
-import {AuthGuardService} from "../../api/auth-guard.service";
-import {Geolocation} from '@ionic-native/geolocation/ngx';
-import {SentPushNotificationService} from "../../api/sent-push-notification.service";
+import { PedidoNegocioModel } from '../../Modelos/PedidoNegocioModel';
+import { Component, Input, OnInit } from '@angular/core';
+import { UtilsCls } from "../../utils/UtilsCls";
+import { AlertController, ModalController, Platform } from "@ionic/angular";
+import { icon, Map, Marker, marker, tileLayer } from "leaflet";
+import { NegocioService } from "../../api/negocio.service";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { AuthGuardService } from "../../api/auth-guard.service";
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { SentPushNotificationService } from "../../api/sent-push-notification.service";
 
 declare var google: any;
-import {SentNotificationModel} from "../../Modelos/OneSignalNotificationsModel/SentNotificationModel";
-import {CommonOneSignalModel} from "../../Modelos/OneSignalNotificationsModel/CommonOneSignalModel";
-import {AppSettings} from "../../AppSettings";
+import { SentNotificationModel } from "../../Modelos/OneSignalNotificationsModel/SentNotificationModel";
+import { CommonOneSignalModel } from "../../Modelos/OneSignalNotificationsModel/CommonOneSignalModel";
+import { AppSettings } from "../../AppSettings";
 
 @Component({
     selector: 'app-pedido-negocio',
@@ -94,7 +94,7 @@ export class PedidoNegocioComponent implements OnInit {
             const lat = this.lat;
             const lng = this.lng;
             this.map = new Map("mapIdPedido").setView([lat, lng], 14);
-            tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: ''}).addTo(this.map);
+            tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
             this.map.on('click', respuesta => {
                 this.getLatLong(respuesta);
             });
@@ -103,10 +103,10 @@ export class PedidoNegocioComponent implements OnInit {
                 iconSize: [45, 41],
                 iconAnchor: [13, 41],
             });
-            this.marker = marker([lat, lng], {icon: myIcon, draggable: true}).addTo(this.map);
+            this.marker = marker([lat, lng], { icon: myIcon, draggable: true }).addTo(this.map);
             this.marker.on("dragend", () => {
 
-                this.getLatLong({latlng: this.marker.getLatLng()});
+                this.getLatLong({ latlng: this.marker.getLatLng() });
             });
         }, 500);
     }
@@ -137,7 +137,7 @@ export class PedidoNegocioComponent implements OnInit {
             lat: parseFloat(String(this.lat)),
             lng: parseFloat(String(this.lng))
         };
-        geocoder.geocode({location: latlng}, (results, status) => {
+        geocoder.geocode({ location: latlng }, (results, status) => {
             if (status === 'OK') {
                 if (results[0]) {
                     this.estasUbicacion = results[0].formatted_address;
@@ -175,27 +175,25 @@ export class PedidoNegocioComponent implements OnInit {
                 this.headings = new CommonOneSignalModel();
                 this.negocioService.obtenerIdUsuarioByNegocio(this.lista[0].idNegocio).subscribe(
                     (respuesta) => {
-                        this.sentPushNotification = new SentNotificationModel(this.platform.is('android'), this.platform.is('ios'), this.headings, this.contents, [String(respuesta.data.usuario)]);
                         this.sendNotification.getTkn().subscribe(
                             (response) => {
                                 if (response.code === 200) {
-                                    this.sendNotification.sentNotification(this.sentPushNotification, response.data.tkn).subscribe(
+                                    // this.sentPushNotification = new SentNotificationModel(this.headings, this.contents, [String(respuesta.data.usuario)], AppSettings.ONE_SIGNAL);
+                                    this.sentPushNotification = new SentNotificationModel(this.headings, this.contents, [String(respuesta.data.usuario)], response.data.api);
+                                    // this.sendNotification.sentNotification(this.sentPushNotification).subscribe(
+                                        this.sendNotification.sentNotification(this.sentPushNotification, response.data.tkn).subscribe(
                                         (r) => {
-                                            console.log(r);
                                             this.enviarSms(telephoneUsuario, this.lista[0].idNegocio);
                                         }, (e) => {
-                                            console.log(e);
-                                            this.mesajes.error('Ocurrió un error en el servidor');
+                                            this.mesajes.error('Ocurrió un error al notificar el negocio, tu pedido se envío con éxito');
                                             this.loader = false;
                                         }
                                     );
                                 } else {
-                                    console.log(response);
                                     this.mesajes.error("Ocurrió un problema al contactar al negocio");
                                     this.loader = false;
                                 }
                             }, (e) => {
-                                console.log(e);
                                 this.mesajes.error("Error en el servidor");
                                 this.loader = false;
                             }
@@ -216,6 +214,7 @@ export class PedidoNegocioComponent implements OnInit {
     public realizarPedido() {
         this.loader = true;
         this.pedido = new PedidoNegocioModel(this.lista[0].idNegocio, this.utilsCls.getIdPersona(), this.tipoEnvio, this.lista);
+        this.pedido.detalle = this.detalle;
         if (this.tipoEnvio !== null) {
             switch (this.tipoEnvio) {
                 case 1:
@@ -237,8 +236,6 @@ export class PedidoNegocioComponent implements OnInit {
             this.loader = false;
             this.presentAlert("Debe seleccionar el Tipo de Entrega");
         }
-
-
     }
 
     private sumarLista() {

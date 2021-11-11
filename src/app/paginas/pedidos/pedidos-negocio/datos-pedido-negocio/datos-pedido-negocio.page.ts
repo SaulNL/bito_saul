@@ -1,9 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {PedidosService} from '../../../../api/pedidos.service';
+import { SentNotificationModel } from './../../../../Modelos/OneSignalNotificationsModel/SentNotificationModel';
+import { CommonOneSignalModel } from './../../../../Modelos/OneSignalNotificationsModel/CommonOneSignalModel';
+import { AppSettings } from './../../../../AppSettings';
+import { SentPushNotificationService } from './../../../../api/sent-push-notification.service';
+import { Component, OnInit } from '@angular/core';
+import { PedidosService } from '../../../../api/pedidos.service';
 // import {Map, tileLayer, marker, icon, Marker} from 'leaflet';
-import {icon, Map, Marker, marker, tileLayer} from "leaflet";
-import {Router, ActivatedRoute} from '@angular/router';
-import {ToadNotificacionService} from '../../../../api/toad-notificacion.service';
+import { icon, Map, Marker, marker, tileLayer } from "leaflet";
+import { Router, ActivatedRoute } from '@angular/router';
+import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
 
 declare var google: any;
 
@@ -31,7 +35,8 @@ export class DatosPedidoNegocioPage implements OnInit {
         private activatedRoute: ActivatedRoute,
         private route: ActivatedRoute,
         private router: Router,
-        private notificaciones: ToadNotificacionService
+        private notificaciones: ToadNotificacionService,
+        private sentPushNotificationService: SentPushNotificationService
     ) {
         this.blnCancelar = false;
         this.loaderBtn = false;
@@ -65,12 +70,7 @@ export class DatosPedidoNegocioPage implements OnInit {
 
     public visto(idPedidoNegocio) {
         this.pedidosServicios.ponerVisto(idPedidoNegocio).subscribe(
-            (response) => {
-                console.log(response);
-                // this._noVistos.emit();
-            },
-            () => {
-            });
+            () => { }, () => { });
     }
 
     public textoDomicilio(domicilioEnvioMessage: any) {
@@ -93,7 +93,7 @@ export class DatosPedidoNegocioPage implements OnInit {
 
     regresar() {
         //this.blnCancelar = false;
-        this.router.navigate(['/tabs/home/ventas'], {queryParams: {special: true}});
+        this.router.navigate(['/tabs/home/ventas'], { queryParams: { special: true } });
         //this.admin.blnActivaDatosVariable = false;
         //this.admin.getVariables();
     }
@@ -107,7 +107,7 @@ export class DatosPedidoNegocioPage implements OnInit {
                 pedido.estatus = respuesta.data.estatus;
                 pedido.color = respuesta.data.color;
                 pedido.motivo = respuesta.data.motivo;
-                this.blnCancelar = false;
+                this.sendOneSignalNotifications('Se cancelo tu compra en ' + pedido.negocio, 'El negocio cancelo tu compra por el motivo de: ' + this.motivo, pedido.id_persona);
                 this.notificaciones.exito(respuesta.message);
             },
             error => {
@@ -116,11 +116,11 @@ export class DatosPedidoNegocioPage implements OnInit {
             });
     }
 
-    perpararPedido(pedido) {
+    perpararPedido(pedido: any) {
         this.loaderBtn = true;
         this.pedidosServicios.preparar(pedido.id_pedido_negocio).subscribe(
             respuesta => {
-                this.loaderBtn = false;
+                this.sendOneSignalNotifications('El negocio ' + pedido.negocio + ' vio tu pedido y lo esta preparando', 'Tu pedido esta en proceso', pedido.id_persona);
                 pedido.id_estatus_pedido = respuesta.data.id;
                 pedido.estatus = respuesta.data.estatus;
                 pedido.color = respuesta.data.color;
@@ -136,7 +136,16 @@ export class DatosPedidoNegocioPage implements OnInit {
         this.loaderBtn = true;
         this.pedidosServicios.enviar(pedido.id_pedido_negocio).subscribe(
             respuesta => {
-                this.loaderBtn = false;
+                let content = '';
+                let header = '';
+                if (pedido.id_tipo_pedido === 2) {
+                    content = 'El negocio ' + pedido.negocio + ' envío tu pedido, por favor contactalo para saber los detalles del envío';
+                    header = 'Tu pedido se envio';
+                } else {
+                    content = 'Por favor pasa a recogerlo';
+                    header = 'Tu pedido se encuentra listo';
+                }
+                this.sendOneSignalNotifications(content, header, pedido.id_persona);
                 pedido.id_estatus_pedido = respuesta.data.id;
                 pedido.estatus = respuesta.data.estatus;
                 pedido.color = respuesta.data.color;
@@ -152,7 +161,7 @@ export class DatosPedidoNegocioPage implements OnInit {
         this.loaderBtn = true;
         this.pedidosServicios.entregar(pedido.id_pedido_negocio).subscribe(
             respuesta => {
-                this.loaderBtn = false;
+                this.sendOneSignalNotifications('Tu pedido del negocio ' + pedido.negocio + ' se entrego', 'El pedido se entrego con éxito', pedido.id_persona);
                 pedido.id_estatus_pedido = respuesta.data.id;
                 pedido.estatus = respuesta.data.estatus;
                 pedido.color = respuesta.data.color;
@@ -170,7 +179,7 @@ export class DatosPedidoNegocioPage implements OnInit {
             lat: parseFloat(String(lat)),
             lng: parseFloat(String(lng))
         };
-        coder.geocode({location: lnr}, (results, status) => {
+        coder.geocode({ location: lnr }, (results, status) => {
             if (status === 'OK') {
                 if (results[0]) {
                     this.estasUbicacion = results[0].formatted_address;
@@ -204,11 +213,11 @@ export class DatosPedidoNegocioPage implements OnInit {
             const lat = this.pedido.direccion.latitud;
             const lng = this.pedido.direccion.longitud;
             this.map = new Map("mapId").setView([lat, lng], 16);
-            tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: ''}).addTo(this.map);
+            tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
             // const myIcon = icon({iconUrl: 'https://ecoevents.blob.core.windows.net/comprandoando/marker.png', iconSize: [45, 41], iconAnchor: [13, 41],});
-            this.marker = marker([lat, lng], {draggable: true}).addTo(this.map);
+            this.marker = marker([lat, lng], { draggable: true }).addTo(this.map);
             this.marker.on("dragend", () => {
-                this.getLatLong({latlng: this.marker.getLatLng()});
+                this.getLatLong({ latlng: this.marker.getLatLng() });
             });
             setTimeout(() => {
                 this.local(lat, lng);
@@ -230,5 +239,54 @@ export class DatosPedidoNegocioPage implements OnInit {
             },
             () => {
             });
+    }
+    /**
+     * @author Juan Antonio
+     * @description Metodo para enviar las notificaciones
+     * @param body
+     * @param header
+     * @param idPersona
+     */
+    private sendOneSignalNotifications(body: string, header: string, idPersona: string) {
+        this.sentPushNotificationService.getUserByPersona(idPersona).subscribe(
+            response => {
+                this.sentPushNotificationService.getTkn().subscribe(
+                    res => {
+                        let content = new CommonOneSignalModel(body);
+                        let headings = new CommonOneSignalModel(header);
+                        let sentNotification = new SentNotificationModel(content, headings, [String(response.data.usuario)], res.data.api); /* Produccion */
+                        // let sentNotification = new SentNotificationModel(content, headings, [String(response.data.usuario)], AppSettings.ONE_SIGNAL); /* Desarrollo Local*/
+                        this.sentPushNotificationService.sentNotification(sentNotification, res.data.tkn).subscribe( /* Produccion */
+                        // this.sentPushNotificationService.sentNotification(sentNotification).subscribe(  /* Desarrollo Loca*/
+                            () => {
+                                this.loaderCancel();
+                            }, () => {
+                                this.loaderCancel();
+                            }
+                        );
+                    }, () => {
+                        this.loaderCancel();
+                    }
+                );
+            }, () => {
+                this.loaderCancel();
+            }
+        );
+    }
+    /**
+     * @author Juan Antonio
+     * @description Terminar loader
+     */
+    private loaderCancel() {
+        this.loaderBtn = false;
+    }
+    /**
+     * @author Juan Antonio
+     * @description Valida el tipo del pedido
+     * @param idTipoPedido
+     * @returns
+     */
+    public typeSendMessage(idTipoPedido: number) {
+        return (idTipoPedido === 2) ? 'Enviar' : 'Notificar';
     }
 }

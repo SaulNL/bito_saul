@@ -41,9 +41,9 @@ export class ModalProductoPage implements OnInit {
   }
 
   verMas(producto: ProductoModel) {
-    this.negocioServico.buscarNegocio(producto.negocio.idNegocio).subscribe(
+    this.negocioServico.getUrlNegocioById(producto.negocio.idNegocio).subscribe(
       (response) => {
-        this.router.navigate(["/tabs/negocio/" + response.data.url_negocio], {
+        this.router.navigate(["/tabs/negocio/" + response.data.urlNegocio], {
           queryParams: { route: true },
         });
         this.modalCtrl.dismiss({
@@ -54,17 +54,6 @@ export class ModalProductoPage implements OnInit {
 
       }
     );
-  }
-  login() {
-    this.typeLogin.type = 'producto';
-    localStorage.setItem("isRedirected", "false");
-    const body = JSON.stringify(this.typeLogin);
-    this.router.navigate(["/tabs/login"], {
-      queryParams: { productos:  body}
-    });
-    this.modalCtrl.dismiss({
-      dismissed: true,
-    });
   }
   public loVio(producto) {
     let objectoVio = {

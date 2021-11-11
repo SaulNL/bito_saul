@@ -4,6 +4,7 @@ import { CambioUrlModel } from "./../../../Modelos/CambioUrlModel";
 import { LoadingController, ModalController } from "@ionic/angular";
 import { AdministracionService } from "./../../../api/administracion-service.service";
 import { Router, ActivatedRoute } from "@angular/router";
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-solicitud-cambio-url",
@@ -56,18 +57,14 @@ export class SolicitudCambioUrlPage implements OnInit {
             if (response.code === 200) {
               this.cambiarUrlTO = new CambioUrlModel();
             }
+            this.cerrarModal();
             this.loader = false;
             this.notificaciones.exito(response.message);
           },
           (error) => {
             this.loader = false;
             this.notificaciones.error(error.message);
-          },
-          () => {
-            this.loader = false;
-            this.cerrarModal();
-          }
-        );
+          });
     } else {
       this.loader = false;
       this.notificaciones.error("todo los datos son requeridos");
