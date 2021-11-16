@@ -49,6 +49,21 @@ export class SentPushNotificationService {
             }));
     }
     /**
+     * @author Juan Antonio
+     * @description Obtiene el api para el servicio de notificaciones
+     */
+    getApi(): Observable<any> {
+        const body = JSON.stringify({});
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(`${AppSettings.API_ENDPOINT}` + 'api/service/oneSignal/api', body, AppSettings.getHeaders())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+    /**
      * @param idPersona
      * @author Juan Antonio
      * @description Obtiene el id del usuario sistema por el id persona

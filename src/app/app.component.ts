@@ -1,21 +1,22 @@
-import {AccessPermissionService} from './api/access-permission.service';
-import {Component} from '@angular/core';
-import {ModalController, NavController, Platform} from '@ionic/angular';
-import {SplashScreen} from '@ionic-native/splash-screen/ngx';
-import {StatusBar} from '@ionic-native/status-bar/ngx';
-import {Deeplinks} from '@ionic-native/deeplinks/ngx';
-import {Router} from '@angular/router';
-import {NgZone} from '@angular/core';
-import {NegocioService} from './api/negocio.service';
-import {VistasBitooModel} from 'src/app/Modelos/vistasBitooModel';
-import {Plugins} from '@capacitor/core';
-import {VersionAndroidService} from './api/version-android.service';
-import {AppSettings} from './AppSettings';
+import { SentPushNotificationService } from './api/sent-push-notification.service';
+import { AccessPermissionService } from './api/access-permission.service';
+import { Component } from '@angular/core';
+import { ModalController, NavController, Platform } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Deeplinks } from '@ionic-native/deeplinks/ngx';
+import { Router } from '@angular/router';
+import { NgZone } from '@angular/core';
+import { NegocioService } from './api/negocio.service';
+import { VistasBitooModel } from 'src/app/Modelos/vistasBitooModel';
+import { Plugins } from '@capacitor/core';
+import { VersionAndroidService } from './api/version-android.service';
+import { AppSettings } from './AppSettings';
 import OneSignal from 'onesignal-cordova-plugin';
 
-const {Geolocation} = Plugins;
-import {DeviceInfoModel} from "./Modelos/DeviceInfoModel";
-import {OneSignalNotificationsService} from "./api/one-signal-notifications.service";
+const { Geolocation } = Plugins;
+import { DeviceInfoModel } from "./Modelos/DeviceInfoModel";
+import { OneSignalNotificationsService } from "./api/one-signal-notifications.service";
 
 @Component({
     selector: 'app-root',
@@ -41,7 +42,8 @@ export class AppComponent {
         private access: AccessPermissionService,
         public modalController: ModalController,
         private android: VersionAndroidService,
-        private signal: OneSignalNotificationsService
+        private signal: OneSignalNotificationsService,
+        private sendPushNoficationService: SentPushNotificationService
     ) {
         this.initializeApp();
         this.visitasBitooModel = new VistasBitooModel();
@@ -54,7 +56,7 @@ export class AppComponent {
         this.platform.ready().then(() => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
-            this.signal.inicialiceNotifications();
+            this.inicialiceOneSignalNotifications();
             this.signal.unSetUserExternal();
             this.signal.setUserExternal();
             this.obtenerVersion(this.device);
@@ -145,7 +147,7 @@ export class AppComponent {
 
     verificarVersion(deviceInfo: DeviceInfoModel) {
         if (this.versionActualSistema !== deviceInfo.version && deviceInfo.active) {
-            this.router.navigate(['/actualizar-version'], {queryParams: {blockedUp: JSON.stringify(deviceInfo)}});
+            this.router.navigate(['/actualizar-version'], { queryParams: { blockedUp: JSON.stringify(deviceInfo) } });
         } else {
             this.setupDeeplinks();
             this.obtenerPlataforma();
@@ -213,7 +215,7 @@ export class AppComponent {
     }
 
     async getCurrentPosition() {
-        let gpsOptions = {maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true};
+        let gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
         await Geolocation.getCurrentPosition(gpsOptions).then(res => {
             this.visitasBitooModel.latitud = res.coords.latitude;
             this.visitasBitooModel.longitud = res.coords.longitude;
@@ -264,5 +266,11 @@ export class AppComponent {
         )
     }
 
-
+    private inicialiceOneSignalNotifications() {
+        this.sendPushNoficationService.getApi().subscribe(
+            response => {
+                this.signal.inicialiceNotifications(response.data.api);
+            }
+        );
+    }
 }
