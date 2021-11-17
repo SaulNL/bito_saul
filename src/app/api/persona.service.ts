@@ -69,7 +69,7 @@ export class PersonaService {
     const body = JSON.stringify({id_persona : idPersona});
     this._http.setDataSerializer("utf8");
     return from(this._http.post(
-        `${this.url}api/favoritos/negocios`, body,
+        `${this.url}api/usuario/favoritos/negocios`, body,
         AppSettings.getHeadersToken())
         .then((data) => {
           return JSON.parse(data.data);

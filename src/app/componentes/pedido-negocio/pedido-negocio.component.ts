@@ -178,9 +178,7 @@ export class PedidoNegocioComponent implements OnInit {
                         this.sendNotification.getTkn().subscribe(
                             (response) => {
                                 if (response.code === 200) {
-                                    // this.sentPushNotification = new SentNotificationModel(this.headings, this.contents, [String(respuesta.data.usuario)], AppSettings.ONE_SIGNAL);
                                     this.sentPushNotification = new SentNotificationModel(this.headings, this.contents, [String(respuesta.data.usuario)], response.data.api);
-                                    // this.sendNotification.sentNotification(this.sentPushNotification).subscribe(
                                         this.sendNotification.sentNotification(this.sentPushNotification, response.data.tkn).subscribe(
                                         (r) => {
                                             this.enviarSms(telephoneUsuario, this.lista[0].idNegocio);

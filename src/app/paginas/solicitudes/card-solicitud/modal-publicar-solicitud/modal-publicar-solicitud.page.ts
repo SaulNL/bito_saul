@@ -113,7 +113,6 @@ export class ModalPublicarSolicitudPage implements OnInit {
     guardarPublicacion(form: NgForm) {
         this.mensaje = 'Publicando';
         this.loader = true;
-        console.log(this.fechaini);
         const d = this.fechaini.slice(-21, -19);
         const replace = this.fechaini.slice(-21, -16);
         const content = this.fechaini.slice(-19, -16);
@@ -126,7 +125,6 @@ export class ModalPublicarSolicitudPage implements OnInit {
         }
 
         const newDateInit = this.fechaini.replace(replace, (String(res) + content));
-        console.log(newDateInit);
         let fechaInicio = Date.parse(newDateInit);
         const fechaIni = new Date(fechaInicio);
         let fechaFinal = Date.parse(this.fechafin);

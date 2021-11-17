@@ -324,7 +324,6 @@ export class MispromocionesPage implements OnInit {
         this._promociones_service.obtenerQuienVioPublicacion(id_promocion).subscribe(
                 (response) => {
                     this.lstQuienVioPublicacion = response.data;
-                    console.log(this.lstQuienVioPublicacion);
                     this.quienNumeroVioPublicacion(id_promocion);
                 },
                 (error) => {
@@ -337,7 +336,6 @@ export class MispromocionesPage implements OnInit {
             .obtenerNumeroQuienVioPublicacion(id_promocion)
             .subscribe(
                 (response) => {
-                    console.log(response.data);
                     this.numeroVisto = response.data;
                     this.btnLoaderModal = false;
                     this.infoPromocion();

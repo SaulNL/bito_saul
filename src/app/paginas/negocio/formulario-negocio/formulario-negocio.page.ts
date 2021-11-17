@@ -467,8 +467,6 @@ export class FormularioNegocioPage implements OnInit {
      * @author Omar
      */
   confirmarUrlNegocio(evento, entrada = 1) {
-    console.log(this.negocioTO.id_negocio);
-    // if(isNaN(this.negocioTO.id_negocio)){
     if(this.negocioTO.id_negocio === null){
       let cadena = '';
     if (entrada === 2) {

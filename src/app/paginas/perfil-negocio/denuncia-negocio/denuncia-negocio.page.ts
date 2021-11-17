@@ -1,3 +1,6 @@
+import { SentPushNotificationService } from './../../../api/sent-push-notification.service';
+import { CommonOneSignalModel } from './../../../Modelos/OneSignalNotificationsModel/CommonOneSignalModel';
+import { SentNotificationModel } from './../../../Modelos/OneSignalNotificationsModel/SentNotificationModel';
 import { ToadNotificacionService } from './../../../api/toad-notificacion.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { LoadingController, ModalController } from '@ionic/angular';
@@ -13,6 +16,7 @@ import { PreguntaModel } from 'src/app/Modelos/PreguntaModel';
 })
 export class DenunciaNegocioPage implements OnInit {
   @Input() public idNegocio: number;
+  @Input() public negocioNombre: string;
   public denunciaTO: DenunciaModel;
   public user: any;
   public preguntaUno: any;
@@ -22,7 +26,8 @@ export class DenunciaNegocioPage implements OnInit {
     private modalController: ModalController,
     private _serviceAdministracion: AdministracionService,
     private notificaciones: ToadNotificacionService,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    private _sentPushNotificationService: SentPushNotificationService
   ) {
     this.loader = false;
   }
@@ -47,7 +52,7 @@ export class DenunciaNegocioPage implements OnInit {
       let pregunta3 = <HTMLInputElement>document.getElementById('pregunta3');
       let pregunta4 = <HTMLInputElement>document.getElementById('pregunta4');
       let pregunta5 = <HTMLInputElement>document.getElementById('pregunta5');
-      let pregunta6 =  <any>document.getElementById('pregunta6');
+      let pregunta6 = <any>document.getElementById('pregunta6');
 
       this.denunciaTO.preguntas.push(new PreguntaModel(1, 'El negocio no existe', pregunta1.checked));
       this.denunciaTO.preguntas.push(new PreguntaModel(2, 'Se hace pasar por alguien más', pregunta2.checked));
@@ -66,7 +71,7 @@ export class DenunciaNegocioPage implements OnInit {
         this._serviceAdministracion.guardarDenunciaNegocio(this.denunciaTO).subscribe(
           data => {
             if (data.code === 200) {
-              this.loader = false;
+              this.sendNotification(data.data.idAdministradores);
               this.notificaciones.exito('se guardo correctamente la denuncia');
               this.cerrarModal();
             } else {
@@ -87,5 +92,24 @@ export class DenunciaNegocioPage implements OnInit {
       this.loader = false;
       this.notificaciones.alerta('Para poder denunciar este negocio, necesitas ser usuario logeado');
     }
+  }
+  private sendNotification(admins: string[]) {
+    this._sentPushNotificationService.getTkn().subscribe(
+      response => {
+        let headers = new CommonOneSignalModel('Alerta nuevo reporte de negocio');
+        let content = new CommonOneSignalModel('Se realizo un reporte en el negocio: ' + this.negocioNombre);
+        let sentNotificationModel = new SentNotificationModel(content, headers, admins, response.data.api);
+        this._sentPushNotificationService.sentNotification(sentNotificationModel, response.data.tkn).subscribe(
+          () => {
+            this.loaderFalse();
+          }, () => {
+            this.loaderFalse();
+          });
+      }, () => {
+        this.loaderFalse();
+      });
+  }
+  private loaderFalse() {
+    this.loader = false;
   }
 }

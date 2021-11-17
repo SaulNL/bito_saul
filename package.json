@@ -26,6 +26,7 @@
     "@capacitor/ios": "^2.4.2",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/deeplinks": "^5.31.1",
+    "@ionic-native/device": "^5.36.0",
     "@ionic-native/downloader": "^5.29.0",
     "@ionic-native/facebook": "^5.36.0",
     "@ionic-native/file": "^5.30.0",

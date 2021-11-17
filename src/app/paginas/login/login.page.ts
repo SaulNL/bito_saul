@@ -90,7 +90,6 @@ export class LoginPage implements OnInit {
             case 'success':
                 if (response.isAppleID) {
                     const userCredentials = new Login(credentials.user, credentials.email, 'apple');
-                    console.log(JSON.stringify(userCredentials));
                     this.login(userCredentials);
                 } else {
                     if (typeof credentials.user.providerData[0].uid === "undefined" || credentials.user.providerData[0].uid == null) {
@@ -139,7 +138,6 @@ export class LoginPage implements OnInit {
                 this.notification.error(error);
             }
         );
-        console.log(this.loader);
     }
 
     private goToRoute(url) {

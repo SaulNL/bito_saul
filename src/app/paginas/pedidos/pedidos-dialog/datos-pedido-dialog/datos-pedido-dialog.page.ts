@@ -112,9 +112,7 @@ export class DatosPedidoDialogPage implements OnInit {
             let content = new CommonOneSignalModel('El pedido fue cancelado por el usuario por el motivo de : ' + motivo);
             let headings = new CommonOneSignalModel('Pedido Cancelado');
             let sentNotification = new SentNotificationModel(content, headings, [String(response.data.usuario)], res.data.api); /* Produccion */
-            // let sentNotification = new SentNotificationModel(content, headings, [String(response.data.usuario)], AppSettings.ONE_SIGNAL); /* Desarrollo Local*/
             this.sentPushNotificationService.sentNotification(sentNotification, res.data.tkn).subscribe( /* Produccion */
-            // this.sentPushNotificationService.sentNotification(sentNotification).subscribe(  /* Desarrollo Loca*/
               () => {
                 this.blnLoaderFalse();
               }, () => {

@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
 import { MsNegocioModel } from "../../../Modelos/busqueda/MsNegocioModel";
 import { ProveedorServicioService } from "../../../api/busqueda/proveedores/proveedor-servicio.service";
-import {IonContent, Platform} from '@ionic/angular';
+import { IonContent, Platform } from '@ionic/angular';
 
 @Component({
   selector: "app-negocios-favoritos",
@@ -95,5 +95,9 @@ export class NegociosFavoritosPage implements OnInit {
 
   regresar() {
     this.router.navigate(["/tabs/mis-favoritos"]);
+  }
+
+  isTypeColor(type: string) {
+    return (type == 'ABIERTO') ? 'success' : 'danger';
   }
 }

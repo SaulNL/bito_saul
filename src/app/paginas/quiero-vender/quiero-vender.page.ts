@@ -89,6 +89,8 @@ export class QuieroVenderPage implements OnInit {
     this.list_cat_municipio = [];
     this.list_cat_localidad = [];
     this.loader = false;
+    this.hIneAtras = true;
+    this.hIneFrente = true;
   }
 
   ngOnInit() {

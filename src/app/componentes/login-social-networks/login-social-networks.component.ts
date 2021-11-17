@@ -93,7 +93,6 @@ export class LoginSocialNetworksComponent implements OnInit {
                     }else{
                         this.errorAppleID();
                     }
-                    console.log(JSON.stringify(res));
                 })
                 .catch((error: AppleSignInErrorResponse) => {
                     this.errorAppleID();

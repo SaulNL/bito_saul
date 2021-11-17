@@ -17,15 +17,12 @@ export class VersionAndroidService {
 
     public getDeviceInfo(idDevice: number): Observable<any> {
         const body = JSON.stringify({'id_device': idDevice});
-        console.log(body);
         this.http.setDataSerializer("utf8");
         return from(this.http.post(`${this.url}api/service/devices`, body, AppSettings.getHeaders())
             .then((data) => {
-                console.log(data);
                 return JSON.parse(data.data);
             })
             .catch((error) => {
-                console.log(error);
                 return error;
             }));
     }

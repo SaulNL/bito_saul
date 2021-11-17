@@ -257,8 +257,7 @@ export class PerfilNegocioPage implements OnInit {
                 // this.loadMap();
                 // }, 100);
             },
-            (error) => {
-                console.log(error);
+            () => {
                 confirm("Error al cargar");
                 this.loader = false;
             }
@@ -443,6 +442,7 @@ export class PerfilNegocioPage implements OnInit {
             component: DenunciaNegocioPage,
             componentProps: {
                 idNegocio: this.informacionNegocio.id_negocio,
+                negocioNombre : this.informacionNegocio.nombre_comercial
             },
         });
         await modal.present();

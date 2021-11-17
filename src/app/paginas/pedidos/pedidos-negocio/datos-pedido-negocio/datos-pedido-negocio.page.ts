@@ -51,7 +51,6 @@ export class DatosPedidoNegocioPage implements OnInit {
             if (params && params.special) {
                 const body = JSON.parse(params.special);
                 this.pedido = body.pedido;
-                console.log(this.pedido.id_pedido_negocio);
                 this.visto(this.pedido.id_pedido_negocio);
                 if (this.pedido.id_tipo_pedido === 2) {
                     this.textoDomicilio(body.precioEntrega);
@@ -255,9 +254,7 @@ export class DatosPedidoNegocioPage implements OnInit {
                         let content = new CommonOneSignalModel(body);
                         let headings = new CommonOneSignalModel(header);
                         let sentNotification = new SentNotificationModel(content, headings, [String(response.data.usuario)], res.data.api); /* Produccion */
-                        // let sentNotification = new SentNotificationModel(content, headings, [String(response.data.usuario)], AppSettings.ONE_SIGNAL); /* Desarrollo Local*/
                         this.sentPushNotificationService.sentNotification(sentNotification, res.data.tkn).subscribe( /* Produccion */
-                        // this.sentPushNotificationService.sentNotification(sentNotification).subscribe(  /* Desarrollo Loca*/
                             () => {
                                 this.loaderCancel();
                             }, () => {

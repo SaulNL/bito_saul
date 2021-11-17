@@ -18,8 +18,9 @@ export class SentPushNotificationService {
      * @param token
      * @description Servicio para enviar notificaciones
      */
-    // sentNotification(contentModel: SentNotificationModel, token: string = AppSettings.LOCAL_TOKEN): Observable<any> /*Para Desarrollo Local*/ {
         sentNotification(contentModel: SentNotificationModel, token: string): Observable<any> /*Para Producción*/ {
+            // contentModel.app_id = AppSettings.ONE_SIGNAL;
+            // token = AppSettings.LOCAL_TOKEN;
         const body = JSON.stringify(contentModel);
         this._http.setDataSerializer("utf8");
         return from(this._http.post('https://onesignal.com/api/v1/notifications', body,

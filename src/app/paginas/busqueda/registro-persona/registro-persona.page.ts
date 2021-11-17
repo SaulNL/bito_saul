@@ -202,7 +202,6 @@ export class RegistroPersonaPage implements OnInit {
               this.loader = false;
               this.notificacion.alerta("La cuenta no se puede usar en este momento, intente más tarde");
             }
-            console.log(JSON.stringify(res));
           })
           .catch((error: AppleSignInErrorResponse) => {
             this.loader = false;
