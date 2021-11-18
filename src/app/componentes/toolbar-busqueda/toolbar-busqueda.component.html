@@ -5,10 +5,9 @@
                 <ion-icon name="list-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-searchbar [placeholder]="placeHolder" (keyup.enter)="buscar()"
-                       (ngModelChange)="buscarParch($event)"
-                       (keypress)="searchItems($event)" [(ngModel)]="strBuscar" (ionClear)="limpiar()"
-                       inputmode="search"></ion-searchbar>
+        <ion-searchbar debounce="1000" [placeholder]="placeHolder" (keyup.enter)="buscar()"
+            (ngModelChange)="buscarParch($event)" (keypress)="searchItems($event)" [(ngModel)]="strBuscar"
+            (ionClear)="limpiar()" inputmode="search"></ion-searchbar>
         <ion-buttons *ngIf="pescar" slot="end">
             <ion-button class="blanco" (click)="buscar()">
                 <ion-icon name="search-outline"></ion-icon>

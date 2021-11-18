@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {PedidosService} from 'src/app/api/pedidos.service';
-import {UtilsCls} from 'src/app/utils/UtilsCls';
-import {Auth0Service} from '../../api/busqueda/auth0.service';
-import {NavBarServiceService} from '../../api/busqueda/nav-bar-service.service';
-import {SideBarService} from '../../api/busqueda/side-bar-service';
-import {Platform} from "@ionic/angular";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PedidosService } from 'src/app/api/pedidos.service';
+import { UtilsCls } from 'src/app/utils/UtilsCls';
+import { Auth0Service } from '../../api/busqueda/auth0.service';
+import { NavBarServiceService } from '../../api/busqueda/nav-bar-service.service';
+import { SideBarService } from '../../api/busqueda/side-bar-service';
+import { Platform } from "@ionic/angular";
 
 @Component({
     selector: 'app-toolbar-busqueda',
@@ -63,6 +63,7 @@ export class ToolbarBusquedaComponent implements OnInit {
         this.buscarEmit.emit(this.strBuscar);
     }
 
+
     searchItems(event) {
         if (event && event.key === 'Enter') {
             this.pescar = (this.isAndroid);
@@ -97,10 +98,13 @@ export class ToolbarBusquedaComponent implements OnInit {
     buscarParch(event: any) {
         if (this.isAndroid) {
             if ((event !== '' || event !== undefined) && event.length > 3) {
+                this.strBuscar = event;
                 this.showS();
                 this.pescar = true;
-                this.buscar();
-            } else {
+                this.buscarEmit.emit(event);
+            }
+
+            if (event === '' || event === undefined) {
                 this.hiddenS();
                 this.pescar = false;
                 this.limpiar();
