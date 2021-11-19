@@ -10,7 +10,7 @@ import { ModalController } from '@ionic/angular';
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { Router } from "@angular/router";
 import { RecorteImagenComponent } from 'src/app/components/recorte-imagen/recorte-imagen.component';
-import {SessionUtil} from './../../utils/sessionUtil';
+import { SessionUtil } from './../../utils/sessionUtil';
 
 
 
@@ -29,7 +29,7 @@ export class DatosBasicosPage implements OnInit {
   public minDate: any;
   public maxDate: any;
   private file_img_galeria: FileList;
-public msj = 'Cargando';
+  public msj = 'Cargando';
   imageChangedEvent: any = '';
   croppedImage: any = '';
   resizeToWidth: number = 0;
@@ -56,12 +56,31 @@ public msj = 'Cargando';
 
   ngOnInit() {
     this.usuarioSistema = new MsPersonaModel();
-    this.actualizarUsuario();
+    this.setLocalStorageData();
   }
 
-  private actualizarUsuario() {
-    this.usuarioSistema = JSON.parse(localStorage.getItem('u_data'));
+  private actualizarUsuario(user) {
+    this.usuarioSistema = user;
     this.usuarioSistema.fecha_nacimiento = this.usuarioSistema.fecha_nacimiento !== null ? new Date(this.usuarioSistema.fecha_nacimiento) : null;
+  }
+  private setLocalStorageData(){
+    const user = JSON.parse(localStorage.getItem('u_data'));
+    this.actualizarUsuario(user);
+  }
+
+  private setDataBasicUser() {
+    const user = JSON.parse(localStorage.getItem('u_data'));
+    this.servicioPersona.datosBasicos(user.id_persona).subscribe(
+      response => {
+        if (response.code === 200) {
+          this.actualizarUsuario(response.data);
+        } else {
+          this.actualizarUsuario(user);
+        }
+      }, () => {
+        this.actualizarUsuario(user);
+      }
+    );
   }
   actualizarDatos(formBasicos: NgForm) {
     this.loader = true;
@@ -76,7 +95,7 @@ public msj = 'Cargando';
             resolve(resultado);
             setTimeout(() => {
               this.router.navigate(['/tabs/home/perfil']);
-              }, 1500);
+            }, 1500);
           }
         },
         error => {

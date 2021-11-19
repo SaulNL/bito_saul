@@ -1,3 +1,6 @@
+import { SentPushNotificationService } from './../../api/sent-push-notification.service';
+import { SentNotificationModel } from './../../Modelos/OneSignalNotificationsModel/SentNotificationModel';
+import { CommonOneSignalModel } from './../../Modelos/OneSignalNotificationsModel/CommonOneSignalModel';
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { SolicitudesService } from '../../api/solicitudes.service';
@@ -39,10 +42,11 @@ export class ModalInfoSolicitudComponent implements OnInit {
     private _utils_cls: UtilsCls,
     private _auth0: Auth0Service,
     private _notificacionService: ToadNotificacionService,
+    private sentPushNotificationService: SentPushNotificationService
   ) { }
 
   ngOnInit() {
-    if(this._utils_cls.existe_sesion()){
+    if (this._utils_cls.existe_sesion()) {
       this.user = this._auth0.getUserData();
     }
     this.numeroVistas = 0;
@@ -66,23 +70,23 @@ export class ModalInfoSolicitudComponent implements OnInit {
     );
   }
 
-  postularme(){
+  postularme() {
     this.btnPostular = !this.btnPostular;
     this.loaderPostular = false;
     this.postulacionModel.descripcion = '';
   }
 
   public guardar(form: NgForm) {
-    if ( form.invalid ) {
-      return Object.values( form.controls ).forEach( control => {
-        if (control instanceof FormGroup ) {
-          Object.values( control.controls ).forEach( con => con.markAsTouched());
+    if (form.invalid) {
+      return Object.values(form.controls).forEach(control => {
+        if (control instanceof FormGroup) {
+          Object.values(control.controls).forEach(con => con.markAsTouched());
         } else {
           control.markAsTouched();
         }
       });
-    }else {
-      if( this.uploadedFiles !== undefined) {
+    } else {
+      if (this.uploadedFiles !== undefined) {
         const fileName = this.uploadedFiles.name;
         const file = this.uploadedFiles;
         let file64: any;
@@ -103,7 +107,7 @@ export class ModalInfoSolicitudComponent implements OnInit {
     }
   }
 
-  public enviar(){
+  public enviar() {
     this.loaderPostular = true;
     this.seleccionTO = this.solicitud;
     this.postulacionModel.idPersona = this.user.id_persona;
@@ -111,24 +115,52 @@ export class ModalInfoSolicitudComponent implements OnInit {
     this.servicioSolicitudes.enviarPostulacion(this.postulacionModel).subscribe(
       response => {
         this._notificacionService.exito(response.message);
+        this.sendOneSignalNotifications(this.solicitud.id_persona);
         this.dismiss();
-        this.loaderPostular = false;
       },
       error => {
       },
-      () =>{
+      () => {
         this.loaderPostular = false;
       }
     );
   }
 
-  regresarPostulacion(){
+  private sendOneSignalNotifications(idPersona: string) {
+    this.sentPushNotificationService.getUserByPersona(idPersona).subscribe(
+      response => {
+        this.sentPushNotificationService.getTkn().subscribe(
+          res => {
+            let content = new CommonOneSignalModel('Se ha postulado alguien en tu requerimiento de compra.');
+            let headings = new CommonOneSignalModel('Postulación Nueva!');
+            let sentNotification = new SentNotificationModel(content, headings, [String(response.data.usuario)], res.data.api); /* Produccion */
+            this.sentPushNotificationService.sentNotification(sentNotification, res.data.tkn).subscribe( /* Produccion */
+              () => {
+                this.loaderP();
+              }, () => {
+                this.loaderP();
+              }
+            );
+          }, () => {
+            this.loaderP();
+          }
+        );
+      }, () => {
+        this.loaderP();
+      }
+    );
+  }
+
+  private loaderP() {
+    this.loaderPostular = false;
+  }
+  regresarPostulacion() {
     this.btnPostular = false;
     this.loaderPostular = false;
   }
 
   subir_archivo($event) {
-    if ( $event.target.files[0].size < 100000) {
+    if ($event.target.files[0].size < 500000) {
       this.uploadedFiles = $event.target.files[0];
       this.pesado = false;
       this.nombreArchivo = $event.target.files[0].name;

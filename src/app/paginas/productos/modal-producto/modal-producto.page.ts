@@ -1,3 +1,5 @@
+import { NegocioProductoModel } from './../../../Modelos/NegocioProductoModel';
+import { FiltroNegocioModel } from './../../../Modelos/FiltroNegocioModel';
 import { Component, Input, OnInit } from "@angular/core";
 import { ProductoModel } from "../../../Modelos/ProductoModel";
 import { ModalController } from "@ionic/angular";
@@ -16,58 +18,56 @@ export class ModalProductoPage implements OnInit {
   @Input() public existeSesion: boolean;
   @Input() public unoProducto: any;
   @Input() public user: any;
-  public negocio: any;
-  public informacionNegocio: any;
+  public busquedaNegocio: FiltroNegocioModel;
+  public negocio: NegocioProductoModel;
   public comprarB: any;
   public mensajeCompra = 'Agregar';
   public typeLogin: OptionBackLogin;
+  public loader: boolean;
+  public idPersona: number | null;
+  public cargaFallidaMensaje: string;
+  public cargando: string;
   constructor(
     private servicioProductos: ProductosService,
     public modalCtrl: ModalController,
     private negocioServico: NegocioService,
     private router: Router,
     private notificaciones: ToadNotificacionService
-  ) { }
+  ) {
+    this.cargando = 'Cargando producto';
+    this.idPersona = null;
+    this.loader = false;
+  }
 
   ngOnInit() {
     this.typeLogin = new OptionBackLogin();
     if (this.existeSesion) {
-      this.obtenerInformacionNegocio();
+      this.idPersona = this.user.id_persona;
       this.loVio(this.unoProducto);
     }
+    this.busquedaNegocio = new FiltroNegocioModel(this.unoProducto.negocio.idNegocio, this.idPersona);
+    this.obtenerNegocio(this.busquedaNegocio);
   }
   dismiss() {
     this.modalCtrl.dismiss();
   }
 
-  verMas(producto: ProductoModel) {
-    this.negocioServico.getUrlNegocioById(producto.negocio.idNegocio).subscribe(
-      (response) => {
-        this.router.navigate(["/tabs/negocio/" + response.data.urlNegocio], {
-          queryParams: { route: true },
-        });
-        this.modalCtrl.dismiss({
-          dismissed: true,
-        });
-      },
-      (error) => {
-
-      }
-    );
+  verMas() {
+    this.router.navigate(["/tabs/negocio/" + this.negocio.url_negocio], {
+      queryParams: { route: true },
+    });
+    this.modalCtrl.dismiss({
+      dismissed: true
+    });
   }
+
+
   public loVio(producto) {
     let objectoVio = {
       id_persona: this.user.id_persona, //usuario
       id_producto: producto.idProducto, //idProducto
     };
-    this.servicioProductos.quienVioProdu(objectoVio).subscribe(
-      (response) => {
-        if (response.code === 200) {
-
-        }
-      },
-      (error) => { }
-    );
+    this.servicioProductos.quienVioProdu(objectoVio).subscribe();
   }
   public agregar(producto: any) {
     const contenido = JSON.parse(JSON.stringify(producto));
@@ -82,39 +82,30 @@ export class ModalProductoPage implements OnInit {
       dismissed: true,
     });
   }
-  obtenerInformacionNegocio() {
-    this.negocioServico
-      .buscarNegocio(this.unoProducto.negocio.idNegocio)
-      .subscribe(
-        (response) => {
 
-          this.negocio = response.data;
-          this.negocioUrl(response.data);
-        },
-        (error) => {
-
+  public obtenerNegocio(busqueda: FiltroNegocioModel) {
+    this.loader = true;
+    this.negocioServico.obtenerNegocio(busqueda).subscribe(
+      respuesta => {
+        if (respuesta.code === 200) {
+          this.negocio = respuesta.data.lst_cat_negocios[0];
+        } else {
+          this.notificaciones.error('Error no se pudo cargar su producto');
+          this.dismiss();
         }
-      );
+          this.loader = false;
+      }, () => {
+        this.loader = false;
+        this.notificaciones.error('Error problemas con el servidor');
+        this.dismiss();
+      }
+    );
   }
-  public negocioUrl(negocioT: any) {
-    this.negocioServico
-      .obteneretalleNegocio(negocioT.url_negocio, this.user.id_persona)
-      .subscribe(
-        (response) => {
-
-          this.informacionNegocio = response.data;
-
-          this.mostrarBoton();
-        },
-        (error) => { }
-      );
-  }
-
   public mostrarBoton() {
     this.comprarB =
-      (this.informacionNegocio.entrega_domicilio === 1 ||
-        this.informacionNegocio.entrega_sitio === 1 ||
-        this.informacionNegocio.consumo_sitio === 1) &&
+      (this.negocio.entrega_domicilio === 1 ||
+        this.negocio.entrega_sitio === 1 ||
+        this.negocio.consumo_sitio === 1) &&
       parseInt(this.unoProducto.precio) > 0;
   }
 

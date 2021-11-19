@@ -41,32 +41,38 @@ export class TabsPage implements OnInit {
 
     inicio() {
         // localStorage.setItem('isRedirected', 'false');
+        localStorage.removeItem('byCategorias');
         this.router.navigate(['/tabs/inicio'], { queryParams: { buscarNegocios: 'buscar' } });
         localStorage.setItem('resetFiltro', '0');
     }
 
     promociones() {
+        localStorage.removeItem('byCategorias');
         localStorage.setItem('isRedirected', 'false');
         this.router.navigate(['/tabs/promociones']);
         localStorage.setItem('resetFiltro', '0');
     }
     solicitudes() {
+        localStorage.removeItem('byCategorias');
         this.router.navigate(['/tabs/mis-favoritos']);
         // this.router.navigate(['/tabs/home/solicitud']);
     }
 
     productos() {
+        localStorage.removeItem('byCategorias');
         localStorage.setItem('isRedirected', 'false');
         this.router.navigate(['/tabs/productos']);
         localStorage.setItem('resetFiltro', '0');
 
     }
     perfil() {
+        localStorage.removeItem('byCategorias');
         localStorage.setItem('isRedirected', 'false');
         localStorage.setItem('resetFiltro', '0');
         this.router.navigate(['/tabs/home/perfil'], { queryParams: { special: true } });
     }
     login() {
+        localStorage.removeItem('byCategorias');
         localStorage.setItem('isRedirected', 'false');
         this.router.navigate(['/tabs/login']);
     }

@@ -53,8 +53,7 @@ export class DatosComplementariosPage implements OnInit {
     private notificaciones: ToadNotificacionService,
     private router: Router
   ) {
-    this.proveedorTO = JSON.parse(localStorage.getItem('u_data'));
-    this.proveedorTO.det_domicilio = JSON.parse(localStorage.getItem('u_data')).domicilio !== null ? JSON.parse(localStorage.getItem('u_data')).domicilio : new DetDomicilioModel();
+    this.setDataComplementary();
     this.list_cat_estado = [];
     this.list_cat_municipio = [];
     this.list_cat_localidad = [];
@@ -66,6 +65,34 @@ export class DatosComplementariosPage implements OnInit {
   }
 
   ngOnInit() {
+    this.setLocalStorageData();
+  }
+
+  private setLocalStorageData() {
+    const user = JSON.parse(localStorage.getItem('u_data'));
+    this.dataComplementary(user);
+  }
+
+  private setDataComplementary() {
+    const user = JSON.parse(localStorage.getItem('u_data'));
+    this.servicioPersona.datosComplementarios(user.id_persona).subscribe(
+      response => {
+        if (response.code === 200) {
+          this.dataComplementary(response.data);
+        } else {
+          this.dataComplementary(user);
+        }
+      }, () => {
+        this.dataComplementary(user);
+      }
+    );
+  }
+  private dataComplementary(user) {
+    this.proveedorTO = user;
+    this.proveedorTO.det_domicilio = JSON.parse(localStorage.getItem('u_data')).domicilio !== null ? JSON.parse(localStorage.getItem('u_data')).domicilio : new DetDomicilioModel();
+    this.loadExtraServices();
+  }
+  private loadExtraServices() {
     this.primeraVez = true;
     this.load_cat_estados();
     if (this.proveedorTO.det_domicilio.id_estado !== null && this.proveedorTO.det_domicilio.id_estado !== undefined) {
@@ -75,14 +102,13 @@ export class DatosComplementariosPage implements OnInit {
       this.get_list_cat_localidad({ value: this.proveedorTO.det_domicilio.id_municipio });
     }
   }
-
   private load_cat_estados() {
     this._general_service.getEstadosWS().subscribe(
       response => {
         if (this._utils_cls.is_success_response(response.code)) {
           this.list_cat_estado = response.data.list_cat_estado;
           this.list_cat_estado.forEach(element => {
-            if (element.id_estado==this.proveedorTO.det_domicilio.id_estado) {
+            if (element.id_estado == this.proveedorTO.det_domicilio.id_estado) {
               this.estaAux = element.nombre;
 
             }
@@ -117,7 +143,7 @@ export class DatosComplementariosPage implements OnInit {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_municipio = response.data.list_cat_municipio;
             this.list_cat_municipio.forEach(element => {
-              if (element.id_municipio==this.proveedorTO.det_domicilio.id_municipio) {
+              if (element.id_municipio == this.proveedorTO.det_domicilio.id_municipio) {
                 this.muniAux = element.nombre;
 
               }
@@ -159,7 +185,7 @@ export class DatosComplementariosPage implements OnInit {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_localidad = response.data.list_cat_localidad;
             this.list_cat_localidad.forEach(element => {
-              if (element.id_localidad==this.proveedorTO.det_domicilio.id_localidad) {
+              if (element.id_localidad == this.proveedorTO.det_domicilio.id_localidad) {
                 this.locaAux = element.nombre;
 
               }
@@ -208,7 +234,7 @@ export class DatosComplementariosPage implements OnInit {
         });
     });
     miPrimeraPromise.then((successMessage) => {
-      
+
     });
   }
   public subirArchivo(event, tipo: number) {

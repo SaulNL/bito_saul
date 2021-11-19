@@ -79,4 +79,33 @@ export class PersonaService {
         }));
   }
 
+  datosBasicos(idPersona: number) {
+    const body = JSON.stringify({id_persona : idPersona});
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      `${this.url}api/personas/obtener/datosBasicos`, body,
+        AppSettings.getHeaders()
+    ).then(
+      (data) => {
+        return JSON.parse(data.data);
+      }
+    ).catch((error) => {
+      return error;
+    }));
+  }
+
+  datosComplementarios(idPersona: number) {
+    const body = JSON.stringify({id_persona : idPersona});
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      `${this.url}api/personas/obtener/datosComplementarios`, body,
+        AppSettings.getHeaders()
+    ).then(
+      (data) => {
+        return JSON.parse(data.data);
+      }
+    ).catch((error) => {
+      return error;
+    }));
+  }
 }

@@ -48,7 +48,8 @@
                 <small class="d-block">Celular: {{pedido.persona.celular}}</small>
                 <small class="d-block">Correo: {{pedido.persona.correo}}</small>
                 <small *ngIf="pedido.id_tipo_pedido === 1" class="d-block">Numero de mesa: {{pedido.mesa}}</small>
-                <small *ngIf="pedido.id_tipo_pedido === 2" class="d-block">Dirección: {{pedido.direccion.direccion}}</small>
+                <small *ngIf="pedido.id_tipo_pedido === 2" class="d-block">Dirección:
+                  {{pedido.direccion.direccion}}</small>
               </div>
             </div>
           </ion-col>
@@ -73,8 +74,10 @@
           </ion-col>
           <ion-col>
             <p>{{producto.nombre_producto}}</p>
-            <small>Cantidad: {{producto.cantidad}}</small>
-            <strong><span class="d-block">$ {{producto.costo}}</span></strong>
+            <small class="d-block">Cantidad: {{producto.cantidad}}</small>
+            <small class="d-block">Precio unitario: $ {{
+              precioUnitarioParche(producto.cantidad,producto.costo)}}</small>
+            <small class="d-block">Precio Total: </small> <strong><span> $ {{producto.costo}}</span></strong>
           </ion-col>
           <ion-col>
             <div class="ion-text-center">
@@ -102,12 +105,12 @@
         Preparar
       </ion-button>
 
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2"
-        (click)="enviarPedido(pedido)" [disabled]="loaderBtn" color="danger"> {{ typeSendMessage(pedido.id_tipo_pedido) }}
+      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2" (click)="enviarPedido(pedido)"
+        [disabled]="loaderBtn" color="danger"> {{ typeSendMessage(pedido.id_tipo_pedido) }}
       </ion-button>
 
       <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 3" (click)="entregarPedido(pedido)"
-        [disabled]="loaderBtn" color="danger"> Cerrar Venta
+        [disabled]="loaderBtn" color="danger"> Cerrar Pedido
       </ion-button>
       <!-- <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 4">
         <ion-icon name="checkmark-circle-outline" [style]="{'color': pedido.color}"></ion-icon><span> Pedido entregado</span>

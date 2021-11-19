@@ -103,6 +103,8 @@ export class InicioPage implements OnInit {
   }
 
   ngOnInit(): void {
+    this.user = this.util.getUserData();
+    this.load();
     this.route.queryParams.subscribe(
       params => {
         if (params.buscarNegocios && params) {
@@ -110,18 +112,11 @@ export class InicioPage implements OnInit {
         }
       }
     );
-
     this.route.queryParams.subscribe(params => {
       if (params.byLogin && params) {
         this.negocioRutaByLogin(params.byLogin);
       }
     });
-
-    this.user = this.util.getUserData();
-    this.eventosServicios.eventBuscar().subscribe((data) => {
-      this.buscarNegocios();
-    });
-    this.load();
   }
 
   private load() {
@@ -199,6 +194,9 @@ export class InicioPage implements OnInit {
     if (usr.id_persona !== undefined) {
       this.Filtros.id_persona = usr.id_persona;
     }
+    const byCategorias = localStorage.getItem('byCategorias');
+    const dato = JSON.parse(byCategorias);
+    if (byCategorias !== null) { this.Filtros.idCategoriaNegocio = [dato.id_categoria]; this.filtroActivo = true; }
     (this.selectionAP) ? this.Filtros.organizacion = this.objectSelectAfiliacionPlaza.id_organizacion : '';
     this.principalSercicio.obtenerDatos(this.Filtros).subscribe(
       (respuesta) => {
@@ -307,6 +305,7 @@ export class InicioPage implements OnInit {
     location.reload();
   }
   borrarFiltros() {
+    localStorage.removeItem('byCategorias');
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/

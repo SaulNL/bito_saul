@@ -100,7 +100,7 @@ export class DatosPedidoDialogPage implements OnInit {
     if (isNaN(temp)) {
       this.domicilioEnvioMessage = '+ Costo de envio : ' + domicilioEnvioMessage;
     } else {
-      this.domicilioEnvioMessage = '+ $' + temp + 'pesos del envio';
+      this.domicilioEnvioMessage = '+ $' + temp + ' pesos del envio';
     }
   }
 
@@ -132,5 +132,7 @@ export class DatosPedidoDialogPage implements OnInit {
     this.blnCancelar = false;
   }
 
-
+  public precioUnitarioParche(cantidad: number, precio: number) {
+    return (Number(precio) / Number(cantidad));
+  }
 }

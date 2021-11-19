@@ -4,7 +4,7 @@
       <ion-button (click)="regresar()">
         <ion-icon name="arrow-back-outline"></ion-icon>
       </ion-button>
-      </ion-buttons>
+    </ion-buttons>
     <ion-title>Datos Pedido</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -33,18 +33,21 @@
         <ion-col>
           <ion-badge color="primary">{{pedido.tipo}}</ion-badge>
           <small class="d-block"><strong>{{pedido.fc_pedido}}</strong></small>
-          <small *ngIf="pedido.id_tipo_pedido === 1" class="d-block">Numero de mesa: <strong>{{pedido.mesa}}</strong></small>
+          <small *ngIf="pedido.id_tipo_pedido === 1" class="d-block">Numero de mesa:
+            <strong>{{pedido.mesa}}</strong></small>
         </ion-col>
       </ion-row>
     </ion-grid>
     <ion-grid>
       <ion-row>
-        <ion-col  class="ion-align-self-center"><h3>Artículos:</h3></ion-col>
+        <ion-col class="ion-align-self-center">
+          <h3>Artículos:</h3>
+        </ion-col>
       </ion-row>
     </ion-grid>
     <ion-item *ngFor="let producto of pedido.productos">
       <ion-grid>
-        <ion-row >
+        <ion-row>
           <ion-col>
             <ion-avatar>
               <ion-img [src]="producto.logo_producto"></ion-img>
@@ -52,8 +55,10 @@
           </ion-col>
           <ion-col>
             <p>{{producto.nombre_producto}}</p>
-            <small>Cantidad: {{producto.cantidad}}</small>
-            <strong><span class="d-block">$ {{producto.costo}}</span></strong>
+            <small class="d-block">Cantidad: {{producto.cantidad}}</small>
+            <small class="d-block">Precio unitario: $ {{
+              precioUnitarioParche(producto.cantidad,producto.costo)}}</small>
+            <small class="d-block">Total: </small> <strong><span>$ {{producto.costo}}</span></strong>
           </ion-col>
           <ion-col>
             <div class="ion-text-center">
@@ -68,21 +73,23 @@
       <ion-label>Total : ${{total}}  <span *ngIf="domicilioEnvio">{{domicilioEnvioMessage}}</span></ion-label>
     </ion-item>
     <div *ngIf="!blnCancelar">
-      <ion-button  expand="block" *ngIf="pedido.id_estatus_pedido < 4" (click)="cancelar()" color="medium">Cancelar mi pedido</ion-button>
+      <ion-button expand="block" *ngIf="pedido.id_estatus_pedido < 4" (click)="cancelar()" color="medium">Cancelar mi
+        pedido</ion-button>
       <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 5 || pedido.id_estatus_pedido === 6">
-        <ion-icon name="ban-outline" style="color: darkred; font-size: 12px;"></ion-icon><span style=" font-size: 12px;"> {{pedido.estatus}}</span>
+        <ion-icon name="ban-outline" style="color: darkred; font-size: 12px;"></ion-icon><span
+          style=" font-size: 12px;"> {{pedido.estatus}}</span>
         <small class="d-block">{{pedido.motivo}}</small>
       </div>
     </div>
     <div *ngIf="blnCancelar">
       <ion-item class="ion-margin-bottom">
-        <ion-label  position="stacked">Motivo de la cancelación</ion-label>
+        <ion-label position="stacked">Motivo de la cancelación</ion-label>
         <ion-textarea type="text" [(ngModel)]="motivo"></ion-textarea>
       </ion-item>
-        <ion-button  expand="block" *ngIf="pedido.id_estatus_pedido < 4" (click)="btnRegresar()" color="medium">Regresar
-        </ion-button>
-        <ion-button  expand="block" (click)="validarMotivoCancelacion(pedido);" color="danger"> Cancelar pedido
-        </ion-button>
-      </div>
+      <ion-button expand="block" *ngIf="pedido.id_estatus_pedido < 4" (click)="btnRegresar()" color="medium">Regresar
+      </ion-button>
+      <ion-button expand="block" (click)="validarMotivoCancelacion(pedido);" color="danger"> Cancelar pedido
+      </ion-button>
+    </div>
   </ion-card>
 </ion-content>

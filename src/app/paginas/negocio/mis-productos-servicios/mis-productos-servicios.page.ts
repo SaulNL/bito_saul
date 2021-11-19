@@ -150,7 +150,7 @@ export class MisProductosServiciosPage implements OnInit {
           text: "Cancel",
           icon: "close",
           role: "cancel",
-          handler: () => {},
+          handler: () => { },
         },
       ],
     });
@@ -197,7 +197,7 @@ export class MisProductosServiciosPage implements OnInit {
                   this.datosNegocio = repsuesta.data;
                   this.static = repsuesta.data;
                 },
-                (error) => {}
+                (error) => { }
               );
           }
           this.loader = false;
@@ -301,7 +301,7 @@ export class MisProductosServiciosPage implements OnInit {
             break;
         }
       },
-      (error) => {},
+      (error) => { },
       () => {
         this.loadPdf = false;
       }
@@ -572,7 +572,7 @@ export class MisProductosServiciosPage implements OnInit {
                 fn: fName
               }
               this.abrirModalImagen(
-                 newImagen,
+                newImagen,
                 this.resizeToWidth,
                 this.resizeToHeight
               );
@@ -637,11 +637,11 @@ export class MisProductosServiciosPage implements OnInit {
         this.indexModificar = this.productoNuevo.index;
         this.productoE = this.productoNuevo;
 
-         this.actualizar(this.productoNuevo);
+        this.actualizar(this.productoNuevo);
       }
       if (this.opcion === 1) {
 
-         this.agregar(this.listaProductos);
+        this.agregar(this.listaProductos);
       }
     }
   }
@@ -739,68 +739,68 @@ export class MisProductosServiciosPage implements OnInit {
     switch (this.iden) {
       case 1:
 
-          this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
-            (repsuesta) => {
-              this.buscarCategoriasProductos();
-              this.datosNegocio = repsuesta.data;
-              this.blnformMobile = false;
-              this.listaVista.map((item) => {
-                if (item.id_categoria === this.productoNuevo.id_categoria) {
-                  this.productoNuevo =
-                    this.datosNegocio.productos[
-                      this.datosNegocio.productos.length - 1
-                    ];
-                  this.productoNuevo.index =
-                    this.datosNegocio.productos.length - 1;
-                  // @ts-ignore
-                  this.productoNuevo.editar = false;
-                  item.productos.push(this.productoNuevo);
-                }
-              });
-              this.notificacionService.exito("Se guardó el producto con éxito");
-              this.indexModificar = undefined;
-              this.blnEditando = false;
-              this.productoNuevo = new DtosMogoModel();
-            },
-            (error) => {},
-            () => {
-              this.banderaGuardar = false;
-              this.regresarLista();
-            }
-          );
+        this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
+          (repsuesta) => {
+            this.buscarCategoriasProductos();
+            this.datosNegocio = repsuesta.data;
+            this.blnformMobile = false;
+            this.listaVista.map((item) => {
+              if (item.id_categoria === this.productoNuevo.id_categoria) {
+                this.productoNuevo =
+                  this.datosNegocio.productos[
+                  this.datosNegocio.productos.length - 1
+                  ];
+                this.productoNuevo.index =
+                  this.datosNegocio.productos.length - 1;
+                // @ts-ignore
+                this.productoNuevo.editar = false;
+                item.productos.push(this.productoNuevo);
+              }
+            });
+            this.notificacionService.exito("Se guardó el producto con éxito");
+            this.indexModificar = undefined;
+            this.blnEditando = false;
+            this.productoNuevo = new DtosMogoModel();
+          },
+          (error) => { },
+          () => {
+            this.banderaGuardar = false;
+            this.regresarLista();
+          }
+        );
         break;
 
       case 2:
 
-          this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
-            (repsuesta) => {
-              this.buscarCategoriasProductos();
-              this.datosNegocio = repsuesta.data;
-              this.blnformMobile = false;
-              this.listaVista.map((item) => {
-                if (item.id_categoria === this.productoNuevo.id_categoria) {
-                  this.productoNuevo =
-                    this.datosNegocio.servicios[
-                      this.datosNegocio.servicios.length - 1
-                    ];
-                  this.productoNuevo.index =
-                    this.datosNegocio.servicios.length - 1;
-                  // @ts-ignore
-                  this.productoNuevo.editar = false;
-                  item.servicios.push(this.productoNuevo);
-                }
-              });
-              this.notificacionService.exito("Se guardó el producto con éxito");
-              this.indexModificar = undefined;
-              this.blnEditando = false;
-              this.productoNuevo = new DtosMogoModel();
-            },
-            (error) => {},
-            () => {
-              this.banderaGuardar = false;
-              this.regresarLista();
-            }
-          );
+        this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
+          (repsuesta) => {
+            this.buscarCategoriasProductos();
+            this.datosNegocio = repsuesta.data;
+            this.blnformMobile = false;
+            this.listaVista.map((item) => {
+              if (item.id_categoria === this.productoNuevo.id_categoria) {
+                this.productoNuevo =
+                  this.datosNegocio.servicios[
+                  this.datosNegocio.servicios.length - 1
+                  ];
+                this.productoNuevo.index =
+                  this.datosNegocio.servicios.length - 1;
+                // @ts-ignore
+                this.productoNuevo.editar = false;
+                item.servicios.push(this.productoNuevo);
+              }
+            });
+            this.notificacionService.exito("Se guardó el producto con éxito");
+            this.indexModificar = undefined;
+            this.blnEditando = false;
+            this.productoNuevo = new DtosMogoModel();
+          },
+          (error) => { },
+          () => {
+            this.banderaGuardar = false;
+            this.regresarLista();
+          }
+        );
 
         break;
       default:
@@ -894,7 +894,7 @@ export class MisProductosServiciosPage implements OnInit {
       }
     );
   }
-  public subirImgs(event: any){
+  public subirImgs(event: any) {
 
     this.subirArchivo(event);
   }
@@ -903,7 +903,15 @@ export class MisProductosServiciosPage implements OnInit {
 
     this.subir_imagen_cuadrada(event);
   }
-  public updateBorrado(event: any){
+  public updateBorrado(event: any) {
     this.productoNuevo.imagen.splice(event.po, 1);
+  }
+
+  public isService(type: number) {
+    return (type == 2) ? 'servicio' : 'producto';
+  }
+
+  public isServices(type: number) {
+    return (type == 2) ? 'servicios' : 'productos';
   }
 }

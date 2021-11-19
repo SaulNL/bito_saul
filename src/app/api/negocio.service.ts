@@ -1,3 +1,4 @@
+import { FiltroNegocioModel } from './../Modelos/FiltroNegocioModel';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppSettings } from '../AppSettings';
@@ -33,6 +34,22 @@ export class NegocioService {
             .catch((error) => {
                 return error;
             }));
+    }
+
+    obtenerNegocio(filtros: FiltroNegocioModel) {
+        const body = JSON.stringify({ "filtros": filtros });
+        this._http.setDataSerializer('utf8');
+        return from(
+            this._http.post(
+                this.url + 'api/negocios/obtener', body, AppSettings.getHeaders()
+                // this.url + '/api/negocios/obtenerDatosBasicos', body, AppSettings.getHeaders()
+            ).then((data) => {
+                return JSON.parse(data.data);
+            }).catch((error) => {
+                return error;
+            })
+        );
+
     }
 
     public obtenerDetalleDeNegocio(negocio: number, tip, persona): Observable<any> {

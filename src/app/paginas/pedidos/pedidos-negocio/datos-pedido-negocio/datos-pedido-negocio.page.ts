@@ -286,4 +286,8 @@ export class DatosPedidoNegocioPage implements OnInit {
     public typeSendMessage(idTipoPedido: number) {
         return (idTipoPedido === 2) ? 'Enviar' : 'Notificar';
     }
+
+    public precioUnitarioParche(cantidad: number, precio: number) {
+        return (Number(precio) / Number(cantidad));
+    }
 }

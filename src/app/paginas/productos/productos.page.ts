@@ -423,6 +423,7 @@ export class ProductosPage {
     }
 
     public borrarFiltros() {
+        localStorage.removeItem('byCategorias');
         this.filtroActivo = false;
         this.obtenerProductos();
     }

@@ -190,7 +190,7 @@
                   "
                 >
                   <small style="color: red"
-                    >El nombre de la categoría del producto es requerida</small
+                    >El nombre de la categoría del {{ isService(iden) }} es requerida</small
                   >
                 </div>
                 <div
@@ -243,7 +243,7 @@
             }} permitidos
           </h2>
           <small style="text-align: justify"
-            >Los productos que no cuenten con una imagen no se mostrará en la
+            >Los {{ isServices(iden) }} que no cuenten con una imagen no se mostrará en la
             busqueda de productos y servicios</small
           >
         </div>
@@ -302,7 +302,7 @@
                 color="success"
                 expand="full"
                 (click)="agregarProductos()"
-                >Agregar producto</ion-button
+                >Agregar {{ isService(iden) }}</ion-button
               >
             </ion-col>
           </ion-row>
