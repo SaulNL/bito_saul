@@ -37,6 +37,7 @@ export class ModalProductoPage implements OnInit {
     this.cargando = 'Cargando producto';
     this.idPersona = null;
     this.loader = false;
+    this.comprarB = false;
   }
 
   ngOnInit() {
@@ -89,11 +90,12 @@ export class ModalProductoPage implements OnInit {
       respuesta => {
         if (respuesta.code === 200) {
           this.negocio = respuesta.data.lst_cat_negocios[0];
+          this.mostrarBoton();
         } else {
           this.notificaciones.error('Error no se pudo cargar su producto');
           this.dismiss();
         }
-          this.loader = false;
+        this.loader = false;
       }, () => {
         this.loader = false;
         this.notificaciones.error('Error problemas con el servidor');
@@ -102,11 +104,7 @@ export class ModalProductoPage implements OnInit {
     );
   }
   public mostrarBoton() {
-    this.comprarB =
-      (this.negocio.entrega_domicilio === 1 ||
-        this.negocio.entrega_sitio === 1 ||
-        this.negocio.consumo_sitio === 1) &&
-      parseInt(this.unoProducto.precio) > 0;
+    this.comprarB = (this.negocio.entrega_domicilio === 1 || this.negocio.entrega_sitio === 1 || this.negocio.consumo_sitio === 1) && parseInt(this.unoProducto.precio) > 0;
   }
 
   public noEstaAbierto() {
