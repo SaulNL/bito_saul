@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { SolicitudesService } from "../../../../../../api/solicitudes.service";
 import { PostuladosModel } from "src/app/Modelos/PostuladosModel";
 import { LoadingController } from "@ionic/angular";
-import {Downloader,DownloadRequest,NotificationVisibility} from "@ionic-native/downloader/ngx";
+import { Downloader, DownloadRequest, NotificationVisibility } from "@ionic-native/downloader/ngx";
 import { ToadNotificacionService } from "../../../../../../api/toad-notificacion.service";
 import { Platform } from '@ionic/angular';
 import { HTTP } from "@ionic-native/http/ngx";
@@ -22,6 +22,8 @@ export class CardPostuladoPage implements OnInit {
   public lstPostulados: Array<PostuladosModel>;
   public loader: any;
   public extencion: string;
+  public message: string;
+  public ckecket: boolean;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -32,29 +34,27 @@ export class CardPostuladoPage implements OnInit {
     private http: HTTP,
     private file: File,
     public platform: Platform
-  ) {}
+  ) {
+    this.loader = false
+    this.message = 'Cargando...';
+  }
 
   ngOnInit() {
     this.lstPostulados = new Array<PostuladosModel>();
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.solicitudPostulado = JSON.parse(params.special);
+        this.ckecket = (this.solicitudPostulado.checkend === 1) ? true : false;
       }
     });
   }
 
   public checkSolicitud(postulado: PostuladosModel) {
-    this.loader = true;
     this.solicitudesService.checkendPostulacion(postulado).subscribe(
       (response) => {
         if (response.code === 200) {
           this.lstPostulados = response.data;
-          this.loader = false;
         }
-        this.loader = false;
-      },
-      (error) => {
-        this.loader = false;
       }
     );
   }
@@ -63,32 +63,28 @@ export class CardPostuladoPage implements OnInit {
   }
   descargarAndroid() {
     this.extensionArchivo();
+    this.message = 'Descargando archivo....';
     this.loader = true;
-    setTimeout(() => {
-      var request: DownloadRequest = {
-        uri: this.solicitudPostulado.url_archivo,
-        title: "Archivo_Solicitud_Postulado",
-        description: "Archivo que contiene una solicitud de un postulado",
-        mimeType: "",
-        visibleInDownloadsUi: true,
-        notificationVisibility: NotificationVisibility.VisibleNotifyCompleted,
-        destinationInExternalFilesDir: {
-          dirType: "",
-          subPath:
-            "../../../../Download/" +
-            this.solicitudPostulado.nombre +
-            "_Archivo_Postulado." +
-            this.extencion,
-        },
-      };
-      this.downloader
-        .download(request)
-        .then( () =>
-        this.notificaciones.exito("El Archivo se descargo con exito")
-        ,)
-        .catch((error) => this.notificaciones.error(error));
-        this.loader = false;
-    }, 700);
+    var request: DownloadRequest = {
+      uri: this.solicitudPostulado.url_archivo,
+      title: "Archivo_Solicitud_Postulado",
+      description: "Archivo que contiene una solicitud de un postulado",
+      mimeType: "",
+      visibleInDownloadsUi: true,
+      notificationVisibility: NotificationVisibility.VisibleNotifyCompleted,
+      destinationInExternalFilesDir: {
+        dirType: "",
+        subPath: + this.solicitudPostulado.nombre + "_Archivo_Postulado." + this.extencion
+      }
+    };
+    this.downloader.download(request).then((location: string) => {
+      console.log(location);
+      this.notificaciones.exito("El Archivo se descargo con exito")
+      this.loader = false;
+    }).catch((error: any) => {
+      this.loader = false;
+      this.notificaciones.error(error)
+    });
   }
 
   extensionArchivo() {
@@ -120,7 +116,7 @@ export class CardPostuladoPage implements OnInit {
           this.file
             .writeFile(
               this.file.documentsDirectory,
-              this.solicitudPostulado.nombre +"_Archivo_Postulado." + this.extencion, blob, { replace: true, append: false })
+              this.solicitudPostulado.nombre + "_Archivo_Postulado." + this.extencion, blob, { replace: true, append: false })
             .then((response) => {
               Share.share({
                 title: this.solicitudPostulado.nombre + "_Archivo_Postulado",
@@ -132,7 +128,7 @@ export class CardPostuladoPage implements OnInit {
             .catch((error) => this.notificaciones.error(error));
         })
         .catch((error) => this.notificaciones.error(error));
-        this.loader = false;
+      this.loader = false;
     }, 700);
   }
   getMimetype(name) {
@@ -146,15 +142,15 @@ export class CardPostuladoPage implements OnInit {
 
       return "image/jpeg";
     } else if (name.indexOf("jpg") >= 0) {
-      
+
       return "image/jpg";
     }
   }
-  descargar(){
-    if(this.platform.is('ios')){
-       this.descargarIOS();
-     }else{
-       this.descargarAndroid();
-     }
-   }
+  descargar() {
+    if (this.platform.is('ios')) {
+      this.descargarIOS();
+    } else {
+      this.descargarAndroid();
+    }
+  }
 }

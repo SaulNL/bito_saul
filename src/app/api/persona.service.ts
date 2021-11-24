@@ -83,8 +83,8 @@ export class PersonaService {
     const body = JSON.stringify({id_persona : idPersona});
     this._http.setDataSerializer("utf8");
     return from(this._http.post(
-      `${this.url}api/personas/obtener/datosBasicos`, body,
-        AppSettings.getHeaders()
+      `${this.url}api/api/personas/obtener/datosBasicos`, body,
+        AppSettings.getHeadersToken()
     ).then(
       (data) => {
         return JSON.parse(data.data);
@@ -98,8 +98,8 @@ export class PersonaService {
     const body = JSON.stringify({id_persona : idPersona});
     this._http.setDataSerializer("utf8");
     return from(this._http.post(
-      `${this.url}api/personas/obtener/datosComplementarios`, body,
-        AppSettings.getHeaders()
+      `${this.url}api/api/personas/obtener/datosComplementarios`, body,
+        AppSettings.getHeadersToken()
     ).then(
       (data) => {
         return JSON.parse(data.data);

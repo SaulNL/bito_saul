@@ -4,11 +4,12 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UtilsCls } from "../../utils/UtilsCls";
 import { AppSettings } from "../../AppSettings";
-import {ActionSheetController, NavController, Platform} from "@ionic/angular";
+import { ActionSheetController, NavController, Platform } from "@ionic/angular";
 import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Auth0Service } from "src/app/api/auth0.service";
-import {PedidosService} from "../../api/pedidos.service";
-import {OneSignalNotificationsService} from "../../api/one-signal-notifications.service";
+import { PedidosService } from "../../api/pedidos.service";
+import { OneSignalNotificationsService } from "../../api/one-signal-notifications.service";
+import { PersonaService } from '../../api/persona.service';
 
 @Component({
   selector: "app-ajustes",
@@ -42,12 +43,14 @@ export class AjustesPage implements OnInit {
     private validarPermisos: ValidarPermisoService,
     private pedidos: PedidosService,
     private platform: Platform,
-    private signal: OneSignalNotificationsService
+    private signal: OneSignalNotificationsService,
+    private personaService: PersonaService
   ) {
     this.siNoVistos = false;
     this.totalNoVistos = 0;
-    this.usuario = this.auth0.getUserData();
     if (this.util.existSession()) {
+      this.usuario = this.auth0.getUserData();
+      this.setNewDataBasicUser(this.usuario.id_persona);
       this.validar(JSON.parse(String(localStorage.getItem('u_permisos'))));
     }
   }
@@ -161,11 +164,28 @@ export class AjustesPage implements OnInit {
   public notificacionesVentas() {
     const id = this.auth0.getIdProveedor();
     this.pedidos.noVistos(id).subscribe(
-        res => {
-          this.totalNoVistos = res.data;
-          this.siNoVistos = (res.data > 0);
-        },
-        () => {
-        });
+      res => {
+        this.totalNoVistos = res.data;
+        this.siNoVistos = (res.data > 0);
+      },
+      () => {
+      });
+  }
+
+  private setNewDataBasicUser(idPersona: number) {
+    console.log(idPersona);
+    this.personaService.datosBasicos(idPersona).subscribe(
+      response => {
+        if (response.code === 200) {
+          this.usuario.nombre = response.data.nombre;
+          this.usuario.paterno = response.data.paterno;
+          this.usuario.materno = response.data.materno;
+          this.usuario.telefono = response.data.telefono;
+          this.usuario.imagen = response.data.imagen;
+          this.usuario.correo = response.data.correo;
+          localStorage.setItem('u_data', JSON.stringify(this.usuario));
+        }
+      }
+    );
   }
 }

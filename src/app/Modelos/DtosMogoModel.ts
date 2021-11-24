@@ -1,27 +1,30 @@
-import {ArchivoComunModel} from './ArchivoComunModel';
-import {NegocioMongo} from './NegocioMongo';
+import { ArchivoComunModel } from './ArchivoComunModel';
+import { DtosNegocioMogoModel } from './DtosNegocioMogoModel';
 
 export class DtosMogoModel {
-  public nombre: string;
-  public descripcion: string;
-  public precio: string;
   public categoria: any;
-  public imagen: any;
-  public negocio: any;
-  public existencia: any;
   categoria2: any;
-  nombre_categoria1: any;
-  nombre_categoria2: any;
   index: number;
-  id_categoria: number;
-
+  public descripcion: string;
+  public existencia: boolean;
+  public id_categoria: number;
+  public imagen: any;
+  public likes: number;
+  public
+  negocio: DtosNegocioMogoModel;
+  public nombre: string;
+  public nombre_categoria1: string;
+  public nombre_categoria2: string;
+  public activo: boolean;
+  public precio: string;
+  public usuario_dio_like: boolean;
 
   constructor(nombre = null, descripcion = null, precio = null, categoria = null) {
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.precio = precio;
     this.categoria = categoria;
-    this.imagen = new  ArchivoComunModel();
-    this.negocio = new NegocioMongo();
+    this.imagen = new ArchivoComunModel();
+    this.negocio = new DtosNegocioMogoModel();
   }
 }

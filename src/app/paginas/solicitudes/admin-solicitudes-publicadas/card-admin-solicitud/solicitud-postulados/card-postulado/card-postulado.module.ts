@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
 import { CardPostuladoPageRoutingModule } from './card-postulado-routing.module';
-
 import { CardPostuladoPage } from './card-postulado.page';
+import { SpinnerModule } from '../../../../../../componentes/spinner/spinner.module';
 
 
 @NgModule({
@@ -14,7 +12,8 @@ import { CardPostuladoPage } from './card-postulado.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    CardPostuladoPageRoutingModule
+    CardPostuladoPageRoutingModule,
+    SpinnerModule
   ],
   declarations: [CardPostuladoPage]
 })

@@ -56,16 +56,12 @@ export class DatosBasicosPage implements OnInit {
 
   ngOnInit() {
     this.usuarioSistema = new MsPersonaModel();
-    this.setLocalStorageData();
+    this.setDataBasicUser();
   }
 
   private actualizarUsuario(user) {
     this.usuarioSistema = user;
     this.usuarioSistema.fecha_nacimiento = this.usuarioSistema.fecha_nacimiento !== null ? new Date(this.usuarioSistema.fecha_nacimiento) : null;
-  }
-  private setLocalStorageData(){
-    const user = JSON.parse(localStorage.getItem('u_data'));
-    this.actualizarUsuario(user);
   }
 
   private setDataBasicUser() {

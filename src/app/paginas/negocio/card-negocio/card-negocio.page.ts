@@ -85,6 +85,7 @@ export class CardNegocioPage implements OnInit {
     });
   }
   productosServicios(negocio: NegocioModel, inde) {
+    console.log(negocio);
     this.negocioTO = JSON.parse(JSON.stringify(negocio));
     let all = {
       inden: inde,

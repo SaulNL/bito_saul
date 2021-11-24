@@ -335,24 +335,6 @@ export class MisProductosServiciosPage implements OnInit {
     this.agregarClas = true;
   }
 
-  get obtenerProductos() {
-    if (this.listaVista !== undefined && this.listaVista !== null) {
-      let total = 0;
-      this.listaVista.forEach((it) => {
-        if (it.activo && it.productos !== undefined) {
-          it.productos.forEach((p) => {
-            if (p.existencia) {
-              total++;
-            }
-          });
-        }
-      });
-
-      return total;
-    } else {
-      return 0;
-    }
-  }
 
   async modalClasificacion(item) {
     const modal = await this.modalController.create({
@@ -662,8 +644,7 @@ export class MisProductosServiciosPage implements OnInit {
   setNegocioProducto() {
     this.productoNuevo.negocio.idNegocio = this.datosNegocio.id_negocio;
     this.productoNuevo.negocio.nombre = this.negocioTO.nombre_comercial;
-    this.productoNuevo.negocio.dirección =
-      this.datosNegocio.domicilio.id_domicilio;
+    this.productoNuevo.negocio.direccion = this.datosNegocio.domicilio.id_domicilio;
     this.productoNuevo.negocio.logo = this.negocioTO.url_logo;
   }
 
@@ -696,7 +677,7 @@ export class MisProductosServiciosPage implements OnInit {
     datosAEnviar = JSON.parse(datos);
     this.productoNuevo.imagen = JSON.parse(JSON.stringify(this.productoNuevo.imagen));
     // this.productoNuevo.imagen.nombre_archivo = this.productoNuevo.nombre + ".jpg";
-    this.productoNuevo.negocio.dirección = this.negocioTO.det_domicilio.id_domicilio;
+    this.productoNuevo.negocio.direccion = this.negocioTO.det_domicilio.id_domicilio;
     if (this.blnEditando) {
       datosAEnviar.productos[this.indexModificar] = this.productoNuevo;
     } else {
@@ -913,5 +894,22 @@ export class MisProductosServiciosPage implements OnInit {
 
   public isServices(type: number) {
     return (type == 2) ? 'servicios' : 'productos';
+  }
+
+  public isMayusculaService(type: number) {
+    return (type == 2) ? 'Servicios' : 'Productos';
+  }
+  public obtenerTotalProductosOrServicios(type: number) {
+    let selection: Array<DtosMogoModel>;
+    if (type == 2) {
+      selection = (Array.isArray(this.datosNegocio.servicios)) ? this.datosNegocio.servicios : [];
+      return this.obtenerTotal(selection);
+    }
+    selection = (Array.isArray(this.datosNegocio.productos)) ? this.datosNegocio.productos : [];
+    return this.obtenerTotal(selection);
+  }
+
+  private obtenerTotal(lista: Array<DtosMogoModel>) {
+    return lista.length;
   }
 }

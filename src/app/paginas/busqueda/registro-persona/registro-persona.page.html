@@ -69,7 +69,7 @@
             <div *ngIf="materno.errors.required">El apellido materno es requerido</div>
           </div>
           <ion-item>
-            <ion-label position="stacked">Correo<span style="color: red;">*</span></ion-label>
+            <ion-label position="stacked">Correo <span *ngIf="blnCorreo" style="color: red;">*</span></ion-label>
             <ion-input id="correo" type="email" name="correo" placeholder="usuario@dominio.com" #correo="ngModel"
               [(ngModel)]="usuario_sistema.ms_persona.correo" [required]="blnCorreo"
               (ngModelChange)="obtenerCorreo($event)"></ion-input>
@@ -78,7 +78,7 @@
             <div>El correo es requerido</div>
           </div>
           <ion-item>
-            <ion-label position="stacked">Número Celular<span style="color: red;">*</span></ion-label>
+            <ion-label position="stacked">Número Celular<span *ngIf="blnTelefono" style="color: red;">*</span></ion-label>
             <ion-input id="telefono_admin" type="text" maxlength='10' name="telefono_admin" placeholder="Número Celular"
               #telefono_admin="ngModel" [(ngModel)]="usuario_sistema.ms_persona.telefono_celular"
               [required]="blnTelefono" (ngModelChange)="obtenerNumeroCelular($event)"></ion-input>

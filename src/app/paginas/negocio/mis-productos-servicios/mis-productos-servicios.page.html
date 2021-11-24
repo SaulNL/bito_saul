@@ -239,8 +239,7 @@
           "
         >
           <h2 style="color: black; text-align: center">
-            Productos registrados: {{ obtenerProductos }} de {{ maximoProductos
-            }} permitidos
+            {{ isMayusculaService(iden) }} registrados: {{ obtenerTotalProductosOrServicios(iden) }} de {{ maximoProductos }} permitidos
           </h2>
           <small style="text-align: justify"
             >Los {{ isServices(iden) }} que no cuenten con una imagen no se mostrará en la
