@@ -173,7 +173,6 @@ export class AjustesPage implements OnInit {
   }
 
   private setNewDataBasicUser(idPersona: number) {
-    console.log(idPersona);
     this.personaService.datosBasicos(idPersona).subscribe(
       response => {
         if (response.code === 200) {

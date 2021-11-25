@@ -48,6 +48,7 @@ export class SolicitudPostuladosPage implements OnInit {
     );
   }
  selePostulado(solicitud: any){
+   localStorage.setItem("isRedirected", "false");
   let navigationExtras = JSON.stringify(solicitud);
   this.router.navigate(['/tabs/home/solicitudes/admin-solicitudes-publicadas/card-admin-solicitud/solicitud-postulados/card-postulado'] , { queryParams: { special: navigationExtras } });
  }

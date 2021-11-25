@@ -89,7 +89,7 @@ export class ModalProductoPage implements OnInit {
     this.negocioServico.obtenerNegocio(idNegocio).subscribe(
       respuesta => {
         if (respuesta.code === 200) {
-          this.negocio = respuesta.data.lst_cat_negocios[0];
+          this.negocio = respuesta.data;
           this.mostrarBoton();
         } else {
           this.notificaciones.error('Error no se pudo cargar su producto');

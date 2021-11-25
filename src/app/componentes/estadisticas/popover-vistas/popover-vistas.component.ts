@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-popover-vistas',
@@ -7,11 +7,19 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class PopoverVistasComponent implements OnInit {
 
-  @Input() public vistasQR: number;
-  @Input() public vistasURL: number;
+  @Input() public visitasQR: number;
+  @Input() public visitasURL: number;
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (isNaN(Number(this.visitasQR))) {
+      this.visitasQR = 0;
+    }
+
+    if (isNaN(Number(this.visitasURL))) {
+      this.visitasURL = 0;
+    }
+  }
 
 }

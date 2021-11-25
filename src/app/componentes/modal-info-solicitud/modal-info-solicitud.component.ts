@@ -133,8 +133,8 @@ export class ModalInfoSolicitudComponent implements OnInit {
           res => {
             let content = new CommonOneSignalModel('Se ha postulado alguien en tu requerimiento de compra.');
             let headings = new CommonOneSignalModel('Postulación Nueva!');
-            let sentNotification = new SentNotificationModel(content, headings, [String(response.data.usuario)], res.data.api); /* Produccion */
-            this.sentPushNotificationService.sentNotification(sentNotification, res.data.tkn).subscribe( /* Produccion */
+            let sentNotification = new SentNotificationModel(content, headings, [String(response.data.usuario)], res.data.api);
+            this.sentPushNotificationService.sentNotification(sentNotification, res.data.tkn).subscribe(
               () => {
                 this.loaderP();
               }, () => {

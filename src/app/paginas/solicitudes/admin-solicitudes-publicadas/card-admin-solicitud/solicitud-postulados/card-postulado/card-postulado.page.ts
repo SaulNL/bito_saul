@@ -9,7 +9,7 @@ import { ToadNotificacionService } from "../../../../../../api/toad-notificacion
 import { Platform } from '@ionic/angular';
 import { HTTP } from "@ionic-native/http/ngx";
 import { File } from "@ionic-native/file/ngx";
-import { Plugins } from "@capacitor/core";
+import { Plugins, FilesystemDirectory } from '@capacitor/core';
 const { Share } = Plugins;
 
 @Component({
@@ -24,6 +24,7 @@ export class CardPostuladoPage implements OnInit {
   public extencion: string;
   public message: string;
   public ckecket: boolean;
+  public isIOS: boolean;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -37,9 +38,15 @@ export class CardPostuladoPage implements OnInit {
   ) {
     this.loader = false
     this.message = 'Cargando...';
+    this.isIOS = this.platform.is('ios');
   }
 
   ngOnInit() {
+    if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
+      localStorage.setItem("isRedirected", "true");
+      location.reload();
+      // window.location.assign(this.router.url);
+    }
     this.lstPostulados = new Array<PostuladosModel>();
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params && params.special) {
@@ -59,26 +66,26 @@ export class CardPostuladoPage implements OnInit {
     );
   }
   cerrar() {
+    this.loader = false;
     this.router.navigate(["/tabs/home/solicitudes"]);
   }
   descargarAndroid() {
-    this.extensionArchivo();
+    // this.extensionArchivo();
     this.message = 'Descargando archivo....';
     this.loader = true;
     var request: DownloadRequest = {
       uri: this.solicitudPostulado.url_archivo,
-      title: "Archivo_Solicitud_Postulado",
+      title: this.solicitudPostulado.nombre + "_Archivo_Postulado." + this.extencion,
       description: "Archivo que contiene una solicitud de un postulado",
       mimeType: "",
       visibleInDownloadsUi: true,
       notificationVisibility: NotificationVisibility.VisibleNotifyCompleted,
       destinationInExternalFilesDir: {
         dirType: "",
-        subPath: this.solicitudPostulado.nombre + "_Archivo_Postulado." + this.extencion
+        subPath: FilesystemDirectory.Documents + "/" + this.solicitudPostulado.nombre + "_Archivo_Postulado." + this.extencion
       }
     };
     this.downloader.download(request).then((location: string) => {
-      console.log(location);
       this.notificaciones.exito("El Archivo se descargo con exito")
       this.loader = false;
     }).catch((error: any) => {
@@ -98,9 +105,14 @@ export class CardPostuladoPage implements OnInit {
     }
     this.extencion = listapabra.reverse().toString();
     this.extencion = this.extencion.split(",").join("");
+    if (this.platform.is('ios')) {
+      this.descargarIOS();
+    } else {
+      this.descargarAndroid();
+    }
   }
   descargarIOS() {
-    this.extensionArchivo();
+    // this.extensionArchivo();
     this.loader = true;
     setTimeout(() => {
       const options: any = {
@@ -147,10 +159,6 @@ export class CardPostuladoPage implements OnInit {
     }
   }
   descargar() {
-    if (this.platform.is('ios')) {
-      this.descargarIOS();
-    } else {
-      this.descargarAndroid();
-    }
+    this.extensionArchivo()
   }
 }

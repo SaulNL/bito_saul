@@ -104,14 +104,14 @@ export class EstadisticasComponent implements OnInit {
     public obtenerVisitasQR() {
         this.servicioNegocio.estadisticaVisitasQR(this.filtroGrafica).subscribe(
             response => {
-                this.totalVisitasQR = response.data.numero_visto;
-                this.loader = false;
-                if (response.data.numero_visto === 0) {
-                    this.totalVisitasQR = 0;
+                if (!isNaN(Number(response.data.numero_visto))) {
+                    this.totalVisitasQR = response.data.numero_visto;
                 }
+                this.loader = false;
             },
             error => {
                 this.loader = false;
+                this.totalVisitasQR = 0;
                 this.notificaciones.error(error);
             }
         );
@@ -120,13 +120,15 @@ export class EstadisticasComponent implements OnInit {
     public obtenerVisitasUrl() {
         this.servicioNegocio.estadisticaVisitasURL(this.filtroGrafica).subscribe(
             response => {
-                this.totalVisitasURL = response.data.numero_visto;
-                if (response.data.numero_visto === undefined) {
-                    this.totalVisitasURL = 0;
+                if (!isNaN(Number(response.data.numero_visto))) {
+                    this.totalVisitasURL = response.data.numero_visto;
                 }
+                this.loader = false;
             },
             error => {
                 this.notificaciones.error(error);
+                this.totalVisitasURL = 0;
+                this.loader = false;
             }
         );
     }
