@@ -74,7 +74,7 @@ export class CardPostuladoPage implements OnInit {
       notificationVisibility: NotificationVisibility.VisibleNotifyCompleted,
       destinationInExternalFilesDir: {
         dirType: "",
-        subPath: + this.solicitudPostulado.nombre + "_Archivo_Postulado." + this.extencion
+        subPath: this.solicitudPostulado.nombre + "_Archivo_Postulado." + this.extencion
       }
     };
     this.downloader.download(request).then((location: string) => {
