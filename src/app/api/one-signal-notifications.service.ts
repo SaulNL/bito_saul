@@ -11,7 +11,6 @@ export class OneSignalNotificationsService {
 
     inicialiceNotifications(api: string) {
         OneSignal.setAppId(api);
-        // OneSignal.setAppId(AppSettings.ONE_SIGNAL);
         OneSignal.setNotificationOpenedHandler(function (jsonData) {
         });
         OneSignal.promptForPushNotificationsWithUserResponse(function (accepted) {
