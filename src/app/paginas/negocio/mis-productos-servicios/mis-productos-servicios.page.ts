@@ -180,7 +180,7 @@ export class MisProductosServiciosPage implements OnInit {
       .subscribe(
         (repsuesta) => {
           this.datosNegocio = repsuesta.data;
-          this.productoTags = this.datosNegocio.productoTags;
+          (this.iden === 2) ? this.productoTags = this.datosNegocio.serviciosTags : this.productoTags = this.datosNegocio.productoTags;
           if (
             this.datosNegocio === undefined ||
             this.datosNegocio === null ||
