@@ -215,3 +215,18 @@ ion-fab {
     transform: translateX(0%);
   }
 }
+
+.alert-required {
+  color: red;
+}
+
+.facebook-color-button {
+  --background: #274da1;
+}
+.apple-color-button {
+  --background: #A2AAAD;
+}
+
+.login-button {
+    text-transform: initial;
+}

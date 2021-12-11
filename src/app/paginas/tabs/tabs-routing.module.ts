@@ -39,7 +39,7 @@ const routes: Routes = [
       },
       {
         path: 'login',
-        loadChildren: () => import('../login/login.module').then(m => m.LoginPageModule) , canActivate: [GuardLoginService]
+        loadChildren: () => import('../../Bitoo/Pages/sign-in/sign-in.module').then(m => m.SignInPageModule), canActivate: [GuardLoginService]
       },
       {
         path: 'ajustes',
@@ -58,8 +58,12 @@ const routes: Routes = [
         loadChildren: () => import('../datos-complementarios/datos-complementarios.module').then(m => m.DatosComplementariosPageModule)
       },
       {
-        path: 'registro-persona',
-        loadChildren: () => import('../busqueda/registro-persona/registro-persona.module').then(m => m.RegistroPersonaPageModule)
+        path: 'actualizar-version',
+        loadChildren: () => import('../actualizar-version/actualizar-version.module').then(m => m.ActualizarVersionPageModule)
+      },
+      {
+        path: 'sign-up',
+        loadChildren: () => import('../../Bitoo/Pages/sign-up/sign-up.module').then(m => m.SignUpPageModule)
       },
       {
         path: '',

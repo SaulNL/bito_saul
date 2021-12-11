@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\Bitoo",
+    "\\src\\app\\Bitoo\\Pages",
+    "\\src\\app\\Bitoo\\Pages\\sign-up"
+  ],
+  "SelectedNode": "\\src\\app\\Bitoo\\Pages\\sign-up\\sign-up.page.ts",
+  "PreviewInSolutionExplorer": true
+}

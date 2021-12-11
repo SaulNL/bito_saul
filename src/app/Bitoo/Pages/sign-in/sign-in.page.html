@@ -1,0 +1,35 @@
+<app-header message="Inicio de Sesión" [backButton]="false" [closeButton]="false">
+</app-header>
+<app-loader [loader]="loader" message="Iniciando sesión"></app-loader>
+<ion-content class="ion-padding" *ngIf="!loader">
+  <ion-grid class="ion-justify-content-center ion-text-center ion-align-items-center">
+    <img alt="Logo Bitoo" width="150" height="150"
+      src="https://ecoevents.blob.core.windows.net/comprandoando/logos%2Flogo%201.0.png">
+  </ion-grid>
+  <form (ngSubmit)="signInForm(formLogin)" #formLogin="ngForm">
+    <ion-item>
+      <ion-label position="floating">Usuario</ion-label>
+      <ion-input id="user" name="user" type="username" [(ngModel)]="user.usuario" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input id="password" name="password" type="password" [(ngModel)]="user.password" required></ion-input>
+    </ion-item>
+    <ion-button class="ion-margin-top bg-rosa text-format" expand="block" type="submit" mode="ios">
+      Iniciar sesión
+    </ion-button>
+  </form>
+  <app-sign-in-or-up-social-networks [ios]="isIos" [signIn]="true" (responder)="response($event)"
+    [loaderFacebook]="loadFacebook" [loaderGoogle]="loadGoogle" [loaderApple]="loadApple" #socialNetworks>
+  </app-sign-in-or-up-social-networks>
+  <ion-grid>
+    <ion-row class="ion-align-items-center">
+      <ion-col size="12" class="ion-text-center">
+        <a (click)="recoverPassword()">Olvidé mi contraseña</a>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-item class="bg-gris" lines="none">
+    <ion-label>No estas Registrado? <a (click)="toSignUp()">Registrate Aquí!</a></ion-label>
+  </ion-item>
+</ion-content>
