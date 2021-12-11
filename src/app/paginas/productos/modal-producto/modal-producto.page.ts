@@ -18,7 +18,6 @@ export class ModalProductoPage implements OnInit {
   @Input() public existeSesion: boolean;
   @Input() public unoProducto: any;
   @Input() public user: any;
-  // public busquedaNegocio: FiltroNegocioModel;
   public negocio: NegocioProductoModel;
   public comprarB: any;
   public mensajeCompra = 'Agregar';
@@ -46,7 +45,6 @@ export class ModalProductoPage implements OnInit {
       this.idPersona = this.user.id_persona;
       this.loVio(this.unoProducto);
     }
-    // this.busquedaNegocio = new FiltroNegocioModel(this.unoProducto.negocio.idNegocio, this.idPersona);
     this.obtenerNegocio(this.unoProducto.negocio.idNegocio);
   }
   dismiss() {

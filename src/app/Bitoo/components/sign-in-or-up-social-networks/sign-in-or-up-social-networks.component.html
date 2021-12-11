@@ -1,0 +1,23 @@
+<section [ngClass]="{'bg-gris': isSignIn}">
+  <section>
+    <ion-button (click)="signUpFacebook()" class="facebook-color-button" expand="block" mode="ios" [disabled]="loaderFacebook">
+      <ion-icon slot="start" name="logo-facebook"></ion-icon>
+      Continuar con Facebook    
+      <ion-spinner *ngIf="loaderFacebook" name="crescent"></ion-spinner>
+    </ion-button>
+  </section>
+  <section>
+    <ion-button (click)="signUpGoogle()" expand="block" mode="ios" [disabled]="loaderGoogle">
+      <ion-icon slot="start" name="logo-google"></ion-icon>
+      Continuar con Google   
+      <ion-spinner *ngIf="loaderGoogle" name="crescent"></ion-spinner>
+    </ion-button>
+  </section>
+  <section *ngIf="ios">
+    <ion-button (click)="signUpApple()" expand="block" mode="ios" class="apple-color-button" [disabled]=loaderApple>
+      <ion-icon slot="start" name="logo-apple"></ion-icon>
+      Continuar con Apple    
+      <ion-spinner *ngIf="loaderApple" name="crescent"></ion-spinner>
+    </ion-button>
+  </section>
+</section>

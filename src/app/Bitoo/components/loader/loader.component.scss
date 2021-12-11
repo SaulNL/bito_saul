@@ -1,0 +1,17 @@
+.spinner-color {
+    --color: #fa4f72;
+}
+
+.spinner {
+    position: fixed;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.message {
+    position: fixed;
+    top: 53%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fa4f72;
+}

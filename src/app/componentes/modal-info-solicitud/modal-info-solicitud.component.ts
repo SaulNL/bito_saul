@@ -160,7 +160,7 @@ export class ModalInfoSolicitudComponent implements OnInit {
   }
 
   subir_archivo($event) {
-    if ($event.target.files[0].size < 500000) {
+    if ($event.target.files[0].size < 300000) {
       this.uploadedFiles = $event.target.files[0];
       this.pesado = false;
       this.nombreArchivo = $event.target.files[0].name;

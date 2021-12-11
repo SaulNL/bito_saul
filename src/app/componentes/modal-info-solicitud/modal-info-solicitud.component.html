@@ -11,7 +11,7 @@
 
 <ion-content [fullscreen]="true">
   <ion-card *ngIf="!btnPostular">
-    <img src="{{solicitud.url_imagen}}" style="width: 100%;">
+    <img src="{{solicitud.url_imagen}}" style="width: 100%;" alt="Requerimiento">
     <ion-card-content>
       <ion-list>
 
@@ -69,15 +69,13 @@
 
         <label for="archivo"
           style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-          <small *ngIf="!pesado && nombreArchivo !== ''" style="margin-top: 10px; color: blue;">{{ nombreArchivo
-            }}</small>
-          <small *ngIf="pesado && nombreArchivo === ''" style="margin-top: 10px; color: red;">Archivo pesado</small>
+          <small *ngIf="!pesado && nombreArchivo !== ''" style="margin-top: 10px; color: blue;">{{ nombreArchivo }}</small>
+          <small *ngIf="pesado && nombreArchivo === ''" style="margin-top: 10px; color: red;"> <strong>Archivo pesado</strong></small>
           <div
             style="display: flex; justify-content: center; align-items: center; background-color: greenyellow; border-radius: 20px; padding: 10px; margin-top: 20px; width: 50%;">
             Subir Archivo <ion-icon name="folder-outline" style="margin-left: 10px;"></ion-icon>
           </div>
-          <small style="margin-top: 10px; color: red;"><strong>Tu archivo no debe pesar mas de 4
-              Mb</strong> </small>
+          <small *ngIf="!pesado" style="margin-top: 10px; color: blue;"><strong>Tu archivo no debe pesar mas de 3 Mb</strong> </small>
         </label>
 
         <input type="file" id="archivo" name="archivo" (change)="subir_archivo($event)" maxsize=10 hidden>

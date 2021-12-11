@@ -1,12 +1,14 @@
 <ion-tabs>
 
   <ion-tab-bar slot="bottom">
-    <ion-tab-button class="tab-button-principal" (click)="productos()" tab="productos" style="--color-selected: #fa4f72">
+    <ion-tab-button class="tab-button-principal" (click)="productos()" tab="productos"
+      style="--color-selected: #fa4f72">
       <ion-icon name="cube-outline"></ion-icon>
       <ion-label>Productos</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button class="tab-button-principal" (click)="promociones()" tab="promociones" style="--color-selected: #fa4f72">
+    <ion-tab-button class="tab-button-principal" (click)="promociones()" tab="promociones"
+      style="--color-selected: #fa4f72">
       <ion-icon name="pricetags-outline"></ion-icon>
       <ion-label>Promociones</ion-label>
     </ion-tab-button>
@@ -15,12 +17,13 @@
       <ion-icon name="storefront-outline"></ion-icon>
       <ion-label>Negocios</ion-label>
     </ion-tab-button>
-    <ion-tab-button *ngIf="usuario !== null" tab="mis-favoritos" class="tab-button-principal" (click)="solicitudes()" style="--color-selected: #fa4f72">
-    <ion-icon name="heart-outline"></ion-icon>
-    <!-- <ion-icon name="receipt-outline"></ion-icon> -->
+    <ion-tab-button *ngIf="usuario !== null" tab="mis-favoritos" class="tab-button-principal" (click)="solicitudes()"
+      style="--color-selected: #fa4f72">
+      <ion-icon name="heart-outline"></ion-icon>
+      <!-- <ion-icon name="receipt-outline"></ion-icon> -->
       <ion-label>Favoritos</ion-label>
     </ion-tab-button>
-    <ion-tab-button *ngIf="usuario === null" (click)="login()" tab="login" style="--color-selected: #fa4f72">
+    <ion-tab-button *ngIf="usuario === null" (click)="login()" style="--color-selected: #fa4f72">
       <ion-icon name="person-circle-outline"></ion-icon>
       <ion-label>Usuario</ion-label>
     </ion-tab-button>
