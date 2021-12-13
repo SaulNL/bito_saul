@@ -282,6 +282,7 @@ export class SignInPage implements OnInit {
     this.loadFacebook = false;
     this.loadGoogle = false;
     this.loadApple = false;
+    this.loader = true;
     this.signInChange.loaderGoogle = false;
     this.signInChange.loaderFacebook = false;
     this.signInChange.loaderApple = false;

@@ -29,9 +29,6 @@ export class SignInOrUpSocialNetworksComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.loaderFacebook);
-    console.log(this.loaderGoogle);
-    console.log(this.loaderApple);
   }
 
   async signUpFacebook() {

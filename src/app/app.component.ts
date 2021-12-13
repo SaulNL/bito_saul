@@ -105,8 +105,7 @@ export class AppComponent {
                         }
                     });
                 }
-            }, (nomatch) => {
-                console.error('Got a deeplink that didn\'t match', nomatch);
+            }, () => {
             });
     }
 

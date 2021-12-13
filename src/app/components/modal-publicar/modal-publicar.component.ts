@@ -50,7 +50,7 @@ export class ModalPublicarComponent implements OnInit {
                private _promociones_service: PromocionesService,
                private router: Router,
               ) {
-                const currentYear = new Date().getFullYear(); 
+                const currentYear = new Date().getFullYear();
                 this.minDate = new Date();
                 this.maxDate = new Date(currentYear - -30, 0, 0);
                 this.minDate = moment.parseZone(this.minDate).format("YYYY-MM-DD");
@@ -157,8 +157,8 @@ export class ModalPublicarComponent implements OnInit {
               this._notificacionService.exito('se publico correctamente');
             }
           },
-          error => {
-            console.error(error);
+          (error) => {
+
             this._notificacionService.error(error);
           }
         );

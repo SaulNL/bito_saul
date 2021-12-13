@@ -180,7 +180,14 @@ export class MisProductosServiciosPage implements OnInit {
       .subscribe(
         (repsuesta) => {
           this.datosNegocio = repsuesta.data;
-          (this.iden === 2) ? this.productoTags = this.datosNegocio.serviciosTags : this.productoTags = this.datosNegocio.productoTags;
+
+          if (this.iden === 2) {
+            this.productoTags = this.datosNegocio.serviciosTags;
+          }
+          if (this.iden === 1) {
+            this.productoTags = this.datosNegocio.productoTags;
+          }
+
           if (
             this.datosNegocio === undefined ||
             this.datosNegocio === null ||
@@ -327,7 +334,12 @@ export class MisProductosServiciosPage implements OnInit {
 
   agregarTags(tags: string[]) {
     this.productoTags = tags;
-    this.datosNegocio.productoTags = this.productoTags;
+    if (this.iden === 2) {
+      this.datosNegocio.serviciosTags = tags;
+    }
+    if (this.iden === 1) {
+      this.datosNegocio.productoTags = tags;
+    }
     this.guardarDatos();
   }
 
@@ -473,8 +485,8 @@ export class MisProductosServiciosPage implements OnInit {
             this.agregarClas = false;
             this.blnNuevaCategoria = false;
           },
-          (error) => {
-            console.error(error);
+          () => {
+
           },
           () => {
             this.notificacionService.exito("Se agrego la categoría con éxito");
@@ -863,8 +875,8 @@ export class MisProductosServiciosPage implements OnInit {
         this.blnEditando = false;
         this.blnformMobile = false;
       },
-      (error) => {
-        console.error(error);
+      () => {
+        
       },
       () => {
         this.banderaGuardar = false;

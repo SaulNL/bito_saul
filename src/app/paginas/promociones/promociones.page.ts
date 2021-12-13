@@ -123,8 +123,8 @@ export class PromocionesPage implements OnInit {
                         this.lstPromociones = [];
                     }
                 },
-                (error) => {
-                    console.error(error);
+                () => {
+                    
                     this.lstPromociones = [];
                 },
                 () => {

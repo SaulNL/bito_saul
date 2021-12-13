@@ -29,7 +29,6 @@ export class RecoverPasswordComponent implements OnInit {
 
   public recoverPassword(form: NgForm) {
     this.loader = true;
-    console.log(form.value.user);
     this.loginService.resetPassword(form.value.user).subscribe(response => {
       if (response.code === 200) {
         this.toadNotificacionService.exito(response.message);

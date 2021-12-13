@@ -154,7 +154,6 @@ export class SolicitudPage implements OnInit {
       },
       error => {
         this._notificacionService.error(error);
-        console.error(error);
         this.lstSolicitudes = [];
       },
       () => {

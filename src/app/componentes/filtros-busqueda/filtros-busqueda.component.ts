@@ -144,8 +144,8 @@ export class FiltrosBusquedaComponent implements OnInit {
                     }
                 });
             },
-            error => {
-                console.error(error);
+            () => {
+
             }
         );
     }
@@ -189,8 +189,7 @@ export class FiltrosBusquedaComponent implements OnInit {
             response => {
                 this.listCatMunicipio = response.data.list_cat_municipio;
             },
-            error => {
-                console.error(error);
+            () => {
             }
         );
     }
@@ -200,8 +199,8 @@ export class FiltrosBusquedaComponent implements OnInit {
             response => {
                 this.listCaLocalidad = response.data.list_cat_localidad;
             },
-            error => {
-                console.error(error);
+            () => {
+
             }
         );
     }
@@ -226,7 +225,7 @@ export class FiltrosBusquedaComponent implements OnInit {
 
                 }
             } else {
-                
+
                 //this.loader = false;
             }
         });

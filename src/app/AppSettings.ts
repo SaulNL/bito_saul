@@ -1,10 +1,10 @@
 export class AppSettings {
 
-    // public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
-    // public static URL_FRONT = 'https://bitoo.com.mx/';
+    public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
+    public static URL_FRONT = 'https://bitoo.com.mx/';
 
-    public static API_ENDPOINT = 'https://beta-bitoo-back.azurewebsites.net/';
-    public static URL_FRONT = 'https://beta-bitoo.azurewebsites.net/';
+    // public static API_ENDPOINT = 'https://beta-bitoo-back.azurewebsites.net/';
+    // public static URL_FRONT = 'https://beta-bitoo.azurewebsites.net/';
 
     // public static URL_REGISTRO = 'https://bitoo.com.mx/registro';
     // public static URL_MOVIL = 'https://bitoo.com.mx/';
@@ -29,7 +29,7 @@ export class AppSettings {
     public static IMG_CATEGORIAS_TODAS = 'https://ecoevents.blob.core.windows.net/comprandoando/Categor%C3%ADas/Separador%20categor%C3%ADa%20web/Todas%20las%20categor%C3%ADas.png';
 
     public static VERSION_SISTEMA = 28;
-    public static VERSION_ANDROID = 30;
+    public static VERSION_ANDROID = 31;
     public static ID_DB_PLATFORM_ANDROID = 54;
     public static ID_DB_PLATFORM_IOS = 55;
     public static VERSION_IOS = 1;
