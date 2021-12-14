@@ -35,7 +35,7 @@ export class ProductosPage {
     public anyFiltros: FiltrosModel;
     public lstProductos: Array<ProductoModel>;
     public lstProductosBK: Array<ProductoModel>;
-    private loader: boolean;
+    public loader: boolean;
     public blnBtnMapa: boolean;
     public listaNegocioMap: any;
     public motrarContacto: boolean;
@@ -376,6 +376,7 @@ export class ProductosPage {
             componentProps: {
                 buscarPorFiltros: eventEmitter,
                 filtros: this.anyFiltros,
+                isProductPage: true
             },
         });
         return await this.modal.present();

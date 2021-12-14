@@ -31,18 +31,13 @@
         <ion-item>
             <ion-label>Estados</ion-label>
 
-            
-            
+
+
             <ion-select placeholder="{{estadoAux}}" (ionChange)="selectEstado($event)" [(ngModel)]="estado">
                 <ng-container *ngFor="let estado of lstCatEstados">
                     <ion-select-option [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
                 </ng-container>
             </ion-select>
-            <!-- <ion-select [value]="this.estado" (ionChange)="selectEstado($event)">
-                <ion-select-option *ngFor="let estado of lstCatEstados" 
-                                   [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
-            </ion-select> -->
-
         </ion-item>
         <ion-item>
             <ion-label>Municipios</ion-label>
@@ -68,7 +63,7 @@
                 <p>{{estasUbicacion}}</p>
                 <h5>Radio de busqueda:</h5>
                 <h5>Kilometros a la redonda: <ion-badge color="medium">{{kilometrosSlider}} Km</ion-badge></h5>
-                <ion-range [value]="kilometrosSlider" (ionChange)="obtenerKilometrosRango($event)" min="1" max="10" 
+                <ion-range [value]="kilometrosSlider" (ionChange)="obtenerKilometrosRango($event)" min="1" max="10"
                 step="1" snaps="true" color="danger" pin="true"></ion-range>
             </div>
         </ion-item>
@@ -82,19 +77,19 @@
     <div *ngFor="let tipo of lstCatTipoNegocio">
         <ion-item>
             <ion-label>{{tipo.nombre}}</ion-label>
-            <ion-checkbox value="{{tipo.id_tipo_negocio}}"  color="primary" 
+            <ion-checkbox value="{{tipo.id_tipo_negocio}}"  color="primary"
                     (ionChange)="selectTipoNegocio($event)"  slot="start"></ion-checkbox>
         </ion-item>
     </div>
-    <ion-item-divider>
+    <ion-item-divider *ngIf="!isProductPage">
         <ion-label>
             Categorias
         </ion-label>
     </ion-item-divider>
-    <ion-item>
+    <ion-item *ngIf="!isProductPage">
         <ion-label>Categorias</ion-label>
         <ion-select placeholder="{{categoriaAux}}" [(ngModel)]="categoria" (ionChange)="selectCategoria()">
-            <ng-container *ngFor="let giro of lstCatTipoProducto;">            
+            <ng-container *ngFor="let giro of lstCatTipoProducto;">
                 <ion-select-option [value]="giro.id_giro">{{giro.nombre}}</ion-select-option>
             </ng-container>
         </ion-select>

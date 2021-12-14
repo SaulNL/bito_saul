@@ -245,7 +245,8 @@ export class InicioPage implements OnInit {
       component: FiltrosBusquedaComponent,
       componentProps: {
         buscarPorFiltros: eventEmitter,
-        filtros: this.Filtros
+        filtros: this.Filtros,
+        isProductPage: false
       },
     });
     return await this.modal.present();

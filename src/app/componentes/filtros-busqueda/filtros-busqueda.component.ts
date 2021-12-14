@@ -15,16 +15,17 @@ declare var google: any;
 })
 export class FiltrosBusquedaComponent implements OnInit {
     @Output() private buscarPorFiltros = new EventEmitter();
+    @Input() public isProductPage: boolean;
     private currentModal: any;
     @Input() filtros: FiltrosModel;
-    private lstCatTipoNegocio: any;
+    public lstCatTipoNegocio: any;
     ubicacion: any;
-    private lstCatEstados: any;
+    public lstCatEstados: any;
     estado: any;
-    private listCaLocalidad: any;
-    private listCatMunicipio: any;
+    public listCaLocalidad: any;
+    public listCatMunicipio: any;
     categoriaAux: any;
-    estadoAux:any;
+    estadoAux: any;
     subCategoriaAux: any;
     municipio: any;
     localidad: any;
@@ -61,7 +62,7 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     async getCurrentPosition() {
-        const gpsOptions = {maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true};
+        const gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
         const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
 
             this.blnUbicacion = true;
@@ -109,11 +110,14 @@ export class FiltrosBusquedaComponent implements OnInit {
             this.categoria = this.filtros.idGiro;
             this.subCategorias();
         }
-        if(this.filtros.idCategoriaNegocio !== null){
+        if (this.filtros.idCategoriaNegocio !== null) {
             this.subCategoria = this.filtros.idCategoriaNegocio;
         }
-        if(this.filtros.kilometros <=10 ){
+        if (this.filtros.kilometros <= 10) {
             this.kilometrosSlider = this.filtros.kilometros;
+        }
+        if (this.isProductPage) {
+            this.subCategorias();
         }
     }
 
@@ -122,11 +126,11 @@ export class FiltrosBusquedaComponent implements OnInit {
             response => {
                 this.lstCatTipoProducto = response.data;
                 this.lstCatTipoProducto.forEach(element => {
-                    if (element.id_giro==this.categoria) {
-                      this.categoriaAux = element.nombre;
+                    if (element.id_giro == this.categoria) {
+                        this.categoriaAux = element.nombre;
 
                     }
-                  });
+                });
             },
             error => {
             }
@@ -140,7 +144,7 @@ export class FiltrosBusquedaComponent implements OnInit {
                 this.validarCheckbox();
                 this.lstCatEstados.forEach(element => {
                     if (element.id_estado == this.estado) {
-                      this.estadoAux = element.nombre;
+                        this.estadoAux = element.nombre;
                     }
                 });
             },
@@ -168,14 +172,14 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     buscar() {
-        this.filtros.strBuscar=null;
+        this.filtros.strBuscar = null;
         this.filtros.idTipoNegocio = this.listaTipoNegocio;
         if (this.filtros.tipoBusqueda === 1) {
             this.filtros.idEstado = null;
             this.filtros.idMunicipio = null;
             this.filtros.idLocalidad = null;
         }
-        this.buscarPorFiltros.emit(this.filtros)
+        this.buscarPorFiltros.emit(this.filtros);
     }
 
     selectEstado(event) {
@@ -247,6 +251,9 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     subCategorias() {
+        if (this.isProductPage) {
+            this.categoria = null;
+        }
         this.filtroServicio.obtenerCategoriasGiro(this.categoria).subscribe(
             response => {
                 this.listaCategorias = response.data;
@@ -255,7 +262,7 @@ export class FiltrosBusquedaComponent implements OnInit {
                 });
 
                 this.listaCategorias.forEach(element => {
-                    if(this.filtros.idCategoriaNegocio !== null){
+                    if (this.filtros.idCategoriaNegocio !== null) {
                         this.filtros.idCategoriaNegocio.forEach(elementCategoria => {
                             if (elementCategoria == element.id_categoria) {
                                 this.subCategoriaAux = element.nombre;
@@ -278,8 +285,8 @@ export class FiltrosBusquedaComponent implements OnInit {
     public selectTipoNegocio(evento) {
         if (evento.detail.checked === true) {
             this.listaTipoNegocio.push(parseInt(evento.detail.value));
-        }else if(evento.detail.checked === false){
-            const index=this.listaTipoNegocio.indexOf(parseInt(evento.detail.value));
+        } else if (evento.detail.checked === false) {
+            const index = this.listaTipoNegocio.indexOf(parseInt(evento.detail.value));
             this.listaTipoNegocio.splice(index, 1);
         }
         if (parseInt(evento.detail.value) === 3 && evento.detail.checked === true) {
