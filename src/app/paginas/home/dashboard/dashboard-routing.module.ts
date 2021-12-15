@@ -50,11 +50,6 @@ const routes: Routes = [
       }
 
     ]
-  },
-  {
-    path: '',
-    redirectTo: '/tabs/home/productos',
-    pathMatch: 'full'
   }
 ];
 

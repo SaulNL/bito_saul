@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: SignInPage
+  },
+  {
+    path: 'sign-up',
+    loadChildren: () => import('../../../Bitoo/Pages/sign-up/sign-up.module').then(m => m.SignUpPageModule)
   }
 ];
 
@@ -14,4 +18,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SignInPageRoutingModule {}
+export class SignInPageRoutingModule { }

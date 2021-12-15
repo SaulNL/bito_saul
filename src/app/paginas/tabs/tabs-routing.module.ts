@@ -42,28 +42,8 @@ const routes: Routes = [
         loadChildren: () => import('../../Bitoo/Pages/sign-in/sign-in.module').then(m => m.SignInPageModule), canActivate: [GuardLoginService]
       },
       {
-        path: 'ajustes',
-        loadChildren: () => import('../ajustes/ajustes.module').then(m => m.AjustesPageModule)
-      },
-      {
-        path: 'datos-basicos',
-        loadChildren: () => import('../datos-basicos/datos-basicos.module').then(m => m.DatosBasicosPageModule)
-      },
-      {
-        path: 'cambio-contrasenia',
-        loadChildren: () => import('../cambio-contrasenia/cambio-contrasenia.module').then(m => m.CambioContraseniaPageModule)
-      },
-      {
-        path: 'datos-complementarios',
-        loadChildren: () => import('../datos-complementarios/datos-complementarios.module').then(m => m.DatosComplementariosPageModule)
-      },
-      {
         path: 'actualizar-version',
         loadChildren: () => import('../actualizar-version/actualizar-version.module').then(m => m.ActualizarVersionPageModule)
-      },
-      {
-        path: 'sign-up',
-        loadChildren: () => import('../../Bitoo/Pages/sign-up/sign-up.module').then(m => m.SignUpPageModule)
       },
       {
         path: '',

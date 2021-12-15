@@ -109,21 +109,21 @@ export class AjustesPage implements OnInit {
           text: "Mi Cuenta",
           icon: "person-outline",
           handler: () => {
-            this._router.navigate(["/tabs/datos-basicos"]);
+            this._router.navigate(["/tabs/home/perfil/datos-basicos"]);
           },
         },
         {
           text: "Cambiar Contraseña",
           icon: "key-outline",
           handler: () => {
-            this._router.navigate(["/tabs/cambio-contrasenia"]);
+            this._router.navigate(["/tabs/home/perfil/cambio-contrasenia"]);
           },
         },
         {
           text: "Datos Complementarios",
           icon: "create-outline",
           handler: () => {
-            this._router.navigate(["/tabs/datos-complementarios"]);
+            this._router.navigate(["/tabs/home/perfil/datos-complementarios"]);
           },
         },
         {

@@ -15,7 +15,7 @@
 </ion-header>
 <ion-content fullscreen *ngIf="usuario !== null">
     <ion-card style="margin-bottom: 3%;">
-        <div class="ion-text-center ion-margin-top" [routerLink]="['/tabs/datos-basicos']">
+        <div class="ion-text-center ion-margin-top" [routerLink]="['/tabs/home/perfil/datos-basicos']">
             <img *ngIf="usuario.imagen !== ''" class="rounded-circle" [src]="usuario.imagen" alt="">
             <img *ngIf="usuario.imagen === ''" class="imagen" alt="">
         </div>

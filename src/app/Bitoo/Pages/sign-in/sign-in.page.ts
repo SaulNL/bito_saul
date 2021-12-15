@@ -231,16 +231,22 @@ export class SignInPage implements OnInit {
   private goToRoute(url: string) {
     this.route.navigate(["/tabs/inicio"], { queryParams: { byLogin: url } });
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Redirecciona a recuperar contraseña
+   */
   async recoverPassword() {
     const modal = await this.modalCtr.create({
       component: RecoverPasswordComponent,
     });
     await modal.present();
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Redirige al page de sign-up-page
+   */
   public toSignUp() {
-    this.route.navigate(["/tabs/sign-up"]);
+    this.route.navigate(["/tabs/login/sign-up"]);
   }
   /**
    * @author Juan Antonio Guevara Flores
