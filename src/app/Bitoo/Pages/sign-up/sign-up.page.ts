@@ -16,7 +16,7 @@ import { ShippingMethod } from '../../types/shipping-method-type';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserSignUpModel, CommonUserSignUpInterface, CommonUserSingUpModel, ContentCommonUserSingUpModel, ContentCommonUserSingUpInterface } from './../../models/user-sign-up-model';
+import { UserSignUpModel, ContentCommonUserSingUpInterface } from './../../models/user-sign-up-model';
 import { ValidatorData } from '../../helper/validations';
 import { ResponseCommon } from '../../helper/is-success-response';
 import { ConfigGlobal } from '../../config/config-global';
@@ -67,15 +67,29 @@ export class SignUpPage implements OnInit {
       }
     );
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @param event
+   * @description Resetea el formulario y regresa al inicio de sesión
+   */
   public backTo(event: NgForm) {
     event.resetForm();
     this.backToSignIn();
   }
+
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Inicializa los valores por default y regresa al inicio de sesión
+   */
   private backToSignIn() {
     this.init();
     this.router.navigate(['tabs/login']);
   }
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @param form
+   * @description Obtiene los datos del formulario y los prepara en un model nuevo
+   */
   public signUp(form: NgForm) {
     const data: UserSignUpModel = new UserSignUpModel();
     data.ms_persona.nombre = form.value.first_name;
@@ -85,10 +99,14 @@ export class SignUpPage implements OnInit {
     data.ms_persona.telefono_celular = form.value.phone;
     data.password = form.value.password;
     data.repeat_password = form.value.repeat_password;
-
     this.openModalConfirmSingUp(data);
   }
 
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @param user
+   * @description Abre el modal para confirmar cuenta, mandando los datos de fomulario el tipo de mensaje a que tipo se envia y el metodo de de envio para el servicio
+   */
   async openModalConfirmSingUp(user: UserSignUpModel) {
     const modal = await this.modalCtr.create({
       component: ModalConfirmSignUpComponent,
@@ -105,6 +123,11 @@ export class SignUpPage implements OnInit {
         this.redirectSuccess(response.data);
       });
   }
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @param isSuccess
+   * @description Redireccion al inicio si se recibio una respuesta del modal
+   */
   private redirectSuccess(isSuccess: any) {
     if (typeof isSuccess !== 'undefined') {
       this.oneSignalService.setUserExternal();
@@ -114,21 +137,32 @@ export class SignUpPage implements OnInit {
       }, 1300);
     }
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Abre los terminos y condiciones
+   */
   public openTermsConditions() {
     window.open(
       'https://ecoevents.blob.core.windows.net/comprandoando/documentos%2FTERMINOS%20Y%20CONDICIONES%20Bitoo.pdf',
       '_blank'
     );
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @param event
+   * @description Cambia la validacion de requiere aceptar terminos y condiciones en el formulario
+   */
   public aceptTermsConditions(event: boolean) {
     this.termsConditions = false;
     if (event) {
       this.termsConditions = true;
     }
   }
-
+  /**
+   * @author Juan Antonio Guuevara flores
+   * @param event
+   * @description Cambia la validacion de requerido el telefono
+   */
   public mailProccess(event: any) {
     if (event !== 'undefined' && event !== null && event.length > 4) {
       this.messageTo = 'correo';
@@ -142,7 +176,11 @@ export class SignUpPage implements OnInit {
       this.messageTo = 'número celular';
     }
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @param event
+   * @description Cambia la validacion de requerido el correo
+   */
   phoneProccess(event: any) {
     if (event !== 'undefined' && event !== null && event.length === 10) {
       this.requiredMail = false;
@@ -156,18 +194,29 @@ export class SignUpPage implements OnInit {
       this.messageTo = 'correo';
     }
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Valida la contraseña que sea igual
+   */
   public validatePassword() {
     this.validateRepeadPassword = true;
     if (this.user.password !== '' && this.user.repeat_password !== '' && this.user.password !== this.user.repeat_password) {
       this.validateRepeadPassword = false;
     }
   }
-
-  public disableButtom(formSignUp: NgForm) {
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @param formSignUp
+   * @description Desabilita el boton de crear cuenta si no estan completas las validaciones
+   * @returns boolean
+   */
+  public disableButtom(formSignUp: NgForm): boolean {
     return formSignUp.invalid || !this.termsConditions || !this.validateRepeadPassword;
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Inicializa las variables por default
+   */
   private init() {
     this.user = new UserSignUpModel();
     this.termsConditions = false;
@@ -180,6 +229,11 @@ export class SignUpPage implements OnInit {
     this.loadGoogle = false;
     this.loadApple = false;
   }
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @param response
+   * @description Respuesta de de datos de una red social para crear cuenta
+   */
   public response(response: ResponderModel) {
     if (this.responseCommon.validation(response)) {
       try {
@@ -203,10 +257,41 @@ export class SignUpPage implements OnInit {
         this.toadNotificacionService.error(this.validatorData.messageErrorValidationSocialNetworkData());
       }
     } else {
+      this.SetSocialNetworkLoadTurnOf(response.socialNetwork);
       this.toadNotificacionService.error(this.responseCommon.errorMessage(response));
     }
   }
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @param selected
+   * @description Finaliza el loader dependiendo de la red social
+   */
+  private SetSocialNetworkLoadTurnOf(selected: SelectedSocialNetwork) {
+    try {
+      switch (selected) {
+        case 'google':
+          this.signUnChange.loaderGoogle = false;
+          break;
+        case 'apple':
+          this.signUnChange.loaderApple = false;
+          break;
+        case 'facebook':
+          this.signUnChange.loaderFacebook = false;
+          break;
+        default:
+          this.turnOfLoadSocialNetworks();
+          break;
+      }
+    } catch (error) {
+      this.toadNotificacionService.error(error);
+      this.turnOfLoadSocialNetworks();
+    }
+  }
 
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Finaliza en caso de error todos los loader
+   */
   public turnOfLoadSocialNetworks() {
     this.signUnChange.loaderGoogle = false;
     this.signUnChange.loaderFacebook = false;
@@ -215,7 +300,11 @@ export class SignUpPage implements OnInit {
     this.loadGoogle = false;
     this.loadApple = false;
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @param response
+   * @description Proceso para crear una cuenta con Apple
+   */
   private createAccountWithApple(response: ResponderModel) {
     if (this.validatorData.validateApple(response)) {
       this.usuarioService.createAccountApple(response.credentials).subscribe(
@@ -232,7 +321,11 @@ export class SignUpPage implements OnInit {
       this.toadNotificacionService.error(this.validatorData.messageErrorValidationSocialNetworkData());
     }
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @param response
+   * @description Proceso para crear una cuenta con Google
+   */
   private createAccountWithGoogle(response: ResponderModel) {
     if (!this.validatorData.validateSocialNetworkData(response.credentials)) {
       const contentUser: ContentCommonUserSingUpInterface = this.proceesSignUp.proccessCreateAccountModel(response);
@@ -251,7 +344,11 @@ export class SignUpPage implements OnInit {
     }
 
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @param response
+   * @description Proceso para crear una cuenta con Facebook
+   */
   private createAccountWithFacebook(response: ResponderModel) {
     if (!this.validatorData.validateSocialNetworkData(response.credentials)) {
       const contentUser: ContentCommonUserSingUpInterface = this.proceesSignUp.proccessCreateAccountModel(response);
@@ -272,7 +369,7 @@ export class SignUpPage implements OnInit {
     }
   }
 
-  private userSignIn(user: UserSignInModel) {
+  private userSignIn(user: UserSignInModel, selectedSocialNetwork: SelectedSocialNetwork) {
     this.loginService.login(user).subscribe(
       (response) => {
         if (response.code === 200) {
@@ -287,14 +384,14 @@ export class SignUpPage implements OnInit {
           }
           this.toadNotificacionService.exito(response.message);
           this.oneSignalService.setUserExternal();
-          this.turnOfLoadSocialNetworks();
+          this.SetSocialNetworkLoadTurnOf(selectedSocialNetwork);
         } else {
-          this.turnOfLoadSocialNetworks();
+          this.SetSocialNetworkLoadTurnOf(selectedSocialNetwork);
           this.toadNotificacionService.alerta("Usuario y/o contraseña incorrectos");
         }
       },
       (error) => {
-        this.turnOfLoadSocialNetworks();
+        this.SetSocialNetworkLoadTurnOf(selectedSocialNetwork);
         this.toadNotificacionService.error(error);
       }
     );
@@ -303,26 +400,21 @@ export class SignUpPage implements OnInit {
   goToBusiness(businessRoute: string) {
     this.router.navigate(["/tabs/inicio"], { queryParams: { byLogin: businessRoute } });
   }
-  private getPictureProfile(response: ResponderModel): string {
-    return (response.socialNetwork === 'facebook') ? response.credentials.additionalUserInfo.profile.picture.data.url : response.credentials.additionalUserInfo.profile.picture;
-  }
-  private specialProccessBeforeCreateAccount(response: ResponderModel) {
-    const content = response.credentials;
-    const credentials = content.user;
-    const password = credentials.providerData[0].uid;
-    const photo: string = this.getPictureProfile(response);
-    const user: CommonUserSignUpInterface = new CommonUserSingUpModel(credentials.providerData[0].displayName,
-      credentials.providerData[0].email, photo, password);
-    return new ContentCommonUserSingUpModel(password, user);
-  }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @param response
+   * @param email
+   * @param password
+   * @param selectedSocialNetwork
+   * @description Proceso para despues de crear una cuenta con una red social con Facebook, Google y Apple
+   */
   private specialProccessAfterCreateAccount(response: any, email: string, password: string, selectedSocialNetwork: SelectedSocialNetwork) {
     const respond: ResponderInterface = this.proceesSignUp.proccessAfterCreateAccount(response, email, password, selectedSocialNetwork);
     if (this.responseCommon.validation(respond)) {
       const user: UserSignInInterface = respond.credentials;
-      this.userSignIn(user);
+      this.userSignIn(user, selectedSocialNetwork);
     } else {
-      this.turnOfLoadSocialNetworks();
+      this.SetSocialNetworkLoadTurnOf(selectedSocialNetwork);
       this.toadNotificacionService.alerta(response.data.message);
     }
   }

@@ -8,6 +8,7 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import { GooglePlus } from "@ionic-native/google-plus/ngx";
 import { AppleSignInErrorResponse, AppleSignInResponse, ASAuthorizationAppleIDRequest, SignInWithApple } from "@ionic-native/sign-in-with-apple/ngx";
 
+
 @Component({
   selector: 'app-sign-in-or-up-social-networks',
   templateUrl: './sign-in-or-up-social-networks.component.html',
@@ -30,7 +31,10 @@ export class SignInOrUpSocialNetworksComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Inicio de coneccion al servidor de facebook para obtener y retornar las credenciales
+   */
   async signUpFacebook() {
     this.loaderFacebook = true;
     const response: ResponderInterface = new ResponderModel('facebook');
@@ -48,7 +52,10 @@ export class SignInOrUpSocialNetworksComponent implements OnInit {
       this.loaderFacebook = false;
     }
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Inicio de coneccion al servidor Google
+   */
   async signUpGoogle() {
     this.loaderGoogle = true;
     const response: ResponderInterface = new ResponderModel('google');
@@ -67,7 +74,12 @@ export class SignInOrUpSocialNetworksComponent implements OnInit {
       this.loaderGoogle = false;
     }
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @param responseGoogle
+   * @param response
+   * @description Proceso para obtener y retornar las crendenciales de Google
+   */
   async proccessAfterSignUpGoogle(responseGoogle: any, response: ResponderModel) {
     const credentialsGoogle = await this.angularFireAuth.auth.signInWithCredential(
       firebase.auth.GoogleAuthProvider.credential(responseGoogle.idToken)
@@ -75,7 +87,10 @@ export class SignInOrUpSocialNetworksComponent implements OnInit {
     response.credentials = credentialsGoogle;
     this.responder.emit(response);
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Inicio de coneccion al servidor de Apple para obtener y retornar las credenciales
+   */
   public signUpApple() {
     this.loaderApple = true;
     const response: ResponderInterface = new ResponderModel('apple');
@@ -100,7 +115,10 @@ export class SignInOrUpSocialNetworksComponent implements OnInit {
       this.loaderApple = false;
     }
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Retorna si viene el valor de Sign-In-page o de Sign-Up-page
+   */
   get isSignIn() {
     return (this.signIn);
   }
