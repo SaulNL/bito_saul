@@ -8,8 +8,8 @@ const routes: Routes = [
     component: ProductosPage,
   },
   {
-    path: 'modal-producto',
-    loadChildren: () => import('./modal-producto/modal-producto.module').then( m => m.ModalProductoPageModule)
+    path: 'product-detail',
+    loadChildren: () => import('./../../Bitoo/Pages/product-detail/product-detail.module').then( m => m.ProductDetailPageModule)
   }
 ];
 

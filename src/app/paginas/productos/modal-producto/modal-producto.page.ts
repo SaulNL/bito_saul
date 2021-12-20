@@ -68,18 +68,21 @@ export class ModalProductoPage implements OnInit {
     };
     this.servicioProductos.quienVioProdu(objectoVio).subscribe();
   }
+
   public agregar(producto: any) {
     const contenido = JSON.parse(JSON.stringify(producto));
     const enviar = {
       producto: contenido,
       agregado: true,
     };
+
     this.router.navigate(["/tabs/negocio/" + this.negocio.url_negocio], {
       queryParams: { carrito: JSON.stringify(enviar) },
     });
     this.modalCtrl.dismiss({
       dismissed: true,
     });
+
   }
 
   public obtenerNegocio(idNegocio: number) {
@@ -101,6 +104,7 @@ export class ModalProductoPage implements OnInit {
       }
     );
   }
+
   public mostrarBoton() {
     this.comprarB = (this.negocio.entrega_domicilio === 1 || this.negocio.entrega_sitio === 1 || this.negocio.consumo_sitio === 1) && parseInt(this.unoProducto.precio) > 0;
   }

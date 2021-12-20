@@ -1,9 +1,55 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>productDetail</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<app-header message="Detalle de producto" [backButton]="false" [closeButton]="true" (closeResponse)="closeDetail()">
+</app-header>
+<app-loader [loader]="loader" message="Cargando detalles del producto"></app-loader>
+<ion-content fullscreen *ngIf="!loader">
+    <ion-card>
+        <ion-grid class="ion-text-center">
+            <app-slider-images [productImages]="product.images"></app-slider-images>
+            <ion-label class="alert-images-message">
+                <span class="alert-required">*</span> Algunas imágenes sólamente son usadas con fines ilustrativos. El
+                producto final puede no estár representado con exactitud por las mismas
+            </ion-label>
+        </ion-grid>
+        <ion-card-header>
+            <ion-card-subtitle class="text-initial">{{business.name}}</ion-card-subtitle>
+            <ion-card-title class="text-initial text-pink"><strong>{{ product.name }}</strong></ion-card-title>
+        </ion-card-header>
+        <ion-card-content class="text-initial">
+            {{ product.description }}
+        </ion-card-content>
+        <ion-row>
+            <app-like-product [productLike]="productLike"></app-like-product>
+        </ion-row>
+        <ion-card-content>
+            <ion-label [ngClass]="{'text-pink': existPrice}" class="price">
+                <h2> {{ price }}</h2>
+            </ion-label>
+        </ion-card-content>
+        <ion-card-content>
+            <ion-label class="exist"> {{ exist }} </ion-label>
+        </ion-card-content>
+        <ion-row *ngIf="visibility">
+            <ion-col>
+                <ion-chip *ngIf="purchase else notPurchase" (click)="addProduct()">
+                    <ion-icon class="text-pink" role="img" name="bag-add-outline"></ion-icon>
+                    <ion-label class="text-pink"> {{purchaseMessage}} </ion-label>
+                </ion-chip>
+                <ng-template #notPurchase>
+                    <ion-chip (click)="changePurchaseMessage()">
+                        <ion-icon role="img" class="text-grey" name="bag-add-outline"></ion-icon>
+                        <ion-label class="text-grey">{{purchaseMessage}}</ion-label>
+                    </ion-chip>
+                </ng-template>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-item lines="none">
+                <ion-label>Vendido por </ion-label>
+                <ion-icon slot="end" name="open-outline"></ion-icon>
+            </ion-item>
+        </ion-row>
+        <ion-button (click)="showMore()" class="text-capitalize background-bitoo" mode="ios" expand="block" fill="clear" shape="round">
+            {{business.name}} <ion-icon slot="end" name="storefront-outline"></ion-icon>
+        </ion-button>
+    </ion-card>
 </ion-content>

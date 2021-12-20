@@ -1,6 +1,6 @@
 import { ConfigGlobal } from './../../config/config-global';
 import { LoginService } from './../../../api/login.service';
-import { UserSignInInterface } from './../../models/user-sign-in';
+import { UserSignInInterface } from '../../models/user-sign-in-model';
 import { UsuarioService } from './../../../api/busqueda/login/usuario.service';
 import { ToadNotificacionService } from './../../../api/toad-notificacion.service';
 import { GeneralServicesService } from 'src/app/api/general-services.service';

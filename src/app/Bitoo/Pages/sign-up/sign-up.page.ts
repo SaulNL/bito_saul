@@ -4,7 +4,7 @@ import { SelectedSocialNetwork } from './../../types/platform-type';
 import { LoginService } from './../../../api/login.service';
 import { OneSignalNotificationsService } from './../../../api/one-signal-notifications.service';
 import { ActivatedRoute } from '@angular/router';
-import { UserSignInModel, UserSignInInterface } from './../../models/user-sign-in';
+import { UserSignInModel, UserSignInInterface } from '../../models/user-sign-in-model';
 import { UsuarioService } from './../../../api/busqueda/login/usuario.service';
 import { ToadNotificacionService } from './../../../api/toad-notificacion.service';
 import { ResponderModel, ResponderInterface } from './../../models/responder-model';

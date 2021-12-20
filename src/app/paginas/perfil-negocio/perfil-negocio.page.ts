@@ -1,43 +1,49 @@
-import {AppSettings} from "./../../AppSettings";
-import {Component, EventEmitter, OnInit} from "@angular/core";
-import {Map, tileLayer, marker, icon} from "leaflet";
-import {ActivatedRoute, Router} from "@angular/router";
+import { byProductModel } from './../../Bitoo/models/add-To-Product-model';
+import { CreateObjects } from './../../Bitoo/helper/create-object';
+import { BackToProductDetailModel, ByProductDetailModel } from './../../Bitoo/models/query-params-model';
+import { AddToProductInterface } from '../../Bitoo/models/add-To-Product-model';
+import { ProductInterface } from '../../Bitoo/models/product-model';
+import { AppSettings } from "./../../AppSettings";
+import { Component, EventEmitter, OnInit } from "@angular/core";
+import { Map, tileLayer, marker, icon } from "leaflet";
+import { ActivatedRoute, Router } from "@angular/router";
 import {
     AlertController,
     NavController,
     Platform,
     ToastController,
 } from "@ionic/angular";
-import {NegocioService} from "../../api/negocio.service";
-import {Geolocation} from "@capacitor/core";
-import {ToadNotificacionService} from "../../api/toad-notificacion.service";
-import {Location} from "@angular/common";
-import {UtilsCls} from "../../utils/UtilsCls";
-import {SideBarService} from "../../api/busqueda/side-bar-service";
-import {ActionSheetController} from "@ionic/angular";
-import {ModalController} from "@ionic/angular";
-import {DenunciaNegocioPage} from "./denuncia-negocio/denuncia-negocio.page";
-import {Plugins} from "@capacitor/core";
-import {CalificarNegocioComponent} from "../../componentes/calificar-negocio/calificar-negocio.component";
-import {ProveedorServicioService} from "../../api/busqueda/proveedores/proveedor-servicio.service";
-import {DetalleProductoComponent} from "../../componentes/detalle-producto/detalle-producto.component";
-import {PedidoNegocioComponent} from "../../componentes/pedido-negocio/pedido-negocio.component";
-import {AuthGuardService} from "../../api/auth-guard.service";
-import {NavBarServiceService} from "src/app/api/busqueda/nav-bar-service.service";
-import {PromocionesModel} from "src/app/Modelos/busqueda/PromocionesModel";
+import { NegocioService } from "../../api/negocio.service";
+import { Geolocation } from "@capacitor/core";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { Location } from "@angular/common";
+import { UtilsCls } from "../../utils/UtilsCls";
+import { SideBarService } from "../../api/busqueda/side-bar-service";
+import { ActionSheetController } from "@ionic/angular";
+import { ModalController } from "@ionic/angular";
+import { DenunciaNegocioPage } from "./denuncia-negocio/denuncia-negocio.page";
+import { Plugins } from "@capacitor/core";
+import { CalificarNegocioComponent } from "../../componentes/calificar-negocio/calificar-negocio.component";
+import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveedor-servicio.service";
+import { DetalleProductoComponent } from "../../componentes/detalle-producto/detalle-producto.component";
+import { PedidoNegocioComponent } from "../../componentes/pedido-negocio/pedido-negocio.component";
+import { AuthGuardService } from "../../api/auth-guard.service";
+import { NavBarServiceService } from "src/app/api/busqueda/nav-bar-service.service";
+import { PromocionesModel } from "src/app/Modelos/busqueda/PromocionesModel";
 
-const {Share} = Plugins;
+const { Share } = Plugins;
 const haversineCalculator = require("haversine-calculator");
-import {ModalPromocionNegocioComponent} from "src/app/componentes/modal-promocion-negocio/modal-promocion-negocio.component";
-import {ProductoModel} from "../../Modelos/ProductoModel";
-import {ProductosService} from "../../api/productos.service";
-import {ComentariosNegocioComponent} from '../../componentes/comentarios-negocio/comentarios-negocio.component';
-import {OptionBackLogin} from "src/app/Modelos/OptionBackLoginModel";
+import { ModalPromocionNegocioComponent } from "src/app/componentes/modal-promocion-negocio/modal-promocion-negocio.component";
+import { ProductoModel } from "../../Modelos/ProductoModel";
+import { ProductosService } from "../../api/productos.service";
+import { ComentariosNegocioComponent } from '../../componentes/comentarios-negocio/comentarios-negocio.component';
+import { OptionBackLogin } from "src/app/Modelos/OptionBackLoginModel";
 
 @Component({
     selector: "app-perfil-negocio",
     templateUrl: "./perfil-negocio.page.html",
     styleUrls: ["./perfil-negocio.page.scss"],
+    providers: [CreateObjects]
 })
 export class PerfilNegocioPage implements OnInit {
 
@@ -65,13 +71,13 @@ export class PerfilNegocioPage implements OnInit {
     public banderaS: any;
     public banderaP: any;
     public diasArray = [
-        {id: 1, dia: "Lunes", horarios: [], hi: null, hf: null},
-        {id: 2, dia: "Martes", horarios: [], hi: null, hf: null},
-        {id: 3, dia: "Miércoles", horarios: [], hi: null, hf: null},
-        {id: 4, dia: "Jueves", horarios: [], hi: null, hf: null},
-        {id: 5, dia: "Viernes", horarios: [], hi: null, hf: null},
-        {id: 6, dia: "Sábado", horarios: [], hi: null, hf: null},
-        {id: 7, dia: "Domingo", horarios: [], hi: null, hf: null},
+        { id: 1, dia: "Lunes", horarios: [], hi: null, hf: null },
+        { id: 2, dia: "Martes", horarios: [], hi: null, hf: null },
+        { id: 3, dia: "Miércoles", horarios: [], hi: null, hf: null },
+        { id: 4, dia: "Jueves", horarios: [], hi: null, hf: null },
+        { id: 5, dia: "Viernes", horarios: [], hi: null, hf: null },
+        { id: 6, dia: "Sábado", horarios: [], hi: null, hf: null },
+        { id: 7, dia: "Domingo", horarios: [], hi: null, hf: null },
     ];
     private detalle: any;
     public bolsa: any;
@@ -92,7 +98,8 @@ export class PerfilNegocioPage implements OnInit {
     public promociones: any;
     public isIOS: boolean = false;
     private idPersona: number | null;
-
+    public toProductDetail: boolean;
+    public idProduct: string;
     constructor(
         private navctrl: NavController,
         private route: ActivatedRoute,
@@ -111,7 +118,9 @@ export class PerfilNegocioPage implements OnInit {
         private blockk: AuthGuardService,
         private navBarServiceService: NavBarServiceService,
         private servicioProductos: ProductosService,
+        private createObject: CreateObjects
     ) {
+        this.toProductDetail = false;
         this.motrarContacto = true;
         this.seccion = 'productos';
         // this.segmentModel = 'productos';
@@ -166,6 +175,24 @@ export class PerfilNegocioPage implements OnInit {
         this.route.queryParams.subscribe(params => {
             if (params.route && params) {
                 this.navegacion = true;
+            }
+        });
+
+        this.route.queryParams.subscribe(params => {
+            if (params.addProduct) {
+                this.navegacion = true;
+                this.toProductDetail = true;
+                const addProduct: AddToProductInterface = JSON.parse(params.addProduct);
+                setTimeout(() => {
+                    this.addProduct(addProduct.product);
+                }, 2000);
+            }
+
+            if (params.byProductDetail) {
+                this.navegacion = true;
+                this.toProductDetail = true;
+                const content: byProductModel = JSON.parse(params.byProductDetail);
+                this.idProduct = content.product.idProduct;
             }
         });
 
@@ -442,7 +469,7 @@ export class PerfilNegocioPage implements OnInit {
             component: DenunciaNegocioPage,
             componentProps: {
                 idNegocio: this.informacionNegocio.id_negocio,
-                negocioNombre : this.informacionNegocio.nombre_comercial
+                negocioNombre: this.informacionNegocio.nombre_comercial
             },
         });
         await modal.present();
@@ -471,7 +498,7 @@ export class PerfilNegocioPage implements OnInit {
             if (r.data.goLogin != undefined) {
                 localStorage.setItem("isRedirected", "false");
                 const body = JSON.stringify(r.data.goLogin);
-                this.router.navigate(["/tabs/login"], {queryParams: {perfil: body}});
+                this.router.navigate(["/tabs/login"], { queryParams: { perfil: body } });
             }
         });
     }
@@ -518,7 +545,7 @@ export class PerfilNegocioPage implements OnInit {
             },
         });
         await modal.present();
-        const {data} = await modal.onDidDismiss();
+        const { data } = await modal.onDidDismiss();
         if (data !== undefined) {
             this.informacionNegocio.numCalificaciones = data.numCalificaciones;
             this.informacionNegocio.promedio = data.promedio;
@@ -592,7 +619,7 @@ export class PerfilNegocioPage implements OnInit {
 
     private horarios(negocio: any) {
 
-        this.estatus = {tipo: 0, mensaje: "No abre hoy"};
+        this.estatus = { tipo: 0, mensaje: "No abre hoy" };
 
         const hros = negocio.horarios;
         let hoy: any;
@@ -713,7 +740,7 @@ export class PerfilNegocioPage implements OnInit {
                             }
                         }
                     } else {
-                        this.estatus = {tipo: 0, mensaje: "No abre hoy"};
+                        this.estatus = { tipo: 0, mensaje: "No abre hoy" };
                     }
                 }
             });
@@ -748,8 +775,9 @@ export class PerfilNegocioPage implements OnInit {
 
             this.blockk.tf = true;
             if (this.navegacion) {
-                this.location.back();
+                this.goBackTo();
                 this.navegacion = false;
+
             } else {
                 // this.router.navigate(['/tabs/inicio']);
                 this.router.navigateByUrl('/tabs/inicio');
@@ -782,7 +810,7 @@ export class PerfilNegocioPage implements OnInit {
                         this.blockk.tf = true;
                         this.bolsa = [];
                         if (this.ruta === "/tabs/home/perfil") {
-                            this.router.navigate(['/tabs/home/perfil'], {queryParams: {special: true}});
+                            this.router.navigate(['/tabs/home/perfil'], { queryParams: { special: true } });
                         } else {
                             this.router.navigate([this.ruta]);
                         }
@@ -827,7 +855,8 @@ export class PerfilNegocioPage implements OnInit {
                         this.bolsa = [];
                         this.blockk.tf = true;
                         if (this.navegacion) {
-                            this.location.back();
+                            this.goBackTo();
+
                         } else {
                             this.router.navigate(['/tabs/inicio']);
                         }
@@ -891,9 +920,24 @@ export class PerfilNegocioPage implements OnInit {
             localStorage.setItem("isRedirected", "false");
             const body = JSON.stringify(this.typeLogin);
             this.router.navigate(["/tabs/login"], {
-                queryParams: {perfil: body}
+                queryParams: { perfil: body }
             });
         }
+    }
+
+    private addProduct(product: ProductInterface) {
+        this.idProduct = product.idProduct;
+        const productoTemporal = {
+            idProducto: product.idProduct,
+            precio: product.price,
+            imagen: product.images,
+            negocio: {
+                idNegocio: product.idBusiness
+            },
+            nombre: product.name,
+            descripcion: product.description,
+        };
+        this.agregarBolsaDeta(productoTemporal);
     }
 
     loginGo() {
@@ -902,7 +946,7 @@ export class PerfilNegocioPage implements OnInit {
         this.typeLogin.url = this.negocio;
         const body = JSON.stringify(this.typeLogin);
         this.router.navigate(["/tabs/login"], {
-            queryParams: {perfil: body}
+            queryParams: { perfil: body }
         });
     }
 
@@ -918,8 +962,8 @@ export class PerfilNegocioPage implements OnInit {
 
     mostrarBoton(precio) {
         return ((this.informacionNegocio.entrega_domicilio === 1 ||
-                this.informacionNegocio.entrega_sitio === 1 ||
-                this.informacionNegocio.consumo_sitio === 1) &&
+            this.informacionNegocio.entrega_sitio === 1 ||
+            this.informacionNegocio.consumo_sitio === 1) &&
             parseInt(precio) > 0
         ); // && parseInt(precio) > 0
     }
@@ -1123,9 +1167,81 @@ export class PerfilNegocioPage implements OnInit {
         this.negocioSub = true;
     }
     public costoMayorA(costo) {
-         if(!isNaN(Number(costo)) && Number(costo) === 0) {
-             return false;
-         }
-         return true;
+        if (!isNaN(Number(costo)) && Number(costo) === 0) {
+            return false;
+        }
+        return true;
     }
+
+    private goBackTo() {
+        if (this.toProductDetail) {
+            const productByProfile = this.updateProductToProductDetail(this.idProduct);
+            const product: ProductInterface = this.createObject.createProduct(productByProfile);
+            const queryParams: BackToProductDetailModel = new BackToProductDetailModel(JSON.stringify(product));
+            this.router.navigate(['/tabs/productos/product-detail'], { queryParams: queryParams });
+        } else {
+            this.location.back();
+        }
+        this.toProductDetail = true;
+    }
+
+    private searchProduct(list: Array<any>, idProduct: string): any {
+        list.forEach(element => {
+            if (element.productos.length > 0) {
+                element.productos.forEach(product => {
+                    if (product.idProducto === idProduct) {
+                        console.log(product);
+                        return product;
+                    }
+                });
+            }
+        });
+        return null;
+    }
+
+    private searchService(list: Array<any>, idProduct: string): any {
+        list.forEach(element => {
+            if (element.servicios.length > 0) {
+                element.servicios.forEach(service => {
+                    if (service.idProducto === idProduct) {
+                        console.log(service);
+                        return service;
+                    }
+                });
+            }
+        });
+        return null;
+    }
+    private updateProductToProductDetail(idProduct: string) {
+        const products: Array<any> = this.informacionNegocio.catProductos;
+        const services: Array<any> = this.informacionNegocio.catServicos;
+        let existProduct: any = null;
+        let existService: any = null;
+        if (products.length > 0) {
+            this.informacionNegocio.catProductos.forEach(element => {
+                if (element.productos.length > 0) {
+                    element.productos.forEach(product => {
+                        if (product.idProducto === idProduct) {
+                            console.log(product);
+                            existProduct = product;
+                        }
+                    });
+                }
+            });
+        }
+        if (services.length > 0) {
+            this.informacionNegocio.catServicos.forEach(element => {
+                if (element.servicios.length > 0) {
+                    element.servicios.forEach(service => {
+                        if (service.idProducto === idProduct) {
+                            console.log(service);
+                            existService = service;
+                        }
+                    });
+                }
+            });
+        }
+        return (existProduct !== null) ? existProduct : existService;
+    }
+
 }

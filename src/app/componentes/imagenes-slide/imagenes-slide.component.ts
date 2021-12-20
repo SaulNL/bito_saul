@@ -34,7 +34,7 @@ export class ImagenesSlideComponent implements OnInit {
         this.multiImagen = true;
         this.lstImagene = this.imagen.imagen;
       } else {
-        
+
         this.multiImagen = false;
         this.lstImagen = this.imagen.imagen[0];
       }

@@ -197,6 +197,19 @@ ion-fab {
   color: #fa4f72 !important;
 }
 
+.text-pink {
+  color: #fa4f72 !important;
+}
+
+.text-grey {
+  color: grey !important;
+}
+
+.background-bitoo {
+  --background: linear-gradient(90deg, #fa4f72, #a74eef);
+  color: white;
+}
+
 .custom-modal-plazas-afiliaciones .modal-wrapper {
   height: 50%;
 }
@@ -224,9 +237,12 @@ ion-fab {
   --background: #274da1;
 }
 .apple-color-button {
-  --background: #A2AAAD;
+  --background: #a2aaad;
 }
 
-.login-button {
-    text-transform: initial;
+.text-initial:first-letter {
+  text-transform: uppercase;
+}
+.text-capitalize {
+  text-transform: capitalize;
 }

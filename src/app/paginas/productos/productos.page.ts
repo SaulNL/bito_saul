@@ -1,33 +1,37 @@
-import {AfiliacionPlazaModel} from '../../Modelos/AfiliacionPlazaModel';
-import {Component, EventEmitter, ViewChild} from "@angular/core";
-import {ProductoModel} from "../../Modelos/ProductoModel";
+import { CloseProductDetailModel } from './../../Bitoo/models/query-params-model';
+import { ProductInterface } from '../../Bitoo/models/product-model';
+import { CreateObjects } from './../../Bitoo/helper/create-object';
+import { ProductDetailPage } from './../../Bitoo/Pages/product-detail/product-detail.page';
+import { AfiliacionPlazaModel } from '../../Modelos/AfiliacionPlazaModel';
+import { Component, EventEmitter, ViewChild } from "@angular/core";
+import { ProductoModel } from "../../Modelos/ProductoModel";
 import {
     IonContent,
     LoadingController,
     ModalController, Platform,
     ToastController,
 } from "@ionic/angular";
-import {Router, ActivatedRoute} from "@angular/router";
-import {BusquedaService} from "../../api/busqueda.service";
-import {ProductosService} from "../../api/productos.service";
-import {FiltrosModel} from "../../Modelos/FiltrosModel";
-import {FiltroABCModel} from "../../Modelos/FiltroABCModel";
-import {ModalProductoPage} from "./modal-producto/modal-producto.page";
-import {ToadNotificacionService} from "../../api/toad-notificacion.service";
-import {FiltrosBusquedaComponent} from "../../componentes/filtros-busqueda/filtros-busqueda.component";
-import {AnimationController} from "@ionic/angular";
-import {ModalProductosComponent} from "../../components/modal-productos/modal-productos.component";
-import {UtilsCls} from "../../utils/UtilsCls";
-import {AppSettings} from "../../AppSettings";
-import {PlazasAfiliacionesComponent} from 'src/app/componentes/plazas-afiliaciones/plazas-afiliaciones.component';
-import {ValidarPermisoService} from "../../api/validar-permiso.service";
-import {Auth0Service} from "../../api/busqueda/auth0.service";
-import {PermisoModel} from "../../Modelos/PermisoModel";
+import { Router, ActivatedRoute, Params } from "@angular/router";
+import { BusquedaService } from "../../api/busqueda.service";
+import { ProductosService } from "../../api/productos.service";
+import { FiltrosModel } from "../../Modelos/FiltrosModel";
+import { FiltroABCModel } from "../../Modelos/FiltroABCModel";
+import { ModalProductoPage } from "./modal-producto/modal-producto.page";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/filtros-busqueda.component";
+import { AnimationController } from "@ionic/angular";
+import { ModalProductosComponent } from "../../components/modal-productos/modal-productos.component";
+import { UtilsCls } from "../../utils/UtilsCls";
+import { PlazasAfiliacionesComponent } from 'src/app/componentes/plazas-afiliaciones/plazas-afiliaciones.component';
+import { ValidarPermisoService } from "../../api/validar-permiso.service";
+import { Auth0Service } from "../../api/busqueda/auth0.service";
+import { PermisoModel } from "../../Modelos/PermisoModel";
 
 @Component({
     selector: "app-tab1",
     templateUrl: "productos.page.html",
     styleUrls: ["productos.page.scss"],
+    providers: [CreateObjects]
 })
 export class ProductosPage {
     @ViewChild(IonContent) content: IonContent;
@@ -78,7 +82,8 @@ export class ProductosPage {
         private util: UtilsCls,
         private platform: Platform,
         private validarPermiso: ValidarPermisoService,
-        private auth0Service: Auth0Service
+        private auth0Service: Auth0Service,
+        private createObject: CreateObjects
     ) {
         this.afiliacion = false;
         this.abc = false;
@@ -90,6 +95,15 @@ export class ProductosPage {
     }
 
     ngOnInit(): void {
+
+        this.active.queryParams.subscribe(
+            (params: Params) => {
+                if (params.byCloseProduct) {
+                    const product: ProductInterface = JSON.parse(params.byCloseProduct);
+                    this.updateProduct(product, this.lstProductos);
+                }
+            }
+        );
 
         if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
             localStorage.setItem("isRedirected", "true");
@@ -200,7 +214,7 @@ export class ProductosPage {
             "Todos,A,B,C,D,E,F,G,H,I,J,K,L,M,N,Ñ,O,P,Q,R,S,T,U,V,W,X,Y,Z";
         const arreglo = letras.split(",");
         for (let i = 0; i < 28; i++) {
-            this.filtroABC.push({id: i, letra: arreglo[i], activo: 1});
+            this.filtroABC.push({ id: i, letra: arreglo[i], activo: 1 });
         }
         this.filtroABC.forEach((item) => {
             let siHay = this.lstProductos.find((producto) => {
@@ -323,16 +337,14 @@ export class ProductosPage {
 
         this.presentModale();
     }
-
     /**
-     * Funcion para un producto y abrir modal
-     * @param modal
+     * @author Juan Antonio Guevara Flores
+     * @description Crea un productModel y redirige al page ProductDetailPage
      * @param producto
-     * @author Juan
      */
     public abrirProducto(producto: ProductoModel) {
-        this.unoProducto = producto;
-        this.presentModale();
+        const product: ProductInterface = this.createObject.createProduct(producto);
+        this._router.navigate(['/tabs/productos/product-detail'], { queryParams: { product: JSON.stringify(product) } });
     }
 
     async presentModal() {
@@ -393,8 +405,8 @@ export class ProductosPage {
                 .create()
                 .addElement(baseEl.querySelector(".modal-wrapper")!)
                 .keyframes([
-                    {offset: 0, opacity: "0", transform: "scale(0)"},
-                    {offset: 1, opacity: "0.99", transform: "scale(1)"},
+                    { offset: 0, opacity: "0", transform: "scale(0)" },
+                    { offset: 1, opacity: "0.99", transform: "scale(1)" },
                 ]);
 
             return this.animationCtrl
@@ -487,4 +499,19 @@ export class ProductosPage {
 
         return await this.modal.present();
     }
+    /**
+     * @author Juan Antonio Guevara Flores
+     * @description Actualiza el producto desde el perfil si se hiso un cambio con el like
+     * @param product
+     * @param arrayList
+     */
+    private updateProduct(product: ProductInterface, arrayList: any) {
+        arrayList.forEach(element => {
+            if(element.idProducto === product.idProduct) {
+                element.likes = product.likes;
+                element.usuario_dio_like = (product.like) ? 1 : 0;
+            }
+        });
+    }
+
 }

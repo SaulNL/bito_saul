@@ -13,7 +13,7 @@ import { OneSignalNotificationsService } from './../../../api/one-signal-notific
 import { ToadNotificacionService } from './../../../api/toad-notificacion.service';
 import { LoginService } from './../../../api/login.service';
 import { NgForm } from '@angular/forms';
-import { UserSignInModel, UserSignInInterface } from './../../models/user-sign-in';
+import { UserSignInModel, UserSignInInterface } from '../../models/user-sign-in-model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Platform, ModalController } from '@ionic/angular';

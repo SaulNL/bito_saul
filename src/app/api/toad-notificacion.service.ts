@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {ToastController} from "@ionic/angular";
+import { ToastController } from "@ionic/angular";
 
 @Injectable({
   providedIn: 'root'
@@ -7,16 +7,39 @@ import {ToastController} from "@ionic/angular";
 export class ToadNotificacionService {
 
   constructor(
-      private toadController: ToastController
+    private toadController: ToastController
   ) { }
-  public exito(mensaje){
-    this.configToad('success',mensaje)
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Muestra mensaje exito
+   * @param message
+   */
+  public success(message: any) {
+    this.exito(message);
   }
-  public alerta(mensaje){
-    this.configToad('warning',mensaje)
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Muestra mensaje de alerta
+   * @param message
+   */
+  public alert(message: any) {
+    this.alerta(message);
   }
-  public error(mensaje){
-    this.configToad('danger',mensaje)
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Muestra mensaje de error
+   * @param message
+   */
+  public error(message: any) {
+    this.configToad('danger', message);
+  }
+
+  public exito(mensaje) {
+    this.configToad('success', mensaje);
+  }
+
+  public alerta(mensaje) {
+    this.configToad('warning', mensaje);
   }
 
   async configToad(color, mensaje) {

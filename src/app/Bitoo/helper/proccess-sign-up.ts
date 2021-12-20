@@ -1,4 +1,4 @@
-import { UserSignInInterface, UserSignInModel } from './../models/user-sign-in';
+import { UserSignInInterface, UserSignInModel } from '../models/user-sign-in-model';
 import { SelectedSocialNetwork } from './../types/platform-type';
 import { CommonUserSignUpInterface, CommonUserSingUpModel, ContentCommonUserSingUpModel } from './../models/user-sign-up-model';
 import { ResponderModel, ResponderInterface } from './../models/responder-model';
