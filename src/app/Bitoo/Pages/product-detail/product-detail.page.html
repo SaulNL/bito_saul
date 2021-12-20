@@ -30,7 +30,7 @@
         </ion-card-content>
         <ion-row *ngIf="visibility">
             <ion-col>
-                <ion-chip *ngIf="purchase else notPurchase" (click)="addProduct()">
+                <ion-chip class="border-solid" *ngIf="purchase else notPurchase" (click)="addProduct()">
                     <ion-icon class="text-pink" role="img" name="bag-add-outline"></ion-icon>
                     <ion-label class="text-pink"> {{purchaseMessage}} </ion-label>
                 </ion-chip>

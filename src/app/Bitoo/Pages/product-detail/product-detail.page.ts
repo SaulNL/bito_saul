@@ -30,6 +30,7 @@ export class ProductDetailPage implements OnInit {
   public productLike: ProductLikeInterface;
   public purchaseMessage: string;
   public subscribe: Subscription;
+  public backTo: boolean;
   constructor(
     private activatedRoute: ActivatedRoute,
     private businessService: NegocioService,
@@ -41,11 +42,13 @@ export class ProductDetailPage implements OnInit {
     private productService: ProductosService,
     private platform: Platform
   ) {
+    this.backTo = true;
   }
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(
       (params: Params) => {
         if (params.product) {
+          this.backTo = true;
           const product: ProductInterface = JSON.parse(params.product);
           this.init(product);
         }
@@ -55,6 +58,11 @@ export class ProductDetailPage implements OnInit {
           this.product = updateProduct;
           this.productLike.like = this.product.like;
           this.productLike.likes = this.product.likes;
+        }
+        if (params.productByFavorite) {
+           this.backTo = false;
+          const product: ProductInterface = JSON.parse(params.productByFavorite);
+          this.init(product);
         }
       }
     );
@@ -84,9 +92,16 @@ export class ProductDetailPage implements OnInit {
   public closeDetail() {
     this.product.like = this.productLike.like;
     this.product.likes = this.productLike.likes;
-    this.route.navigate(['/tabs/productos/'], {
-      queryParams: new CloseProductDetailModel(JSON.stringify(this.product))
-    });
+    if (this.backTo) {
+      this.route.navigate(['/tabs/productos/'], {
+        queryParams: new CloseProductDetailModel(JSON.stringify(this.product))
+      });
+    } else {
+      this.route.navigate(['/tabs/mis-favoritos/'], {
+        queryParams: new CloseProductDetailModel(JSON.stringify(this.product))
+      });
+    }
+
   }
   /**
    * @author Juan Antonio Guevara Flores

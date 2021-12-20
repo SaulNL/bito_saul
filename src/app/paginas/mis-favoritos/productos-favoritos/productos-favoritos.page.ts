@@ -1,9 +1,11 @@
+import { ProductFavoriteModel } from './../../../Bitoo/models/query-params-model';
+import { CreateObjects } from './../../../Bitoo/helper/create-object';
+import { ProductInterface } from './../../../Bitoo/models/product-model';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { UtilsCls } from "../../../utils/UtilsCls";
 import { PersonaService } from "../../../api/persona.service";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import { ProductoModel } from "../../../Modelos/ProductoModel";
-import { ModalProductoPage } from "../../productos/modal-producto/modal-producto.page";
 import { AnimationController, IonContent, ModalController } from '@ionic/angular';
 import { ProductosService } from "../../../api/productos.service";
 import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
@@ -12,6 +14,7 @@ import { ToadNotificacionService } from "../../../api/toad-notificacion.service"
   selector: "app-productos-favoritos",
   templateUrl: "./productos-favoritos.page.html",
   styleUrls: ["./productos-favoritos.page.scss"],
+  providers: [CreateObjects]
 })
 export class ProductosFavoritosPage implements OnInit {
   @ViewChild(IonContent) content: IonContent;
@@ -32,7 +35,9 @@ export class ProductosFavoritosPage implements OnInit {
     public animationCtrl: AnimationController,
     public modalController: ModalController,
     private servicioProductos: ProductosService,
-    private notificaciones: ToadNotificacionService
+    private notificaciones: ToadNotificacionService,
+    private createObject: CreateObjects,
+    private activatedRoute: ActivatedRoute
   ) {
     this.user = this.util.getUserData();
     this.existeSesion = util.existe_sesion();
@@ -43,6 +48,26 @@ export class ProductosFavoritosPage implements OnInit {
     this.obtenerProductosFavoritos();
     this.existeSesion = this.util.existe_sesion();
     this.motrarContacto = true;
+    this.activatedRoute.queryParams.subscribe(
+      (params: Params) => {
+        if (params.byCloseProduct) {
+          const product: ProductInterface = JSON.parse(params.byCloseProduct);
+          this.updateProduct(product);
+        }
+      }
+    );
+  }
+
+  private updateProduct(product: ProductInterface) {
+    if (!product.like) {
+      let position: number;
+      this.listaProductos.forEach(function (value: any, index: any) {
+        if (value.idProducto === product.idProduct) {
+          position = index;
+        }
+      });
+      this.listaProductos.splice(position, 1);
+    }
   }
 
   public obtenerProductosFavoritos() {
@@ -67,51 +92,11 @@ export class ProductosFavoritosPage implements OnInit {
   }
 
   public abrirProducto(producto: ProductoModel) {
+    localStorage.setItem('isRedirected', 'true');
     this.unoProducto = producto;
-    this.presentModale();
-  }
-
-  async presentModale() {
-    const enterAnimation = (baseEl: any) => {
-      const backdropAnimation = this.animationCtrl
-        .create()
-        .addElement(baseEl.querySelector("ion-backdrop")!)
-        .fromTo("opacity", "0.01", "var(--backdrop-opacity)");
-
-      const wrapperAnimation = this.animationCtrl
-        .create()
-        .addElement(baseEl.querySelector(".modal-wrapper")!)
-        .keyframes([
-          { offset: 0, opacity: "0", transform: "scale(0)" },
-          { offset: 1, opacity: "0.99", transform: "scale(1)" },
-        ]);
-
-      return this.animationCtrl
-        .create()
-        .addElement(baseEl)
-        .easing("ease-out")
-        .duration(500)
-        .addAnimation([backdropAnimation, wrapperAnimation]);
-    };
-
-    const leaveAnimation = (baseEl: any) => {
-      return enterAnimation(baseEl).direction("reverse");
-    };
-
-
-
-    const modal = await this.modalController.create({
-      component: ModalProductoPage,
-      enterAnimation,
-      leaveAnimation,
-      swipeToClose: true,
-      componentProps: {
-        unoProducto: this.unoProducto,
-        existeSesion: this.existeSesion,
-        user: this.user,
-      },
-    });
-    return await modal.present();
+    const product: ProductInterface = this.createObject.createProduct(producto);
+    const queryParams: ProductFavoriteModel = new ProductFavoriteModel(JSON.stringify(product));
+    this.router.navigate(['/tabs/productos/product-detail'], { queryParams: queryParams });
   }
 
   public darDislike(producto: ProductoModel) {

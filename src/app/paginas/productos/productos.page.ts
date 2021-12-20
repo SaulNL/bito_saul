@@ -16,7 +16,6 @@ import { BusquedaService } from "../../api/busqueda.service";
 import { ProductosService } from "../../api/productos.service";
 import { FiltrosModel } from "../../Modelos/FiltrosModel";
 import { FiltroABCModel } from "../../Modelos/FiltroABCModel";
-import { ModalProductoPage } from "./modal-producto/modal-producto.page";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/filtros-busqueda.component";
 import { AnimationController } from "@ionic/angular";
@@ -307,37 +306,6 @@ export class ProductosPage {
     }
 
     /**
-     * Funcion para ordenar el arreglo y abrir modal
-     * @param modal
-     * @param producto
-     * @author Omar
-     */
-    public abrirModal(producto: ProductoModel) {
-        this.producto = producto;
-        this.lstProductos.forEach((item) => {
-            item["select"] = 0;
-        });
-        producto.select = 1;
-        this.lstProductos.sort((a, b) => {
-            return b.select - a.select;
-        });
-
-        let data = true;
-        this.seleccionadoDetalleArray = this.lstProductos;
-        if (this.lstProductos.length > 1) {
-            this.lstProductos.forEach((element) => {
-                if (data) {
-                    this.unoProducto = element;
-                } else {
-                    this.todosProducto.push(element);
-                }
-            });
-        } else {
-        }
-
-        this.presentModale();
-    }
-    /**
      * @author Juan Antonio Guevara Flores
      * @description Crea un productModel y redirige al page ProductDetailPage
      * @param producto
@@ -392,47 +360,6 @@ export class ProductosPage {
             },
         });
         return await this.modal.present();
-    }
-
-    async presentModale() {
-        const enterAnimation = (baseEl: any) => {
-            const backdropAnimation = this.animationCtrl
-                .create()
-                .addElement(baseEl.querySelector("ion-backdrop")!)
-                .fromTo("opacity", "0.01", "var(--backdrop-opacity)");
-
-            const wrapperAnimation = this.animationCtrl
-                .create()
-                .addElement(baseEl.querySelector(".modal-wrapper")!)
-                .keyframes([
-                    { offset: 0, opacity: "0", transform: "scale(0)" },
-                    { offset: 1, opacity: "0.99", transform: "scale(1)" },
-                ]);
-
-            return this.animationCtrl
-                .create()
-                .addElement(baseEl)
-                .easing("ease-out")
-                .duration(500)
-                .addAnimation([backdropAnimation, wrapperAnimation]);
-        };
-
-        const leaveAnimation = (baseEl: any) => {
-            return enterAnimation(baseEl).direction("reverse");
-        };
-
-        const modal = await this.modalController.create({
-            component: ModalProductoPage,
-            enterAnimation,
-            leaveAnimation,
-            swipeToClose: true,
-            componentProps: {
-                unoProducto: this.unoProducto,
-                existeSesion: this.existeSesion,
-                user: this.user,
-            },
-        });
-        return await modal.present();
     }
 
     public borrarFiltros() {

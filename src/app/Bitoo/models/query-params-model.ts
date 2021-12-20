@@ -17,7 +17,14 @@ export class BackToProductDetailModel {
 
 export class ByProductDetailModel {
     public byProductDetail: string;
-    constructor(product: string){
+    constructor(product: string) {
         this.byProductDetail = product;
     }
+}
+
+export class ProductFavoriteModel {
+    public productByFavorite: string;
+    constructor(content: string) {
+        this.productByFavorite = content;
+     }
 }
