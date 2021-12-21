@@ -1,4 +1,3 @@
-import { SentPushNotificationService } from './api/sent-push-notification.service';
 import { AccessPermissionService } from './api/access-permission.service';
 import { Component } from '@angular/core';
 import { ModalController, NavController, Platform } from '@ionic/angular';
@@ -12,11 +11,8 @@ import { VistasBitooModel } from 'src/app/Modelos/vistasBitooModel';
 import { Plugins } from '@capacitor/core';
 import { VersionAndroidService } from './api/version-android.service';
 import { AppSettings } from './AppSettings';
-import OneSignal from 'onesignal-cordova-plugin';
-
 const { Geolocation } = Plugins;
 import { DeviceInfoModel } from "./Modelos/DeviceInfoModel";
-import { OneSignalNotificationsService } from "./api/one-signal-notifications.service";
 
 @Component({
     selector: 'app-root',
@@ -41,9 +37,7 @@ export class AppComponent {
         private negocioService: NegocioService,
         private access: AccessPermissionService,
         public modalController: ModalController,
-        private android: VersionAndroidService,
-        private signal: OneSignalNotificationsService,
-        private sendPushNoficationService: SentPushNotificationService
+        private android: VersionAndroidService
     ) {
         this.initializeApp();
         this.visitasBitooModel = new VistasBitooModel();
@@ -56,9 +50,6 @@ export class AppComponent {
         this.platform.ready().then(() => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
-            this.inicialiceOneSignalNotifications();
-            this.signal.unSetUserExternal();
-            this.signal.setUserExternal();
             this.obtenerVersion(this.device);
         });
         this.obtenerIP();
@@ -265,11 +256,4 @@ export class AppComponent {
         )
     }
 
-    private inicialiceOneSignalNotifications() {
-        this.sendPushNoficationService.getApi().subscribe(
-            response => {
-                this.signal.inicialiceNotifications(response.data.api);
-            }
-        );
-    }
 }

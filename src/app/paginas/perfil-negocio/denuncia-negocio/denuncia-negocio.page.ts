@@ -1,6 +1,3 @@
-import { SentPushNotificationService } from './../../../api/sent-push-notification.service';
-import { CommonOneSignalModel } from './../../../Modelos/OneSignalNotificationsModel/CommonOneSignalModel';
-import { SentNotificationModel } from './../../../Modelos/OneSignalNotificationsModel/SentNotificationModel';
 import { ToadNotificacionService } from './../../../api/toad-notificacion.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { LoadingController, ModalController } from '@ionic/angular';
@@ -26,8 +23,7 @@ export class DenunciaNegocioPage implements OnInit {
     private modalController: ModalController,
     private _serviceAdministracion: AdministracionService,
     private notificaciones: ToadNotificacionService,
-    public loadingController: LoadingController,
-    private _sentPushNotificationService: SentPushNotificationService
+    public loadingController: LoadingController
   ) {
     this.loader = false;
   }
@@ -71,7 +67,7 @@ export class DenunciaNegocioPage implements OnInit {
         this._serviceAdministracion.guardarDenunciaNegocio(this.denunciaTO).subscribe(
           data => {
             if (data.code === 200) {
-              this.sendNotification(data.data.idAdministradores);
+              this.loaderFalse();
               this.notificaciones.exito('se guardo correctamente la denuncia');
               this.cerrarModal();
             } else {
@@ -92,22 +88,6 @@ export class DenunciaNegocioPage implements OnInit {
       this.loader = false;
       this.notificaciones.alerta('Para poder denunciar este negocio, necesitas ser usuario logeado');
     }
-  }
-  private sendNotification(admins: string[]) {
-    this._sentPushNotificationService.getTkn().subscribe(
-      response => {
-        let headers = new CommonOneSignalModel('Alerta nuevo reporte de negocio');
-        let content = new CommonOneSignalModel('Se realizo un reporte en el negocio: ' + this.negocioNombre);
-        let sentNotificationModel = new SentNotificationModel(content, headers, admins, response.data.api);
-        this._sentPushNotificationService.sentNotification(sentNotificationModel, response.data.tkn).subscribe(
-          () => {
-            this.loaderFalse();
-          }, () => {
-            this.loaderFalse();
-          });
-      }, () => {
-        this.loaderFalse();
-      });
   }
   private loaderFalse() {
     this.loader = false;

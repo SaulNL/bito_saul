@@ -8,7 +8,6 @@ import { ActionSheetController, NavController, Platform } from "@ionic/angular";
 import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Auth0Service } from "src/app/api/auth0.service";
 import { PedidosService } from "../../api/pedidos.service";
-import { OneSignalNotificationsService } from "../../api/one-signal-notifications.service";
 import { PersonaService } from '../../api/persona.service';
 
 @Component({
@@ -43,7 +42,6 @@ export class AjustesPage implements OnInit {
     private validarPermisos: ValidarPermisoService,
     private pedidos: PedidosService,
     private platform: Platform,
-    private signal: OneSignalNotificationsService,
     private personaService: PersonaService
   ) {
     this.siNoVistos = false;
@@ -132,7 +130,6 @@ export class AjustesPage implements OnInit {
           handler: () => {
             if (AppSettings.resetToken(this._router)) {
               this.sideBarService.publishSomeData("");
-              this.signal.unSetUserExternal();
               this._router.navigate(["/tabs/inicio"], {
                 queryParams: { spe: true },
               });

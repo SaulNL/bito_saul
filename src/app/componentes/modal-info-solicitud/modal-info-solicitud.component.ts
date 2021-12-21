@@ -1,6 +1,3 @@
-import { SentPushNotificationService } from './../../api/sent-push-notification.service';
-import { SentNotificationModel } from './../../Modelos/OneSignalNotificationsModel/SentNotificationModel';
-import { CommonOneSignalModel } from './../../Modelos/OneSignalNotificationsModel/CommonOneSignalModel';
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { SolicitudesService } from '../../api/solicitudes.service';
@@ -41,8 +38,7 @@ export class ModalInfoSolicitudComponent implements OnInit {
     private servicioSolicitudes: SolicitudesService,
     private _utils_cls: UtilsCls,
     private _auth0: Auth0Service,
-    private _notificacionService: ToadNotificacionService,
-    private sentPushNotificationService: SentPushNotificationService
+    private _notificacionService: ToadNotificacionService
   ) { }
 
   ngOnInit() {
@@ -115,38 +111,13 @@ export class ModalInfoSolicitudComponent implements OnInit {
     this.servicioSolicitudes.enviarPostulacion(this.postulacionModel).subscribe(
       response => {
         this._notificacionService.exito(response.message);
-        this.sendOneSignalNotifications(this.solicitud.id_persona);
+        this.loaderP();
         this.dismiss();
       },
       error => {
       },
       () => {
         this.loaderPostular = false;
-      }
-    );
-  }
-
-  private sendOneSignalNotifications(idPersona: string) {
-    this.sentPushNotificationService.getUserByPersona(idPersona).subscribe(
-      response => {
-        this.sentPushNotificationService.getTkn().subscribe(
-          res => {
-            let content = new CommonOneSignalModel('Se ha postulado alguien en tu requerimiento de compra.');
-            let headings = new CommonOneSignalModel('Postulación Nueva!');
-            let sentNotification = new SentNotificationModel(content, headings, [String(response.data.usuario)], res.data.api);
-            this.sentPushNotificationService.sentNotification(sentNotification, res.data.tkn).subscribe(
-              () => {
-                this.loaderP();
-              }, () => {
-                this.loaderP();
-              }
-            );
-          }, () => {
-            this.loaderP();
-          }
-        );
-      }, () => {
-        this.loaderP();
       }
     );
   }

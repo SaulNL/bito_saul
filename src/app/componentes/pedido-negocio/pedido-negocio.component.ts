@@ -7,13 +7,8 @@ import { NegocioService } from "../../api/negocio.service";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { AuthGuardService } from "../../api/auth-guard.service";
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { SentPushNotificationService } from "../../api/sent-push-notification.service";
 
 declare var google: any;
-import { SentNotificationModel } from "../../Modelos/OneSignalNotificationsModel/SentNotificationModel";
-import { CommonOneSignalModel } from "../../Modelos/OneSignalNotificationsModel/CommonOneSignalModel";
-import { AppSettings } from "../../AppSettings";
-
 @Component({
     selector: 'app-pedido-negocio',
     templateUrl: './pedido-negocio.component.html',
@@ -51,9 +46,6 @@ export class PedidoNegocioComponent implements OnInit {
     private pedido: PedidoNegocioModel;
     public content: string;
     public heading: string;
-    public sentPushNotification: SentNotificationModel;
-    public contents: CommonOneSignalModel;
-    public headings: CommonOneSignalModel;
     public address: string;
 
     constructor(
@@ -64,8 +56,7 @@ export class PedidoNegocioComponent implements OnInit {
         public alertController: AlertController,
         private platform: Platform,
         private guard: AuthGuardService,
-        private geolocation: Geolocation,
-        private sendNotification: SentPushNotificationService
+        private geolocation: Geolocation
     ) {
         this.lat = 19.31905;
         this.numeroMesa = 0;
@@ -170,38 +161,13 @@ export class PedidoNegocioComponent implements OnInit {
         const datos = JSON.parse(localStorage.getItem('u_data'));
         const telephoneUsuario = datos.celular;
         this.negocioService.registrarPedido(pedido).subscribe(
-            () => {
-                this.contents = new CommonOneSignalModel('Se registró una venta en ' + this.negocioNombre);
-                this.headings = new CommonOneSignalModel();
-                this.negocioService.obtenerIdUsuarioByNegocio(this.lista[0].idNegocio).subscribe(
-                    (respuesta) => {
-                        this.sendNotification.getTkn().subscribe(
-                            (response) => {
-                                if (response.code === 200) {
-                                    this.sentPushNotification = new SentNotificationModel(this.headings, this.contents, [String(respuesta.data.usuario)], response.data.api);
-                                        this.sendNotification.sentNotification(this.sentPushNotification, response.data.tkn).subscribe(
-                                        (r) => {
-                                            this.enviarSms(telephoneUsuario, this.lista[0].idNegocio);
-                                        }, (e) => {
-                                            this.mesajes.error('Ocurrió un error al notificar el negocio, tu pedido se envío con éxito');
-                                            this.loader = false;
-                                        }
-                                    );
-                                } else {
-                                    this.mesajes.error("Ocurrió un problema al contactar al negocio");
-                                    this.loader = false;
-                                }
-                            }, (e) => {
-                                this.mesajes.error("Error en el servidor");
-                                this.loader = false;
-                            }
-                        );
-                    }, () => {
-                        this.mesajes.alerta("Ocurrió un problema al enviar la notificación se enviara un sms");
-                        this.enviarSms(telephoneUsuario, this.lista[0].idNegocio);
-                    }
-                );
-
+            (response) => {
+                if (response.code === 200) {
+                    this.enviarSms(telephoneUsuario, this.lista[0].idNegocio);
+                    this.loader = false;
+                } else {
+                    this.mesajes.error('Ocurrió un error al generar el pedido');
+                }
             }, () => {
                 this.loader = false;
                 this.mesajes.error('Ocurrió un error al generar el pedido');

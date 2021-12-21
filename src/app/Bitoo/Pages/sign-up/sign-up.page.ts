@@ -2,7 +2,6 @@ import { SignInOrUpSocialNetworksComponent } from './../../components/sign-in-or
 import { ProccessSignUp } from './../../helper/proccess-sign-up';
 import { SelectedSocialNetwork } from './../../types/platform-type';
 import { LoginService } from './../../../api/login.service';
-import { OneSignalNotificationsService } from './../../../api/one-signal-notifications.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserSignInModel, UserSignInInterface } from '../../models/user-sign-in-model';
 import { UsuarioService } from './../../../api/busqueda/login/usuario.service';
@@ -52,7 +51,6 @@ export class SignUpPage implements OnInit {
     private usuarioService: UsuarioService,
     private loginService: LoginService,
     private activateRoute: ActivatedRoute,
-    private oneSignalService: OneSignalNotificationsService,
     private proceesSignUp: ProccessSignUp) {
     this.isIos = this.platform.is('ios');
     this.init();
@@ -130,7 +128,6 @@ export class SignUpPage implements OnInit {
    */
   private redirectSuccess(isSuccess: any) {
     if (typeof isSuccess !== 'undefined') {
-      this.oneSignalService.setUserExternal();
       this.router.navigate(['/tabs/inicio']);
       setTimeout(() => {
         location.reload();
@@ -383,7 +380,6 @@ export class SignUpPage implements OnInit {
             this.router.navigate(["/tabs/inicio"]);
           }
           this.toadNotificacionService.exito(response.message);
-          this.oneSignalService.setUserExternal();
           this.SetSocialNetworkLoadTurnOf(selectedSocialNetwork);
         } else {
           this.SetSocialNetworkLoadTurnOf(selectedSocialNetwork);

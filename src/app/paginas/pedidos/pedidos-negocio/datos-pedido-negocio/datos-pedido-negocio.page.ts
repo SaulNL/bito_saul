@@ -1,7 +1,3 @@
-import { SentNotificationModel } from './../../../../Modelos/OneSignalNotificationsModel/SentNotificationModel';
-import { CommonOneSignalModel } from './../../../../Modelos/OneSignalNotificationsModel/CommonOneSignalModel';
-import { AppSettings } from './../../../../AppSettings';
-import { SentPushNotificationService } from './../../../../api/sent-push-notification.service';
 import { Component, OnInit } from '@angular/core';
 import { PedidosService } from '../../../../api/pedidos.service';
 // import {Map, tileLayer, marker, icon, Marker} from 'leaflet';
@@ -35,8 +31,7 @@ export class DatosPedidoNegocioPage implements OnInit {
         private activatedRoute: ActivatedRoute,
         private route: ActivatedRoute,
         private router: Router,
-        private notificaciones: ToadNotificacionService,
-        private sentPushNotificationService: SentPushNotificationService
+        private notificaciones: ToadNotificacionService
     ) {
         this.blnCancelar = false;
         this.loaderBtn = false;
@@ -101,12 +96,11 @@ export class DatosPedidoNegocioPage implements OnInit {
         //this.loaderBtn = true;
         this.pedidosServicios.cancelar(pedido.id_pedido_negocio, this.motivo).subscribe(
             respuesta => {
-                //this.loaderBtn = false;
                 pedido.id_estatus_pedido = respuesta.data.id;
                 pedido.estatus = respuesta.data.estatus;
                 pedido.color = respuesta.data.color;
                 pedido.motivo = respuesta.data.motivo;
-                this.sendOneSignalNotifications('Se cancelo tu compra en ' + pedido.negocio, 'El negocio cancelo tu compra por el motivo de: ' + this.motivo, pedido.id_persona);
+                this.loaderCancel();
                 this.notificaciones.exito(respuesta.message);
             },
             error => {
@@ -119,7 +113,7 @@ export class DatosPedidoNegocioPage implements OnInit {
         this.loaderBtn = true;
         this.pedidosServicios.preparar(pedido.id_pedido_negocio).subscribe(
             respuesta => {
-                this.sendOneSignalNotifications('El negocio ' + pedido.negocio + ' vio tu pedido y lo esta preparando', 'Tu pedido esta en proceso', pedido.id_persona);
+                this.loaderCancel();
                 pedido.id_estatus_pedido = respuesta.data.id;
                 pedido.estatus = respuesta.data.estatus;
                 pedido.color = respuesta.data.color;
@@ -135,16 +129,7 @@ export class DatosPedidoNegocioPage implements OnInit {
         this.loaderBtn = true;
         this.pedidosServicios.enviar(pedido.id_pedido_negocio).subscribe(
             respuesta => {
-                let content = '';
-                let header = '';
-                if (pedido.id_tipo_pedido === 2) {
-                    content = 'El negocio ' + pedido.negocio + ' envío tu pedido, por favor contactalo para saber los detalles del envío';
-                    header = 'Tu pedido se envio';
-                } else {
-                    content = 'Por favor pasa a recogerlo';
-                    header = 'Tu pedido se encuentra listo';
-                }
-                this.sendOneSignalNotifications(content, header, pedido.id_persona);
+                this.loaderCancel();
                 pedido.id_estatus_pedido = respuesta.data.id;
                 pedido.estatus = respuesta.data.estatus;
                 pedido.color = respuesta.data.color;
@@ -160,7 +145,7 @@ export class DatosPedidoNegocioPage implements OnInit {
         this.loaderBtn = true;
         this.pedidosServicios.entregar(pedido.id_pedido_negocio).subscribe(
             respuesta => {
-                this.sendOneSignalNotifications('Tu pedido del negocio ' + pedido.negocio + ' se entrego', 'El pedido se entrego con éxito', pedido.id_persona);
+                this.loaderCancel();
                 pedido.id_estatus_pedido = respuesta.data.id;
                 pedido.estatus = respuesta.data.estatus;
                 pedido.color = respuesta.data.color;
@@ -238,37 +223,6 @@ export class DatosPedidoNegocioPage implements OnInit {
             },
             () => {
             });
-    }
-    /**
-     * @author Juan Antonio
-     * @description Metodo para enviar las notificaciones
-     * @param body
-     * @param header
-     * @param idPersona
-     */
-    private sendOneSignalNotifications(body: string, header: string, idPersona: string) {
-        this.sentPushNotificationService.getUserByPersona(idPersona).subscribe(
-            response => {
-                this.sentPushNotificationService.getTkn().subscribe(
-                    res => {
-                        let content = new CommonOneSignalModel(body);
-                        let headings = new CommonOneSignalModel(header);
-                        let sentNotification = new SentNotificationModel(content, headings, [String(response.data.usuario)], res.data.api); /* Produccion */
-                        this.sentPushNotificationService.sentNotification(sentNotification, res.data.tkn).subscribe( /* Produccion */
-                            () => {
-                                this.loaderCancel();
-                            }, () => {
-                                this.loaderCancel();
-                            }
-                        );
-                    }, () => {
-                        this.loaderCancel();
-                    }
-                );
-            }, () => {
-                this.loaderCancel();
-            }
-        );
     }
     /**
      * @author Juan Antonio

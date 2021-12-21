@@ -9,7 +9,6 @@ import { UsuarioService } from './../../../api/busqueda/login/usuario.service';
 import { RecoverPasswordComponent } from './../../components/recover-password/recover-password.component';
 import { ReturnToModel } from './../../models/return-to-model';
 import { Location } from '@angular/common';
-import { OneSignalNotificationsService } from './../../../api/one-signal-notifications.service';
 import { ToadNotificacionService } from './../../../api/toad-notificacion.service';
 import { LoginService } from './../../../api/login.service';
 import { NgForm } from '@angular/forms';
@@ -51,7 +50,6 @@ export class SignInPage implements OnInit {
     private platform: Platform,
     private route: Router,
     private modalCtr: ModalController,
-    private oneSignalService: OneSignalNotificationsService,
     private usuarioService: UsuarioService,
     private proceesSignUp: ProccessSignUp
   ) {
@@ -101,7 +99,6 @@ export class SignInPage implements OnInit {
     ConfigGlobal.setUser(response);
     localStorage.setItem("isRedirected", "false");
     const optionEnterLogin = localStorage.getItem('optionLogin');
-    this.oneSignalService.setUserExternal();
     if (optionEnterLogin != null) {
       this.returnToLocation = JSON.parse(String(optionEnterLogin));
       this.goToRoute(this.returnToLocation.url);
@@ -109,7 +106,6 @@ export class SignInPage implements OnInit {
       window.location.assign("/tabs/inicio");
     }
     this.toadNotificacionService.exito(response.message);
-    this.oneSignalService.setUserExternal();
     this.optionSesionLoad(optionSesion);
   }
 
