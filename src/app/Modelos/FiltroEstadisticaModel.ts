@@ -1,6 +1,6 @@
 export class FiltroEstadisticaModel {
     public id_negocio: number;
-    public fecha_inicio: string | null;
+    public fecha_inicio: string | null | moment.Moment;
     public fecha_final: string | null;
 
     constructor(

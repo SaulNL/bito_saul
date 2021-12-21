@@ -7,6 +7,9 @@ const routes: Routes = [
   {
     path: '',
     component: EstadisticasPage
+  }, {
+    path: 'statistics-by-business',
+    loadChildren: () => import('../../Bitoo/Pages/statistics-by-business/statistics-by-business.module').then(m => m.StatisticsByBusinessPageModule)
   }
 ];
 
@@ -14,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class EstadisticasPageRoutingModule {}
+export class EstadisticasPageRoutingModule { }

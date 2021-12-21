@@ -1,8 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {NegocioModel} from '../../Modelos/NegocioModel';
-import {NegocioService} from '../../api/negocio.service';
-import {ActionSheetController, IonContent, ModalController} from '@ionic/angular';
-import {EstadisticasComponent} from '../../componentes/estadisticas/estadisticas.component';
+import { StatisticsByBusinessInterface, StatisticsByBusinessModel } from './../../Bitoo/models/statistic-model';
+import { BusinessStatisticModel } from './../../Bitoo/models/query-params-model';
+import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NegocioModel } from '../../Modelos/NegocioModel';
+import { NegocioService } from '../../api/negocio.service';
+import { ActionSheetController, IonContent, ModalController } from '@ionic/angular';
 
 @Component({
     selector: 'app-estadisticas',
@@ -25,7 +27,8 @@ export class EstadisticasPage implements OnInit {
     constructor(
         private servicioNegocios: NegocioService,
         private actionSheetController: ActionSheetController,
-        private modalController: ModalController
+        private modalController: ModalController,
+        private route: Router
     ) {
         this.listaNegocios = [];
         this.usuario = JSON.parse(localStorage.getItem('u_data'));
@@ -53,10 +56,10 @@ export class EstadisticasPage implements OnInit {
         if (this.usuario.proveedor != null) {
             this.servicioNegocios.misNegociosEstadisticas(this.usuario.proveedor.id_proveedor, this.rol).subscribe(
                 (resp) => {
-                    if (this.rol === 1){
+                    if (this.rol === 1) {
                         this.listaNegociosOriginal = resp.data;
                         this.listaNegocios = this.listaNegociosOriginal.slice(0, 12);
-                    }else{
+                    } else {
                         this.listaNegocios = resp.data;
                     }
                     this.loader = false;
@@ -65,22 +68,19 @@ export class EstadisticasPage implements OnInit {
                     this.loader = false;
                 },
                 () => {
-                    window.scrollTo({top: 0, behavior: 'smooth'});
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             );
         } else {
             this.loader = false;
         }
     }
-
-    async abrirModalEstadisticas(negocio) {
-        const modal = await this.modalController.create({
-            component: EstadisticasComponent,
-            componentProps: {
-                idNegocio: negocio
-            },
+    public showStatisticByBusiness(idBusiness: number) {
+        const content: StatisticsByBusinessInterface = new StatisticsByBusinessModel(idBusiness);
+        const queryParams: BusinessStatisticModel = new BusinessStatisticModel(JSON.stringify(content));
+        this.route.navigate(['tabs/home/estadisticas/statistics-by-business'], {
+            queryParams: queryParams
         });
-        await modal.present();
     }
 
     public cargarMasNegocios(event) {

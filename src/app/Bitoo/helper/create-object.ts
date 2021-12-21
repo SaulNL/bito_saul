@@ -51,7 +51,7 @@ export class CreateObjects {
      * @param object
      * @returns number
      */
-    private anyToNumber(object: any): number {
+    public anyToNumber(object: any): number {
         const number: number = Number(object);
         if (isNaN(number)) {
             return 0;

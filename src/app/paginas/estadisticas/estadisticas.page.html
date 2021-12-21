@@ -17,7 +17,7 @@
     </ion-list-header>
 
     <div>
-      <ion-item *ngFor="let negocio of listaNegocios" (click)="abrirModalEstadisticas(negocio.id_negocio)">
+      <ion-item *ngFor="let negocio of listaNegocios" (click)="showStatisticByBusiness(negocio.id_negocio)">
         <ion-avatar slot="start">
           <img *ngIf="negocio.url_logo !== '' && negocio.url_logo !== null "  src="{{ negocio.url_logo }}" alt="{{ negocio.nombre_comercial }}">
           <img *ngIf="negocio.url_logo === '' || negocio.url_logo === null  " src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg">

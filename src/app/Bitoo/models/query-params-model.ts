@@ -26,5 +26,12 @@ export class ProductFavoriteModel {
     public productByFavorite: string;
     constructor(content: string) {
         this.productByFavorite = content;
-     }
+    }
+}
+
+export class BusinessStatisticModel {
+    public business: string;
+    constructor(id: string) {
+        this.business = id;
+    }
 }

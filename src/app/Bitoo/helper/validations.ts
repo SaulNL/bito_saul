@@ -53,8 +53,23 @@ export class ValidatorData {
         ) &&
             price > 0 && business.isOpen);
     }
-
-    public existPrice(price: number) {
+    /**
+     * @author Juan Antonio Guevara Flores
+     * @description Valida si existe el precio
+     * @param price
+     * @returns boolean
+     */
+    public existPrice(price: number): boolean {
         return (price > 0);
+    }
+    /**
+     * @author Juan Antonio Guevara Flores
+     * @description Valida si 2 objetos son iguales
+     * @param source
+     * @param target
+     * @returns
+     */
+    public validateObj(source: any, target: any): boolean {
+        return JSON.stringify(source) === JSON.stringify(target);
     }
 }

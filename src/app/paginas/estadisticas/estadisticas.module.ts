@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { EstadisticasPageRoutingModule } from './estadisticas-routing.module';
 import { EstadisticasPage } from './estadisticas.page';
-import {EstadisticasComponent} from '../../componentes/estadisticas/estadisticas.component';
 import {InfinitoScrollModule} from '../../componentes/infinito-scroll/infinito-scroll.module';
 import {TabsPageModule} from '../tabs/tabs.module';
 
@@ -19,6 +18,6 @@ import {TabsPageModule} from '../tabs/tabs.module';
         TabsPageModule,
         SpinnerModule
     ],
-    declarations: [EstadisticasPage, EstadisticasComponent]
+    declarations: [EstadisticasPage]
 })
 export class EstadisticasPageModule {}
