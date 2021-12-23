@@ -9,7 +9,7 @@ import { SolicitudesModel } from '../../Modelos/SolicitudesModel';
 import { AppSettings } from '../../AppSettings';
 import { UtilsCls } from '../../utils/UtilsCls';
 import { ModalInfoSolicitudComponent } from '../../componentes/modal-info-solicitud/modal-info-solicitud.component';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { Router } from "@angular/router";
 import { UbicacionModel } from '../../Modelos/UbicacionModel';
 import { UbicacionActualModel } from '../../Modelos/UbicacionActualModel';
@@ -45,6 +45,7 @@ export class SolicitudPage implements OnInit {
   public numeroVistas: number;
   public cargando = 'Cargando';
   private plazaAfiliacion: AfiliacionPlazaModel;
+  public isIos: boolean;
   constructor(
     private filtrosService: FiltrosService,
     private serviceProveedores: ProveedorServicioService,
@@ -52,8 +53,11 @@ export class SolicitudPage implements OnInit {
     private servicioSolicitudes: SolicitudesService,
     private _utils_cls: UtilsCls,
     public modalController: ModalController,
-    private _router: Router
-  ) { }
+    private _router: Router,
+    private platform: Platform
+  ) {
+    this.isIos = this.platform.is('ios');
+  }
 
   ngOnInit() {
     this.idGiro = null;

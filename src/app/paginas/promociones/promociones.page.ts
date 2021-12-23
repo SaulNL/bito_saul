@@ -21,7 +21,7 @@ export class PromocionesPage implements OnInit {
     public lstPromociones: Array<PromocionesModel>;
     public anyFiltros: FiltrosModel;
     public loader: boolean = false;
-    private Filtros: FiltrosModel;
+    public Filtros: FiltrosModel;
     public listaCategorias: any;
     public blnBtnMapa: boolean;
     public blnBtnMap: boolean;
@@ -124,7 +124,7 @@ export class PromocionesPage implements OnInit {
                     }
                 },
                 () => {
-                    
+
                     this.lstPromociones = [];
                 },
                 () => {

@@ -48,6 +48,11 @@ export class StatisticsByBusinessPage implements OnInit {
       }
     );
   }
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Activar el filtro para buscar
+   * @param value
+   */
   public activetedFilter(value: string) {
     const moment = Moment();
     const day = moment.format(Moment.HTML5_FMT.DATE);
@@ -91,10 +96,19 @@ export class StatisticsByBusinessPage implements OnInit {
       this.activatedFilter(filter);
     }
   }
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Regresar a la page de Estadisticas
+   */
   public closeStatistic() {
     this.location.back();
   }
 
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Abre el PopOverVisitsComponent para visualizar las visitas
+   * @param event
+   */
   async visists(event: any) {
     const popOver = await this.popOver.create({
       component: PopOverVisitsComponent,
@@ -106,21 +120,31 @@ export class StatisticsByBusinessPage implements OnInit {
       }
     });
     await popOver.present();
-
-    // const { role } = await popOver.onDidDismiss();
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Inicializa el contructor
+   */
   private initConstructor() {
     this.selected = 'all';
     this.loader = new BusinessStatisticsLoaderModel();
     this.statistics = new BusinessStatisticsModel();
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Inicializa los filtros como nulos
+   * @param idBusiness
+   */
   private init(idBusiness: number) {
     this.filters = new StatisticsFilterModel(idBusiness);
     this.activatedFilter(this.filters);
   }
 
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Inicia los Servicios
+   * @param filter
+   */
   private activatedFilter(filter: StatisticsFilterInterface) {
     this.getVisitsByQr(filter);
     this.getVisitsByUrl(filter);
@@ -131,6 +155,11 @@ export class StatisticsByBusinessPage implements OnInit {
     this.getLikesProducts(filter);
   }
 
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Obtiene las visitas por Qr
+   * @param filters
+   */
   private getVisitsByQr(filters: StatisticsFilterInterface) {
     this.loader.loadingVisitsByQr = true;
     this.business.estadisticaVisitasQR(filters).subscribe(
@@ -144,7 +173,11 @@ export class StatisticsByBusinessPage implements OnInit {
       }
     );
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Obtiene la visitas por url
+   * @param filters
+   */
   private getVisitsByUrl(filters: StatisticsFilterInterface) {
     this.loader.loadingVisitsByUrl = true;
     this.business.estadisticaVisitasURL(filters).subscribe(
@@ -158,7 +191,11 @@ export class StatisticsByBusinessPage implements OnInit {
       }
     );
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Obtiene los Likes de un negocio
+   * @param filters
+   */
   private getLikesBusiness(filters: StatisticsFilterInterface) {
     this.loader.loadingLikesBusiness = true;
     this.business.estadisticaLikesNegocio(filters).subscribe(
@@ -172,7 +209,11 @@ export class StatisticsByBusinessPage implements OnInit {
       }
     );
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Obtiene el las estaditicas de los comentarios de un negocio
+   * @param filters
+   */
   private getCompanyRating(filters: StatisticsFilterInterface) {
     this.loader.loadingCompanyRating = true;
     this.business.estadisticaComentariosNegocio(filters).subscribe(
@@ -191,7 +232,11 @@ export class StatisticsByBusinessPage implements OnInit {
       }
     );
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Obtiene las estadisticias de requerimientos de compra
+   * @param filters
+   */
   private getRequests(filters: StatisticsFilterInterface) {
     this.loader.loadingTotalRequests = true;
     this.business.estadisticaSolicitudesNegocio(filters).subscribe(
@@ -206,7 +251,11 @@ export class StatisticsByBusinessPage implements OnInit {
       }
     );
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Obtiene las promociones y el total
+   * @param filters
+   */
   private getPromotions(filters: StatisticsFilterInterface) {
     this.loader.loadingTotalPromotions = true;
     this.business.estadisticaPromocionesNegocio(filters).subscribe(
@@ -221,7 +270,11 @@ export class StatisticsByBusinessPage implements OnInit {
       }
     );
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description obtiene los productos y sus likes
+   * @param filters
+   */
   private getLikesProducts(filters: StatisticsFilterInterface) {
     this.loader.loadingLikesProducts = true;
     this.business.estadisticaVistasProductosNegocio(filters).subscribe(
@@ -236,21 +289,40 @@ export class StatisticsByBusinessPage implements OnInit {
       }
     );
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Valida el loading si se activa
+   */
   get loading() {
     return !(this.validator.validateObj(this.loader, new BusinessStatisticsLoaderModel()));
 
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Retorna el total de visitas por qr y url
+   */
   get totalVisitsQrAndUrl() {
     return (this.statistics.totalVisitsByQr + this.statistics.totalVisitsByUrl);
   }
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Valida y retorna si existen o requerimientos de compra
+   */
   get totalRequest() {
     return (this.statistics.totalRequests !== 0);
   }
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Valida y retorna si existe total de likes en productos
+   */
   get totalProduct() {
     return (this.statistics.totalLikesProducts !== 0);
   }
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Retorna un Mensaje de error dependiendo del Servicio
+   * @param by
+   */
   private notificationError(by: string) {
     this.toadNotificacion.error('No se pudo cargar las estaditicas de ' + by);
   }

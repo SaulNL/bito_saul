@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {RouteConfigLoadStart, RouteReuseStrategy} from '@angular/router';
+import { RouteConfigLoadStart, RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -8,24 +8,22 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {HttpClientModule} from "@angular/common/http";
+import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from '@angular/forms';
 
 import { HaversineService } from "ng2-haversine";
-import { Downloader} from '@ionic-native/downloader/ngx';
-import {Platform} from "@ionic/angular";
-import {HTTP} from "@ionic-native/http/ngx";
-import {GooglePlus} from '@ionic-native/google-plus/ngx';
-import {Facebook} from '@ionic-native/facebook/ngx';
-
+import { Downloader } from '@ionic-native/downloader/ngx';
+import { Platform } from "@ionic/angular";
+import { HTTP } from "@ionic-native/http/ngx";
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { Facebook } from '@ionic-native/facebook/ngx';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { firebaseConfig } from '../environments/environment';
 import { File } from '@ionic-native/file/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
-import { SignInWithApple} from '@ionic-native/sign-in-with-apple/ngx';
+import { SignInWithApple } from '@ionic-native/sign-in-with-apple/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,11 +40,10 @@ import { SignInWithApple} from '@ionic-native/sign-in-with-apple/ngx';
     Facebook,
     File,
     Geolocation,
-  { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy },
+    { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy },
     Deeplinks,
-    OneSignal,
-    SignInWithApple,
-],
+    SignInWithApple
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
