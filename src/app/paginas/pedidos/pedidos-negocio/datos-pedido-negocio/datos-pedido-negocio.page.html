@@ -120,7 +120,7 @@
         <small class="d-block">{{pedido.motivo}}</small>
       </div>
     </div>
-    <div *ngIf="blnCancelar">
+    <div *ngIf="blnCancelar && pedido.id_estatus_pedido < 4">
       <ion-item>
         <ion-label position="floating">Motivo de la cancelación</ion-label>
         <ion-textarea type="text" [(ngModel)]="motivo"></ion-textarea>

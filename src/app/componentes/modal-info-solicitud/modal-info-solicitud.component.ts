@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
 import { SolicitudesService } from '../../api/solicitudes.service';
 import { NgForm } from '@angular/forms';
 import { PostulacionModel } from '../../Modelos/PostulacionModel';
 import { FormGroup } from '@angular/forms';
 import { UtilsCls } from '../../utils/UtilsCls';
+import { ModalController, Platform } from '@ionic/angular';
 import { ArchivoComunModel } from '../../Modelos/ArchivoComunModel';
 import { Auth0Service } from '../../api/auth0.service';
 import { SolicitudesModel } from '../../Modelos/SolicitudesModel';
@@ -32,14 +32,18 @@ export class ModalInfoSolicitudComponent implements OnInit {
   public seleccionTO: SolicitudesModel;
   public nombreArchivo = '';
   public pesado: boolean = false;
+  public isIos: boolean;
 
   constructor(
     public modalController: ModalController,
     private servicioSolicitudes: SolicitudesService,
     private _utils_cls: UtilsCls,
     private _auth0: Auth0Service,
-    private _notificacionService: ToadNotificacionService
-  ) { }
+    private _notificacionService: ToadNotificacionService,
+    private platform: Platform
+  ) {
+    this.isIos = this.platform.is('ios');
+  }
 
   ngOnInit() {
     if (this._utils_cls.existe_sesion()) {
