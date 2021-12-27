@@ -32,17 +32,16 @@
         <ion-item>
           <ion-label class="ion-text-wrap">
             <h2 style="font-weight: bolder; text-align: center">Inicia:</h2>
-            <h3 style="text-align: center;" *ngIf="isIos; else androidView">{{solicitud.fecha_inicio_public }} -
-              Termina:
-              {{solicitud.fecha_fin_public }}</h3>
-            <ng-template #androidView>
-              <h3 style="text-align: center;">{{solicitud.fecha_inicio_public }} - Termina:
-                {{solicitud.fecha_fin_public }}</h3>
-            </ng-template>
-            <h3 style="color: black;">
-              Del {{solicitud.fecha_inicio_public | date:'dd-MM-yyyy' }} al {{solicitud.fecha_fin_public |
-              date:'dd-MM-yyyy' }}
+            <h3 style="text-align: center;" *ngIf="isIos; else androidView">
+              {{solicitud.fecha_inicio_public }}
+              <br> Termina: {{solicitud.fecha_fin_public }}
             </h3>
+            <ng-template #androidView>
+              <h3 style="text-align: center;">
+                {{solicitud.fecha_inicio_public | date:'dd-MM-yyyy' }}
+                <br> Termina: {{solicitud.fecha_fin_public | date:'dd-MM-yyyy' }}
+              </h3>
+            </ng-template>
           </ion-label>
         </ion-item>
 
