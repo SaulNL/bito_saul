@@ -1,3 +1,7 @@
+import { CreateObjects } from './Bitoo/helper/create-object';
+import { ValidatorData } from './Bitoo/helper/validations';
+import { NotificationInterface } from './Bitoo/models/notifications-model';
+import { NotificationWithFirebaseService } from './api/notification-with-firebase.service';
 import { AccessPermissionService } from './api/access-permission.service';
 import { Component } from '@angular/core';
 import { ModalController, NavController, Platform } from '@ionic/angular';
@@ -17,7 +21,8 @@ import { DeviceInfoModel } from "./Modelos/DeviceInfoModel";
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
-    styleUrls: ['app.component.scss']
+    styleUrls: ['app.component.scss'],
+    providers: [ValidatorData, CreateObjects]
 })
 export class AppComponent {
     visitasBitooModel: VistasBitooModel;
@@ -37,11 +42,13 @@ export class AppComponent {
         private negocioService: NegocioService,
         private access: AccessPermissionService,
         public modalController: ModalController,
-        private android: VersionAndroidService
+        private android: VersionAndroidService,
+        private notification: NotificationWithFirebaseService,
+        private validate: ValidatorData,
+        private create: CreateObjects
     ) {
         this.initializeApp();
         this.visitasBitooModel = new VistasBitooModel();
-        // location.reload();
         this.versionActualSistema = (this.platform.is('android')) ? AppSettings.VERSION_ANDROID : AppSettings.VERSION_IOS;
         this.device = (this.platform.is('android')) ? AppSettings.ID_DB_PLATFORM_ANDROID : AppSettings.ID_DB_PLATFORM_IOS;
     }
@@ -53,6 +60,25 @@ export class AppComponent {
             this.obtenerVersion(this.device);
         });
         this.obtenerIP();
+        this.inicializeNotifications();
+    }
+
+    /**
+   * @author Juan Antonio Guevara Flores
+   * @description Inicializa y registra el token para las notificaciones
+   */
+    private inicializeNotifications() {
+        this.notification.inicialize();
+        if (this.validate.activeNotification()) {
+            const content: NotificationInterface = this.create.createNotificationFirebaseWithUser();
+            this.notification.updateUserWithNotification(content).subscribe(
+                (response) => {
+                    console.log(response);
+                }, (error) => {
+                    console.log(error);
+                }
+            );
+        }
     }
 
     public getIdUsuarioSistema(): number {
@@ -63,6 +89,18 @@ export class AppComponent {
             return id_usuario;
         } catch (e) {
             return 0;
+        }
+    }
+
+    public getTokenNotificationSistema(): string {
+        try {
+            const tkn = localStorage.getItem("nftoken");
+            if (tkn === null) {
+                return '';
+            }
+            return tkn;
+        } catch (e) {
+            return '';
         }
     }
 

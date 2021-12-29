@@ -1,3 +1,6 @@
+import { CreateObjects } from './../../helper/create-object';
+import { NotificationInterface } from './../../models/notifications-model';
+import { NotificationWithFirebaseService } from './../../../api/notification-with-firebase.service';
 import { SignInOrUpSocialNetworksComponent } from './../../components/sign-in-or-up-social-networks/sign-in-or-up-social-networks.component';
 import { ProccessSignUp } from './../../helper/proccess-sign-up';
 import { SelectedSocialNetwork } from './../../types/platform-type';
@@ -24,7 +27,7 @@ import { ConfigGlobal } from '../../config/config-global';
   selector: 'app-sign-up',
   templateUrl: './sign-up.page.html',
   styleUrls: ['./sign-up.page.scss'],
-  providers: [ValidatorData, ResponseCommon, ProccessSignUp]
+  providers: [ValidatorData, ResponseCommon, ProccessSignUp, CreateObjects]
 })
 export class SignUpPage implements OnInit {
   @ViewChild('socialNetwork', { static: false }) signUnChange: SignInOrUpSocialNetworksComponent;
@@ -51,7 +54,10 @@ export class SignUpPage implements OnInit {
     private usuarioService: UsuarioService,
     private loginService: LoginService,
     private activateRoute: ActivatedRoute,
-    private proceesSignUp: ProccessSignUp) {
+    private proceesSignUp: ProccessSignUp,
+    private notification: NotificationWithFirebaseService,
+    private create: CreateObjects
+  ) {
     this.isIos = this.platform.is('ios');
     this.init();
   }
@@ -129,6 +135,7 @@ export class SignUpPage implements OnInit {
   private redirectSuccess(isSuccess: any) {
     if (typeof isSuccess !== 'undefined') {
       this.router.navigate(['/tabs/inicio']);
+      this.inicializeNotification();
       setTimeout(() => {
         location.reload();
       }, 1300);
@@ -379,6 +386,7 @@ export class SignUpPage implements OnInit {
           } else {
             this.router.navigate(["/tabs/inicio"]);
           }
+          this.inicializeNotification();
           this.toadNotificacionService.exito(response.message);
           this.SetSocialNetworkLoadTurnOf(selectedSocialNetwork);
         } else {
@@ -413,5 +421,33 @@ export class SignUpPage implements OnInit {
       this.SetSocialNetworkLoadTurnOf(selectedSocialNetwork);
       this.toadNotificacionService.alerta(response.data.message);
     }
+  }
+
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Valida y registra token de notificaciones
+   */
+  private inicializeNotification() {
+    if (this.validatorData.isTokenExist()) {
+      this.registerTokenNotification();
+    } else {
+      this.notification.inicialize();
+      this.registerTokenNotification();
+    }
+  }
+
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Registra el token para las notificaciones
+   */
+  private registerTokenNotification() {
+    const content: NotificationInterface = this.create.createNotificationFirebaseWithUser();
+    this.notification.updateUserWithNotification(content).subscribe(
+      (response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      }
+    );
   }
 }

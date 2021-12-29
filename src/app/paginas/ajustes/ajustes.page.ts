@@ -1,3 +1,7 @@
+import { CreateObjects } from './../../Bitoo/helper/create-object';
+import { NotificationInterface } from './../../Bitoo/models/notifications-model';
+import { ValidatorData } from './../../Bitoo/helper/validations';
+import { NotificationWithFirebaseService } from './../../api/notification-with-firebase.service';
 import { PermisoModel } from 'src/app/Modelos/PermisoModel';
 import { ValidarPermisoService } from '../../api/validar-permiso.service';
 import { Component, OnInit } from "@angular/core";
@@ -14,7 +18,7 @@ import { PersonaService } from '../../api/persona.service';
   selector: "app-ajustes",
   templateUrl: "./ajustes.page.html",
   styleUrls: ["./ajustes.page.scss"],
-  providers: [UtilsCls, Auth0Service],
+  providers: [UtilsCls, Auth0Service, ValidatorData, CreateObjects]
 })
 export class AjustesPage implements OnInit {
   usuario: any;
@@ -42,7 +46,10 @@ export class AjustesPage implements OnInit {
     private validarPermisos: ValidarPermisoService,
     private pedidos: PedidosService,
     private platform: Platform,
-    private personaService: PersonaService
+    private personaService: PersonaService,
+    private notification: NotificationWithFirebaseService,
+    private validate: ValidatorData,
+    private create: CreateObjects
   ) {
     this.siNoVistos = false;
     this.totalNoVistos = 0;
@@ -128,6 +135,7 @@ export class AjustesPage implements OnInit {
           text: "Cerrar sesión",
           icon: "log-out-outline",
           handler: () => {
+            this.closeNotification();
             if (AppSettings.resetToken(this._router)) {
               this.sideBarService.publishSomeData("");
               this._router.navigate(["/tabs/inicio"], {
@@ -135,7 +143,7 @@ export class AjustesPage implements OnInit {
               });
               location.reload();
               localStorage.clear();
-
+              this.notification.inicialize();
             }
           },
         },
@@ -181,6 +189,34 @@ export class AjustesPage implements OnInit {
           this.usuario.correo = response.data.correo;
           localStorage.setItem('u_data', JSON.stringify(this.usuario));
         }
+      }
+    );
+  }
+
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Valida para actualizar el token para las notificaciones en cerrar sesión
+   */
+  private closeNotification() {
+    if (this.validate.isTokenExist()) {
+      this.updateNotification();
+    } else {
+      this.notification.inicialize();
+      this.updateNotification();
+    }
+  }
+
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Actualiza el token para las notificaciones al cerrar sesión
+   */
+  private updateNotification() {
+    const content: NotificationInterface = this.create.createNotificationFirebaseWithNotUser();
+    this.notification.updateUserWithNotification(content).subscribe(
+      (response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
       }
     );
   }

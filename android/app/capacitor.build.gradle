@@ -10,11 +10,15 @@ android {
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
     implementation project(':rdlabo-capacitor-facebook-login')
-    implementation "com.facebook.android:facebook-android-sdk:8.2.0"
-    implementation "com.google.android.gms:play-services-auth:19.2.0"
-    implementation "com.google.android.gms:play-services-identity:17.0.1"
+    implementation "com.facebook.android:facebook-android-sdk:11.3.0"
+    implementation "com.facebook.android:facebook-android-sdk:11.3.0"
+    implementation "com.google.android.gms:play-services-auth:15.0.1"
+    implementation "com.google.android.gms:play-services-identity:15.0.1"
+    implementation "com.android.support:support-v4:26.+"
     implementation "com.onesignal:OneSignal:4.4.2"
 }
+apply from: "../../node_modules/cordova-plugin-badge/src/android/badge.gradle"
+apply from: "../../node_modules/cordova-plugin-local-notification/src/android/build/localnotification.gradle"
 apply from: "../../node_modules/onesignal-cordova-plugin/build-extras-onesignal.gradle"
 
 if (hasProperty('postBuildExtras')) {

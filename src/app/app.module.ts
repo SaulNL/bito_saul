@@ -24,12 +24,14 @@ import { File } from '@ionic-native/file/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { SignInWithApple } from '@ionic-native/sign-in-with-apple/ngx';
+import { LocalNotifications} from '@ionic-native/local-notifications/ngx'
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule],
   providers: [
+    LocalNotifications,
     StatusBar,
     SplashScreen,
     HaversineService,

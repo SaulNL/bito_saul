@@ -72,4 +72,36 @@ export class ValidatorData {
     public validateObj(source: any, target: any): boolean {
         return JSON.stringify(source) === JSON.stringify(target);
     }
+    /**
+     * @author Juan Antonio Guevara Flores
+     * @description Valida si existe el token
+     * @returns boolean
+     */
+    public isTokenExist(): boolean {
+        const token: string = localStorage.getItem('nftoken');
+        if (token === null) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * @author Juan Antonio Guevara Flores
+     * @description valida si existe una sesión iniciada
+     * @returns boolean
+     */
+    public isSessionExist(): boolean {
+        const token = localStorage.getItem("tk_str");
+        if (token !== null && token !== undefined) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * @author Juan Antonio Guevara Flores
+     * @description valida si se activa la actualización de token para las notificaciones
+     * @returns boolean
+     */
+    public activeNotification(): boolean {
+        return (this.isSessionExist() && this.isTokenExist());
+    }
 }

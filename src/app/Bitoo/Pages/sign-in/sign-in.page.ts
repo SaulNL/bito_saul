@@ -1,3 +1,6 @@
+import { NotificationInterface } from './../../models/notifications-model';
+import { CreateObjects } from './../../helper/create-object';
+import { NotificationWithFirebaseService } from './../../../api/notification-with-firebase.service';
 import { SelectedOptionSesionModel } from './../../models/selected-option-sesion-model';
 import { OptionSesion } from './../../types/option-sesion';
 import { SignInOrUpSocialNetworksComponent } from './../../components/sign-in-or-up-social-networks/sign-in-or-up-social-networks.component';
@@ -26,7 +29,7 @@ import { ResponseCommon } from '../../helper/is-success-response';
   selector: 'app-sign-in',
   templateUrl: './sign-in.page.html',
   styleUrls: ['./sign-in.page.scss'],
-  providers: [ValidatorData, ResponseCommon, ProccessSignUp]
+  providers: [ValidatorData, ResponseCommon, ProccessSignUp, CreateObjects]
 })
 
 export class SignInPage implements OnInit {
@@ -51,7 +54,9 @@ export class SignInPage implements OnInit {
     private route: Router,
     private modalCtr: ModalController,
     private usuarioService: UsuarioService,
-    private proceesSignUp: ProccessSignUp
+    private proceesSignUp: ProccessSignUp,
+    private notification: NotificationWithFirebaseService,
+    private create: CreateObjects
   ) {
     this.isIos = this.platform.is('ios');
     this.init();
@@ -99,6 +104,7 @@ export class SignInPage implements OnInit {
     ConfigGlobal.setUser(response);
     localStorage.setItem("isRedirected", "false");
     const optionEnterLogin = localStorage.getItem('optionLogin');
+    this.inicializeNotification();
     if (optionEnterLogin != null) {
       this.returnToLocation = JSON.parse(String(optionEnterLogin));
       this.goToRoute(this.returnToLocation.url);
@@ -462,6 +468,34 @@ export class SignInPage implements OnInit {
         this.loadFacebook = false;
         this.signInChange.loaderFacebook = false;
         this.toadNotificacionService.alerta(error);
+      }
+    );
+  }
+
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Valida y registra token de notificaciones
+   */
+  private inicializeNotification() {
+    if (this.validatorData.isTokenExist()) {
+      this.registerTokenNotification();
+    } else {
+      this.notification.inicialize();
+      this.registerTokenNotification();
+    }
+  }
+
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Registra el token para las notificaciones
+   */
+  private registerTokenNotification() {
+    const content: NotificationInterface = this.create.createNotificationFirebaseWithUser();
+    this.notification.updateUserWithNotification(content).subscribe(
+      (response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
       }
     );
   }

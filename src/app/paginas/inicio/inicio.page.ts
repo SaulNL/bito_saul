@@ -5,7 +5,6 @@ import { Component, EventEmitter, OnInit, ViewChild } from "@angular/core";
 import {
   IonContent,
   LoadingController,
-  MenuController,
   ModalController, Platform,
   ToastController
 } from "@ionic/angular";
@@ -13,14 +12,12 @@ import { BusquedaService } from "../../api/busqueda.service";
 import { FiltrosModel } from "../../Modelos/FiltrosModel";
 import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/filtros-busqueda.component";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
-import { FormControl } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { MapaNegociosComponent } from "../../componentes/mapa-negocios/mapa-negocios.component";
 import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Router } from "@angular/router";
 import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveedor-servicio.service";
 import { UtilsCls } from "../../utils/UtilsCls";
-import { MsNegocioModel } from "../../Modelos/busqueda/MsNegocioModel";
 import { PermisoModel } from 'src/app/Modelos/PermisoModel';
 import { ValidarPermisoService } from '../../api/validar-permiso.service';
 
@@ -94,7 +91,6 @@ export class InicioPage implements OnInit {
     if (option !== null) {
       this.Filtros = new FiltrosModel();
       this.Filtros.idEstado = 29;
-      /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
       this.filtroActivo = false;
       localStorage.removeItem('filter');
       localStorage.setItem('isRedirected', 'false');

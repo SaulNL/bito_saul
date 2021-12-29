@@ -1,3 +1,4 @@
+import { NotificationInterface, NotificationModel } from './../models/notifications-model';
 import { ProductLikeInterface, ProductLikeModel } from '../models/product-like-model';
 import { ProductBusinessInterface, ProductoBusinessModel } from '../models/product-business-model';
 import { ProductImageInterface, ProductImageModel } from '../models/product-images-model';
@@ -182,5 +183,36 @@ export class CreateObjects {
         } catch (e) {
             return null;
         }
+    }
+
+    /**
+     * @author Juan Antonio Guevara Flores
+     * @description Crea el objeto para el servicio de actualizacion de token de notificacion con usuario
+     * @returns NotificationInterface
+     */
+    public createNotificationFirebaseWithUser(): NotificationInterface {
+        const usuarioSistema = JSON.parse(localStorage.getItem('u_sistema'));
+        return this.createNotificationFirebase(usuarioSistema.id_usuario_sistema);
+    }
+
+    /**
+     * @author Juan Antonio Guevara Flores
+     * @description Crea el objeto para el servicio de actualizacion de token de notificacion sin usuario (Cierre de sesión)
+     * @returns NotificationInterface
+     */
+    public createNotificationFirebaseWithNotUser(): NotificationInterface {
+        return this.createNotificationFirebase();
+    }
+
+    /**
+     * @author Juan Antonio Guevara Flores
+     * @description Crea el objecto para los retornos dependiendo si es para usuario con sesión o sin sesión(cierre de sesión)
+     * @param idUser
+     * @returns
+     */
+    private createNotificationFirebase(idUser: number = null): NotificationInterface {
+        const nftoken = localStorage.getItem('nftoken');
+        const contentNotification: NotificationInterface = new NotificationModel(nftoken, idUser);
+        return contentNotification;
     }
 }
