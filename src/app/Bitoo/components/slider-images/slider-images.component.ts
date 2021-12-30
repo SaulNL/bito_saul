@@ -24,8 +24,5 @@ export class SliderImagesComponent implements OnInit {
   ngOnInit() {
     this.slidesOptions;
     this.images = this.productImages;
-    console.log("cargando las imagenes");
-    console.log(this.images);
-  
   }
 }

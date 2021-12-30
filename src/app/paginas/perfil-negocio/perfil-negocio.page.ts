@@ -1115,19 +1115,15 @@ export class PerfilNegocioPage implements OnInit {
     }
 
     guardarQuienVioNegocio(id_negocio: number) {
-
         this.negocioService.visteMiNegocio(id_negocio).subscribe(
             response => {
-
             },
             error => {
-
             }
         );
     }
 
     comentariosNegocio(idNegocio: number) {
-
         this.negocioService.obtenerComentariosNegocio(idNegocio).subscribe(
             response => {
                 if (response.data !== null && response.data != undefined) {
@@ -1137,9 +1133,7 @@ export class PerfilNegocioPage implements OnInit {
                     }
                 }
             },
-            error => {
-
-            }
+            () => {}
         );
     }
 
@@ -1155,7 +1149,6 @@ export class PerfilNegocioPage implements OnInit {
     }
 
     public ifPromocion(promociones: any) {
-
         return (promociones !== undefined && promociones !== null && promociones.length > 0);
     }
 
@@ -1181,13 +1174,9 @@ export class PerfilNegocioPage implements OnInit {
         } else {
             this.location.back();
         }
-        console.log("Navegar terminado");
-        console.log(this.toProductDetail);
         this.toProductDetail = false;
     }
     private sendToProduct() {
-        console.log("Navegar hacia atras");
-        console.log(this.toProductDetail);
         const content: ReturnToProductInterface = new ReturnToProductModel(
             this.createObject.createProduct(this.updateProductToProductDetail(this.idProduct)),
             this.createObject.createProductBusiness(this.informacionNegocio));
@@ -1204,7 +1193,6 @@ export class PerfilNegocioPage implements OnInit {
                 if (element.productos.length > 0) {
                     element.productos.forEach(product => {
                         if (product.idProducto === idProduct) {
-                            console.log(product);
                             existProduct = product;
                         }
                     });
@@ -1216,7 +1204,6 @@ export class PerfilNegocioPage implements OnInit {
                 if (element.servicios.length > 0) {
                     element.servicios.forEach(service => {
                         if (service.idProducto === idProduct) {
-                            console.log(service);
                             existService = service;
                         }
                     });
@@ -1225,5 +1212,4 @@ export class PerfilNegocioPage implements OnInit {
         }
         return (existProduct !== null) ? existProduct : existService;
     }
-
 }

@@ -44,7 +44,6 @@ export class NotificationWithFirebaseService {
       'registration',
       (token: PushNotificationToken) => {
         localStorage.setItem('nftoken', String(token.value));
-        console.log('Push registration success, token: ' + token.value);
       },
     );
   }
@@ -57,7 +56,6 @@ export class NotificationWithFirebaseService {
       'pushNotificationReceived',
       (notification: PushNotification) => {
         this.localNotificationPush(notification);
-        console.log('Push received: ' + JSON.stringify(notification));
       },
     );
   }

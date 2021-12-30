@@ -11,8 +11,6 @@ export class CreateObjects {
      * @returns ProductInterface
      */
     public createProduct(object: any): ProductInterface {
-        console.log("Objeto nuevo");
-        console.log(object);
         const product: ProductInterface = new ProductModel();
         product.description = this.transformText(object.descripcion);
         product.exist = object.existencia;
@@ -23,8 +21,6 @@ export class CreateObjects {
         product.like = this.getLike(object.usuario_dio_like);
         product.name = this.transformText(object.nombre);
         product.price = this.anyToNumber(object.precio);
-        console.log("Producto creado");
-        console.log(product);
         return product;
     }
 

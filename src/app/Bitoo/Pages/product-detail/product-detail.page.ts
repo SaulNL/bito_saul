@@ -64,23 +64,13 @@ export class ProductDetailPage implements OnInit {
         if (params.byProfile) {
           this.inicializeModels();
           const content: ReturnToProductInterface = JSON.parse(params.byProfile);
-          console.log("Entrando desde el perfil del negocio");
           this.product = content.product;
           this.productLike = this.createObject.createProductLike(this.product);
           this.business = content.business;
-          console.log("Imprimiendo el contenido del producto");
-          console.log(this.product);
-          console.log("Imprimiendo el contenido del negocio");
-          console.log(this.business);
-          console.log("Imprimiendo el slider anterior");
-          console.log(this.sliderImages.productImages);
-          console.log("Inicializando el slider como nuevo");
           this.sliderImages.productImages = [];
           this.sliderImages.images = [];
-          console.log("Inicializando el proceso para setear las imagenes");
           this.sliderImages.productImages = content.product.images;
           this.sliderImages.images = content.product.images;
-          
         }
         if (params.productByFavorite) {
           localStorage.setItem('detail', 'favorite');
@@ -191,23 +181,16 @@ export class ProductDetailPage implements OnInit {
     this.businessService.obtenerNegocio(product.idBusiness).subscribe(
       (response) => {
         if (response.code === 200) {
-          console.log("Proceso terminado");
           this.business = this.createObject.createProductBusiness(response.data);
           this.product = product;
-          console.log("Imprimiendo producto");
-          console.log(this.product);
-          console.log("Imprimiendo negocio");
-          console.log(this.business);
           this.proccessProductLike(this.product);
         } else {
           this.errorService();
         }
         this.loaderTurnOff();
         this.loaderProductTurnOff();
-        
       }, () => {
         this.errorService();
-        
       }
     );
   }
@@ -283,9 +266,7 @@ export class ProductDetailPage implements OnInit {
    * @description Apaga el Loader
    */
   private loaderTurnOff() {
-    console.log("Loader apagado");
     this.loader = false;
-    console.log(this.loader);
   }
   /**
    * @author Juan Antonio Guevara Flores
