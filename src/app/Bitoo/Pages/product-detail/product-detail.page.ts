@@ -1,3 +1,8 @@
+import { SliderImagesComponent } from './../../components/slider-images/slider-images.component';
+import { ReturnToProductInterface } from './../../models/return-to-model';
+import { ProductoBusinessModel } from './../../models/product-business-model';
+import { ProductLikeModel } from './../../models/product-like-model';
+import { ProductModel } from './../../models/product-model';
 import { Platform } from '@ionic/angular';
 import { byProductModel } from './../../models/add-To-Product-model';
 import { CloseProductDetailModel, ByProductDetailModel } from './../../models/query-params-model';
@@ -14,8 +19,9 @@ import { ProductBusinessInterface } from '../../models/product-business-model';
 import { NegocioService } from './../../../api/negocio.service';
 import { ProductInterface } from '../../models/product-model';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { LoaderComponent } from '../../components/loader/loader.component';
 
 @Component({
   selector: 'app-product-detail',
@@ -24,13 +30,14 @@ import { Subscription } from 'rxjs';
   providers: [CreateObjects, Formats, ValidatorData]
 })
 export class ProductDetailPage implements OnInit {
+  @ViewChild('loaderProduct', { static: false }) loaderProduct: LoaderComponent;
+  @ViewChild('sliderImages', { static: false }) sliderImages: SliderImagesComponent;
   public loader: boolean;
   public product: ProductInterface;
   public business: ProductBusinessInterface;
   public productLike: ProductLikeInterface;
   public purchaseMessage: string;
   public subscribe: Subscription;
-  public backTo: boolean;
   constructor(
     private activatedRoute: ActivatedRoute,
     private businessService: NegocioService,
@@ -42,25 +49,42 @@ export class ProductDetailPage implements OnInit {
     private productService: ProductosService,
     private platform: Platform
   ) {
-    this.backTo = true;
+    this.inicializeModels();
   }
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(
       (params: Params) => {
         if (params.product) {
-          this.backTo = true;
+          localStorage.setItem('detail', 'product');
+          this.inicializeModels();
           const product: ProductInterface = JSON.parse(params.product);
           this.init(product);
         }
 
         if (params.byProfile) {
-          const updateProduct: ProductInterface = JSON.parse(params.byProfile);
-          this.product = updateProduct;
-          this.productLike.like = this.product.like;
-          this.productLike.likes = this.product.likes;
+          this.inicializeModels();
+          const content: ReturnToProductInterface = JSON.parse(params.byProfile);
+          console.log("Entrando desde el perfil del negocio");
+          this.product = content.product;
+          this.productLike = this.createObject.createProductLike(this.product);
+          this.business = content.business;
+          console.log("Imprimiendo el contenido del producto");
+          console.log(this.product);
+          console.log("Imprimiendo el contenido del negocio");
+          console.log(this.business);
+          console.log("Imprimiendo el slider anterior");
+          console.log(this.sliderImages.productImages);
+          console.log("Inicializando el slider como nuevo");
+          this.sliderImages.productImages = [];
+          this.sliderImages.images = [];
+          console.log("Inicializando el proceso para setear las imagenes");
+          this.sliderImages.productImages = content.product.images;
+          this.sliderImages.images = content.product.images;
+          
         }
         if (params.productByFavorite) {
-           this.backTo = false;
+          localStorage.setItem('detail', 'favorite');
+          this.inicializeModels();
           const product: ProductInterface = JSON.parse(params.productByFavorite);
           this.init(product);
         }
@@ -85,23 +109,25 @@ export class ProductDetailPage implements OnInit {
   ionViewDidLeave() {
     this.subscribe.unsubscribe();
   }
+
   /**
    * @author Juan Antonio Guevara Flores
    * @description Actualiza el detalle del producto y redirecciona a los productos
    */
   public closeDetail() {
-    this.product.like = this.productLike.like;
-    this.product.likes = this.productLike.likes;
-    if (this.backTo) {
+    const temp: string = localStorage.getItem('detail');
+    if (temp !== null && temp === 'product') {
+      this.updateLikeProduct();
       this.route.navigate(['/tabs/productos/'], {
         queryParams: new CloseProductDetailModel(JSON.stringify(this.product))
       });
-    } else {
+    }
+    if (temp !== null && temp === 'favorite') {
+      this.updateLikeProduct();
       this.route.navigate(['/tabs/mis-favoritos/'], {
         queryParams: new CloseProductDetailModel(JSON.stringify(this.product))
       });
     }
-
   }
   /**
    * @author Juan Antonio Guevara Flores
@@ -138,6 +164,15 @@ export class ProductDetailPage implements OnInit {
   }
   /**
    * @author Juan Antonio Guevara Flores
+   * @description Actualiza los valores para reenviar el producto
+   */
+  private updateLikeProduct() {
+    this.product.like = this.productLike.like;
+    this.product.likes = this.productLike.likes;
+  }
+
+  /**
+   * @author Juan Antonio Guevara Flores
    * @description Inicializa el prceso de carga de las variables
    * @param product
    */
@@ -156,21 +191,44 @@ export class ProductDetailPage implements OnInit {
     this.businessService.obtenerNegocio(product.idBusiness).subscribe(
       (response) => {
         if (response.code === 200) {
+          console.log("Proceso terminado");
           this.business = this.createObject.createProductBusiness(response.data);
           this.product = product;
-          this.productLike = this.createObject.createProductLike(this.product);
-          if (this.productLike.visibility) {
-            this.visitToProduct(this.productLike.idPerson, this.productLike.idProduct);
-          }
-          console.log("El if solo funciona para una linea");
-          this.loaderTurnOff();
+          console.log("Imprimiendo producto");
+          console.log(this.product);
+          console.log("Imprimiendo negocio");
+          console.log(this.business);
+          this.proccessProductLike(this.product);
         } else {
           this.errorService();
         }
+        this.loaderTurnOff();
+        this.loaderProductTurnOff();
+        
       }, () => {
         this.errorService();
+        
       }
     );
+  }
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Inicia el proceso para el Like del producto
+   */
+  private proccessProductLike(product: ProductInterface) {
+    this.productLike = this.createObject.createProductLike(product);
+    if (this.productLike.visibility) {
+      this.visitToProduct(this.productLike.idPerson, this.productLike.idProduct);
+    }
+  }
+  /**
+   * @author Juan Antonio Guevara Flores
+   *  @description Inicializa los models
+   */
+  private inicializeModels() {
+    this.product = new ProductModel();
+    this.business = new ProductoBusinessModel();
+    this.productLike = new ProductLikeModel(false);
   }
   /**
    * @author Juan Antonio Guevara Flores
@@ -182,7 +240,6 @@ export class ProductDetailPage implements OnInit {
     const visitProduct: AddVisitToProductInterface = new AddVisitToProductModel(idPerson, idProduct);
     this.productService.quienVioProdu(visitProduct);
   }
-
   /**
    * @author Juan Antonio Guevara Flores
    * @description Retorna el precio formateado o si no tiene retorna un mensaje
@@ -226,9 +283,19 @@ export class ProductDetailPage implements OnInit {
    * @description Apaga el Loader
    */
   private loaderTurnOff() {
+    console.log("Loader apagado");
     this.loader = false;
+    console.log(this.loader);
   }
-
+  /**
+   * @author Juan Antonio Guevara Flores
+   * @description Forzar el apagado del loader
+   */
+  private loaderProductTurnOff() {
+    setTimeout(() => {
+      this.loaderProduct.loader = false;
+    }, 3000);
+  }
   /**
    * @author Juan Antonio Guevara Flores
    * @description Se activa cuando el servicio de obtener el negocio no cargo correctamente

@@ -1,3 +1,5 @@
+import { ReturnToProductInterface, ReturnToProductModel } from './../../Bitoo/models/return-to-model';
+import { ProductBusinessInterface } from './../../Bitoo/models/product-business-model';
 import { byProductModel } from './../../Bitoo/models/add-To-Product-model';
 import { CreateObjects } from './../../Bitoo/helper/create-object';
 import { BackToProductDetailModel, ByProductDetailModel } from './../../Bitoo/models/query-params-model';
@@ -1175,42 +1177,22 @@ export class PerfilNegocioPage implements OnInit {
 
     private goBackTo() {
         if (this.toProductDetail) {
-            const productByProfile = this.updateProductToProductDetail(this.idProduct);
-            const product: ProductInterface = this.createObject.createProduct(productByProfile);
-            const queryParams: BackToProductDetailModel = new BackToProductDetailModel(JSON.stringify(product));
-            this.router.navigate(['/tabs/productos/product-detail'], { queryParams: queryParams });
+            this.sendToProduct();
         } else {
             this.location.back();
         }
-        this.toProductDetail = true;
+        console.log("Navegar terminado");
+        console.log(this.toProductDetail);
+        this.toProductDetail = false;
     }
-
-    private searchProduct(list: Array<any>, idProduct: string): any {
-        list.forEach(element => {
-            if (element.productos.length > 0) {
-                element.productos.forEach(product => {
-                    if (product.idProducto === idProduct) {
-                        console.log(product);
-                        return product;
-                    }
-                });
-            }
-        });
-        return null;
-    }
-
-    private searchService(list: Array<any>, idProduct: string): any {
-        list.forEach(element => {
-            if (element.servicios.length > 0) {
-                element.servicios.forEach(service => {
-                    if (service.idProducto === idProduct) {
-                        console.log(service);
-                        return service;
-                    }
-                });
-            }
-        });
-        return null;
+    private sendToProduct() {
+        console.log("Navegar hacia atras");
+        console.log(this.toProductDetail);
+        const content: ReturnToProductInterface = new ReturnToProductModel(
+            this.createObject.createProduct(this.updateProductToProductDetail(this.idProduct)),
+            this.createObject.createProductBusiness(this.informacionNegocio));
+        const queryParams: BackToProductDetailModel = new BackToProductDetailModel(JSON.stringify(content));
+        this.router.navigate(['/tabs/productos/product-detail'], { queryParams: queryParams });
     }
     private updateProductToProductDetail(idProduct: string) {
         const products: Array<any> = this.informacionNegocio.catProductos;

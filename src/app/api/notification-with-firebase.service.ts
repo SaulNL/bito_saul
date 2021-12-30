@@ -86,13 +86,7 @@ export class NotificationWithFirebaseService {
   public updateUserWithNotification(contentNotification: NotificationInterface): Observable<any> {
     const body: string = JSON.stringify(contentNotification);
     return from(this.http.post(
-      this.url + 'api/notificationes/actualizarToken', body, AppSettings.getHeaders()
-    ).then(data => {
-      return JSON.parse(data.data);
-    }).catch(error => {
-      return error;
-    })).pipe(map(data => {
-      return data;
-    }));
+      this.url + 'api/notificaciones/actualizarToken', body, AppSettings.getHeadersToken()
+    ).then().catch());
   }
 }

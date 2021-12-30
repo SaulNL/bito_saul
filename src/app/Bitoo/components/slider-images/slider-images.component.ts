@@ -8,11 +8,10 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SliderImagesComponent implements OnInit {
   @Input() public productImages: Array<ProductImageInterface>;
-  public images: Array<ProductImageInterface>;
-  // public image: ProductImagesInterface;
-  // public isManyImages: boolean;
+  @Input() public images: Array<ProductImageInterface>;
+
   constructor() {
-    // this.isManyImages = true;
+
   }
 
   slidesOptions = {
@@ -25,12 +24,8 @@ export class SliderImagesComponent implements OnInit {
   ngOnInit() {
     this.slidesOptions;
     this.images = this.productImages;
-    // if (this.productImages.length > 1) {
-    //   this.images = this.productImages;
-    //   this.isManyImages = true;
-    // } else {
-    //   this.isManyImages = false;
-    //   this.image = this.productImages[0];
-    // }
+    console.log("cargando las imagenes");
+    console.log(this.images);
+  
   }
 }

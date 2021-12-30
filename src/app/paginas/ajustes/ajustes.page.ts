@@ -212,12 +212,6 @@ export class AjustesPage implements OnInit {
    */
   private updateNotification() {
     const content: NotificationInterface = this.create.createNotificationFirebaseWithNotUser();
-    this.notification.updateUserWithNotification(content).subscribe(
-      (response) => {
-        console.log(response);
-      }, (error) => {
-        console.log(error);
-      }
-    );
+    this.notification.updateUserWithNotification(content);
   }
 }

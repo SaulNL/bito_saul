@@ -1,10 +1,10 @@
 <app-header message="Detalle de producto" [backButton]="false" [closeButton]="true" (closeResponse)="closeDetail()">
 </app-header>
-<app-loader [loader]="loader" message="Cargando detalles del producto"></app-loader>
+<app-loader #loaderProduct [loader]="loader" message="Cargando detalles del producto"></app-loader>
 <ion-content fullscreen *ngIf="!loader">
     <ion-card>
         <ion-grid class="ion-text-center">
-            <app-slider-images [productImages]="product.images"></app-slider-images>
+            <app-slider-images #sliderImages [productImages]="product.images"></app-slider-images>
             <ion-label class="alert-images-message">
                 <span class="alert-required">*</span> Algunas imágenes sólamente son usadas con fines ilustrativos. El
                 producto final puede no estár representado con exactitud por las mismas

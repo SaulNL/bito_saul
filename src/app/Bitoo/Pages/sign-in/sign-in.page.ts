@@ -491,12 +491,6 @@ export class SignInPage implements OnInit {
    */
   private registerTokenNotification() {
     const content: NotificationInterface = this.create.createNotificationFirebaseWithUser();
-    this.notification.updateUserWithNotification(content).subscribe(
-      (response) => {
-        console.log(response);
-      }, (error) => {
-        console.log(error);
-      }
-    );
+    this.notification.updateUserWithNotification(content);
   }
 }

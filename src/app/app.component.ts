@@ -71,13 +71,7 @@ export class AppComponent {
         this.notification.inicialize();
         if (this.validate.activeNotification()) {
             const content: NotificationInterface = this.create.createNotificationFirebaseWithUser();
-            this.notification.updateUserWithNotification(content).subscribe(
-                (response) => {
-                    console.log(response);
-                }, (error) => {
-                    console.log(error);
-                }
-            );
+            this.notification.updateUserWithNotification(content);
         }
     }
 
