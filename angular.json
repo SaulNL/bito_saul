@@ -30,8 +30,7 @@
               "@firebase/functions",
               "@firebase/performance",
               "@firebase/remote-config",
-              "@firebase/component",
-              "onesignal-cordova-plugin"
+              "@firebase/component"
             ],
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",

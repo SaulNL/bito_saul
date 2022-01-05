@@ -66,12 +66,9 @@ export class NotificationWithFirebaseService {
    */
   public localNotificationPush(notification: PushNotification) {
     this.localNotifications.schedule({
-      id: 1,
       title: notification.title,
       text: notification.body,
-      icon: 'https://ecoevents.blob.core.windows.net/comprandoando/logos/Bitoo.png',
-      sound: null,
-      data: { secret: 'secret' }
+      icon: 'https://ecoevents.blob.core.windows.net/comprandoando/logos/Bitoo.png'
     });
   }
 
