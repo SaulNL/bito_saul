@@ -23,6 +23,7 @@ export class PlazasAfiliacionesComponent implements OnInit {
   public showHidenPlaza: boolean;
   public showHidenAfiliacion: boolean;
   public afiliacion: boolean;
+  public plaza: boolean;
   constructor(
     private modalCtr: ModalController,
     private validarPermiso: ValidarPermisoService,
@@ -36,6 +37,7 @@ export class PlazasAfiliacionesComponent implements OnInit {
     this.existOrg = false;
     this.existPlz = false;
     this.afiliacion = false;
+    this.plaza = false;
   }
 
   ngOnInit() {
@@ -68,9 +70,11 @@ export class PlazasAfiliacionesComponent implements OnInit {
     this.generalService.obtenerOrganizacionesPorUsuario(idUsuario).subscribe(
       response => {
         if (response.code === 200 && response.data.length > 0) {
-          this.loaderOrg = true;
           this.listAfiliacines = response.data;
+        } else {
+          this.afiliacion = false;
         }
+        this.loaderOrg = true;
       },
       error => {
         this.notificaciones.error(error);
@@ -78,14 +82,18 @@ export class PlazasAfiliacionesComponent implements OnInit {
       }
     )
   }
+
   public obtenerPlazas() {
+    this.plaza = true;
     this.loaderPlz = false;
     this.generalService.obtenerPlazas().subscribe(
       response => {
         if (response.code === 200 && response.data.length > 0) {
-          this.loaderPlz = true;
           this.listPlazas = response.data;
+        } else {
+          this.plaza = false;
         }
+        this.loaderPlz = true;
       }, error => {
         this.notificaciones.error(error);
         this.loaderPlz = true;

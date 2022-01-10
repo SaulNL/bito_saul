@@ -9,10 +9,10 @@
     </ion-toolbar>
 </ion-header>
 <ion-content fullscreen>
-    <ion-card>
+    <ion-card *ngIf="plaza">
         <ion-card-header>
             <ion-item *ngIf="!loaderPlz">
-                <ion-label>
+                <ion-label slot="start">
                     <p>Plazas</p>
                 </ion-label>
                 <ion-spinner slot="end" class="spinner-color"></ion-spinner>
@@ -30,6 +30,9 @@
         <ion-card-content *ngIf="showHidenPlaza">
             <ion-list *ngIf="loaderPlz">
                 <ion-item *ngFor="let plz of listPlazas" (click)="selectOption(plz)">
+                    <ion-avatar slot="start">
+                        <img src="{{plz.icon}}">
+                    </ion-avatar>
                     <ion-label>{{ plz.nombre}}</ion-label>
                     <ion-icon slot="end" name="enter-outline"></ion-icon>
                 </ion-item>
@@ -49,11 +52,13 @@
                 </ion-label>
                 <ion-spinner *ngIf="!loaderOrg" class="spinner-color"></ion-spinner>
             </ion-item>
-            <ion-item *ngIf="loaderOrg" lines="none" (click)="shAfiliacion(showHidenAfiliacion)" class="fondo-buttom-border">
+            <ion-item *ngIf="loaderOrg" lines="none" (click)="shAfiliacion(showHidenAfiliacion)"
+                class="fondo-buttom-border">
                 <ion-label>
                     <p>Afiliaciones</p>
                 </ion-label>
-                <ion-icon *ngIf="!showHidenAfiliacion; else iconNoEyeAfiliacion" slot="end" name="eye-outline"></ion-icon>
+                <ion-icon *ngIf="!showHidenAfiliacion; else iconNoEyeAfiliacion" slot="end" name="eye-outline">
+                </ion-icon>
                 <ng-template #iconNoEyeAfiliacion>
                     <ion-icon slot="end" name="eye-off-outline"></ion-icon>
                 </ng-template>
@@ -62,6 +67,9 @@
         <ion-card-content *ngIf="showHidenAfiliacion">
             <ion-list *ngIf="loaderOrg">
                 <ion-item *ngFor="let org of listAfiliacines" (click)="selectOption(org)">
+                    <ion-avatar slot="start">
+                        <img src="{{org.icon}}">
+                    </ion-avatar>
                     <ion-label>{{ org.nombre}}</ion-label>
                     <ion-icon slot="end" name="enter-outline"></ion-icon>
                 </ion-item>
