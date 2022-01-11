@@ -1,0 +1,45 @@
+Comandos para despliegue () = >
+
+ionic build // Compilar proyecto
+
+npx cap copy <android || ios> // copiar contenido de la carpetas www a la carpeta www de android o ios
+
+ionic cap sync <android || ios > // en caso de instalar un pluggin sincronizarlo con lo de ios y android
+
+Se abre el android studio con el comando
+npx cap open android o se abre manualmente apuntando la carpeta de android
+
+En el archivo de AndroidManifest () => {
+    C:\Users\Ikaro\Documents\GitHub\bitoo-app\android
+    se encuentra este archivo en la seccion de capacitor cordova pluggins, en esa la version 2.4.2
+    se tiene que cambiar en la linea del gps
+
+    <uses-feature android:name="android.hardware.location.gps" android:required="Undefined"/>
+
+    el android required se tiene que cambiar a false o true ya que tendra un undefined
+
+}
+
+Para generar la app se tiene que ir a la opcion () => {
+    Build =>
+        Generate Signed Bundle / Apk () => {
+            Para este proceso se firma con la key de beta en el caso de que solo se realizen pruebas o desplueges
+            para validacion (la password esta en el proyecto)
+            En el modo apk, la ultima opcion se selecciona en mdo relase si es para mandar a probar o en el modo debug
+            si es para depuerar para nosotros (solo usar esta opcion si se requere una de las opcions de firebase)
+
+            Para generar la aplicacion firmada son lo mismos pasos que en al apk, solo que se selecciona la key de softura
+            se encuentea en imagenes en el proyecto de Web( igual se encuentra en ese la password de la key que esta en el archivo
+            ANGULAR CORDOVA) en este modo no se realiza modo debug solo release.
+        }
+}
+
+
+.\zipalign.exe -f -v 4 <Nombre de la App copeada> <Nombre de la App de salida> () => {
+    En este primero debe ir a la carpeta que se encuentra en
+
+    "C:\Users\Ikaro\AppData\Local\Android\Sdk\build-tools\30.0.2"
+
+    en esa se utilizara este comando para firmar la aplicación
+}
+
