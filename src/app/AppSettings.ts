@@ -1,23 +1,10 @@
+import { URLS_ENTORNOS } from '../environments/urlEntornos';
 export class AppSettings {
 
-    // public static API_ENDPOINT = 'https://bitoo-back.azurewebsites.net/';
-    // public static URL_FRONT = 'https://bitoo.com.mx/';
-
-    public static API_ENDPOINT = 'https://beta-bitoo-back.azurewebsites.net/';
-    public static URL_FRONT = 'https://beta-bitoo.azurewebsites.net/';
-
-    // public static URL_REGISTRO = 'https://bitoo.com.mx/registro';
-    // public static URL_MOVIL = 'https://bitoo.com.mx/';
-    // public static URL_REGISTRO = 'https://beta-bitoo.azurewebsites.net/registro';
-    // public static URL_MOVIL = 'https://beta-bitoo.azurewebsites.net/';
-    // public static API_ENDPOINT = 'https://dev-back-bitoo.azurewebsites.net/';
-    // public static URL_REGISTRO = 'https://dev-front-bitoo.azurewebsites.net/registro';
-    // public static URL_FRONT = 'https://dev-front-bitoo.azurewebsites.net/';
-    // public static URL_MOVIL = '';
-    // public static URL_MOVIL = 'http://app-bitoo.com.mx/tabs/negocio/';
-    // public static API_ENDPOINT = 'http://127.0.0.1:8000/';
-    // public static URL_REGISTRO = 'http://127.0.0.1:8000/registro';
-    // public static URL_FRONT = 'https://127.0.0.1:4200/';
+    public static ENTORNO = URLS_ENTORNOS.beta;
+    public static API_ENDPOINT = AppSettings.ENTORNO.API_ENDPOINT;
+    public static URL_FRONT = AppSettings.ENTORNO.URL_FRONT;
+    public static URL_REGISTRO = AppSettings.ENTORNO.URL_REGISTRO;
 
     public static URL = 'tabs/negocio/';
     public static IMG_ERROR_PRODUCTO = 'https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png';
