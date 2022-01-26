@@ -593,4 +593,15 @@ export class NegocioService {
                 return error;
             }));
     }
+    obtenerTiposDePagosPorNegocio(idNegocio: string | number): Observable<any>{
+        const body = JSON.stringify({idNegocio: idNegocio});
+        return from(this._http.post(this.url+'/api/catalogo/tipopago/list', body, AppSettings.getHeadersToken())
+            .then(
+            (respuesta) => { 
+                return JSON.parse(respuesta.data);
+            })
+            .catch((error) => {
+                return error;
+            }));        
+    }
 }

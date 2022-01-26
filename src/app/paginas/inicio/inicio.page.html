@@ -85,6 +85,7 @@
                 <h2>No se encontraron negocios relacionados</h2>
             </ion-text>
         </ion-grid>
+        <app-infinito-scroll *ngIf="true" (respuesta)="cargarMasPaginas($event)" [activado]="true" [msj]="mensaje"></app-infinito-scroll>
     </div>
 
 
