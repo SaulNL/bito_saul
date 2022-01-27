@@ -85,8 +85,9 @@
             style="display: flex; justify-content: center; align-items: center; background-color: greenyellow; border-radius: 20px; padding: 10px; margin-top: 20px; width: 50%;">
             Subir Archivo <ion-icon name="folder-outline" style="margin-left: 10px;"></ion-icon>
           </div>
-          <small *ngIf="!pesado" style="margin-top: 10px; color: blue;"><strong>Tu archivo no debe pesar mas de 3
-              Mb</strong> </small>
+          <small *ngIf="!pesado" style="margin-top: 10px; color: blue;"><strong>Tu archivo no debe pesar mas de 2
+              Mb y debe ser imagen(JPG) o documento(pdf)</strong> </small>
+        
         </label>
 
         <input type="file" id="archivo" name="archivo" (change)="subir_archivo($event)" maxsize=10 hidden>

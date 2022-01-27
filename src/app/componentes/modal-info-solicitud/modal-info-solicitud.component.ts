@@ -24,6 +24,8 @@ export class ModalInfoSolicitudComponent implements OnInit {
 
   @Input() public solicitud: any;
   public numeroVistas: number;
+  public static readonly PESO_MAXIMO = (1024 * 1024) * 2; //el tamaño se lee en bytes, se pide máximo 2 MB
+  public static readonly EXTENSIONES_ACEPTADAS: Array<string> = ["jpg", "pdf"];
   public btnPostular: boolean = false;
   public postulacionModel = new PostulacionModel();
   public loaderPostular: boolean = false;
@@ -133,12 +135,21 @@ export class ModalInfoSolicitudComponent implements OnInit {
     this.btnPostular = false;
     this.loaderPostular = false;
   }
+  esExtensionValida(nombreDelArchivo: string): boolean{
+    const extension = nombreDelArchivo.split(".").pop();
+    return ModalInfoSolicitudComponent.EXTENSIONES_ACEPTADAS.includes(extension);
+  }
+  esValidoElPeso(file: any): boolean{
+    return file.size < ModalInfoSolicitudComponent.PESO_MAXIMO;
+
+  }
 
   subir_archivo($event) {
-    if ($event.target.files[0].size < 300000) {
-      this.uploadedFiles = $event.target.files[0];
+    const file: any = $event.target.files[0];
+    if (this.esValidoElPeso(file) && this.esExtensionValida(file.name)) {
+      this.uploadedFiles = file;
       this.pesado = false;
-      this.nombreArchivo = $event.target.files[0].name;
+      this.nombreArchivo = file.name;
     } else {
       this.uploadedFiles = undefined;
       this.nombreArchivo = '';
