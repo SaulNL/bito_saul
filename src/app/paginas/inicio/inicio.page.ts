@@ -229,6 +229,8 @@ export class InicioPage implements OnInit {
     this.loader = seMuestraElLoader;
     if (seMuestraElLoader) {
       this.siguientePagina = 1;
+      this.listaCategorias = new Array<ICategoriaNegocio>();
+      
     }
     const usr = this.user;
     if (usr.id_persona !== undefined) {
