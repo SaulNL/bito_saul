@@ -30,7 +30,7 @@ export class GeneralServicesService {
       }));
   }
   public getMunicipios(id_estado: number): Observable<any> {
-    const body = JSON.stringify({ id_estado: id_estado });
+    const body = JSON.stringify({ id_estado: id_estado, conNegocios:1 });
     this.http.setDataSerializer("utf8");
     return from(this.http.post(`${this.url}api/catalogo/municipio/list`, body, AppSettings.getHeaders())
       .then((data) => {
@@ -42,7 +42,7 @@ export class GeneralServicesService {
   }
 
   public getLocalidad(id_municipio: number): Observable<any> {
-    const body = JSON.stringify({ id_municipio: id_municipio });
+    const body = JSON.stringify({ id_municipio: id_municipio, conNegocios:1 });
     this.http.setDataSerializer("utf8");
     return from(this.http.post(`${this.url}api/catalogo/localidad/list`, body, AppSettings.getHeaders())
       .then((data) => {

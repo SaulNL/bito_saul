@@ -506,15 +506,17 @@ export class PerfilNegocioPage implements OnInit {
     }
 
     async abrirModalpedido() {
+        console.log("Id negocio: " + this.informacionNegocio.id_negocio)
         const modal = await this.modalController.create({
             component: PedidoNegocioComponent,
             componentProps: {
+                idNegocio: this.informacionNegocio.id_negocio,
                 lista: this.bolsa,
                 _entregaDomicilio: this.informacionNegocio.entrega_domicilio,
                 _entregaSitio: this.informacionNegocio.entrega_sitio,
                 _consumoSitio: this.informacionNegocio.consumo_sitio,
                 _costoEntrega: this.informacionNegocio.costo_entrega,
-                negocioNombre: this.informacionNegocio.nombre_comercial
+                negocioNombre: this.informacionNegocio.nombre_comercial,
             },
         });
         await modal.present();

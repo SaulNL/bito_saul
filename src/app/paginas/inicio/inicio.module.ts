@@ -11,6 +11,7 @@ import { Tab3PageRoutingModule } from './inicio-routing.module'
 import {FiltrosBusquedaModule} from "../../componentes/filtros-busqueda/filtros-busqueda.module";
 import {TabsPageModule} from '../tabs/tabs.module';
 import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-negocios.component';
+import {InfinitoScrollModule} from '../../componentes/infinito-scroll/infinito-scroll.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-nego
     ExploreContainerComponentModule,
     DarLikeNegocioModule,
     SpinnerModule,
+    InfinitoScrollModule,
     RouterModule.forChild([{ path: '', component: InicioPage }]),
     Tab3PageRoutingModule,
       FiltrosBusquedaModule,

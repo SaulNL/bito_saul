@@ -7,6 +7,11 @@ import { NegocioService } from "../../api/negocio.service";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { AuthGuardService } from "../../api/auth-guard.service";
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { IPago } from 'src/app/interfaces/IPago';
+import HttpStatusCode from '../../utils/https-status-code';
+import { error } from 'protractor';
+import { HttpParams } from '@angular/common/http';
+
 
 declare var google: any;
 @Component({
@@ -16,14 +21,14 @@ declare var google: any;
     providers: [UtilsCls]
 })
 export class PedidoNegocioComponent implements OnInit {
-
+    @Input() public idNegocio: number;
     @Input() public _entregaDomicilio: any;
     @Input() public _entregaSitio: any;
     @Input() public _consumoSitio: any;
     @Input() public _costoEntrega: any;
     @Input() lista: any;
     @Input() negocioNombre: string;
-
+    public static readonly TIPO_DE_PAGO_INVALIDO = -1; // Puede ser cualquier numero menor a 0;
     tipoEnvio: any;
     private map: Map;
     public lat: any;
@@ -47,6 +52,8 @@ export class PedidoNegocioComponent implements OnInit {
     public content: string;
     public heading: string;
     public address: string;
+    public pagos: Array<IPago>;
+    public idTipoDePago: number;
 
     constructor(
         private utilsCls: UtilsCls,
@@ -66,6 +73,11 @@ export class PedidoNegocioComponent implements OnInit {
             this.cerrarModal();
             this.loader = false;
         });
+        this.idTipoDePago = PedidoNegocioComponent.TIPO_DE_PAGO_INVALIDO;
+        
+        
+      
+    
     }
 
     ngOnInit() {
@@ -78,6 +90,23 @@ export class PedidoNegocioComponent implements OnInit {
 
         this.loadMap();
         this.sumarLista();
+        this.cargarTipoDePagos();
+    }
+    cargarTipoDePagos(){
+        this.negocioService.obtenerTiposDePagosPorNegocio(this.idNegocio)
+        .subscribe((respuesta) =>{
+            if(respuesta.code === HttpStatusCode.OK as number){
+                this.pagos = respuesta.data.list_cat_tipo_pago as Array<IPago>;
+            }else{
+                this.pagos = new Array<IPago>();
+            }
+        }, error=>{
+            this.pagos = new Array<IPago>();
+        });
+        
+    }
+    contienTipoDePagos(){
+        return this.pagos.length > 0;
     }
 
     loadMap() {
@@ -177,7 +206,7 @@ export class PedidoNegocioComponent implements OnInit {
 
     public realizarPedido() {
         this.loader = true;
-        this.pedido = new PedidoNegocioModel(this.lista[0].idNegocio, this.utilsCls.getIdPersona(), this.tipoEnvio, this.lista);
+        this.pedido = new PedidoNegocioModel(this.lista[0].idNegocio, this.utilsCls.getIdPersona(), this.tipoEnvio, this.lista, this.idTipoDePago);
         this.pedido.detalle = this.detalle;
         if (this.tipoEnvio !== null) {
             switch (this.tipoEnvio) {
@@ -361,5 +390,9 @@ export class PedidoNegocioComponent implements OnInit {
 
     public rTantidad(cantidad: number) {
         return cantidad === 0;
+    }
+    public seleccionarTipoPago(event: any){
+        this.idTipoDePago = event.target.value;
+        
     }
 }

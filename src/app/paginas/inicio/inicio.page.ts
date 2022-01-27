@@ -20,6 +20,8 @@ import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveed
 import { UtilsCls } from "../../utils/UtilsCls";
 import { PermisoModel } from 'src/app/Modelos/PermisoModel';
 import { ValidarPermisoService } from '../../api/validar-permiso.service';
+import { ICategoriaNegocio } from 'src/app/interfaces/ICategoriaNegocio';
+import { Observable, throwError } from 'rxjs';
 
 @Component({
   selector: "app-tab3",
@@ -29,9 +31,11 @@ import { ValidarPermisoService } from '../../api/validar-permiso.service';
 })
 export class InicioPage implements OnInit {
   @ViewChild(IonContent) content: IonContent;
+  public static readonly MENSAJE_CUANDO_CARGA = "Cargar más";
+  public static readonly PAGINAS_POR_CONSULTA = 20;
   public cordenada: number;
   public Filtros: FiltrosModel;
-  public listaCategorias: any;
+  public listaCategorias: Array<ICategoriaNegocio>;
   private modal: any;
   public selectionAP: boolean;
   public anyFiltros: FiltrosModel;
@@ -51,6 +55,14 @@ export class InicioPage implements OnInit {
   public byLogin: boolean;
   public isIOS: boolean = false;
   public subscribe;
+  public categoriasEstaVacios = true;
+  public actualPagina = 0;
+  public totalDePaginas = 0;
+  public seHaceScroll = false;
+  public siguientePagina = this.actualPagina + 1;
+  public mensaje = InicioPage.MENSAJE_CUANDO_CARGA;
+  public totalDePaginasPorConsulta = 0;
+
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -70,7 +82,7 @@ export class InicioPage implements OnInit {
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.filtroActivo = false;
-    this.listaCategorias = [];
+    this.listaCategorias = new Array<ICategoriaNegocio>();
     this.listaIdsMapa = [];
     this.user = this.util.getUserData();
     this.existeSesion = this.util.existe_sesion();
@@ -121,7 +133,7 @@ export class InicioPage implements OnInit {
       this.selectionAP = true;
       this.objectSelectAfiliacionPlaza = JSON.parse(String(localStorage.getItem('org')));
     }
-    this.buscarNegocios();
+    this.buscarNegocios(true);
     if (this.util.existSession()) {
       this.persona = this.util.getIdPersona();
       this.permisos = this.auth0Service.getUserPermisos();
@@ -157,7 +169,7 @@ export class InicioPage implements OnInit {
       this.Filtros = new FiltrosModel();
       // this.Filtros.idGiro = [dato.idGiro != null ? dato.idGiro : 1];
       this.Filtros.idCategoriaNegocio = [dato.id_categoria];
-      this.buscarNegocios();
+      this.buscarNegocios(true);
       localStorage.removeItem("seleccionado");
     }
     if (categoria === null && estatusFiltro === "0") {
@@ -183,21 +195,26 @@ export class InicioPage implements OnInit {
       }
     }
   }
+  validarResultadosDeCategorias(respuesta: any) {
+    const cantidadDeResultados = respuesta.data.lst_cat_negocios.data.length;
+    if (cantidadDeResultados > 0) {
+      this.listaCategorias.push(...respuesta.data.lst_cat_negocios.data);
+      this.actualPagina = respuesta.data.lst_cat_negocios.current_page;
+      this.siguientePagina = this.actualPagina + 1;
+      this.totalDePaginas = respuesta.data.lst_cat_negocios.total;
+      this.totalDePaginasPorConsulta = respuesta.data.lst_cat_negocios.to;
+      this.negociosIdMapa();
+      this.categoriasEstaVacios = false;
 
-  buscarNegocios() {
-    this.loader = true;
-    const usr = this.user;
-    if (usr.id_persona !== undefined) {
-      this.Filtros.id_persona = usr.id_persona;
+    } else {
+      throw throwError("");
     }
-    const byCategorias = localStorage.getItem('byCategorias');
-    const dato = JSON.parse(byCategorias);
-    if (byCategorias !== null) { this.Filtros.idCategoriaNegocio = [dato.id_categoria]; this.filtroActivo = true; }
-    (this.selectionAP) ? this.Filtros.organizacion = this.objectSelectAfiliacionPlaza.id_organizacion : '';
-    this.principalSercicio.obtenerDatos(this.Filtros).subscribe(
+
+  }
+  cargarCategorias() {
+    this.principalSercicio.obtenerDatos(this.Filtros, this.siguientePagina).subscribe(
       (respuesta) => {
-        this.listaCategorias = respuesta.data;
-        this.negociosIdMapa();
+        this.validarResultadosDeCategorias(respuesta);
         this.loader = false;
       },
       (error) => {
@@ -205,6 +222,26 @@ export class InicioPage implements OnInit {
         this.loader = false;
       }
     );
+
+  }
+
+  buscarNegocios(seMuestraElLoader: boolean) {
+    this.loader = seMuestraElLoader;
+    if (seMuestraElLoader) {
+      this.siguientePagina = 1;
+    }
+    const usr = this.user;
+    if (usr.id_persona !== undefined) {
+      this.Filtros.id_persona = usr.id_persona;
+    }
+    const byCategorias = localStorage.getItem('byCategorias');
+    const dato = JSON.parse(byCategorias);
+    if (byCategorias !== null) {
+      this.Filtros.idCategoriaNegocio = [dato.id_categoria]; this.filtroActivo = true;
+    }
+    (this.selectionAP) ? this.Filtros.organizacion = this.objectSelectAfiliacionPlaza.id_organizacion : '';
+    this.cargarCategorias();
+
   }
 
   async configToad(mensaje) {
@@ -220,7 +257,7 @@ export class InicioPage implements OnInit {
     this.Filtros = new FiltrosModel();
     this.Filtros.strBuscar = event;
     this.tFiltro = true;
-    this.buscarNegocios();
+    this.buscarNegocios(true);
   }
 
   abrirFiltros() {
@@ -235,7 +272,7 @@ export class InicioPage implements OnInit {
       });
       this.filtroActivo = true;
       this.Filtros = res;
-      this.buscarNegocios();
+      this.buscarNegocios(true);
     });
     this.modal = await this.modalController.create({
       component: FiltrosBusquedaComponent,
@@ -270,7 +307,7 @@ export class InicioPage implements OnInit {
     this.Filtros = new FiltrosModel();
     this.Filtros.idCategoriaNegocio = [seleccionado.id_categoria];
     this.Filtros.idGiro = [seleccionado.idGiro];
-    this.buscarNegocios();
+    this.buscarNegocios(true);
   }
 
   async abrirModalMapa() {
@@ -307,7 +344,7 @@ export class InicioPage implements OnInit {
     this.Filtros.idEstado = 29;
     /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
     this.filtroActivo = false;
-    this.buscarNegocios();
+    this.buscarNegocios(true);
   }
 
   negocioRuta(negocioURL) {
@@ -323,5 +360,19 @@ export class InicioPage implements OnInit {
   negocioRutaByLogin(url: string) {
     localStorage.setItem("isRedirected", "false");
     this.ruta.navigate(["/tabs/negocio/" + url]);
+  }
+  cargarMasPaginas(event: any) {
+    if (this.totalDePaginasPorConsulta < this.totalDePaginas) {
+      this.buscarNegocios(false);
+      setTimeout(() => {
+        event.target.complete();
+      }, 800) // 800 es el tiempo que se tarda por cargar, sin tener un lag por las 20 paginas que se consultan
+    }else{
+      event.target.disabled = true;
+    }
+
+
+
+
   }
 }
