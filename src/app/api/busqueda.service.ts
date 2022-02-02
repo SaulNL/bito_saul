@@ -33,6 +33,17 @@ export class BusquedaService {
       return respuesta;
     }));
   }
+  public obtenerNegocioPorCategoria(filtro, pagina: number): Promise<any>{
+    const body = JSON.stringify({filtros: filtro, page: pagina});
+     this.http.setDataSerializer("utf8");
+    return this.http.post(`${this.url}api/negocios/obtener`,body, AppSettings.getHeaders())
+    .then( data => {
+      let respuesta: any =  JSON.parse(data.data);
+      let msNegocios = respuesta.data.lst_cat_negocios.data as Array<IMsNegocio>;
+      respuesta.data.lst_cat_negocios.data = CategoriaNegocioUtil.filtrarNegociosPorCategorias(msNegocios);
+      return respuesta;
+    });
+  }
   
   public obtenerCategorias():Observable<any>{
     const body = JSON.stringify({});
