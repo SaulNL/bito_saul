@@ -39,9 +39,28 @@ export class BusquedaService {
     return this.http.post(`${this.url}api/negocios/obtener`,body, AppSettings.getHeaders())
     .then( data => {
       let respuesta: any =  JSON.parse(data.data);
-      let msNegocios = respuesta.data.lst_cat_negocios.data as Array<IMsNegocio>;
-      respuesta.data.lst_cat_negocios.data = CategoriaNegocioUtil.filtrarNegociosPorCategorias(msNegocios);
-      return respuesta;
+     
+      /* Se valida que tenga la propiedad "data", debido el backend no lo manda en el páginado
+      * --> Refactorizar, esto lo debe hacer el backend, no el frontend,
+      * el backend debe ser encargado de otorgar la estructura correcta al front
+      */
+     let msNegocios: Array<IMsNegocio>;
+     if(respuesta.data.lst_cat_negocios.hasOwnProperty("data")){
+       msNegocios = respuesta.data.lst_cat_negocios.data as Array<IMsNegocio>;
+     }else{
+       /**
+        * son las propiedades que se usan para el páginado
+        * así evitar que tengan nulo y mande error,
+        * se establecen así que el backend no manda páginado, validar, no es lo correcto
+        */
+       msNegocios = respuesta.data.lst_cat_negocios as Array<IMsNegocio>;
+       respuesta.data.lst_cat_negocios.current_page = 1;
+       respuesta.data.lst_cat_negocios.total = 1;
+       respuesta.data.lst_cat_negocios.per_page = 1;
+       respuesta.data.lst_cat_negocios.to = 1;
+     }
+     respuesta.data.lst_cat_negocios.data = CategoriaNegocioUtil.filtrarNegociosPorCategorias(msNegocios);
+     return respuesta;
     });
   }
   

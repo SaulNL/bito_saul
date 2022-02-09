@@ -5,6 +5,7 @@ import { FiltrosModel } from '../../Modelos/FiltrosModel';
 import { HostListener } from '@angular/core';
 import {IonContent, NavController, Platform} from "@ionic/angular";
 import {SideBarService} from "../../api/busqueda/side-bar-service";
+import { LOCAL_STORAGE_KEY } from '../../utils/localStorageKey';
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.page.html',
@@ -65,6 +66,7 @@ export class CategoriasPage implements OnInit {
     localStorage.removeItem('byCategorias');
     localStorage.setItem('byCategorias', JSON.stringify(subCategoria));
     localStorage.setItem('seleccionado', JSON.stringify(subCategoria));
+    localStorage.setItem(LOCAL_STORAGE_KEY.CATEGORIA_SELECCIONADA, "true");
     localStorage.removeItem('busqueda');
     localStorage.setItem('filter', 'true');
     this.router.navigate(["/tabs/inicio"]);

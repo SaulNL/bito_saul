@@ -23,6 +23,8 @@ import { ValidarPermisoService } from '../../api/validar-permiso.service';
 import { ICategoriaNegocio } from 'src/app/interfaces/ICategoriaNegocio';
 import { Observable, throwError } from 'rxjs';
 import { runInThisContext } from 'vm';
+import { LocalStorageUtil } from '../../utils/localStorageUtil';
+import { LOCAL_STORAGE_KEY } from 'src/app/utils/localStorageKey';
 
 @Component({
   selector: "app-tab3",
@@ -63,7 +65,7 @@ export class InicioPage implements OnInit {
   public siguientePagina = this.actualPagina + 1;
   public mensaje = InicioPage.MENSAJE_CUANDO_CARGA;
   public totalDePaginasPorConsulta = 0;
-  
+  private tieneCategoriaSeleccionada = false;
 
   constructor(
     public loadingController: LoadingController,
@@ -117,7 +119,7 @@ export class InicioPage implements OnInit {
     this.user = this.util.getUserData();
     this.load();
     this.route.queryParams.subscribe(
-    
+
       params => {
         if (params.buscarNegocios && params) {
           this.load();
@@ -198,56 +200,65 @@ export class InicioPage implements OnInit {
         /* this.borrarFiltros();*/
       }
     }
+  
+
+
   }
-  agregarCategorias(categorias: Array<ICategoriaNegocio>){
-    let haEncontradoUnaCategoria = false;
+  
+  eliminarCategoriasDuplicadas(categorias: Array<ICategoriaNegocio>) {
     /***
      * Es una forma de validar y solución para las categorias 
      * repetidas, se puede mejorar, no es lo mas optimpo
      */
-    categorias.forEach((categoria, index, categoriasNegocios) =>{
-      let categoriaEncontrada = this.listaCategorias.find(  fCategoria => fCategoria.id_categoria_negocio === categoria.id_categoria_negocio);
-      if(categoriaEncontrada){
-        haEncontradoUnaCategoria = true;
-        return;
+    let tienenLaMismaLongitud = false;
+    categorias.forEach((categoria, index) => {
+      let categoriaEncontrada = this.listaCategorias.find(fCategoria => fCategoria.id_categoria_negocio === categoria.id_categoria_negocio);
+      if (categoriaEncontrada) {
+        if(categoria.negocios.length === categoriaEncontrada.negocios.length){
+          tienenLaMismaLongitud = true;
+          return;
+        }
       }
-    })
-    if(haEncontradoUnaCategoria === false){
+    });
+    if(tienenLaMismaLongitud === false){
       this.listaCategorias.push(...categorias);
     }
+  
+
+
   }
   validarResultadosDeCategorias(respuesta: any) {
     const cantidadDeResultados = respuesta.data.lst_cat_negocios.data.length;
-    if (cantidadDeResultados > 0 ) {
+    if (cantidadDeResultados > 0) {
       this.actualPagina = respuesta.data.lst_cat_negocios.current_page;
       this.siguientePagina = this.actualPagina + 1;
       this.totalDePaginas = respuesta.data.lst_cat_negocios.total;
       this.totalDePaginasPorConsulta = respuesta.data.lst_cat_negocios.to;
-      this.negociosIdMapa();
       this.categoriasEstaVacios = false;
-      this.agregarCategorias(respuesta.data.lst_cat_negocios.data);
-     
-      count++;
+      this.eliminarCategoriasDuplicadas(respuesta.data.lst_cat_negocios.data);
+      this.negociosIdMapa();
+      //this.listaCategorias.push(...respuesta.data.lst_cat_negocios.data);
+
 
     } else {
       throw throwError("");
     }
   }
- 
-  
-  cargarCategorias() {
-    
-    this.principalSercicio
-    .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
-    .then((respuesta) =>{
-      this.validarResultadosDeCategorias(respuesta)
-        this.loader = false;
-    }).catch((error)=>{
-      this.loader = false;
-      this.notificaciones.error("Error al buscar los datos");
 
-    })
-  
+
+  cargarCategorias() {
+
+    this.principalSercicio
+      .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
+      .then((respuesta) => {
+        this.validarResultadosDeCategorias(respuesta)
+        this.loader = false;
+      }).catch((error) => {
+        this.loader = false;
+        this.notificaciones.error("Error al buscar los datos");
+
+      })
+
 
   }
 
@@ -256,9 +267,9 @@ export class InicioPage implements OnInit {
     if (seMuestraElLoader === true) {
       this.siguientePagina = 1;
       this.listaCategorias = [];
-      
+
     }
-    
+
     const usr = this.user;
     if (usr.id_persona !== undefined) {
       this.Filtros.id_persona = usr.id_persona;
@@ -396,7 +407,7 @@ export class InicioPage implements OnInit {
       setTimeout(() => {
         event.target.complete();
       }, 800) // 800 es el tiempo que se tarda por cargar, sin tener un lag por las 20 paginas que se consultan
-    }else{
+    } else {
       event.target.disabled = true;
     }
 
