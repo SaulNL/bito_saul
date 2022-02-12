@@ -56,7 +56,7 @@ export class CategoriasPage implements OnInit {
   obtenerCategorias(){
     this.busquedaService.obtenerCategorias().subscribe(
       response=>{
-        this.listaCategorias=response.data;
+        this.listaCategorias=response.data.data;
     },error=>{
 
     });
