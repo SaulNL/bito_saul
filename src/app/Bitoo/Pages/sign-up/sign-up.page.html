@@ -1,106 +1,214 @@
-<app-header message="Crea tu Cuenta" [backButton]="true" [closeButton]="false"
-    (backButtonResponse)="backTo(formSignUp)">
+<app-header
+  message="Crea tu Cuenta"
+  [backButton]="true"
+  [closeButton]="false"
+  (backButtonResponse)="backTo(formSignUp)"
+>
 </app-header>
 <ion-content>
-    <ion-card>
-        <ion-card-header class="ion-text-center">
-            <ion-grid class="ion-text-center">
-                <ion-label>Puedes crear tu cuenta usando tus redes sociales</ion-label>
-            </ion-grid>
-            <app-sign-in-or-up-social-networks [ios]="isIos" [signIn]="false" (responder)="response($event)"
-                [loaderGoogle]="loadGoogle" [loaderApple]="loadApple" [loaderFacebook]="loadFacebook" #socialNetwork>
-            </app-sign-in-or-up-social-networks>
-            <ion-grid class="ion-text-center">
-                <ion-label>- O -</ion-label>
-            </ion-grid>
-            <ion-grid class="ion-text-center">
-                <ion-label>Crea tu cuenta con tu correo o telefono
-                    <br>
-                    Los campos con <span class="alert-required">*</span> son obligatorios
-                </ion-label>
-            </ion-grid>
-            <form (ngSubmit)="signUp(formSignUp)" #formSignUp="ngForm">
-                <ion-list>
-                    <ion-item>
-                        <ion-label position="stacked">Nombre<span class="alert-required">*</span></ion-label>
-                        <ion-input type="name" placeholder="Alicia Ejemplo" id="first_name" name="first_name"
-                            #first_name="ngModel" [(ngModel)]="user.ms_persona.nombre" required></ion-input>
-                    </ion-item>
-                    <app-show-alert-form message="El nombre es requerido" [validation]="first_name">
-                    </app-show-alert-form>
-                    <ion-item>
-                        <ion-label position="stacked">Apellido Paterno<span class="alert-required">*</span> </ion-label>
-                        <ion-input type="text" id="last_name" name="last_name" [(ngModel)]="user.ms_persona.paterno"
-                            #last_name="ngModel" placeholder="Torres Ejemplo" required></ion-input>
-                    </ion-item>
-                    <app-show-alert-form message="El apellido paterno es requerido" [validation]="last_name">
-                    </app-show-alert-form>
-                    <ion-item>
-                        <ion-label position="stacked">Apellido Materno<span class="alert-required">*</span></ion-label>
-                        <ion-input type="text" placeholder="Lopez Ejemplo" id="mother_last_name" name="mother_last_name"
-                            [(ngModel)]="user.ms_persona.materno" required #mother_last_name="ngModel"></ion-input>
-                    </ion-item>
-                    <app-show-alert-form message="El apellido materno es requerido" [validation]="mother_last_name">
-                    </app-show-alert-form>
-                    <ion-item>
-                        <ion-label position="stacked">Correo<span *ngIf="requiredMail" class="alert-required">*</span>
-                        </ion-label>
-                        <ion-input type="email" id="email" name="email" placeholder="usuarioBitoo@dominio.com"
-                            (ngModelChange)="mailProccess($event)" [(ngModel)]="user.ms_persona.correo" #email="ngModel"
-                            [required]="requiredMail"></ion-input>
-                    </ion-item>
-                    <app-show-alert-form message="El correo es requerido" [validation]="email">
-                    </app-show-alert-form>
-                    <ion-item>
-                        <ion-label position="stacked">Número Celular<span *ngIf="requiredPhone"
-                                class="alert-required">*</span></ion-label>
-                        <ion-input (ngModelChange)="phoneProccess($event)" type="tel" placeholder="222-222-2222"
-                            id="phone" name="phone" [(ngModel)]="user.ms_persona.telefono_celular" #phone="ngModel"
-                            [required]="requiredPhone"></ion-input>
-                    </ion-item>
-                    <app-show-alert-form message="El número celular es requerido" [validation]="phone">
-                    </app-show-alert-form>
-                    <ion-item>
-                        <ion-label position="stacked">Contraseña<span class="alert-required">*</span></ion-label>
-                        <ion-input (ionChange)="validatePassword()" name="password" id="password"
-                            [(ngModel)]="user.password" #password="ngModel" type="password" placeholder="*********"
-                            required>
-                        </ion-input>
-                    </ion-item>
-                    <app-show-alert-form message="La contraseña es requerida" [validation]="password">
-                    </app-show-alert-form>
-                    <ion-item>
-                        <ion-label position="stacked">Repetir Contraseña<span class="alert-required">*</span>
-                        </ion-label>
-                        <ion-input (ionChange)="validatePassword()" type="password" name="repeat_password"
-                            id="repeat_password" [(ngModel)]="user.repeat_password" #repeat_password="ngModel"
-                            placeholder="*********" required>
-                        </ion-input>
-                    </ion-item>
-                    <app-show-alert-form message="La contraseña es requerida" [validation]="password">
-                    </app-show-alert-form>
-                    <span *ngIf="!validateRepeadPassword" class="alert-required">
-                        las contraseñas no coinciden
-                    </span>
-                    <ion-item>
-                        <ion-checkbox slot="start" (ngModelChange)="aceptTermsConditions($event)" id="terms_conditions"
-                            [(ngModel)]="termsConditions" name="terms_conditions"></ion-checkbox>
-                        <ion-label class="ion-text-center">Aceptar términos y condiciones</ion-label>
-                        <ion-button (click)="openTermsConditions()" slot="end">
-                            <ion-icon name="eye-outline"></ion-icon>
-                        </ion-button>
-                    </ion-item>
-                    <ion-item>
-                        <ion-label class="custom-text-property ion-text-center">Al dar clic en siguiente recibirás un
-                            {{toSend}} de
-                            Bitoo</ion-label>
-                    </ion-item>
-                </ion-list>
-                <ion-button expand="block" type="submit" class="bg-rosa" [disabled]="disableButtom(formSignUp)"
-                    mode="ios">
-                    Siguiente
-                </ion-button>
-            </form>
-        </ion-card-header>
-    </ion-card>
+  <ion-card>
+    <ion-card-header class="ion-text-center">
+      <ion-grid class="ion-text-center">
+        <ion-label>Puedes crear tu cuenta usando tus redes sociales</ion-label>
+      </ion-grid>
+      <app-sign-in-or-up-social-networks
+        [ios]="isIos"
+        [signIn]="false"
+        (responder)="response($event)"
+        [loaderGoogle]="loadGoogle"
+        [loaderApple]="loadApple"
+        [loaderFacebook]="loadFacebook"
+        #socialNetwork
+      >
+      </app-sign-in-or-up-social-networks>
+      <ion-grid class="ion-text-center">
+        <ion-label>- O -</ion-label>
+      </ion-grid>
+      <ion-grid class="ion-text-center">
+        <ion-label
+          >Crea tu cuenta con tu correo o teléfono
+          <br />
+          Los campos con <span class="alert-required">*</span> son obligatorios
+        </ion-label>
+      </ion-grid>
+      <form (ngSubmit)="signUp(formSignUp)" #formSignUp="ngForm">
+        <ion-list>
+          <ion-item>
+            <ion-label position="stacked"
+              >Nombre<span class="alert-required">*</span></ion-label
+            >
+            <ion-input
+              type="name"
+              placeholder="Ejemplo: Alicia"
+              id="first_name"
+              name="first_name"
+              #first_name="ngModel"
+              [(ngModel)]="user.ms_persona.nombre"
+              required
+            ></ion-input>
+          </ion-item>
+          <app-show-alert-form
+            message="El nombre es requerido"
+            [validation]="first_name"
+          >
+          </app-show-alert-form>
+          <ion-item>
+            <ion-label position="stacked"
+              >Apellido paterno<span class="alert-required">*</span>
+            </ion-label>
+            <ion-input
+              type="text"
+              id="last_name"
+              name="last_name"
+              [(ngModel)]="user.ms_persona.paterno"
+              #last_name="ngModel"
+              placeholder="Ejemplo: Torres"
+              required
+            ></ion-input>
+          </ion-item>
+          <app-show-alert-form
+            message="El apellido paterno es requerido"
+            [validation]="last_name"
+          >
+          </app-show-alert-form>
+          <ion-item>
+            <ion-label position="stacked"
+              >Apellido materno<span class="alert-required">*</span></ion-label
+            >
+            <ion-input
+              type="text"
+              placeholder="Ejemplo: López"
+              id="mother_last_name"
+              name="mother_last_name"
+              [(ngModel)]="user.ms_persona.materno"
+              required
+              #mother_last_name="ngModel"
+            ></ion-input>
+          </ion-item>
+          <app-show-alert-form
+            message="El apellido materno es requerido"
+            [validation]="mother_last_name"
+          >
+          </app-show-alert-form>
+          <ion-item>
+            <ion-label position="stacked"
+              >Correo<span *ngIf="requiredMail" class="alert-required">*</span>
+            </ion-label>
+            <ion-input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="usuarioBitoo@dominio.com"
+              (ngModelChange)="mailProccess($event)"
+              [(ngModel)]="user.ms_persona.correo"
+              #email="ngModel"
+              [required]="requiredMail"
+            ></ion-input>
+          </ion-item>
+          <app-show-alert-form
+            message="El correo es requerido"
+            [validation]="email"
+          >
+          </app-show-alert-form>
+          <ion-item>
+            <ion-label position="stacked"
+              >Número celular<span *ngIf="requiredPhone" class="alert-required"
+                >*</span
+              ></ion-label
+            >
+            <ion-input
+              (ngModelChange)="phoneProccess($event)"
+              type="tel"
+              placeholder="222-222-2222"
+              id="phone"
+              name="phone"
+              [(ngModel)]="user.ms_persona.telefono_celular"
+              #phone="ngModel"
+              [required]="requiredPhone"
+            ></ion-input>
+          </ion-item>
+          <app-show-alert-form
+            message="El número celular es requerido"
+            [validation]="phone"
+          >
+          </app-show-alert-form>
+          <ion-item>
+            <ion-label position="stacked"
+              >Contraseña<span class="alert-required">*</span></ion-label
+            >
+            <ion-input
+              (ionChange)="validatePassword()"
+              name="password"
+              id="password"
+              [(ngModel)]="user.password"
+              #password="ngModel"
+              type="password"
+              placeholder="*********"
+              required
+            >
+            </ion-input>
+          </ion-item>
+          <app-show-alert-form
+            message="La contraseña es requerida"
+            [validation]="password"
+          >
+          </app-show-alert-form>
+          <ion-item>
+            <ion-label position="stacked"
+              >Repetir contraseña<span class="alert-required">*</span>
+            </ion-label>
+            <ion-input
+              (ionChange)="validatePassword()"
+              type="password"
+              name="repeat_password"
+              id="repeat_password"
+              [(ngModel)]="user.repeat_password"
+              #repeat_password="ngModel"
+              placeholder="*********"
+              required
+            >
+            </ion-input>
+          </ion-item>
+          <app-show-alert-form
+            message="La contraseña es requerida"
+            [validation]="password"
+          >
+          </app-show-alert-form>
+          <span *ngIf="!validateRepeadPassword" class="alert-required">
+            Las contraseñas no coinciden
+          </span>
+          <ion-item>
+            <ion-checkbox
+              slot="start"
+              (ngModelChange)="aceptTermsConditions($event)"
+              id="terms_conditions"
+              [(ngModel)]="termsConditions"
+              name="terms_conditions"
+            ></ion-checkbox>
+            <ion-label class="ion-text-center"
+              >Aceptar términos y condiciones</ion-label
+            >
+            <ion-button (click)="openTermsConditions()" slot="end">
+              <ion-icon name="eye-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <ion-item>
+            <ion-label class="custom-text-property ion-text-center"
+              >Al dar clic en "Siguiente" recibirás un {{toSend}} de
+              Bitoo</ion-label
+            >
+          </ion-item>
+        </ion-list>
+        <ion-button
+          expand="block"
+          type="submit"
+          class="bg-rosa"
+          [disabled]="disableButtom(formSignUp)"
+          mode="ios"
+        >
+          Siguiente
+        </ion-button>
+      </form>
+    </ion-card-header>
+  </ion-card>
 </ion-content>

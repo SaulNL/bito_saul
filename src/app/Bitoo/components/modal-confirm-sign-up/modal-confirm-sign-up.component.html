@@ -1,44 +1,77 @@
-<app-header message="Código de Seguridad" [backButton]="false" [closeButton]="true"
-    (closeResponse)="responseCloseHeader()"></app-header>
-<app-loader [loader]="loaderCreateAccount" message="Creando tu cuenta de Bitoo"></app-loader>
+<app-header
+  message="Código de Seguridad"
+  [closeButton]="true"
+  (closeResponse)="responseCloseHeader()"
+></app-header>
+<app-loader
+  [loader]="loaderCreateAccount"
+  message="Creando tu cuenta de Bitoo"
+></app-loader>
 <ion-content *ngIf="!loaderCreateAccount">
-    <ion-card>
-        <ion-card-header>
-            <ion-grid class="ion-text-center">
-                <h2>CÓDIGO DE SEGURIDAD</h2>
-                <ion-label> Para finalizar debemos verificar tu identidad
-                    <br>
-                    Te llegará un código de seguridad al {{messageTo}} <strong *ngIf="isSendToMovil"> :
-                        {{formSignUp.ms_persona.telefono_celular}} </strong>
-                </ion-label>
-            </ion-grid>
-            <ion-list>
-                <ion-grid *ngIf="retryCode" class="ion-text-center">
-                    <ion-label>Volver a solicitar código en <strong id="timer"></strong></ion-label>
-                </ion-grid>
-                <ion-grid *ngIf="!retryCode && isSendToMovil" class="ion-text-center">
-                    <ion-button (click)="getCodeSms()" size="small">
-                        Solicitar código nuevamente
-                    </ion-button>
-                </ion-grid>
-                <form (ngSubmit)="createAccount(formValidate)" #formValidate="ngForm">
-                    <ion-item>
-                        <ion-label position="stacked">Código</ion-label>
-                        <ion-input id="code" (ionChange)="validateCode(code)" name="code" maxlength="5"
-                            placeholder="00000" required type="tel" #code="ngModel" [(ngModel)]="formSignUp.codigo">
-                        </ion-input>
-                    </ion-item>
-                    <ion-grid class="ion-text-center ion-margin-top">
-                        <ion-label>Ingresa el código que se te envio por {{toSend}}</ion-label>
-                    </ion-grid>
-                    <ion-button mode="ios" expand="block" type="submit" class="bg-rosa"
-                        [disabled]="formValidate.invalid && !successProccess">
-                        Activar
-                    </ion-button>
-                </form>
-                <ion-button expand="block" type="button" class="medium" (click)="closeModal()"> Regresar
-                </ion-button>
-            </ion-list>
-        </ion-card-header>
-    </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-grid class="ion-text-center">
+        <h2>CÓDIGO DE SEGURIDAD</h2>
+        <ion-label>
+          Para finalizar debemos verificar tu identidad
+          <br />
+          Te llegará un código de seguridad al {{ messageTo }}:
+          <strong *ngIf="isSendToMovil">
+            {{ formSignUp.ms_persona.telefono_celular }}
+          </strong>
+        </ion-label>
+      </ion-grid>
+      <ion-list>
+        <ion-grid *ngIf="retryCode" class="ion-text-center">
+          <ion-label
+            >Volver a solicitar código en <strong id="timer"></strong
+          ></ion-label>
+        </ion-grid>
+        <ion-grid *ngIf="!retryCode && isSendToMovil" class="ion-text-center">
+          <ion-button (click)="getCodeSms()" size="small">
+            Solicitar código nuevamente
+          </ion-button>
+        </ion-grid>
+        <form (ngSubmit)="createAccount(formValidate)" #formValidate="ngForm">
+          <ion-item>
+            <ion-label position="stacked">Código</ion-label>
+            <ion-input
+              id="code"
+              (ionChange)="validateCode(code)"
+              name="code"
+              maxlength="5"
+              placeholder="00000"
+              required
+              type="tel"
+              #code="ngModel"
+              [(ngModel)]="formSignUp.codigo"
+            >
+            </ion-input>
+          </ion-item>
+          <ion-grid class="ion-text-center ion-margin-top">
+            <ion-label
+              >Ingresa el código que se te envió por {{ toSend }}</ion-label
+            >
+          </ion-grid>
+          <ion-button
+            mode="ios"
+            expand="block"
+            type="submit"
+            class="bg-rosa"
+            [disabled]="formValidate.invalid && !successProccess"
+          >
+            Activar
+          </ion-button>
+        </form>
+        <ion-button
+          expand="block"
+          type="button"
+          class="medium"
+          (click)="closeModal()"
+        >
+          Regresar
+        </ion-button>
+      </ion-list>
+    </ion-card-header>
+  </ion-card>
 </ion-content>
