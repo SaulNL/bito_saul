@@ -1,4 +1,1 @@
-export type ToSend =
-| 'sms a tu celular'
-| 'correo'
-| 'codigo';
+export type ToSend = "sms a tu celular" | "correo" | "código";

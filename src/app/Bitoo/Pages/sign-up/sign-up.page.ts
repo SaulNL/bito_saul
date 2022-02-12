@@ -1,36 +1,46 @@
-import { CreateObjects } from './../../helper/create-object';
-import { NotificationInterface } from './../../models/notifications-model';
-import { NotificationWithFirebaseService } from './../../../api/notification-with-firebase.service';
-import { SignInOrUpSocialNetworksComponent } from './../../components/sign-in-or-up-social-networks/sign-in-or-up-social-networks.component';
-import { ProccessSignUp } from './../../helper/proccess-sign-up';
-import { SelectedSocialNetwork } from './../../types/platform-type';
-import { LoginService } from './../../../api/login.service';
-import { ActivatedRoute } from '@angular/router';
-import { UserSignInModel, UserSignInInterface } from '../../models/user-sign-in-model';
-import { UsuarioService } from './../../../api/busqueda/login/usuario.service';
-import { ToadNotificacionService } from './../../../api/toad-notificacion.service';
-import { ResponderModel, ResponderInterface } from './../../models/responder-model';
-import { ModalConfirmSignUpComponent } from './../../components/modal-confirm-sign-up/modal-confirm-sign-up.component';
-import { ModalController, Platform } from '@ionic/angular';
-import { ToSend } from './../../types/to-send-type';
-import { MessageTo } from './../../types/message-to-type';
-import { ShippingMethod } from '../../types/shipping-method-type';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { UserSignUpModel, ContentCommonUserSingUpInterface } from './../../models/user-sign-up-model';
-import { ValidatorData } from '../../helper/validations';
-import { ResponseCommon } from '../../helper/is-success-response';
-import { ConfigGlobal } from '../../config/config-global';
+import { CreateObjects } from "./../../helper/create-object";
+import { NotificationInterface } from "./../../models/notifications-model";
+import { NotificationWithFirebaseService } from "./../../../api/notification-with-firebase.service";
+import { SignInOrUpSocialNetworksComponent } from "./../../components/sign-in-or-up-social-networks/sign-in-or-up-social-networks.component";
+import { ProccessSignUp } from "./../../helper/proccess-sign-up";
+import { SelectedSocialNetwork } from "./../../types/platform-type";
+import { LoginService } from "./../../../api/login.service";
+import { ActivatedRoute } from "@angular/router";
+import {
+  UserSignInModel,
+  UserSignInInterface,
+} from "../../models/user-sign-in-model";
+import { UsuarioService } from "./../../../api/busqueda/login/usuario.service";
+import { ToadNotificacionService } from "./../../../api/toad-notificacion.service";
+import {
+  ResponderModel,
+  ResponderInterface,
+} from "./../../models/responder-model";
+import { ModalConfirmSignUpComponent } from "./../../components/modal-confirm-sign-up/modal-confirm-sign-up.component";
+import { ModalController, Platform } from "@ionic/angular";
+import { ToSend } from "./../../types/to-send-type";
+import { MessageTo } from "./../../types/message-to-type";
+import { ShippingMethod } from "../../types/shipping-method-type";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { Router } from "@angular/router";
+import {
+  UserSignUpModel,
+  ContentCommonUserSingUpInterface,
+} from "./../../models/user-sign-up-model";
+import { ValidatorData } from "../../helper/validations";
+import { ResponseCommon } from "../../helper/is-success-response";
+import { ConfigGlobal } from "../../config/config-global";
 
 @Component({
-  selector: 'app-sign-up',
-  templateUrl: './sign-up.page.html',
-  styleUrls: ['./sign-up.page.scss'],
-  providers: [ValidatorData, ResponseCommon, ProccessSignUp, CreateObjects]
+  selector: "app-sign-up",
+  templateUrl: "./sign-up.page.html",
+  styleUrls: ["./sign-up.page.scss"],
+  providers: [ValidatorData, ResponseCommon, ProccessSignUp, CreateObjects],
 })
 export class SignUpPage implements OnInit {
-  @ViewChild('socialNetwork', { static: false }) signUnChange: SignInOrUpSocialNetworksComponent;
+  @ViewChild("socialNetwork", { static: false })
+  signUnChange: SignInOrUpSocialNetworksComponent;
   public user: UserSignUpModel;
   public repeatPassword: boolean;
   public termsConditions: boolean;
@@ -58,18 +68,16 @@ export class SignUpPage implements OnInit {
     private notification: NotificationWithFirebaseService,
     private create: CreateObjects
   ) {
-    this.isIos = this.platform.is('ios');
+    this.isIos = this.platform.is("ios");
     this.init();
   }
 
   ngOnInit() {
-    this.activateRoute.queryParams.subscribe(
-      params => {
-        if (params && params.signUp) {
-          this.init();
-        }
+    this.activateRoute.queryParams.subscribe((params) => {
+      if (params && params.signUp) {
+        this.init();
       }
-    );
+    });
   }
   /**
    * @author Juan Antonio Guevara Flores
@@ -87,7 +95,7 @@ export class SignUpPage implements OnInit {
    */
   private backToSignIn() {
     this.init();
-    this.router.navigate(['tabs/login']);
+    this.router.navigate(["tabs/login"]);
   }
   /**
    * @author Juan Antonio Guevara Flores
@@ -118,14 +126,13 @@ export class SignUpPage implements OnInit {
         formSignUp: user,
         messageTo: this.messageTo,
         toSend: this.toSend,
-        shippingMethod: this.shippingMethod
-      }
+        shippingMethod: this.shippingMethod,
+      },
     });
     await modal.present();
-    await modal.onDidDismiss().then(
-      (response) => {
-        this.redirectSuccess(response.data);
-      });
+    await modal.onDidDismiss().then((response) => {
+      this.redirectSuccess(response.data);
+    });
   }
   /**
    * @author Juan Antonio Guevara Flores
@@ -133,8 +140,8 @@ export class SignUpPage implements OnInit {
    * @description Redireccion al inicio si se recibio una respuesta del modal
    */
   private redirectSuccess(isSuccess: any) {
-    if (typeof isSuccess !== 'undefined') {
-      this.router.navigate(['/tabs/inicio']);
+    if (typeof isSuccess !== "undefined") {
+      this.router.navigate(["/tabs/inicio"]);
       this.inicializeNotification();
       setTimeout(() => {
         location.reload();
@@ -147,8 +154,8 @@ export class SignUpPage implements OnInit {
    */
   public openTermsConditions() {
     window.open(
-      'https://ecoevents.blob.core.windows.net/comprandoando/documentos%2FTERMINOS%20Y%20CONDICIONES%20Bitoo.pdf',
-      '_blank'
+      "https://ecoevents.blob.core.windows.net/comprandoando/documentos%2FTERMINOS%20Y%20CONDICIONES%20Bitoo.pdf",
+      "_blank"
     );
   }
   /**
@@ -168,16 +175,16 @@ export class SignUpPage implements OnInit {
    * @description Cambia la validacion de requerido el telefono
    */
   public mailProccess(event: any) {
-    if (event !== 'undefined' && event !== null && event.length > 4) {
-      this.messageTo = 'correo';
-      this.toSend = 'correo';
+    if (event !== "undefined" && event !== null && event.length > 4) {
+      this.messageTo = "correo";
+      this.toSend = "correo";
       this.requiredPhone = false;
       this.shippingMethod = 2;
     } else {
       this.requiredPhone = true;
       this.shippingMethod = 1;
-      this.toSend = 'sms a tu celular';
-      this.messageTo = 'número celular';
+      this.toSend = "sms a tu celular";
+      this.messageTo = "número celular";
     }
   }
   /**
@@ -186,16 +193,16 @@ export class SignUpPage implements OnInit {
    * @description Cambia la validacion de requerido el correo
    */
   phoneProccess(event: any) {
-    if (event !== 'undefined' && event !== null && event.length === 10) {
+    if (event !== "undefined" && event !== null && event.length === 10) {
       this.requiredMail = false;
-      this.messageTo = 'número celular';
-      this.toSend = 'sms a tu celular';
+      this.messageTo = "número celular";
+      this.toSend = "sms a tu celular";
       this.shippingMethod = 1;
     } else {
       this.requiredMail = true;
-      this.toSend = 'correo';
+      this.toSend = "correo";
       this.shippingMethod = 2;
-      this.messageTo = 'correo';
+      this.messageTo = "correo";
     }
   }
   /**
@@ -204,7 +211,11 @@ export class SignUpPage implements OnInit {
    */
   public validatePassword() {
     this.validateRepeadPassword = true;
-    if (this.user.password !== '' && this.user.repeat_password !== '' && this.user.password !== this.user.repeat_password) {
+    if (
+      this.user.password !== "" &&
+      this.user.repeat_password !== "" &&
+      this.user.password !== this.user.repeat_password
+    ) {
       this.validateRepeadPassword = false;
     }
   }
@@ -215,7 +226,11 @@ export class SignUpPage implements OnInit {
    * @returns boolean
    */
   public disableButtom(formSignUp: NgForm): boolean {
-    return formSignUp.invalid || !this.termsConditions || !this.validateRepeadPassword;
+    return (
+      formSignUp.invalid ||
+      !this.termsConditions ||
+      !this.validateRepeadPassword
+    );
   }
   /**
    * @author Juan Antonio Guevara Flores
@@ -224,8 +239,8 @@ export class SignUpPage implements OnInit {
   private init() {
     this.user = new UserSignUpModel();
     this.termsConditions = false;
-    this.toSend = 'codigo';
-    this.messageTo = 'número celular';
+    this.toSend = "código";
+    this.messageTo = "número celular";
     this.requiredMail = true;
     this.requiredPhone = true;
     this.validateRepeadPassword = true;
@@ -242,27 +257,33 @@ export class SignUpPage implements OnInit {
     if (this.responseCommon.validation(response)) {
       try {
         switch (response.socialNetwork) {
-          case 'google':
+          case "google":
             this.createAccountWithGoogle(response);
             break;
-          case 'apple':
+          case "apple":
             this.createAccountWithApple(response);
             break;
-          case 'facebook':
+          case "facebook":
             this.createAccountWithFacebook(response);
             break;
           default:
             this.turnOfLoadSocialNetworks();
-            this.toadNotificacionService.error(this.validatorData.messageErrorValidationSocialNetworkData());
+            this.toadNotificacionService.error(
+              this.validatorData.messageErrorValidationSocialNetworkData()
+            );
             break;
         }
       } catch (error) {
         this.turnOfLoadSocialNetworks();
-        this.toadNotificacionService.error(this.validatorData.messageErrorValidationSocialNetworkData());
+        this.toadNotificacionService.error(
+          this.validatorData.messageErrorValidationSocialNetworkData()
+        );
       }
     } else {
       this.SetSocialNetworkLoadTurnOf(response.socialNetwork);
-      this.toadNotificacionService.error(this.responseCommon.errorMessage(response));
+      this.toadNotificacionService.error(
+        this.responseCommon.errorMessage(response)
+      );
     }
   }
   /**
@@ -273,13 +294,13 @@ export class SignUpPage implements OnInit {
   private SetSocialNetworkLoadTurnOf(selected: SelectedSocialNetwork) {
     try {
       switch (selected) {
-        case 'google':
+        case "google":
           this.signUnChange.loaderGoogle = false;
           break;
-        case 'apple':
+        case "apple":
           this.signUnChange.loaderApple = false;
           break;
-        case 'facebook':
+        case "facebook":
           this.signUnChange.loaderFacebook = false;
           break;
         default:
@@ -313,7 +334,12 @@ export class SignUpPage implements OnInit {
     if (this.validatorData.validateApple(response)) {
       this.usuarioService.createAccountApple(response.credentials).subscribe(
         (respond) => {
-          this.specialProccessAfterCreateAccount(respond, response.credentials.user, response.credentials.email, response.socialNetwork);
+          this.specialProccessAfterCreateAccount(
+            respond,
+            response.credentials.user,
+            response.credentials.email,
+            response.socialNetwork
+          );
         },
         (error) => {
           this.toadNotificacionService.error(error);
@@ -322,7 +348,9 @@ export class SignUpPage implements OnInit {
       );
     } else {
       this.loadApple = false;
-      this.toadNotificacionService.error(this.validatorData.messageErrorValidationSocialNetworkData());
+      this.toadNotificacionService.error(
+        this.validatorData.messageErrorValidationSocialNetworkData()
+      );
     }
   }
   /**
@@ -332,21 +360,30 @@ export class SignUpPage implements OnInit {
    */
   private createAccountWithGoogle(response: ResponderModel) {
     if (!this.validatorData.validateSocialNetworkData(response.credentials)) {
-      const contentUser: ContentCommonUserSingUpInterface = this.proceesSignUp.proccessCreateAccountModel(response);
-      this.usuarioService.createAccountWithGoogle(contentUser.content).subscribe(
-        (respond) => {
-          this.specialProccessAfterCreateAccount(respond, contentUser.content.email, contentUser.password, response.socialNetwork);
-        },
-        (error) => {
-          this.loadGoogle = false;
-          this.toadNotificacionService.alerta(error);
-        }
-      );
+      const contentUser: ContentCommonUserSingUpInterface =
+        this.proceesSignUp.proccessCreateAccountModel(response);
+      this.usuarioService
+        .createAccountWithGoogle(contentUser.content)
+        .subscribe(
+          (respond) => {
+            this.specialProccessAfterCreateAccount(
+              respond,
+              contentUser.content.email,
+              contentUser.password,
+              response.socialNetwork
+            );
+          },
+          (error) => {
+            this.loadGoogle = false;
+            this.toadNotificacionService.alerta(error);
+          }
+        );
     } else {
       this.loadGoogle = false;
-      this.toadNotificacionService.error(this.validatorData.messageErrorValidationSocialNetworkData());
+      this.toadNotificacionService.error(
+        this.validatorData.messageErrorValidationSocialNetworkData()
+      );
     }
-
   }
   /**
    * @author Juan Antonio Guevara Flores
@@ -355,30 +392,43 @@ export class SignUpPage implements OnInit {
    */
   private createAccountWithFacebook(response: ResponderModel) {
     if (!this.validatorData.validateSocialNetworkData(response.credentials)) {
-      const contentUser: ContentCommonUserSingUpInterface = this.proceesSignUp.proccessCreateAccountModel(response);
-      this.usuarioService.createAccountWithFacebook(contentUser.content).subscribe(
-        (respond) => {
-          this.specialProccessAfterCreateAccount(respond, contentUser.content.email, contentUser.password, response.socialNetwork);
-        },
-        (error) => {
-          this.toadNotificacionService.alerta(error);
-          this.signUnChange.loaderFacebook = false;
-          this.loadFacebook = false;
-        }
-      );
+      const contentUser: ContentCommonUserSingUpInterface =
+        this.proceesSignUp.proccessCreateAccountModel(response);
+      this.usuarioService
+        .createAccountWithFacebook(contentUser.content)
+        .subscribe(
+          (respond) => {
+            this.specialProccessAfterCreateAccount(
+              respond,
+              contentUser.content.email,
+              contentUser.password,
+              response.socialNetwork
+            );
+          },
+          (error) => {
+            this.toadNotificacionService.alerta(error);
+            this.signUnChange.loaderFacebook = false;
+            this.loadFacebook = false;
+          }
+        );
     } else {
       this.signUnChange.loaderFacebook = false;
       this.loadFacebook = false;
-      this.toadNotificacionService.error(this.validatorData.messageErrorValidationSocialNetworkData());
+      this.toadNotificacionService.error(
+        this.validatorData.messageErrorValidationSocialNetworkData()
+      );
     }
   }
 
-  private userSignIn(user: UserSignInModel, selectedSocialNetwork: SelectedSocialNetwork) {
+  private userSignIn(
+    user: UserSignInModel,
+    selectedSocialNetwork: SelectedSocialNetwork
+  ) {
     this.loginService.login(user).subscribe(
       (response) => {
         if (response.code === 200) {
           ConfigGlobal.setUser(response);
-          const optionLogin = localStorage.getItem('optionLogin');
+          const optionLogin = localStorage.getItem("optionLogin");
           localStorage.setItem("isRedirected", "false");
           if (optionLogin != null) {
             const dataBusiness = JSON.parse(optionLogin);
@@ -391,7 +441,9 @@ export class SignUpPage implements OnInit {
           this.SetSocialNetworkLoadTurnOf(selectedSocialNetwork);
         } else {
           this.SetSocialNetworkLoadTurnOf(selectedSocialNetwork);
-          this.toadNotificacionService.alerta("Usuario y/o contraseña incorrectos");
+          this.toadNotificacionService.alerta(
+            "Usuario y/o contraseña incorrectos"
+          );
         }
       },
       (error) => {
@@ -402,7 +454,9 @@ export class SignUpPage implements OnInit {
   }
 
   goToBusiness(businessRoute: string) {
-    this.router.navigate(["/tabs/inicio"], { queryParams: { byLogin: businessRoute } });
+    this.router.navigate(["/tabs/inicio"], {
+      queryParams: { byLogin: businessRoute },
+    });
   }
   /**
    * @author Juan Antonio Guevara Flores
@@ -412,8 +466,19 @@ export class SignUpPage implements OnInit {
    * @param selectedSocialNetwork
    * @description Proceso para despues de crear una cuenta con una red social con Facebook, Google y Apple
    */
-  private specialProccessAfterCreateAccount(response: any, email: string, password: string, selectedSocialNetwork: SelectedSocialNetwork) {
-    const respond: ResponderInterface = this.proceesSignUp.proccessAfterCreateAccount(response, email, password, selectedSocialNetwork);
+  private specialProccessAfterCreateAccount(
+    response: any,
+    email: string,
+    password: string,
+    selectedSocialNetwork: SelectedSocialNetwork
+  ) {
+    const respond: ResponderInterface =
+      this.proceesSignUp.proccessAfterCreateAccount(
+        response,
+        email,
+        password,
+        selectedSocialNetwork
+      );
     if (this.responseCommon.validation(respond)) {
       const user: UserSignInInterface = respond.credentials;
       this.userSignIn(user, selectedSocialNetwork);
@@ -441,7 +506,8 @@ export class SignUpPage implements OnInit {
    * @description Registra el token para las notificaciones
    */
   private registerTokenNotification() {
-    const content: NotificationInterface = this.create.createNotificationFirebaseWithUser();
+    const content: NotificationInterface =
+      this.create.createNotificationFirebaseWithUser();
     this.notification.updateUserWithNotification(content);
   }
 }
