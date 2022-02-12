@@ -54,8 +54,9 @@ export class CategoriasPage implements OnInit {
     }
 
   obtenerCategorias(){
-    this.busquedaService.obtenerCategorias().subscribe(
+    this.busquedaService.obtenerCategorias(1).subscribe(
       response=>{
+        
         this.listaCategorias=response.data.data;
     },error=>{
 
@@ -72,5 +73,10 @@ export class CategoriasPage implements OnInit {
     this.router.navigate(["/tabs/inicio"]);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+   /*cargarMasPaginas(evento: any){
+    this.paginacion.evento = evento;
+    this.paginacion.callback = this.obtenerCategorias;
+    PaginacionUtils.establecerEventoParaScroll(this.paginacion);
+  }*/
 
 }
