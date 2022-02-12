@@ -65,8 +65,8 @@ export class BusquedaService {
   }
   
   public obtenerCategorias(pagina: number):Observable<any>{
-    const body = JSON.stringify({page: pagina});
-    let datos = from(this.http.get(this.url + '/buscar/datos/inicio/allfiltro',body,
+    const url = this.url + '/buscar/datos/inicio/allfiltro?page='+pagina;
+    let datos = from(this.http.get(url,{},
     {'Content-Type':'application/json'})
     .then( data => {
         return JSON.parse(data.data);

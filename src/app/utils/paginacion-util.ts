@@ -12,15 +12,6 @@ export class PaginacionUtils{
 
 
     }
-    public static establecerEventoParaScroll(paginacion: IPaginacion){
-        if (paginacion.totalDePaginasPorConsulta < paginacion.totalDePaginas) {
-            paginacion.callback()
-            setTimeout(() => {
-                paginacion.evento.target.complete();
-            }, 800) 
-          } else {
-            paginacion.evento.target.disabled = true;
-          }
-    }
+    
 
 }

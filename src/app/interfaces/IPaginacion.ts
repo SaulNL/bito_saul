@@ -5,7 +5,4 @@ export interface IPaginacion{
     totalDePaginas?: number;
     actualPagina?: number;
     siguientePagina?:number;
-    evento?: any;
-    callback?: any;
-    tipoDeCarga?:number;
 } 

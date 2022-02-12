@@ -23,5 +23,6 @@
             </ion-col>
         </ion-row>
     </ion-grid>
+    <app-infinito-scroll *ngIf="true" (respuesta)="cargarMasPaginas($event)" [activado]="true" [msj]="paginacion.mensaje"></app-infinito-scroll>
 
 </ion-content>

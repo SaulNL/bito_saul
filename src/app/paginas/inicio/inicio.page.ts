@@ -65,7 +65,7 @@ export class InicioPage implements OnInit {
   public siguientePagina = this.actualPagina + 1;
   public mensaje = InicioPage.MENSAJE_CUANDO_CARGA;
   public totalDePaginasPorConsulta = 0;
-  private tieneCategoriaSeleccionada = false;
+ 
 
   constructor(
     public loadingController: LoadingController,
@@ -139,6 +139,7 @@ export class InicioPage implements OnInit {
       this.selectionAP = true;
       this.objectSelectAfiliacionPlaza = JSON.parse(String(localStorage.getItem('org')));
     }
+    
     this.buscarNegocios(true);
     if (this.util.existSession()) {
       this.persona = this.util.getIdPersona();
@@ -204,29 +205,7 @@ export class InicioPage implements OnInit {
 
 
   }
-  
-  eliminarCategoriasDuplicadas(categorias: Array<ICategoriaNegocio>) {
-    /***
-     * Es una forma de validar y solución para las categorias 
-     * repetidas, se puede mejorar, no es lo mas optimpo
-     */
-    let tienenLaMismaLongitud = false;
-    categorias.forEach((categoria, index) => {
-      let categoriaEncontrada = this.listaCategorias.find(fCategoria => fCategoria.id_categoria_negocio === categoria.id_categoria_negocio);
-      if (categoriaEncontrada) {
-        if(categoria.negocios.length === categoriaEncontrada.negocios.length){
-          tienenLaMismaLongitud = true;
-          return;
-        }
-      }
-    });
-    if(tienenLaMismaLongitud === false){
-      this.listaCategorias.push(...categorias);
-    }
-  
 
-
-  }
   validarResultadosDeCategorias(respuesta: any) {
     const cantidadDeResultados = respuesta.data.lst_cat_negocios.data.length;
     if (cantidadDeResultados > 0) {
@@ -235,11 +214,9 @@ export class InicioPage implements OnInit {
       this.totalDePaginas = respuesta.data.lst_cat_negocios.total;
       this.totalDePaginasPorConsulta = respuesta.data.lst_cat_negocios.to;
       this.categoriasEstaVacios = false;
-      this.eliminarCategoriasDuplicadas(respuesta.data.lst_cat_negocios.data);
+      this.listaCategorias.push(... respuesta.data.lst_cat_negocios.data);
       this.negociosIdMapa();
-      //this.listaCategorias.push(...respuesta.data.lst_cat_negocios.data);
-
-
+     
     } else {
       throw throwError("");
     }

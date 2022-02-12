@@ -227,6 +227,8 @@ export class ProductosPage {
                 item.activo = item.letra != "Todos" ? 0 : 1;
             }
         });
+
+        
         this.filtrarABCRandom();
     }
 

@@ -43,7 +43,7 @@
     <div *ngIf="!this.abc" id="abcedario" class="scrolling-wrapper-flexbox">
         <div class="item" *ngFor="let filtro of filtroABC">
             <ion-button size="small" color="danger" (click)="filtrarABC(filtro)"
-                [ngClass]="{active:filtro.id === filtroCheckend}" [disabled]="!filtro.activo">
+                [ngClass]="{active:filtro.id === filtroCheckend}" *ngIf="filtro.activo">
                 {{filtro.letra}}
             </ion-button>
         </div>

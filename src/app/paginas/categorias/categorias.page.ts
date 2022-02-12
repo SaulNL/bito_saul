@@ -6,6 +6,8 @@ import { HostListener } from '@angular/core';
 import {IonContent, NavController, Platform} from "@ionic/angular";
 import {SideBarService} from "../../api/busqueda/side-bar-service";
 import { LOCAL_STORAGE_KEY } from '../../utils/localStorageKey';
+import { IPaginacion } from '../../interfaces/IPaginacion';
+import { PaginacionUtils } from '../../utils/paginacion-util';
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.page.html',
@@ -15,7 +17,11 @@ import { LOCAL_STORAGE_KEY } from '../../utils/localStorageKey';
 export class CategoriasPage implements OnInit {
   @ViewChild(IonContent) content: IonContent;
   public cordenada: number;
-
+  public paginacion:IPaginacion ={
+    actualPagina:1,
+    siguientePagina:1,
+    mensaje:"",
+  };
   public listaCategorias: Array<any>;
   private Filtros: FiltrosModel;
   public imgMobil:boolean;
@@ -28,7 +34,8 @@ export class CategoriasPage implements OnInit {
     ) {
       this.Filtros = new FiltrosModel();
       this.Filtros.idEstado = 29;
-    this.isIOS = this.platform.is('ios');
+      this.isIOS = this.platform.is('ios');
+      this.listaCategorias = new Array<any>();
     }
 
   ngOnInit() {
@@ -54,12 +61,13 @@ export class CategoriasPage implements OnInit {
     }
 
   obtenerCategorias(){
-    this.busquedaService.obtenerCategorias(1).subscribe(
+    this.busquedaService.obtenerCategorias(this.paginacion.siguientePagina).subscribe(
       response=>{
-        
-        this.listaCategorias=response.data.data;
+        this.listaCategorias.push(...response.data.data);
+        this.paginacion = PaginacionUtils.establecerDatosDePaginacion(response.data);
+   
     },error=>{
-
+      alert(error);
     });
   }
 
@@ -73,10 +81,16 @@ export class CategoriasPage implements OnInit {
     this.router.navigate(["/tabs/inicio"]);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-   /*cargarMasPaginas(evento: any){
-    this.paginacion.evento = evento;
-    this.paginacion.callback = this.obtenerCategorias;
-    PaginacionUtils.establecerEventoParaScroll(this.paginacion);
-  }*/
+   cargarMasPaginas(evento: any){
+    if (this.paginacion.totalDePaginasPorConsulta < this.paginacion.totalDePaginas) {
+      this.obtenerCategorias();
+      setTimeout(() => {
+          evento.target.complete();
+      }, 800)
+    } else {
+       evento.target.disabled = true;
+    }
+  
+  }
 
 }
