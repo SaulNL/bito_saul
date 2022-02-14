@@ -17,8 +17,9 @@
 <ion-content fullscreen>
     <ion-toolbar>
         <ion-segment [value]="ubicacion" [(ngModel)]="ubicacion" (ionChange)="setTipo(ubicacion)">
-            <ion-segment-button  [disabled]="!blnUbicacion" value="ubicacion">Ubicación</ion-segment-button>
             <ion-segment-button  value="localidad">Localidad</ion-segment-button>
+            <ion-segment-button  [disabled]="!blnUbicacion" value="ubicacion">Ubicación</ion-segment-button>
+            
         </ion-segment>
     </ion-toolbar>
     <ion-list>

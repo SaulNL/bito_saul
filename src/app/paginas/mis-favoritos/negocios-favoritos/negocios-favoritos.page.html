@@ -1,6 +1,6 @@
 <app-spinner [loader]="loader" [message]="msj"></app-spinner>
 <ion-content *ngIf="!loader" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
-  <app-boton-top [content]="content" [cordenada]="cordenada" [platform]="isIOS"></app-boton-top>
+  <app-boton-top [content]="content" [cordenada]="cordenada" ></app-boton-top>
   <ion-grid style="background-color: white;" *ngIf="tamanoLista === 0">
     <ion-row class="ion-align-items-center">
       <ion-col size="12" class="ion-text-center">

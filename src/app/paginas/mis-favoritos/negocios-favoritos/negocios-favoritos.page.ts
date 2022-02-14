@@ -47,11 +47,11 @@ export class NegociosFavoritosPage implements OnInit {
         .obtenerNegociosFavoritos(this.user.id_persona)
         .subscribe(
           (response) => {
+            this.loader = false;
             if (response.code === 200) {
               this.listaNegocios = response.data;
               this.tamanoLista = this.listaNegocios.length;
             }
-            this.loader = false;
           },
           (error) => {
             this.tamanoLista = 0;
