@@ -69,6 +69,9 @@
         </ion-row>
       </ion-grid>
     </ion-item>
+    <div class="ion-padding">
+      <small class="d-block">Método de pago: <strong>{{pedido.tipo_pago}}</strong></small>
+    </div>
     <ion-item lines="none">
       <ion-label>Total : ${{total}}  <span *ngIf="domicilioEnvio">{{domicilioEnvioMessage}}</span></ion-label>
     </ion-item>
