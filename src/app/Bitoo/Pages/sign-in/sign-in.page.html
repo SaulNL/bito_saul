@@ -18,25 +18,39 @@
   </ion-grid>
   <form (ngSubmit)="signInForm(formLogin)" #formLogin="ngForm">
     <ion-item>
-      <ion-label position="floating">Usuario</ion-label>
+      
       <ion-input
         id="user"
         name="user"
         type="username"
+        placeholder="Usuario"
         [(ngModel)]="user.usuario"
         required
       ></ion-input>
     </ion-item>
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input
+    
+      
+      <ion-item class="password-style">
+        
+        <ion-input
         id="password"
+        class="input-password"
         name="password"
-        type="password"
+        [type]="passwordType"
+        placeholder="Contraseña"
         [(ngModel)]="user.password"
         required
-      ></ion-input>
-    </ion-item>
+      >
+    </ion-input>
+    <a class="type-toggle" (click)="showHidePassword()">
+      <ion-icon class="show-option" [hidden]="showPassword" name="eye-off-outline"></ion-icon>
+      <ion-icon item-right class="hide-option" [hidden]="!showPassword" name="eye-outline"></ion-icon>
+   </a>
+      </ion-item>
+
+     
+     
+    
     <ion-button
       class="ion-margin-top bg-rosa text-format"
       expand="block"

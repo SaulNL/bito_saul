@@ -42,6 +42,8 @@ export class SignInPage implements OnInit {
   public loadFacebook: boolean;
   public loadGoogle: boolean;
   public loadApple: boolean;
+  public passwordType: string;
+  public showPassword: boolean;
 
   constructor(
     private loginService: LoginService,
@@ -93,6 +95,8 @@ export class SignInPage implements OnInit {
     this.loadGoogle = false;
     this.loadApple = false;
     this.user = new UserSignInModel(null, null);
+    this.passwordType = 'password';
+    this.showPassword = false;
   }
   /**
    * @author Juan Antonio Guevara Flores
@@ -493,4 +497,19 @@ export class SignInPage implements OnInit {
     const content: NotificationInterface = this.create.createNotificationFirebaseWithUser();
     this.notification.updateUserWithNotification(content);
   }
+
+ /**
+   * @author Paola Coba
+   * @description Muestra u oculta la contraseña en el login
+   */
+  public showHidePassword() {
+    if (!this.showPassword) {
+      this.showPassword=true;
+      this.passwordType='text';
+    }else{
+       this.showPassword=false;
+      this.passwordType='password';
+    }
+  }
+
 }
