@@ -13,6 +13,7 @@ declare var google: any;
     styleUrls: ['./datos-pedido-negocio.page.scss'],
 })
 export class DatosPedidoNegocioPage implements OnInit {
+    
     public pedido: any;
     blnCancelar: boolean;
     motivo: any;
