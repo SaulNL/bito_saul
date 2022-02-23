@@ -1,39 +1,42 @@
-import { NotificationInterface } from './../../models/notifications-model';
-import { CreateObjects } from './../../helper/create-object';
-import { NotificationWithFirebaseService } from './../../../api/notification-with-firebase.service';
-import { SelectedOptionSesionModel } from './../../models/selected-option-sesion-model';
-import { OptionSesion } from './../../types/option-sesion';
-import { SignInOrUpSocialNetworksComponent } from './../../components/sign-in-or-up-social-networks/sign-in-or-up-social-networks.component';
-import { ResponderInterface } from './../../models/responder-model';
-import { ContentCommonUserSingUpInterface } from './../../models/user-sign-up-model';
-import { SelectedSocialNetwork } from './../../types/platform-type';
-import { ProccessSignUp } from './../../helper/proccess-sign-up';
-import { UsuarioService } from './../../../api/busqueda/login/usuario.service';
-import { RecoverPasswordComponent } from './../../components/recover-password/recover-password.component';
-import { ReturnToModel } from './../../models/return-to-model';
-import { Location } from '@angular/common';
-import { ToadNotificacionService } from './../../../api/toad-notificacion.service';
-import { LoginService } from './../../../api/login.service';
-import { NgForm } from '@angular/forms';
-import { UserSignInModel, UserSignInInterface } from '../../models/user-sign-in-model';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Platform, ModalController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
-import { ConfigGlobal } from '../../config/config-global';
-import { ResponderModel } from '../../models/responder-model';
-import { ValidatorData } from '../../helper/validations';
-import { ResponseCommon } from '../../helper/is-success-response';
+import { NotificationInterface } from "./../../models/notifications-model";
+import { CreateObjects } from "./../../helper/create-object";
+import { NotificationWithFirebaseService } from "./../../../api/notification-with-firebase.service";
+import { SelectedOptionSesionModel } from "./../../models/selected-option-sesion-model";
+import { OptionSesion } from "./../../types/option-sesion";
+import { SignInOrUpSocialNetworksComponent } from "./../../components/sign-in-or-up-social-networks/sign-in-or-up-social-networks.component";
+import { ResponderInterface } from "./../../models/responder-model";
+import { ContentCommonUserSingUpInterface } from "./../../models/user-sign-up-model";
+import { SelectedSocialNetwork } from "./../../types/platform-type";
+import { ProccessSignUp } from "./../../helper/proccess-sign-up";
+import { UsuarioService } from "./../../../api/busqueda/login/usuario.service";
+import { RecoverPasswordComponent } from "./../../components/recover-password/recover-password.component";
+import { ReturnToModel } from "./../../models/return-to-model";
+import { Location } from "@angular/common";
+import { ToadNotificacionService } from "./../../../api/toad-notificacion.service";
+import { LoginService } from "./../../../api/login.service";
+import { NgForm } from "@angular/forms";
+import {
+  UserSignInModel,
+  UserSignInInterface,
+} from "../../models/user-sign-in-model";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Platform, ModalController } from "@ionic/angular";
+import { Subscription } from "rxjs";
+import { ConfigGlobal } from "../../config/config-global";
+import { ResponderModel } from "../../models/responder-model";
+import { ValidatorData } from "../../helper/validations";
+import { ResponseCommon } from "../../helper/is-success-response";
 
 @Component({
-  selector: 'app-sign-in',
-  templateUrl: './sign-in.page.html',
-  styleUrls: ['./sign-in.page.scss'],
-  providers: [ValidatorData, ResponseCommon, ProccessSignUp, CreateObjects]
+  selector: "app-sign-in",
+  templateUrl: "./sign-in.page.html",
+  styleUrls: ["./sign-in.page.scss"],
+  providers: [ValidatorData, ResponseCommon, ProccessSignUp, CreateObjects],
 })
-
 export class SignInPage implements OnInit {
-  @ViewChild('socialNetworks', { static: false }) signInChange: SignInOrUpSocialNetworksComponent;
+  @ViewChild("socialNetworks", { static: false })
+  signInChange: SignInOrUpSocialNetworksComponent;
   public loader: boolean;
   public user: UserSignInModel;
   private backButtonPhysical: Subscription;
@@ -60,7 +63,7 @@ export class SignInPage implements OnInit {
     private notification: NotificationWithFirebaseService,
     private create: CreateObjects
   ) {
-    this.isIos = this.platform.is('ios');
+    this.isIos = this.platform.is("ios");
     this.init();
     this.ionViewDidEnter();
     this.ionViewWillLeave();
@@ -72,16 +75,16 @@ export class SignInPage implements OnInit {
       location.reload();
     }
 
-    this.activeRoute.queryParams.subscribe(params => {
+    this.activeRoute.queryParams.subscribe((params) => {
       if (params.productos && params) {
         this.returnToLocation = JSON.parse(params.productos);
       }
     });
 
-    this.activeRoute.queryParams.subscribe(params => {
+    this.activeRoute.queryParams.subscribe((params) => {
       if (params.perfil && params) {
         this.returnToLocation = JSON.parse(params.perfil);
-        localStorage.setItem('optionLogin', params.perfil);
+        localStorage.setItem("optionLogin", params.perfil);
       }
     });
   }
@@ -95,7 +98,7 @@ export class SignInPage implements OnInit {
     this.loadGoogle = false;
     this.loadApple = false;
     this.user = new UserSignInModel(null, null);
-    this.passwordType = 'password';
+    this.passwordType = "password";
     this.showPassword = false;
   }
   /**
@@ -104,10 +107,13 @@ export class SignInPage implements OnInit {
    * @param optionSesion
    * @description Proceso despues recibir una validacion correcta de las credenciales
    */
-  private proccessSuccessAfterSignIn(response: any, optionSesion: SelectedOptionSesionModel) {
+  private proccessSuccessAfterSignIn(
+    response: any,
+    optionSesion: SelectedOptionSesionModel
+  ) {
     ConfigGlobal.setUser(response);
     localStorage.setItem("isRedirected", "false");
-    const optionEnterLogin = localStorage.getItem('optionLogin');
+    const optionEnterLogin = localStorage.getItem("optionLogin");
     this.inicializeNotification();
     if (optionEnterLogin != null) {
       this.returnToLocation = JSON.parse(String(optionEnterLogin));
@@ -126,8 +132,12 @@ export class SignInPage implements OnInit {
    */
   public signInForm(form: NgForm) {
     this.loader = true;
-    const user: UserSignInInterface = new UserSignInModel(form.value.user, form.value.password);
-    const optionSesion: SelectedOptionSesionModel = new SelectedOptionSesionModel('defaultUser');
+    const user: UserSignInInterface = new UserSignInModel(
+      form.value.user,
+      form.value.password
+    );
+    const optionSesion: SelectedOptionSesionModel =
+      new SelectedOptionSesionModel("defaultUser");
     this.signInCommon(user, optionSesion);
   }
   /**
@@ -136,7 +146,10 @@ export class SignInPage implements OnInit {
    * @param optionSesion
    * @description Inicio de sesion principal, usuario normal o con red social
    */
-  private signInCommon(user: UserSignInModel, optionSesion: SelectedOptionSesionModel) {
+  private signInCommon(
+    user: UserSignInModel,
+    optionSesion: SelectedOptionSesionModel
+  ) {
     try {
       this.loginService.login(user).subscribe(
         (response) => {
@@ -145,7 +158,8 @@ export class SignInPage implements OnInit {
           } else {
             this.proccessErrorMessageBeforeSignIn(optionSesion);
           }
-        }, (error) => {
+        },
+        (error) => {
           this.optionSesionLoad(optionSesion);
           this.toadNotificacionService.error(error);
         }
@@ -171,16 +185,18 @@ export class SignInPage implements OnInit {
    * @author Juan Antonio Guevara Flores
    * @description Desactiva el loader de la red social seleccioanda
    */
-  private optionSesionSocialNetworks(selectedSocialNetwork: SelectedSocialNetwork) {
+  private optionSesionSocialNetworks(
+    selectedSocialNetwork: SelectedSocialNetwork
+  ) {
     try {
       switch (selectedSocialNetwork) {
-        case 'apple':
+        case "apple":
           this.signInChange.loaderApple = false;
           break;
-        case 'google':
+        case "google":
           this.signInChange.loaderGoogle = false;
           break;
-        case 'facebook':
+        case "facebook":
           this.signInChange.loaderFacebook = false;
           break;
         default:
@@ -191,14 +207,15 @@ export class SignInPage implements OnInit {
       this.toadNotificacionService.error(error);
       this.turnOfLoadSocialNetworks();
     }
-
   }
   /**
    * @author Juan Antonio Guevara Flores
    * @param optionSesion
    * @description Proceso despues recibir una validacion incorrecta de las credenciales
    */
-  private proccessErrorMessageBeforeSignIn(optionSesion: SelectedOptionSesionModel) {
+  private proccessErrorMessageBeforeSignIn(
+    optionSesion: SelectedOptionSesionModel
+  ) {
     this.optionSesionLoad(optionSesion);
     this.toadNotificacionService.alerta("Usuario y/o contraseña incorrectos");
   }
@@ -214,14 +231,14 @@ export class SignInPage implements OnInit {
   }
 
   public backPhysicalBottom() {
-    const optionEnterLogin = localStorage.getItem('optionLogin');
+    const optionEnterLogin = localStorage.getItem("optionLogin");
     this.returnToLocation = JSON.parse(String(optionEnterLogin));
     try {
       switch (this.returnToLocation.type) {
-        case 'producto':
+        case "producto":
           this.location.back();
           break;
-        case 'perfil':
+        case "perfil":
           this.goToRoute(this.returnToLocation.url);
           break;
         default:
@@ -231,7 +248,6 @@ export class SignInPage implements OnInit {
     } catch (error) {
       this.location.back();
     }
-
   }
 
   private goToRoute(url: string) {
@@ -260,31 +276,38 @@ export class SignInPage implements OnInit {
    * @description Respuesta de de datos de una red social para iniciar sesión
    */
   public response(response: ResponderModel) {
-    const optionSesion: SelectedOptionSesionModel = new SelectedOptionSesionModel('socialNetwork', response.socialNetwork);
+    const optionSesion: SelectedOptionSesionModel =
+      new SelectedOptionSesionModel("socialNetwork", response.socialNetwork);
     if (this.responseCommon.validation(response)) {
       try {
         switch (response.socialNetwork) {
-          case 'google':
+          case "google":
             this.signInGoogle(response, optionSesion);
             break;
-          case 'apple':
+          case "apple":
             this.signInApple(response, optionSesion);
             break;
-          case 'facebook':
+          case "facebook":
             this.signInFacebook(response, optionSesion);
             break;
           default:
             this.turnOfLoadSocialNetworks();
-            this.toadNotificacionService.error(this.validatorData.messageErrorValidationSocialNetworkData());
+            this.toadNotificacionService.error(
+              this.validatorData.messageErrorValidationSocialNetworkData()
+            );
             break;
         }
       } catch (error) {
         this.optionSesionSocialNetworks(optionSesion.selectedSocialNetwork);
-        this.toadNotificacionService.error(this.validatorData.messageErrorValidationSocialNetworkData());
+        this.toadNotificacionService.error(
+          this.validatorData.messageErrorValidationSocialNetworkData()
+        );
       }
     } else {
       this.optionSesionSocialNetworks(optionSesion.selectedSocialNetwork);
-      this.toadNotificacionService.error(this.responseCommon.errorMessage(response));
+      this.toadNotificacionService.error(
+        this.responseCommon.errorMessage(response)
+      );
     }
   }
   /**
@@ -293,8 +316,14 @@ export class SignInPage implements OnInit {
    * @param optionSesion
    * @description Inicio de proceso para sesión con Apple
    */
-  private signInApple(response: ResponderModel, optionSesion: SelectedOptionSesionModel) {
-    const userApple: UserSignInInterface = new UserSignInModel(response.credentials.email, response.credentials.user);
+  private signInApple(
+    response: ResponderModel,
+    optionSesion: SelectedOptionSesionModel
+  ) {
+    const userApple: UserSignInInterface = new UserSignInModel(
+      response.credentials.email,
+      response.credentials.user
+    );
     userApple.type = response.socialNetwork;
     this.userSignIn(userApple, response, optionSesion);
   }
@@ -304,7 +333,10 @@ export class SignInPage implements OnInit {
    * @param optionSesion
    * @description Inicio del proceso de sesión con Google
    */
-  private signInGoogle(response: ResponderModel, optionSesion: SelectedOptionSesionModel) {
+  private signInGoogle(
+    response: ResponderModel,
+    optionSesion: SelectedOptionSesionModel
+  ) {
     this.proccessSignInCommon(response, optionSesion);
   }
 
@@ -314,7 +346,10 @@ export class SignInPage implements OnInit {
    * @param optionSesion
    * @description Inicio del proceso de sesión con Facebook
    */
-  private signInFacebook(response: ResponderModel, optionSesion: SelectedOptionSesionModel) {
+  private signInFacebook(
+    response: ResponderModel,
+    optionSesion: SelectedOptionSesionModel
+  ) {
     this.proccessSignInCommon(response, optionSesion);
   }
 
@@ -324,13 +359,21 @@ export class SignInPage implements OnInit {
    * @param optionSesion
    * @description Proceso comun de Google y Facebook para validar las crendeciales
    */
-  private proccessSignInCommon(response: ResponderModel, optionSesion: SelectedOptionSesionModel) {
+  private proccessSignInCommon(
+    response: ResponderModel,
+    optionSesion: SelectedOptionSesionModel
+  ) {
     if (!this.validatorData.validateSocialNetworkData(response.credentials)) {
-      const userGoogle: UserSignInInterface = new UserSignInModel(response.credentials.user.email, response.credentials.user.providerData[0].uid);
+      const userGoogle: UserSignInInterface = new UserSignInModel(
+        response.credentials.user.email,
+        response.credentials.user.providerData[0].uid
+      );
       this.userSignIn(userGoogle, response, optionSesion);
     } else {
       this.optionSesionSocialNetworks(optionSesion.selectedSocialNetwork);
-      this.toadNotificacionService.error(this.validatorData.messageErrorValidationSocialNetworkData());
+      this.toadNotificacionService.error(
+        this.validatorData.messageErrorValidationSocialNetworkData()
+      );
     }
   }
   /**
@@ -340,7 +383,11 @@ export class SignInPage implements OnInit {
    * @param optionSesion
    * @description Inicio de sesión y en el caso de que no exista crea la cuenta para redes sociales
    */
-  private userSignIn(user: UserSignInModel, responder: ResponderModel, optionSesion: SelectedOptionSesionModel) {
+  private userSignIn(
+    user: UserSignInModel,
+    responder: ResponderModel,
+    optionSesion: SelectedOptionSesionModel
+  ) {
     try {
       this.loginService.login(user).subscribe(
         (response) => {
@@ -349,7 +396,8 @@ export class SignInPage implements OnInit {
           } else {
             this.signUp(responder, optionSesion);
           }
-        }, (error) => {
+        },
+        (error) => {
           this.optionSesionSocialNetworks(optionSesion.selectedSocialNetwork);
           this.toadNotificacionService.error(error);
         }
@@ -365,26 +413,33 @@ export class SignInPage implements OnInit {
    * @param optionSesion
    * @description Crear cuenta dependiendo de la red social
    */
-  private signUp(response: ResponderModel, optionSesion: SelectedOptionSesionModel) {
+  private signUp(
+    response: ResponderModel,
+    optionSesion: SelectedOptionSesionModel
+  ) {
     try {
       switch (response.socialNetwork) {
-        case 'google':
+        case "google":
           this.createAccountWithGoogle(response, optionSesion);
           break;
-        case 'apple':
+        case "apple":
           this.createAccountWithApple(response, optionSesion);
           break;
-        case 'facebook':
+        case "facebook":
           this.createAccountWithFacebook(response, optionSesion);
           break;
         default:
           this.optionSesionSocialNetworks(optionSesion.selectedSocialNetwork);
-          this.toadNotificacionService.error(this.validatorData.messageErrorValidationSocialNetworkData());
+          this.toadNotificacionService.error(
+            this.validatorData.messageErrorValidationSocialNetworkData()
+          );
           break;
       }
     } catch (error) {
       this.optionSesionSocialNetworks(optionSesion.selectedSocialNetwork);
-      this.toadNotificacionService.error(this.validatorData.messageErrorValidationSocialNetworkData());
+      this.toadNotificacionService.error(
+        this.validatorData.messageErrorValidationSocialNetworkData()
+      );
     }
   }
   /**
@@ -408,8 +463,19 @@ export class SignInPage implements OnInit {
    * @param optionSesion
    * @description Proceso para iniciar sesión despues de crear la cuenta con una red social
    */
-  private proccessAfterCreateAccount(response: any, email: string, password: string, optionSesion: SelectedOptionSesionModel) {
-    const respond: ResponderInterface = this.proceesSignUp.proccessAfterCreateAccount(response, email, password, optionSesion.selectedSocialNetwork);
+  private proccessAfterCreateAccount(
+    response: any,
+    email: string,
+    password: string,
+    optionSesion: SelectedOptionSesionModel
+  ) {
+    const respond: ResponderInterface =
+      this.proceesSignUp.proccessAfterCreateAccount(
+        response,
+        email,
+        password,
+        optionSesion.selectedSocialNetwork
+      );
     if (this.responseCommon.validation(respond)) {
       const user: UserSignInInterface = respond.credentials;
       this.signInCommon(user, optionSesion);
@@ -424,13 +490,20 @@ export class SignInPage implements OnInit {
    * @param optionSesion
    * @description Crear cuenta con Apple
    */
-  private createAccountWithApple(response: ResponderModel, optionSesion: SelectedOptionSesionModel) {
+  private createAccountWithApple(
+    response: ResponderModel,
+    optionSesion: SelectedOptionSesionModel
+  ) {
     this.usuarioService.createAccountApple(response.credentials).subscribe(
       (respond) => {
-        this.proccessAfterCreateAccount(respond, response.credentials.user, response.credentials.email, optionSesion);
+        this.proccessAfterCreateAccount(
+          respond,
+          response.credentials.user,
+          response.credentials.email,
+          optionSesion
+        );
       },
       (error) => {
-
         this.signInChange.loaderApple = false;
         this.loadApple = false;
         this.toadNotificacionService.error(error);
@@ -443,11 +516,20 @@ export class SignInPage implements OnInit {
    * @param optionSesion
    * @description Crear cuanta con Google
    */
-  private createAccountWithGoogle(response: ResponderModel, optionSesion: SelectedOptionSesionModel) {
-    const contentUser: ContentCommonUserSingUpInterface = this.proceesSignUp.proccessCreateAccountModel(response);
+  private createAccountWithGoogle(
+    response: ResponderModel,
+    optionSesion: SelectedOptionSesionModel
+  ) {
+    const contentUser: ContentCommonUserSingUpInterface =
+      this.proceesSignUp.proccessCreateAccountModel(response);
     this.usuarioService.createAccountWithGoogle(contentUser.content).subscribe(
       (respond) => {
-        this.proccessAfterCreateAccount(respond, contentUser.content.email, contentUser.password, optionSesion);
+        this.proccessAfterCreateAccount(
+          respond,
+          contentUser.content.email,
+          contentUser.password,
+          optionSesion
+        );
       },
       (error) => {
         this.signInChange.loaderGoogle = false;
@@ -462,18 +544,29 @@ export class SignInPage implements OnInit {
    * @param optionSesion
    * @description Crear cuenta con Facebook
    */
-  private createAccountWithFacebook(response: ResponderModel, optionSesion: SelectedOptionSesionModel) {
-    const contentUser: ContentCommonUserSingUpInterface = this.proceesSignUp.proccessCreateAccountModel(response);
-    this.usuarioService.createAccountWithFacebook(contentUser.content).subscribe(
-      (respond) => {
-        this.proccessAfterCreateAccount(respond, contentUser.content.email, contentUser.password, optionSesion);
-      },
-      (error) => {
-        this.loadFacebook = false;
-        this.signInChange.loaderFacebook = false;
-        this.toadNotificacionService.alerta(error);
-      }
-    );
+  private createAccountWithFacebook(
+    response: ResponderModel,
+    optionSesion: SelectedOptionSesionModel
+  ) {
+    const contentUser: ContentCommonUserSingUpInterface =
+      this.proceesSignUp.proccessCreateAccountModel(response);
+    this.usuarioService
+      .createAccountWithFacebook(contentUser.content)
+      .subscribe(
+        (respond) => {
+          this.proccessAfterCreateAccount(
+            respond,
+            contentUser.content.email,
+            contentUser.password,
+            optionSesion
+          );
+        },
+        (error) => {
+          this.loadFacebook = false;
+          this.signInChange.loaderFacebook = false;
+          this.toadNotificacionService.alerta(error);
+        }
+      );
   }
 
   /**
@@ -494,22 +587,22 @@ export class SignInPage implements OnInit {
    * @description Registra el token para las notificaciones
    */
   private registerTokenNotification() {
-    const content: NotificationInterface = this.create.createNotificationFirebaseWithUser();
+    const content: NotificationInterface =
+      this.create.createNotificationFirebaseWithUser();
     this.notification.updateUserWithNotification(content);
   }
 
- /**
+  /**
    * @author Paola Coba
    * @description Muestra u oculta la contraseña en el login
    */
   public showHidePassword() {
     if (!this.showPassword) {
-      this.showPassword=true;
-      this.passwordType='text';
-    }else{
-       this.showPassword=false;
-      this.passwordType='password';
+      this.showPassword = true;
+      this.passwordType = "text";
+    } else {
+      this.showPassword = false;
+      this.passwordType = "password";
     }
   }
-
 }

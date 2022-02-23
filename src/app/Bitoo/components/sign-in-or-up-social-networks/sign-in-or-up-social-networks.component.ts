@@ -1,18 +1,25 @@
-import { Constant } from './../../environments/contant';
-import { ResponderInterface, ResponderModel } from './../../models/responder-model';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Constant } from "./../../environments/contant";
+import {
+  ResponderInterface,
+  ResponderModel,
+} from "./../../models/responder-model";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Facebook, FacebookLoginResponse } from "@ionic-native/facebook/ngx";
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
+import * as firebase from "firebase/app";
+import "firebase/auth";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { GooglePlus } from "@ionic-native/google-plus/ngx";
-import { AppleSignInErrorResponse, AppleSignInResponse, ASAuthorizationAppleIDRequest, SignInWithApple } from "@ionic-native/sign-in-with-apple/ngx";
-
+import {
+  AppleSignInErrorResponse,
+  AppleSignInResponse,
+  ASAuthorizationAppleIDRequest,
+  SignInWithApple,
+} from "@ionic-native/sign-in-with-apple/ngx";
 
 @Component({
-  selector: 'app-sign-in-or-up-social-networks',
-  templateUrl: './sign-in-or-up-social-networks.component.html',
-  styleUrls: ['./sign-in-or-up-social-networks.component.scss'],
+  selector: "app-sign-in-or-up-social-networks",
+  templateUrl: "./sign-in-or-up-social-networks.component.html",
+  styleUrls: ["./sign-in-or-up-social-networks.component.scss"],
 })
 export class SignInOrUpSocialNetworksComponent implements OnInit {
   @Input() public ios: boolean;
@@ -29,24 +36,31 @@ export class SignInOrUpSocialNetworksComponent implements OnInit {
     private signInWithApple: SignInWithApple
   ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
   /**
    * @author Juan Antonio Guevara Flores
    * @description Inicio de coneccion al servidor de facebook para obtener y retornar las credenciales
    */
   async signUpFacebook() {
     this.loaderFacebook = true;
-    const response: ResponderInterface = new ResponderModel('facebook');
+    const response: ResponderInterface = new ResponderModel("facebook");
     try {
       const permissions: Array<string> = ["public_profile", "email"];
-      const responseFacebook: FacebookLoginResponse = await this.facebook.login(permissions);
-      const credentialsFacebook: firebase.auth.OAuthCredential = firebase.auth.FacebookAuthProvider.credential(responseFacebook.authResponse.accessToken);
-      response.credentials = await this.angularFireAuth.auth.signInWithCredential(credentialsFacebook);
+      const responseFacebook: FacebookLoginResponse = await this.facebook.login(
+        permissions
+      );
+      const credentialsFacebook: firebase.auth.OAuthCredential =
+        firebase.auth.FacebookAuthProvider.credential(
+          responseFacebook.authResponse.accessToken
+        );
+      response.credentials =
+        await this.angularFireAuth.auth.signInWithCredential(
+          credentialsFacebook
+        );
       this.facebook.logout();
       this.responder.emit(response);
     } catch (error) {
-      response.isSuccess = 'error';
+      response.isSuccess = "error";
       response.credentials = error;
       this.responder.emit(response);
       this.loaderFacebook = false;
@@ -58,17 +72,23 @@ export class SignInOrUpSocialNetworksComponent implements OnInit {
    */
   async signUpGoogle() {
     this.loaderGoogle = true;
-    const response: ResponderInterface = new ResponderModel('google');
+    const response: ResponderInterface = new ResponderModel("google");
     try {
       if (this.ios) {
-        const responseGoogleApple = await this.googlePlus.login({ webClientId: Constant.GOOGLE_KEY_APPLE, offline: true });
+        const responseGoogleApple = await this.googlePlus.login({
+          webClientId: Constant.GOOGLE_KEY_APPLE,
+          offline: true,
+        });
         this.proccessAfterSignUpGoogle(responseGoogleApple, response);
       } else {
-        const responseGoogleAndroid = await this.googlePlus.login({ webClientId: Constant.GOOGLE_KEY_ANDROID, offline: true });
+        const responseGoogleAndroid = await this.googlePlus.login({
+          webClientId: Constant.GOOGLE_KEY_ANDROID,
+          offline: true,
+        });
         this.proccessAfterSignUpGoogle(responseGoogleAndroid, response);
       }
     } catch (error) {
-      response.isSuccess = 'error';
+      response.isSuccess = "error";
       response.credentials = error;
       this.responder.emit(response);
       this.loaderGoogle = false;
@@ -80,10 +100,14 @@ export class SignInOrUpSocialNetworksComponent implements OnInit {
    * @param response
    * @description Proceso para obtener y retornar las crendenciales de Google
    */
-  async proccessAfterSignUpGoogle(responseGoogle: any, response: ResponderModel) {
-    const credentialsGoogle = await this.angularFireAuth.auth.signInWithCredential(
-      firebase.auth.GoogleAuthProvider.credential(responseGoogle.idToken)
-    );
+  async proccessAfterSignUpGoogle(
+    responseGoogle: any,
+    response: ResponderModel
+  ) {
+    const credentialsGoogle =
+      await this.angularFireAuth.auth.signInWithCredential(
+        firebase.auth.GoogleAuthProvider.credential(responseGoogle.idToken)
+      );
     response.credentials = credentialsGoogle;
     this.responder.emit(response);
   }
@@ -93,23 +117,26 @@ export class SignInOrUpSocialNetworksComponent implements OnInit {
    */
   public signUpApple() {
     this.loaderApple = true;
-    const response: ResponderInterface = new ResponderModel('apple');
+    const response: ResponderInterface = new ResponderModel("apple");
     try {
-      this.signInWithApple.signin({
-        requestedScopes: [
-          ASAuthorizationAppleIDRequest.ASAuthorizationScopeFullName,
-          ASAuthorizationAppleIDRequest.ASAuthorizationScopeEmail
-        ]
-      }).then((credentialsGoogle: AppleSignInResponse) => {
-        response.credentials = credentialsGoogle;
-        this.responder.emit(response);
-      }).catch((error: AppleSignInErrorResponse) => {
-        response.isSuccess = 'error';
-        response.credentials = error;
-        this.responder.emit(response);
-      });
+      this.signInWithApple
+        .signin({
+          requestedScopes: [
+            ASAuthorizationAppleIDRequest.ASAuthorizationScopeFullName,
+            ASAuthorizationAppleIDRequest.ASAuthorizationScopeEmail,
+          ],
+        })
+        .then((credentialsGoogle: AppleSignInResponse) => {
+          response.credentials = credentialsGoogle;
+          this.responder.emit(response);
+        })
+        .catch((error: AppleSignInErrorResponse) => {
+          response.isSuccess = "error";
+          response.credentials = error;
+          this.responder.emit(response);
+        });
     } catch (error) {
-      response.isSuccess = 'error';
+      response.isSuccess = "error";
       response.credentials = error;
       this.responder.emit(response);
       this.loaderApple = false;
@@ -120,6 +147,6 @@ export class SignInOrUpSocialNetworksComponent implements OnInit {
    * @description Retorna si viene el valor de Sign-In-page o de Sign-Up-page
    */
   get isSignIn() {
-    return (this.signIn);
+    return this.signIn;
   }
 }
