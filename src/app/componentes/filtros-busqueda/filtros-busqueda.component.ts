@@ -306,9 +306,9 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
     setIonradiogroupAbiertoCerrado(opcion: number) {
         if (opcion === 1) {
-            this.filtros.abierto = true;
+            this.filtros.abierto = opcion+'';
         } else if (opcion === 0) {
-            this.filtros.abierto = false;
+            this.filtros.abierto = opcion+'';
         }
     }
     obtenerKilometrosRango(event) {

@@ -66,11 +66,11 @@
                                 <ion-badge *ngIf="proveedor.abierto == 'ABIERTO'" color="success">Abierto</ion-badge>
                                 <ion-badge *ngIf="proveedor.abierto !== 'ABIERTO'" color="danger">Cerrado</ion-badge>
                             </ion-card-header>
-                            <ion-card-content>
+                            <!-- <ion-card-content>
                                 <div class="ui-search-item__title">
                                     {{proveedor.descripcion}}
                                 </div>
-                            </ion-card-content>
+                            </ion-card-content> -->
                         </div>
                         <div *ngIf="existeSesion" class="likegegi">
                             <app-dar-like-negocio [negocio]="proveedor" [usuario]="user" [mostrarLike]="existeSesion">
