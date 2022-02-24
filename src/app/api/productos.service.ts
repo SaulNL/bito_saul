@@ -20,8 +20,8 @@ export class ProductosService {
    * Funcion para obtener los productos
    * @author Omar
    */
-  public obtenerProductos(filtro: FiltroABCModel): Observable<any> {
-    const body = JSON.stringify(filtro);
+  public obtenerProductos(filtros: FiltrosModel): Observable<any> {
+    const body = JSON.stringify({ filtros: filtros });
     this.http.setDataSerializer("utf8");
     return from(
       this.http
