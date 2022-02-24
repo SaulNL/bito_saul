@@ -272,6 +272,7 @@ export class ProductosPage {
    * @author Paola Coba
    */
   public obtenerProductoPorLetra(filtro: FiltroABCModel) {
+    console.log("filtro: ", filtro);
     this.loader = true;
     let letra = filtro.letra;
     if (filtro.id === this.filtroCheckend) {
@@ -286,8 +287,11 @@ export class ProductosPage {
       this.filtrarTodos();
     } else {
       try {
-        this.servicioProductos.obtenerProductos(filtro).subscribe(
+        this.anyFiltros.letraInicial = filtro.letra;
+        console.log("this any filtros", this.anyFiltros);
+        this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
           (response) => {
+            console.log("productos", response);
             this.lstProductosOriginal = response.data.lstProductos;
             this.lstProductos = this.lstProductosOriginal.slice(0, 6);
             this.loader = false;
