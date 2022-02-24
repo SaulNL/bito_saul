@@ -225,6 +225,9 @@ export class InicioPage implements OnInit {
 
   cargarCategorias() {
 
+    this.Filtros.tipoBusqueda=1;
+    this.Filtros.idEstado=29;
+
     this.principalSercicio
       .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
       .then((respuesta) => {
