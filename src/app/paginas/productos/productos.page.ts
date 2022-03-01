@@ -392,6 +392,7 @@ export class ProductosPage {
       this.modal.dismiss({
         dismissed: true,
       });
+      this.filtroActivo = true;
       this.anyFiltros = res;
       this.obtenerProductos();
     });
@@ -408,6 +409,8 @@ export class ProductosPage {
 
   public borrarFiltros() {
     localStorage.removeItem("byCategorias");
+    this.anyFiltros = new FiltrosModel();
+    this.anyFiltros.idEstado = 29;
     this.filtroActivo = false;
     this.obtenerProductos();
   }

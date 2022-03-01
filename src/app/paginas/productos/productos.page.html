@@ -15,7 +15,7 @@
     </ion-header>
 
     <ion-item>
-        <ion-buttons *ngIf=" filtroActivo" slot="start">
+        <ion-buttons *ngIf=" filtroActivo" slot="end">
             <ion-chip (click)="borrarFiltros()" color="danger">
                 <ion-icon name="trash-outline" color="danger"></ion-icon>
                 <ion-label>Borrar Filtros</ion-label>
@@ -33,7 +33,7 @@
                     <ion-label>Regresar a bitoo</ion-label>
                 </ion-chip>
             </ion-buttons>
-        <ion-buttons slot="end">
+        <ion-buttons slot="end" *ngIf="!filtroActivo">
             <ion-button (click)="abrirFiltros()">Filtrar
                 <ion-icon name="filter-outline"></ion-icon>
             </ion-button>
