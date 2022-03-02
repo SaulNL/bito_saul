@@ -49,7 +49,7 @@ export class ProductosService {
    * @author Paola Coba
    */
   public obtenerIniciales(filtros: FiltrosModel): Observable<any> {
-    const body = JSON.stringify(filtros);
+    const body = JSON.stringify({ filtros: filtros });
     this.http.setDataSerializer("utf8");
     return from(
       this.http

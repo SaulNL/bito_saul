@@ -171,19 +171,15 @@ export class ProductosPage {
    * @author Omar
    */
   public obtenerProductos() {
-    console.log("se ejecuta obtenerProductos");
     this.loader = true;
 
     this.anyFiltros.user = this.user;
     this.plazaAfiliacion = JSON.parse(localStorage.getItem("org"));
-    console.log("plaza", this.plazaAfiliacion);
     if (this.plazaAfiliacion != null) {
       this.anyFiltros.organizacion = this.plazaAfiliacion.id_organizacion;
     }
-    console.log("filtros enviados", this.anyFiltros);
     this.servicioProductos.obtenerIniciales(this.anyFiltros).subscribe(
       (response) => {
-        console.log("respuesta de servicio", response.data.lstProductos);
         this.lstProductos = response.data.lstProductos;
         if (this.lstProductos.length > 0) {
           this.blnBtnMapa = true;
@@ -193,10 +189,8 @@ export class ProductosPage {
         }
         this.lstProductosBK = response.data.lstProductos;
         if (!this.abc) {
-          console.log("primer op", this.abc);
           this.armarFiltroABC();
         } else {
-          console.log("segunda op", this.abc);
           const tempLstProduct = response.data.lstProductos;
           this.lstProductosOriginal = tempLstProduct;
           this.lstProductos = tempLstProduct.slice(0, 6);
@@ -235,7 +229,6 @@ export class ProductosPage {
         }
       });
       if (siHay !== undefined) {
-        console.log("si hay", siHay);
         item.activo = 1;
       }
     });
@@ -279,7 +272,6 @@ export class ProductosPage {
    * @author Paola Coba
    */
   public obtenerProductoPorLetra(filtro: FiltroABCModel) {
-    console.log("filtro: ", filtro);
     this.loader = true;
     let letra = filtro.letra;
     if (filtro.id === this.filtroCheckend) {
@@ -297,7 +289,6 @@ export class ProductosPage {
         this.anyFiltros.letraInicial = filtro.letra;
         this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
           (response) => {
-            console.log("productos", response);
             this.lstProductosOriginal = response.data.lstProductos;
             this.lstProductos = this.lstProductosOriginal.slice(0, 6);
             this.loader = false;
