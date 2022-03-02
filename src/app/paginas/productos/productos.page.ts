@@ -171,14 +171,19 @@ export class ProductosPage {
    * @author Omar
    */
   public obtenerProductos() {
+    console.log("se ejecuta obtenerProductos");
     this.loader = true;
+
     this.anyFiltros.user = this.user;
     this.plazaAfiliacion = JSON.parse(localStorage.getItem("org"));
+    console.log("plaza", this.plazaAfiliacion);
     if (this.plazaAfiliacion != null) {
       this.anyFiltros.organizacion = this.plazaAfiliacion.id_organizacion;
     }
+    console.log("filtros enviados", this.anyFiltros);
     this.servicioProductos.obtenerIniciales(this.anyFiltros).subscribe(
       (response) => {
+        console.log("respuesta de servicio", response.data.lstProductos);
         this.lstProductos = response.data.lstProductos;
         if (this.lstProductos.length > 0) {
           this.blnBtnMapa = true;
@@ -188,8 +193,10 @@ export class ProductosPage {
         }
         this.lstProductosBK = response.data.lstProductos;
         if (!this.abc) {
+          console.log("primer op", this.abc);
           this.armarFiltroABC();
         } else {
+          console.log("segunda op", this.abc);
           const tempLstProduct = response.data.lstProductos;
           this.lstProductosOriginal = tempLstProduct;
           this.lstProductos = tempLstProduct.slice(0, 6);
@@ -218,8 +225,9 @@ export class ProductosPage {
       "Todos,A,B,C,D,E,F,G,H,I,J,K,L,M,N,Ñ,O,P,Q,R,S,T,U,V,W,X,Y,Z";
     const arreglo = letras.split(",");
     for (let i = 0; i < 28; i++) {
-      this.filtroABC.push({ id: i, letra: arreglo[i], activo: 1 });
+      this.filtroABC.push({ id: i, letra: arreglo[i], activo: 0 });
     }
+
     this.filtroABC.forEach((item) => {
       let siHay = this.lstProductos.find((producto) => {
         if (producto.nombre !== null) {
@@ -227,9 +235,8 @@ export class ProductosPage {
         }
       });
       if (siHay !== undefined) {
+        console.log("si hay", siHay);
         item.activo = 1;
-      } else {
-        item.activo = item.letra != "Todos" ? 0 : 1;
       }
     });
     this.filtrarABCRandom();
@@ -288,7 +295,6 @@ export class ProductosPage {
     } else {
       try {
         this.anyFiltros.letraInicial = filtro.letra;
-        console.log("this any filtros", this.anyFiltros);
         this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
           (response) => {
             console.log("productos", response);

@@ -1,12 +1,13 @@
-import { PlazasAfiliacionesComponent } from '../../componentes/plazas-afiliaciones/plazas-afiliaciones.component';
-import { AfiliacionPlazaModel } from '../../Modelos/AfiliacionPlazaModel';
-import { Auth0Service } from '../../api/busqueda/auth0.service';
+import { PlazasAfiliacionesComponent } from "../../componentes/plazas-afiliaciones/plazas-afiliaciones.component";
+import { AfiliacionPlazaModel } from "../../Modelos/AfiliacionPlazaModel";
+import { Auth0Service } from "../../api/busqueda/auth0.service";
 import { Component, EventEmitter, OnInit, ViewChild } from "@angular/core";
 import {
   IonContent,
   LoadingController,
-  ModalController, Platform,
-  ToastController
+  ModalController,
+  Platform,
+  ToastController,
 } from "@ionic/angular";
 import { BusquedaService } from "../../api/busqueda.service";
 import { FiltrosModel } from "../../Modelos/FiltrosModel";
@@ -18,13 +19,13 @@ import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Router } from "@angular/router";
 import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveedor-servicio.service";
 import { UtilsCls } from "../../utils/UtilsCls";
-import { PermisoModel } from 'src/app/Modelos/PermisoModel';
-import { ValidarPermisoService } from '../../api/validar-permiso.service';
-import { ICategoriaNegocio } from 'src/app/interfaces/ICategoriaNegocio';
-import { Observable, throwError } from 'rxjs';
-import { runInThisContext } from 'vm';
-import { LocalStorageUtil } from '../../utils/localStorageUtil';
-import { LOCAL_STORAGE_KEY } from 'src/app/utils/localStorageKey';
+import { PermisoModel } from "src/app/Modelos/PermisoModel";
+import { ValidarPermisoService } from "../../api/validar-permiso.service";
+import { ICategoriaNegocio } from "src/app/interfaces/ICategoriaNegocio";
+import { Observable, throwError } from "rxjs";
+import { runInThisContext } from "vm";
+import { LocalStorageUtil } from "../../utils/localStorageUtil";
+import { LOCAL_STORAGE_KEY } from "src/app/utils/localStorageKey";
 
 @Component({
   selector: "app-tab3",
@@ -36,6 +37,7 @@ export class InicioPage implements OnInit {
   @ViewChild(IonContent) content: IonContent;
   public static readonly MENSAJE_CUANDO_CARGA = "Cargar más";
   public static readonly PAGINAS_POR_CONSULTA = 20;
+  public lengthLista: number;
   public cordenada: number;
   public Filtros: FiltrosModel;
   public listaCategorias: Array<ICategoriaNegocio>;
@@ -49,7 +51,7 @@ export class InicioPage implements OnInit {
   filtroActivo: boolean;
   user: any;
   public existeSesion: boolean;
-  public msj = 'Cargando';
+  public msj = "Cargando";
   public tFiltro: boolean;
   private objectSelectAfiliacionPlaza: AfiliacionPlazaModel;
   public persona: number | null;
@@ -59,13 +61,13 @@ export class InicioPage implements OnInit {
   public isIOS: boolean = false;
   public subscribe;
   public categoriasEstaVacios = true;
+  public nombreCategoria = "";
   public actualPagina = 0;
   public totalDePaginas = 0;
   public seHaceScroll = false;
   public siguientePagina = this.actualPagina + 1;
   public mensaje = InicioPage.MENSAJE_CUANDO_CARGA;
   public totalDePaginasPorConsulta = 0;
- 
 
   constructor(
     public loadingController: LoadingController,
@@ -93,10 +95,9 @@ export class InicioPage implements OnInit {
     this.selectionAP = false;
     this.tFiltro = false;
     this.afiliacion = false;
-    this.isIOS = this.platform.is('ios');
+    this.isIOS = this.platform.is("ios");
 
     this.route.queryParams.subscribe((params) => {
-
       this.subscribe = this.platform.backButton.subscribe(() => {
         this.backPhysicalBottom();
       });
@@ -104,29 +105,26 @@ export class InicioPage implements OnInit {
   }
 
   public backPhysicalBottom() {
-    const option = localStorage.getItem('filter');
+    const option = localStorage.getItem("filter");
     if (option !== null) {
       this.Filtros = new FiltrosModel();
       this.Filtros.idEstado = 29;
       this.filtroActivo = false;
-      localStorage.removeItem('filter');
-      localStorage.setItem('isRedirected', 'false');
-      this.ruta.navigate(['/tabs/categorias']);
+      localStorage.removeItem("filter");
+      localStorage.setItem("isRedirected", "false");
+      this.ruta.navigate(["/tabs/categorias"]);
     }
   }
 
   ngOnInit(): void {
     this.user = this.util.getUserData();
     this.load();
-    this.route.queryParams.subscribe(
-
-      params => {
-        if (params.buscarNegocios && params) {
-          this.load();
-        }
+    this.route.queryParams.subscribe((params) => {
+      if (params.buscarNegocios && params) {
+        this.load();
       }
-    );
-    this.route.queryParams.subscribe(params => {
+    });
+    this.route.queryParams.subscribe((params) => {
       if (params.byLogin && params) {
         this.negocioRutaByLogin(params.byLogin);
       }
@@ -134,17 +132,22 @@ export class InicioPage implements OnInit {
   }
 
   private load() {
-    const selected = localStorage.getItem('org');
+    const selected = localStorage.getItem("org");
     if (selected != null) {
       this.selectionAP = true;
-      this.objectSelectAfiliacionPlaza = JSON.parse(String(localStorage.getItem('org')));
+      this.objectSelectAfiliacionPlaza = JSON.parse(
+        String(localStorage.getItem("org"))
+      );
     }
-    
+
     this.buscarNegocios(true);
     if (this.util.existSession()) {
       this.persona = this.util.getIdPersona();
       this.permisos = this.auth0Service.getUserPermisos();
-      this.afiliacion = this.validarPermiso.isChecked(this.permisos, 'ver_afiliacion');
+      this.afiliacion = this.validarPermiso.isChecked(
+        this.permisos,
+        "ver_afiliacion"
+      );
     }
   }
   /**
@@ -152,7 +155,7 @@ export class InicioPage implements OnInit {
    * @author Omar
    */
   scrollToTop() {
-    this.content.scrollToTop(500).then(r => { });
+    this.content.scrollToTop(500).then((r) => {});
   }
 
   public recargar(event: any) {
@@ -201,12 +204,9 @@ export class InicioPage implements OnInit {
         /* this.borrarFiltros();*/
       }
     }
-  
-
-
   }
 
-  validarResultadosDeCategorias(respuesta: any) {
+  async validarResultadosDeCategorias(respuesta: any) {
     const cantidadDeResultados = respuesta.data.lst_cat_negocios.data.length;
     if (cantidadDeResultados > 0) {
       this.actualPagina = respuesta.data.lst_cat_negocios.current_page;
@@ -214,29 +214,34 @@ export class InicioPage implements OnInit {
       this.totalDePaginas = respuesta.data.lst_cat_negocios.total;
       this.totalDePaginasPorConsulta = respuesta.data.lst_cat_negocios.to;
       this.categoriasEstaVacios = false;
-      this.listaCategorias.push(... respuesta.data.lst_cat_negocios.data);
+      this.lengthLista = this.listaCategorias.length;
+      this.listaCategorias.push(...respuesta.data.lst_cat_negocios.data);
       this.negociosIdMapa();
-     
+      if (this.actualPagina > 1) {
+        if (
+          this.listaCategorias[this.lengthLista - 1].nombre ==
+            this.listaCategorias[this.lengthLista].nombre ||
+          this.listaCategorias[this.lengthLista - 1].nombre == ""
+        ) {
+          this.listaCategorias[this.lengthLista].nombre = "";
+        }
+      }
     } else {
       throw throwError("");
     }
   }
 
-
   cargarCategorias() {
-
     this.principalSercicio
       .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
       .then((respuesta) => {
-        this.validarResultadosDeCategorias(respuesta)
+        this.validarResultadosDeCategorias(respuesta);
         this.loader = false;
-      }).catch((error) => {
+      })
+      .catch((error) => {
         this.loader = false;
         this.notificaciones.error("Error al buscar los datos");
-
-      })
-
-
+      });
   }
 
   buscarNegocios(seMuestraElLoader: boolean) {
@@ -244,20 +249,22 @@ export class InicioPage implements OnInit {
     if (seMuestraElLoader === true) {
       this.siguientePagina = 1;
       this.listaCategorias = [];
-
     }
 
     const usr = this.user;
     if (usr.id_persona !== undefined) {
       this.Filtros.id_persona = usr.id_persona;
     }
-    const byCategorias = localStorage.getItem('byCategorias');
+    const byCategorias = localStorage.getItem("byCategorias");
     const dato = JSON.parse(byCategorias);
     if (byCategorias !== null) {
       this.Filtros.idCategoriaNegocio = [dato.id_categoria];
       this.filtroActivo = true;
     }
-    (this.selectionAP) ? this.Filtros.organizacion = this.objectSelectAfiliacionPlaza.id_organizacion : '';
+    this.selectionAP
+      ? (this.Filtros.organizacion =
+          this.objectSelectAfiliacionPlaza.id_organizacion)
+      : "";
     this.cargarCategorias();
   }
 
@@ -296,7 +303,7 @@ export class InicioPage implements OnInit {
       componentProps: {
         buscarPorFiltros: eventEmitter,
         filtros: this.Filtros,
-        isProductPage: false
+        isProductPage: false,
       },
     });
     return await this.modal.present();
@@ -305,21 +312,18 @@ export class InicioPage implements OnInit {
     this.presentModalPlazasAfiliaciones();
   }
   async presentModalPlazasAfiliaciones() {
-    this.modal = await this.modalController.create(
-      {
-        component: PlazasAfiliacionesComponent,
-        cssClass: 'custom-modal-plazas-afiliaciones',
-        componentProps: {
-          idUsuario: this.persona,
-          permisos: this.permisos
-        }
-      }
-    );
+    this.modal = await this.modalController.create({
+      component: PlazasAfiliacionesComponent,
+      cssClass: "custom-modal-plazas-afiliaciones",
+      componentProps: {
+        idUsuario: this.persona,
+        permisos: this.permisos,
+      },
+    });
 
     return await this.modal.present();
   }
   private buscarSeleccionado(seleccionado: any) {
-
     this.seleccionado = seleccionado;
     this.Filtros = new FiltrosModel();
     this.Filtros.idCategoriaNegocio = [seleccionado.id_categoria];
@@ -352,11 +356,11 @@ export class InicioPage implements OnInit {
     this.listaIdsMapa = listaIdNegocio;
   }
   public regresarBitoo() {
-    localStorage.removeItem('org');
+    localStorage.removeItem("org");
     location.reload();
   }
   borrarFiltros() {
-    localStorage.removeItem('byCategorias');
+    localStorage.removeItem("byCategorias");
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
@@ -383,10 +387,9 @@ export class InicioPage implements OnInit {
       this.buscarNegocios(false);
       setTimeout(() => {
         event.target.complete();
-      }, 800) // 800 es el tiempo que se tarda por cargar, sin tener un lag por las 20 paginas que se consultan
+      }, 800); // 800 es el tiempo que se tarda por cargar, sin tener un lag por las 20 paginas que se consultan
     } else {
       event.target.disabled = true;
     }
-
   }
 }
