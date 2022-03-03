@@ -59,7 +59,6 @@ export class AgregarPromocionPage implements OnInit {
   }
 
   ngOnInit() {
-
     this.route.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.seleccionTo = JSON.parse(params.special);
@@ -110,13 +109,10 @@ export class AgregarPromocionPage implements OnInit {
   }
 
   public subir_imagen_cuadrada(event) {
-
     if (event.target.files && event.target.files.length) {
-
       let height;
       let width;
       for (const archivo of event.target.files) {
-
         const reader = this._utils_cls.getFileReader();
         reader.readAsDataURL(archivo);
         reader.onload = () => {
@@ -127,14 +123,11 @@ export class AgregarPromocionPage implements OnInit {
             height = img.naturalHeight;
             width = img.naturalWidth;
 
-            if (width === 400 && height === 400) {
-
+            if (width === 500 && height === 500) {
               this.procesando_img = true;
-
 
               const file = archivo;
               if (file.size < 3145728) {
-
                 let file_64: any;
                 const utl = new UtilsCls();
                 utl.getBase64(file).then((data) => {
@@ -153,8 +146,8 @@ export class AgregarPromocionPage implements OnInit {
               }
             } else {
               this.maintainAspectRatio = true;
-              this.resizeToWidth = 400;
-              this.resizeToHeight = 400;
+              this.resizeToWidth = 500;
+              this.resizeToHeight = 500;
               this.tipoImagen = 1;
               this.fileChangeEvent(event);
               this.abrirModalImagen(
@@ -174,7 +167,7 @@ export class AgregarPromocionPage implements OnInit {
     this.imageChangedEvent = event;
   }
 
-  async abrirModalImagen(evento,nombre, wi, he) {
+  async abrirModalImagen(evento, nombre, wi, he) {
     const modal = await this.modalController.create({
       component: RecorteImagenComponent,
       cssClass: "my-custom-class",
@@ -290,7 +283,7 @@ export class AgregarPromocionPage implements OnInit {
       if (this.seleccionTo.tags.length === 0) {
         this.seleccionTo.tags = [];
       }
-      
+
       this._promociones_service.guardar(this.seleccionTo).subscribe(
         (response) => {
           if (this._utils_cls.is_success_response(response.code)) {
