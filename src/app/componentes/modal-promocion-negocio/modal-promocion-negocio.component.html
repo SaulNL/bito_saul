@@ -1,22 +1,29 @@
 <ion-header translucent>
   <ion-toolbar class="tolbar">
-      <ion-title>Promocion</ion-title>
-      <ion-buttons slot="end" (click)="cerrar()">
-          <ion-button>
-              <ion-icon name="close-outline"></ion-icon>
-          </ion-button>
-      </ion-buttons>
+    <ion-title>Promocion</ion-title>
+    <ion-buttons slot="end" (click)="cerrar()">
+      <ion-button>
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content fullscreen>
-<ion-card class="ion-text-center ion-margin ">
-  <br>
-  <img [src]="promocionTO.url_imagen_banner">
-  <br>
-  <ion-label><h1><strong>{{promocionTO.promocion}}</strong></h1></ion-label>
-  <ion-label><strong>{{'DE'+promocionTO.fecha_inicio+'A'+promocionTO.fecha_fin}}</strong></ion-label>
-  <br>
-  <br>
-</ion-card>
-
+  <ion-card class="ion-text-center ion-margin">
+    <br />
+    <img [src]="promocionTO.url_imagen_banner" />
+    <br />
+    <ion-label
+      ><h1>
+        <strong>{{ promocionTO.promocion }}</strong>
+      </h1></ion-label
+    >
+    <ion-label
+      ><strong>{{
+        "DE " + promocionTO.fecha_inicio + " A " + promocionTO.fecha_fin
+      }}</strong></ion-label
+    >
+    <br />
+    <br />
+  </ion-card>
 </ion-content>
