@@ -794,6 +794,7 @@ export class FormularioNegocioPage implements OnInit {
       this.loader = false;
     } else {
       this.datos();
+      this.negocioGuardar.organizaciones = this.negocioTO.organizaciones;
       this.negocioServico.guardar(this.negocioGuardar).subscribe(
         response => {
           if (response.code === 200) {
@@ -843,7 +844,7 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.organizaciones = this.negocioTO.plazas;
     this.negocioGuardar.nombre_organizacion = '';
     if (this.negocioGuardar.organizaciones !== undefined && this.negocioGuardar.organizaciones.length > 0) {
-      this.negocioGuardar.nombre_organizacion = this.negocioTO.nombre_organizacion;
+      this.negocioGuardar.nombre_organizacion = this.negocioTO.nombre_organizacion.join(',');;
     }
 
     if (this.negtag == true) {

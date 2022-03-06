@@ -322,10 +322,14 @@ export class NegocioService {
     guardar(negocio: NegocioModel): Observable<any> {
         const body = JSON.stringify(negocio);
         this._http.setDataSerializer('utf8');
+        let d1= JSON.stringify(negocio);
+        console.log('Bere (Peticion) - 50000:   '+d1);
         return from(this._http.post(
             this.url + 'api/proveedor/guardar_negocio',
             body, AppSettings.getHeadersToken())
             .then((data) => {
+                let d12= JSON.stringify(data);
+                console.log('Bere (Respuesta) - 50000:   '+d12);
                 return JSON.parse(data.data);
             })
             .catch((error) => {
