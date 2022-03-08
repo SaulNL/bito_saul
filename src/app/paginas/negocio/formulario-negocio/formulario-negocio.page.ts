@@ -805,7 +805,6 @@ export class FormularioNegocioPage implements OnInit {
             this.router.navigate(['/tabs/home/negocio']);
           } else {
             this.loader = false;
-            console.log(this.notificaciones+ 'bere else');
             this.notificaciones.alerta('Error al guardar, intente nuevamente');
           }
         },
