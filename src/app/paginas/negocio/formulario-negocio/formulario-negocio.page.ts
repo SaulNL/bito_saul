@@ -452,7 +452,8 @@ export class FormularioNegocioPage implements OnInit {
       this.lstPlazas = Object.values(response.data);
       if (this.negocioTO.id_negocio != null) {
         this.lstPlazas.forEach((element) => {
-          this.negocioTO.organizaciones.forEach((elements) => {
+          this.negocioTO.plazas.forEach((elements) => {
+
             if (element.id_organizacion == elements) {
               this.tipoPlzAux = element.nombre;
             }
@@ -461,6 +462,7 @@ export class FormularioNegocioPage implements OnInit {
       }
     });
   }
+  
   /**
      * Funcion para enviar a validar la url del negocio
      * @param evento
@@ -790,24 +792,29 @@ export class FormularioNegocioPage implements OnInit {
       this.negocioTO.logo.archivo_64 === '' ||
       this.negocioTO.logo.archivo_64 === null ||
       this.negocioTO.logo.archivo_64 === undefined) {
+        this.loader = false;
       this.notificaciones.alerta('Agregue la foto de su negocio');
-      this.loader = false;
+     
     } else {
-      this.datos();
-      this.negocioGuardar.organizaciones = this.negocioTO.organizaciones;
+
       this.negocioServico.guardar(this.negocioGuardar).subscribe(
         response => {
+          this.datos();
+          let d1= JSON.stringify(this.negocioGuardar);
+          console.log('Bere -100000: '+d1);
+          let d2= JSON.stringify(response);
+          console.log('Bere -200000: '+d2);
           if (response.code === 200) {
-            this.notificaciones.exito('Tu negocio se guardo exitosamente');
+            this.notificaciones.exito('Tu negocio se guardo exitosamente');  
             this.loader = false;
             this.router.navigate(['/tabs/home/negocio']);
           } else {
-            this.notificaciones.alerta('Error al guardar, intente nuevamente');
             this.loader = false;
+            this.notificaciones.alerta('Error al guardar, intente nuevamente');
           }
         },
         error => {
-          this.notificaciones.error(error);
+          this.notificaciones.error(error);  
           this.loader = false;
         }
       );
@@ -841,7 +848,7 @@ export class FormularioNegocioPage implements OnInit {
     }
     this.negocioGuardar.otra_subcategoria = '';
     this.negocioGuardar.organizaciones = this.negocioTO.organizaciones;
-    this.negocioGuardar.organizaciones = this.negocioTO.plazas;
+    this.negocioGuardar.plazas = this.negocioTO.plazas;
     this.negocioGuardar.nombre_organizacion = '';
     if (this.negocioGuardar.organizaciones !== undefined && this.negocioGuardar.organizaciones.length > 0) {
       this.negocioGuardar.nombre_organizacion = this.negocioTO.nombre_organizacion.join(',');;
@@ -894,6 +901,7 @@ export class FormularioNegocioPage implements OnInit {
     }
     this.negocioGuardar.dias = this.negocioTO.dias;
   }
+
 
   public infoInvalid(info, dias) {
     if (info === true) {

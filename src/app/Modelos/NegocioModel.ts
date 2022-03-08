@@ -56,7 +56,8 @@ export class NegocioModel {
   public tipo_pago_tarjeta_debito:number;
   public tipo_pago_efectivo:number;
   public verificado: Boolean;
-
+  plazasTodo: any;
+  public plazas: any;
   constructor(
     id_negocio = null,
     rfc = null,
