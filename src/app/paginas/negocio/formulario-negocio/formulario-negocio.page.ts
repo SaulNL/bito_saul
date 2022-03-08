@@ -792,24 +792,20 @@ export class FormularioNegocioPage implements OnInit {
       this.negocioTO.logo.archivo_64 === '' ||
       this.negocioTO.logo.archivo_64 === null ||
       this.negocioTO.logo.archivo_64 === undefined) {
-        this.loader = false;
       this.notificaciones.alerta('Agregue la foto de su negocio');
+      this.loader = false;
      
     } else {
-
+      this.datos();
       this.negocioServico.guardar(this.negocioGuardar).subscribe(
         response => {
-          this.datos();
-          let d1= JSON.stringify(this.negocioGuardar);
-          console.log('Bere -100000: '+d1);
-          let d2= JSON.stringify(response);
-          console.log('Bere -200000: '+d2);
           if (response.code === 200) {
             this.notificaciones.exito('Tu negocio se guardo exitosamente');  
             this.loader = false;
             this.router.navigate(['/tabs/home/negocio']);
           } else {
             this.loader = false;
+            console.log(this.notificaciones+ 'bere else');
             this.notificaciones.alerta('Error al guardar, intente nuevamente');
           }
         },
@@ -851,7 +847,7 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.plazas = this.negocioTO.plazas;
     this.negocioGuardar.nombre_organizacion = '';
     if (this.negocioGuardar.organizaciones !== undefined && this.negocioGuardar.organizaciones.length > 0) {
-      this.negocioGuardar.nombre_organizacion = this.negocioTO.nombre_organizacion.join(',');;
+      this.negocioGuardar.nombre_organizacion = this.negocioTO.nombre_organizacion
     }
 
     if (this.negtag == true) {

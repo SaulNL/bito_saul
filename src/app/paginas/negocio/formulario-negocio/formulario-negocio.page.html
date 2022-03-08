@@ -37,7 +37,7 @@
 <ion-content *ngIf="segmentModel === 'informacion' && !loader">
   <ion-card>
     <ion-card-content>
-      <form #formNegocio="ngForm" >
+      <form #formNegocio="ngForm" (ngSubmit)="guardar(formNegocio)">
         <div class="form-group" style="display: flex; justify-content: center; align-items: center">
 
           <div class="avatar-upload">
@@ -299,9 +299,9 @@
               obligatorios</ion-label>
           </ion-item>
           <ion-button expand="block" type="submit" class="bg-rosa"
-        
-            *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)" (ngSubmit)="guardar()">Actualizar
-          </ion-button>
+          [disabled]="infoInvalid(formNegocio.invalid, negocioTO.dias)"
+          *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar
+        </ion-button>
         </ion-list>
       </form>
     </ion-card-content>
