@@ -61,7 +61,7 @@
       <ion-icon *ngIf="detalle" (click)="detalle=''" name="close-outline" slot="end"></ion-icon>
     </ion-item>
     <ion-item *ngIf="contienTipoDePagos()">
-      <ion-label position="floating">Tipos de pagos</ion-label>
+      <ion-label position="floating">Metodos de pago</ion-label>
       <ion-select (ionChange)="seleccionarTipoPago($event)">
         <ion-select-option *ngFor="let pago of pagos" [value]="pago.id_tipo_pago">{{pago.nombre}}</ion-select-option>
       </ion-select>

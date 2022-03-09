@@ -1,6 +1,12 @@
 <ion-tabs>
 
   <ion-tab-bar slot="bottom">
+
+    <ion-tab-button class="tab-button-principal" (click)="inicio()" tab="inicio" style="--color-selected: #fa4f72">
+      <ion-icon name="storefront-outline"></ion-icon>
+      <ion-label>Negocios</ion-label>
+    </ion-tab-button>
+
     <ion-tab-button class="tab-button-principal" (click)="productos()" tab="productos"
       style="--color-selected: #fa4f72">
       <ion-icon name="cube-outline"></ion-icon>
@@ -13,10 +19,6 @@
       <ion-label>Promociones</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button class="tab-button-principal" (click)="inicio()" tab="inicio" style="--color-selected: #fa4f72">
-      <ion-icon name="storefront-outline"></ion-icon>
-      <ion-label>Negocios</ion-label>
-    </ion-tab-button>
     <ion-tab-button *ngIf="usuario !== null" tab="mis-favoritos" class="tab-button-principal" (click)="solicitudes()"
       style="--color-selected: #fa4f72">
       <ion-icon name="heart-outline"></ion-icon>
