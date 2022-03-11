@@ -191,10 +191,24 @@ export class ProductosPage {
         if (!this.abc) {
           this.armarFiltroABC();
         } else {
-          const tempLstProduct = response.data.lstProductos;
-          this.lstProductosOriginal = tempLstProduct;
-          this.lstProductos = tempLstProduct.slice(0, 6);
-          this.loader = false;
+          this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
+            response2 => {
+              if (response2.data.lstProductos.length > 0) {
+                this.blnBtnMapa=true;
+                const tempLstProduct = response2.data.lstProductos;
+                this.lstProductosOriginal =tempLstProduct;
+                this.lstProductos =tempLstProduct.slice(0, 6);
+                this.loader = false;
+              }else{
+                this.blnBtnMapa = false;
+              }
+            },  error => {
+              this.loader = false;
+              this.notificaciones.error(
+                "Ocurrió un error al obtener productos, inténtelo más tarde"
+              );
+            }
+          );
         }
         if (this.lstProductos.length > 0) {
           this.blnBtnMapa = true;
@@ -349,9 +363,20 @@ export class ProductosPage {
    * @param event
    */
   buscarToolbar(event) {
+    this.anyFiltros = new FiltrosModel();
+    this.anyFiltros.idEstado = 29;
+    this.anyFiltros.idTipoNegocio=null;
+    this.anyFiltros.kilometros = 1;
+    this.anyFiltros.letraInicial="Todos";
     this.anyFiltros.strBuscar = event;
     this.abc = this.anyFiltros.strBuscar != null;
-    this.obtenerProductos();
+    this.anyFiltros.blnEntrega = null;
+    if(event===''){
+      this.borrarFiltros();
+      this.obtenerProductos();
+    }else{
+      this.obtenerProductos();
+    }
   }
 
   abrirFiltros() {
@@ -364,6 +389,7 @@ export class ProductosPage {
       this.modal.dismiss({
         dismissed: true,
       });
+      this.filtroActivo = true;
       this.anyFiltros = res;
       this.obtenerProductos();
     });
@@ -380,6 +406,8 @@ export class ProductosPage {
 
   public borrarFiltros() {
     localStorage.removeItem("byCategorias");
+    this.anyFiltros = new FiltrosModel();
+    this.anyFiltros.idEstado = 29;
     this.filtroActivo = false;
     this.obtenerProductos();
   }
