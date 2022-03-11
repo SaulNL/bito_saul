@@ -80,10 +80,13 @@ export class CategoriasPage implements OnInit {
     localStorage.removeItem("byCategorias");
     localStorage.setItem("byCategorias", JSON.stringify(subCategoria));
     localStorage.setItem("seleccionado", JSON.stringify(subCategoria));
+    let seleccionado2 = localStorage.setItem(
+      "seleccionado",
+      JSON.stringify(subCategoria)
+    );
     localStorage.setItem(LOCAL_STORAGE_KEY.CATEGORIA_SELECCIONADA, "true");
     localStorage.removeItem("busqueda");
     localStorage.setItem("filter", "true");
-    localStorage.removeItem("seleccionado");
     this.router.navigate(["/tabs/inicio"]);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }

@@ -201,7 +201,7 @@ export class InicioPage implements OnInit {
         this.Filtros.tipoBusqueda === 0
       ) {
       } else {
-        /* this.borrarFiltros();*/
+        this.borrarFiltros();
       }
     }
   }
@@ -215,9 +215,10 @@ export class InicioPage implements OnInit {
       this.totalDePaginasPorConsulta = respuesta.data.lst_cat_negocios.to;
       this.categoriasEstaVacios = false;
       this.lengthLista = this.listaCategorias.length;
-      this.listaCategorias.push(...respuesta.data.lst_cat_negocios.data);
+
       this.negociosIdMapa();
       if (this.actualPagina > 1) {
+        this.listaCategorias.push(...respuesta.data.lst_cat_negocios.data);
         if (
           this.listaCategorias[this.lengthLista - 1].nombre ==
             this.listaCategorias[this.lengthLista].nombre ||
@@ -225,6 +226,8 @@ export class InicioPage implements OnInit {
         ) {
           this.listaCategorias[this.lengthLista].nombre = "";
         }
+      } else {
+        this.listaCategorias = respuesta.data.lst_cat_negocios.data;
       }
     } else {
       throw throwError("");
