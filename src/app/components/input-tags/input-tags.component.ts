@@ -10,7 +10,7 @@ export class InputTagsComponent implements OnInit {
   public tagContainer;
   public input;
   @Input() public tags;
-  @Output() _enviarTags: EventEmitter<any>;
+  @Output() _enviarTags: EventEmitter < any > ;
 
   constructor() {
     this._enviarTags = new EventEmitter();
@@ -22,8 +22,8 @@ export class InputTagsComponent implements OnInit {
     this.input.addEventListener('ionInput', (e) => {
       if (e.detail.data === ',') {
         if (this.input.value.length !== 0) {
-         let numero = this.input.value.indexOf(",");
-           let  tag = this.input.value.slice(0, numero);
+          let numero = this.input.value.indexOf(",");
+          let tag = this.input.value.slice(0, numero);
           this.tags.push(tag);
           this.agregarTags();
           this._enviarTags.emit(this.tags);
@@ -81,15 +81,17 @@ export class InputTagsComponent implements OnInit {
   }
 
   agregarTags() {
-    const borrar = document.querySelectorAll('.tag');
-    borrar.forEach(tag => {
-      tag.parentElement.removeChild(tag);
-    });
-    this.tags.slice().reverse().forEach(etiqueta => {
-      const tag = this.crearTag(etiqueta);
-      this.tagContainer.prepend(tag);
-    });
+    if(this.tags[0]==="" && this.tags.length===1){
+      this.tags = [];
+    }else{
+      const borrar = document.querySelectorAll('.tag');
+      borrar.forEach(tag => {
+        tag.parentElement.removeChild(tag);
+      });
+      this.tags.slice().reverse().forEach(etiqueta => {
+        const tag = this.crearTag(etiqueta);
+        this.tagContainer.prepend(tag);
+      });
+    }
   }
-
-
 }
