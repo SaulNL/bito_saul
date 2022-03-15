@@ -216,9 +216,9 @@ export class InicioPage implements OnInit {
       this.categoriasEstaVacios = false;
       this.lengthLista = this.listaCategorias.length;
 
-      this.negociosIdMapa();
       if (this.actualPagina > 1) {
         this.listaCategorias.push(...respuesta.data.lst_cat_negocios.data);
+        this.negociosIdMapa();
         if (
           this.listaCategorias[this.lengthLista - 1].nombre ==
             this.listaCategorias[this.lengthLista].nombre ||
@@ -228,6 +228,7 @@ export class InicioPage implements OnInit {
         }
       } else {
         this.listaCategorias = respuesta.data.lst_cat_negocios.data;
+        this.negociosIdMapa();
       }
     } else {
       throw throwError("");
@@ -353,10 +354,13 @@ export class InicioPage implements OnInit {
         listaIds.push(n);
       });
     });
+    console.log("listacategor", this.listaCategorias);
+    console.log("listaids", listaIds);
     for (let index = 0; index < listaIds.length; index++) {
       listaIdNegocio.push(listaIds[index].id_negocio);
     }
     this.listaIdsMapa = listaIdNegocio;
+    console.log("listas mapass", this.listaIdsMapa);
   }
   public regresarBitoo() {
     localStorage.removeItem("org");
