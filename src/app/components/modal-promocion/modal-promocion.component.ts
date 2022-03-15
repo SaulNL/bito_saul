@@ -1,7 +1,7 @@
 import {AfiliacionPlazaModel} from './../../Modelos/AfiliacionPlazaModel';
 import {Component, OnInit, Input} from '@angular/core';
 import {ModalController} from '@ionic/angular';
-import * as moment from 'moment';
+import  moment from 'moment';
 import {Router} from '@angular/router';
 import {PromocionesService} from '../../api/promociones.service';
 import {PromocionesModel} from '../../Modelos/PromocionesModel';

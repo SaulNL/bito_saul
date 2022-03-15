@@ -56,6 +56,7 @@
     "cordova-plugin-local-notification": "^0.9.0-beta.2",
     "cordova-plugin-sign-in-with-apple": "^0.1.2",
     "cordova-plugin-x-socialsharing": "^6.0.3",
+    "easyqrcodejs": "^3.8.3",
     "es6-promise-plugin": "^4.2.2",
     "firebase": "^7.7.0",
     "haversine": "^1.1.1",

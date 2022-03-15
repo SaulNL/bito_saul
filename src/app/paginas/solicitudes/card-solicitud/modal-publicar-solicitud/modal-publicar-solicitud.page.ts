@@ -1,7 +1,7 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {SolicitudesModel} from '../../../../Modelos/SolicitudesModel';
-import * as moment from 'moment';
+import  moment from 'moment';
 import {Router, ActivatedRoute} from '@angular/router';
 import {SolicitudesService} from '../../../../api/solicitudes.service';
 import {ToadNotificacionService} from '../../../../api/toad-notificacion.service';
