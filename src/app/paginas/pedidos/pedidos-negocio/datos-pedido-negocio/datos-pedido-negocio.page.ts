@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { PedidosService } from '../../../../api/pedidos.service';
 // import {Map, tileLayer, marker, icon, Marker} from 'leaflet';
-import { icon, Map, Marker, marker, tileLayer } from "leaflet";
+import { icon, LatLng, latLng, Map, Marker, marker, tileLayer } from "leaflet";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToadNotificacionService } from '../../../../api/toad-notificacion.service';
+
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 declare var google: any;
 
@@ -32,7 +34,8 @@ export class DatosPedidoNegocioPage implements OnInit {
         private activatedRoute: ActivatedRoute,
         private route: ActivatedRoute,
         private router: Router,
-        private notificaciones: ToadNotificacionService
+        private notificaciones: ToadNotificacionService,
+        private socialSharing: SocialSharing
     ) {
         this.blnCancelar = false;
         this.loaderBtn = false;
@@ -156,6 +159,13 @@ export class DatosPedidoNegocioPage implements OnInit {
                 this.loaderBtn = false;
                 this.notificaciones.error(error.message);
             });
+    }
+
+    shareSocial() {
+        let url = 'https://www.google.com.mx/maps/@'
+                   + this.pedido.direccion.latitud + ","
+                   + this.pedido.direccion.longitud + ",17z"
+        this.socialSharing.share('Dirección:', 'Dirección:', '', '' + this.pedido.direccion.direccion + ' ' + url);
     }
 
     public gLatLng(lat, lng) {
