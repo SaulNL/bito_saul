@@ -41,8 +41,32 @@ export class GeneralServicesService {
       }));
   }
 
+  public getMunicipiosAll(id_estado: number): Observable<any> {
+    const body = JSON.stringify({ id_estado: id_estado});
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(`${this.url}api/catalogo/municipio/list`, body, AppSettings.getHeaders())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+  }
+
   public getLocalidad(id_municipio: number): Observable<any> {
     const body = JSON.stringify({ id_municipio: id_municipio, conNegocios:1 });
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(`${this.url}api/catalogo/localidad/list`, body, AppSettings.getHeaders())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+  }
+
+  public getLocalidadAll(id_municipio: number): Observable<any> {
+    const body = JSON.stringify({ id_municipio: id_municipio });
     this.http.setDataSerializer("utf8");
     return from(this.http.post(`${this.url}api/catalogo/localidad/list`, body, AppSettings.getHeaders())
       .then((data) => {

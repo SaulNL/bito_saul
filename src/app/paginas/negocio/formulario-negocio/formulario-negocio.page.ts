@@ -715,7 +715,7 @@ export class FormularioNegocioPage implements OnInit {
     }
     if (idE > 0) {
       // this.loaderMunicipio = true;
-      this._general_service.getMunicipios(idE).subscribe(
+      this._general_service.getMunicipiosAll(idE).subscribe(
         response => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_municipio = response.data.list_cat_municipio;
@@ -758,7 +758,7 @@ export class FormularioNegocioPage implements OnInit {
     if (idE > 0) {
       // this.loaderLocalidad = true;
 
-      this._general_service.getLocalidad(idE).subscribe(
+      this._general_service.getLocalidadAll(idE).subscribe(
         response => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.btnLocalidad = false;
