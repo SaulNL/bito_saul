@@ -48,7 +48,7 @@ export class InicioPage implements OnInit {
   private seleccionado: any;
   loader: any;
   listaIdsMapa: any;
-  filtroActivo: boolean;
+  filtroActivo: boolean =true;
   user: any;
   public existeSesion: boolean;
   public msj = "Cargando";
@@ -87,7 +87,18 @@ export class InicioPage implements OnInit {
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
-    this.filtroActivo = false;
+    const byCategorias =localStorage.getItem("filtroactual");
+    if (byCategorias !== null && byCategorias !== undefined && byCategorias !== "" && byCategorias.length>0) {
+      const dato = JSON.parse(byCategorias);
+      this.Filtros = dato;
+      this.filtroActivo = true;
+      this.selectionAP = false;
+      //console.log("filtro activo");
+    }else{
+      this.filtroActivo = false;
+      //console.log("filtro false");
+     
+    }
     this.listaCategorias = new Array<ICategoriaNegocio>();
     this.listaIdsMapa = [];
     this.user = this.util.getUserData();
@@ -96,7 +107,6 @@ export class InicioPage implements OnInit {
     this.tFiltro = false;
     this.afiliacion = false;
     this.isIOS = this.platform.is("ios");
-
     this.route.queryParams.subscribe((params) => {
       this.subscribe = this.platform.backButton.subscribe(() => {
         this.backPhysicalBottom();
@@ -109,10 +119,23 @@ export class InicioPage implements OnInit {
     if (option !== null) {
       this.Filtros = new FiltrosModel();
       this.Filtros.idEstado = 29;
-      this.filtroActivo = false;
+      const byCategorias =localStorage.getItem("filtroactual");
+      if (byCategorias !== null && byCategorias !== undefined && byCategorias !== "" && byCategorias.length>0) {
+        const dato = JSON.parse(byCategorias);
+        this.Filtros = dato;
+        this.filtroActivo = true;
+      }else{
+        this.filtroActivo = false;
+      }
       localStorage.removeItem("filter");
       localStorage.setItem("isRedirected", "false");
       this.ruta.navigate(["/tabs/categorias"]);
+    }
+    const byCategorias =localStorage.getItem("filtroactual");
+    if (byCategorias !== null && byCategorias !== undefined && byCategorias !== "" && byCategorias.length>0) {
+      const dato = JSON.parse(byCategorias);
+      this.Filtros = dato;
+      this.filtroActivo = true;
     }
   }
 
@@ -122,13 +145,32 @@ export class InicioPage implements OnInit {
     this.route.queryParams.subscribe((params) => {
       if (params.buscarNegocios && params) {
         this.load();
+        const byCategorias =localStorage.getItem("filtroactual");
+        if (byCategorias !== null && byCategorias !== undefined && byCategorias !== "" && byCategorias.length>0) {
+          const dato = JSON.parse(byCategorias);
+          this.Filtros = dato;
+          this.filtroActivo = true;
+        }
       }
     });
     this.route.queryParams.subscribe((params) => {
       if (params.byLogin && params) {
         this.negocioRutaByLogin(params.byLogin);
+        const byCategorias =localStorage.getItem("filtroactual");
+        if (byCategorias !== null && byCategorias !== undefined && byCategorias !== "" && byCategorias.length>0) {
+          const dato = JSON.parse(byCategorias);
+          this.Filtros = dato;
+          this.filtroActivo = true;
+        }
       }
     });
+    const byCategorias =localStorage.getItem("filtroactual");
+    if (byCategorias !== null && byCategorias !== undefined && byCategorias !== "" && byCategorias.length>0) {
+      const dato = JSON.parse(byCategorias);
+      this.Filtros = dato;
+      this.filtroActivo = true;
+    }
+
   }
 
   private load() {
@@ -236,15 +278,28 @@ export class InicioPage implements OnInit {
   }
 
   cargarCategorias() {
+    const byCategorias =localStorage.getItem("filtroactual");
+    if (byCategorias !== null && byCategorias !== undefined && byCategorias !== "" && byCategorias.length>0) {
+      const dato = JSON.parse(byCategorias);
+      this.Filtros = dato;
+      this.filtroActivo = true;
+    }
     this.principalSercicio
       .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
       .then((respuesta) => {
         this.validarResultadosDeCategorias(respuesta);
         this.loader = false;
+        //
+        const byCategorias=localStorage.getItem("filtroactual");
+        console.log(byCategorias+" & bere "+ " - ");
+        if (byCategorias !== null && byCategorias !== undefined && byCategorias !== "" && byCategorias.length>0) {
+          console.log(" 1 bere ");
+          this.filtroActivo = true;
+        }
       })
       .catch((error) => {
         this.loader = false;
-        this.notificaciones.error("Error al buscar los datos");
+        this.notificaciones.error("Error al buscar los datos"+error.message);
       });
   }
 
@@ -261,7 +316,7 @@ export class InicioPage implements OnInit {
     }
     const byCategorias = localStorage.getItem("byCategorias");
     const dato = JSON.parse(byCategorias);
-    if (byCategorias !== null) {
+    if (byCategorias !== null && byCategorias !== undefined && byCategorias !== "" && byCategorias.length>0) {
       this.Filtros.idCategoriaNegocio = [dato.id_categoria];
       this.filtroActivo = true;
     }
@@ -300,8 +355,11 @@ export class InicioPage implements OnInit {
       });
       this.filtroActivo = true;
       this.Filtros = res;
+      let d1= JSON.stringify(res);
+      localStorage.setItem("filtroactual", d1);
       this.buscarNegocios(true);
     });
+
     this.modal = await this.modalController.create({
       component: FiltrosBusquedaComponent,
       componentProps: {
@@ -374,7 +432,15 @@ export class InicioPage implements OnInit {
     this.filtroActivo = false;
     this.buscarNegocios(true);
   }
-
+  borrarFiltrosP() {
+    localStorage.removeItem("filtroactual");
+    localStorage.removeItem("byCategorias");
+    this.Filtros = new FiltrosModel();
+    this.Filtros.idEstado = 29;
+    /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
+    this.filtroActivo = false;
+    this.buscarNegocios(true);
+  }
   negocioRuta(negocioURL) {
     if (negocioURL == "") {
       this.notificaciones.error(
