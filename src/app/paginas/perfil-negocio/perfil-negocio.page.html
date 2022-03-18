@@ -55,7 +55,13 @@
 
                 <ion-card class="w-100">
                     <ion-card-content class="ion-text-center">
-                        <br>
+                        <div  *ngIf="existeSesion">
+                            <pre></pre>
+                            <a class="text-rosa" [href]="urlData">{{this.urlData}}</a>
+                        </div>
+                        <div  *ngIf="!existeSesion" >
+                            <a class="text-rosa" [href]="urlData">{{this.urlData}}</a>
+                        </div>
                         <span class="info-descripcion">{{informacionNegocio.descripcion}}</span>
                         <br>
                         <div class="div-like">
