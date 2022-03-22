@@ -172,6 +172,7 @@ export class ProductosPage {
    */
   public obtenerProductos() {
     this.loader = true;
+
     this.anyFiltros.user = this.user;
     this.plazaAfiliacion = JSON.parse(localStorage.getItem("org"));
     if (this.plazaAfiliacion != null) {
@@ -232,8 +233,9 @@ export class ProductosPage {
       "Todos,A,B,C,D,E,F,G,H,I,J,K,L,M,N,Ñ,O,P,Q,R,S,T,U,V,W,X,Y,Z";
     const arreglo = letras.split(",");
     for (let i = 0; i < 28; i++) {
-      this.filtroABC.push({ id: i, letra: arreglo[i], activo: 1 });
+      this.filtroABC.push({ id: i, letra: arreglo[i], activo: 0 });
     }
+
     this.filtroABC.forEach((item) => {
       let siHay = this.lstProductos.find((producto) => {
         if (producto.nombre !== null) {
@@ -242,8 +244,6 @@ export class ProductosPage {
       });
       if (siHay !== undefined) {
         item.activo = 1;
-      } else {
-        item.activo = item.letra != "Todos" ? 0 : 1;
       }
     });
     this.filtrarABCRandom();
@@ -286,7 +286,6 @@ export class ProductosPage {
    * @author Paola Coba
    */
   public obtenerProductoPorLetra(filtro: FiltroABCModel) {
-    console.log("filtro: ", filtro);
     this.loader = true;
     let letra = filtro.letra;
     if (filtro.id === this.filtroCheckend) {
@@ -302,10 +301,8 @@ export class ProductosPage {
     } else {
       try {
         this.anyFiltros.letraInicial = filtro.letra;
-        console.log("this any filtros", this.anyFiltros);
         this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
           (response) => {
-            console.log("productos", response);
             this.lstProductosOriginal = response.data.lstProductos;
             this.lstProductos = this.lstProductosOriginal.slice(0, 6);
             this.loader = false;

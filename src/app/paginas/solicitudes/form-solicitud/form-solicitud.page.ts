@@ -54,7 +54,7 @@ export class FormSolicitudPage implements OnInit {
   public locaAux: any;
   public data: any;
   public loader: boolean;
-  public cargando = 'Guardando';
+  public cargando = "Guardando";
   public lstOrganizaciones: any;
   public mostrarAfiliacion: boolean;
 
@@ -123,7 +123,6 @@ export class FormSolicitudPage implements OnInit {
       return;
     }
     if (form.valid) {
-
       this.actualTO.id_persona = this.usuario.id_persona;
       if (this.actualTO.id_giro === 12) {
         this.actualTO.id_categoria = 9999;
@@ -211,7 +210,7 @@ export class FormSolicitudPage implements OnInit {
     }
     if (idE > 0) {
       // this.loaderMunicipio = true;
-      this._general_service.getMunicipios(idE).subscribe(
+      this._general_service.getMunicipiosAll(idE).subscribe(
         (response) => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_municipio = response.data.list_cat_municipio;
@@ -255,7 +254,7 @@ export class FormSolicitudPage implements OnInit {
     if (idE > 0) {
       // this.loaderLocalidad = true;
 
-      this._general_service.getLocalidad(idE).subscribe(
+      this._general_service.getLocalidadAll(idE).subscribe(
         (response) => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.btnLocalidad = false;
@@ -336,7 +335,7 @@ export class FormSolicitudPage implements OnInit {
           img.onload = () => {
             height = img.naturalHeight;
             width = img.naturalWidth;
-            if (width === 200 && height === 200) {
+            if (width === 500 && height === 500) {
               //   this.procesando_img = true;
               const file_name = archivo.name;
               const file = archivo;
@@ -359,8 +358,8 @@ export class FormSolicitudPage implements OnInit {
                 );
               }
             } else {
-              this.resizeToWidth = 200;
-              this.resizeToHeight = 200;
+              this.resizeToWidth = 500;
+              this.resizeToHeight = 500;
               this.abrirModal(
                 img.src,
                 this.resizeToWidth,
@@ -460,29 +459,31 @@ export class FormSolicitudPage implements OnInit {
   }
   public obtenerCatOrganizaciones() {
     this.mostrarAfiliacion = false;
-    this._general_service.obtenerOrganizacionesPorUsuario(this._utils_cls.getIdPersona()).subscribe(
-      response => {
-        if (response.code === 200) {
-          this.lstOrganizaciones = Object.values(response.data);
-          if (this.lstOrganizaciones.length > 0) {
-            this.mostrarAfiliacion = true;
-            this.lstOrganizaciones.forEach((element) => {
-              this.actualTO.organizaciones.forEach((elements) => {
-                if (element.id_organizacion == elements) {
-                  this.tipoOrg = element.nombre;
-                }
+    this._general_service
+      .obtenerOrganizacionesPorUsuario(this._utils_cls.getIdPersona())
+      .subscribe(
+        (response) => {
+          if (response.code === 200) {
+            this.lstOrganizaciones = Object.values(response.data);
+            if (this.lstOrganizaciones.length > 0) {
+              this.mostrarAfiliacion = true;
+              this.lstOrganizaciones.forEach((element) => {
+                this.actualTO.organizaciones.forEach((elements) => {
+                  if (element.id_organizacion == elements) {
+                    this.tipoOrg = element.nombre;
+                  }
+                });
               });
-            });
+            }
+          } else {
+            this.mostrarAfiliacion = false;
+            this.lstOrganizaciones = [];
           }
-        } else {
+        },
+        (error) => {
           this.mostrarAfiliacion = false;
           this.lstOrganizaciones = [];
         }
-      }, (error) => {
-        this.mostrarAfiliacion = false;
-        this.lstOrganizaciones = [];
-      }
-    );
+      );
   }
-
 }

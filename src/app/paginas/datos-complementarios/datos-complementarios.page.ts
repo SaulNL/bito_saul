@@ -138,7 +138,7 @@ export class DatosComplementariosPage implements OnInit {
       }
       this.select_estado = false;
       this.select_municipio = false;
-      this._general_service.getMunicipios(idE).subscribe(
+      this._general_service.getMunicipiosAll(idE).subscribe(
         response => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_municipio = response.data.list_cat_municipio;
@@ -180,7 +180,7 @@ export class DatosComplementariosPage implements OnInit {
         id = event.value;
       }
       this.select_municipio = false;
-      this._general_service.getLocalidad(id).subscribe(
+      this._general_service.getLocalidadAll(id).subscribe(
         response => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_localidad = response.data.list_cat_localidad;
