@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { NegocioModel } from "./../../../Modelos/NegocioModel";
@@ -151,7 +150,7 @@ export class MisProductosServiciosPage implements OnInit {
           text: "Cancel",
           icon: "close",
           role: "cancel",
-          handler: () => { },
+          handler: () => {},
         },
       ],
     });
@@ -197,7 +196,8 @@ export class MisProductosServiciosPage implements OnInit {
             this.datosNegocio = new DatosNegocios();
             this.datosNegocio.domicilio = this.negocioTO.det_domicilio;
             this.datosNegocio.id_negocio = this.negocioTO.id_negocio;
-            this.datosNegocio.idProveedor = this.datosUsuario.proveedor.id_proveedor;
+            this.datosNegocio.idProveedor =
+              this.datosUsuario.proveedor.id_proveedor;
             this.sercicioNegocio
               .guardarProductoServio(this.datosNegocio)
               .subscribe(
@@ -205,7 +205,7 @@ export class MisProductosServiciosPage implements OnInit {
                   this.datosNegocio = repsuesta.data;
                   this.static = repsuesta.data;
                 },
-                (error) => { }
+                (error) => {}
               );
           }
           this.loader = false;
@@ -309,7 +309,7 @@ export class MisProductosServiciosPage implements OnInit {
             break;
         }
       },
-      (error) => { },
+      (error) => {},
       () => {
         this.loadPdf = false;
       }
@@ -347,7 +347,6 @@ export class MisProductosServiciosPage implements OnInit {
   agregarClasificacion() {
     this.agregarClas = true;
   }
-
 
   async modalClasificacion(item) {
     const modal = await this.modalController.create({
@@ -391,9 +390,7 @@ export class MisProductosServiciosPage implements OnInit {
         {
           text: "Cancelar",
           role: "cancel",
-          handler: () => {
-
-          },
+          handler: () => {},
         },
         {
           text: "Aceptar",
@@ -486,9 +483,7 @@ export class MisProductosServiciosPage implements OnInit {
             this.agregarClas = false;
             this.blnNuevaCategoria = false;
           },
-          () => {
-
-          },
+          () => {},
           () => {
             this.notificacionService.exito("Se agrego la categoría con éxito");
           }
@@ -544,7 +539,8 @@ export class MisProductosServiciosPage implements OnInit {
                   file_64 = data;
                   const imagen = new ArchivoComunModel();
                   if (file_name != null) {
-                    imagen.nombre_archivo = this.utilscls.convertir_nombre(file_name) + ".jpg";
+                    imagen.nombre_archivo =
+                      this.utilscls.convertir_nombre(file_name) + ".jpg";
                     imagen.archivo_64 = file_64;
                   }
                   this.productoNuevo.imagen[position] = imagen;
@@ -564,8 +560,8 @@ export class MisProductosServiciosPage implements OnInit {
               const newImagen = {
                 i: img.src,
                 p: position,
-                fn: fName
-              }
+                fn: fName,
+              };
               this.abrirModalImagen(
                 newImagen,
                 this.resizeToWidth,
@@ -635,7 +631,6 @@ export class MisProductosServiciosPage implements OnInit {
         this.actualizar(this.productoNuevo);
       }
       if (this.opcion === 1) {
-
         this.agregar(this.listaProductos);
       }
     }
@@ -657,7 +652,8 @@ export class MisProductosServiciosPage implements OnInit {
   setNegocioProducto() {
     this.productoNuevo.negocio.idNegocio = this.datosNegocio.id_negocio;
     this.productoNuevo.negocio.nombre = this.negocioTO.nombre_comercial;
-    this.productoNuevo.negocio.direccion = this.datosNegocio.domicilio.id_domicilio;
+    this.productoNuevo.negocio.direccion =
+      this.datosNegocio.domicilio.id_domicilio;
     this.productoNuevo.negocio.logo = this.negocioTO.url_logo;
   }
 
@@ -688,13 +684,17 @@ export class MisProductosServiciosPage implements OnInit {
     let datosAEnviar: DatosNegocios;
     const datos = JSON.stringify(this.datosNegocio);
     datosAEnviar = JSON.parse(datos);
-    this.productoNuevo.imagen = JSON.parse(JSON.stringify(this.productoNuevo.imagen));
+    this.productoNuevo.imagen = JSON.parse(
+      JSON.stringify(this.productoNuevo.imagen)
+    );
     // this.productoNuevo.imagen.nombre_archivo = this.productoNuevo.nombre + ".jpg";
-    this.productoNuevo.negocio.direccion = this.negocioTO.det_domicilio.id_domicilio;
+    this.productoNuevo.negocio.direccion =
+      this.negocioTO.det_domicilio.id_domicilio;
     if (this.blnEditando) {
       datosAEnviar.productos[this.indexModificar] = this.productoNuevo;
     } else {
-      this.productoNuevo.nombre_categoria1 = this.productoNuevo.categoria.nombre;
+      this.productoNuevo.nombre_categoria1 =
+        this.productoNuevo.categoria.nombre;
       switch (this.iden) {
         case 1:
           datosAEnviar.productos.push(this.productoNuevo);
@@ -732,7 +732,6 @@ export class MisProductosServiciosPage implements OnInit {
 
     switch (this.iden) {
       case 1:
-
         this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
           (repsuesta) => {
             this.buscarCategoriasProductos();
@@ -742,7 +741,7 @@ export class MisProductosServiciosPage implements OnInit {
               if (item.id_categoria === this.productoNuevo.id_categoria) {
                 this.productoNuevo =
                   this.datosNegocio.productos[
-                  this.datosNegocio.productos.length - 1
+                    this.datosNegocio.productos.length - 1
                   ];
                 this.productoNuevo.index =
                   this.datosNegocio.productos.length - 1;
@@ -756,7 +755,7 @@ export class MisProductosServiciosPage implements OnInit {
             this.blnEditando = false;
             this.productoNuevo = new DtosMogoModel();
           },
-          (error) => { },
+          (error) => {},
           () => {
             this.banderaGuardar = false;
             this.regresarLista();
@@ -765,7 +764,6 @@ export class MisProductosServiciosPage implements OnInit {
         break;
 
       case 2:
-
         this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
           (repsuesta) => {
             this.buscarCategoriasProductos();
@@ -775,7 +773,7 @@ export class MisProductosServiciosPage implements OnInit {
               if (item.id_categoria === this.productoNuevo.id_categoria) {
                 this.productoNuevo =
                   this.datosNegocio.servicios[
-                  this.datosNegocio.servicios.length - 1
+                    this.datosNegocio.servicios.length - 1
                   ];
                 this.productoNuevo.index =
                   this.datosNegocio.servicios.length - 1;
@@ -789,7 +787,7 @@ export class MisProductosServiciosPage implements OnInit {
             this.blnEditando = false;
             this.productoNuevo = new DtosMogoModel();
           },
-          (error) => { },
+          (error) => {},
           () => {
             this.banderaGuardar = false;
             this.regresarLista();
@@ -822,7 +820,6 @@ export class MisProductosServiciosPage implements OnInit {
   }
 
   editarRegistro(produc: any) {
-
     this.mostrarListaProductos = !this.mostrarListaProductos;
     this.agregarProducto = true;
     this.almacenarRegistro = JSON.parse(JSON.stringify(produc));
@@ -833,7 +830,6 @@ export class MisProductosServiciosPage implements OnInit {
       this.productoNuevo.imagen = [imagens];
     }
     this.opcion = 2;
-
   }
 
   actualizar(produc) {
@@ -852,8 +848,10 @@ export class MisProductosServiciosPage implements OnInit {
           break;
       }
     }
+    
     this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
       (repsuesta) => {
+        
         this.buscarCategoriasProductos();
         // this.modalReference.close();
         this.datosNegocio = repsuesta.data;
@@ -876,9 +874,7 @@ export class MisProductosServiciosPage implements OnInit {
         this.blnEditando = false;
         this.blnformMobile = false;
       },
-      () => {
-        
-      },
+      () => {},
       () => {
         this.banderaGuardar = false;
         this.notificacionService.exito(
@@ -889,12 +885,10 @@ export class MisProductosServiciosPage implements OnInit {
     );
   }
   public subirImgs(event: any) {
-
     this.subirArchivo(event);
   }
 
   public subirArchivo(event: any) {
-
     this.subir_imagen_cuadrada(event);
   }
   public updateBorrado(event: any) {
@@ -902,29 +896,41 @@ export class MisProductosServiciosPage implements OnInit {
   }
 
   public isService(type: number) {
-    return (type == 2) ? 'servicio' : 'producto';
+    return type == 2 ? "servicio" : "producto";
   }
 
   public isServices(type: number) {
-    return (type == 2) ? 'servicios' : 'productos';
+    return type == 2 ? "servicios" : "productos";
   }
 
   public isMayusculaService(type: number) {
-    return (type == 2) ? 'Servicios' : 'Productos';
+    return type == 2 ? "Servicios" : "Productos";
   }
   public obtenerTotalProductosOrServicios(type: number) {
     let selection: Array<DtosMogoModel>;
     if (type == 2) {
-      selection = (Array.isArray(this.datosNegocio.servicios)) ? this.datosNegocio.servicios : [];
+      selection = Array.isArray(this.datosNegocio.servicios)
+        ? this.datosNegocio.servicios
+        : [];
       return this.obtenerTotal(selection);
     }
-    selection = (Array.isArray(this.datosNegocio.productos)) ? this.datosNegocio.productos : [];
+    
+    let productosActivos = [];
+    this.datosNegocio.productos.forEach((element) => {
+      if (element.existencia) {
+        productosActivos.push(element);
+      }
+    });
+    selection = Array.isArray(this.datosNegocio.productos)
+      ? productosActivos
+      : [];
     return this.obtenerTotal(selection);
   }
 
   private obtenerTotal(lista: Array<DtosMogoModel>) {
     return lista.length;
   }
+
   eliminarProducto(produc: any) {
     console.log("prducto delete", produc);
 
