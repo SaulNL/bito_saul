@@ -182,7 +182,7 @@ export class PedidoNegocioComponent implements OnInit {
                 }
                 this.loader = false;
                 this.guard.tf = true;
-                this.mesajes.exito('Pedido realizado éxito');
+                this.mesajes.exito('Pedido realizado con éxito');
                 this.lista = [];
                 this.cerrarModal();
             }, () => {
