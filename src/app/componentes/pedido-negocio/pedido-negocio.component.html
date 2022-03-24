@@ -15,17 +15,40 @@
 <app-spinner [loader]="loader" [message]="msj"></app-spinner>
 <ion-content *ngIf="!loader">
   <ion-list *ngIf="tipoEnvio !== undefined">
-    <ion-radio-group (ionChange)="cambiarTipo($event)" [value]="tipoEnvio">
+    <ion-list *ngIf="_entregaDomicilio === 1 && _entregaSitio === 1 && _consumoSitio === 1 && tipoEnvio !== null">
+      <ion-radio-group [(ngModel)]="tipoEnvio">
+        <ion-list-header>
+          <ion-label>Tipo de entrega</ion-label>
+        </ion-list-header>
+    
+        <ion-item>
+          <ion-label>Envio a domicilio</ion-label>
+          <ion-radio slot="end" [value]="2"></ion-radio>
+        </ion-item>
+    
+        <ion-item>
+          <ion-label>Recoger en sucursal</ion-label>
+          <ion-radio slot="end" [value]="3"></ion-radio>
+        </ion-item>
+    
+        <ion-item>
+          <ion-label>Consumo en sitio</ion-label>
+          <ion-radio slot="end" [value]="1"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+    <ion-radio-group *ngIf="_entregaDomicilio !== 1"  (ionChange)="cambiarTipo($event)" [value]="tipoEnvio">
+     
       <ion-list-header>
         <ion-label>
           Tipo de entrega
         </ion-label>
       </ion-list-header>
 
-      <ion-item *ngIf="_entregaDomicilio === 1">
-        <ion-label> <strong>Envio a domicilio</strong></ion-label>
-        <ion-radio [value]="2" ></ion-radio>
-      </ion-item>
+      <ion-list *ngIf="_entregaDomicilio === 1">
+        <ion-label> <strong >Envio a domicilio </strong> </ion-label>
+        <ion-radio [value]="2"></ion-radio>
+      </ion-list>
 
       <ion-item *ngIf="_entregaSitio === 1">
         <ion-label><strong>Recoger en sucursal</strong> </ion-label>
