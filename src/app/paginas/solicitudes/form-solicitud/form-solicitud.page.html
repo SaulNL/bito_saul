@@ -277,6 +277,16 @@
           <div *ngIf="compLocalidad.invalid" class="alert">
             <div>Seleccione una Localidad</div>
           </div>
+          <br/>
+          <ion-button
+          size="small"
+          class="bg-rosa"
+          type="button"
+          (click)="getAddress()"
+        >
+          <ion-icon name="navigate-circle-outline"></ion-icon>
+          Buscar dirección
+        </ion-button>
           <br />
           <ion-label
             >Selecciona una ubicación<span style="color: red">*</span

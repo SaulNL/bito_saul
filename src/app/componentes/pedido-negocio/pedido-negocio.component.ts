@@ -6,13 +6,15 @@ import { icon, Map, Marker, marker, tileLayer } from "leaflet";
 import { NegocioService } from "../../api/negocio.service";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { AuthGuardService } from "../../api/auth-guard.service";
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+/* import { Geolocation } from '@ionic-native/geolocation/ngx'; */
 import { IPago } from 'src/app/interfaces/IPago';
 import HttpStatusCode from '../../utils/https-status-code';
 import { error } from 'protractor';
 import { HttpParams } from '@angular/common/http';
+import { UbicacionMapa } from '../../api/ubicacion-mapa.service';
+import { Plugins } from "@capacitor/core";
 
-
+const { Geolocation } = Plugins;
 declare var google: any;
 @Component({
     selector: 'app-pedido-negocio',
@@ -63,7 +65,8 @@ export class PedidoNegocioComponent implements OnInit {
         public alertController: AlertController,
         private platform: Platform,
         private guard: AuthGuardService,
-        private geolocation: Geolocation
+        /* private geolocation: Geolocation, */
+        public getCoordinatesMap: UbicacionMapa,
     ) {
         this.lat = 19.31905;
         this.numeroMesa = 0;
@@ -153,11 +156,14 @@ export class PedidoNegocioComponent implements OnInit {
 
     public geocodeLatLng() {
         const geocoder = new google.maps.Geocoder;
-        const latlng = {
+        let latlong = {
             lat: parseFloat(String(this.lat)),
             lng: parseFloat(String(this.lng))
         };
-        geocoder.geocode({ location: latlng }, (results, status) => {
+        console.log("desp",latlong)
+        
+        geocoder.geocode({ location: latlong }, (results, status) => {
+            console.log("res",results)
             if (status === 'OK') {
                 if (results[0]) {
                     this.estasUbicacion = results[0].formatted_address;
@@ -263,7 +269,7 @@ export class PedidoNegocioComponent implements OnInit {
      * Funcion para obtener la ubicacion actual
      */
     async localizacionTiempo() {
-        this.geolocation.getCurrentPosition().then((resp) => {
+        await Geolocation.getCurrentPosition().then((resp) => {
             this.lat = resp.coords.latitude
             this.lng = resp.coords.longitude
             this.map.panTo([this.lat, this.lng]);
@@ -394,5 +400,35 @@ export class PedidoNegocioComponent implements OnInit {
     public seleccionarTipoPago(event: any){
         this.idTipoDePago = event.target.value;
         
+    }
+
+    async getAddress(){
+  
+        console.log("si")
+        console.log("1",this.address)
+        console.log("2",this.pedido.longitud)
+        console.log("3",this.pedido.direccion)
+        
+      }
+
+      async getCoordinates(){
+        this.getCoordinatesMap.getPosts(this.address)
+        .then(async data => {
+            console.log("data1111",data)
+            let arrayPosts:any = data;
+            let latitud = arrayPosts.results[0].geometry.location.lat;
+            let longitud = arrayPosts.results[0].geometry.location.lng;
+            let gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
+            const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
+                console.log("antes",res.coords)
+                this.lat = res.coords.latitude;
+                this.lng = res.coords.longitude;
+                this.map.panTo([latitud, longitud]);
+                this.marker.setLatLng([latitud, longitud]);
+                this.geocodeLatLng();
+            }).catch((error) => {
+            console.log("error1",error)
+                })
+            })
     }
 }
