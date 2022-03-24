@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { NegocioModel } from "./../../../Modelos/NegocioModel";
@@ -923,5 +924,41 @@ export class MisProductosServiciosPage implements OnInit {
 
   private obtenerTotal(lista: Array<DtosMogoModel>) {
     return lista.length;
+  }
+  eliminarProducto(produc: any) {
+    console.log("prducto delete", produc);
+
+    /* this.sercicioNegocio.eliminarProducto(produc.idProducto).subscribe(
+      (respuesta) => {
+        console.log("eliminado bien", respuesta);
+        this.notificacionService.exito("Se eliminó correctamente el producto");
+        this.regresarLista();
+      },
+      (error) => {
+        console.log("error", error);
+      }
+    ); */
+  }
+
+  async alertProductDelete(produc: any) {
+    const alert = await this.alertController.create({
+      header: "Eliminar",
+      message: `¿Estás seguro de que deseas eliminar el producto: ${produc.nombre}?`,
+      buttons: [
+        {
+          text: "Cancelar",
+          role: "cancel",
+          handler: () => {},
+        },
+        {
+          text: "Aceptar",
+          handler: () => {
+            this.eliminarProducto(produc);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }
