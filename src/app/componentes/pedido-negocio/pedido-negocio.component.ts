@@ -160,10 +160,8 @@ export class PedidoNegocioComponent implements OnInit {
             lat: parseFloat(String(this.lat)),
             lng: parseFloat(String(this.lng))
         };
-        console.log("desp",latlong)
         
         geocoder.geocode({ location: latlong }, (results, status) => {
-            console.log("res",results)
             if (status === 'OK') {
                 if (results[0]) {
                     this.estasUbicacion = results[0].formatted_address;
