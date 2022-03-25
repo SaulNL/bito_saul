@@ -402,33 +402,21 @@ export class PedidoNegocioComponent implements OnInit {
         
     }
 
-    async getAddress(){
-  
-        console.log("si")
-        console.log("1",this.address)
-        console.log("2",this.pedido.longitud)
-        console.log("3",this.pedido.direccion)
-        
-      }
-
       async getCoordinates(){
         this.getCoordinatesMap.getPosts(this.address)
         .then(async data => {
-            console.log("data1111",data)
             let arrayPosts:any = data;
             let latitud = arrayPosts.results[0].geometry.location.lat;
             let longitud = arrayPosts.results[0].geometry.location.lng;
-            let gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
-            const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
-                console.log("antes",res.coords)
-                this.lat = res.coords.latitude;
-                this.lng = res.coords.longitude;
-                this.map.panTo([latitud, longitud]);
-                this.marker.setLatLng([latitud, longitud]);
-                this.geocodeLatLng();
+
+            this.lat = latitud;
+            this.lng = longitud;
+            this.map.panTo([latitud, longitud]);
+            this.marker.setLatLng([latitud, longitud]);
+            this.geocodeLatLng();
             }).catch((error) => {
-            console.log("error1",error)
+                this.mesajes.error("Ocurrió un error al consultar la dirección, intente de nuevo más tarde");
                 })
-            })
+            
     }
 }
