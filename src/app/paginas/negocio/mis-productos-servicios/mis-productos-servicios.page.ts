@@ -848,7 +848,7 @@ export class MisProductosServiciosPage implements OnInit {
           break;
       }
     }
-    
+
     this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
       (repsuesta) => {
         
@@ -931,25 +931,48 @@ export class MisProductosServiciosPage implements OnInit {
     return lista.length;
   }
 
-  eliminarProducto(produc: any) {
-    console.log("prducto delete", produc);
+  eliminarProducto(produc: any, tipo:string) {
+    let datosAEnviar: DatosNegocios;
+    const datos = JSON.stringify(this.datosNegocio);
+    datosAEnviar = JSON.parse(datos);
 
-    /* this.sercicioNegocio.eliminarProducto(produc.idProducto).subscribe(
-      (respuesta) => {
-        console.log("eliminado bien", respuesta);
-        this.notificacionService.exito("Se eliminó correctamente el producto");
-        this.regresarLista();
-      },
-      (error) => {
-        console.log("error", error);
-      }
-    ); */
+    if (tipo === 'producto') {
+      let productIndex = datosAEnviar.productos.map(function(e) { return e.idProducto; }).indexOf(produc.idProducto);
+      datosAEnviar.productos.splice(productIndex, 1);
+    }else{
+      let productIndex = datosAEnviar.servicios.map(function(e) { return e.idProducto; }).indexOf(produc.idProducto);
+      datosAEnviar.servicios.splice(productIndex, 1);
+    }
+    
+       this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
+        (respuesta) => {
+          if (respuesta.code === 200) {
+            if (tipo === 'producto') {
+              this.notificacionService.exito(
+                "Se eliminó correctamente el producto " + produc.nombre, 
+              );
+            }else{
+              this.notificacionService.exito(
+                "Se eliminó correctamente el servicio " + produc.nombre
+              );
+            }
+            location.reload();
+          } else {
+            this.notificacionService.error(respuesta.message);
+          }
+        },
+        (error) => {
+          this.notificacionService.error(
+            "Ocurrio un error al eliminar el producto, por favor inténtalo más tarde"
+          );
+        },
+    );
   }
 
-  async alertProductDelete(produc: any) {
+  async alertProductDelete(produc: any, tipo:string) {
     const alert = await this.alertController.create({
       header: "Eliminar",
-      message: `¿Estás seguro de que deseas eliminar el producto: ${produc.nombre}?`,
+      message: tipo === 'producto' ?  `¿Estás seguro de que deseas eliminar el producto: ${produc.nombre}?` :  `¿Estás seguro de que deseas eliminar el servicio: ${produc.nombre}?`,
       buttons: [
         {
           text: "Cancelar",
@@ -959,7 +982,7 @@ export class MisProductosServiciosPage implements OnInit {
         {
           text: "Aceptar",
           handler: () => {
-            this.eliminarProducto(produc);
+            this.eliminarProducto(produc,tipo);
           },
         },
       ],

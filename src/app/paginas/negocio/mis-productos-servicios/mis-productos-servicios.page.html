@@ -319,18 +319,18 @@
                     align-items: center;
                   "
                 >
-                  <div style="width: 10%; text-align: left">
-                    <strong>No.</strong>
-                  </div>
-                  <div style="width: 25%; text-align: left">
-                    <strong>Nombre</strong>
-                  </div>
-                  <div style="width: 25%; text-align: left">
-                    <strong>Existencia</strong>
-                  </div>
-                  <div style="width: 40%"><strong>Acciones</strong></div>
+                <div style="width: 10%; text-align: left">
+                  <strong>No.</strong>
                 </div>
-                <div
+                <div style="width: 25%; text-align: left">
+                  <strong>Nombre</strong>
+                </div>
+                <div style="width: 25%; text-align: left">
+                  <strong>Existencia</strong>
+                </div>
+                <div style="width: 40%"><strong>Acciones</strong></div>
+              </div>
+              <div
                   style="
                     width: 100%;
                     display: flex;
@@ -342,7 +342,7 @@
                 >
                   <div style="width: 10%">{{ i + 1 }}</div>
                   <div style="width: 25%">{{ producto.nombre }}</div>
-                  <div style="width: 20%; text-align: center">
+                  <div style="width: 25%; text-align: center">
                     <ion-toggle
                       style="width: 20"
                       name="existencia"
@@ -361,7 +361,7 @@
                     </ion-button>
                     <ion-button
                       color="danger"
-                      (click)="alertProductDelete(producto)"
+                      (click)="alertProductDelete(producto, 'producto')"
                     >
                       <ion-icon name="trash"></ion-icon>
                     </ion-button>
@@ -395,11 +395,11 @@
                   "
                 >
                   <div style="width: 10%"><strong>No.</strong></div>
-                  <div style="width: 35%; text-align: center">
+                  <div style="width: 25%; text-align: center">
                     <strong>Nombre</strong>
                   </div>
-                  <div style="width: 30%"><strong>Existencia</strong></div>
-                  <div style="width: 25%"><strong>Acciones</strong></div>
+                  <div style="width: 25%"><strong>Existencia</strong></div>
+                  <div style="width: 40%"><strong>Acciones</strong></div>
                 </div>
                 <div
                   style="
@@ -411,34 +411,41 @@
                   "
                   *ngFor="let producto of listaProductos.servicios; index as i"
                 >
-                  <div style="width: 10%">{{ i + 1 }}</div>
-                  <div style="width: 35%">{{ producto.nombre }}</div>
-                  <div style="width: 30%">
-                    <ion-toggle
-                      name="existencia"
-                      disabled
-                      #existencia="ngModel"
-                      [(ngModel)]="producto.existencia"
-                      color="danger"
-                    ></ion-toggle>
-                  </div>
-                  <div style="width: 25%">
-                    <ion-button
-                      color="warning"
-                      (click)="editarRegistro(producto)"
-                    >
-                      <ion-icon name="create"></ion-icon>
-                    </ion-button>
-                  </div>
+                <div style="width: 10%">{{ i + 1 }}</div>
+                <div style="width: 25%">{{ producto.nombre }}</div>
+                <div style="width: 25%; text-align: center">
+                  <ion-toggle
+                    style="width: 20"
+                    name="existencia"
+                    disabled
+                    #existencia="ngModel"
+                    [(ngModel)]="producto.existencia"
+                    color="danger"
+                  ></ion-toggle>
                 </div>
-                <div
-                  style="
-                    width: 100%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                  "
-                ></div>
+                <div style="width: 40%">
+                  <ion-button
+                    color="warning"
+                    (click)="editarRegistro(producto)"
+                  >
+                    <ion-icon name="create"></ion-icon>
+                  </ion-button>
+                  <ion-button
+                    color="danger"
+                    (click)="alertProductDelete(producto, 'servicio')"
+                  >
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-button>
+                </div>
+              </div>
+              <div
+                style="
+                  width: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              ></div>
               </div>
             </ion-col>
           </ion-row>
