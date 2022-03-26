@@ -9,7 +9,7 @@ import { StatisticsByBusinessInterface, BusinessStatisticsLoaderInterface, Busin
 import { Params } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import * as Moment from 'moment';
+import Moment from 'moment';
 import { ToadNotificacionService } from './../../../api/toad-notificacion.service';
 
 @Component({

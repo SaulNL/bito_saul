@@ -63,6 +63,7 @@ export class PerfilNegocioPage implements OnInit {
     public existeSesion: boolean;
     url = `${AppSettings.URL_FRONT}`;
     public url_negocio: string;
+    public urlData : string;
     public estatusCalificacion: boolean;
     public hoy: number;
     public estatus: { tipo: number; mensaje: string };
@@ -256,8 +257,12 @@ export class PerfilNegocioPage implements OnInit {
             (response) => {
                 if (response.data !== null) {
                     this.informacionNegocio = response.data;
-
                     this.promociones = this.informacionNegocio.promociones;
+                    if (this.informacionNegocio.url_negocio !== null && this.informacionNegocio.url_negocio !== '' && this.informacionNegocio.url_negocio !== undefined){
+                        this.urlData = this.url + this.informacionNegocio.url_negocio;
+                    }else{
+                        this.urlData = this.url;
+                    }
                     if (this.informacionNegocio.lugares_entrega !== null) {
                         this.arrayLugaresEntrega = this.informacionNegocio.lugares_entrega.split(',');
                     } else {

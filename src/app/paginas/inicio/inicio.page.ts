@@ -86,6 +86,7 @@ export class InicioPage implements OnInit {
   ) {
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
+    
     this.Filtros.idEstado = 29;
     const byCategorias = localStorage.getItem("filtroactual");
     if (
@@ -116,6 +117,8 @@ export class InicioPage implements OnInit {
         this.backPhysicalBottom();
       });
     });
+  
+  
   }
 
   public backPhysicalBottom() {
@@ -455,10 +458,13 @@ export class InicioPage implements OnInit {
         listaIds.push(n);
       });
     });
+    console.log("listacategor", this.listaCategorias);
+    console.log("listaids", listaIds);
     for (let index = 0; index < listaIds.length; index++) {
       listaIdNegocio.push(listaIds[index].id_negocio);
     }
     this.listaIdsMapa = listaIdNegocio;
+    console.log("listas mapass", this.listaIdsMapa);
   }
   public regresarBitoo() {
     localStorage.removeItem("org");
@@ -477,7 +483,6 @@ export class InicioPage implements OnInit {
     localStorage.removeItem("byCategorias");
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
-    /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
     this.filtroActivo = false;
     this.buscarNegocios(true);
   }

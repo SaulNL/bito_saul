@@ -4,7 +4,7 @@ import { PublicacionesModel } from '../../Modelos/PublicacionesModel';
 import { NegocioModel } from '../../Modelos/NegocioModel';
 import { NegocioService } from '../../api/negocio.service';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
-import * as moment from 'moment';
+import  moment from 'moment';
 import { NgForm } from '@angular/forms';
 import { SolicitudesService } from './../../api/solicitudes.service';
 import { PromocionesModel } from '../../Modelos/PromocionesModel';

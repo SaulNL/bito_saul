@@ -34,6 +34,7 @@ export class MisProductosServiciosPage implements OnInit {
   public loadPdf: boolean;
   private fileImgGaleria: FileList;
   public productoTags: Array<string>;
+  public serviciosTags: Array<string>;
   public agregarClas: boolean;
   public maximoProductos: number;
   public editarCategoria: any;
@@ -82,6 +83,7 @@ export class MisProductosServiciosPage implements OnInit {
     this.carta = null;
     this.listaVista = [];
     this.productoTags = [];
+    this.serviciosTags = [];
     this.blnNuevaCategoria = false;
     this.blnformMobile = false;
     this.blnEditando = false;
@@ -182,10 +184,12 @@ export class MisProductosServiciosPage implements OnInit {
           this.datosNegocio = repsuesta.data;
 
           if (this.iden === 2) {
-            this.productoTags = this.datosNegocio.serviciosTags;
+            this.serviciosTags = this.datosNegocio.serviciosTags;
+            this.negocioTO.tags=[...this.serviciosTags];
           }
           if (this.iden === 1) {
             this.productoTags = this.datosNegocio.productoTags;
+             this.negocioTO.tags=[...this.productoTags];
           }
 
           if (
@@ -282,6 +286,15 @@ export class MisProductosServiciosPage implements OnInit {
     this.sercicioNegocio.guardarProductoServio(this.datosNegocio).subscribe(
       (repsuesta) => {
         this.datosNegocio = repsuesta.data;
+
+        if (this.iden === 2) {
+          this.serviciosTags = this.datosNegocio.serviciosTags;
+          this.datosNegocio.serviciosTags = this.datosNegocio.serviciosTags;
+        }
+        if (this.iden === 1) {
+          this.productoTags = this.datosNegocio.productoTags;
+          this.datosNegocio.productoTags = this.datosNegocio.productoTags;
+        }
         switch (this.iden) {
           case 1:
             if (
@@ -334,11 +347,13 @@ export class MisProductosServiciosPage implements OnInit {
   }
 
   agregarTags(tags: string[]) {
-    this.productoTags = tags;
+    this.negocioTO.tags=[...tags];
     if (this.iden === 2) {
+      this.serviciosTags = tags;
       this.datosNegocio.serviciosTags = tags;
     }
     if (this.iden === 1) {
+      this.productoTags = tags;
       this.datosNegocio.productoTags = tags;
     }
     this.guardarDatos();
