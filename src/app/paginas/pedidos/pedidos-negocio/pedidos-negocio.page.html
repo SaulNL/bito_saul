@@ -20,6 +20,40 @@
                 <ion-col class="ion-align-self-center"><h3>Filtros</h3></ion-col>
             </ion-row>
         </ion-grid>
+        <ion-grid fixed>
+        <ion-row class="ion-text-center">          
+            <ion-col>              
+            <ion-button class="border text-format rosa"  size="small" mode="ios" color="white"  (click)="toSignUp()">Hoy</ion-button>          
+            </ion-col>          
+            <ion-col>              
+            <ion-button class="border text-format rosa"  size="small" mode="ios" color="white" (click)="loginGo()">Últimos 7 días</ion-button>          
+            </ion-col>          
+            <ion-col>              
+            <ion-button class="border text-format rosa"  size="small" mode="ios" color="white"  (click)="toSignUp()">Últimos 30 días</ion-button>          
+            </ion-col>          
+            <ion-col>              
+            <ion-button class="border text-format rosa"  size="small" mode="ios" color="white" (click)="toSignUp()">Todos</ion-button>          
+            </ion-col>        
+        </ion-row> 
+        <p class="ion-text-center">Rango de fechas:</p> 
+        <ion-row class="ion-text-center">
+            <ion-col>
+            <ion-item>
+                <ion-datetime #fechaFinal="ngModel" name="fechaFinal" required (ionChange)="calcularRangoFechas()" [min]="minDate" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Final" [(ngModel)]="fechafin"></ion-datetime>            
+            </ion-item>
+            </ion-col> 
+            <ion-col>
+            <ion-item>
+                <ion-datetime #fechaFinal="ngModel" name="fechaFinal" required (ionChange)="calcularRangoFechas()" [min]="minDate" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Final" [(ngModel)]="fechafin"></ion-datetime>            
+            </ion-item>
+            </ion-col> 
+            <ion-col>            
+            <ion-button class="border text-format rosa" size="small" mode="ios" color="white"  (click)="toSignUp()">              
+                <ion-icon slot="start" name="calendar-outline" slot="start"> </ion-icon>Buscar            
+            </ion-button>        
+            </ion-col> 
+        </ion-row>       
+        </ion-grid>
         <ion-list>
             <ion-grid>
                 <ion-row>
