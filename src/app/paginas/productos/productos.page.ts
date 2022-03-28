@@ -11,6 +11,7 @@ import {
   ModalController,
   Platform,
   ToastController,
+  AlertController,
 } from "@ionic/angular";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { BusquedaService } from "../../api/busqueda.service";
@@ -89,7 +90,8 @@ export class ProductosPage {
     private platform: Platform,
     private validarPermiso: ValidarPermisoService,
     private auth0Service: Auth0Service,
-    private createObject: CreateObjects
+    private createObject: CreateObjects,
+    public alertController: AlertController
   ) {
     this.afiliacion = false;
     this.abc = false;
@@ -306,6 +308,11 @@ export class ProductosPage {
             this.lstProductosOriginal = response.data.lstProductos;
             this.lstProductos = this.lstProductosOriginal.slice(0, 6);
             this.loader = false;
+            if (this.existeSesion) {
+
+            }else{
+              this.mensajeRegistro();
+            }
           },
           (error) => {
             this.notificaciones.error(
@@ -481,5 +488,29 @@ export class ProductosPage {
         element.usuario_dio_like = product.like ? 1 : 0;
       }
     });
+  }
+
+  async mensajeRegistro() {
+    const alert = await this.alertController.create({
+      header: 'Crea tu cuenta',
+      backdropDismiss: false,
+      message: "¡Únete a <strong>Bitoo</strong>! ",
+        buttons: [
+            {
+                text: "Cancelar",
+                cssClass: 'text-grey',
+                handler: () => {
+                }
+            },
+            {
+                text: "Registrate",
+                cssClass: 'text-rosa',
+                handler: () => {
+                    this._router.navigate(["/tabs/login/sign-up"]);
+                },
+            },
+        ],
+    });
+    await alert.present();
   }
 }

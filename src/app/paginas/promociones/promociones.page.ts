@@ -6,6 +6,8 @@ import {FiltrosService} from "../../api/filtros.service";
 import {ProveedorServicioService} from "../../api/proveedor-servicio.service";
 import {ToadNotificacionService} from "../../api/toad-notificacion.service";
 import {ActivatedRoute} from "@angular/router";
+import { Router } from "@angular/router";
+import { AlertController, ModalController } from "@ionic/angular";
 /* Modelos */
 import {PromocionesModel} from "../../Modelos/PromocionesModel";
 import {FiltrosModel} from "../../Modelos/FiltrosModel";
@@ -35,6 +37,7 @@ export class PromocionesPage implements OnInit {
     private plazaAfiliacion: AfiliacionPlazaModel | null;
     public isIOS: boolean = false;
     public idPersona: number | null;
+    public existeSesion: boolean;
 
     constructor(
         private _promociones: PromocionesService,
@@ -44,7 +47,10 @@ export class PromocionesPage implements OnInit {
         public _notificacionService: ToadNotificacionService,
         private active: ActivatedRoute,
         private platform: Platform,
-        private utils : UtilsCls
+        private utils : UtilsCls,
+        private router: Router,
+        public modalController: ModalController,
+        public alertController: AlertController
     ) {
         this.idPersona = null;
         this.Filtros = new FiltrosModel();
@@ -55,6 +61,7 @@ export class PromocionesPage implements OnInit {
         this.idGiro = null;
         this.mostrarDetalle = false;
         this.isIOS = this.platform.is('ios');
+        this.existeSesion = utils.existe_sesion();
     }
 
     ngOnInit(): void {
@@ -118,14 +125,18 @@ export class PromocionesPage implements OnInit {
                     if (response.data !== null) {
                         this.lstPromociones = response.data;
                         this.loader = false;
+                        if (this.existeSesion) {
+                        }else{
+                          this.mensajeRegistro();
+                        }
                         // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}
                     } else {
-                        this.lstPromociones = [];
+                        this.lstPromociones = [];  
                     }
                 },
                 () => {
 
-                    this.lstPromociones = [];
+                    this.lstPromociones = [];                  
                 },
                 () => {
                     window.scrollTo({top: 0, behavior: "smooth"});
@@ -174,4 +185,28 @@ export class PromocionesPage implements OnInit {
             }
         );
     }
+
+    async mensajeRegistro() {
+        const alert = await this.alertController.create({
+          header: 'Crea tu cuenta',
+          backdropDismiss: false,
+          message: "¡Únete a <strong>Bitoo</strong>! ",
+            buttons: [
+                {
+                    text: "Cancelar",
+                    cssClass: 'text-grey',
+                    handler: () => {
+                    }
+                },
+                {
+                    text: "Registrate",
+                    cssClass: 'text-rosa',
+                    handler: () => {
+                        this.router.navigate(["/tabs/login/sign-up"]);
+                    },
+                },
+            ],
+        });
+        await alert.present();
+      }
 }
