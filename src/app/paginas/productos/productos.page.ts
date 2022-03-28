@@ -181,18 +181,24 @@ export class ProductosPage {
     this.servicioProductos.obtenerIniciales(this.anyFiltros).subscribe(
       (response) => {
         this.lstProductos = response.data.lstProductos;
+        
         if (this.lstProductos.length > 0) {
           this.blnBtnMapa = true;
           this.listaNegocioMap = this.lstProductos;
+          
         } else {
+          
           this.blnBtnMapa = false;
+          this.loader=false;
         }
         this.lstProductosBK = response.data.lstProductos;
         if (!this.abc) {
+          
           this.armarFiltroABC();
         } else {
           this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
             response2 => {
+            
               if (response2.data.lstProductos.length > 0) {
                 this.blnBtnMapa=true;
                 const tempLstProduct = response2.data.lstProductos;
@@ -201,6 +207,8 @@ export class ProductosPage {
                 this.loader = false;
               }else{
                 this.blnBtnMapa = false;
+                this.loader=false;
+              
               }
             },  error => {
               this.loader = false;
@@ -237,15 +245,17 @@ export class ProductosPage {
     }
 
     this.filtroABC.forEach((item) => {
+
       let siHay = this.lstProductos.find((producto) => {
         if (producto.nombre !== null) {
-          return producto.nombre.charAt(0) === item.letra;
+          return producto.nombre.charAt(0) === item.letra.toLowerCase() || producto.nombre.charAt(0) === item.letra;
         }
       });
       if (siHay !== undefined) {
         item.activo = 1;
       }
     });
+    
     this.filtrarABCRandom();
   }
 
@@ -262,6 +272,7 @@ export class ProductosPage {
       incremento++;
       const pos = Math.round(Math.random() * (tamanio - 0) + 0);
       filtro = this.filtroABC[pos];
+      
       if (filtro.activo === 1 && filtro.letra != "Todos") {
         bandera = false;
         setTimeout(() => {
