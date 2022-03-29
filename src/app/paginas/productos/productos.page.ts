@@ -503,14 +503,14 @@ export class ProductosPage {
 
   async mensajeRegistro() {
     const alert = await this.alertController.create({
-      header: 'Crea tu cuenta',
-      backdropDismiss: false,
-      message: "¡Únete a <strong>Bitoo</strong>! ",
+      cssClass: 'text-center',
+      message: "<strong>¿Ya tienes una cuenta?</strong>",
         buttons: [
             {
-                text: "Cancelar",
+                text: "Iniciar sesión",
                 cssClass: 'text-grey',
                 handler: () => {
+                  this._router.navigate(["/tabs/login"]);
                 }
             },
             {
