@@ -1,4 +1,4 @@
-<app-toolbar-busqueda placeHolder="Buscar productos" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
+<app-toolbar-busqueda [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar productos en ' + plazaAfiliacionNombre.nombre : 'Buscar productos' " (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
 
 <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
 <ion-content *ngIf="!loader" [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
@@ -66,5 +66,15 @@
             <app-dar-like-producto [producto]="producto" [usuario]="user" [mostrarLike]="existeSesion"></app-dar-like-producto>
         </ion-item>
     </ion-list>
+    <ion-grid *ngIf="lstProductos.length === 0 && selectionAP === true">
+        <ion-text color="primary">
+            <h2>No se encontraron productos relacionados en {{plazaAfiliacionNombre.nombre}}</h2>
+        </ion-text>
+    </ion-grid>
+    <ion-grid *ngIf="lstProductos.length === 0 && selectionAP === false">
+        <ion-text color="primary">
+            <h2>No se encontraron productos relacionados</h2>
+        </ion-text>
+    </ion-grid>
     <app-infinito-scroll (respuesta)="cargarMasProductos($event)" [activado]="scroll" [msj]="mensaje"> </app-infinito-scroll>
 </ion-content>

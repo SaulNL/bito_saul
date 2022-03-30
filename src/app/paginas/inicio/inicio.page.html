@@ -83,7 +83,12 @@
                 </ion-col>
             </ion-row>
         </ion-grid>
-        <ion-grid *ngIf="listaCategorias.length === 0">
+        <ion-grid *ngIf="listaCategorias.length === 0 && selectionAP === false">
+            <ion-text color="primary">
+                <h2>No se encontraron negocios relacionados</h2>
+            </ion-text>
+        </ion-grid>
+        <ion-grid *ngIf="listaCategorias.length === 0  && selectionAP === true">
             <ion-text color="primary">
                 <h2>No se encontraron negocios relacionados en {{objectSelectAfiliacionPlaza.nombre}}</h2>
             </ion-text>

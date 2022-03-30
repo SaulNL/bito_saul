@@ -69,6 +69,7 @@ export class ProductosPage {
   public isIOS: boolean = false;
   public abc: boolean;
   public permisos: Array<PermisoModel> | null;
+  public plazaAfiliacionNombre : any;
   public paginacion: IPaginacion = {
     actualPagina: 1,
     siguientePagina: 1,
@@ -89,13 +90,14 @@ export class ProductosPage {
     private platform: Platform,
     private validarPermiso: ValidarPermisoService,
     private auth0Service: Auth0Service,
-    private createObject: CreateObjects
+    private create: CreateObjects
   ) {
     this.afiliacion = false;
     this.abc = false;
     this.user = this.util.getUserData();
     this.existeSesion = util.existe_sesion();
     this.mensaje = "Cargando más productos...";
+    this.plazaAfiliacionNombre = "";
     this.selectionAP = false;
     this.isIOS = this.platform.is("ios");
   }
@@ -115,6 +117,9 @@ export class ProductosPage {
 
     const selected = localStorage.getItem("org");
     if (selected != null) {
+      this.plazaAfiliacionNombre = this.objectSelectAfiliacionPlaza = JSON.parse(
+        String(localStorage.getItem("org"))
+      );
       this.selectionAP = true;
     }
     this.mensaje = "Cargando más productos...";

@@ -35,6 +35,7 @@ export class PromocionesPage implements OnInit {
     private plazaAfiliacion: AfiliacionPlazaModel | null;
     public isIOS: boolean = false;
     public idPersona: number | null;
+    public selectionAP: boolean;
 
     constructor(
         private _promociones: PromocionesService,
@@ -55,6 +56,7 @@ export class PromocionesPage implements OnInit {
         this.idGiro = null;
         this.mostrarDetalle = false;
         this.isIOS = this.platform.is('ios');
+        this.selectionAP = false;
     }
 
     ngOnInit(): void {
@@ -62,6 +64,14 @@ export class PromocionesPage implements OnInit {
         if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
             localStorage.setItem("isRedirected", "true");
             location.reload();
+        }
+
+        const selected = localStorage.getItem("org");
+        if (selected != null) {
+        this.plazaAfiliacionNombre = this.objectSelectAfiliacionPlaza = JSON.parse(
+            String(localStorage.getItem("org"))
+        );
+        this.selectionAP = true;
         }
         this.loader = true;
         this.anyFiltros = new FiltrosModel();
@@ -90,6 +100,12 @@ export class PromocionesPage implements OnInit {
             this.obtenerPromociones();
         }
     }
+
+    public regresarBitoo() {
+        localStorage.removeItem("org");
+        location.reload();
+    }
+
 
     public obtenerPromociones() {
         if (navigator.geolocation && this.anyFiltros.tipoBusqueda === 1) {
@@ -174,4 +190,27 @@ export class PromocionesPage implements OnInit {
             }
         );
     }
+
+     public openPlazasAfiliacionesModal() {
+    this.presentModalPlazasAfiliaciones();
+  }
+
+  async presentModalPlazasAfiliaciones() {
+    let persona = null;
+    let permisos = null;
+    if (this.util.existSession()) {
+      persona = this.util.getIdPersona();
+      permisos = this.util.getUserPermisos();
+    }
+    this.modal = await this.modalController.create({
+      component: PlazasAfiliacionesComponent,
+      cssClass: "custom-modal-plazas-afiliaciones",
+      componentProps: {
+        idUsuario: persona,
+        permisos: permisos,
+      },
+    });
+
+    return await this.modal.present();
+  }
 }

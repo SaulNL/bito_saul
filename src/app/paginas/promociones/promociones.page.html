@@ -1,16 +1,38 @@
-<app-toolbar-busqueda placeHolder="Buscar promociones sobre productos, servicios y más..." (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
+<app-toolbar-busqueda [placeHolder]="plazaAfiliacionNombre !== null && plazaAfiliacionNombre !== undefined ? 'Buscar promociones en ' + plazaAfiliacionNombre.nombre : 'Buscar promociones sobre productos, servicios y más...' " (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
 <ion-content [fullscreen]="true">
   <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
   <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
-  <div *ngIf="lstPromociones.length == 0 && !loader">
+  <ion-item>
+
+    <ion-buttons *ngIf="!selectionAP">
+        <ion-button (click)="openPlazasAfiliacionesModal()">
+            Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span>
+            <ion-icon name="caret-down-outline"></ion-icon>
+        </ion-button>
+        </ion-buttons>
+        <ion-buttons *ngIf="selectionAP">
+            <ion-chip (click)="regresarBitoo()" color="danger">
+                <ion-icon name="log-out-outline"></ion-icon>
+                <ion-label>Regresar a bitoo</ion-label>
+            </ion-chip>
+        </ion-buttons>
+</ion-item>
+  <div *ngIf="lstPromociones.length == 0 && !loader && !selectionAP">
     <ion-grid>
       <ion-row style="margin: 10px;">
-        <ion-col size="12" style="color: white; background: red; border-radius: 20px; padding: 10px; text-align: center;">
-          <strong>Lo sentimos!</strong> No se encontraron promociones con la busqueda.
+        <ion-col size="12" color="primary">
+          <h2 style="color: #4d78e7">No se encontraron promociones relacionadas a la búsqueda</h2>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
+
+  <ion-grid *ngIf="lstPromociones.length === 0 && selectionAP === true">
+    <ion-text color="primary">
+        <h2>No se encontraron promociones relacionadas en {{plazaAfiliacionNombre.nombre}}</h2>
+    </ion-text>
+</ion-grid>
+
   <div *ngIf="!loader">
     <app-recargar (respuesta)="recargar($event)"></app-recargar>
     <ion-grid *ngFor="let categorias of lstPromociones" class=".categoria" >
