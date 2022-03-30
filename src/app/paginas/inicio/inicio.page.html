@@ -1,4 +1,4 @@
-<app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
+<app-toolbar-busqueda [placeHolder]=" objectSelectAfiliacionPlaza !== null && objectSelectAfiliacionPlaza !== undefined ? 'Buscar negocios en ' + objectSelectAfiliacionPlaza.nombre : 'Buscar negocios' " (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
 <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
     <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
     <app-boton-top [content]="content" [cordenada]="cordenada" [platform]="isIOS" *ngIf="!isIOS"></app-boton-top>
