@@ -110,7 +110,7 @@ export class InicioPage implements OnInit {
     this.existeSesion = this.util.existe_sesion();
     this.selectionAP = false;
     this.tFiltro = false;
-    this.afiliacion = false;
+    this.afiliacion = true;
     this.isIOS = this.platform.is("ios");
     this.route.queryParams.subscribe((params) => {
       this.subscribe = this.platform.backButton.subscribe(() => {
@@ -217,10 +217,10 @@ export class InicioPage implements OnInit {
     if (this.util.existSession()) {
       this.persona = this.util.getIdPersona();
       this.permisos = this.auth0Service.getUserPermisos();
-      this.afiliacion = this.validarPermiso.isChecked(
-        this.permisos,
-        "ver_afiliacion"
-      );
+      // this.afiliacion = this.validarPermiso.isChecked(
+      //   this.permisos,
+      //   "ver_afiliacion"
+      // );
     }
   }
   /**
