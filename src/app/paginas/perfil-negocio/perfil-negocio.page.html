@@ -232,7 +232,7 @@
                                         </ion-col>
                                         <ion-col *ngIf="dia.horarios.length > 0">
                                             <span *ngFor="let h of dia.horarios ">
-                                                <p class="negritas">{{h.texto}}</p>
+                                                <p style="font-size: 15px; font-weight: bold; margin-bottom: 2%;">{{h.texto}}</p>
                                             </span>
                                         </ion-col>
                                         <ion-col *ngIf="dia.horarios.length === 0"
@@ -299,9 +299,9 @@
             </ion-row>
             <ion-row *ngFor="let cat of informacionNegocio.catProductos; let i = index">
                 <ion-item class="w-100 bg-gris">
-                    <h2 (click)="mostrarProducto(cat.nombre)">{{cat.nombre}}</h2>
+                    <p style="font-size: 18px" (click)="mostrarProducto(cat.nombre)">{{cat.nombre}}</p>
                     <ion-icon (click)="mostrarProducto(cat.nombre)" slot="end"
-                        [name]="negocioSub?'caret-forward-outline' : 'caret-down-outline'">
+                        [name]="!negocioSub &&  nameSub === cat.nombre ? 'caret-down-outline' : 'caret-forward-outline'">
                     </ion-icon>
                 </ion-item>
                 <ng-container *ngIf="!negocioSub &&  nameSub === cat.nombre">
@@ -382,9 +382,9 @@
             </ion-row>
             <ion-row *ngFor="let cat of informacionNegocio.catServicos">
                 <ion-item class="w-100 bg-gris">
-                    <h2 (click)="mostrarServicio(cat.nombre)">{{cat.nombre}}</h2>
+                    <p style="font-size: 18px" (click)="mostrarServicio(cat.nombre)">{{cat.nombre}}</p>
                     <ion-icon (click)="mostrarServicio(cat.nombre)" slot="end"
-                        [name]="servicioSub? 'caret-forward-outline' : 'caret-down-outline'">
+                    [name]="!servicioSub &&  namelesSub === cat.nombre ? 'caret-down-outline' : 'caret-forward-outline'">
                     </ion-icon>
                 </ion-item>
                 <ng-container *ngIf="!servicioSub &&  namelesSub === cat.nombre">
