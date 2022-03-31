@@ -164,6 +164,8 @@ public  finalFecha:String ;
   }
 
   clickEvaluar(opcion:number) {
+    this.inicioFecha="";
+    this.finalFecha="";
     const id = this.utilsCls.getIdPersona();
     this.loaderB = true;
     this.loaderSearch = true;

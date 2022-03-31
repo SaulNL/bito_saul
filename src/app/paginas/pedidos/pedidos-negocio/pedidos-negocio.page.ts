@@ -131,6 +131,8 @@ export class PedidosNegocioPage implements OnInit {
       }
     
       clickEvaluar(opcion:number) {
+        this.inicioFecha="";
+        this.finalFecha="";
         const id = this.utilsCls.getIdProveedor();
         this.loaderBus = true;
         this.loaderSearch = true;
