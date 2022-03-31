@@ -40,12 +40,12 @@
       <ion-row class="ion-text-center">
         <ion-col>
           <ion-item>
-            <ion-datetime [(ngModel)]="inicioFecha"  name="fechaFinal" required ></ion-datetime>            
+            <ion-datetime [(ngModel)]="inicioFecha"  name="fechaFinal" required displayFormat="YYYY-MM-DD" placeholder="yyyy-mm-dd" min="2015-01-01"></ion-datetime>            
           </ion-item>
         </ion-col> 
         <ion-col>
           <ion-item>
-            <ion-datetime [(ngModel)]="finalFecha" name="fechaFinal" required ></ion-datetime>            
+            <ion-datetime [(ngModel)]="finalFecha" name="fechaFinal" required displayFormat="YYYY-MM-DD" placeholder="yyyy-mm-dd" min="2015-01-01"></ion-datetime>            
           </ion-item>
         </ion-col> 
         <ion-col>            
