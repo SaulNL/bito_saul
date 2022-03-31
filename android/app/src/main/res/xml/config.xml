@@ -42,6 +42,10 @@
     <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification"/>
   </feature>
 
+  <feature name="SocialSharing">
+    <param name="android-package" value="nl.xservices.plugins.SocialSharing"/>
+  </feature>
+
   <feature name="Downloader">
     <param name="android-package" value="hr.integrator.cordova.plugins.downloader.Downloader"/>
   </feature>
