@@ -17,11 +17,12 @@ import * as moment from 'moment';
 import { CatLocalidadModel } from './../../../Modelos/CatLocalidadModel';
 import { CatMunicipioModel } from './../../../Modelos/CatMunicipioModel';
 import { CatEstadoModel } from './../../../Modelos/CatEstadoModel';
-import { Map, tileLayer, marker, Marker } from 'leaflet';
+import { Map, tileLayer, marker, Marker,latLng } from 'leaflet';
 import { Plugins } from '@capacitor/core';
 const { Geolocation } = Plugins;
 import { GeneralServicesService } from './../../../api/general-services.service';
 import { LoadingController } from '@ionic/angular';
+import { UbicacionMapa } from '../../../api/ubicacion-mapa.service';
 
 @Component({
   selector: 'app-formulario-negocio',
@@ -111,6 +112,7 @@ export class FormularioNegocioPage implements OnInit {
     private notificaciones: ToadNotificacionService,
     public modalController: ModalController,
     private _general_service: GeneralServicesService,
+    public getCoordinatesMap: UbicacionMapa,
   ) {
     this.valido = false;
     this.listCategorias = [];
@@ -934,5 +936,33 @@ export class FormularioNegocioPage implements OnInit {
       }
     });
     await modal.present();
+  }
+
+  public getAddress(){
+    let estado = this.list_cat_estado.filter(estado => estado.id_estado == this.negocioTO.det_domicilio.id_estado)[0].nombre;
+    let municipio = this.list_cat_municipio.filter(municipio => municipio.id_municipio == this.negocioTO.det_domicilio.id_municipio)[0].nombre;
+    let address = this.negocioTO.det_domicilio.calle+" "+this.negocioTO.det_domicilio.numero_ext+" "+this.negocioTO.det_domicilio.colonia+" "+this.negocioTO.det_domicilio.codigo_postal+" "+municipio+" "+estado;
+    this.getCoordinates(address);
+  }
+
+  async getCoordinates(address){
+    this.getCoordinatesMap.getPosts(address)
+    .then(async data => {
+      const arrayPosts:any = data;
+      let latitud = arrayPosts.results[0].geometry.location.lat;
+      let longitud = arrayPosts.results[0].geometry.location.lng;
+      let gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
+      const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
+        this.negocioTO.det_domicilio.latitud = res.coords.latitude;
+        this.negocioTO.det_domicilio.longitud = res.coords.longitude;
+        this.map.panTo([latitud, longitud]);
+        this.marker.setLatLng([latitud, longitud]);
+      })
+
+    })
+  }
+
+  async nextTab(tab){
+    this.segmentModel = tab;
   }
 }

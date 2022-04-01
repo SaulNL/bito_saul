@@ -18,11 +18,13 @@ export class DtosMogoModel {
   public activo: boolean;
   public precio: string;
   public usuario_dio_like: boolean;
+  public idProducto:any;
 
-  constructor(nombre = null, descripcion = null, precio = null, categoria = null) {
+  constructor(nombre = null, descripcion = null, precio = null, categoria = null, idProducto = null) {
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.precio = precio;
+    this.idProducto = idProducto
     this.categoria = categoria;
     this.imagen = new ArchivoComunModel();
     this.negocio = new DtosNegocioMogoModel();

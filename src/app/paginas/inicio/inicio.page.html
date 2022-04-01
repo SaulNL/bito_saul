@@ -37,6 +37,9 @@
         </ion-item>
         <ion-grid>
             <ion-row class="ion-align-items-center">
+                <div  *ngIf="objectSelectAfiliacionPlaza !== null && objectSelectAfiliacionPlaza !== undefined" style="background-color: #3c3c3c; color: white; font-size: small;" class="ion-text-center">
+                    <p style="padding-inline: 5%;">ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA <img style="width: 25px; margin-top: 2%;" src="{{objectSelectAfiliacionPlaza.icon}}">  {{objectSelectAfiliacionPlaza.nombre}}</p>
+                  </div>
                 <ion-col size="12" class="ion-text-center">
                     <ion-button size="small" class="bg-rosa" type="button" (click)="abrirModalMapa()">
                         <ion-icon name="map-outline"></ion-icon>
@@ -82,7 +85,7 @@
         </ion-grid>
         <ion-grid *ngIf="listaCategorias.length === 0">
             <ion-text color="primary">
-                <h2>No se encontraron negocios relacionados</h2>
+                <h2>No se encontraron negocios relacionados en {{objectSelectAfiliacionPlaza.nombre}}</h2>
             </ion-text>
         </ion-grid>
         <app-infinito-scroll *ngIf="true" (respuesta)="cargarMasPaginas($event)" [activado]="true" [msj]="mensaje"></app-infinito-scroll>

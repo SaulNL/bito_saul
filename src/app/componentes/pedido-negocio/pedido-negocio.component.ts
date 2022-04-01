@@ -6,13 +6,15 @@ import { icon, Map, Marker, marker, tileLayer } from "leaflet";
 import { NegocioService } from "../../api/negocio.service";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { AuthGuardService } from "../../api/auth-guard.service";
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+/* import { Geolocation } from '@ionic-native/geolocation/ngx'; */
 import { IPago } from 'src/app/interfaces/IPago';
 import HttpStatusCode from '../../utils/https-status-code';
 import { error } from 'protractor';
 import { HttpParams } from '@angular/common/http';
+import { UbicacionMapa } from '../../api/ubicacion-mapa.service';
+import { Plugins } from "@capacitor/core";
 
-
+const { Geolocation } = Plugins;
 declare var google: any;
 @Component({
     selector: 'app-pedido-negocio',
@@ -63,7 +65,8 @@ export class PedidoNegocioComponent implements OnInit {
         public alertController: AlertController,
         private platform: Platform,
         private guard: AuthGuardService,
-        private geolocation: Geolocation
+        /* private geolocation: Geolocation, */
+        public getCoordinatesMap: UbicacionMapa,
     ) {
         this.lat = 19.31905;
         this.numeroMesa = 0;
@@ -153,11 +156,12 @@ export class PedidoNegocioComponent implements OnInit {
 
     public geocodeLatLng() {
         const geocoder = new google.maps.Geocoder;
-        const latlng = {
+        let latlong = {
             lat: parseFloat(String(this.lat)),
             lng: parseFloat(String(this.lng))
         };
-        geocoder.geocode({ location: latlng }, (results, status) => {
+        
+        geocoder.geocode({ location: latlong }, (results, status) => {
             if (status === 'OK') {
                 if (results[0]) {
                     this.estasUbicacion = results[0].formatted_address;
@@ -176,7 +180,7 @@ export class PedidoNegocioComponent implements OnInit {
                 }
                 this.loader = false;
                 this.guard.tf = true;
-                this.mesajes.exito('Pedido realizado éxito');
+                this.mesajes.exito('Pedido realizado con éxito');
                 this.lista = [];
                 this.cerrarModal();
             }, () => {
@@ -263,7 +267,7 @@ export class PedidoNegocioComponent implements OnInit {
      * Funcion para obtener la ubicacion actual
      */
     async localizacionTiempo() {
-        this.geolocation.getCurrentPosition().then((resp) => {
+        await Geolocation.getCurrentPosition().then((resp) => {
             this.lat = resp.coords.latitude
             this.lng = resp.coords.longitude
             this.map.panTo([this.lat, this.lng]);
@@ -394,5 +398,23 @@ export class PedidoNegocioComponent implements OnInit {
     public seleccionarTipoPago(event: any){
         this.idTipoDePago = event.target.value;
         
+    }
+
+      async getCoordinates(){
+        this.getCoordinatesMap.getPosts(this.address)
+        .then(async data => {
+            let arrayPosts:any = data;
+            let latitud = arrayPosts.results[0].geometry.location.lat;
+            let longitud = arrayPosts.results[0].geometry.location.lng;
+
+            this.lat = latitud;
+            this.lng = longitud;
+            this.map.panTo([latitud, longitud]);
+            this.marker.setLatLng([latitud, longitud]);
+            this.geocodeLatLng();
+            }).catch((error) => {
+                this.mesajes.error("Ocurrió un error al consultar la dirección, intente de nuevo más tarde");
+                })
+            
     }
 }
