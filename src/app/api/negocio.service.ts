@@ -267,6 +267,20 @@ export class NegocioService {
             }));
     }
 
+    obtenerCategoriasProdServ(id: any, negocio_id: any): Observable<any> {
+        const body = JSON.stringify({ id_giro: id , id_tipo_negocio: negocio_id });
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'buscar/giro/categorias',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
     /**
      * Funcion para obtener el catalogo de organizaciones
      * @param id
