@@ -12,6 +12,7 @@ import { AlertController, ModalController } from "@ionic/angular";
 import {PromocionesModel} from "../../Modelos/PromocionesModel";
 import {FiltrosModel} from "../../Modelos/FiltrosModel";
 import {UtilsCls} from "../../utils/UtilsCls";
+import { ModalLoguearseComponent } from 'src/app/componentes/modal-loguearse/modal-loguearse.component';
 
 @Component({
     selector: "app-tab2",
@@ -38,6 +39,7 @@ export class PromocionesPage implements OnInit {
     public isIOS: boolean = false;
     public idPersona: number | null;
     public existeSesion: boolean;
+    private modal: any;
 
     constructor(
         private _promociones: PromocionesService,
@@ -127,7 +129,7 @@ export class PromocionesPage implements OnInit {
                         this.loader = false;
                         if (this.existeSesion) {
                         }else{
-                          this.mensajeRegistro();
+                          this.presentModalLoguearse();
                         }
                         // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}
                     } else {
@@ -185,28 +187,14 @@ export class PromocionesPage implements OnInit {
             }
         );
     }
-
-    async mensajeRegistro() {
-        const alert = await this.alertController.create({
-          cssClass: 'text-center',
-          message: "<strong>¿Ya tienes una cuenta?</strong>",
-            buttons: [
-                {
-                    text: "Iniciar sesión",
-                    cssClass: 'text-grey',
-                    handler: () => {
-                      this.router.navigate(["/tabs/login"]);
-                    }
-                },
-                {
-                    text: "Registrate",
-                    cssClass: 'text-rosa',
-                    handler: () => {
-                        this.router.navigate(["/tabs/login/sign-up"]);
-                    },
-                },
-            ],
+ 
+    async presentModalLoguearse() {
+        this.modal = await this.modalController.create({
+          component: ModalLoguearseComponent,
+          backdropDismiss: false,
+          cssClass: "custom-modal-loguearse"
         });
-        await alert.present();
+    
+        return await this.modal.present();
     }
 }

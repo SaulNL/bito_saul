@@ -28,6 +28,7 @@ import { ValidarPermisoService } from "../../api/validar-permiso.service";
 import { Auth0Service } from "../../api/busqueda/auth0.service";
 import { PermisoModel } from "../../Modelos/PermisoModel";
 import { IPaginacion } from "../../interfaces/IPaginacion";
+import { ModalLoguearseComponent } from "src/app/componentes/modal-loguearse/modal-loguearse.component";
 
 @Component({
   selector: "app-tab1",
@@ -93,7 +94,7 @@ export class ProductosPage {
     private createObject: CreateObjects,
     public alertController: AlertController
   ) {
-    this.afiliacion = false;
+    this.afiliacion = true;
     this.abc = false;
     this.user = this.util.getUserData();
     this.existeSesion = util.existe_sesion();
@@ -150,14 +151,18 @@ export class ProductosPage {
       }
     });
     this.existeSesion = this.util.existe_sesion();
-
     if (this.existeSesion) {
-      this.permisos = this.auth0Service.getUserPermisos();
-      this.afiliacion = this.validarPermiso.isChecked(
-        this.permisos,
-        "ver_afiliacion"
-      );
+    }else{
+      this.presentModalLoguearse();
     }
+
+    // if (this.existeSesion) {
+    //   this.permisos = this.auth0Service.getUserPermisos();
+    //   this.afiliacion = this.validarPermiso.isChecked(
+    //     this.permisos,
+    //     "ver_afiliacion"
+    //   );
+    // }
   }
 
   /**
@@ -319,11 +324,6 @@ export class ProductosPage {
             this.lstProductosOriginal = response.data.lstProductos;
             this.lstProductos = this.lstProductosOriginal.slice(0, 6);
             this.loader = false;
-            if (this.existeSesion) {
-
-            }else{
-              this.mensajeRegistro();
-            }
           },
           (error) => {
             this.notificaciones.error(
@@ -501,27 +501,18 @@ export class ProductosPage {
     });
   }
 
-  async mensajeRegistro() {
-    const alert = await this.alertController.create({
-      cssClass: 'text-center',
-      message: "<strong>¿Ya tienes una cuenta?</strong>",
-        buttons: [
-            {
-                text: "Iniciar sesión",
-                cssClass: 'text-grey',
-                handler: () => {
-                  this._router.navigate(["/tabs/login"]);
-                }
-            },
-            {
-                text: "Registrate",
-                cssClass: 'text-rosa',
-                handler: () => {
-                    this._router.navigate(["/tabs/login/sign-up"]);
-                },
-            },
-        ],
+  async presentModalLoguearse() {
+    this.modal = await this.modalController.create({
+      component: ModalLoguearseComponent,
+      backdropDismiss: false,
+      cssClass: "custom-modal-loguearse"
     });
-    await alert.present();
+
+    return await this.modal.present();
+    // setTimeout( function(){
+    //   return  this.modal.present();
+    // }, 20 );
   }
+
+  
 }
