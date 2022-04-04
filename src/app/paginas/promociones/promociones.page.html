@@ -17,6 +17,9 @@
             </ion-chip>
         </ion-buttons>
 </ion-item>
+<div  *ngIf="plazaAfiliacionNombre !== null && plazaAfiliacionNombre !== undefined" style="background-color: #3c3c3c; color: white; font-size: small;" class="ion-text-center">
+  <p style="padding-inline: 5%;">ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA <img style="width: 25px; margin-top: 2%;" src="{{plazaAfiliacionNombre.icon}}">  {{plazaAfiliacionNombre.nombre}}</p>
+</div>
   <div *ngIf="lstPromociones.length == 0 && !loader && !selectionAP">
     <ion-grid>
       <ion-row style="margin: 10px;">
@@ -26,6 +29,7 @@
       </ion-row>
     </ion-grid>
   </div>
+  
 
   <ion-grid *ngIf="lstPromociones.length === 0 && selectionAP === true">
     <ion-text color="primary">

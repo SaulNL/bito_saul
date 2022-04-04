@@ -39,6 +39,7 @@
             </ion-button>
         </ion-buttons>
     </ion-item>
+  
 
     <div *ngIf="!this.abc" id="abcedario" class="scrolling-wrapper-flexbox">
         <div class="item" *ngFor="let filtro of filtroABC">
@@ -48,6 +49,9 @@
             </ion-button>
         </div>
     </div>
+    <div  *ngIf="plazaAfiliacionNombre !== null && plazaAfiliacionNombre !== undefined" style="background-color: #3c3c3c; color: white; font-size: small;" class="ion-text-center">
+        <p style="padding-inline: 5%;">ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA <img style="width: 25px; margin-top: 2%;" src="{{plazaAfiliacionNombre.icon}}">  {{plazaAfiliacionNombre.nombre}}</p>
+      </div>
 
     <ion-list>
         <ion-item *ngFor="let producto of lstProductos" class="item  in-list ion-focusable hydrated item-label">
