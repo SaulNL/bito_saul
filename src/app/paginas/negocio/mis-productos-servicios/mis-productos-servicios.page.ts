@@ -924,8 +924,14 @@ export class MisProductosServiciosPage implements OnInit {
   public obtenerTotalProductosOrServicios(type: number) {
     let selection: Array<DtosMogoModel>;
     if (type == 2) {
+      let serviciosActivos = [];
+      this.datosNegocio.servicios.forEach((element) => {
+        if (element.existencia) {
+          serviciosActivos.push(element);
+        }
+      });
       selection = Array.isArray(this.datosNegocio.servicios)
-        ? this.datosNegocio.servicios
+        ? serviciosActivos
         : [];
       return this.obtenerTotal(selection);
     }
