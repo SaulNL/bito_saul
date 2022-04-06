@@ -258,11 +258,14 @@
                         Ver carta de
                         productos
                     </ion-button>
+                    <ion-content>
+                        <iframe [src]="informacionNegocio.cartaServicio"  style="width:100%;height:100%" scrolling="yes" ></iframe>
+                    </ion-content>
                     <ion-button shape="round"
                         *ngIf="informacionNegocio.cartaServicio !== undefined && informacionNegocio.cartaServicio !== null&& informacionNegocio.cartaServicio !== ''"
                         (click)="abrirVentana(informacionNegocio.cartaServicio)" expand="full" class="bg-rosa">
                         Ver carta de
-                        servicios
+                        servicios2
                     </ion-button>
                 </ion-col>
             </ion-row>

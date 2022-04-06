@@ -16,7 +16,7 @@ import {
     ToastController,
 } from "@ionic/angular";
 import { NegocioService } from "../../api/negocio.service";
-import { Geolocation } from "@capacitor/core";
+import { Geolocation, Capacitor } from "@capacitor/core";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { Location } from "@angular/common";
 import { UtilsCls } from "../../utils/UtilsCls";
@@ -32,6 +32,10 @@ import { PedidoNegocioComponent } from "../../componentes/pedido-negocio/pedido-
 import { AuthGuardService } from "../../api/auth-guard.service";
 import { NavBarServiceService } from "src/app/api/busqueda/nav-bar-service.service";
 import { PromocionesModel } from "src/app/Modelos/busqueda/PromocionesModel";
+import { File } from '@ionic-native/File/ngx';
+import { HTTP } from '@ionic-native/http/ngx';
+/* import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer/ngx'; */
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@awesome-cordova-plugins/file-transfer/ngx';
 
 const { Share } = Plugins;
 const haversineCalculator = require("haversine-calculator");
@@ -40,6 +44,7 @@ import { ProductoModel } from "../../Modelos/ProductoModel";
 import { ProductosService } from "../../api/productos.service";
 import { ComentariosNegocioComponent } from '../../componentes/comentarios-negocio/comentarios-negocio.component';
 import { OptionBackLogin } from "src/app/Modelos/OptionBackLoginModel";
+import { WebView } from '@awesome-cordova-plugins/ionic-webview/ngx';
 
 @Component({
     selector: "app-perfil-negocio",
@@ -104,6 +109,8 @@ export class PerfilNegocioPage implements OnInit {
     public toProductDetail: boolean;
     public idProduct: string;
     constructor(
+        private nativeHTTP: HTTP,
+         private file: File,
         private navctrl: NavController,
         private route: ActivatedRoute,
         private toadController: ToastController,
@@ -121,7 +128,11 @@ export class PerfilNegocioPage implements OnInit {
         private blockk: AuthGuardService,
         private navBarServiceService: NavBarServiceService,
         private servicioProductos: ProductosService,
-        private createObject: CreateObjects
+        private createObject: CreateObjects,
+        /* private document: DocumentViewer, */
+        private transfer: FileTransfer,
+        private webview: WebView
+        
     ) {
         this.toProductDetail = false;
         this.motrarContacto = true;
@@ -441,11 +452,49 @@ export class PerfilNegocioPage implements OnInit {
     }
 
     abrirVentana(ruta) {
-        window.open(
+       /*  this.negocioService.obtenerPDF(ruta).subscribe(
+            (response) => {
+console.log("resp",response)
+            });
+                var oReq = new XMLHttpRequest();
+                oReq.open("GET", ruta, true);
+                oReq.responseType = "blob";
+                oReq.onload = function (oEvent) {
+                    var blob = oReq.response; 
+                    if (blob) {
+                        console.log("blob",blob);
+                        
+                        var url = window.URL.createObjectURL(blob);
+                       
+                        var reader = new FileReader();
+                        reader.addEventListener("loadend", function() {
+                        });
+                        reader.readAsText(blob);
+                    } else console.error('we didnt get an XHR response!');
+                };
+                oReq.send(null); */
+            
+        
+       /*  console.log(this.platform)
+       this.file.copyFile(ruta, 'p.pdf', this.file.dataDirectory, 'name.pdf').then(result => {
+           this.fileOpener.open(result.nativeURL, 'application/pdf');
+       }) */
+        /* const options: DocumentViewerOptions = {
+            title: 'my pdf'
+        }
+        this.document.viewDocument(ruta, 'application/pdf',options); */
+        console.log("cambio5");
+        Capacitor.convertFileSrc(ruta);
+        window.location.href = ruta;
+
+
+       /*  window.open(ruta,"_self"); */
+        /*  window.open(
             ruta,
             "_blank",
             "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400"
-        );
+        ); */
+
     }
 
     async presentActionSheet() {

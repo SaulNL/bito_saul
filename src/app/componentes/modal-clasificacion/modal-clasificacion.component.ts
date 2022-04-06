@@ -77,18 +77,39 @@ export class ModalClasificacionComponent implements OnInit {
       this.modalEditarCat.id_proveedor = this.datosNegocio.idProveedor;
       this.modalEditarCat.id_negocio = this.datosNegocio.id_negocio;
 
-      if (this.modalEditarCat.activo === false) {
+      /* if (this.modalEditarCat.activo === false) {
         this.presentAlert();
       }else{
         this.guardarCategoria();
-      }
+      } */
+      this.guardarCategoria();
     }
   
   }
   async guardarCategoria() {
-
+   /*  if (!this.modalEditarCat.activo) {
+      console.log("cat",this.modalEditarCat)
+      if (
+        this.modalEditarCat.productos !== undefined &&
+        this.modalEditarCat.productos !== null
+      ) {
+        this.modalEditarCat.productos.forEach((prod) => {
+          prod.existencia = false;
+        });
+      }
+      else if (
+        this.modalEditarCat.servicios !== undefined &&
+        this.modalEditarCat.servicios !== null
+      ) {
+        this.modalEditarCat.servicios.forEach((serv) => {
+          serv.existencia = false;
+        });
+      }
+    } */
+    
     this.sercicioNegocio.modificarCategoria(this.modalEditarCat).subscribe(
       (repsuesta) => {
+        console.log("resp", repsuesta)
         const categoriaMod = this.listaVista.find(
           (cat) => cat.id_categoria === this.modalEditarCat.id_categoria
         );
@@ -97,16 +118,7 @@ export class ModalClasificacionComponent implements OnInit {
         if (repsuesta.code === 402) {
           this.notificacionService.alerta(repsuesta.message);
         }
-        if (!this.modalEditarCat.activo) {
-          if (
-            categoriaMod.productos !== undefined &&
-            categoriaMod.productos !== null
-          ) {
-            categoriaMod.productos.forEach((prod) => {
-              prod.existencia = false;
-            });
-          }
-        }
+   
 
         this.notificacionService.exito("Se actualizó la categoría con éxito");
        this.dismiss();
