@@ -1,4 +1,4 @@
-<app-toolbar-busqueda [placeHolder]="plazaAfiliacionNombre !== null && plazaAfiliacionNombre !== undefined ? 'Buscar promociones en ' + plazaAfiliacionNombre.nombre : 'Buscar promociones sobre productos, servicios y más...' " (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
+<app-toolbar-busqueda [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar promociones en ' + plazaAfiliacionNombre.nombre : 'Buscar promociones sobre productos, servicios y más...' " (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
 <ion-content [fullscreen]="true">
   <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
   <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
@@ -10,14 +10,14 @@
             <ion-icon name="caret-down-outline"></ion-icon>
         </ion-button>
         </ion-buttons>
-        <ion-buttons *ngIf="selectionAP">
+        <!-- <ion-buttons *ngIf="selectionAP">
             <ion-chip (click)="regresarBitoo()" color="danger">
                 <ion-icon name="log-out-outline"></ion-icon>
                 <ion-label>Regresar a bitoo</ion-label>
             </ion-chip>
-        </ion-buttons>
+        </ion-buttons> -->
 </ion-item>
-<div  *ngIf="plazaAfiliacionNombre !== null && plazaAfiliacionNombre !== undefined" style="background-color: #3c3c3c; color: white; font-size: small;" class="ion-text-center">
+<div  *ngIf="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined" style="background-color: #3c3c3c; color: white; font-size: small;" class="ion-text-center">
   <p style="padding-inline: 5%;">ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA <img style="width: 25px; margin-top: 2%;" src="{{plazaAfiliacionNombre.icon}}">  {{plazaAfiliacionNombre.nombre}}</p>
 </div>
   <div *ngIf="lstPromociones.length == 0 && !loader && !selectionAP">
