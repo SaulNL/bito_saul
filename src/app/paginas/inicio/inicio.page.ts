@@ -327,14 +327,14 @@ export class InicioPage implements OnInit {
         this.loader = false;
         //
         const byCategorias = localStorage.getItem("filtroactual");
-        console.log(byCategorias + " & bere " + " - ");
+        
         if (
           byCategorias !== null &&
           byCategorias !== undefined &&
           byCategorias !== "" &&
           byCategorias.length > 0
         ) {
-          console.log(" 1 bere ");
+          
           this.filtroActivo = true;
         }
       })
