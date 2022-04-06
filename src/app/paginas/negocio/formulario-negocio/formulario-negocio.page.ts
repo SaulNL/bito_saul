@@ -336,7 +336,7 @@ export class FormularioNegocioPage implements OnInit {
     } else {
       idE = evento.value;
     }
-    this.negocioServico.obtenerCategorias(idE).subscribe(
+    this.negocioServico.obtenerCategoriasProdServ(idE,this.negocioTO.id_tipo_negocio).subscribe(
       respuesta => {
         this.listaSubCategorias = Array();
         if (respuesta.code === 200) {

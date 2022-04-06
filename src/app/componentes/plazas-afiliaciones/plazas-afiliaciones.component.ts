@@ -36,15 +36,16 @@ export class PlazasAfiliacionesComponent implements OnInit {
     this.loaderPlz = true;
     this.existOrg = false;
     this.existPlz = false;
-    this.afiliacion = false;
+    this.afiliacion = true;
     this.plaza = false;
   }
 
   ngOnInit() {
-    if (this.idUsuario != null && this.idUsuario > 0) {
-      this.afiliacion = this.validarPermiso.isChecked(this.permisos, 'ver_afiliacion')
-      this.obtenerOrganizacion(this.idUsuario);
-    }
+    // if (this.idUsuario != null && this.idUsuario > 0) {
+    //   this.afiliacion = this.validarPermiso.isChecked(this.permisos, 'ver_afiliacion')
+    //   this.obtenerOrganizacion();
+    // }
+    this.obtenerOrganizacion();
     this.obtenerPlazas();
   }
 
@@ -65,9 +66,9 @@ export class PlazasAfiliacionesComponent implements OnInit {
     location.reload();
   }
 
-  public obtenerOrganizacion(idUsuario: number) {
+  public obtenerOrganizacion() {
     this.loaderOrg = false;
-    this.generalService.obtenerOrganizacionesPorUsuario(idUsuario).subscribe(
+    this.generalService.obtenerOrganizaciones().subscribe(
       response => {
         if (response.code === 200 && response.data.length > 0) {
           this.listAfiliacines = response.data;

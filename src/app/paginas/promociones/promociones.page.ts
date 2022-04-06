@@ -12,6 +12,7 @@ import { AlertController, ModalController } from "@ionic/angular";
 import {PromocionesModel} from "../../Modelos/PromocionesModel";
 import {FiltrosModel} from "../../Modelos/FiltrosModel";
 import {UtilsCls} from "../../utils/UtilsCls";
+import { ModalLoguearseComponent } from 'src/app/componentes/modal-loguearse/modal-loguearse.component';
 
 @Component({
     selector: "app-tab2",
@@ -40,6 +41,7 @@ export class PromocionesPage implements OnInit {
     public existeSesion: boolean;
     public selectionAP: boolean;
     public plazaAfiliacionNombre : any;
+    private modal: any;
 
     constructor(
         private _promociones: PromocionesService,
@@ -137,7 +139,7 @@ export class PromocionesPage implements OnInit {
                         this.loader = false;
                         if (this.existeSesion) {
                         }else{
-                          this.mensajeRegistro();
+                          this.presentModalLoguearse();
                         }
                         // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}
                     } else {
@@ -195,28 +197,14 @@ export class PromocionesPage implements OnInit {
             }
         );
     }
-
-    async mensajeRegistro() {
-        const alert = await this.alertController.create({
-          header: 'Crea tu cuenta',
+ 
+    async presentModalLoguearse() {
+        this.modal = await this.modalController.create({
+          component: ModalLoguearseComponent,
           backdropDismiss: false,
-          message: "¡Únete a <strong>Bitoo</strong>! ",
-            buttons: [
-                {
-                    text: "Cancelar",
-                    cssClass: 'text-grey',
-                    handler: () => {
-                    }
-                },
-                {
-                    text: "Registrate",
-                    cssClass: 'text-rosa',
-                    handler: () => {
-                        this.router.navigate(["/tabs/login/sign-up"]);
-                    },
-                },
-            ],
+          cssClass: "custom-modal-loguearse"
         });
-        await alert.present();
-      }
+    
+        return await this.modal.present();
+    }
 }

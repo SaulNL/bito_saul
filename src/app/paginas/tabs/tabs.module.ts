@@ -14,6 +14,7 @@ import { ImageCropperModule } from "ngx-image-cropper";
 import { TabsPage } from "./tabs.page";
 import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/filtros-busqueda.component";
 import {InputLugaresEntregaComponent} from '../../components/input-lugares-entrega/input-lugares-entrega.component';
+import { ModalLoguearseComponent } from '../../componentes/modal-loguearse/modal-loguearse.component'
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import {InputLugaresEntregaComponent} from '../../components/input-lugares-entre
     ModalClasificacionComponent,
     RecorteImagenComponent,
     FiltrosBusquedaComponent,
-    PlazasAfiliacionesComponent
+    PlazasAfiliacionesComponent,
+    ModalLoguearseComponent
   ],
   exports: [
     BannerPromocionesComponent,
@@ -44,7 +46,8 @@ import {InputLugaresEntregaComponent} from '../../components/input-lugares-entre
     ModalClasificacionComponent,
     RecorteImagenComponent,
     FiltrosBusquedaComponent,
-    PlazasAfiliacionesComponent
+    PlazasAfiliacionesComponent,
+    ModalLoguearseComponent
   ],
 })
 export class TabsPageModule {}

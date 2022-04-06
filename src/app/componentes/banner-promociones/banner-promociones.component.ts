@@ -37,6 +37,7 @@ export class BannerPromocionesComponent implements OnInit {
   public miUbicacionlongitud: number;
   public ubicacion = new UbicacionModel();
   private plazaAfiliacion: AfiliacionPlazaModel;
+  private modalController: any;
   constructor(
     private servicioPromociones: PromocionesService,
     private navBarServiceService: NavBarServiceService,
@@ -143,12 +144,13 @@ export class BannerPromocionesComponent implements OnInit {
   * @author Omar
   */
   accionPromocion(promocion) {
-    localStorage.setItem("isRedirected", "false");
-    this.urlNegocio = 'tabs/negocio/' + promocion.url_negocio;
+    // localStorage.setItem("isRedirected", "false");
+    // this.urlNegocio = 'tabs/negocio/' + promocion.url_negocio;
     this.promocion = promocion;
+    this.masInformacion(promocion);
     this.visteMiPromocion(promocion);
     this.quienNumeroVioPublicacion(promocion.id_promocion);
-    this.rutaLink(this.urlNegocio);
+    //this.rutaLink(this.urlNegocio);
     setTimeout(() => {
       this.navBarServiceService.promocionSeleccionada(promocion);
     }, 1500);
@@ -194,6 +196,13 @@ export class BannerPromocionesComponent implements OnInit {
   rutaLink(ruta: string) {
     //this._router.navigateByUrl('#' + ruta, { skipLocationChange: true });
     setTimeout(() => this._router.navigate([ruta]));
+  }
+
+  
+   masInformacion(promocion: any) {
+    this._router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
+          queryParams: { route: true }});
+    this.modalController.dismiss();
   }
 
 }

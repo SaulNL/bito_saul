@@ -16,6 +16,45 @@
 >
   <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
   <ion-card>
+    <ion-grid>
+      <ion-row>
+          <ion-col class="ion-align-self-center"><h3>Filtros</h3></ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid fixed>
+      <ion-row class="ion-text-center">          
+        <ion-col>              
+          <ion-button class="border text-format rosa"  size="small" mode="ios" color="white"   (click)="clickEvaluar(1)">Hoy</ion-button>          
+        </ion-col>          
+        <ion-col>              
+          <ion-button class="border text-format rosa"  size="small" mode="ios" color="white"    (click)="clickEvaluar(2)">Últimos 7 días</ion-button>          
+        </ion-col>          
+        <ion-col>              
+          <ion-button class="border text-format rosa"  size="small" mode="ios" color="white"    (click)="clickEvaluar(3)">Últimos 30 días</ion-button>          
+        </ion-col>          
+        <ion-col>              
+          <ion-button class="border text-format rosa"  size="small" mode="ios" color="white" (click)="clickEvaluar(4)">Todos</ion-button>          
+        </ion-col>        
+      </ion-row> 
+      <p class="ion-text-center">Rango de fechas:</p> 
+      <ion-row class="ion-text-center">
+        <ion-col>
+          <ion-item>
+            <ion-datetime [(ngModel)]="inicioFecha"  name="fechaFinal" required displayFormat="YYYY-MM-DD" placeholder="yyyy-mm-dd" min="2015-01-01"></ion-datetime>            
+          </ion-item>
+        </ion-col> 
+        <ion-col>
+          <ion-item>
+            <ion-datetime [(ngModel)]="finalFecha" name="fechaFinal" required displayFormat="YYYY-MM-DD" placeholder="yyyy-mm-dd" min="2015-01-01"></ion-datetime>            
+          </ion-item>
+        </ion-col> 
+        <ion-col>            
+          <ion-button class="border text-format rosa" size="small" mode="ios" color="white" (click)="fechasRengo()">              
+            <ion-icon slot="start" name="calendar-outline" slot="start"> </ion-icon>Buscar            
+          </ion-button>        
+        </ion-col> 
+      </ion-row>       
+    </ion-grid>
     <ion-list>
       <ion-grid>
         <ion-row>
