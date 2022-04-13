@@ -6,7 +6,6 @@ import { IonicModule } from '@ionic/angular';
 import { PedidosDialogPageRoutingModule } from './pedidos-dialog-routing.module';
 import { PedidosDialogPage } from './pedidos-dialog.page';
 import {TabsPageModule} from '../../tabs/tabs.module';
-
 @NgModule({
     imports: [
         CommonModule,

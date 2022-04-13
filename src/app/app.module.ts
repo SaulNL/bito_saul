@@ -25,7 +25,6 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { SignInWithApple } from '@ionic-native/sign-in-with-apple/ngx';
 import { LocalNotifications} from '@ionic-native/local-notifications/ngx'
-
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 
 @NgModule({
