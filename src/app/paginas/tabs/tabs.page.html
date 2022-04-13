@@ -1,39 +1,130 @@
 <ion-tabs>
-
   <ion-tab-bar slot="bottom">
-
-    <ion-tab-button class="tab-button-principal" (click)="inicio()" tab="inicio" style="--color-selected: #fa4f72">
-      <ion-icon name="storefront-outline"></ion-icon>
-      <ion-label>Negocios</ion-label>
+    <ion-tab-button
+      class="tab-button-principal"
+      (click)="inicio()"
+      tab="inicio"
+      style="--color-selected: #fa4f72"
+    >
+      <img
+        *ngIf="activedPage === 'inicio'"
+        style="margin-top: -20px"
+        width="25px"
+        src="../../../assets/images/inicio.png"
+      />
+      <img
+        *ngIf="activedPage !== 'inicio'"
+        style="margin-top: 0px"
+        width="30px"
+        src="../../../assets/images/inicio.png"
+      />
+      <ion-label *ngIf="activedPage === 'inicio'">Negocios</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button class="tab-button-principal" (click)="productos()" tab="productos"
-      style="--color-selected: #fa4f72">
-      <ion-icon name="cube-outline"></ion-icon>
-      <ion-label>Productos</ion-label>
+    <ion-tab-button
+      class="tab-button-principal"
+      (click)="productos()"
+      tab="productos"
+      style="--color-selected: #fa4f72"
+    >
+      <img
+        *ngIf="activedPage === 'productos'"
+        style="margin-top: -20px"
+        width="25px"
+        src="../../../assets/images/Productos.png"
+      />
+      <img
+        *ngIf="activedPage !== 'productos'"
+        style="margin-top: 0px"
+        width="25px"
+        src="../../../assets/images/Productos.png"
+      />
+      <ion-label *ngIf="activedPage === 'productos'">Productos</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button class="tab-button-principal" (click)="promociones()" tab="promociones"
-      style="--color-selected: #fa4f72">
-      <ion-icon name="pricetags-outline"></ion-icon>
-      <ion-label>Promociones</ion-label>
+    <ion-tab-button
+      class="tab-button-principal"
+      (click)="promociones()"
+      tab="promociones"
+      style="--color-selected: #fa4f72"
+    >
+      <img
+        *ngIf="activedPage === 'promociones'"
+        style="margin-top: -20px"
+        width="25px"
+        src="../../../assets/images/promociones.png"
+      />
+      <img
+        *ngIf="activedPage !== 'promociones'"
+        style="margin-top: 0px"
+        width="35px"
+        src="../../../assets/images/promociones.png"
+      />
+      <ion-label *ngIf="activedPage === 'promociones'">Promociones</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button *ngIf="usuario !== null" tab="mis-favoritos" class="tab-button-principal" (click)="solicitudes()"
-      style="--color-selected: #fa4f72">
-      <ion-icon name="heart-outline"></ion-icon>
-      <!-- <ion-icon name="receipt-outline"></ion-icon> -->
-      <ion-label>Favoritos</ion-label>
+    <!--   <ion-tab-button
+      *ngIf="usuario !== null"
+      tab="mis-favoritos"
+      class="tab-button-principal"
+      (click)="solicitudes()"
+      style="--color-selected: #fa4f72"
+    >
+   
+      
+      <ion-label *ngIf="activedPage === 'favoritos'">Favoritos</ion-label>
+    </ion-tab-button> -->
+
+    <ion-tab-button
+      *ngIf="usuario !== null"
+      tab="solicitudes"
+      class="tab-button-principal"
+      (click)="requerimientos()"
+      style="--color-selected: #fa4f72"
+    >
+      <img
+        *ngIf="activedPage === 'requerimientos'"
+        style="margin-top: -20px"
+        width="25px"
+        src="../../../assets/images/requerimientos.png"
+      />
+      <img
+        *ngIf="activedPage !== 'requerimientos'"
+        style="margin-top: 0px"
+        width="25px"
+        src="../../../assets/images/requerimientos.png"
+      />
+
+      <ion-label *ngIf="activedPage === 'requerimientos'"
+        >Requerimientos</ion-label
+      >
     </ion-tab-button>
-    <ion-tab-button *ngIf="usuario === null" (click)="login()" style="--color-selected: #fa4f72">
-      <ion-icon name="person-circle-outline"></ion-icon>
-      <ion-label>Usuario</ion-label>
+    <ion-tab-button
+      *ngIf="usuario === null"
+      (click)="login()"
+      style="--color-selected: #fa4f72"
+    >
+      <img
+        *ngIf="activedPage === 'perfil'"
+        style="margin-top: -20px"
+        width="25px"
+        src="../../../assets/images/iniciar-sesion.png"
+      />
+      <img
+        *ngIf="activedPage !== 'perfil'"
+        style="margin-top: 0px"
+        width="27px"
+        src="../../../assets/images/iniciar-sesion.png"
+      />
+      <ion-label *ngIf="activedPage === 'perfil'">Usuario</ion-label>
     </ion-tab-button>
     <ion-tab-button *ngIf="usuario !== null" (click)="perfil()">
       <ion-avatar>
-        <img src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg" [srcset]="usuario.imagen">
+        <img
+          src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
+          [srcset]="usuario.imagen"
+        />
       </ion-avatar>
     </ion-tab-button>
   </ion-tab-bar>
-
 </ion-tabs>

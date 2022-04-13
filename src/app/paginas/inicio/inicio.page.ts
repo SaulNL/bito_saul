@@ -157,6 +157,9 @@ export class InicioPage implements OnInit {
   }
 
   ngOnInit(): void {
+    
+    
+    console.log("activadoiniciopage", localStorage.getItem('activedPage'));
     this.user = this.util.getUserData();
     this.load();
     this.route.queryParams.subscribe((params) => {
