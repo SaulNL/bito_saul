@@ -344,7 +344,7 @@ export class InicioPage implements OnInit {
       .catch((error) => {
         this.loader = false;
         // this.notificaciones.error("Error al buscar los datos" + error.message);
-        this.notificaciones.error("No hay conexión a intenet, conectate a una red");
+        this.notificaciones.error("No hay conexión a internet, conectate a una red");
       });
   }
 
