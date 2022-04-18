@@ -89,6 +89,7 @@ export class PromocionesPage implements OnInit {
         this.anyFiltros.idEstado = 29;
         this.lstCatTipoNegocio = new Array<any>();
         this.obtenerPromociones();
+        this.mostrarLoguearse();
         this.active.queryParams.subscribe((params) => {
             if (params && params.special) {
                 if (params.special) {
@@ -137,10 +138,6 @@ export class PromocionesPage implements OnInit {
                     if (response.data !== null) {
                         this.lstPromociones = response.data;
                         this.loader = false;
-                        if (this.existeSesion) {
-                        }else{
-                          this.presentModalLoguearse();
-                        }
                         // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}
                     } else {
                         this.lstPromociones = [];  
@@ -196,6 +193,17 @@ export class PromocionesPage implements OnInit {
                 this._notificacionService.error(error);
             }
         );
+    }
+
+    public mostrarLoguearse(){
+        if (this.existeSesion) {
+        }else{
+            if(this.plazaAfiliacion != null){
+                
+            }else{
+                this.presentModalLoguearse();
+            }
+        }
     }
  
     async presentModalLoguearse() {

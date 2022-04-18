@@ -155,10 +155,7 @@ export class ProductosPage {
       }
     });
     this.existeSesion = this.util.existe_sesion();
-    if (this.existeSesion) {
-    }else{
-      this.presentModalLoguearse();
-    }
+    this.mostrarLoguearse();
 
     // if (this.existeSesion) {
     //   this.permisos = this.auth0Service.getUserPermisos();
@@ -505,6 +502,19 @@ export class ProductosPage {
     });
   }
 
+  public mostrarLoguearse(){
+    if (this.existeSesion) {
+    }else{
+        if(this.plazaAfiliacion != null){
+            
+        }else{
+          setTimeout(() =>{
+            this.presentModalLoguearse();
+          },3800)
+        }
+    }
+}
+
   async presentModalLoguearse() {
     this.modal = await this.modalController.create({
       component: ModalLoguearseComponent,
@@ -513,9 +523,6 @@ export class ProductosPage {
     });
 
     return await this.modal.present();
-    // setTimeout( function(){
-    //   return  this.modal.present();
-    // }, 20 );
   }
 
   
