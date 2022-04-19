@@ -77,39 +77,90 @@
                 </h2>
               </ion-text>
             </ion-col>
-            <ion-col size="12">
-              <ion-chip
-                (click)="mostrarOcultar()"
-                *ngIf="estatus.tipo === 1"
-                color="success"
-              >
-                <ion-label>Abierto</ion-label>
-              </ion-chip>
-              <ion-chip
-                (click)="mostrarOcultar()"
-                *ngIf="estatus.tipo === 0"
-                color="danger"
-              >
-                <ion-label>Cerrado</ion-label>
-              </ion-chip>
-              <ion-label (click)="mostrarOcultar()"
-                >{{ estatus.mensaje}}</ion-label
-              >
-              <ion-icon
-                (click)="mostrarOcultar()"
-                style="margin-left: 0px"
-                *ngIf="!motrarContacto"
-                name="arrow-up-outline"
-              >
-              </ion-icon>
-              <ion-icon
-                (click)="mostrarOcultar()"
-                style="margin-left: 0px"
-                *ngIf="motrarContacto"
-                name="arrow-down-outline"
-              >
-              </ion-icon>
-            </ion-col>
+            <ion-grid>
+              <ion-row>
+                <ion-col size="12">
+                  <div
+                    style="
+                      background: white;
+                      margin-left: -10px;
+                      border-radius: 1em 1em 0em 0em;
+                    "
+                    class="ion-text-center"
+                  >
+                    <ion-chip
+                      (click)="mostrarOcultar()"
+                      *ngIf="estatus.tipo === 1"
+                      color="success"
+                    >
+                      <ion-label>Abierto</ion-label>
+                    </ion-chip>
+                    <ion-chip
+                      (click)="mostrarOcultar()"
+                      *ngIf="estatus.tipo === 0"
+                      color="danger"
+                    >
+                      <ion-label>Cerrado</ion-label>
+                    </ion-chip>
+                    <ion-label (click)="mostrarOcultar()"
+                      >{{ estatus.mensaje}}</ion-label
+                    >
+                    <ion-icon
+                      (click)="mostrarOcultar()"
+                      style="margin-left: 0px"
+                      *ngIf="!motrarContacto"
+                      name="arrow-up-outline"
+                    >
+                    </ion-icon>
+                    <ion-icon
+                      (click)="mostrarOcultar()"
+                      style="margin-left: 0px"
+                      *ngIf="motrarContacto"
+                      name="arrow-down-outline"
+                    >
+                    </ion-icon>
+                  </div>
+                  <div *ngIf="!motrarContacto && estatus!==undefined">
+                    <ion-list style="border-radius: 0em 0em 1em 1em">
+                      <ion-item *ngFor="let dia of diasArray">
+                        <ion-grid>
+                          <ion-row>
+                            <ion-col>
+                              <p [ngClass]="{'negritas':dia.id === hoy}">
+                                {{ dia.dia }}
+                              </p>
+                            </ion-col>
+                            <ion-col *ngIf="dia.horarios.length > 0">
+                              <span *ngFor="let h of dia.horarios ">
+                                <p
+                                  style="
+                                    font-size: 15px;
+                                    font-weight: bold;
+                                    margin-bottom: 2%;
+                                  "
+                                >
+                                  {{h.texto}}
+                                </p>
+                              </span>
+                            </ion-col>
+                            <ion-col
+                              *ngIf="dia.horarios.length === 0"
+                              style="
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                              "
+                            >
+                              <ion-badge color="danger">Cerrado</ion-badge>
+                            </ion-col>
+                          </ion-row>
+                        </ion-grid>
+                      </ion-item>
+                    </ion-list>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-row>
         </div>
         <ion-row>
