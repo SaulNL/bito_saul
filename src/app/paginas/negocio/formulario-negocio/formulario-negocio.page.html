@@ -405,7 +405,7 @@
               [(ngModel)]="negocioTO.det_domicilio.codigo_postal" (change)="getAddress()" required></ion-input>
           </ion-item>
           <br/>
-          <ion-button size="small" class="bg-rosa" type="button" (click)="getAddress()">
+          <ion-button *ngIf="blnActivaNegocioFisico" size="small" class="bg-rosa" type="button" (click)="getAddress()">
             <ion-icon name="navigate-circle-outline"></ion-icon>
             Buscar dirección en el mapa
           </ion-button>
