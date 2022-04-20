@@ -543,11 +543,11 @@ console.log("resp",response)
         Capacitor.convertFileSrc(ruta);
         window.location.href = ruta; */
     /*  window.open(ruta,"_self"); */
-    /*  window.open(
-            ruta,
-            "_blank",
-            "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400"
-        ); */
+    window.open(
+      ruta,
+      "_blank",
+      "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400"
+    );
   }
 
   async presentActionSheet() {
