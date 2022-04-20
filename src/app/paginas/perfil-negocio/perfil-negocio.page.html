@@ -77,39 +77,90 @@
                 </h2>
               </ion-text>
             </ion-col>
-            <ion-col size="12">
-              <ion-chip
-                (click)="mostrarOcultar()"
-                *ngIf="estatus.tipo === 1"
-                color="success"
-              >
-                <ion-label>Abierto</ion-label>
-              </ion-chip>
-              <ion-chip
-                (click)="mostrarOcultar()"
-                *ngIf="estatus.tipo === 0"
-                color="danger"
-              >
-                <ion-label>Cerrado</ion-label>
-              </ion-chip>
-              <ion-label (click)="mostrarOcultar()"
-                >{{ estatus.mensaje}}</ion-label
-              >
-              <ion-icon
-                (click)="mostrarOcultar()"
-                style="margin-left: 0px"
-                *ngIf="!motrarContacto"
-                name="arrow-up-outline"
-              >
-              </ion-icon>
-              <ion-icon
-                (click)="mostrarOcultar()"
-                style="margin-left: 0px"
-                *ngIf="motrarContacto"
-                name="arrow-down-outline"
-              >
-              </ion-icon>
-            </ion-col>
+            <ion-grid>
+              <ion-row>
+                <ion-col size="12">
+                  <div
+                    style="
+                      background: white;
+                      margin-left: -10px;
+                      border-radius: 1em 1em 0em 0em;
+                    "
+                    class="ion-text-center"
+                  >
+                    <ion-chip
+                      (click)="mostrarOcultar()"
+                      *ngIf="estatus.tipo === 1"
+                      color="success"
+                    >
+                      <ion-label>Abierto</ion-label>
+                    </ion-chip>
+                    <ion-chip
+                      (click)="mostrarOcultar()"
+                      *ngIf="estatus.tipo === 0"
+                      color="danger"
+                    >
+                      <ion-label>Cerrado</ion-label>
+                    </ion-chip>
+                    <ion-label (click)="mostrarOcultar()"
+                      >{{ estatus.mensaje}}</ion-label
+                    >
+                    <ion-icon
+                      (click)="mostrarOcultar()"
+                      style="margin-left: 0px"
+                      *ngIf="!motrarContacto"
+                      name="arrow-up-outline"
+                    >
+                    </ion-icon>
+                    <ion-icon
+                      (click)="mostrarOcultar()"
+                      style="margin-left: 0px"
+                      *ngIf="motrarContacto"
+                      name="arrow-down-outline"
+                    >
+                    </ion-icon>
+                  </div>
+                  <div *ngIf="!motrarContacto && estatus!==undefined">
+                    <ion-list style="border-radius: 0em 0em 1em 1em">
+                      <ion-item *ngFor="let dia of diasArray">
+                        <ion-grid>
+                          <ion-row>
+                            <ion-col>
+                              <p [ngClass]="{'negritas':dia.id === hoy}">
+                                {{ dia.dia }}
+                              </p>
+                            </ion-col>
+                            <ion-col *ngIf="dia.horarios.length > 0">
+                              <span *ngFor="let h of dia.horarios ">
+                                <p
+                                  style="
+                                    font-size: 15px;
+                                    font-weight: bold;
+                                    margin-bottom: 2%;
+                                  "
+                                >
+                                  {{h.texto}}
+                                </p>
+                              </span>
+                            </ion-col>
+                            <ion-col
+                              *ngIf="dia.horarios.length === 0"
+                              style="
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                              "
+                            >
+                              <ion-badge color="danger">Cerrado</ion-badge>
+                            </ion-col>
+                          </ion-row>
+                        </ion-grid>
+                      </ion-item>
+                    </ion-list>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-row>
         </div>
         <ion-row>
@@ -205,9 +256,9 @@
           </ion-col>
         </ion-row>
         <ion-row style="margin-top: 5%">
+          <!-- div -->
           <ion-col
-            *ngIf="informacionNegocio.consumo_sitio !== null || informacionNegocio.entrega_sitio !== null || informacionNegocio.entrega_domicilio !== null"
-            [size]="informacionNegocio.tipo_pago_transferencia || informacionNegocio.tipo_pago_tarjeta_credito || informacionNegocio.tipo_pago_tarjeta_debito ? 6 : 12"
+            [size]="6"
             class="ion-align-items-center ion-text-center ion-justify-content-center"
             style="
               padding-bottom: 2%;
@@ -216,18 +267,25 @@
               border-style: solid;
             "
           >
-            <h6
-              *ngIf="informacionNegocio.consumo_sitio !== null || informacionNegocio.entrega_sitio !== null || informacionNegocio.entrega_domicilio !== null"
-              style="align-items: center"
-            >
-              Tipos de consumo
-            </h6>
+            <h6 style="align-items: center">Tipos de consumo</h6>
 
             <!--  <br *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0">
                     <br *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0"> -->
             <ion-label
               style="align-items: left"
-              *ngIf="informacionNegocio.consumo_sitio !== null || informacionNegocio.consumo_sitio > 0 "
+              *ngIf="(informacionNegocio.consumo_sitio == null || informacionNegocio.consumo_sitio == 0) && (informacionNegocio.entrega_sitio == null || informacionNegocio.entrega_sitio ==0) && (informacionNegocio.entrega_domicilio == null || informacionNegocio.entrega_domicilio ==0)"
+            >
+              <p>
+                <ion-icon
+                  style="align-items: left; margin-left: 2px"
+                  name="pizza-outline"
+                ></ion-icon>
+                Este negocio no cuenta con ningún tipo de consumo
+              </p>
+            </ion-label>
+            <ion-label
+              style="align-items: left"
+              *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0 "
             >
               <p>
                 <ion-icon
@@ -265,7 +323,7 @@
           </ion-col>
 
           <ion-col
-            [size]="informacionNegocio.consumo_sitio !== null || informacionNegocio.entrega_sitio !== null || informacionNegocio.entrega_domicilio !== null ? 6 : 12"
+            [size]="6"
             class="ion-align-items-center ion-text-center ion-justify-content-center"
             style="
               padding-bottom: 2%;
@@ -274,7 +332,19 @@
               border-style: solid;
             "
           >
-            <h6 style="align-items: center">Métodos de pagos</h6>
+            <h6 style="align-items: center">Métodos de pago</h6>
+            <ion-label
+              style="align-items: left"
+              *ngIf="!informacionNegocio.tipo_pago_efectivo && !informacionNegocio.tipo_pago_tarjeta_credito && !informacionNegocio.tipo_pago_tarjeta_debito"
+            >
+              <p>
+                <ion-icon
+                  style="align-items: left; margin-left: 2px"
+                  name="pizza-outline"
+                ></ion-icon>
+                Este negocio no cuenta con métodos de pago
+              </p>
+            </ion-label>
             <ion-label
               style="align-items: left"
               *ngIf="informacionNegocio.tipo_pago_efectivo"
@@ -318,182 +388,146 @@
             >
           </ion-col>
         </ion-row>
+        <br />
         <ion-row>
           <ion-col>
             <div id="mapIdPedido" style="height: 200px"></div>
           </ion-col>
-        </ion-row>
-        <ion-row *ngIf="existeSesion">
-          <ion-col
-            style="align-items: left"
-            size="6"
-            *ngIf="informacionNegocio.tipo_negocio || informacionNegocio.tipo_negocio === null; else online"
-          >
-            <p>
-              Dirección: {{informacionNegocio.det_domicilio.calle}}
-              {{informacionNegocio.det_domicilio.numero_ext}}
-              {{informacionNegocio.det_domicilio.colonia}} ,
-              {{informacionNegocio.det_domicilio.nombre_localidad !== undefined
-              ? informacionNegocio.det_domicilio.nombre_localidad + ', ' :
-              ''}}{{informacionNegocio.det_domicilio.nombre_municipio}} ,
-              {{informacionNegocio.det_domicilio.nombre_estado}}
-            </p>
-            <p
-              *ngIf="!permisoUbicacionCancelado && miLat && miLng && distanciaNegocio !== 'NaN'"
-            >
-              <b class="texto-resaltado"
-                >A {{distanciaNegocio}} km Cerca de tí</b
-              >
-            </p>
-          </ion-col>
-          <ng-template #online>
-            <ion-col size="12" *ngIf="arrayLugaresEntrega === null">
-              <p>Este es un negocio online.</p>
-            </ion-col>
-            <ion-col size="12" *ngIf="arrayLugaresEntrega !== null">
-              <p>Este es un negocio online y hace entregas en:</p>
-              <ion-badge
-                class="bg-rosa"
-                style="margin-right: 10px"
-                *ngFor="let lugar of arrayLugaresEntrega"
-                >{{lugar}}</ion-badge
-              >
-            </ion-col>
-          </ng-template>
-          <ion-col size="6" style="margin-top: 10%; align-items: center">
-            <a
-              href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
-              >CÓMO LLEGAR</a
-            >
-          </ion-col>
-          <!--<ion-col>
-                        <ion-button expand="block" size="small"
-                                    href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
-                                    target="_blank">
-                            Ir al lugar
-                            <ion-icon name="navigate-outline"></ion-icon>
-                        </ion-button>
-                        <div id="mapId" style="height:200px"></div>
-                    </ion-col>-->
         </ion-row>
 
         <ion-grid *ngIf="existeSesion">
           <ion-row
             style="display: flex; justify-content: center; align-items: center"
           >
-            <ion-col>
-              <div
-                class="estrella"
+            <ion-col size="6" style="align-items: left">
+              <h6>
+                Dirección: {{informacionNegocio.det_domicilio.calle}}
+                {{informacionNegocio.det_domicilio.numero_ext}}
+                {{informacionNegocio.det_domicilio.colonia}} ,
+                {{informacionNegocio.det_domicilio.nombre_localidad !==
+                undefined ? informacionNegocio.det_domicilio.nombre_localidad +
+                ', ' : ''}}{{informacionNegocio.det_domicilio.nombre_municipio}}
+                , {{informacionNegocio.det_domicilio.nombre_estado}}
+              </h6>
+            </ion-col>
+            <ion-col size="6" style="margin-top: 0%; align-items: center">
+              <center>
+                <a
+                  href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
+                  style="font-size: 15px; font-weight: bolder"
+                  >CÓMO LLEGAR</a
+                >
+              </center>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <div
+              class="estrella"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <h5
+                class="text-rosa"
                 style="
                   display: flex;
                   justify-content: center;
                   align-items: center;
                 "
               >
-                <h3
-                  class="text-rosa"
-                  style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                  "
-                >
-                  Calificación del negocio
-                </h3>
-                <div
-                  class="clasificacion"
-                  style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                  "
-                >
-                  {{informacionNegocio.numCalificaciones}}
-                  <ion-icon name="person-outline"></ion-icon>
-                  <input
-                    disabled
-                    id="radio1"
-                    type="radio"
-                    name="estrellas"
-                    value="5"
-                  />
-                  <label for="radio1">★</label>
-                  <input
-                    disabled
-                    id="radio2"
-                    type="radio"
-                    name="estrellas"
-                    value="4"
-                  />
-                  <label for="radio2">★</label>
-                  <input
-                    disabled
-                    id="radio3"
-                    type="radio"
-                    name="estrellas"
-                    value="3"
-                  />
-                  <label for="radio3">★</label>
-                  <input
-                    disabled
-                    id="radio4"
-                    type="radio"
-                    name="estrellas"
-                    value="2"
-                  />
-                  <label for="radio4">★</label>
-                  <input
-                    disabled
-                    id="radio5"
-                    type="radio"
-                    name="estrellas"
-                    value="1"
-                  />
-                  <label for="radio5">★</label>
-                  <ion-label>{{informacionNegocio.promedio}}</ion-label>
-                </div>
+                Calificación del negocio
+              </h5>
+              <div
+                class="clasificacion"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                {{informacionNegocio.numCalificaciones}}
+                <ion-icon name="person-outline"></ion-icon>
+                <input
+                  disabled
+                  id="radio1"
+                  type="radio"
+                  name="estrellas"
+                  value="5"
+                />
+                <label for="radio1">★</label>
+                <input
+                  disabled
+                  id="radio2"
+                  type="radio"
+                  name="estrellas"
+                  value="4"
+                />
+                <label for="radio2">★</label>
+                <input
+                  disabled
+                  id="radio3"
+                  type="radio"
+                  name="estrellas"
+                  value="3"
+                />
+                <label for="radio3">★</label>
+                <input
+                  disabled
+                  id="radio4"
+                  type="radio"
+                  name="estrellas"
+                  value="2"
+                />
+                <label for="radio4">★</label>
+                <input
+                  disabled
+                  id="radio5"
+                  type="radio"
+                  name="estrellas"
+                  value="1"
+                />
+                <label for="radio5">★</label>
+                <ion-label>{{informacionNegocio.promedio}}</ion-label>
               </div>
-            </ion-col>
+            </div>
           </ion-row>
           <ion-row>
             <ion-col>
-              <div>
-                <div class="ion-text-center" (click)="abrirModalCalifica()">
-                  <ion-button
-                    expand="block"
-                    size="small"
-                    type="submit"
-                    class="bg-rosa"
-                  >
-                    Calificar
-                  </ion-button>
-                </div>
-                <!--
+              <div class="ion-text-center" (click)="abrirModalCalifica()">
+                <ion-button
+                  expand="block"
+                  size="small"
+                  type="submit"
+                  class="bg-rosa"
+                >
+                  Calificar
+                </ion-button>
+              </div>
+              <!--
                                   <div *ngIf="estatusCalificacion" class="ion-text-center">
                                       <ion-label>Gracias, ya calificaste este negocio</ion-label>
                                   </div>
 -->
-              </div>
             </ion-col>
           </ion-row>
 
-          <ion-row>
+          <ion-row *ngIf="mostrarComentarios">
             <ion-col>
-              <div>
-                <div
-                  *ngIf="mostrarComentarios"
-                  class="ion-text-center"
-                  (click)="abrirModalComentarios()"
+              <div
+                *ngIf="mostrarComentarios"
+                class="ion-text-center"
+                (click)="abrirModalComentarios()"
+              >
+                <ion-button
+                  expand="block"
+                  size="small"
+                  type="submit"
+                  class="bg-rosa"
                 >
-                  <ion-button
-                    expand="block"
-                    size="small"
-                    type="submit"
-                    class="bg-rosa"
-                  >
-                    Ver comentarios
-                  </ion-button>
-                </div>
+                  Ver comentarios
+                </ion-button>
               </div>
             </ion-col>
           </ion-row>
@@ -754,7 +788,10 @@
       </ion-row>
     </ion-grid> -->
       <!-- <br /> -->
-      <ion-grid>
+      <ion-grid
+        *ngIf="informacionNegocio.cartaProducto !== undefined && informacionNegocio.cartaProducto !== null && informacionNegocio.cartaProducto !== ''"
+        style="margin-bottom: 2%"
+      >
         <ion-row>
           <ion-col>
             <ion-button
@@ -766,13 +803,13 @@
             >
               Ver carta de productos
             </ion-button>
-            <ion-content>
+            <!-- <ion-content>
               <iframe
                 [src]="informacionNegocio.cartaServicio"
                 style="width: 100%; height: 100%"
                 scrolling="yes"
               ></iframe>
-            </ion-content>
+            </ion-content> -->
             <ion-button
               shape="round"
               *ngIf="informacionNegocio.cartaServicio !== undefined && informacionNegocio.cartaServicio !== null&& informacionNegocio.cartaServicio !== ''"
@@ -780,13 +817,12 @@
               expand="full"
               class="bg-rosa"
             >
-              Ver carta de servicios2
+              Ver carta de servicios
             </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
-      <br />
-      <br />
+
       <ion-grid style="margin-top: 1em">
         <ion-row style="background: white">
           <ion-segment
@@ -1098,74 +1134,4 @@
       </ion-grid>
     </ion-card>
   </div>
-  <ion-fab *ngIf="existeSesion" horizontal="end" vertical="bottom" slot="fixed">
-    <ion-fab-button
-      size="small"
-      *ngIf="informacionNegocio.tipo_negocio || informacionNegocio.tipo_negocio === null;"
-      href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
-      target="_blank"
-    >
-      <ion-icon name="navigate" style="color: royalblue"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button
-      size="small"
-      *ngIf="informacionNegocio.youtube !== null && informacionNegocio.youtube !== ''"
-      (click)="irRedSocial(informacionNegocio.youtube)"
-      target="_blank"
-    >
-      <img src="../../../assets/images/yt.png" />
-    </ion-fab-button>
-    <ion-fab-button
-      size="small"
-      color="light"
-      *ngIf="informacionNegocio.tiktok !== null && informacionNegocio.tiktok !== ''"
-      (click)="irRedSocial(informacionNegocio.tiktok)"
-      target="_blank"
-    >
-      <img src="../../../assets/images/tt.png" />
-    </ion-fab-button>
-    <ion-fab-button
-      size="small"
-      color="light"
-      *ngIf="informacionNegocio.instagram !== null && informacionNegocio.instagram !== ''"
-      (click)="irRedSocial(informacionNegocio.instagram)"
-      target="_blank"
-    >
-      <img src="../../../assets/images/insta.png" />
-    </ion-fab-button>
-    <ion-fab-button
-      size="small"
-      color="light"
-      *ngIf="informacionNegocio.twitter !== null && informacionNegocio.twitter !== ''"
-      (click)="irRedSocial(informacionNegocio.twitter)"
-      target="_blank"
-    >
-      <img src="../../../assets/images/tw.png" />
-    </ion-fab-button>
-    <ion-fab-button
-      size="small"
-      color="light"
-      *ngIf="informacionNegocio.id_facebook !== null && informacionNegocio.id_facebook !== ''"
-      (click)="irRedSocial(informacionNegocio.id_facebook)"
-      target="_blank"
-    >
-      <img src="../../../assets/images/fb.png" />
-    </ion-fab-button>
-    <ion-fab-button
-      size="small"
-      color="light"
-      *ngIf="informacionNegocio.celular !== null && informacionNegocio.celular !== ''"
-      (click)="enviarWhasapp(informacionNegocio.celular)"
-    >
-      <img src="../../../assets/images/wp.png" />
-    </ion-fab-button>
-    <ion-fab-button
-      size="small"
-      color="light"
-      *ngIf="informacionNegocio.telefono !== null && informacionNegocio.telefono !== ''"
-      (click)="llamar(informacionNegocio.telefono)"
-    >
-      <ion-icon class="telefono" name="call"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>

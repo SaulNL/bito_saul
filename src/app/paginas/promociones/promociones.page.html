@@ -1,51 +1,86 @@
-<app-toolbar-busqueda [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar promociones en ' + plazaAfiliacionNombre.nombre : 'Buscar promociones sobre productos, servicios y más...' " (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
+<ion-toolbar class="tolbar">
+  <div style="display: flex">
+    <ion-buttons slot="start">
+      <ion-button class="blanco" (click)="verSolicitudes()">
+        <ion-icon name="list-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Promociones</ion-title>
+    <app-toolbar-busqueda
+      [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar promociones en ' + plazaAfiliacionNombre.nombre : 'Buscar promociones sobre productos, servicios y más...' "
+      (buscarEmit)="buscarToolbar($event)"
+    ></app-toolbar-busqueda>
+  </div>
+</ion-toolbar>
+
+<!-- <app-toolbar-busqueda
+  [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar promociones en ' + plazaAfiliacionNombre.nombre : 'Buscar promociones sobre productos, servicios y más...' "
+  (buscarEmit)="buscarToolbar($event)"
+></app-toolbar-busqueda> -->
 <ion-content [fullscreen]="true">
   <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
   <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
   <ion-item>
-
     <ion-buttons *ngIf="!selectionAP">
-        <ion-button (click)="openPlazasAfiliacionesModal()">
-            Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span>
-            <ion-icon name="caret-down-outline"></ion-icon>
-        </ion-button>
-        </ion-buttons>
-        <!-- <ion-buttons *ngIf="selectionAP">
+      <ion-button (click)="openPlazasAfiliacionesModal()">
+        Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span>
+        <ion-icon name="caret-down-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- <ion-buttons *ngIf="selectionAP">
             <ion-chip (click)="regresarBitoo()" color="danger">
                 <ion-icon name="log-out-outline"></ion-icon>
                 <ion-label>Regresar a bitoo</ion-label>
             </ion-chip>
         </ion-buttons> -->
-</ion-item>
-<div  *ngIf="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined" style="background-color: #3c3c3c; color: white; font-size: small;" class="ion-text-center">
-  <p style="padding-inline: 5%;">ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA <img style="width: 25px; margin-top: 2%;" src="{{plazaAfiliacionNombre.icon}}">  {{plazaAfiliacionNombre.nombre}}</p>
-</div>
+  </ion-item>
+  <div
+    *ngIf="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined"
+    style="background-color: #3c3c3c; color: white; font-size: small"
+    class="ion-text-center"
+  >
+    <p style="padding-inline: 5%">
+      ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA
+      <img
+        style="width: 25px; margin-top: 2%"
+        src="{{plazaAfiliacionNombre.icon}}"
+      />
+      {{plazaAfiliacionNombre.nombre}}
+    </p>
+  </div>
   <div *ngIf="lstPromociones.length == 0 && !loader && !selectionAP">
     <ion-grid>
-      <ion-row style="margin: 10px;">
+      <ion-row style="margin: 10px">
         <ion-col size="12" color="primary">
-          <h2 style="color: #4d78e7">No se encontraron promociones relacionadas a la búsqueda</h2>
+          <h2 style="color: #4d78e7">
+            No se encontraron promociones relacionadas a la búsqueda
+          </h2>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
-  
 
   <ion-grid *ngIf="lstPromociones.length === 0 && selectionAP === true">
     <ion-text color="primary">
-        <h2>No se encontraron promociones relacionadas en {{plazaAfiliacionNombre.nombre}}</h2>
+      <h2>
+        No se encontraron promociones relacionadas en
+        {{plazaAfiliacionNombre.nombre}}
+      </h2>
     </ion-text>
-</ion-grid>
+  </ion-grid>
 
   <div *ngIf="!loader">
     <app-recargar (respuesta)="recargar($event)"></app-recargar>
-    <ion-grid *ngFor="let categorias of lstPromociones" class=".categoria" >
+    <ion-grid *ngFor="let categorias of lstPromociones" class=".categoria">
       <ion-row class="categoria">
         <h2>{{ categorias.nombre }}</h2>
       </ion-row>
       <ion-row *ngFor="let promocion of categorias.promociones">
         <ion-col size="12">
-          <app-promocion [promocion]="promocion" [idPersona]="idPersona"></app-promocion>
+          <app-promocion
+            [promocion]="promocion"
+            [idPersona]="idPersona"
+          ></app-promocion>
         </ion-col>
       </ion-row>
     </ion-grid>

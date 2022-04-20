@@ -15,7 +15,7 @@
       <img
         *ngIf="activedPage !== 'inicio'"
         style="margin-top: 0px"
-        width="30px"
+        width="25px"
         src="../../../assets/images/inicio.png"
       />
       <ion-label *ngIf="activedPage === 'inicio'">Negocios</ion-label>
@@ -63,17 +63,27 @@
       <ion-label *ngIf="activedPage === 'promociones'">Promociones</ion-label>
     </ion-tab-button>
 
-    <!--   <ion-tab-button
+    <ion-tab-button
       *ngIf="usuario !== null"
       tab="mis-favoritos"
       class="tab-button-principal"
       (click)="solicitudes()"
       style="--color-selected: #fa4f72"
     >
-   
-      
+      <img
+        *ngIf="activedPage === 'favoritos'"
+        style="margin-top: -20px"
+        width="25px"
+        src="../../../assets/images/favoritos.png"
+      />
+      <img
+        *ngIf="activedPage !== 'favoritos'"
+        style="margin-top: 0px"
+        width="25px"
+        src="../../../assets/images/favoritos.png"
+      />
       <ion-label *ngIf="activedPage === 'favoritos'">Favoritos</ion-label>
-    </ion-tab-button> -->
+    </ion-tab-button>
 
     <ion-tab-button
       *ngIf="usuario !== null"
@@ -81,6 +91,7 @@
       class="tab-button-principal"
       (click)="requerimientos()"
       style="--color-selected: #fa4f72"
+      [routerLink]="['/tabs/home/solicitud']"
     >
       <img
         *ngIf="activedPage === 'requerimientos'"

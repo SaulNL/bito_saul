@@ -52,6 +52,10 @@ ion-back-button {
   --color: white !important;
 }
 
+.busqueda {
+  --background: linear-gradient(90deg, #d64fa9, #a74eef) !important;
+}
+
 ion-menu-button {
   color: white;
 }
@@ -76,7 +80,8 @@ ion-content {
   --background: #f2f2f2;
 }
 
-.searchbar-left-aligned.sc-ion-searchbar-ios-h .searchbar-input.sc-ion-searchbar-ios {
+.searchbar-left-aligned.sc-ion-searchbar-ios-h
+  .searchbar-input.sc-ion-searchbar-ios {
   background: white;
 }
 
@@ -250,10 +255,10 @@ ion-fab {
   color: white;
 }
 .background-blueviolet {
-    background-color: #AC4EE6;
+  background-color: #ac4ee6;
 }
 .background-deeppink {
-    background-color: #fa4f72;
+  background-color: #fa4f72;
 }
 .text-center {
   text-align: center;
