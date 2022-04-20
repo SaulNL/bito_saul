@@ -82,7 +82,7 @@ export class TabsPage implements OnInit {
   requerimientos() {
     localStorage.removeItem("activedPage");
     localStorage.removeItem("byCategorias");
-    this.router.navigate(["/tabs/home/solicitudes"]);
+    this.router.navigate(["/tabs/home/solicitud"]);
     localStorage.setItem("activedPage", "requerimientos");
     this.activedPage = localStorage.getItem("activedPage");
   }
