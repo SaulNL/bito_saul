@@ -265,7 +265,7 @@ export class PerfilNegocioPage implements OnInit {
         iconSize: [45, 41],
         iconAnchor: [13, 41],
       });
-      this.marker = marker([lat, lng], { icon: myIcon, draggable: true }).addTo(
+      this.marker = marker([lat, lng], { icon: myIcon, draggable: false }).addTo(
         this.map
       );
       /* this.marker.on("dragend", () => {
