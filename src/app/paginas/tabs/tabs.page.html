@@ -71,13 +71,13 @@
       style="--color-selected: #fa4f72"
     >
       <img
-        *ngIf="activedPage === 'requerimientos'"
+        *ngIf="activedPage === 'favoritos'"
         style="margin-top: -20px"
         width="25px"
         src="../../../assets/images/favoritos.png"
       />
       <img
-        *ngIf="activedPage !== 'requerimientos'"
+        *ngIf="activedPage !== 'favoritos'"
         style="margin-top: 0px"
         width="25px"
         src="../../../assets/images/favoritos.png"
@@ -91,6 +91,7 @@
       class="tab-button-principal"
       (click)="requerimientos()"
       style="--color-selected: #fa4f72"
+      [routerLink]="['/tabs/home/solicitud']"
     >
       <img
         *ngIf="activedPage === 'requerimientos'"

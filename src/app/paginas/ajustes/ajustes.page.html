@@ -1,111 +1,136 @@
 <ion-header>
-    <ion-toolbar class="tolbar">
-        <ion-title>
-            Perfil
-        </ion-title>
-        <ion-buttons *ngIf="usuario !== null" slot="start">
-            <ion-menu-button></ion-menu-button>
-        </ion-buttons>
-        <ion-buttons slot="end" (click)="presentActionSheet()">
-            <ion-button>
-                <ion-icon name="ellipsis-vertical-outline"></ion-icon>
-            </ion-button>
-        </ion-buttons>
-    </ion-toolbar>
+  <ion-toolbar class="tolbar">
+    <ion-title> Perfil </ion-title>
+    <ion-buttons *ngIf="usuario !== null" slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end" (click)="presentActionSheet()">
+      <ion-button>
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 <ion-content fullscreen *ngIf="usuario !== null">
-    <ion-card style="margin-bottom: 3%;">
-        <div class="ion-text-center ion-margin-top" [routerLink]="['/tabs/home/perfil/datos-basicos']">
-            <img *ngIf="usuario.imagen !== ''" class="rounded-circle" [src]="usuario.imagen" alt="">
-            <img *ngIf="usuario.imagen === ''" class="imagen" alt="">
-        </div>
-        <ion-card-header class="ion-text-center">
-            <ion-card-title>
-                <h4 style="margin-top: -10px;">{{usuario.nombre}} {{usuario.paterno}} {{usuario.materno}}</h4>
-            </ion-card-title>
-            <ion-label>{{usuario.celular}}</ion-label>
-            <br>
-            <ion-label>{{usuario.correo}}</ion-label>
-        </ion-card-header>
-        <ion-card-content>
-            <ion-grid>
-                <ion-row>
-                    <ion-col *ngIf="misNegocios" [routerLink]="['/tabs/home/negocio']">
-                        <ion-card>
-                            <ion-card-content>
-                                <div class="ion-text-center">
-                                    <ion-icon name="briefcase-outline"></ion-icon>
-                                    <h2>Mis Negocios</h2>
-                                </div>
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
-                    <ion-col *ngIf="misAPromociones" (click)="misPromociones()">
-                        <ion-card>
-                            <ion-card-content>
-                                <div class="ion-text-center">
-                                    <ion-icon name="pricetags-outline"></ion-icon>
-                                    <h2>Mis anuncios y promociones</h2>
-                                </div>
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
-                    <ion-col *ngIf="generarSolicitud" (click)="misSolicitudes()">
-                        <ion-card>
-                            <ion-card-content>
-                                <div class="ion-text-center">
-                                    <ion-icon name="document-text-outline"></ion-icon>
-                                    <h2>Mis requerimientos de compra</h2>
-                                </div>
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
-                    <ion-col *ngIf="misVentas">
-                        <ion-card>
-                            <ion-badge *ngIf="siNoVistos" class="total-vistos" color="danger">{{totalNoVistos}}</ion-badge>
-                            <ion-card-content>
-                                <div class="ion-text-center" [routerLink]="['/tabs/home/ventas']">
-                                    <ion-icon name="receipt-outline"></ion-icon>
-                                    <h2>Mis
-                                        <br>
-                                        ventas</h2>
-                                </div>
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
-                    <ion-col *ngIf="misCompras">
-                        <ion-card>
-                            <ion-card-content>
-                                <div class="ion-text-center" [routerLink]="['/tabs/home/compras']">
-                                    <ion-icon name="bag-handle-outline"></ion-icon>
-                                    <h2>Mis compras</h2>
-                                </div>
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
-                    <ion-col *ngIf="solicitudes">
-                        <ion-card>
-                            <ion-card-content>
-                                <div class="ion-text-center" [routerLink]="['/tabs/home/solicitud']">
-                                    <ion-icon name="receipt-outline"></ion-icon>
-                                    <!-- <ion-icon name="heart-outline"></ion-icon> -->
-                                    <h2>Requerimientos de compra</h2>
-                                </div>
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
-                    <ion-col *ngIf="estadisticas">
-                        <ion-card>
-                            <ion-card-content>
-                                <div class="ion-text-center" [routerLink]="['/tabs/home/estadisticas']">
-                                    <ion-icon name="analytics-outline"></ion-icon>
-                                    <h2>Estadísticas</h2>
-                                </div>
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-        </ion-card-content>
-    </ion-card>
+  <ion-card style="margin-bottom: 3%">
+    <div
+      class="ion-text-center ion-margin-top"
+      [routerLink]="['/tabs/home/perfil/datos-basicos']"
+    >
+      <img
+        *ngIf="usuario.imagen !== ''"
+        class="rounded-circle"
+        [src]="usuario.imagen"
+        alt=""
+      />
+      <img *ngIf="usuario.imagen === ''" class="imagen" alt="" />
+    </div>
+    <ion-card-header class="ion-text-center">
+      <ion-card-title>
+        <h4 style="margin-top: -10px">
+          {{usuario.nombre}} {{usuario.paterno}} {{usuario.materno}}
+        </h4>
+      </ion-card-title>
+      <ion-label>{{usuario.celular}}</ion-label>
+      <br />
+      <ion-label>{{usuario.correo}}</ion-label>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col *ngIf="misNegocios" [routerLink]="['/tabs/home/negocio']">
+            <ion-card>
+              <ion-card-content>
+                <div class="ion-text-center">
+                  <ion-icon name="briefcase-outline"></ion-icon>
+                  <h2>Mis negocios</h2>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+          <ion-col *ngIf="misAPromociones" (click)="misPromociones()">
+            <ion-card>
+              <ion-card-content>
+                <div class="ion-text-center">
+                  <ion-icon name="pricetags-outline"></ion-icon>
+                  <h2>Mis anuncios y promociones</h2>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+          <ion-col *ngIf="generarSolicitud" (click)="misSolicitudes()">
+            <ion-card>
+              <ion-card-content>
+                <div class="ion-text-center">
+                  <ion-icon name="document-text-outline"></ion-icon>
+                  <h2>Mis requerimientos de compra</h2>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+          <ion-col *ngIf="misVentas">
+            <ion-card>
+              <ion-badge *ngIf="siNoVistos" class="total-vistos" color="danger"
+                >{{totalNoVistos}}</ion-badge
+              >
+              <ion-card-content>
+                <div
+                  class="ion-text-center"
+                  [routerLink]="['/tabs/home/ventas']"
+                >
+                  <ion-icon name="receipt-outline"></ion-icon>
+                  <h2>
+                    Mis
+                    <br />
+                    ventas
+                  </h2>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+          <ion-col *ngIf="misCompras">
+            <ion-card>
+              <ion-card-content>
+                <div
+                  class="ion-text-center"
+                  [routerLink]="['/tabs/home/compras']"
+                >
+                  <ion-icon name="bag-handle-outline"></ion-icon>
+                  <h2>Mis compras</h2>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+          <ion-col *ngIf="solicitudes">
+            <ion-card>
+              <ion-card-content>
+                <div
+                  class="ion-text-center"
+                  [routerLink]="['/tabs/home/solicitud']"
+                >
+                  <ion-icon name="receipt-outline"></ion-icon>
+                  <!-- <ion-icon name="heart-outline"></ion-icon> -->
+                  <h2>Requerimientos de compra</h2>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+
+          <ion-col *ngIf="estadisticas">
+            <ion-card>
+              <ion-card-content>
+                <div
+                  class="ion-text-center"
+                  [routerLink]="['/tabs/home/estadisticas']"
+                >
+                  <ion-icon name="analytics-outline"></ion-icon>
+                  <h2>Estadísticas</h2>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
