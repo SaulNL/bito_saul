@@ -287,7 +287,7 @@
               style="align-items: left"
               *ngIf="informacionNegocio.consumo_sitio !== null && informacionNegocio.consumo_sitio > 0 "
             >
-              <p>
+              <p *ngIf="informacionNegocio.tipo_negocio >=1">
                 <ion-icon
                   style="align-items: left; margin-left: 2px"
                   name="pizza-outline"
@@ -299,7 +299,7 @@
             <ion-label
               *ngIf="informacionNegocio.entrega_sitio !== null && informacionNegocio.entrega_sitio > 0"
             >
-              <p>
+              <p *ngIf="informacionNegocio.tipo_negocio >=1">
                 <ion-icon name="storefront-outline"></ion-icon>
                 Entregas en sitio
               </p>
@@ -389,7 +389,7 @@
           </ion-col>
         </ion-row>
         <br />
-        <ion-row>
+        <ion-row *ngIf="informacionNegocio.tipo_negocio >=1">
           <ion-col>
             <div id="mapIdPedido" style="height: 200px"></div>
           </ion-col>
@@ -400,7 +400,7 @@
             style="display: flex; justify-content: center; align-items: center"
           >
             <ion-col size="6" style="align-items: left">
-              <h6>
+              <h6 *ngIf="informacionNegocio.tipo_negocio >=1">
                 Dirección: {{informacionNegocio.det_domicilio.calle}}
                 {{informacionNegocio.det_domicilio.numero_ext}}
                 {{informacionNegocio.det_domicilio.colonia}} ,
@@ -410,7 +410,7 @@
                 , {{informacionNegocio.det_domicilio.nombre_estado}}
               </h6>
             </ion-col>
-            <ion-col size="6" style="margin-top: 0%; align-items: center">
+            <ion-col *ngIf="informacionNegocio.tipo_negocio >=1" size="6" style="margin-top: 0%; align-items: center">
               <center>
                 <a
                   href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
