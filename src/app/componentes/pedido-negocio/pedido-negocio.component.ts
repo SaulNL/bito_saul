@@ -116,7 +116,7 @@ export class PedidoNegocioComponent implements OnInit {
         setTimeout(it => {
             const lat = this.lat;
             const lng = this.lng;
-            this.map = new Map("mapIdPedido").setView([lat, lng], 14);
+            this.map = new Map("mapIdPedidoBolsa").setView([lat, lng], 14);
             tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
             this.map.on('click', respuesta => {
                 this.getLatLong(respuesta);
@@ -259,7 +259,7 @@ export class PedidoNegocioComponent implements OnInit {
         if (this.tipoEnvio === 2) {
             setTimeout(it => {
                 this.loadMap();
-            }, 500);
+            }, 300);
         }
     }
 

@@ -1,4 +1,4 @@
-<ion-toolbar class="tolbar">
+<!-- <ion-toolbar class="tolbar">
   <div style="display: flex">
     <ion-buttons slot="start">
       <ion-button class="blanco" (click)="verSolicitudes()">
@@ -6,12 +6,13 @@
       </ion-button>
     </ion-buttons>
     <ion-title>Requerimientos</ion-title>
-    <app-toolbar-busqueda
-      [placeHolder]="lstSolicitudes.length <= 0 ? 'Buscar requerimientos en ' + plazaAfiliacion.nombre : 'Buscar requerimientos de compra' "
-      (buscarEmit)="buscarToolbar($event)"
-    ></app-toolbar-busqueda>
+    
   </div>
-</ion-toolbar>
+</ion-toolbar> -->
+<app-toolbar-busqueda
+      [placeHolder]="lstSolicitudes.length <= 0 ? 'Buscar requerimientos en ' + plazaAfiliacion.nombre : 'Buscar requerimientos de compra' "
+      (buscarEmit)="buscarToolbar($event)" titulo="Requerimientos"
+></app-toolbar-busqueda> 
 
 <!-- <app-toolbar-busqueda placeHolder="Buscar requerimientos de compra..." (buscarEmit)="buscarToolbar($event)">
 </app-toolbar-busqueda> -->

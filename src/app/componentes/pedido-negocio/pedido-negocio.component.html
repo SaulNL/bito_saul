@@ -15,8 +15,8 @@
 <app-spinner [loader]="loader" [message]="msj"></app-spinner>
 <ion-content *ngIf="!loader">
   <ion-list *ngIf="tipoEnvio !== undefined">
-    <ion-list *ngIf="_entregaDomicilio === 1 && _entregaSitio === 1 && _consumoSitio === 1 && tipoEnvio !== null">
-      <ion-radio-group [(ngModel)]="tipoEnvio">
+   <!-- <ion-list *ngIf="_entregaDomicilio === 1 && _entregaSitio === 1 && _consumoSitio === 1 && tipoEnvio !== null"> -->
+      <ion-radio-group [(ngModel)]="tipoEnvio" (ionChange)="cambiarTipo($event)" [value]="tipoEnvio">
         <ion-list-header>
           <ion-label>Tipo de entrega</ion-label>
         </ion-list-header>
@@ -89,7 +89,7 @@
         <ion-select-option *ngFor="let pago of pagos" [value]="pago.id_tipo_pago">{{pago.nombre}}</ion-select-option>
       </ion-select>
     </ion-item>
-  </ion-list>
+  <!-- </ion-list> -->
   
   <ion-list>
     <div *ngIf="tipoEnvio === 2">
@@ -113,7 +113,7 @@
           </ion-grid>-->
         <ion-row>
           <ion-col>
-            <div id="mapIdPedido" style="height:200px"></div>
+            <div id="mapIdPedidoBolsa" style="height:200px"></div>
           </ion-col>
         </ion-row>
         <p class="ion-text-center">{{estasUbicacion}}</p>

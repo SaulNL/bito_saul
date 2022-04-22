@@ -14,6 +14,7 @@ import { Platform } from "@ionic/angular";
 })
 export class ToolbarBusquedaComponent implements OnInit {
     @Input() public placeHolder: string = 'Buscar'
+    @Input() public titulo: string;
     @Output() public buscarEmit = new EventEmitter()
     strBuscar: String;
     public user: any;
