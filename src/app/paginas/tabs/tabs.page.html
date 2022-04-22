@@ -65,28 +65,6 @@
 
     <ion-tab-button
       *ngIf="usuario !== null"
-      tab="mis-favoritos"
-      class="tab-button-principal"
-      (click)="solicitudes()"
-      style="--color-selected: #fa4f72"
-    >
-      <img
-        *ngIf="activedPage === 'favoritos'"
-        style="margin-top: -20px"
-        width="25px"
-        src="../../../assets/images/favoritos.png"
-      />
-      <img
-        *ngIf="activedPage !== 'favoritos'"
-        style="margin-top: 0px"
-        width="25px"
-        src="../../../assets/images/favoritos.png"
-      />
-      <ion-label *ngIf="activedPage === 'favoritos'">Favoritos</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button
-      *ngIf="usuario !== null"
       tab="solicitudes"
       class="tab-button-principal"
       (click)="requerimientos()"
@@ -110,6 +88,30 @@
         >Requerimientos</ion-label
       >
     </ion-tab-button>
+
+    <ion-tab-button
+      *ngIf="usuario !== null"
+      tab="mis-favoritos"
+      class="tab-button-principal"
+      (click)="solicitudes()"
+      style="--color-selected: #fa4f72"
+    >
+      <img
+        *ngIf="activedPage === 'favoritos'"
+        style="margin-top: -20px"
+        width="25px"
+        src="../../../assets/images/favoritos.png"
+      />
+      <img
+        *ngIf="activedPage !== 'favoritos'"
+        style="margin-top: 0px"
+        width="25px"
+        src="../../../assets/images/favoritos.png"
+      />
+      <ion-label *ngIf="activedPage === 'favoritos'">Favoritos</ion-label>
+    </ion-tab-button>
+
+    
     <ion-tab-button
       *ngIf="usuario === null"
       (click)="login()"
