@@ -1,16 +1,10 @@
 <ion-toolbar class="tolbar">
-  <div style="display: flex">
-    <ion-buttons slot="start">
-      <ion-button class="blanco" (click)="verSolicitudes()">
-        <ion-icon name="list-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>Negocios</ion-title>
+ 
     <app-toolbar-busqueda
       [placeHolder]=" objectSelectAfiliacionPlaza !== null && objectSelectAfiliacionPlaza !== undefined ? 'Buscar negocios en ' + objectSelectAfiliacionPlaza.nombre : 'Buscar negocios' "
-      (buscarEmit)="buscarToolbar($event)"
+      (buscarEmit)="buscarToolbar($event)" titulo="Negocio"
     ></app-toolbar-busqueda>
-  </div>
+
 </ion-toolbar>
 
 <ion-content
