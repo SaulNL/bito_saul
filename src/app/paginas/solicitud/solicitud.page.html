@@ -9,21 +9,28 @@
     
   </div>
 </ion-toolbar> -->
-<app-toolbar-busqueda
+<!-- <app-toolbar-busqueda
       [placeHolder]="lstSolicitudes.length <= 0 ? 'Buscar requerimientos en ' + plazaAfiliacion.nombre : 'Buscar requerimientos de compra' "
       (buscarEmit)="buscarToolbar($event)" titulo="Requerimientos"
-></app-toolbar-busqueda> 
+></app-toolbar-busqueda>  -->
 
-<!-- <app-toolbar-busqueda placeHolder="Buscar requerimientos de compra..." (buscarEmit)="buscarToolbar($event)">
-</app-toolbar-busqueda> -->
+<app-toolbar-busqueda [placeHolder]="fuenteExclusiva !== undefined ? 'Buscar requerimientos de compra en ' + fuenteExclusiva:'Buscar requerimientos de compra '" (buscarEmit)="buscarToolbar($event)"  titulo="Requerimientos">
+</app-toolbar-busqueda>
 <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
 <ion-content *ngIf="!loader">
   <!-- <ion-card-content>
       <strong>Lo sentimos!</strong> No hay requerimientos de compra relacionadas
       con tu busqueda en <strong>{{mensaje}}</strong>...
     </ion-card-content> -->
+    <ion-grid *ngIf="!loader && lstSolicitudes.length <= 0 && fuenteExclusiva === undefined">
+    <ion-text color="primary">
+      <h2>
+        No se encontraron requerimientos de compra relacionados
+      </h2>
+    </ion-text>
+  </ion-grid>
   <div
-    *ngIf="lstSolicitudes.length <= 0"
+    *ngIf="lstSolicitudes.length <= 0 && plazaAfiliacion.nombre.length > 0"
     style="background-color: #3c3c3c; color: white; font-size: small"
     class="ion-text-center"
   >

@@ -43,6 +43,8 @@ export class SolicitudPage implements OnInit {
   public cargando = "Cargando";
   public plazaAfiliacion: AfiliacionPlazaModel;
   public isIos: boolean;
+  public fuenteExclusiva:String;
+  obj: any;
   constructor(
     private filtrosService: FiltrosService,
     private serviceProveedores: ProveedorServicioService,
@@ -246,5 +248,15 @@ export class SolicitudPage implements OnInit {
         },
         (error) => {}
       );
+  }
+  ngAfterViewInit(){
+    this.nombrePlazas();
+  }
+  public nombrePlazas(){
+    const organ=localStorage.getItem('org');
+    if(organ?.length>0){
+       this.obj = JSON.parse(organ);
+    }
+    this.fuenteExclusiva=this.obj?.nombre;
   }
 }
