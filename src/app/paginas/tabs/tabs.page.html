@@ -8,15 +8,12 @@
     >
       <img
         *ngIf="activedPage === 'inicio'"
-        style="margin-top: -20px"
-        width="25px"
-        src="../../../assets/images/inicio.png"
+        style="margin-top: -18px"
+        src="../../../assets/images/tabs/Icono/Home.png"
       />
       <img
         *ngIf="activedPage !== 'inicio'"
-        style="margin-top: 0px"
-        width="25px"
-        src="../../../assets/images/inicio.png"
+        src="../../../assets/images/tabs/Icono/Home.png"
       />
       <ion-label *ngIf="activedPage === 'inicio'">Negocios</ion-label>
     </ion-tab-button>
@@ -29,15 +26,12 @@
     >
       <img
         *ngIf="activedPage === 'productos'"
-        style="margin-top: -20px"
-        width="25px"
-        src="../../../assets/images/Productos.png"
+        style="margin-top: -18px"
+        src="../../../assets/images/tabs/Icono/Productos.png"
       />
       <img
         *ngIf="activedPage !== 'productos'"
-        style="margin-top: 0px"
-        width="25px"
-        src="../../../assets/images/Productos.png"
+        src="../../../assets/images/tabs/Icono/Productos.png"
       />
       <ion-label *ngIf="activedPage === 'productos'">Productos</ion-label>
     </ion-tab-button>
@@ -50,21 +44,17 @@
     >
       <img
         *ngIf="activedPage === 'promociones'"
-        style="margin-top: -20px"
-        width="25px"
-        src="../../../assets/images/promociones.png"
+        style="margin-top: -18px"
+        src="../../../assets/images/tabs/Icono/Ofertas.png"
       />
       <img
         *ngIf="activedPage !== 'promociones'"
-        style="margin-top: 0px"
-        width="35px"
-        src="../../../assets/images/promociones.png"
+        src="../../../assets/images/tabs/Icono/Ofertas.png"
       />
       <ion-label *ngIf="activedPage === 'promociones'">Promociones</ion-label>
     </ion-tab-button>
 
     <ion-tab-button
-      *ngIf="usuario !== null"
       tab="requerimientos"
       class="tab-button-principal"
       (click)="requerimientos()"
@@ -72,15 +62,12 @@
     >
       <img
         *ngIf="activedPage === 'requerimientos'"
-        style="margin-top: -20px"
-        width="25px"
-        src="../../../assets/images/requerimientos.png"
+        style="margin-top: -18px"
+        src="../../../assets/images/tabs/Icono/Requerimientos.png"
       />
       <img
         *ngIf="activedPage !== 'requerimientos'"
-        style="margin-top: 0px"
-        width="25px"
-        src="../../../assets/images/requerimientos.png"
+        src="../../../assets/images/tabs/Icono/Requerimientos.png"
       />
 
       <ion-label *ngIf="activedPage === 'requerimientos'"
@@ -97,15 +84,12 @@
     >
       <img
         *ngIf="activedPage === 'favoritos'"
-        style="margin-top: -20px"
-        width="25px"
-        src="../../../assets/images/favoritos.png"
+        style="margin-top: -18px"
+        src="../../../assets/images/tabs/Icono/Favoritos.png"
       />
       <img
         *ngIf="activedPage !== 'favoritos'"
-        style="margin-top: 0px"
-        width="25px"
-        src="../../../assets/images/favoritos.png"
+        src="../../../assets/images/tabs/Icono/Favoritos.png"
       />
       <ion-label *ngIf="activedPage === 'favoritos'">Favoritos</ion-label>
     </ion-tab-button>
@@ -113,20 +97,19 @@
     
     <ion-tab-button
       *ngIf="usuario === null"
+      class="tab-button-principal"
       (click)="login()"
       style="--color-selected: #fa4f72"
+      tab="login"
     >
       <img
         *ngIf="activedPage === 'perfil'"
-        style="margin-top: -20px"
-        width="25px"
-        src="../../../assets/images/iniciar-sesion.png"
+        style="margin-top: -18px"
+        src="../../../assets/images/tabs/Icono/Perfil.png"
       />
       <img
         *ngIf="activedPage !== 'perfil'"
-        style="margin-top: 0px"
-        width="27px"
-        src="../../../assets/images/iniciar-sesion.png"
+        src="../../../assets/images/tabs/Icono/Perfil.png"
       />
       <ion-label *ngIf="activedPage === 'perfil'">Usuario</ion-label>
     </ion-tab-button>
