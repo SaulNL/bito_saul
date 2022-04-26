@@ -65,11 +65,10 @@
 
     <ion-tab-button
       *ngIf="usuario !== null"
-      tab="solicitudes"
+      tab="requerimientos"
       class="tab-button-principal"
       (click)="requerimientos()"
       style="--color-selected: #fa4f72"
-      [routerLink]="['/tabs/home/solicitud']"
     >
       <img
         *ngIf="activedPage === 'requerimientos'"

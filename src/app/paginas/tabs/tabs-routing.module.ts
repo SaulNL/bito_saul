@@ -22,6 +22,10 @@ const routes: Routes = [
         loadChildren: () => import('../promociones/promociones.module').then(m => m.Tab2PageModule), canActivate: [AuthGuardService]
       },
       {
+        path: 'requerimientos',
+        loadChildren: () => import('../solicitud/solicitud.module').then(m => m.SolicitudPageModule), canActivate: [AuthGuardService]
+      },
+      {
         path: 'inicio',
         loadChildren: () => import('../inicio/inicio.module').then(m => m.Tab3PageModule), canActivate: [AuthGuardService]
       },

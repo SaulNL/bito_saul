@@ -13,6 +13,11 @@ import { error } from 'protractor';
 import { HttpParams } from '@angular/common/http';
 import { UbicacionMapa } from '../../api/ubicacion-mapa.service';
 import { Plugins } from "@capacitor/core";
+import { CatEstadoModel } from 'src/app/Modelos/CatEstadoModel';
+import { GeneralServicesService } from 'src/app/api/general-services.service';
+import { CatMunicipioModel } from 'src/app/Modelos/CatMunicipioModel';
+import { MsPersonaModel } from 'src/app/Modelos/MsPersonaModel';
+import { CatLocalidadModel } from 'src/app/Modelos/CatLocalidadModel';
 
 const { Geolocation } = Plugins;
 declare var google: any;
@@ -35,6 +40,7 @@ export class PedidoNegocioComponent implements OnInit {
     private map: Map;
     public lat: any;
     public lng: any;
+    proveedorTO: MsPersonaModel;
     public blnUbicacion: boolean;
     public estasUbicacion: any;
     private marker: Marker<any>;
@@ -43,20 +49,39 @@ export class PedidoNegocioComponent implements OnInit {
     cantidad: number;
     costoEntrega: number;
     detalle: string;
+    public estaAux: any;
     blnCosto: boolean;
     blnCostoLetra: boolean;
     public subscribe;
     public modal;
+    public btnEstado: boolean;
+    public btnMuncipio: boolean;
     public loader: any;
+    public calle: String;
+    public numeroInt: String;
+    public numeroExt: String;
+    public colonia: string;
+    public cp: string;
     public msj = 'Realizando pedido';
     public numeroMesa: number;
     private pedido: PedidoNegocioModel;
     public content: string;
     public heading: string;
     public address: string;
+    public locaAux: any;
     public pagos: Array<IPago>;
     public idTipoDePago: number;
-
+    public IdEstado: any;
+    public IdMunicipio: any;
+    public IdLocalidad: any;
+    primeraVez: boolean;
+    public select_municipio: boolean;
+    public list_cat_localidad: Array <CatLocalidadModel> ;
+    public list_cat_estado: Array <CatEstadoModel> ;
+    public list_cat_municipio: Array <CatMunicipioModel> ;
+    public muniAux: any;
+    public blnBuscadoLocalidades: boolean;
+    negocioTO: any;
     constructor(
         private utilsCls: UtilsCls,
         private modalController: ModalController,
@@ -65,7 +90,9 @@ export class PedidoNegocioComponent implements OnInit {
         public alertController: AlertController,
         private platform: Platform,
         private guard: AuthGuardService,
+        private _general_service: GeneralServicesService,
         /* private geolocation: Geolocation, */
+        private _utils_cls: UtilsCls,
         public getCoordinatesMap: UbicacionMapa,
     ) {
         this.lat = 19.31905;
@@ -77,10 +104,13 @@ export class PedidoNegocioComponent implements OnInit {
             this.loader = false;
         });
         this.idTipoDePago = PedidoNegocioComponent.TIPO_DE_PAGO_INVALIDO;
-        
-        
-      
-    
+        this.list_cat_estado = [];
+        this.btnEstado = false;
+        this.calle = "";
+        this.numeroInt = "";
+        this.numeroExt = "";
+        this.colonia = "";
+        this.cp = "";
     }
 
     ngOnInit() {
@@ -90,7 +120,7 @@ export class PedidoNegocioComponent implements OnInit {
         } else {
             this.tipoEnvio = null;
         }
-
+        this.primeraVez = true;
         this.loadMap();
         this.sumarLista();
         this.cargarTipoDePagos();
@@ -106,7 +136,7 @@ export class PedidoNegocioComponent implements OnInit {
         }, error=>{
             this.pagos = new Array<IPago>();
         });
-        
+        this.load_cat_estados();
     }
     contienTipoDePagos(){
         return this.pagos.length > 0;
@@ -153,14 +183,92 @@ export class PedidoNegocioComponent implements OnInit {
             this.guard.tf = true;
         }
     }
+    private load_cat_estados() {
+        this._general_service.getEstadosWS().subscribe(
+            response => {
+                if (this._utils_cls.is_success_response(response.code)) {
+                    this.list_cat_estado = response.data.list_cat_estado;
 
+                }
+            },
+            error => {
+                this.mesajes.error(error);
+            }
+        );
+    }
+    public get_list_cat_municipio(event) {
+        let idE;
+
+        if (event !== undefined) {
+
+            if (!this.primeraVez) {
+                this.btnEstado = false;
+                this.list_cat_municipio = [];
+                this.proveedorTO.det_domicilio.id_municipio = undefined;
+                this.proveedorTO.det_domicilio.id_localidad = undefined;
+            }
+            if (event.type === 'ionChange') {
+                idE = event.detail.value.id_estado;
+            } else {
+                idE = event.value.id_estado;
+            }
+            this.btnEstado = false;
+            this._general_service.getMunicipiosAll(idE).subscribe(
+                response => {
+                    if (this._utils_cls.is_success_response(response.code)) {
+                        this.list_cat_municipio = response.data.list_cat_municipio;
+                        this.btnEstado = true;
+                    }
+                },
+                error => {
+                    this.mesajes.error(error);
+
+                }
+            );
+        } else {
+            this.btnEstado = false;
+
+            this.list_cat_municipio = [];
+            this.proveedorTO.det_domicilio.id_municipio = undefined;
+            this.proveedorTO.det_domicilio.id_localidad = undefined;
+        }
+    }
+    public get_list_cat_localidad(event, reset: boolean = false) {
+        let id;
+        if (event !== undefined) {
+            if (!this.primeraVez) {
+
+                this.list_cat_localidad = [];
+            }
+            if (event.type === 'ionChange') {
+                id = event.detail.value.id_municipio;
+            } else {
+                id = event.value.id_municipio;
+            }
+            this._general_service.getLocalidadAll(id).subscribe(
+                response => {
+                    if (this._utils_cls.is_success_response(response.code)) {
+                        this.list_cat_localidad = response.data.list_cat_localidad;
+                        this.primeraVez = false;
+                    }
+                },
+                error => {
+                    this.mesajes.error(error);
+                    this.primeraVez = false;
+                }
+            );
+        } else {
+
+            this.list_cat_localidad = [];
+        }
+    }
     public geocodeLatLng() {
         const geocoder = new google.maps.Geocoder;
         let latlong = {
             lat: parseFloat(String(this.lat)),
             lng: parseFloat(String(this.lng))
         };
-        
+
         geocoder.geocode({ location: latlong }, (results, status) => {
             if (status === 'OK') {
                 if (results[0]) {
@@ -171,7 +279,28 @@ export class PedidoNegocioComponent implements OnInit {
             }
         });
     }
+    public geocodeLatLng2() {
+        const geocoder = new google.maps.Geocoder;
+        let latlong = {
+            lat: parseFloat(String(this.lat)),
+            lng: parseFloat(String(this.lng))
+        };
 
+        geocoder.geocode({
+            location: latlong
+        }, (results, status) => {
+            if (status === 'OK') {
+                if (results[0]) {
+                    this.estasUbicacion = results[0].formatted_address;
+                    let direccion=[... this.estasUbicacion ][0];
+                    let limitecalle= direccion.indexOf(',');
+                //    this.calle =  direccion.substring(0,  limitecalle+1);
+                //    console.log("Bere por aqui "+   this.calle.substring(  this.calle.indexOf(' '),this.calle.length));
+                //    this.numeroExt = this.calle.substring(  this.calle.indexOf(' '),this.calle.length);
+                } else {}
+            } else {}
+        });
+    }
     private enviarSms(telephone: number, idNegocio: number) {
         this.negocioService.enviarMensajePedido(telephone, idNegocio).subscribe(
             respuesta => {
@@ -400,21 +529,42 @@ export class PedidoNegocioComponent implements OnInit {
         
     }
 
-      async getCoordinates(){
+    async getCoordinates() {
+        this.address = "";
+        if (this.calle != "") {
+            this.address += this.calle + ", ";
+        }
+        if (this.numeroExt != "") {
+            this.address += this.numeroExt + ", ";
+        }
+        if (this.colonia != "") {
+            this.address += this.colonia + ", ";
+        }
+        if (this.IdLocalidad != "") {
+            this.address += this.IdLocalidad + ", ";
+        }
+        if (this.cp != "") {
+            this.address += this.cp + ", ";
+        }
+        if (this.IdMunicipio.nombre != "") {
+            this.address += this.IdMunicipio.nombre + ", ";
+        }
+        if (this.IdEstado.nombre != "") {
+            this.address += this.IdEstado.nombre + ", México";
+        }
         this.getCoordinatesMap.getPosts(this.address)
-        .then(async data => {
-            let arrayPosts:any = data;
-            let latitud = arrayPosts.results[0].geometry.location.lat;
-            let longitud = arrayPosts.results[0].geometry.location.lng;
+            .then(async data => {
+                let arrayPosts: any = data;
+                let latitud = arrayPosts.results[0].geometry.location.lat;
+                let longitud = arrayPosts.results[0].geometry.location.lng;
 
-            this.lat = latitud;
-            this.lng = longitud;
-            this.map.panTo([latitud, longitud]);
-            this.marker.setLatLng([latitud, longitud]);
-            this.geocodeLatLng();
+                this.lat = latitud;
+                this.lng = longitud;
+                this.map.panTo([latitud, longitud]);
+                this.marker.setLatLng([latitud, longitud]);
+                this.geocodeLatLng2();
             }).catch((error) => {
-                this.mesajes.error("Ocurrió un error al consultar la dirección, intente de nuevo más tarde");
-                })
-            
+                this.mesajes.error("Ocurrió un error al consultar la dirección, intente de nuevo más tarde ");
+        })
     }
 }
