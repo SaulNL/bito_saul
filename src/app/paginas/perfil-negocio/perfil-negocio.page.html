@@ -102,7 +102,7 @@
                     >
                       <ion-label>Cerrado</ion-label>
                     </ion-chip>
-                    <ion-label (click)="mostrarOcultar()"
+                    <ion-label (click)="mostrarOcultar()" style="font-size: 11px"
                       >{{ estatus.mensaje}}</ion-label
                     >
                     <ion-icon
@@ -126,7 +126,7 @@
                         <ion-grid>
                           <ion-row>
                             <ion-col>
-                              <p [ngClass]="{'negritas':dia.id === hoy}">
+                              <p [ngClass]="{'negritas':dia.id === hoy}" style="font-size: 11px">
                                 {{ dia.dia }}
                               </p>
                             </ion-col>
@@ -134,7 +134,7 @@
                               <span *ngFor="let h of dia.horarios ">
                                 <p
                                   style="
-                                    font-size: 15px;
+                                    font-size: 11px;
                                     font-weight: bold;
                                     margin-bottom: 2%;
                                   "

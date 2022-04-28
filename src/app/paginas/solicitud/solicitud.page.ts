@@ -13,6 +13,7 @@ import { ModalController, Platform } from "@ionic/angular";
 import { Router } from "@angular/router";
 import { UbicacionModel } from "../../Modelos/UbicacionModel";
 import { UbicacionActualModel } from "../../Modelos/UbicacionActualModel";
+import { ModalLoguearseComponent } from 'src/app/componentes/modal-loguearse/modal-loguearse.component';
 
 @Component({
   selector: "app-solicitud",
@@ -44,6 +45,8 @@ export class SolicitudPage implements OnInit {
   public plazaAfiliacion: AfiliacionPlazaModel;
   public isIos: boolean;
   public fuenteExclusiva:String;
+  private modal: any;
+  public existeSesion: boolean;
   obj: any;
   constructor(
     private filtrosService: FiltrosService,
@@ -56,6 +59,7 @@ export class SolicitudPage implements OnInit {
     private platform: Platform
   ) {
     this.isIos = this.platform.is("ios");
+    this.existeSesion = _utils_cls.existe_sesion();
   }
 
   ngOnInit() {
@@ -80,6 +84,7 @@ export class SolicitudPage implements OnInit {
     this.productoDefault = AppSettings.IMG_ERROR_PRODUCTO;
     this.obtenerSolicitudes();
     this.mostrarSolicitud = this._utils_cls.existe_sesion();
+    this.mostrarLoguearse();
   }
 
   buscarToolbar(respuesta) {
@@ -249,6 +254,27 @@ export class SolicitudPage implements OnInit {
         (error) => {}
       );
   }
+
+  public mostrarLoguearse(){
+    if (this.existeSesion) {
+    }else{
+        if(this.plazaAfiliacion != null){
+            
+        }else{
+            this.presentModalLoguearse();
+        }
+    }
+  }
+
+  async presentModalLoguearse() {
+    this.modal = await this.modalController.create({
+      component: ModalLoguearseComponent,
+      backdropDismiss: false,
+      cssClass: "custom-modal-loguearse"
+    });
+
+    return await this.modal.present();
+}
   ngAfterViewInit(){
     this.nombrePlazas();
   }

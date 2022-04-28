@@ -256,7 +256,7 @@ export class PerfilNegocioPage implements OnInit {
       tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "",
       }).addTo(this.map);
-      this.map.on("click", (respuesta) => {
+      this.map.on("", (respuesta) => {
         this.getLatLong(respuesta);
       });
       const myIcon = icon({
