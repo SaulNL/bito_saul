@@ -18,6 +18,7 @@ import { GeneralServicesService } from 'src/app/api/general-services.service';
 import { CatMunicipioModel } from 'src/app/Modelos/CatMunicipioModel';
 import { MsPersonaModel } from 'src/app/Modelos/MsPersonaModel';
 import { CatLocalidadModel } from 'src/app/Modelos/CatLocalidadModel';
+import { PersonaService } from '../../api/persona.service';
 
 const { Geolocation } = Plugins;
 declare var google: any;
@@ -81,6 +82,7 @@ export class PedidoNegocioComponent implements OnInit {
     public list_cat_municipio: Array <CatMunicipioModel> ;
     public muniAux: any;
     public blnBuscadoLocalidades: boolean;
+    public direccionUser: any;
     negocioTO: any;
     constructor(
         private utilsCls: UtilsCls,
@@ -90,6 +92,7 @@ export class PedidoNegocioComponent implements OnInit {
         public alertController: AlertController,
         private platform: Platform,
         private guard: AuthGuardService,
+        private servicioPersona: PersonaService,
         private _general_service: GeneralServicesService,
         /* private geolocation: Geolocation, */
         private _utils_cls: UtilsCls,
@@ -114,6 +117,7 @@ export class PedidoNegocioComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.ObtenerDireccionPersonal();
         this.validarCosto();
         if (this._entregaDomicilio === 1) {
             this.tipoEnvio = 2;
@@ -183,12 +187,37 @@ export class PedidoNegocioComponent implements OnInit {
             this.guard.tf = true;
         }
     }
+
+    ObtenerDireccionPersonal() {
+        const id = this.utilsCls.getIdPersona();
+        this.servicioPersona.datosUsuario(id).subscribe(
+            respuesta => {
+                var dato = respuesta.data.persona.domicilio;
+                this.direccionUser = respuesta.data.persona.domicilio;
+                this.calle = dato.calle;
+                this.numeroInt = dato.numero_int == null ? "" : dato.numero_int;
+                this.numeroExt = dato.numero_ext == null ? "" : dato.numero_ext;
+                this.colonia = dato.colonia;
+                this.cp = dato.codigo_postal;
+                this.load_cat_estados();
+            },
+            error => {
+                console.log(error);
+            }
+        );
+    }
+    
     private load_cat_estados() {
         this._general_service.getEstadosWS().subscribe(
             response => {
                 if (this._utils_cls.is_success_response(response.code)) {
                     this.list_cat_estado = response.data.list_cat_estado;
-
+                    this.list_cat_estado.forEach(element => {
+                        if (element.id_estado === this.direccionUser.id_estado) {
+                            this.IdEstado = element;
+                            this.get_list_cat_municipio_personal(element);
+                        }
+                    });
                 }
             },
             error => {
@@ -227,7 +256,39 @@ export class PedidoNegocioComponent implements OnInit {
             );
         } else {
             this.btnEstado = false;
-
+            this.list_cat_municipio = [];
+            this.proveedorTO.det_domicilio.id_municipio = undefined;
+            this.proveedorTO.det_domicilio.id_localidad = undefined;
+        }
+    }
+    public get_list_cat_municipio_personal(event) {
+        if (event !== undefined) {
+            if (!this.primeraVez) {
+                this.btnEstado = false;
+                this.list_cat_municipio = [];
+                this.proveedorTO.det_domicilio.id_municipio = undefined;
+                this.proveedorTO.det_domicilio.id_localidad = undefined;
+            }
+            this.btnEstado = false;
+            this._general_service.getMunicipiosAll(event.id_estado).subscribe(
+                response => {
+                    if (this._utils_cls.is_success_response(response.code)) {
+                        this.list_cat_municipio = response.data.list_cat_municipio;
+                        this.list_cat_municipio.forEach(element2 => {
+                            if (element2.id_municipio === this.direccionUser.id_municipio) {
+                                this.IdMunicipio = element2;
+                                this.get_list_cat_localidad_personal(element2);
+                            }
+                        });
+                        this.btnEstado = true;
+                    }
+                },
+                error => {
+                    this.mesajes.error(error);
+                }
+            );
+        } else {
+            this.btnEstado = false;
             this.list_cat_municipio = [];
             this.proveedorTO.det_domicilio.id_municipio = undefined;
             this.proveedorTO.det_domicilio.id_localidad = undefined;
@@ -262,6 +323,27 @@ export class PedidoNegocioComponent implements OnInit {
             this.list_cat_localidad = [];
         }
     }
+
+    public get_list_cat_localidad_personal(event, reset: boolean = false) {
+        this._general_service.getLocalidadAll(event.id_municipio).subscribe(
+            response => {
+                if (this._utils_cls.is_success_response(response.code)) {
+                    this.list_cat_localidad = response.data.list_cat_localidad;
+                    this.primeraVez = false;
+                    this.list_cat_localidad.forEach(element => {
+                        if (element.id_localidad === this.direccionUser.id_localidad) {
+                            this.IdLocalidad = element.nombre;
+                        }
+                    });
+                }
+            },
+            error => {
+                this.mesajes.error(error);
+                this.primeraVez = false;
+            }
+        );
+    }
+
     public geocodeLatLng() {
         const geocoder = new google.maps.Geocoder;
         let latlong = {
@@ -292,11 +374,6 @@ export class PedidoNegocioComponent implements OnInit {
             if (status === 'OK') {
                 if (results[0]) {
                     this.estasUbicacion = results[0].formatted_address;
-                    let direccion=[... this.estasUbicacion ][0];
-                    let limitecalle= direccion.indexOf(',');
-                //    this.calle =  direccion.substring(0,  limitecalle+1);
-                //    console.log("Bere por aqui "+   this.calle.substring(  this.calle.indexOf(' '),this.calle.length));
-                //    this.numeroExt = this.calle.substring(  this.calle.indexOf(' '),this.calle.length);
                 } else {}
             } else {}
         });
