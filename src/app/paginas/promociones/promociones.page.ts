@@ -201,18 +201,34 @@ export class PromocionesPage implements OnInit {
             if(this.plazaAfiliacion != null){
                 
             }else{
-                this.presentModalLoguearse();
+                setTimeout(() =>{
+                    this. mensajeRegistro();
+                  },100)
             }
         }
     }
  
-    async presentModalLoguearse() {
-        this.modal = await this.modalController.create({
-          component: ModalLoguearseComponent,
-          backdropDismiss: false,
-          cssClass: "custom-modal-loguearse"
+    async mensajeRegistro() {
+        const alert = await this.alertController.create({
+          header: 'Bitoo!',
+          message: "¿Ya tienes una cuenta?",
+            buttons: [
+                {
+                    text: "Iniciar sesión",
+                    cssClass: 'text-grey',
+                    handler: () => {
+                        this.router.navigate(['/tabs/login']);
+                    }
+                },
+                {
+                    text: "Registrate",
+                    cssClass: 'text-rosa',
+                    handler: () => {
+                        this.router.navigate(["/tabs/login/sign-up"]);
+                    },
+                },
+            ],
         });
-    
-        return await this.modal.present();
-    }
+        await alert.present();
+      }
 }

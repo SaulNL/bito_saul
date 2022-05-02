@@ -9,7 +9,7 @@ import { SolicitudesModel } from "../../Modelos/SolicitudesModel";
 import { AppSettings } from "../../AppSettings";
 import { UtilsCls } from "../../utils/UtilsCls";
 import { ModalInfoSolicitudComponent } from "../../componentes/modal-info-solicitud/modal-info-solicitud.component";
-import { ModalController, Platform } from "@ionic/angular";
+import { AlertController, ModalController, Platform } from "@ionic/angular";
 import { Router } from "@angular/router";
 import { UbicacionModel } from "../../Modelos/UbicacionModel";
 import { UbicacionActualModel } from "../../Modelos/UbicacionActualModel";
@@ -56,7 +56,8 @@ export class SolicitudPage implements OnInit {
     private _utils_cls: UtilsCls,
     public modalController: ModalController,
     private _router: Router,
-    private platform: Platform
+    private platform: Platform,
+    public alertController: AlertController
   ) {
     this.isIos = this.platform.is("ios");
     this.existeSesion = _utils_cls.existe_sesion();
@@ -261,20 +262,36 @@ export class SolicitudPage implements OnInit {
         if(this.plazaAfiliacion != null){
             
         }else{
-            this.presentModalLoguearse();
+          setTimeout(() =>{
+            this. mensajeRegistro();
+          },100)
         }
     }
   }
 
-  async presentModalLoguearse() {
-    this.modal = await this.modalController.create({
-      component: ModalLoguearseComponent,
-      backdropDismiss: false,
-      cssClass: "custom-modal-loguearse"
+  async mensajeRegistro() {
+    const alert = await this.alertController.create({
+      header: 'Bitoo!',
+      message: "¿Ya tienes una cuenta?",
+        buttons: [
+            {
+                text: "Iniciar sesión",
+                cssClass: 'text-grey',
+                handler: () => {
+                  this._router.navigate(['/tabs/login']);
+                }
+            },
+            {
+                text: "Registrate",
+                cssClass: 'text-rosa',
+                handler: () => {
+                    this._router.navigate(["/tabs/login/sign-up"]);
+                },
+            },
+        ],
     });
-
-    return await this.modal.present();
-}
+    await alert.present();
+  }
   ngAfterViewInit(){
     this.nombrePlazas();
   }
