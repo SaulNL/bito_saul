@@ -60,6 +60,10 @@ export class QuieroVenderPage implements OnInit {
   public formulario2: boolean;
   public finalizar: boolean;
   public loadion: any;
+  public direccionUser: any;
+  primeraVez: any;
+  btnEstado: boolean;
+
   constructor(
     private _formBuilder: FormBuilder,
     private _utils_cls: UtilsCls,
@@ -94,9 +98,9 @@ export class QuieroVenderPage implements OnInit {
   }
 
   ngOnInit() {
-
+    this.ObtenerDireccionPersonal();
     if (this.proveedorTO.det_domicilio.id_estado !== null && this.proveedorTO.det_domicilio.id_estado !== undefined) {
-      this.get_list_cat_municipio({ id_estado: this.proveedorTO.det_domicilio.id_estado });
+      this.get_list_cat_municipio({ id_estado: this.proveedorTO.det_domicilio.id_estado});
     }
     if (this.proveedorTO.det_domicilio.id_municipio !== null && this.proveedorTO.det_domicilio.id_municipio !== undefined) {
       this.get_list_cat_localidad({ id_municipio: this.proveedorTO.det_domicilio.id_municipio });
@@ -260,20 +264,45 @@ export class QuieroVenderPage implements OnInit {
     }
   }
 
+  ObtenerDireccionPersonal() {
+    const id = this._utils_cls.getIdPersona();
+    this.servicioPersona.datosUsuario(id).subscribe(
+        respuesta => {
+            var dato = respuesta.data.persona.domicilio;
+            this.direccionUser = respuesta.data.persona.domicilio;
+            this.proveedorTO.det_domicilio.calle = dato.calle;
+            this.proveedorTO.det_domicilio.numero_int = dato.numero_int == null ? "" : dato.numero_int;
+            this.proveedorTO.det_domicilio.numero_ext = dato.numero_ext == null ? "" : dato.numero_ext;
+            this.proveedorTO.det_domicilio.colonia= dato.colonia;
+            this.proveedorTO.det_domicilio.codigo_postal = dato.codigo_postal;
+            this.load_cat_estados();
+        },
+        error => {
+            console.log(error);
+        }
+    );
+}
+
   public get_list_cat_municipio(evento) {
     let idE;
-    if (evento.type === 'ionChange') {
+    if (evento.type == 'ionChange') {
       idE = evento.detail.value;
     } else {
       idE = evento.value;
     }
     if (idE > 0) {
       // this.loaderMunicipio = true;
-      this._general_service.getMunicipios(idE).subscribe(
+      this._general_service.getMunicipiosAll(idE).subscribe(
         response => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_municipio = response.data.list_cat_municipio;
             this.select_estado = true;
+            this.list_cat_municipio.forEach(element2 => {
+              if (element2.id_municipio === this.direccionUser.id_municipio) {
+                  this.proveedorTO.det_domicilio.id_municipio = element2.id_municipio;
+                  this.get_list_cat_localidad(element2);
+              }
+          });
             if (this.proveedorTO.det_domicilio.id_municipio > 0) {
               this.select_estado = true;
               this.get_list_cat_localidad({ value: this.proveedorTO.det_domicilio.id_municipio });
@@ -291,12 +320,49 @@ export class QuieroVenderPage implements OnInit {
       this.list_cat_municipio = [];
     }
   }
+  public get_list_cat_municipio2(evento) {
+      // this.loaderMunicipio = true;
+      this._general_service.getMunicipiosAll(evento).subscribe(
+        response => {
+          if (this._utils_cls.is_success_response(response.code)) {
+            this.list_cat_municipio = response.data.list_cat_municipio;
+            this.select_estado = true;
+            this.list_cat_municipio.forEach(element2 => {
+              if (element2.id_municipio === this.direccionUser.id_municipio) {
+                  this.proveedorTO.det_domicilio.id_municipio = element2.id_municipio;
+                  this.get_list_cat_localidad(element2);
+                 
+              }
+          });
+            if (this.proveedorTO.det_domicilio.id_municipio > 0) {
+              this.select_estado = true;
+              this.get_list_cat_localidad({ value: this.proveedorTO.det_domicilio.id_municipio });
+            }
+          }
+        },
+        error => {
+          this._notificacionService.error(error);
+        },
+        () => {
+          //  this.loaderMunicipio = false;
+        }
+      );
+
+  }
 
   private load_cat_estados() {
     this._general_service.getEstadosWS().subscribe(
       response => {
         if (this._utils_cls.is_success_response(response.code)) {
           this.list_cat_estado = response.data.list_cat_estado;
+          this.list_cat_estado.forEach(element => {
+            if (element.id_estado === this.direccionUser.id_estado) {
+                this.proveedorTO.det_domicilio.id_estado = element.id_estado;
+                
+                this.get_list_cat_municipio2(element.id_estado);
+            }
+        });
+        this.btnEstado = true;
         }
       },
       error => {
@@ -316,11 +382,15 @@ export class QuieroVenderPage implements OnInit {
     if (idE > 0) {
       // this.loaderLocalidad = true;
       this.select_municipio = true;
-      this._general_service.getLocalidad(idE).subscribe(
-        response => {
+      this._general_service.getLocalidadAll(idE).subscribe( response => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.select_municipio = true;
             this.list_cat_localidad = response.data.list_cat_localidad;
+            this.list_cat_localidad.forEach(element => {
+              if (element.id_localidad === this.direccionUser.id_localidad) {
+                  this.proveedorTO.det_domicilio.id_localidad = element.id_localidad;
+              }
+          });
           }
         },
         error => {
