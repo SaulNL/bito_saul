@@ -102,8 +102,8 @@
                     >
                       <ion-label>Cerrado</ion-label>
                     </ion-chip>
-                    <ion-label (click)="mostrarOcultar()"
-                      >{{ estatus.mensaje}}</ion-label
+                    <small (click)="mostrarOcultar()"
+                      >{{ estatus.mensaje}}</small
                     >
                     <ion-icon
                       (click)="mostrarOcultar()"
@@ -125,22 +125,16 @@
                       <ion-item *ngFor="let dia of diasArray">
                         <ion-grid>
                           <ion-row>
-                            <ion-col>
-                              <p [ngClass]="{'negritas':dia.id === hoy}">
+                            <ion-col class="ion-no-padding">
+                              <small [ngClass]="{'negritas':dia.id === hoy}">
                                 {{ dia.dia }}
-                              </p>
-                            </ion-col>
-                            <ion-col *ngIf="dia.horarios.length > 0">
+                              </small>
+                            </ion-col >
+                            <ion-col class="ion-no-padding" *ngIf="dia.horarios.length > 0">
                               <span *ngFor="let h of dia.horarios ">
-                                <p
-                                  style="
-                                    font-size: 15px;
-                                    font-weight: bold;
-                                    margin-bottom: 2%;
-                                  "
-                                >
+                                <small class="negritas">
                                   {{h.texto}}
-                                </p>
+                                </small>
                               </span>
                             </ion-col>
                             <ion-col
