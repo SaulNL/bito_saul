@@ -1,84 +1,161 @@
-<app-toolbar-busqueda [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar productos en ' + plazaAfiliacionNombre.nombre : 'Buscar productos' " (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
+<!-- <ion-toolbar class="tolbar">
+  <div style="display: flex">
+    <ion-buttons slot="start">
+      <ion-button class="blanco" (click)="verSolicitudes()">
+        <ion-icon name="list-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Productos</ion-title>
+    <app-toolbar-busqueda
+      [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar productos en ' + plazaAfiliacionNombre.nombre : 'Buscar productos' "
+      (buscarEmit)="buscarToolbar($event)"
+    ></app-toolbar-busqueda>
+  </div>
+</ion-toolbar> -->
+
+<app-toolbar-busqueda
+  [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar productos en ' + plazaAfiliacionNombre.nombre : 'Buscar productos' "
+  (buscarEmit)="buscarToolbar($event)" titulo="Productos"
+></app-toolbar-busqueda>
 
 <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
-<ion-content *ngIf="!loader" [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
-    <app-recargar (respuesta)="recargar($event)"></app-recargar>
-    <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
-    <app-boton-top [content]="content" [cordenada]="cordenada" [platform]="isIOS" *ngIf="!isIOS"></app-boton-top>
-    <ion-fab *ngIf="isIOS" horizontal="end" vertical="bottom" slot="fixed" class="btn-flotante" (click)="scrollToTop()">
-        <ion-fab-button class="bg-rosa" *ngIf="cordenada >= 100">
-            <ion-icon name="chevron-up-outline"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
-    <ion-header collapse="condense">
+<ion-content
+  *ngIf="!loader"
+  [fullscreen]="true"
+  [scrollEvents]="true"
+  (ionScroll)="cordenada = $event.detail.scrollTop"
+>
+  <app-recargar (respuesta)="recargar($event)"></app-recargar>
+  <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
+  <app-boton-top
+    [content]="content"
+    [cordenada]="cordenada"
+    [platform]="isIOS"
+    *ngIf="!isIOS"
+  ></app-boton-top>
+  <ion-fab
+    *ngIf="isIOS"
+    horizontal="end"
+    vertical="bottom"
+    slot="fixed"
+    class="btn-flotante"
+    (click)="scrollToTop()"
+  >
+    <ion-fab-button class="bg-rosa" *ngIf="cordenada >= 100">
+      <ion-icon name="chevron-up-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-header collapse="condense"> </ion-header>
 
-    </ion-header>
+  <ion-item>
+    <ion-buttons *ngIf=" filtroActivo" slot="end">
+      <ion-chip (click)="borrarFiltros()" color="danger">
+        <ion-icon name="trash-outline" color="danger"></ion-icon>
+        <ion-label>Borrar Filtros</ion-label>
+      </ion-chip>
+    </ion-buttons>
+    <ion-buttons *ngIf="!selectionAP">
+      <ion-button (click)="openPlazasAfiliacionesModal()">
+        Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span>
+        <ion-icon name="caret-down-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons *ngIf="selectionAP">
+      <ion-chip (click)="regresarBitoo()" color="danger">
+        <ion-icon name="log-out-outline"></ion-icon>
+        <ion-label>Regresar a bitoo</ion-label>
+      </ion-chip>
+    </ion-buttons>
+    <ion-buttons slot="end" *ngIf="!filtroActivo">
+      <ion-button (click)="abrirFiltros()"
+        >Filtros
+        <ion-icon name="filter-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-item>
 
-    <ion-item>
-        <ion-buttons *ngIf=" filtroActivo" slot="end">
-            <ion-chip (click)="borrarFiltros()" color="danger">
-                <ion-icon name="trash-outline" color="danger"></ion-icon>
-                <ion-label>Borrar Filtros</ion-label>
-            </ion-chip>
-        </ion-buttons>
-        <ion-buttons *ngIf="!selectionAP">
-            <ion-button (click)="openPlazasAfiliacionesModal()">
-                Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span>
-                <ion-icon name="caret-down-outline"></ion-icon>
-            </ion-button>
-            </ion-buttons>
-            <ion-buttons *ngIf="selectionAP">
-                <ion-chip (click)="regresarBitoo()" color="danger">
-                    <ion-icon name="log-out-outline"></ion-icon>
-                    <ion-label>Regresar a bitoo</ion-label>
-                </ion-chip>
-            </ion-buttons>
-        <ion-buttons slot="end" *ngIf="!filtroActivo">
-            <ion-button (click)="abrirFiltros()">Filtros
-                <ion-icon name="filter-outline"></ion-icon>
-            </ion-button>
-        </ion-buttons>
-    </ion-item>
-  
-
-    <div *ngIf="!this.abc" id="abcedario" class="scrolling-wrapper-flexbox">
-        <div class="item" *ngFor="let filtro of filtroABC">
-            <ion-button size="small" color="danger" (click)="obtenerProductoPorLetra(filtro)"
-                [ngClass]="{active:filtro.id === filtroCheckend}" *ngIf="filtro.activo">
-                {{filtro.letra}}
-            </ion-button>
-        </div>
+  <div *ngIf="!this.abc" id="abcedario" class="scrolling-wrapper-flexbox">
+    <div class="item" *ngFor="let filtro of filtroABC">
+      <ion-button
+        size="small"
+        color="danger"
+        (click)="obtenerProductoPorLetra(filtro)"
+        [ngClass]="{active:filtro.id === filtroCheckend}"
+        *ngIf="filtro.activo"
+      >
+        {{filtro.letra}}
+      </ion-button>
     </div>
-    <div  *ngIf="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined" style="background-color: #3c3c3c; color: white; font-size: small;" class="ion-text-center">
-        <p style="padding-inline: 5%;">ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA <img style="width: 25px; margin-top: 2%;" src="{{plazaAfiliacionNombre.icon}}">  {{plazaAfiliacionNombre.nombre}}</p>
-      </div>
+  </div>
+  <div
+    *ngIf="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined"
+    style="background-color: #3c3c3c; color: white; font-size: small"
+    class="ion-text-center"
+  >
+    <p style="padding-inline: 5%">
+      ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA
+      <img
+        style="width: 25px; margin-top: 2%"
+        src="{{plazaAfiliacionNombre.icon}}"
+      />
+      {{plazaAfiliacionNombre.nombre}}
+    </p>
+  </div>
 
-    <ion-list>
-        <ion-item *ngFor="let producto of lstProductos" class="item  in-list ion-focusable hydrated item-label">
-            <ion-avatar #datos (click)="abrirProducto(producto)" slot="start"><img
-                    src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
-                    [srcset]="productoImagen(producto.imagen)"></ion-avatar>
-            <ion-label class="hydrated" #datos (click)="abrirProducto(producto)">
-                <h3>{{producto.nombre}}</h3>
-                <p> {{(producto.nombre_categoria1 != null)?producto.nombre_categoria1:'Sin categoría'}} </p>
-                <p color="success">${{(producto.precio != '')?((producto.precio != null)?producto.precio:'Sin precio'):'Sin precio'}}</p>
-                <p>{{(producto.descripcion != null)?producto.descripcion:'Sin descripción'}}</p>
-                <ion-badge color="primary">{{producto.tipo}}</ion-badge>
-                <ion-badge color="medium">{{(producto.ubicacion != null)?producto.ubicacion.nombre_localidad:'Sin ubicación'}}
-                </ion-badge>
-            </ion-label>
-            <app-dar-like-producto [producto]="producto" [usuario]="user" [mostrarLike]="existeSesion"></app-dar-like-producto>
-        </ion-item>
-    </ion-list>
-    <ion-grid *ngIf="lstProductos.length === 0 && selectionAP === true">
-        <ion-text color="primary">
-            <h2>No se encontraron productos relacionados en {{plazaAfiliacionNombre.nombre}}</h2>
-        </ion-text>
-    </ion-grid>
-    <ion-grid *ngIf="lstProductos.length === 0 && selectionAP === false">
-        <ion-text color="primary">
-            <h2>No se encontraron productos relacionados</h2>
-        </ion-text>
-    </ion-grid>
-    <app-infinito-scroll (respuesta)="cargarMasProductos($event)" [activado]="scroll" [msj]="mensaje"> </app-infinito-scroll>
+  <ion-list>
+    <ion-item
+      *ngFor="let producto of lstProductos"
+      class="item in-list ion-focusable hydrated item-label"
+    >
+      <ion-avatar #datos (click)="abrirProducto(producto)" slot="start"
+        ><img
+          src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+          [srcset]="productoImagen(producto.imagen)"
+      /></ion-avatar>
+      <ion-label class="hydrated" #datos (click)="abrirProducto(producto)">
+        <h3>{{producto.nombre}}</h3>
+        <p>
+          {{(producto.nombre_categoria1 != null)?producto.nombre_categoria1:'Sin
+          categoría'}}
+        </p>
+        <p color="success">
+          ${{(producto.precio != '')?((producto.precio !=
+          null)?producto.precio:'Sin precio'):'Sin precio'}}
+        </p>
+        <p>
+          {{(producto.descripcion != null)?producto.descripcion:'Sin
+          descripción'}}
+        </p>
+        <ion-badge color="primary">{{producto.tipo}}</ion-badge>
+        <ion-badge color="medium"
+          >{{(producto.ubicacion !=
+          null)?producto.ubicacion.nombre_localidad:'Sin ubicación'}}
+        </ion-badge>
+      </ion-label>
+      <app-dar-like-producto
+        [producto]="producto"
+        [usuario]="user"
+        [mostrarLike]="existeSesion"
+      ></app-dar-like-producto>
+    </ion-item>
+  </ion-list>
+  <ion-grid *ngIf="lstProductos.length === 0 && selectionAP === true">
+    <ion-text color="primary">
+      <h2>
+        No se encontraron productos relacionados en
+        {{plazaAfiliacionNombre.nombre}}
+      </h2>
+    </ion-text>
+  </ion-grid>
+  <ion-grid *ngIf="lstProductos.length === 0 && selectionAP === false">
+    <ion-text color="primary">
+      <h2>No se encontraron productos relacionados</h2>
+    </ion-text>
+  </ion-grid>
+  <app-infinito-scroll
+    (respuesta)="cargarMasProductos($event)"
+    [activado]="scroll"
+    [msj]="mensaje"
+  >
+  </app-infinito-scroll>
 </ion-content>

@@ -51,7 +51,7 @@
                 <small *ngIf="pedido.id_tipo_pedido === 2" class="d-block">Dirección:
                   {{pedido.direccion.direccion}}</small>
               </div>
-              <ion-button expand="full" (click)="shareSocial()" color="primary">
+              <ion-button expand="full" (click)="shareSocial()" color="primary" *ngIf="pedido.id_tipo_pedido === 2">
                 <ion-icon name="share-social-outline"></ion-icon> Compartir dirección
                 </ion-button>
             </div>

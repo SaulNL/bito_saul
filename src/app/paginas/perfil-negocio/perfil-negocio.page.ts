@@ -256,7 +256,7 @@ export class PerfilNegocioPage implements OnInit {
       tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "",
       }).addTo(this.map);
-      this.map.on("click", (respuesta) => {
+      this.map.on("", (respuesta) => {
         this.getLatLong(respuesta);
       });
       const myIcon = icon({
@@ -265,7 +265,7 @@ export class PerfilNegocioPage implements OnInit {
         iconSize: [45, 41],
         iconAnchor: [13, 41],
       });
-      this.marker = marker([lat, lng], { icon: myIcon, draggable: true }).addTo(
+      this.marker = marker([lat, lng], { icon: myIcon, draggable: false }).addTo(
         this.map
       );
       /* this.marker.on("dragend", () => {
@@ -543,11 +543,11 @@ console.log("resp",response)
         Capacitor.convertFileSrc(ruta);
         window.location.href = ruta; */
     /*  window.open(ruta,"_self"); */
-    /*  window.open(
-            ruta,
-            "_blank",
-            "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400"
-        ); */
+    window.open(
+      ruta,
+      "_blank",
+      "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=400,height=400"
+    );
   }
 
   async presentActionSheet() {

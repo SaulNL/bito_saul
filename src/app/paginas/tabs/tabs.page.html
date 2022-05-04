@@ -1,123 +1,50 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom">
-    <ion-tab-button
-      class="tab-button-principal"
-      (click)="inicio()"
-      tab="inicio"
-      style="--color-selected: #fa4f72"
-    >
-      <img
-        *ngIf="activedPage === 'inicio'"
-        style="margin-top: -20px"
-        width="25px"
-        src="../../../assets/images/inicio.png"
-      />
-      <img
-        *ngIf="activedPage !== 'inicio'"
-        style="margin-top: 0px"
-        width="30px"
-        src="../../../assets/images/inicio.png"
-      />
-      <ion-label *ngIf="activedPage === 'inicio'">Negocios</ion-label>
+    
+    <ion-tab-button class="tab-button-principal" (click)="inicio()" tab="inicio" style="--color-selected: #fa4f72">
+      <ion-icon *ngIf="activedPage === 'inicio'" src="../../../assets/icons/IconosTabs/Home.svg"></ion-icon>
+      <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'inicio'" src="../../../assets/icons/IconosTabs/Home.svg"></ion-icon>
+      <ion-label></ion-label>
+      <ion-label *ngIf="activedPage === 'inicio'">Negocios </ion-label>
     </ion-tab-button>
 
-    <ion-tab-button
-      class="tab-button-principal"
-      (click)="productos()"
-      tab="productos"
-      style="--color-selected: #fa4f72"
-    >
-      <img
-        *ngIf="activedPage === 'productos'"
-        style="margin-top: -20px"
-        width="25px"
-        src="../../../assets/images/Productos.png"
-      />
-      <img
-        *ngIf="activedPage !== 'productos'"
-        style="margin-top: 0px"
-        width="25px"
-        src="../../../assets/images/Productos.png"
-      />
+    <ion-tab-button class="tab-button-principal" (click)="productos()" tab="productos" style="--color-selected: #fa4f72">
+      <ion-icon *ngIf="activedPage === 'productos'" src="../../../assets/icons/IconosTabs/Productos.svg"></ion-icon>
+      <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'productos'" src="../../../assets/icons/IconosTabs/Productos.svg"></ion-icon>
+      <ion-label></ion-label>
       <ion-label *ngIf="activedPage === 'productos'">Productos</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button
-      class="tab-button-principal"
-      (click)="promociones()"
-      tab="promociones"
-      style="--color-selected: #fa4f72"
-    >
-      <img
-        *ngIf="activedPage === 'promociones'"
-        style="margin-top: -20px"
-        width="25px"
-        src="../../../assets/images/promociones.png"
-      />
-      <img
-        *ngIf="activedPage !== 'promociones'"
-        style="margin-top: 0px"
-        width="35px"
-        src="../../../assets/images/promociones.png"
-      />
+    <ion-tab-button class="tab-button-principal" (click)="promociones()" tab="promociones" style="--color-selected: #fa4f72">
+      <ion-icon *ngIf="activedPage === 'promociones'" src="../../../assets/icons/IconosTabs/Ofertas.svg"></ion-icon>
+      <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'promociones'" src="../../../assets/icons/IconosTabs/Ofertas.svg"></ion-icon>
       <ion-label *ngIf="activedPage === 'promociones'">Promociones</ion-label>
     </ion-tab-button>
 
-    <!--   <ion-tab-button
-      *ngIf="usuario !== null"
-      tab="mis-favoritos"
-      class="tab-button-principal"
-      (click)="solicitudes()"
-      style="--color-selected: #fa4f72"
-    >
-   
-      
-      <ion-label *ngIf="activedPage === 'favoritos'">Favoritos</ion-label>
-    </ion-tab-button> -->
-
-    <ion-tab-button
-      *ngIf="usuario !== null"
-      tab="solicitudes"
-      class="tab-button-principal"
-      (click)="requerimientos()"
-      style="--color-selected: #fa4f72"
-    >
-      <img
-        *ngIf="activedPage === 'requerimientos'"
-        style="margin-top: -20px"
-        width="25px"
-        src="../../../assets/images/requerimientos.png"
-      />
-      <img
-        *ngIf="activedPage !== 'requerimientos'"
-        style="margin-top: 0px"
-        width="25px"
-        src="../../../assets/images/requerimientos.png"
-      />
-
-      <ion-label *ngIf="activedPage === 'requerimientos'"
-        >Requerimientos</ion-label
-      >
+    <ion-tab-button tab="requerimientos" class="tab-button-principal" (click)="requerimientos()" style="--color-selected: #fa4f72">
+      <ion-icon *ngIf="activedPage === 'requerimientos'" src="../../../assets/icons/IconosTabs/Requerimientos.svg">
+      </ion-icon>
+      <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'requerimientos'" src="../../../assets/icons/IconosTabs/Requerimientos.svg"></ion-icon>
+      <ion-label></ion-label>
+      <ion-label *ngIf="activedPage === 'requerimientos'">Requerimientos</ion-label>
     </ion-tab-button>
-    <ion-tab-button
-      *ngIf="usuario === null"
-      (click)="login()"
-      style="--color-selected: #fa4f72"
-    >
-      <img
-        *ngIf="activedPage === 'perfil'"
-        style="margin-top: -20px"
-        width="25px"
-        src="../../../assets/images/iniciar-sesion.png"
-      />
-      <img
-        *ngIf="activedPage !== 'perfil'"
-        style="margin-top: 0px"
-        width="27px"
-        src="../../../assets/images/iniciar-sesion.png"
-      />
+
+    <ion-tab-button *ngIf="usuario !== null" tab="mis-favoritos" class="tab-button-principal" (click)="solicitudes()" style="--color-selected: #fa4f72">
+      <ion-icon *ngIf="activedPage === 'favoritos'" src="../../../assets/icons/IconosTabs/Favoritos.svg"></ion-icon>
+      <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'favoritos'" src="../../../assets/icons/IconosTabs/Favoritos.svg"></ion-icon>
+      <ion-label></ion-label>
+      <ion-label *ngIf="activedPage === 'favoritos'">Favoritos</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button *ngIf="usuario === null" class="tab-button-principal" (click)="login()"
+      style="--color-selected: #fa4f72" tab="login">
+      <ion-icon *ngIf="activedPage === 'perfil'" src="../../../assets/icons/IconosTabs/Perfil.svg"></ion-icon>
+      <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'perfil'"
+        src="../../../assets/icons/IconosTabs/Perfil.svg"></ion-icon>
+      <ion-label></ion-label>
       <ion-label *ngIf="activedPage === 'perfil'">Usuario</ion-label>
     </ion-tab-button>
+
     <ion-tab-button *ngIf="usuario !== null" (click)="perfil()">
       <ion-avatar>
         <img

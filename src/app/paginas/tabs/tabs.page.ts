@@ -33,10 +33,17 @@ export class TabsPage implements OnInit {
       this.usuario = this.auth0.getUserData();
     });
     this.usuario = this.util.getData();
-
-    this.activedPage = localStorage.getItem("activedPage");
-
-    /* localStorage.removeItem('activedPage') */
+    let pagina = localStorage.getItem('activedPage');
+     if(pagina==='promociones'){
+      this.activedPage = localStorage.getItem("activedPage");
+     }
+     if(pagina==='productos'){
+      this.activedPage = localStorage.getItem("activedPage");
+     }
+     if(pagina==='perfil'){
+      this.activedPage = localStorage.getItem("activedPage");
+     }
+     localStorage.removeItem('activedPage');
   }
 
   inicio() {
@@ -82,7 +89,7 @@ export class TabsPage implements OnInit {
   requerimientos() {
     localStorage.removeItem("activedPage");
     localStorage.removeItem("byCategorias");
-    this.router.navigate(["/tabs/home/solicitudes"]);
+    this.router.navigate(["/tabs/home/solicitud"]);
     localStorage.setItem("activedPage", "requerimientos");
     this.activedPage = localStorage.getItem("activedPage");
   }

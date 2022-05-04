@@ -15,29 +15,29 @@
 <app-spinner [loader]="loader" [message]="msj"></app-spinner>
 <ion-content *ngIf="!loader">
   <ion-list *ngIf="tipoEnvio !== undefined">
-    <ion-list *ngIf="_entregaDomicilio === 1 && _entregaSitio === 1 && _consumoSitio === 1 && tipoEnvio !== null">
-      <ion-radio-group [(ngModel)]="tipoEnvio">
+      <ion-radio-group  [(ngModel)]="tipoEnvio" (ionChange)="cambiarTipo($event)" [value]="tipoEnvio">
         <ion-list-header>
           <ion-label>Tipo de entrega</ion-label>
         </ion-list-header>
     
-        <ion-item>
+        <ion-item *ngIf="_entregaDomicilio === 1">
           <ion-label>Envio a domicilio</ion-label>
           <ion-radio slot="end" [value]="2"></ion-radio>
         </ion-item>
     
-        <ion-item>
+        <ion-item *ngIf="_entregaSitio === 1">
           <ion-label>Recoger en sucursal</ion-label>
           <ion-radio slot="end" [value]="3"></ion-radio>
         </ion-item>
     
-        <ion-item>
+        <ion-item   *ngIf="_consumoSitio === 1">
           <ion-label>Consumo en sitio</ion-label>
           <ion-radio slot="end" [value]="1"></ion-radio>
         </ion-item>
       </ion-radio-group>
     </ion-list>
-    <ion-radio-group *ngIf="_entregaDomicilio !== 1"  (ionChange)="cambiarTipo($event)" [value]="tipoEnvio">
+
+    <!-- <ion-radio-group *ngIf="_entregaDomicilio !== 1"  (ionChange)="cambiarTipo($event)" [value]="tipoEnvio">
      
       <ion-list-header>
         <ion-label>
@@ -59,7 +59,8 @@
         <ion-label> <strong>Consumo en sitio</strong></ion-label>
         <ion-radio [value]="1"></ion-radio>
       </ion-item>
-    </ion-radio-group>
+    </ion-radio-group> -->
+
       <div *ngIf="tipoEnvio === 1">
       <ion-grid>
         <ion-row class="ion-align-items-center">
@@ -73,11 +74,81 @@
         <small *ngIf="rTantidad(numeroMesa)" class="texto-mesa">Se requiere el numero de mesa</small>
       </ion-grid>
     </div>
-    <ion-item *ngIf="tipoEnvio === 2">
-      <ion-label position="floating">Dirección:</ion-label>
-      <ion-textarea type="text" [(ngModel)]="address"></ion-textarea>
-      <ion-icon *ngIf="address" (click)="address=''" name="close-outline" slot="end"></ion-icon>
-    </ion-item>
+  <div *ngIf="tipoEnvio === 2">
+    <ion-list>
+  
+      <ion-item>
+        <ion-label position="stacked">Calle: <span style="color: red">*</span></ion-label>
+        <ion-input id="calle" name="calle" type="text" [(ngModel)]="calle"   required></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="stacked">Número Exterior: <span style="color: red">*</span></ion-label>
+        <ion-input id="numExt" name="numExt" type="text" [(ngModel)]="numeroExt" required></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="stacked">Número Interior: </ion-label>
+        <ion-input id="numInt" name="numInt" type="text" [(ngModel)]="numeroInt"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Estado <span style="color: red">*</span></ion-label>
+        <ion-select placeholder="-- Selecciona un Estado --" ok-text="Ok" cancel-text="Cancelar" name="estado" required #compEstado="ngModel"
+          [(ngModel)]="IdEstado" (ionChange)="get_list_cat_municipio($event)">
+          <ng-container *ngFor="let e of list_cat_estado">
+            <ion-select-option [value]="e">{{e.nombre}}</ion-select-option>
+          </ng-container>
+        </ion-select>
+      </ion-item>
+      <!-- <div *ngIf="compEstado.invalid" class="alert">
+        <div> <small> Seleccione un Estado </small></div>
+      </div> -->
+
+      <ion-item>
+        <ion-label position="stacked">Municipio <span style="color: red">*</span></ion-label>
+        <ion-select placeholder="-- Selecciona un Municipio --" [disabled]="btnMuncipio" ok-text="Ok" cancel-text="Cancelar" name="municipio"
+          required #compMunicipio="ngModel" [(ngModel)]="IdMunicipio" (ionChange)="get_list_cat_localidad($event,true)">
+          <ng-container *ngFor="let mun of list_cat_municipio">
+            <ion-select-option [value]="mun">
+              {{mun.nombre}}
+            </ion-select-option>
+          </ng-container>
+        </ion-select>
+      </ion-item>
+      <!-- <div *ngIf="compMunicipio.invalid" class="alert">
+        <div> <small>Seleccione un Municipio</small></div>
+      </div> -->
+
+      <ion-item>
+        <ion-label position="stacked">Localidad <span style="color: red">*</span></ion-label>
+        <ion-select placeholder="-- Seleccione una Localidad --" ok-text="Ok" cancel-text="Cancelar" name="localidad" required #compLocalidad="ngModel"
+          [(ngModel)]="IdLocalidad">
+          <ng-container *ngFor="let loc of list_cat_localidad">
+            <ion-select-option [value]="loc.nombre">
+              {{loc.nombre}}
+            </ion-select-option>
+          </ng-container>
+        </ion-select>
+      </ion-item>
+      <!-- <div *ngIf="compLocalidad.invalid" class="alert">
+        <div> <small>Seleccione una Localidad</small></div>
+      </div> -->
+      <ion-item>
+        <ion-label position="stacked">Colonia <span style="color: red">*</span></ion-label>
+        <ion-input id="colonia" name="colonia" type="text" [(ngModel)]="colonia" required></ion-input>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label position="stacked">Código postal <span style="color: red">*</span></ion-label>
+        <ion-input id="codigo_postal" name="codigo_postal" type="text" [(ngModel)]="cp" required></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <small style="display: flex; align-items: center;">Los campos con <span style="color: red">*</span> son
+          obligatorios</small>
+      </ion-item>
+    </ion-list>
+  </div>
     <ion-item>
       <ion-label position="floating">Comentario:</ion-label>
       <ion-textarea type="text" [(ngModel)]="detalle"></ion-textarea>
@@ -89,7 +160,7 @@
         <ion-select-option *ngFor="let pago of pagos" [value]="pago.id_tipo_pago">{{pago.nombre}}</ion-select-option>
       </ion-select>
     </ion-item>
-  </ion-list>
+  <!-- </ion-list> -->
   
   <ion-list>
     <div *ngIf="tipoEnvio === 2">
@@ -102,18 +173,9 @@
         </ion-col>
       </ion-row>
       <ion-grid>
-          <!--<ion-grid *ngIf="!this.blnUbicacion">
-            <ion-row class="ion-align-items-center">
-              <ion-col class="ion-text-center">
-                <ion-chip color="danger"  class="ion-align-items-center">
-                  <ion-label><strong>Lo sentimos!</strong>Debes habilitar tu ubicación.</ion-label>
-                </ion-chip>
-              </ion-col>
-            </ion-row>
-          </ion-grid>-->
         <ion-row>
           <ion-col>
-            <div id="mapIdPedido" style="height:200px"></div>
+            <div id="mapIdPedidoBolsa" style="height:200px"></div>
           </ion-col>
         </ion-row>
         <p class="ion-text-center">{{estasUbicacion}}</p>

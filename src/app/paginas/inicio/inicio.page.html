@@ -1,100 +1,176 @@
-<app-toolbar-busqueda [placeHolder]=" objectSelectAfiliacionPlaza !== null && objectSelectAfiliacionPlaza !== undefined ? 'Buscar negocios en ' + objectSelectAfiliacionPlaza.nombre : 'Buscar negocios' " (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
-<ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
-    <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
-    <app-boton-top [content]="content" [cordenada]="cordenada" [platform]="isIOS" *ngIf="!isIOS"></app-boton-top>
-    <ion-fab *ngIf="isIOS" horizontal="end" vertical="bottom" slot="fixed" class="btn-flotante" (click)="scrollToTop()">
-        <ion-fab-button class="bg-rosa" *ngIf="cordenada >= 100">
-            <ion-icon name="chevron-up-outline"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
-    <app-banner-promociones [anyFiltros]="Filtros" [tieneFiltro]="tFiltro"></app-banner-promociones>
-    <app-spinner [loader]="loader" [message]="msj"></app-spinner>
-    <div *ngIf="!loader">
-        <ion-item>
-            <ion-buttons *ngIf="!selectionAP">
-                <ion-button (click)="openPlazasAfiliacionesModal()">
-                    Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span>
-                    <ion-icon name="caret-down-outline"></ion-icon>
-                </ion-button>
-            </ion-buttons>
-            <ion-buttons *ngIf="selectionAP">
-                <ion-chip (click)="regresarBitoo()" color="danger">
-                    <ion-icon name="log-out-outline"></ion-icon>
-                    <ion-label>Regresar a bitoo</ion-label>
-                </ion-chip>
-            </ion-buttons>
-            <ion-buttons *ngIf="filtroActivo" slot="end">
-                <ion-chip (click)="borrarFiltrosP()" color="danger">
-                    <ion-icon name="trash-outline" color="danger"></ion-icon>
-                    <ion-label>Borrar Filtros</ion-label>
-                </ion-chip>
-            </ion-buttons>
-            <ion-buttons slot="end" *ngIf="!filtroActivo">
-                <ion-button (click)="abrirFiltros()">Filtros
-                    <ion-icon name="filter-outline"></ion-icon>
-                </ion-button>
-            </ion-buttons>
-        </ion-item>
-        <ion-grid>
-            <ion-row class="ion-align-items-center">
-                <div  *ngIf="objectSelectAfiliacionPlaza !== null && objectSelectAfiliacionPlaza !== undefined" style="background-color: #3c3c3c; color: white; font-size: small;" class="ion-text-center">
-                    <p style="padding-inline: 5%;">ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA <img style="width: 25px; margin-top: 2%;" src="{{objectSelectAfiliacionPlaza.icon}}">  {{objectSelectAfiliacionPlaza.nombre}}</p>
-                  </div>
-                <ion-col size="12" class="ion-text-center">
-                    <ion-button size="small" class="bg-rosa" type="button" (click)="abrirModalMapa()">
-                        <ion-icon name="map-outline"></ion-icon>
-                        Mapa
-                    </ion-button>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-        <ion-refresher *ngIf="!isIOS" slot="fixed" (ionRefresh)="recargar($event)">
-            <ion-refresher-content></ion-refresher-content>
-        </ion-refresher>
-        <ion-grid *ngIf="listaCategorias.length !== 0">
-            <ion-row *ngFor="let cat of listaCategorias">
-                <ion-text class="w-100">
-                    <h2>{{cat.nombre}}</h2>
-                </ion-text>
-                <ion-col sizeLg="3" sizeXs="6" sizeSm="4" sizeMd="4" *ngFor="let proveedor of cat.negocios">
-                    <ion-card class="m-0 fixed">
-                        <div (click)="negocioRuta(proveedor.url_negocio)">
-                            <img class="img-card-w"
-                                src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
-                                [srcset]="proveedor.url_logo" alt="Falla al cargar la imagen">
-                            <ion-card-header>
-                                <ion-card-subtitle>{{proveedor.nombre_comercial}} <ion-icon *ngIf="proveedor.verificado"
-                                        class="text-rosa" name="checkmark-circle"></ion-icon>
-                                </ion-card-subtitle>
-                                <ion-badge *ngIf="proveedor.abierto == 'ABIERTO'" color="success">Abierto</ion-badge>
-                                <ion-badge *ngIf="proveedor.abierto !== 'ABIERTO'" color="danger">Cerrado</ion-badge>
-                            </ion-card-header>
-                            <!-- <ion-card-content>
-                                <div class="ui-search-item__title">
-                                    {{proveedor.descripcion}}
-                                </div>
-                            </ion-card-content> -->
-                        </div>
-                        <div *ngIf="existeSesion" class="likegegi">
-                            <app-dar-like-negocio [negocio]="proveedor" [usuario]="user" [mostrarLike]="existeSesion">
-                            </app-dar-like-negocio>
-                        </div>
-                    </ion-card>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-        <ion-grid *ngIf="listaCategorias.length === 0 && selectionAP === false">
-            <ion-text color="primary">
-                <h2>No se encontraron negocios relacionados</h2>
-            </ion-text>
-        </ion-grid>
-        <ion-grid *ngIf="listaCategorias.length === 0  && selectionAP === true">
-            <ion-text color="primary">
-                <h2>No se encontraron negocios relacionados en {{objectSelectAfiliacionPlaza.nombre}}</h2>
-            </ion-text>
-        </ion-grid>
-        <app-infinito-scroll *ngIf="true" (respuesta)="cargarMasPaginas($event)" [activado]="true" [msj]="mensaje"></app-infinito-scroll>
-    </div>
+<ion-toolbar class="tolbar">
+ 
+    <app-toolbar-busqueda
+      [placeHolder]=" objectSelectAfiliacionPlaza !== null && objectSelectAfiliacionPlaza !== undefined ? 'Buscar negocios en ' + objectSelectAfiliacionPlaza.nombre : 'Buscar negocios' "
+      (buscarEmit)="buscarToolbar($event)" titulo="Negocio"
+    ></app-toolbar-busqueda>
 
+</ion-toolbar>
 
+<ion-content
+  [fullscreen]="true"
+  [scrollEvents]="true"
+  (ionScroll)="cordenada = $event.detail.scrollTop"
+>
+  <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
+  <app-boton-top
+    [content]="content"
+    [cordenada]="cordenada"
+    [platform]="isIOS"
+    *ngIf="!isIOS"
+  ></app-boton-top>
+  <ion-fab
+    *ngIf="isIOS"
+    horizontal="end"
+    vertical="bottom"
+    slot="fixed"
+    class="btn-flotante"
+    (click)="scrollToTop()"
+  >
+    <ion-fab-button class="bg-rosa" *ngIf="cordenada >= 100">
+      <ion-icon name="chevron-up-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <app-banner-promociones
+    [anyFiltros]="Filtros"
+    [tieneFiltro]="tFiltro"
+  ></app-banner-promociones>
+  <app-spinner [loader]="loader" [message]="msj"></app-spinner>
+  <div *ngIf="!loader">
+    <ion-item>
+      <ion-buttons *ngIf="!selectionAP">
+        <ion-button (click)="openPlazasAfiliacionesModal()">
+          Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span>
+          <ion-icon name="caret-down-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons *ngIf="selectionAP">
+        <ion-chip (click)="regresarBitoo()" color="danger">
+          <ion-icon name="log-out-outline"></ion-icon>
+          <ion-label>Regresar a bitoo</ion-label>
+        </ion-chip>
+      </ion-buttons>
+      <ion-buttons *ngIf="filtroActivo" slot="end">
+        <ion-chip (click)="borrarFiltrosP()" color="danger">
+          <ion-icon name="trash-outline" color="danger"></ion-icon>
+          <ion-label>Borrar Filtros</ion-label>
+        </ion-chip>
+      </ion-buttons>
+      <ion-buttons slot="end" *ngIf="!filtroActivo">
+        <ion-button (click)="abrirFiltros()"
+          >Filtros
+          <ion-icon name="filter-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+    <ion-grid>
+      <ion-row class="ion-align-items-center">
+        <div
+          *ngIf="objectSelectAfiliacionPlaza !== null && objectSelectAfiliacionPlaza !== undefined"
+          style="background-color: #3c3c3c; color: white; font-size: small"
+          class="ion-text-center"
+        >
+          <p style="padding-inline: 5%">
+            ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA
+            <img
+              style="width: 25px; margin-top: 2%"
+              src="{{objectSelectAfiliacionPlaza.icon}}"
+            />
+            {{objectSelectAfiliacionPlaza.nombre}}
+          </p>
+        </div>
+        <ion-col size="12" class="ion-text-center">
+          <ion-button
+            size="small"
+            class="bg-rosa"
+            type="button"
+            (click)="abrirModalMapa()"
+          >
+            <ion-icon name="map-outline"></ion-icon>
+            Mapa
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-refresher *ngIf="!isIOS" slot="fixed" (ionRefresh)="recargar($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-grid *ngIf="listaCategorias.length !== 0">
+      <ion-row *ngFor="let cat of listaCategorias">
+        <ion-text class="w-100">
+          <h2>{{cat.nombre}}</h2>
+        </ion-text>
+        <ion-col
+          sizeLg="3"
+          sizeXs="6"
+          sizeSm="4"
+          sizeMd="4"
+          *ngFor="let proveedor of cat.negocios"
+        >
+          <ion-card class="m-0 fixed">
+            <div (click)="negocioRuta(proveedor.url_negocio)">
+              <img
+                class="img-card-w"
+                src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
+                [srcset]="proveedor.url_logo"
+                alt="Falla al cargar la imagen"
+              />
+              <ion-card-header>
+                <ion-card-subtitle
+                  >{{proveedor.nombre_comercial}}
+                  <ion-icon
+                    *ngIf="proveedor.verificado"
+                    class="text-rosa"
+                    name="checkmark-circle"
+                  ></ion-icon>
+                </ion-card-subtitle>
+                <ion-badge
+                  *ngIf="proveedor.abierto == 'ABIERTO'"
+                  color="success"
+                  >Abierto</ion-badge
+                >
+                <ion-badge
+                  *ngIf="proveedor.abierto !== 'ABIERTO'"
+                  color="danger"
+                  >Cerrado</ion-badge
+                >
+              </ion-card-header>
+              <!-- <ion-card-content>
+                                  <div class="ui-search-item__title">
+                                      {{proveedor.descripcion}}
+                                  </div>
+                              </ion-card-content> -->
+            </div>
+            <div *ngIf="existeSesion" class="likegegi">
+              <app-dar-like-negocio
+                [negocio]="proveedor"
+                [usuario]="user"
+                [mostrarLike]="existeSesion"
+              >
+              </app-dar-like-negocio>
+            </div>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid *ngIf="listaCategorias.length === 0 && selectionAP === false">
+      <ion-text color="primary">
+        <h2>No se encontraron negocios relacionados</h2>
+      </ion-text>
+    </ion-grid>
+    <ion-grid *ngIf="listaCategorias.length === 0  && selectionAP === true">
+      <ion-text color="primary">
+        <h2>
+          No se encontraron negocios relacionados en
+          {{objectSelectAfiliacionPlaza.nombre}}
+        </h2>
+      </ion-text>
+    </ion-grid>
+    <app-infinito-scroll
+      *ngIf="true"
+      (respuesta)="cargarMasPaginas($event)"
+      [activado]="true"
+      [msj]="mensaje"
+    ></app-infinito-scroll>
+  </div>
 </ion-content>
