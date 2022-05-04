@@ -3,26 +3,76 @@
    src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTrNdWOVG0us26NN-771ygyqcPWQ4T2KXQuiPJgSKyndpDiv5X_&usqp=CAU"
    [srcset]="promocion.url_imagen" alt="Falla al cargar imagen">
   <ion-card-content class="ion-no-padding ion-no-margin">
-    <ion-grid>
-      <ion-row *ngIf="promocion.giro_negocio !== null" class="ion-justify-content-center">
-        <ion-badge>{{ promocion.giro_negocio }}</ion-badge>
-      </ion-row>
-      <ion-row>
-        <strong class="ion-text-center" style="margin-top: 5px;"><p class="promocion">{{ promocion.promocion | slice:0:20 }}...</p></strong>
-      </ion-row>
-      <ion-row class="ion-text-center ion-margin-top">
-        <strong><p class="promocion">{{promocion.fecha_fin !== null ? promocion.fecha_fin_public : promocion.fecha_inicio_public}} | {{promocion.nombre_comercial}}</p></strong>
-      </ion-row>
-      <ion-row class="ion-margin-top" *ngIf="promocion.terminos.length>21">
-        <strong class="ion-text-center"><p>{{ promocion.terminos | slice:0:21 }}...</p></strong>
-      </ion-row>
-      <ion-row class="ion-margin-top" *ngIf="promocion.terminos.length<=21">
-        <strong class="ion-text-center"><p>{{ promocion.terminos }}</p></strong>
-      </ion-row>
-      <ion-row class="ion-justify-content-end">
-        <ion-badge *ngIf="promocion.abierto == 'ABIERTO'" color="primary">{{ promocion.abierto }}</ion-badge>
-        <ion-badge *ngIf="promocion.abierto == 'CERRADO'" color="danger">{{ promocion.abierto }}</ion-badge>
-      </ion-row>
-    </ion-grid>
+    <div *ngIf="promocion.id_tipo_promocion===1">
+      <ion-grid>
+        <ion-row *ngIf="promocion.giro_negocio !== null" class="ion-justify-content-center">
+          <ion-badge>{{ promocion.giro_negocio }}</ion-badge>
+        </ion-row>
+        <ion-row class="ion-justify-content-center promocion" style="font-size: medium;">
+          <strong>Anuncio</strong>
+        </ion-row>
+        <ion-row>
+          <strong class="ion-text-center" style="margin-top: 5px;"><p class="promocion">{{ promocion.promocion | slice:0:20 }}...</p></strong>
+        </ion-row>
+        <ion-row class="ion-text-center ion-margin-top">
+          <strong><p class="promocion">{{promocion.fecha_fin !== null ? promocion.fecha_fin_public : promocion.fecha_inicio_public}} | {{promocion.nombre_comercial}}</p></strong>
+        </ion-row>
+        <ion-row class="ion-margin-top" *ngIf="promocion.terminos.length>21">
+          <strong class="ion-text-center"><p>{{ promocion.terminos | slice:0:21 }}...</p></strong>
+        </ion-row>
+        <ion-row class="ion-margin-top" *ngIf="promocion.terminos.length<=21">
+          <strong class="ion-text-center"><p>{{ promocion.terminos }}</p></strong>
+        </ion-row>
+        <ion-row class="ion-justify-content-end">
+          <ion-badge *ngIf="promocion.abierto == 'ABIERTO'" color="primary">{{ promocion.abierto }}</ion-badge>
+          <ion-badge *ngIf="promocion.abierto == 'CERRADO'" color="danger">{{ promocion.abierto }}</ion-badge>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <div *ngIf="promocion.id_tipo_promocion===2">
+      <ion-grid>
+        <ion-row *ngIf="promocion.giro_negocio !== null" class="ion-justify-content-center">
+          <ion-badge>{{ promocion.giro_negocio }}</ion-badge>
+        </ion-row>
+        <ion-row class="ion-justify-content-center promocion" style="font-size: medium;">
+          <strong>Promoción</strong>
+        </ion-row>
+        <ion-row>
+          <strong class="ion-text-center" style="margin-top: 5px;"><p class="promocion">{{ promocion.promocion | slice:0:20 }}...</p></strong>
+        </ion-row>
+       
+        <ion-row class="ion-text-center ion-margin-top" >
+         
+          <strong *ngFor="let dia of promocion.dias ">
+            <p *ngIf="dia.hora_inicio.length > 0 " class="promocion">{{ dia.hora_inicio}} -{{dia.hora_fin}} |
+              {{promocion.nombre_comercial}}</p>
+          
+            <ng-container *ngIf="dia.hora_inicio.length < 0; then thenTemplate; else elseTemplate"></ng-container>
+            <ng-template #thenTemplate>
+              <p class="promocion">Lunes,{{ dia.dias}} Miercoles, jueves, viernes, Sabado, Domindo| {{promocion.nombre_comercial}}
+              </p>
+            </ng-template>
+            <ng-template #elseTemplate>
+              <p *ngIf="dia.dias.length < 0 " class="promocion">{{promocion.fecha_fin !== null ? promocion.fecha_fin_public :
+                promocion.fecha_inicio_public}} | {{promocion.nombre_comercial}}</p>
+          
+            </ng-template>
+          
+          </strong>
+        </ion-row>
+
+        <ion-row class="ion-margin-top" *ngIf="promocion.terminos.length>21">
+          <strong class="ion-text-center"><p>{{ promocion.terminos | slice:0:21 }}...</p></strong>
+        </ion-row>
+        <ion-row class="ion-margin-top" *ngIf="promocion.terminos.length<=21">
+          <strong class="ion-text-center"><p>{{ promocion.terminos }}</p></strong>
+        </ion-row>
+        <ion-row class="ion-justify-content-end">
+          <ion-badge *ngIf="promocion.abierto == 'ABIERTO'" color="primary">{{ promocion.abierto }}</ion-badge>
+          <ion-badge *ngIf="promocion.abierto == 'CERRADO'" color="danger">{{ promocion.abierto }}</ion-badge>
+        </ion-row>
+      </ion-grid>
+    </div>
+    
   </ion-card-content>
 </ion-card>

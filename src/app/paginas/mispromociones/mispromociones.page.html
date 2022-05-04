@@ -35,7 +35,7 @@
 												</ion-avatar>
 											</ng-template>
 											<ion-label class="ion-text-wrap">
-												<p>{{promocion.promocion}}</p>
+												<p>{{promocion.promocion}} - <span *ngIf="promocion.id_tipo_promocion===1"> Anuncio</span> <span *ngIf="promocion.id_tipo_promocion===2"> Promocion</span> </p>
 											</ion-label>
 											<ion-buttons slot="end">
          										<ion-icon name="chevron-forward-outline"></ion-icon>

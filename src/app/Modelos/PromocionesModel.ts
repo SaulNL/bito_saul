@@ -2,6 +2,8 @@ import {MsNegocioModel} from './MsNegocioModel';
 import {MsProveedorModel} from './MsProveedorModel';
 import {EstatusModel} from "./EstatusModel";
 import {DiasArrayModel} from "./DiasArrayModel";
+import { CatOrganizacionesModel } from './CatOrganizacionesModel';
+import { DiasPromoArray } from './DiasPromoArray';
 
 export class PromocionesModel {
   public id_promocion: number;
@@ -52,7 +54,15 @@ export class PromocionesModel {
   public abierto:any;
   public giro_negocio: any;
 
-  constructor(id_promocion: number = 0, promocion: string = '', tags: Array<string> = [], terminos: string = '', imagen: any = '', imagenBanner: any = '', imagenPoster: any = '', url_imagen: string = '', url_imagen_banner: string = '', url_imagen_poster: string = '', activo: boolean = null, fecha_inicio: Date = null, fecha_fin: Date = null, proveedor: string = '', nombre_comercial: string = '', select = 0) {
+  public id_tipo_promocion: any;
+  public id_alcance_promocion: any;
+  public minimo: any;
+  public maximo_red: any;
+  public porcentaje: any;
+  public organizaciones: Array<CatOrganizacionesModel>;
+  public dias: Array<DiasPromoArray >;
+
+  constructor(id_promocion: number = 0, promocion: string = '', tags: Array<string> = [], terminos: string = '', imagen: any = '', imagenBanner: any = '', imagenPoster: any = '', url_imagen: string = '', url_imagen_banner: string = '', url_imagen_poster: string = '', activo: boolean = null, fecha_inicio: Date = null, fecha_fin: Date = null, proveedor: string = '', nombre_comercial: string = '', select = 0, id_tipo_promocion: any = '', id_alcance_promocion: any ='', minimo: any = '',maximo_red: any='',porcentaje: any='', organizaciones: Array<any> = [], dias: Array<any> =[]) {
     this.id_promocion = id_promocion;
     this.promocion = promocion;
     this.tags = tags;
@@ -69,5 +79,12 @@ export class PromocionesModel {
     this.proveedor = proveedor;
     this.nombre_comercial = nombre_comercial;
     this.select = select;
+    this.id_tipo_promocion = id_tipo_promocion;
+    this.id_alcance_promocion= id_alcance_promocion;
+    this.minimo = minimo;
+    this.maximo_red = maximo_red;
+    this.porcentaje = porcentaje;
+    this.organizaciones = organizaciones;
+    this.dias = dias;
   }
 }

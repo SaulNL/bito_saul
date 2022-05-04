@@ -12,8 +12,8 @@ export class PromocionComponent implements OnInit {
 
   @Input() promocion: PromocionesModel;
   @Input() idPersona: number | null;
-
-  constructor( public modalController: ModalController ) { 
+  
+  constructor( public modalController: ModalController ) {
   }
 
   ngOnInit() {
