@@ -175,7 +175,7 @@ export class PerfilNegocioPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log("info", this.informacionNegocio);
+    
     if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
       localStorage.setItem("isRedirected", "true");
       location.reload();
@@ -306,7 +306,7 @@ export class PerfilNegocioPage implements OnInit {
         (response) => {
           if (response.data !== null) {
             this.informacionNegocio = response.data;
-            console.log("infonegocio", this.informacionNegocio);
+            
             this.latitudNeg = this.informacionNegocio.latitud;
             this.longitudNeg = this.informacionNegocio.longitud;
             this.loadMap();
@@ -614,7 +614,7 @@ console.log("resp",response)
   }
 
   async abrirModalpedido() {
-    console.log("Id negocio: " + this.informacionNegocio.id_negocio);
+    
     const modal = await this.modalController.create({
       component: PedidoNegocioComponent,
       componentProps: {
