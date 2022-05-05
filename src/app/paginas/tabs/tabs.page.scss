@@ -43,9 +43,14 @@ ion-label.sc-ion-label-md-h.sc-ion-label-md-s.md.hydrated {
     line-height: 1.1;
 }
 
+.icon{
+    filter: invert(46%) sepia(58%) saturate(2551%) hue-rotate(317deg) brightness(97%) contrast(102%);
+}
+
 @media (min-width: 412px) {
     .tab-button-principal {
         font-size: 10px;
         
     }
 }
+
