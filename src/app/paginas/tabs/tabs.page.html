@@ -4,20 +4,21 @@
     <ion-tab-button class="tab-button-principal" (click)="inicio()" tab="inicio" style="--color-selected: #fa4f72">
       <ion-icon *ngIf="activedPage === 'inicio'" src="../../../assets/icons/IconosTabs/Home.svg"></ion-icon>
       <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'inicio'" src="../../../assets/icons/IconosTabs/Home.svg"></ion-icon>
-      <ion-label></ion-label>
+      <ion-label *ngIf="activedPage !== 'inicio'"></ion-label>
       <ion-label *ngIf="activedPage === 'inicio'">Negocios </ion-label>
     </ion-tab-button>
 
     <ion-tab-button class="tab-button-principal" (click)="productos()" tab="productos" style="--color-selected: #fa4f72">
       <ion-icon *ngIf="activedPage === 'productos'" src="../../../assets/icons/IconosTabs/Productos.svg"></ion-icon>
       <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'productos'" src="../../../assets/icons/IconosTabs/Productos.svg"></ion-icon>
-      <ion-label></ion-label>
+      <ion-label *ngIf="activedPage !== 'productos'"></ion-label>
       <ion-label *ngIf="activedPage === 'productos'">Productos</ion-label>
     </ion-tab-button>
 
     <ion-tab-button class="tab-button-principal" (click)="promociones()" tab="promociones" style="--color-selected: #fa4f72">
       <ion-icon *ngIf="activedPage === 'promociones'" src="../../../assets/icons/IconosTabs/Ofertas.svg"></ion-icon>
       <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'promociones'" src="../../../assets/icons/IconosTabs/Ofertas.svg"></ion-icon>
+      <ion-label *ngIf="activedPage !== 'promociones'"></ion-label>
       <ion-label *ngIf="activedPage === 'promociones'">Promociones</ion-label>
     </ion-tab-button>
 
@@ -25,14 +26,14 @@
       <ion-icon *ngIf="activedPage === 'requerimientos'" src="../../../assets/icons/IconosTabs/Requerimientos.svg">
       </ion-icon>
       <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'requerimientos'" src="../../../assets/icons/IconosTabs/Requerimientos.svg"></ion-icon>
-      <ion-label></ion-label>
+      <ion-label *ngIf="activedPage !== 'requerimientos'"></ion-label>
       <ion-label *ngIf="activedPage === 'requerimientos'">Requerimientos</ion-label>
     </ion-tab-button>
 
     <ion-tab-button *ngIf="usuario !== null" tab="mis-favoritos" class="tab-button-principal" (click)="solicitudes()" style="--color-selected: #fa4f72">
       <ion-icon *ngIf="activedPage === 'favoritos'" src="../../../assets/icons/IconosTabs/Favoritos.svg"></ion-icon>
       <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'favoritos'" src="../../../assets/icons/IconosTabs/Favoritos.svg"></ion-icon>
-      <ion-label></ion-label>
+      <ion-label *ngIf="activedPage !== 'favoritos'"></ion-label>
       <ion-label *ngIf="activedPage === 'favoritos'">Favoritos</ion-label>
     </ion-tab-button>
 
@@ -41,7 +42,7 @@
       <ion-icon *ngIf="activedPage === 'perfil'" src="../../../assets/icons/IconosTabs/Perfil.svg"></ion-icon>
       <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'perfil'"
         src="../../../assets/icons/IconosTabs/Perfil.svg"></ion-icon>
-      <ion-label></ion-label>
+      <ion-label *ngIf="activedPage !== 'perfil'"></ion-label>
       <ion-label *ngIf="activedPage === 'perfil'">Usuario</ion-label>
     </ion-tab-button>
 

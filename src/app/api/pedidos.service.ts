@@ -33,8 +33,6 @@ export class PedidosService {
   }
 
   pedidosNegocios2(iPedidosNegocios: IPedidosNegocios): Observable<any> {
-    let d1= JSON.stringify(iPedidosNegocios);
-    console.log('Bere - 100000:  '+d1);
     const body = JSON.stringify(iPedidosNegocios);
     return from(this._http.post( this.url + 'api/pedios/proveedor/obtener',body,
     AppSettings.getHeadersToken())

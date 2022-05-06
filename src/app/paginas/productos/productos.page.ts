@@ -155,7 +155,6 @@ export class ProductosPage {
       }
     });
     this.existeSesion = this.util.existe_sesion();
-    this.mostrarLoguearse();
 
     // if (this.existeSesion) {
     //   this.permisos = this.auth0Service.getUserPermisos();
@@ -502,42 +501,7 @@ export class ProductosPage {
     });
   }
 
-  public mostrarLoguearse(){
-    if (this.existeSesion) {
-    }else{
-        if(this.plazaAfiliacion != null){
-            
-        }else{
-          setTimeout(() =>{
-            this. mensajeRegistro();
-          },3800)
-        }
-    }
-}
-
-  async mensajeRegistro() {
-    const alert = await this.alertController.create({
-      header: 'Bitoo!',
-      message: "¿Ya tienes una cuenta?",
-        buttons: [
-            {
-                text: "Iniciar sesión",
-                cssClass: 'text-grey',
-                handler: () => {
-                  this._router.navigate(['/tabs/login']);
-                }
-            },
-            {
-                text: "Registrate",
-                cssClass: 'text-rosa',
-                handler: () => {
-                    this._router.navigate(["/tabs/login/sign-up"]);
-                },
-            },
-        ],
-    });
-    await alert.present();
-  }
+  
 
   
 }

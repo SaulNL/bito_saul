@@ -99,10 +99,10 @@ export class InicioPage implements OnInit {
       this.Filtros = dato;
       this.filtroActivo = true;
       this.selectionAP = false;
-      //console.log("filtro activo");
+     
     } else {
       this.filtroActivo = false;
-      //console.log("filtro false");
+     
     }
     this.listaCategorias = new Array<ICategoriaNegocio>();
     this.listaIdsMapa = [];
@@ -159,7 +159,7 @@ export class InicioPage implements OnInit {
   ngOnInit(): void {
     
     
-    console.log("activadoiniciopage", localStorage.getItem('activedPage'));
+    
     this.user = this.util.getUserData();
     this.load();
     this.route.queryParams.subscribe((params) => {
@@ -462,13 +462,12 @@ export class InicioPage implements OnInit {
         listaIds.push(n);
       });
     });
-    console.log("listacategor", this.listaCategorias);
-    console.log("listaids", listaIds);
+    
     for (let index = 0; index < listaIds.length; index++) {
       listaIdNegocio.push(listaIds[index].id_negocio);
     }
     this.listaIdsMapa = listaIdNegocio;
-    console.log("listas mapass", this.listaIdsMapa);
+    
   }
   public regresarBitoo() {
     localStorage.removeItem("org");
