@@ -109,7 +109,6 @@ export class ModalClasificacionComponent implements OnInit {
     
     this.sercicioNegocio.modificarCategoria(this.modalEditarCat).subscribe(
       (repsuesta) => {
-        console.log("resp", repsuesta)
         const categoriaMod = this.listaVista.find(
           (cat) => cat.id_categoria === this.modalEditarCat.id_categoria
         );

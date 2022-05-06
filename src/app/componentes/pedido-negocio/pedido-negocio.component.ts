@@ -202,7 +202,7 @@ export class PedidoNegocioComponent implements OnInit {
                 this.load_cat_estados();
             },
             error => {
-                console.log(error);
+                
             }
         );
     }
