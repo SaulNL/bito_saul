@@ -4,6 +4,7 @@ import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Auth0Service } from "../../api/busqueda/auth0.service";
 import { Router } from "@angular/router";
 import { Platform, AlertController } from '@ionic/angular';
+import {AfiliacionPlazaModel} from "../../Modelos/AfiliacionPlazaModel";
 
 @Component({
   selector: "app-tabs",
@@ -16,6 +17,7 @@ export class TabsPage implements OnInit {
   usuario: any;
   activedPage: string;
   public isIos: boolean;
+  private plazaAfiliacion: AfiliacionPlazaModel | null;
 
   constructor(
       private util: UtilsCls,
@@ -55,6 +57,7 @@ export class TabsPage implements OnInit {
       this.activedPage = localStorage.getItem("activedPage");
     }
     localStorage.removeItem('activedPage');
+    this.plazaAfiliacion = JSON.parse(localStorage.getItem("org"));
   }
 
   inicio() {
@@ -126,9 +129,13 @@ export class TabsPage implements OnInit {
   public mostrarLoguearse(){
     if (this.existeSesion) {
     }else{
-      setTimeout(() =>{
-        this. mensajeRegistro();
-      },2800)
+      if(this.plazaAfiliacion != null){
+
+      }else{
+        setTimeout(() =>{
+          this. mensajeRegistro();
+        },3800);
+      }
     }
 }
 
