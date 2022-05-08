@@ -33,6 +33,7 @@ export class TabsPage implements OnInit {
   }
 
   ngOnInit(): void {
+    this.plazaAfiliacion = JSON.parse(localStorage.getItem("org"));
     this.sideBarService.getObservable().subscribe((data) => {
       this.usuario = this.util.getData();
     });
@@ -57,7 +58,6 @@ export class TabsPage implements OnInit {
       this.activedPage = localStorage.getItem("activedPage");
     }
     localStorage.removeItem('activedPage');
-    this.plazaAfiliacion = JSON.parse(localStorage.getItem("org"));
   }
 
   inicio() {
