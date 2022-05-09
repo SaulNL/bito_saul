@@ -14,6 +14,7 @@ import { Router } from "@angular/router";
 import { UbicacionModel } from "../../Modelos/UbicacionModel";
 import { UbicacionActualModel } from "../../Modelos/UbicacionActualModel";
 import { ModalLoguearseComponent } from 'src/app/componentes/modal-loguearse/modal-loguearse.component';
+import { OptionBackLogin } from "src/app/Modelos/OptionBackLoginModel";
 
 @Component({
   selector: "app-solicitud",
@@ -47,6 +48,7 @@ export class SolicitudPage implements OnInit {
   public fuenteExclusiva:String;
   private modal: any;
   public existeSesion: boolean;
+  public typeLogin: OptionBackLogin;
   obj: any;
   constructor(
     private filtrosService: FiltrosService,
@@ -61,6 +63,7 @@ export class SolicitudPage implements OnInit {
   ) {
     this.isIos = this.platform.is("ios");
     this.existeSesion = _utils_cls.existe_sesion();
+    this.typeLogin = new OptionBackLogin();
   }
 
   ngOnInit() {
@@ -86,6 +89,10 @@ export class SolicitudPage implements OnInit {
     this.obtenerSolicitudes();
     this.mostrarSolicitud = this._utils_cls.existe_sesion();
     this.mostrarLoguearse();
+    if (localStorage.getItem("isRedirected") === "false" ) {
+      localStorage.setItem("isRedirected", "true");
+        location.reload();
+    }
   }
 
   buscarToolbar(respuesta) {
@@ -183,7 +190,14 @@ export class SolicitudPage implements OnInit {
       this.accionSolicitud(solicitud);
       this.modalDetalleSolicitud(solicitud);
     } else {
-      this._router.navigate(["/tabs/login"]);
+      this.typeLogin.type = "requerimiento";
+      this.typeLogin.url = "";
+      localStorage.setItem("isRedirected", "false");
+      localStorage.setItem("Page", "Requerimiento");
+      const body = JSON.stringify(this.typeLogin);
+      this._router.navigate(["/tabs/login"], {
+        queryParams: { perfil: body },
+      });
     }
   }
 

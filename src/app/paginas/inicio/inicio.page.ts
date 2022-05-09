@@ -205,6 +205,12 @@ export class InicioPage implements OnInit {
       this.Filtros = dato;
       this.filtroActivo = true;
     }
+    const pagina = localStorage.getItem('Page');
+
+      if(pagina==='Requerimiento'){
+        window.location.assign("/tabs/inicio");
+        localStorage.removeItem("Page");
+      }
   }
 
   private load() {
@@ -495,8 +501,17 @@ export class InicioPage implements OnInit {
         "Este negocio aún no cumple los requisitos mínimos"
       );
     } else {
-      localStorage.setItem("isRedirected", "false");
+     
+      if(this.tFiltro===true){
+        localStorage.setItem("isRedirected", "false");
+        this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
+        
+        
+      }else{
+        localStorage.setItem("isRedirected", "true");
       this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
+      }
+      
     }
   }
   negocioRutaByLogin(url: string) {
