@@ -13,10 +13,10 @@
       <ion-row class="ion-text-center ion-margin-top">
         <strong><p class="promocion">{{promocion.fecha_fin !== null ? promocion.fecha_fin_public : promocion.fecha_inicio_public}} | {{promocion.nombre_comercial}}</p></strong>
       </ion-row>
-      <ion-row class="ion-margin-top" *ngIf="promocion.terminos.length>21">
+      <ion-row class="ion-margin-top" *ngIf="promocion.terminos !== null ? promocion.terminos.length>21:''">
         <strong class="ion-text-center"><p>{{ promocion.terminos | slice:0:21 }}...</p></strong>
       </ion-row>
-      <ion-row class="ion-margin-top" *ngIf="promocion.terminos.length<=21">
+      <ion-row class="ion-margin-top" *ngIf="promocion.terminos !== null ? promocion.terminos.length<=21:''">
         <strong class="ion-text-center"><p>{{ promocion.terminos }}</p></strong>
       </ion-row>
       <ion-row class="ion-justify-content-end">
