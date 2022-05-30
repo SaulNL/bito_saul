@@ -12,12 +12,34 @@
   </ion-toolbar>
 </ion-header>
 <app-spinner [loader]="loader" [message]="msj"></app-spinner>
-<ion-content *ngIf="!loader">
+<ion-content *ngIf="!loader" >
+  <!-- <ion-list *ngFor="let lstTipoPromo of lstTipoPromo" >
+    <ion-radio-group [(ngModel)]="tipoPromo" (ionChange)="cambiarTipo($event)" [value]="tipoPromo">
+       
+      <ion-item >
+        <ion-label>{{lstTipoPromo.nombre}}{{lstTipoPromo.id_tipo_promocion}}</ion-label>
+        <ion-radio slot="end" [(value)]=lstTipoPromo.id_tipo_promocion ></ion-radio>
+      </ion-item>
+  
+  
+    </ion-radio-group>
+  </ion-list> -->
   <form #formVariable="ngForm" (ngSubmit)="guardar(formVariable)">
     <ion-card>
       <ion-card-content>
+        <ion-list *ngFor="let lstTipoPromo of lstTipoPromo">
+          <ion-radio-group name="id_tipo_promocion" [(ngModel)]="seleccionTo.id_tipo_promocion" (ionChange)="cambiarTipo($event)" [value]="seleccionTo.id_tipo_promocion">
+                    
+            <ion-item>
+              <ion-label >{{lstTipoPromo.nombre}}</ion-label>
+              <ion-radio slot="end" [(value)]="lstTipoPromo.id_tipo_promocion" ></ion-radio>
+            </ion-item>
+
+          </ion-radio-group>
+        </ion-list>
         <ion-item>
-          <ion-label>Promoción:<span>*</span></ion-label>
+          <ion-label position="stacked" *ngIf="seleccionTo.id_tipo_promocion===2">Promoción: <span>*</span></ion-label>
+          <ion-label position="stacked" *ngIf="seleccionTo.id_tipo_promocion===1">Titulo: <span>*</span></ion-label>
           <ion-input
             #promocion="ngModel"
             required
@@ -45,36 +67,39 @@
           ></app-input-tags>
         </div>
 
-        <ion-item>
-          <ion-label position="floating"
-            >Términos y condiciones:<span>*</span></ion-label
+        <div *ngIf="seleccionTo.id_tipo_promocion===2">
+          <ion-item >
+            <ion-label position="stacked"
+              >Términos y condiciones:<span>*</span></ion-label
+            >
+            <ion-input
+              #terminos="ngModel"
+              required
+              type="text"
+              name="terminos"
+              [(ngModel)]="seleccionTo.terminos"
+            ></ion-input>
+          </ion-item>
+          <div
+            *ngIf="terminos.touched && terminos.invalid"
+            style="
+              color: red;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
           >
-          <ion-input
-            #terminos="ngModel"
-            required
-            type="text"
-            name="terminos"
-            [(ngModel)]="seleccionTo.terminos"
-          ></ion-input>
-        </ion-item>
-        <div
-          *ngIf="terminos.touched && terminos.invalid"
-          style="
-            color: red;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          "
-        >
-          los términos son necesarios
+            los términos son necesarios
+          </div>
         </div>
 
         <ion-item *ngIf="!loaderNegocios">
-          <ion-label> Relacione su negocio:<span>*</span> </ion-label>
+          <ion-label position="stacked"> Relacione su negocio:<span>*</span> </ion-label>
           <ion-select
             [value]="seleccionTo.id_negocio"
             name="negocio"
             [(ngModel)]="seleccionTo.id_negocio"
+            required
           >
             <div *ngFor="let row of lstNegocios" (change)="decripcionSelect()">
               <ion-select-option [value]="row.id_negocio"
@@ -83,6 +108,149 @@
             </div>
           </ion-select>
         </ion-item>
+
+        <div *ngIf="seleccionTo.id_tipo_promocion===2">
+          <ion-item *ngIf="!loaderNegocios">
+            <ion-label position="stacked"> Promoción aplicable a :<span>*</span> </ion-label>
+            <ion-select value="-1" (ionChange)="promoAplicable($event)"
+            [value]="seleccionTo.id_alcance_promocion"
+            name="id_alcance_promocion"
+            [(ngModel)]="seleccionTo.id_alcance_promocion"
+            required
+            >
+              <div *ngFor="let row of lstAlcance" >
+                <ion-select-option [value]="row.id_alcance_promocion" 
+                  >{{row.nombre}}</ion-select-option
+                >
+              </div>
+            </ion-select>
+          </ion-item>
+
+          <ion-item *ngIf="this.tipoAplicable===2 ">
+            <ion-label position="stacked"> Producto<span>*</span> </ion-label>
+            <ion-select
+              [value]="seleccionTo.productos"
+              name="productos"
+              [(ngModel)]="seleccionTo.productos"
+              multiple
+              #productos="ngModel"
+              required
+            >
+              <div *ngFor="let row of prod" >
+                <ion-select-option [value]="row.idProducto"
+                  >{{row.nombre}}</ion-select-option
+                >
+              </div>
+            </ion-select>
+          </ion-item>
+          <ion-item *ngIf="tipoAplicable===3">
+            <ion-label position="stacked">Categoría:<span>*</span> </ion-label>
+            <ion-select
+              [value]="seleccionTo.categorias"
+              name="categorias"
+              [(ngModel)]="seleccionTo.categorias"
+              multiple
+              #categorias="ngModel"
+              required
+            >
+              <div *ngFor="let row of prod" >
+                <ion-select-option [value]="row.id_categoria"
+                  >{{row.nombre}}</ion-select-option
+                >
+              </div>
+            </ion-select>
+          </ion-item>
+
+            <ion-item >
+              <ion-label position="stacked"> Valido Para:</ion-label>
+              <ion-select value="-1" (ionChange)="plazaAfiliacion($event)">
+                <ion-select-option value="1">Plaza</ion-select-option>
+                <ion-select-option value="2">Afiliación</ion-select-option>
+               
+              </ion-select>
+            </ion-item>
+  
+          <ion-item *ngIf="this.tipoPlazaAfi===1">
+            <ion-label position="stacked">Plaza</ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idPlaza" [value]=""
+            name="plazas"
+            [(ngModel)]="seleccionTo.plazas"
+            required
+             >
+              <ion-select-option *ngFor="let plz of this.lstPlazas" [value]="plz.id_organizacion">{{plz.nombre}} 
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item *ngIf="this.tipoPlazaAfi===2">
+            <ion-label position="stacked">Afiliación </ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idPlaza" [value]=""
+            name="organizaciones"
+            [(ngModel)]="seleccionTo.organizaciones"
+            required
+             >
+              <ion-select-option *ngFor="let plz of this.lstPlazas" [value]="plz.id_organizacion"> {{plz.nombre}} 
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item >
+            <ion-label position="stacked"
+              >Número mínimo aplicado, 0 indica ilimitado:<span>*</span></ion-label
+            >
+            <ion-input
+              #terminos="ngModel"
+              required
+              type="number"
+              name="minimo"
+              [(ngModel)]="seleccionTo.minimo"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item >
+            <ion-label position="stacked"
+              >Número máximo aplicado, 0 indica ilimitado:<span>*</span></ion-label
+            >
+            <ion-input
+              #terminos="ngModel"
+              required
+              type="number"
+              name="maximo_red"
+              [(ngModel)]="seleccionTo.maximo_red"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item >
+            <ion-label position="stacked"
+              >Porcentaje de descuento :<span>*</span></ion-label
+            >
+            <ion-input
+              #terminos="ngModel"
+              type="number"
+              name="porcentaje"
+              [(ngModel)]="seleccionTo.porcentaje"
+              required
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked"> Horario Inicial </ion-label>
+            <ion-datetime display-format="H:mm" picker-format="H:mm" name="hora_inicio"  [(ngModel)]="seleccionTo.dias[1]"
+             ></ion-datetime>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked"> Horario Final </ion-label>
+            <ion-datetime [disabled]="blnActivaHoraF" display-format="H:mm" picker-format="H:mm" name="hora_inicio"
+              #fechaFinal="ngModel" [(ngModel)]="seleccionTo.dias[2]" (ionChange)="validarHoraFinal($event)"></ion-datetime>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Dias de la Semana</ion-label>
+            <ion-select [disabled]="blnActivaDias" ok-text="Ok" cancel-text="Cancelar" multiple #dias="ngModel"
+              name="dias" [(ngModel)]="seleccionTo.dias[3]">
+              <ion-select-option *ngFor="let dia of diasArray" [value]="dia.dia">{{dia.dia}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+  
+        </div>
 
         <!--? input de la imagen -->
         <div style="margin-top: 10px">

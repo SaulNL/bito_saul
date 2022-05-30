@@ -460,7 +460,7 @@ export class PedidoNegocioComponent implements OnInit {
 
     cambiarTipo(evento) {
         this.tipoEnvio = parseInt(evento.detail.value);
-
+        
         this.sumarLista();
         if (this.tipoEnvio === 2) {
             setTimeout(it => {
