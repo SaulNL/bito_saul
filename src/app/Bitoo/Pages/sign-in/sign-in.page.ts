@@ -118,6 +118,11 @@ export class SignInPage implements OnInit {
     if (optionEnterLogin != null) {
       this.returnToLocation = JSON.parse(String(optionEnterLogin));
       this.goToRoute(this.returnToLocation.url);
+      const pagina = localStorage.getItem('Page');
+
+      if(pagina==='Requerimiento'){
+        this.goToRouteReque();
+      }
     } else {
       window.location.assign("/tabs/inicio");
     }
@@ -252,6 +257,10 @@ export class SignInPage implements OnInit {
 
   private goToRoute(url: string) {
     this.route.navigate(["/tabs/inicio"], { queryParams: { byLogin: url } });
+  }
+
+  private goToRouteReque() {
+    this.route.navigate(["/tabs/home/solicitud"]);
   }
   /**
    * @author Juan Antonio Guevara Flores
