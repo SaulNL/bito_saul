@@ -22,6 +22,7 @@ export class ToolbarBusquedaComponent implements OnInit {
     public totalNoVistos: number;
     public pescar: boolean;
     public isAndroid = false;
+    public isIos: boolean;
 
     constructor(
         private router: Router,
@@ -38,6 +39,7 @@ export class ToolbarBusquedaComponent implements OnInit {
         this.permisosList();
         this.pescar = false;
         this.isAndroid = (this.platform.is('android'));
+        this.isIos = this.platform.is('ios');
     }
 
     ngOnInit() {
@@ -97,6 +99,7 @@ export class ToolbarBusquedaComponent implements OnInit {
     }
 
     buscarParch(event: any) {
+     
         if (this.isAndroid) {
             if ((event !== '' || event !== undefined) && event.length > 3) {
                 this.strBuscar = event;
@@ -111,6 +114,22 @@ export class ToolbarBusquedaComponent implements OnInit {
                 this.limpiar();
             }
         }
+
+        if (this.isIos){
+            if ((event !== '' || event !== undefined) && event.length > 3) {
+                this.strBuscar = event;
+                this.showS();
+                this.pescar = true;
+                this.buscarEmit.emit(event);
+            }
+
+            if (event === '' || event === undefined) {
+                this.hiddenS();
+                this.pescar = false;
+                this.limpiar();
+            }
+        }
+        
     }
 
     private permisosList() {
