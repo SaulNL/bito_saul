@@ -14,7 +14,10 @@ import { PromocionesService } from "../../../api/promociones.service";
 import { LoadingController } from "@ionic/angular";
 import { CatOrganizacionesModel } from './../../../Modelos/CatOrganizacionesModel';
 import { DiasPromoArray } from '../../../Modelos/DiasPromoArray';
-import { Console } from "console";
+
+import { AlertController } from '@ionic/angular';
+import * as moment from 'moment';
+import { HorarioNegocioModel } from '../../../Modelos/HorarioNegocioModel';
 
 @Component({
   selector: "app-agregar-promocion",
@@ -75,12 +78,16 @@ export class AgregarPromocionPage implements OnInit {
   tipoAplicable: number;
   namePlzAfl: any;
   ngModelPlzAfl: any;
-  blnActivaHoraF: boolean;
-  blnActivaDias: boolean;
-  nuevoHorario: any;
-  blnActivaHorario: boolean;
-
+  public horarioini: string;
+  public blnActivaHoraF: boolean;
+  public horariofin: string;
+  public blnActivaDias: boolean;
+  public nuevoHorario: HorarioNegocioModel;
+  public blnActivaHorario: boolean;
+  public posicionHorario: number;
+  
   constructor(
+    private alertController: AlertController,
     private route: ActivatedRoute,
     private _negocio_service: NegocioService,
     public _notificacionService: ToadNotificacionService,
@@ -93,6 +100,10 @@ export class AgregarPromocionPage implements OnInit {
     this.seleccionTo = new PromocionesModel();
     this.publicacion = new PublicacionesModel();
     this.loader = false;
+    this.blnActivaHoraF = true;
+    this.blnActivaDias = true;
+    this.blnActivaHorario = true;
+    this.nuevoHorario = new HorarioNegocioModel();
   }
 
   ngOnInit() {
@@ -113,7 +124,15 @@ export class AgregarPromocionPage implements OnInit {
     this.buscarNegocios();
     this.obtenerTipoPromocion();
     this.obtenerAlcancePromocion();
-    this.seleccionTo.id_tipo_promocion = 1;
+    console.log("Bere",this.seleccionTo.id_tipo_promocion)
+    if(this.seleccionTo.id_tipo_promocion===''){
+      this.seleccionTo.id_tipo_promocion =1;
+    }else{
+      this.seleccionTo.id_tipo_promocion = this.seleccionTo.id_tipo_promocion;
+    }
+      
+    
+    
     // this.mostrarAnuncio=true
   }
 
@@ -380,6 +399,8 @@ export class AgregarPromocionPage implements OnInit {
         "Es requerido que llenes todos los campos obligatorios"
       );
     }
+    this.obtenerTipoPromocion();
+    this.obtenerAlcancePromocion();
   }
 
   cancelarEdicion() {
@@ -524,6 +545,7 @@ export class AgregarPromocionPage implements OnInit {
       },);
   }
 
+
   validarHoraInicio(evento) {
     if (evento.detail.value !== '' ||
       evento.detail.value !== undefined ||
@@ -531,6 +553,7 @@ export class AgregarPromocionPage implements OnInit {
       this.blnActivaHoraF = false;
     }
   }
+
   validarHoraFinal(evento) {
     if (evento.detail.value !== '' ||
       evento.detail.value !== undefined ||
@@ -538,6 +561,7 @@ export class AgregarPromocionPage implements OnInit {
       this.blnActivaDias = false;
     }
   }
+
   diasSeleccionado(evento) {
     if (evento.detail.value.length > 0) {
       this.nuevoHorario.dias = evento.detail.value;
@@ -545,6 +569,79 @@ export class AgregarPromocionPage implements OnInit {
     } else {
       this.blnActivaHorario = true;
     }
+  }
+
+  cancelarHorario() {
+    this.horarioini = '';
+    this.horariofin = '';
+    this.nuevoHorario = new HorarioNegocioModel;
+  }
+
+  agregarHorario() {
+    if (this.nuevoHorario.id_horario === null || this.nuevoHorario.id_horario === undefined) {
+      this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
+      this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
+      this.nuevoHorario.activo = true;
+      this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
+      this.nuevoHorario.id_horario = null;
+      if (this.posicionHorario >= 0) {
+        this.seleccionTo.dias[this.posicionHorario] = this.nuevoHorario;
+      } else {
+        this.seleccionTo.dias.push(this.nuevoHorario);
+      }
+      this.horarioini = '';
+      this.horariofin = '';
+      this.nuevoHorario = new HorarioNegocioModel;
+      this.posicionHorario = -1;
+    } else {
+      this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
+      this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
+      this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
+      this.nuevoHorario.dias = this.nuevoHorario.dias;
+      this.nuevoHorario.activo = true;
+      this.seleccionTo.dias[this.posicionHorario] = this.nuevoHorario;
+      this.horarioini = '';
+      this.horariofin = '';
+      this.nuevoHorario = new HorarioNegocioModel;
+      this.posicionHorario = -1;
+    }
+  }
+  
+  editarHorario(horario, i) {
+    let objFecha = new Date();
+    this.posicionHorario = i;
+    this.horarioini = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_inicio + ":ssZ");
+    this.horariofin = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_fin + ":ssZ");
+    this.nuevoHorario.dias = horario.dias;
+    this.nuevoHorario.id_horario = horario.id_horario;
+  }
+
+  async presentAlertEliminar(i) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '¿Esta seguro que desa Eliminar el registro?',
+      message: 'Recuerde que la acción es ireversible',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          }
+        }, {
+          role: 'destructive',
+          text: 'Confirmar',
+          handler: () => {
+            this.eliminarHorario(i);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  eliminarHorario(i) {
+    this.seleccionTo.dias.splice(i);
   }
   
 

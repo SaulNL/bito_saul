@@ -7,6 +7,7 @@ import { DiasPromoArray } from './DiasPromoArray';
 import { AfiliacionPlazaModel } from './AfiliacionPlazaModel';
 import { CategoriaModel } from './CategoriaModel';
 import { ProductoModel } from './ProductoModel';
+import { HorarioNegocioModel } from './HorarioNegocioModel';
 
 export class PromocionesModel {
   public id_promocion: number;
@@ -64,11 +65,11 @@ export class PromocionesModel {
   public porcentaje: any;
   public organizaciones: Array<AfiliacionPlazaModel>;
   public plazas: Array<AfiliacionPlazaModel>;
-  public dias: Array<DiasPromoArray >;
+  public dias:Array<HorarioNegocioModel>;
   public productos:Array<ProductoModel>;
   public categorias:Array<CategoriaModel>;
 
-  constructor(id_promocion: number = 0, promocion: string = '', tags: Array<string> = [], terminos: string = '', imagen: any = '', imagenBanner: any = '', imagenPoster: any = '', url_imagen: string = '', url_imagen_banner: string = '', url_imagen_poster: string = '', activo: boolean = null, fecha_inicio: Date = null, fecha_fin: Date = null, proveedor: string = '', nombre_comercial: string = '', select = 0, id_tipo_promocion: any = '', id_alcance_promocion: any ='', minimo: any = '',maximo_red: any='',porcentaje: any='', productos: Array<any> = [], categorias: Array<any> = [], organizaciones: Array<any> = [], plazas: Array<any> = [], dias: Array<any> =[]) {
+  constructor(id_promocion: number = 0, promocion: string = '', tags: Array<string> = [], terminos: string = '', imagen: any = '', imagenBanner: any = '', imagenPoster: any = '', url_imagen: string = '', url_imagen_banner: string = '', url_imagen_poster: string = '', activo: boolean = null, fecha_inicio: Date = null, fecha_fin: Date = null, proveedor: string = '', nombre_comercial: string = '', select = 0, id_tipo_promocion: any = '', id_alcance_promocion: any ='', minimo: any = '',maximo_red: any='',porcentaje: any='', productos: Array<any> = [], categorias: Array<any> = [], organizaciones: Array<any> = [], plazas: Array<any> = []) {
     this.id_promocion = id_promocion;
     this.promocion = promocion;
     this.tags = tags;
@@ -94,6 +95,6 @@ export class PromocionesModel {
     this.plazas = plazas;
     this.productos= productos;
     this.categorias = categorias;
-    this.dias = dias;
+    this.dias= new Array<HorarioNegocioModel>() ;
   }
 }
