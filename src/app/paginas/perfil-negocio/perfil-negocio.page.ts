@@ -246,6 +246,7 @@ export class PerfilNegocioPage implements OnInit {
     });
     this.getCurrentPosition();
     this.idPersona = this.existeSesion ? this.user.id_persona : null;
+    localStorage.removeItem("negocios");
   }
 
   loadMap() {

@@ -155,7 +155,9 @@ export class ProductosPage {
       }
     });
     this.existeSesion = this.util.existe_sesion();
-
+    localStorage.setItem('productos',('active'));
+    localStorage.removeItem("negocios");
+    //localStorage.removeItem("productos");
     // if (this.existeSesion) {
     //   this.permisos = this.auth0Service.getUserPermisos();
     //   this.afiliacion = this.validarPermiso.isChecked(
@@ -163,6 +165,7 @@ export class ProductosPage {
     //     "ver_afiliacion"
     //   );
     // }
+
   }
 
   /**
@@ -483,7 +486,7 @@ export class ProductosPage {
         permisos: permisos,
       },
     });
-
+    sessionStorage.setItem('productos',('active'));
     return await this.modal.present();
   }
   /**

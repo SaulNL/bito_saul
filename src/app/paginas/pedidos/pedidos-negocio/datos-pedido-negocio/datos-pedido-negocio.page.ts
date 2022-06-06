@@ -8,6 +8,7 @@ import { ToadNotificacionService } from '../../../../api/toad-notificacion.servi
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 declare var google: any;
+import { Platform } from '@ionic/angular';
 
 @Component({
     selector: 'app-datos-pedido-negocio',
@@ -28,6 +29,7 @@ export class DatosPedidoNegocioPage implements OnInit {
     public domicilioEnvio: boolean;
     public domicilioEnvioMessage: any;
     public estasUbicacion: any;
+    public isIos: boolean;
 
     constructor(
         private pedidosServicios: PedidosService,
@@ -35,7 +37,8 @@ export class DatosPedidoNegocioPage implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private notificaciones: ToadNotificacionService,
-        private socialSharing: SocialSharing
+        private socialSharing: SocialSharing,
+        private platform: Platform,
     ) {
         this.blnCancelar = false;
         this.loaderBtn = false;
@@ -43,6 +46,7 @@ export class DatosPedidoNegocioPage implements OnInit {
         this.domicilioEnvio = false;
         this.domicilioEnvioMessage = '';
         this.total = 0;
+        this.isIos = this.platform.is('ios');
     }
 
     ngOnInit() {
@@ -162,10 +166,17 @@ export class DatosPedidoNegocioPage implements OnInit {
     }
 
     shareSocial() {
-        let url = 'https://www.google.com.mx/maps/@'
-                   + this.pedido.direccion.latitud + ","
-                   + this.pedido.direccion.longitud + ",17z"
-        this.socialSharing.share('Dirección:', 'Dirección:', '', '' + this.pedido.direccion.direccion + ' ' + url);
+
+        if(this.isIos){
+            let urlIos: string = 'https://www.google.com.mx/maps/@'+ this.pedido.direccion.latitud + ","+ this.pedido.direccion.longitud + ",17z";
+            this.socialSharing.share('Dirección:'+ this.pedido.direccion.direccion, 'Dirección:', '', urlIos);
+        }else{
+            let url = 'https://www.google.com.mx/maps/@'
+            + this.pedido.direccion.latitud + ","
+            + this.pedido.direccion.longitud + ",17z"
+            this.socialSharing.share('Dirección:', 'Dirección:', '', '' + this.pedido.direccion.direccion + ' ' + url);
+        }
+       
     }
 
     public gLatLng(lat, lng) {

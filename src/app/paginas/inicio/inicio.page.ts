@@ -68,7 +68,7 @@ export class InicioPage implements OnInit {
   public siguientePagina = this.actualPagina + 1;
   public mensaje = InicioPage.MENSAJE_CUANDO_CARGA;
   public totalDePaginasPorConsulta = 0;
-
+  activedPage: string;
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -117,8 +117,7 @@ export class InicioPage implements OnInit {
         this.backPhysicalBottom();
       });
     });
-  
-  
+    localStorage.removeItem("productos");
   }
 
   public backPhysicalBottom() {
@@ -211,6 +210,8 @@ export class InicioPage implements OnInit {
         window.location.assign("/tabs/inicio");
         localStorage.removeItem("Page");
       }
+    localStorage.removeItem("productos");
+    localStorage.setItem('negocios',('active'));
   }
 
   private load() {
@@ -244,6 +245,7 @@ export class InicioPage implements OnInit {
     setTimeout(() => {
       event.target.complete();
       this.ngOnInit();
+      localStorage.removeItem("productos");
     }, 2000);
   }
 
