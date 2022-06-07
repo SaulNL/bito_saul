@@ -375,11 +375,18 @@
                 Pago por transferencia
               </p>
             </ion-label>
-            <span
+            <div *ngIf="informacionNegocio.costo_entrega == 'Contactar primero'">
+              <span
               class="entrega-domicilio"
               *ngIf="costoMayorA(informacionNegocio.costo_entrega)"
-              >Costo de entrega: {{informacionNegocio.costo_entrega}}</span
-            >
+              >Costo de entrega:{{informacionNegocio.costo_entrega}}</span>
+            </div>
+            <div  *ngIf="informacionNegocio.costo_entrega != 'Contactar primero'">
+              <span
+                class="entrega-domicilio"
+                *ngIf="costoMayorA(informacionNegocio.costo_entrega)"
+                >Costo de entrega:${{informacionNegocio.costo_entrega}}</span>
+            </div>
           </ion-col>
         </ion-row>
         <br />

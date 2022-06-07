@@ -13,48 +13,23 @@
   (ionScroll)="cordenada = $event.detail.scrollTop"
 >
   <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
-  <section class="portada-fondo">
-    <div class="container-fluid espacio_top">
-      <div class="row justify-content-center">
-        <div class="col-12">
-          <div class="row">
-            <div class="col-12" align="right">
-              <h2 class="text-white s1">¡Reactivemos</h2>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-12" align="right">
-              <h1 class="text-white s2">JUNTOS</h1>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-12" align="right">
-              <h2 class="text-white s3">la economía</h2>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-12" align="right">
-              <h2 class="text-white s4">local!</h2>
-            </div>
-          </div>
-          <br />
-        </div>
-      </div>
-      <div class="row justify-content-end seccion_software">
-        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6" align="right">
-          <img
-            src="https://ecoevents.blob.core.windows.net/comprandoando/conocenos%2FBitoo.png"
-            alt=""
-            class="img-fluid mx-auto"
-            style="width: 8rem"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
+  
+  <ion-slides pager = "true" [options]="slideOptsOne">
+     <ion-slide *ngFor="let imagenConocenos of listImagsConocenos">
+      <ion-card>
+       <ion-card-content>
+         <ion-row>
+           <ion-col col-4></ion-col>
+           <ion-col col-4>
+             <ion-img [src] = "imagenConocenos.imagen" style="height: 300px; width: 320px"></ion-img>
+           </ion-col>
+           <ion-col col-4></ion-col>
+         </ion-row>
+        </ion-card-content>
+      </ion-card>
+     </ion-slide>
+  </ion-slides>
+
   <!-- seccion 2 -->
   <ion-grid class="ion-padding">
     <ion-row>

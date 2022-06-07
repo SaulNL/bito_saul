@@ -20,6 +20,21 @@
     position: relative;
 }
 
+// ion-slides{
+//    ion-slide{
+//        height: 234px;
+//        width: 100% !important;
+//        ion-card{
+//             height: 230px;
+//             width: 100%;
+//        }
+//    }
+// }
+
+ion-slides {
+    --bullet-background-active: #f8307c;
+ }
+
 .alexis {
     background-image: url(https://ecoevents.blob.core.windows.net/comprandoando/conocenos/Alexis.png);
     background-repeat: no-repeat;
