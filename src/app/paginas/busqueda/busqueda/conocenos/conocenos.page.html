@@ -14,20 +14,10 @@
 >
   <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
   
-  <ion-slides pager = "true" [options]="slideOptsOne">
-     <ion-slide *ngFor="let imagenConocenos of listImagsConocenos">
-      <ion-card>
-       <ion-card-content>
-         <ion-row>
-           <ion-col col-4></ion-col>
-           <ion-col col-4>
-             <ion-img [src] = "imagenConocenos.imagen" style="height: 300px; width: 320px"></ion-img>
-           </ion-col>
-           <ion-col col-4></ion-col>
-         </ion-row>
-        </ion-card-content>
-      </ion-card>
-     </ion-slide>
+  <ion-slides  pager = "true" [options]="slideOptsOne" >
+      <ion-slide *ngFor="let imagenConocenos of listImagsConocenos">
+          <img src="{{imagenConocenos.imagen}}">
+      </ion-slide>
   </ion-slides>
 
   <!-- seccion 2 -->
