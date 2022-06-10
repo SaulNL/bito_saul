@@ -245,8 +245,8 @@
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Dias de la Semana</ion-label>
-            <ion-select [disabled]="blnActivaDias" ok-text="Ok" cancel-text="Cancelar" multiple #dias="ngModel"
-              name="dias" (ionChange)="diasSeleccionado($event)" [(ngModel)]="nuevoHorario.dias">
+            <ion-select [disabled]="blnActivaDias" ok-text="Ok" cancel-text="Cancelar" multiple name="dias" 
+              #dias="ngModel" [(ngModel)]="nuevoHorario.dias" (ionChange)="diasSeleccionado($event)" >
               <ion-select-option *ngFor="let dia of diasArray" [value]="dia.dia">{{dia.dia}}</ion-select-option>
             </ion-select>
           </ion-item>

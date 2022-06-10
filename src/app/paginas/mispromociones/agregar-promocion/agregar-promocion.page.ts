@@ -18,6 +18,7 @@ import { DiasPromoArray } from '../../../Modelos/DiasPromoArray';
 import { AlertController } from '@ionic/angular';
 import * as moment from 'moment';
 import { HorarioNegocioModel } from '../../../Modelos/HorarioNegocioModel';
+import { HorarioPromocionModel } from '../../../Modelos/HorarioPromocionModel';
 
 @Component({
   selector: "app-agregar-promocion",
@@ -82,9 +83,10 @@ export class AgregarPromocionPage implements OnInit {
   public blnActivaHoraF: boolean;
   public horariofin: string;
   public blnActivaDias: boolean;
-  public nuevoHorario: HorarioNegocioModel;
+  public nuevoHorario: HorarioPromocionModel;
   public blnActivaHorario: boolean;
   public posicionHorario: number;
+  
   
   constructor(
     private alertController: AlertController,
@@ -103,7 +105,7 @@ export class AgregarPromocionPage implements OnInit {
     this.blnActivaHoraF = true;
     this.blnActivaDias = true;
     this.blnActivaHorario = true;
-    this.nuevoHorario = new HorarioNegocioModel();
+    this.nuevoHorario = new HorarioPromocionModel();
   }
 
   ngOnInit() {
@@ -124,16 +126,13 @@ export class AgregarPromocionPage implements OnInit {
     this.buscarNegocios();
     this.obtenerTipoPromocion();
     this.obtenerAlcancePromocion();
-    console.log("Bere",this.seleccionTo.id_tipo_promocion)
+
     if(this.seleccionTo.id_tipo_promocion===''){
       this.seleccionTo.id_tipo_promocion =1;
     }else{
       this.seleccionTo.id_tipo_promocion = this.seleccionTo.id_tipo_promocion;
     }
-      
     
-    
-    // this.mostrarAnuncio=true
   }
 
   public agregarTags(event) {
@@ -374,11 +373,13 @@ export class AgregarPromocionPage implements OnInit {
       if (this.seleccionTo.tags.length === 0) {
         this.seleccionTo.tags = [];
       }
+      
+      
 
       this._promociones_service.guardar(this.seleccionTo).subscribe(
         (response) => {
           let d1= JSON.stringify(response);
-            console.log('Bere (Form) - 50000:   '+d1);
+            console.log('Bere (Form-enviar) - 50000:   '+d1);
           if (this._utils_cls.is_success_response(response.code)) {
             form.resetForm();
             this._router.navigate(["/tabs/home/promociones"], {
@@ -574,16 +575,17 @@ export class AgregarPromocionPage implements OnInit {
   cancelarHorario() {
     this.horarioini = '';
     this.horariofin = '';
-    this.nuevoHorario = new HorarioNegocioModel;
+    this.nuevoHorario = new HorarioPromocionModel;
   }
 
   agregarHorario() {
-    if (this.nuevoHorario.id_horario === null || this.nuevoHorario.id_horario === undefined) {
+    console.log("horario",this.nuevoHorario.id_horario_promocion)
+    if (this.nuevoHorario.id_horario_promocion === null || this.nuevoHorario.id_horario_promocion  === undefined) {
       this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
       this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
       this.nuevoHorario.activo = true;
       this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
-      this.nuevoHorario.id_horario = null;
+      this.nuevoHorario.id_horario_promocion  = null;
       if (this.posicionHorario >= 0) {
         this.seleccionTo.dias[this.posicionHorario] = this.nuevoHorario;
       } else {
@@ -591,7 +593,7 @@ export class AgregarPromocionPage implements OnInit {
       }
       this.horarioini = '';
       this.horariofin = '';
-      this.nuevoHorario = new HorarioNegocioModel;
+      this.nuevoHorario = new HorarioPromocionModel;
       this.posicionHorario = -1;
     } else {
       this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
@@ -602,7 +604,7 @@ export class AgregarPromocionPage implements OnInit {
       this.seleccionTo.dias[this.posicionHorario] = this.nuevoHorario;
       this.horarioini = '';
       this.horariofin = '';
-      this.nuevoHorario = new HorarioNegocioModel;
+      this.nuevoHorario = new HorarioPromocionModel;
       this.posicionHorario = -1;
     }
   }
@@ -613,7 +615,8 @@ export class AgregarPromocionPage implements OnInit {
     this.horarioini = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_inicio + ":ssZ");
     this.horariofin = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_fin + ":ssZ");
     this.nuevoHorario.dias = horario.dias;
-    this.nuevoHorario.id_horario = horario.id_horario;
+    console.log("dias", horario.dias)
+    this.nuevoHorario.id_horario_promocion  = horario.id_horario_promocion;
   }
 
   async presentAlertEliminar(i) {
@@ -643,6 +646,6 @@ export class AgregarPromocionPage implements OnInit {
   eliminarHorario(i) {
     this.seleccionTo.dias.splice(i);
   }
-  
+
 
 }

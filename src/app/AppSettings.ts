@@ -1,7 +1,7 @@
 import { URLS_ENTORNOS } from '../environments/urlEntornos';
 export class AppSettings {
 
-    public static ENTORNO = URLS_ENTORNOS.beta;
+    public static ENTORNO = URLS_ENTORNOS.local;
     public static API_ENDPOINT = AppSettings.ENTORNO.API_ENDPOINT;
     public static URL_FRONT = AppSettings.ENTORNO.URL_FRONT;
     public static URL_REGISTRO = AppSettings.ENTORNO.URL_REGISTRO;
