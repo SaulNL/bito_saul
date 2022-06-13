@@ -269,18 +269,12 @@ export class PromocionesService {
   guardar(variable: PromocionesModel): Observable<any> {
     
     const body = JSON.stringify(variable);
-    let d3= JSON.stringify(body);
-      console.log('Bere (Body):   '+d3);
     this. http.setDataSerializer('utf8');
     return from(this.http.post(this.url + 'api/promociones/guardar', body, AppSettings.getHeadersToken())
     .then((data) => {
-      let d1= JSON.stringify(data.data);
-      console.log('Bere (data):   '+d1);
       return JSON.parse(data.data);
     })
     .catch((error) => {
-      let d1= JSON.stringify(error);
-      console.log('Bere (error):   '+d1);
       return error;
     }));
   }

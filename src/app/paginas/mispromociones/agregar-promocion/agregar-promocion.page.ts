@@ -378,8 +378,6 @@ export class AgregarPromocionPage implements OnInit {
 
       this._promociones_service.guardar(this.seleccionTo).subscribe(
         (response) => {
-          let d1= JSON.stringify(response);
-            console.log('Bere (Form-enviar) - 50000:   '+d1);
           if (this._utils_cls.is_success_response(response.code)) {
             form.resetForm();
             this._router.navigate(["/tabs/home/promociones"], {
