@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Platform} from "@ionic/angular";
 import {ActivatedRoute} from "@angular/router";
 import {DeviceInfoModel} from "../../Modelos/DeviceInfoModel";
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
     selector: 'app-actualizar-version',
@@ -12,6 +13,7 @@ export class ActualizarVersionPage implements OnInit {
     public isIOS: boolean = false;
     public device: DeviceInfoModel;
     public subscribe;
+    public url = "https://bitoo.azurewebsites.net/descargar-app";
 
     constructor(private platform: Platform,
                 private activatedRoute: ActivatedRoute) {
@@ -42,5 +44,10 @@ export class ActualizarVersionPage implements OnInit {
 
     public goUrl() {
         window.open(this.device.url, '_target')
+        
+    }
+
+    public DescargarActualizacion(){
+        window.open(this.url, '_target')
     }
 }
