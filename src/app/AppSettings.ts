@@ -1,7 +1,7 @@
 import { URLS_ENTORNOS } from '../environments/urlEntornos';
 export class AppSettings {
 
-    public static ENTORNO = URLS_ENTORNOS.beta;
+    public static ENTORNO = URLS_ENTORNOS.produccion;
     public static API_ENDPOINT = AppSettings.ENTORNO.API_ENDPOINT;
     public static URL_FRONT = AppSettings.ENTORNO.URL_FRONT;
     public static URL_REGISTRO = AppSettings.ENTORNO.URL_REGISTRO;
@@ -15,8 +15,9 @@ export class AppSettings {
     public static IMG_ERROR_SOLICITUD = 'https://ecoevents.blob.core.windows.net/comprandoando/img_default/Promo%20banner.png';
     public static IMG_CATEGORIAS_TODAS = 'https://ecoevents.blob.core.windows.net/comprandoando/Categor%C3%ADas/Separador%20categor%C3%ADa%20web/Todas%20las%20categor%C3%ADas.png';
 
+    public static RELEASE_DATE = "17 de junio de 2022";
     public static VERSION_SISTEMA = 28;
-    public static VERSION_ANDROID = 31;
+    public static VERSION_ANDROID = 32;
     public static ID_DB_PLATFORM_ANDROID = 54;
     public static ID_DB_PLATFORM_IOS = 55;
     public static VERSION_IOS = 1;

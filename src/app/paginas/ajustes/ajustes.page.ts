@@ -34,6 +34,8 @@ export class AjustesPage implements OnInit {
   public totalNoVistos: number;
   public subscribe;
   public siNoVistos: boolean;
+  public versionActualSistema: number;
+  public releaseDate: string;
 
   constructor(
     private util: UtilsCls,
@@ -58,6 +60,8 @@ export class AjustesPage implements OnInit {
       this.setNewDataBasicUser(this.usuario.id_persona);
       this.validar(JSON.parse(String(localStorage.getItem('u_permisos'))));
     }
+    this.versionActualSistema = (this.platform.is('android')) ? AppSettings.VERSION_ANDROID : AppSettings.VERSION_IOS;
+    this.releaseDate = AppSettings.RELEASE_DATE;
   }
 
   ngOnInit() {
