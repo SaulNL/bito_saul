@@ -13,11 +13,14 @@ export class ActualizarVersionPage implements OnInit {
     public isIOS: boolean = false;
     public device: DeviceInfoModel;
     public subscribe;
-    public url = "https://bitoo.azurewebsites.net/descargar-app";
-
+    public isAndroid: boolean;
+    public urlAndroid = "https://play.google.com/store/apps/details?id=mx.com.softura.bitoo.produccion";
+    public urlIOS = "https://apps.apple.com/mx/app/bitoo/id1586676298"
+    //public url= "https://bitoo.azurewebsites.net/descargar-app";
     constructor(private platform: Platform,
                 private activatedRoute: ActivatedRoute) {
         this.device = new DeviceInfoModel();
+        this.isAndroid = (this.platform.is('android'));
         this.platform.backButton.subscribeWithPriority(9999, () => {
             document.addEventListener('backbutton', function (event) {
                 event.preventDefault();
@@ -48,6 +51,10 @@ export class ActualizarVersionPage implements OnInit {
     }
 
     public DescargarActualizacion(){
-        window.open(this.url, '_target')
+        if(this.isAndroid ){ 
+            window.open(this.urlAndroid, '_target')
+        }else{
+            window.open(this.urlIOS, '_target')
+        }
     }
 }
