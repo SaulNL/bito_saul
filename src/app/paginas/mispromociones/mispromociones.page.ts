@@ -34,8 +34,11 @@ export class MispromocionesPage implements OnInit {
     public publicacionesHechas: number;
     public publicacionesPermitidas: number;
     public lstPromocionesPublicadasBK: Array<PromocionesModel>;
+    public lstAnunciosBK: Array<PromocionesModel>;
+    public lstPromoPublicadasBK: Array<PromocionesModel>;
     public blnActivarFormularioEdicion: boolean;
     public filtro: any;
+    public filtroAnuncio: any;
     public btnDetallePromocion: boolean;
     public mensajePublicacion = false;
     public blnSelectFecha = false;
@@ -49,8 +52,12 @@ export class MispromocionesPage implements OnInit {
     public lstQuienVioPublicacion: Array<QuienVioModel>;
     public numeroVisto: number;
     public blnActivaPromocion: boolean;
-    public mostrarListaPromocionesPublicadas = true;
+    public mostrarListaPromocionesPublicadas = false;
+    public mostrarListaAnunciosPublicadas = false;
     public msj = 'Cargando';
+    lstAnuncios: any;
+    lstPromo: any;
+    lstTipoPromo: any;
 
     constructor(
         private _promociones_service: PromocionesService,
@@ -105,6 +112,7 @@ export class MispromocionesPage implements OnInit {
                 this.lstPromociones = response.data;
                 this.lstPromocionesBK = response.data;
                 this.filtro = "";
+                this.filtroAnuncio="";
                 window.scrollTo({top: 0, behavior: "smooth"});
                 this.obtenerNumeroPublicacionesPromocion();
                 this.obtenerPromocionesPublicadas();
@@ -147,6 +155,15 @@ export class MispromocionesPage implements OnInit {
             .subscribe(
                 (response) => {
                     this.lstPromocionesPublicadas = response.data;
+
+                    this.lstAnuncios = response.data;
+                    this.lstAnuncios = this.lstAnuncios.filter(publicacion => publicacion.id_tipo_promocion === 1);
+                    
+                    this.lstPromo = response.data;
+                    this.lstPromo =  this.lstPromo.filter(publicacion => publicacion.id_tipo_promocion === 2);
+
+                    this.lstPromoPublicadasBK = this.lstPromo.filter(publicacion => publicacion.id_tipo_promocion === 2);
+                    this.lstAnunciosBK = this.lstAnuncios.filter(publicacion => publicacion.id_tipo_promocion === 1);
                     this.lstPromocionesPublicadasBK = response.data;
                     this.loaderPc = false;
                 },
@@ -176,6 +193,37 @@ export class MispromocionesPage implements OnInit {
                     element.promocion
                         .toLowerCase()
                         .indexOf(this.filtro.toString().toLowerCase()) > -1
+                );
+            }
+        );
+    }
+    btnBuscarPromciones() {
+        this.lstPromo = this.lstPromoPublicadasBK;
+        this.lstPromo = this.lstPromo.filter(
+            (element) => {
+                return (
+                    element.nombre_comercial
+                        .toLowerCase()
+                        .indexOf(this.filtro.toString().toLowerCase()) > -1 ||
+                    element.promocion
+                        .toLowerCase()
+                        .indexOf(this.filtro.toString().toLowerCase()) > -1
+                );
+            }
+        );
+    }
+
+    btnBuscarAnuncios() {
+        this.lstAnuncios = this.lstAnunciosBK;
+        this.lstAnuncios =this.lstAnuncios.filter(
+            (element) => {
+                return (
+                    element.nombre_comercial
+                        .toLowerCase()
+                        .indexOf(this.filtroAnuncio.toString().toLowerCase()) > -1 ||
+                    element.promocion
+                        .toLowerCase()
+                        .indexOf(this.filtroAnuncio.toString().toLowerCase()) > -1
                 );
             }
         );

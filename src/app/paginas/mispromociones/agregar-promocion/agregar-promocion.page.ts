@@ -12,6 +12,13 @@ import { RecorteImagenComponent } from "../../../components/recorte-imagen/recor
 import { ModalController } from "@ionic/angular";
 import { PromocionesService } from "../../../api/promociones.service";
 import { LoadingController } from "@ionic/angular";
+import { CatOrganizacionesModel } from './../../../Modelos/CatOrganizacionesModel';
+import { DiasPromoArray } from '../../../Modelos/DiasPromoArray';
+
+import { AlertController } from '@ionic/angular';
+import * as moment from 'moment';
+import { HorarioNegocioModel } from '../../../Modelos/HorarioNegocioModel';
+import { HorarioPromocionModel } from '../../../Modelos/HorarioPromocionModel';
 
 @Component({
   selector: "app-agregar-promocion",
@@ -42,8 +49,47 @@ export class AgregarPromocionPage implements OnInit {
   @ViewChild("inputTarjeta") inputTar: ElementRef;
   @ViewChild("inputBanner") inputBanner: ElementRef;
   public loading;
-
+  lstTipoPromo: any;
+  mostrarAnuncio: boolean;
+  mostrarPromo: boolean;
+  tipoPromo: any;
+  tipoPlazaAfi:any;
+  promo: number;
+  lstAlcance: any;
+  validoPara: { id: number; name: string; }[];
+  plzAflcn: number;
+  public lstPlazas: Array<CatOrganizacionesModel>;
+  public lstDias: Array<DiasPromoArray>;
+  lstPlaza: any;
+  lstOrg: unknown[];
+  verSeleccion: any;
+  lstPlazaOrg: unknown[];
+  public diasArray = [
+    { id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null },
+    { id: 2, dia: 'Martes', horarios: [], hi: null, hf: null },
+    { id: 3, dia: 'Miércoles', horarios: [], hi: null, hf: null },
+    { id: 4, dia: 'Jueves', horarios: [], hi: null, hf: null },
+    { id: 5, dia: 'Viernes', horarios: [], hi: null, hf: null },
+    { id: 6, dia: 'Sábado', horarios: [], hi: null, hf: null },
+    { id: 7, dia: 'Domingo', horarios: [], hi: null, hf: null },
+  ];
+  productos: any;
+  cats: any[];
+  prod: any[];
+  tipoAplicable: number;
+  namePlzAfl: any;
+  ngModelPlzAfl: any;
+  public horarioini: string;
+  public blnActivaHoraF: boolean;
+  public horariofin: string;
+  public blnActivaDias: boolean;
+  public nuevoHorario: HorarioPromocionModel;
+  public blnActivaHorario: boolean;
+  public posicionHorario: number;
+  
+  
   constructor(
+    private alertController: AlertController,
     private route: ActivatedRoute,
     private _negocio_service: NegocioService,
     public _notificacionService: ToadNotificacionService,
@@ -56,6 +102,10 @@ export class AgregarPromocionPage implements OnInit {
     this.seleccionTo = new PromocionesModel();
     this.publicacion = new PublicacionesModel();
     this.loader = false;
+    this.blnActivaHoraF = true;
+    this.blnActivaDias = true;
+    this.blnActivaHorario = true;
+    this.nuevoHorario = new HorarioPromocionModel();
   }
 
   ngOnInit() {
@@ -74,6 +124,15 @@ export class AgregarPromocionPage implements OnInit {
     this.blnImgRectangulo = !(this.seleccionTo.url_imagen_banner !== "");
     this.blnImgPoster = !(this.seleccionTo.url_imagen_poster !== "");
     this.buscarNegocios();
+    this.obtenerTipoPromocion();
+    this.obtenerAlcancePromocion();
+
+    if(this.seleccionTo.id_tipo_promocion===''){
+      this.seleccionTo.id_tipo_promocion =1;
+    }else{
+      this.seleccionTo.id_tipo_promocion = this.seleccionTo.id_tipo_promocion;
+    }
+    
   }
 
   public agregarTags(event) {
@@ -96,10 +155,41 @@ export class AgregarPromocionPage implements OnInit {
       );
   }
 
+  obtenerTipoPromocion() {
+   
+    this._negocio_service
+    this._promociones_service.obtenerTipoPromocion()
+      .subscribe(
+        (response) => {
+          this.lstTipoPromo = response.data.list_cat_tipo_promocion;
+        },
+        (error) => {
+          this._notificacionService.error(error);
+        }
+      );
+  }
+
+  obtenerAlcancePromocion() {
+   
+    this._negocio_service
+    this._promociones_service.obtenerAlcancePromocion()
+      .subscribe(
+        (response) => {
+          this.lstAlcance = response.data.list_cat_alcance_promocion;
+          
+        },
+        (error) => {
+          this._notificacionService.error(error);
+        }
+      );
+  }
+
   decripcionSelect() {
+    console.log("Entro a description");
     if (this.publicacion.id_negocio.toString() !== "undefined") {
       this.lstNegocios.map((valor) => {
         if (valor.id_negocio === Number(this.publicacion.id_negocio)) {
+          console.log(valor.id_negocio)
           this.descripcionString = valor.descripcion;
         }
       });
@@ -283,6 +373,8 @@ export class AgregarPromocionPage implements OnInit {
       if (this.seleccionTo.tags.length === 0) {
         this.seleccionTo.tags = [];
       }
+      
+      
 
       this._promociones_service.guardar(this.seleccionTo).subscribe(
         (response) => {
@@ -306,9 +398,252 @@ export class AgregarPromocionPage implements OnInit {
         "Es requerido que llenes todos los campos obligatorios"
       );
     }
+    this.obtenerTipoPromocion();
+    this.obtenerAlcancePromocion();
   }
 
   cancelarEdicion() {
     this._router.navigate(["/tabs/home/promociones"]);
   }
+
+  cambiarTipo(evento) {
+    this.seleccionTo.id_tipo_promocion = parseInt(evento.detail.value);
+    if (this.seleccionTo.id_tipo_promocion=== 2) {
+      this.promo=2;
+    }
+    if (this.seleccionTo.id_tipo_promocion=== 1) {
+        this.promo=1;
+    }
+  }
+
+ 
+  plazaAfiliacion(event){
+    this.tipoPlazaAfi = parseInt(event.detail.value);
+    if (this.tipoPlazaAfi=== 1) {
+      this.obtenerCaPlazas();
+    
+      
+    }
+    if (this.tipoPlazaAfi=== 2) {
+      this.obtenerCatOrganizaciones();
+      
+    }
+  }
+  
+  promoAplicable(event){
+    this.tipoAplicable = parseInt(event.detail.value);
+    if (this.tipoAplicable=== 2) {
+      this.productosCategoriasObtener();
+    }
+    if (this.tipoAplicable=== 3) {
+      this.categoriasProductos();
+    }
+  }
+
+  public obtenerCaPlazas() {
+      this._negocio_service.obtenerPlazas()
+        .subscribe(
+          (response) => {
+            if (response.code === 200) {
+              this.lstPlazas= Object.values(response.data);
+             console.log( this.lstPlaza);
+            } else {
+              this.lstPlazas = [];
+            }
+          },
+          (error) => {
+            this._notificacionService.error(error);
+          }
+        );
+  }
+
+  public obtenerCatOrganizaciones() {
+      this._negocio_service.obtenerCatOrganizaciones()
+        .subscribe(
+          (response) => {
+            if (response.code === 200) {
+              this.lstPlazas = Object.values(response.data);
+            } else {
+              this.lstPlazas= [];
+            }
+          },
+          (error) => {
+            this._notificacionService.error(error);
+          }
+        );
+  }
+
+
+  public productosCategoriasObtener(){
+    console.log(this.seleccionTo.id_negocio);
+    
+    this._promociones_service.obtenerDetalleDeNegocio(this.seleccionTo.id_negocio).subscribe(
+      response => {
+        if (response.code === 200 && response.agrupados != null) {
+          this.productos = response.agrupados;
+          console.log(this.productos);
+         this.cats = [];
+         this.prod = [];
+
+          if (this.productos !== undefined) {
+            let id=this.productos.map((x:any) => {
+
+                x.productos.map(y=> {
+                  this.prod.push({
+                    idProducto: y.idProducto,
+                    nombre:y.nombre
+                  })
+                
+                })
+          
+              })
+            };
+          }
+        },
+      error => {
+        this._notificacionService.error(error);
+      },);
+  }
+
+  public categoriasProductos() {
+    this._promociones_service.obtenerDetalleDeNegocio(this.seleccionTo.id_negocio).subscribe(
+      response => {
+        if (response.code === 200 && response.agrupados != null) {
+          const productos = response.agrupados;
+
+          const cats = [];
+          this.prod = [];
+
+          if (productos !== undefined) {
+            productos.map(catprod => {
+
+              if (catprod.activo) {
+
+                const productos3 = [];
+                catprod.productos.map(pro => {
+                  if (pro.existencia) {
+                    productos3.push(pro);
+                  }
+                });
+                catprod.productos = productos3;
+                if (productos3.length > 0) {
+                  this.prod.push({
+                    id_categoria:catprod.id_categoria,
+                    nombre:catprod.nombre});
+                }
+              }
+
+            });
+          }
+          console.log(this.prod);
+        }
+       
+      },
+      error => {
+        this._notificacionService.error(error);
+      },);
+  }
+
+
+  validarHoraInicio(evento) {
+    if (evento.detail.value !== '' ||
+      evento.detail.value !== undefined ||
+      evento.detail.value !== null) {
+      this.blnActivaHoraF = false;
+    }
+  }
+
+  validarHoraFinal(evento) {
+    if (evento.detail.value !== '' ||
+      evento.detail.value !== undefined ||
+      evento.detail.value !== null) {
+      this.blnActivaDias = false;
+    }
+  }
+
+  diasSeleccionado(evento) {
+    if (evento.detail.value.length > 0) {
+      this.nuevoHorario.dias = evento.detail.value;
+      this.blnActivaHorario = false;
+    } else {
+      this.blnActivaHorario = true;
+    }
+  }
+
+  cancelarHorario() {
+    this.horarioini = '';
+    this.horariofin = '';
+    this.nuevoHorario = new HorarioPromocionModel;
+  }
+
+  agregarHorario() {
+    console.log("horario",this.nuevoHorario.id_horario_promocion)
+    if (this.nuevoHorario.id_horario_promocion === null || this.nuevoHorario.id_horario_promocion  === undefined) {
+      this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
+      this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
+      this.nuevoHorario.activo = true;
+      this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
+      this.nuevoHorario.id_horario_promocion  = null;
+      if (this.posicionHorario >= 0) {
+        this.seleccionTo.dias[this.posicionHorario] = this.nuevoHorario;
+      } else {
+        this.seleccionTo.dias.push(this.nuevoHorario);
+      }
+      this.horarioini = '';
+      this.horariofin = '';
+      this.nuevoHorario = new HorarioPromocionModel;
+      this.posicionHorario = -1;
+    } else {
+      this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
+      this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
+      this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
+      this.nuevoHorario.dias = this.nuevoHorario.dias;
+      this.nuevoHorario.activo = true;
+      this.seleccionTo.dias[this.posicionHorario] = this.nuevoHorario;
+      this.horarioini = '';
+      this.horariofin = '';
+      this.nuevoHorario = new HorarioPromocionModel;
+      this.posicionHorario = -1;
+    }
+  }
+  
+  editarHorario(horario, i) {
+    let objFecha = new Date();
+    this.posicionHorario = i;
+    this.horarioini = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_inicio + ":ssZ");
+    this.horariofin = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_fin + ":ssZ");
+    this.nuevoHorario.dias = horario.dias;
+    console.log("dias", horario.dias)
+    this.nuevoHorario.id_horario_promocion  = horario.id_horario_promocion;
+  }
+
+  async presentAlertEliminar(i) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '¿Esta seguro que desa Eliminar el registro?',
+      message: 'Recuerde que la acción es ireversible',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          }
+        }, {
+          role: 'destructive',
+          text: 'Confirmar',
+          handler: () => {
+            this.eliminarHorario(i);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  eliminarHorario(i) {
+    this.seleccionTo.dias.splice(i);
+  }
+
+
 }

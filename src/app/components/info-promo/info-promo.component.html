@@ -17,21 +17,64 @@
         <h2 class="sinMargin">{{ promocion.descripcion }}</h2>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <h2 class="sinMargin promocion">{{ promocion.promocion }}</h2>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <h2 class="promocion" style="color: grey;">{{ promocion.terminos }}</h2>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <h2 class="promocion">Quedan <span style="color: #fa4f72;">{{ promocion.restanDias }} días</span> de esta promoción</h2>
-      </ion-col>
-    </ion-row>
+    <hr>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <div *ngIf="promocion.id_tipo_promocion===1">
+            <h2 class="sinMargin">Anuncio</h2>
+          </div>
+          <div *ngIf="promocion.id_tipo_promocion===2">
+            <h2 class="sinMargin">Promoción</h2>
+            <br>
+            <h2 class="sinMargin promocion">{{promocion.promocion}}</h2>
+          </div>
+        </ion-col>
+      </ion-row>
+    <div *ngIf="promocion.id_tipo_promocion===2">
+      <ion-grid>
+        <ion-row class="ion-text-center">
+          <ion-col size="6" >
+            <label *ngIf="promocion.porcentaje !== null" >{{ promocion.porcentaje}} %</label>
+            <span *ngIf="promocion.porcentaje !== null" class="promocion"> de descuento</span></ion-col>
+          <ion-col size="6"><ion-button (click)="onClick()" class="bg-rosa" size="small" mode="ios" expand="full">
+            Solicitar Cupón
+          </ion-button></ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <h2 class="promocion" style="color: grey;">{{ promocion.terminos }}</h2>
+        </ion-col>
+      </ion-row>
+     
+      <ion-row >
+     
+        <ion-col class="ion-text-center">
+          <h2 class="sinMargin rosa" *ngFor="let org of promocion.organizaciones ">{{org.nombre}}</h2>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div *ngIf="promocion.id_tipo_promocion===1">
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <h2 class="sinMargin promocion">{{ promocion.promocion }}</h2>
+        </ion-col>
+      </ion-row>
+    
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <h2 class="promocion" style="color: grey;">{{ promocion.terminos }}</h2>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div *ngIf="promocion.id_tipo_promocion===2">
+      <ion-row>
+        <ion-col class="ion-text-center" *ngFor="let dia of promocion.dias">
+          <h2 class="promocion">Quedan <span style="color: #fa4f72;">{{ promocion.restanDias }} días</span>, Aplica: 
+            <span style="color: #fa4f72;"> {{ dia.dias}} de {{ dia.hora_inicio}} a {{dia.hora_fin}} </span></h2>
+        </ion-col>
+      </ion-row>
+    </div>
     <ion-row>
       <ion-col size="12">
             <ion-grid>

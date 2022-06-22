@@ -225,10 +225,50 @@ export class PromocionesService {
   //   }));
   // }
 
+  obtenerTipoPromocion(): Observable<any> {
+    this.http.setDataSerializer("utf8");
+    return from(this.http.get( this.url + 'api/catalogo/tipopromocion/list',{}, AppSettings.getHeadersToken())
+        .then( data => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        })).pipe(map(data => {
+      return data;
+    }));
+  }
+
+  obtenerAlcancePromocion(): Observable<any> {
+    this.http.setDataSerializer("utf8");
+    return from(this.http.get( this.url + 'api/catalogo/alcancepromocion/list',{}, AppSettings.getHeadersToken())
+        .then( data => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        })).pipe(map(data => {
+      return data;
+    }));
+  }
+
+
+  obtenerDetalleDeNegocio(id_negocio: number): Observable<any> {
+    const body = JSON.stringify({id_negocio:id_negocio});
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post( this.url + 'api/lista/producto/negocio',body, AppSettings.getHeadersToken())
+        .then( data => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        })).pipe(map(data => {
+      return data;
+    }));
+  }
+
   guardar(variable: PromocionesModel): Observable<any> {
     
     const body = JSON.stringify(variable);
-    
     this. http.setDataSerializer('utf8');
     return from(this.http.post(this.url + 'api/promociones/guardar', body, AppSettings.getHeadersToken())
     .then((data) => {
