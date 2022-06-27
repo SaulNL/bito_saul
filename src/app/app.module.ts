@@ -26,6 +26,8 @@ import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { SignInWithApple } from '@ionic-native/sign-in-with-apple/ngx';
 import { LocalNotifications} from '@ionic-native/local-notifications/ngx';
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
+import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -39,6 +41,7 @@ import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
     Downloader,
     Platform,
     HTTP,
+    BarcodeScanner,
     GooglePlus,
     Facebook,
     File,
