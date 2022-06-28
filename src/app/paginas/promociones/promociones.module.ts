@@ -11,6 +11,7 @@ import { TabsPageModule } from '../tabs/tabs.module';
 import { PromocionComponent } from '../../components/promocion/promocion.component';
 import { ModalPromocionComponent } from '../../components/modal-promocion/modal-promocion.component';
 import { InfoPromoComponent } from '../../components/info-promo/info-promo.component';
+import { ViewqrPromocionComponent } from 'src/app/components/viewqr-promocion/viewqr-promocion.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { InfoPromoComponent } from '../../components/info-promo/info-promo.compo
     PromocionesPage,
     PromocionComponent,
     ModalPromocionComponent,
+    ViewqrPromocionComponent,
     InfoPromoComponent
   ]
 })

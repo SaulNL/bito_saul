@@ -1,0 +1,60 @@
+.cent{
+  text-align: center;
+}
+::ng-deep app-viewqr-promocion img {
+  width: 100%;
+  height: 100%;
+  background-size: 100% 100%;
+}
+
+#qrcode {
+  margin-left: 12vw;
+  width: 75vw !important;
+  height: 24% !important;
+  background-size: 100% 100%;
+}
+svg{
+  visibility: hidden;
+  position: absolute;
+}
+app-viewqr-promocion img {
+  width: 100%;
+  height: 100%;
+  background-size: 100% 100%;
+}
+app-viewqr-promocion > img {
+  width: 100% !important;
+  height: 100% !important;;
+  background-size: 100% 100% !important;
+}
+#this_one{
+  margin: auto;
+}
+@media (max-width: 600px){
+.unico{
+  width: 100%;
+}
+
+}
+
+@media (min-width: 631px) and (max-width: 767px){
+  .unico{
+      width: 8em;
+  }   
+}
+
+ion-content #imagenesFondo {
+  
+  background-image: url(https://ecoevents.blob.core.windows.net/comprandoando/fondos_promociones/cupones/FondoCuponPantalla.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+position: relative;
+width: 100%; /* for IE 6 */
+}
+
+.promo-color{
+  color: #FFF;
+}
+.bitoo-www{
+  margin-left: 25vw;
+}

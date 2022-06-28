@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { HaversineService, GeoCoord } from "ng2-haversine";
+import { ViewqrPromocionComponent } from '../viewqr-promocion/viewqr-promocion.component';
 
 /*
 declare var require: any;
@@ -16,6 +17,7 @@ const haversineCalculator = require('haversine-calculator');*/
 export class InfoPromoComponent implements OnInit {
 
   @Input() promocion: any;
+  @Input() idPersona: number | null;
   public motrarContacto = true;
   public blnPermisoUbicacion: any;
   public miLat: any;
@@ -56,6 +58,17 @@ export class InfoPromoComponent implements OnInit {
       error => {
         this.blnPermisoUbicacion = false;
       });
+  }
+
+  async crearModal( ){
+    const modal = await this.modalController.create({
+      component: ViewqrPromocionComponent,
+      componentProps: {
+        'promocion': this.promocion,
+        // 'idPersona': this.idPersona
+      }
+    });
+    return await modal.present();
   }
 
 
