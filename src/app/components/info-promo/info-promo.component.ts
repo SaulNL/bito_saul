@@ -65,7 +65,7 @@ export class InfoPromoComponent implements OnInit {
       component: ViewqrPromocionComponent,
       componentProps: {
         'promocion': this.promocion,
-        // 'idPersona': this.idPersona
+        'idPersona': this.idPersona
       }
     });
     return await modal.present();
