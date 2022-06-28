@@ -9,6 +9,7 @@ import {ModalPublicarComponent} from "src/app/components/modal-publicar/modal-pu
 import {QuienVioModel} from "../../Modelos/QuienVioModel";
 import {ModalInfoPromoComponent} from "../../components/modal-info-promo/modal-info-promo.component";
 import {Router, ActivatedRoute} from "@angular/router";
+import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 
 @Component({
     selector: "app-mispromociones",
@@ -65,7 +66,8 @@ export class MispromocionesPage implements OnInit {
         private alertController: AlertController,
         public modalController: ModalController,
         private _router: Router,
-        private active: ActivatedRoute
+        private active: ActivatedRoute,
+        private barcodeScanner: BarcodeScanner,
     ) {
         this.blnActivaPromocion = true;
     }
@@ -91,6 +93,15 @@ export class MispromocionesPage implements OnInit {
         });
     }
 
+    public escanearQR(){
+        this.barcodeScanner.scan().then(barcodeData => {
+            let d1= JSON.stringify(barcodeData);
+            console.log('Barcode data'+ d1);
+            alert(d1);
+           }).catch(err => {
+               console.log('Error', err);
+           });
+    }
     agregar() {
         this.seleccionTO = new PromocionesModel();
         let navigationExtras = JSON.stringify(this.seleccionTO);
