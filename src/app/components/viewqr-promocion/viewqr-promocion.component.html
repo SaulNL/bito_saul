@@ -13,45 +13,38 @@
   <div class="ion-text-center">
     <ion-button expand="block" (click)="descargar()">Descargar</ion-button>
   </div>
-  <div class="ion-text-center" id="imagenesFondo">
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <h4 class="ion-text-center" class="promo-color">{{promocion.nombre_comercial}}
-        </h4>
-      </ion-col>
-    </ion-row>
-  
-  
-    <h2 class="ion-text-center" style="color: #e3dd2a">{{promocion.promocion}}</h2>
-  
-    <ion-row>
-      <ion-col class="ion-text-center" *ngFor="let dia of promocion.dias">
-        <h5 class="promo-color">Valido hasta las:
-          {{dia.hora_fin}}
-        </h5>
-      </ion-col>
-    </ion-row>
-  
-    <p class="promo-color ion-text-center">
-      <ion-icon class="promo-color" name="pin"></ion-icon>
-      {{ promocion.calle }} {{ promocion.numero_ext }} {{ promocion.colonia }}, {{ promocion.nombre_municipio
-      }}, {{promocion.nombre_estado }}
-    </p>
-  
-  
-    <h4 class="promo-color ion-text-center" *ngFor="let org of promocion.organizaciones ">{{org.nombre}}</h4>
-  
-  
-    <div #qrcode id="qrcode" class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-  
+  <div id="contenido" class="bg-promo">
+    <div id="imagenesFondo" class="ion-text-center font-color content-margin">
+      <h1>Cupón de descuento</h1>
+      
+      <ion-img id="contenido"  src="https://ecoevents.blob.core.windows.net/comprandoando/BitooLogo.png"></ion-img>
+      <h4>{{promocion.nombre_comercial}}</h4>
+
+      <h2  class="font-color-e3dd2a">{{promocion.promocion}}</h2>
+
+      <h5 *ngFor="let dia of promocion.dias">Valido hasta las:
+        {{dia.hora_fin}}
+      </h5>
+
+      <p>
+        <ion-icon name="pin"></ion-icon>
+        {{ promocion.calle }} {{ promocion.numero_ext }} {{ promocion.colonia }}, {{ promocion.nombre_municipio
+        }}, {{promocion.nombre_estado }}
+      </p>
+
+      <ion-chip>
+        <ion-label>{{usuario.nombre}} {{usuario.paterno}} {{usuario.materno}}</ion-label>
+      </ion-chip>
+      <p *ngFor="let org of promocion.organizaciones "> <span class="font-color-e3dd2a">•</span> {{org.nombre}}</p>
+      
+
+      <div #qrcode id="qrcode" class="d-none d-sm-none d-md-block d-lg-block d-xl-block"></div>
+      
+      <p class="bitoo-www">www.bitoo.com.mx</p>
     </div>
-  
-    <p class="promo-color bitoo-www">www.bitoo.com.mx</p>
-    <br>
+
   </div>
   
-
-
 </ion-content>
 
 

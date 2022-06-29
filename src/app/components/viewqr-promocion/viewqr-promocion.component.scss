@@ -8,7 +8,7 @@
 }
 
 #qrcode {
-  margin-left: 12vw;
+  margin-left: 7vw;
   width: 75vw !important;
   height: 24% !important;
   background-size: 100% 100%;
@@ -51,10 +51,29 @@ ion-content #imagenesFondo {
 position: relative;
 width: 100%; /* for IE 6 */
 }
-
-.promo-color{
+.font-color-e3dd2a{
+  color: #e3dd2a;
+}
+.font-color{
   color: #FFF;
 }
 .bitoo-www{
-  margin-left: 25vw;
+  margin-left: 30vw;
+}
+.bg-promo {
+  background: linear-gradient(90deg, rgba(250, 79, 114, 1) 0%, rgba(167, 78, 239, 1) 100%);
+}
+
+ion-chip{
+  --background: #FFF;
+  justify-content: center;
+}
+
+ion-img{
+  width: 28vw !important;
+  margin-left: 30vw;
+}
+
+.content-margin{
+  padding: 1rem 1.5rem;
 }
