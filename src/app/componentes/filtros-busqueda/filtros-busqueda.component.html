@@ -87,7 +87,7 @@
             Categorias
         </ion-label>
     </ion-item-divider>
-    <ion-item *ngIf="!isProductPage">
+    <ion-item>
         <ion-label>Categorias</ion-label>
         <ion-select placeholder="{{categoriaAux}}" [(ngModel)]="categoria" (ionChange)="selectCategoria()">
             <ng-container *ngFor="let giro of lstCatTipoProducto;">
