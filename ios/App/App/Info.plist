@@ -68,7 +68,7 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>To Take Photos and Video</string>
+	<string>Habilite el acceso a la camara si requiere tomar la foto de su negocio</string>
 	<key>NSContactsUsageDescription</key>
 	<string>This app require permission to access details</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
