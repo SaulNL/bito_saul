@@ -319,6 +319,19 @@ export class InicioPage implements OnInit {
     }
   }
 
+  async validarResultadosDeCategoriasAll(respuesta: any) {
+    const cantidadDeResultados = respuesta.data.lst_cat_negocios.data.length;
+    if (cantidadDeResultados > 0) {
+      if (this.actualPagina > 1) {
+        this.obtenerNegocios([...respuesta.data.lst_cat_negocios.data]);
+      } else {
+        this.obtenerNegocios(respuesta.data.lst_cat_negocios.data);
+      }
+    } else {
+      throw throwError("");
+    }
+  }
+
   cargarCategorias() {
     const byCategorias = localStorage.getItem("filtroactual");
     if (
@@ -333,9 +346,9 @@ export class InicioPage implements OnInit {
     }
     this.principalSercicio
       .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
-      .then((respuesta) => {
+      .then(  async (respuesta) => {
         this.validarResultadosDeCategorias(respuesta);
-        this.loader = false;
+      await  this. procesar(respuesta,1);
         //
         const byCategorias = localStorage.getItem("filtroactual");
         
@@ -354,10 +367,26 @@ export class InicioPage implements OnInit {
         // this.notificaciones.error("Error al buscar los datos" + error.message);
         this.notificaciones.error("No hay conexión a internet, conectate a una red");
       });
+       this.principalSercicio
+      .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
+      .then((respuesta) => {});
+  }
+  
+ public async procesar(response: any, i: number ) {
+    if(response.data.lst_cat_negocios.last_page>=i){
+      var response2=  await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, i);
+      await this.validarResultadosDeCategoriasAll(response2);
+      this.procesar(response, i + 1);
+      return 
+    }else{
+      this.loader = false;
+      return
+    }
   }
 
   buscarNegocios(seMuestraElLoader: boolean) {
     this.loader = seMuestraElLoader;
+    this.listaIdsMapa=[];
     if (seMuestraElLoader === true) {
       this.siguientePagina = 1;
       this.listaCategorias = [];
@@ -462,21 +491,30 @@ export class InicioPage implements OnInit {
     await modal.present();
   }
 
-  negociosIdMapa() {
-    let listaIdNegocio = [];
+  public negociosIdMapa() {
+ 
     let listaIds = [];
     this.listaCategorias.map((l) => {
       l.negocios.map((n) => {
         listaIds.push(n);
       });
     });
-    
-    for (let index = 0; index < listaIds.length; index++) {
-      listaIdNegocio.push(listaIds[index].id_negocio);
-    }
-    this.listaIdsMapa = listaIdNegocio;
-    
   }
+
+  public obtenerNegocios(listaCategoriasAll: ICategoriaNegocio[]) {
+ 
+    let listaIds = [];
+    listaCategoriasAll.map((l) => {
+      l.negocios.map((n) => {
+        listaIds.push(n);
+      });
+    });
+    for (let index = 0; index < listaIds.length; index++) {
+      this.listaIdsMapa.push(listaIds[index].id_negocio);
+    }
+  }
+
+
   public regresarBitoo() {
     localStorage.removeItem("org");
     location.reload();
