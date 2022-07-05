@@ -25,6 +25,7 @@ export class ViewqrPromocionComponent implements OnInit {
   @ViewChild('qrcode', { static: false }) qrcode: ElementRef;
   @Input() promocion: any;
   @Input() idPersona: number | null;
+  @Input() id_cupon_promocion: number | null;
   public qr: any;
   public qrdata: string;
   public urlData: string;
@@ -45,13 +46,14 @@ export class ViewqrPromocionComponent implements OnInit {
 
     const cupon: ICupon = {
       "id_promocion": this.promocion.id_promocion,
-      "id_persona": this.idPersona
+      "id_persona": this.idPersona,
+      "id_cupon_promocion": this.id_cupon_promocion
     };
     this.urlData = JSON.stringify(cupon);
     
     const options = {
 
-      text: this.urlData+"qr-promo",
+      text: this.urlData,
       colorLight: '#ffffff',
       colorDark: '#000000',
       dotScale: 0.5,

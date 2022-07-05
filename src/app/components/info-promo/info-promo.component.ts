@@ -24,6 +24,7 @@ export class InfoPromoComponent implements OnInit {
   public miLat: any;
   public miLng: any;
   public hoy: any;
+  id_cupon_promocion: number;
 
   constructor( 
               public modalController: ModalController, 
@@ -67,14 +68,16 @@ export class InfoPromoComponent implements OnInit {
   }
 
   async crearModal( ){
+    this.guardarCupon();
     const modal = await this.modalController.create({
       component: ViewqrPromocionComponent,
       componentProps: {
         'promocion': this.promocion,
-        'idPersona': this.idPersona
+        'idPersona': this.idPersona,
+        'id_cupon_promocion':this.id_cupon_promocion
       }
     });
-    this.guardarCupon();
+    
     return await modal.present();
     
   }
@@ -87,7 +90,8 @@ export class InfoPromoComponent implements OnInit {
           if (respuesta.code === 200){
 
            console.log( respuesta.data)
-           
+           console.log( respuesta.data.id_cupon_promocion)
+           this.id_cupon_promocion=respuesta.data.id_cupon_promocion
           }
           if (respuesta.code === 402){
             console.log( respuesta)
