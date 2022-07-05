@@ -266,6 +266,21 @@ export class PromocionesService {
     }));
   }
 
+  solicitarCupon(id_promocion: number, id_persona:number): Observable<any> {
+      const body = JSON.stringify({id_promocion:id_promocion, id_persona:id_persona});
+      this.http.setDataSerializer("utf8");
+      return from(this.http.post( this.url + 'api/promociones/cupon/solicitar',body, AppSettings.getHeadersToken())
+          .then( data => {
+            console.log( data.data)
+            return JSON.parse(data.data);
+          })
+          .catch((error) => {
+            return error;
+          })).pipe(map(data => {
+        return data;
+      }));
+    }
+  
   guardar(variable: PromocionesModel): Observable<any> {
     
     const body = JSON.stringify(variable);

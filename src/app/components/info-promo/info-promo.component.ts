@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { HaversineService, GeoCoord } from "ng2-haversine";
 import { ViewqrPromocionComponent } from '../viewqr-promocion/viewqr-promocion.component';
+import { PromocionesService } from 'src/app/api/promociones.service';
 
 /*
 declare var require: any;
@@ -24,7 +25,12 @@ export class InfoPromoComponent implements OnInit {
   public miLng: any;
   public hoy: any;
 
-  constructor( public modalController: ModalController, private router: Router, private _haversineService: HaversineService) { 
+  constructor( 
+              public modalController: ModalController, 
+              private router: Router, 
+              private _haversineService: HaversineService,
+              private _promociones: PromocionesService
+              ) { 
   }
 
   ngOnInit() {
@@ -68,8 +74,29 @@ export class InfoPromoComponent implements OnInit {
         'idPersona': this.idPersona
       }
     });
+    this.guardarCupon();
     return await modal.present();
+    
   }
 
+  guardarCupon() {
+    
+      //const contra = {id_negocio:this.promocion, id_persona:this.idPersona};
+      this._promociones.solicitarCupon(this.promocion.id_promocion, this.idPersona).subscribe(
+        respuesta =>{
+          if (respuesta.code === 200){
+
+           console.log( respuesta.data)
+           
+          }
+          if (respuesta.code === 402){
+            console.log( respuesta)
+            //this.notificaciones.alerta(respuesta.message);
+          }
+         //this.loader = false;
+        }
+      );
+    
+  }
 
 }
