@@ -45,11 +45,11 @@ export class ViewqrPromocionComponent implements OnInit {
   ngAfterViewInit(): void {
 
     const cupon: ICupon = {
-      "id_promocion": this.promocion.id_promocion,
-      "id_persona": this.idPersona,
-      "id_cupon_promocion": this.id_cupon_promocion
+      "idPromo": this.promocion.id_promocion,
+      "idPer": this.idPersona,
+      "idCupon": this.id_cupon_promocion
     };
-    this.urlData = JSON.stringify(cupon);
+    this.urlData =btoa(JSON.stringify(cupon)) ;
     
     const options = {
 
