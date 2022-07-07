@@ -1,5 +1,5 @@
 export interface ICupon {
-    id_promocion: number;
-    id_persona: number;
-    id_cupon_promocion: number;
+    idPromo: number;
+    idPer: number;
+    idCupon: number;
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, Input, OnInit, ViewChild} from "@angular/core";
 import {PromocionesModel} from "../../Modelos/PromocionesModel";
 import {PromocionesService} from "../../api/promociones.service";
 import {ToadNotificacionService} from "../../api/toad-notificacion.service";
@@ -59,6 +59,7 @@ export class MispromocionesPage implements OnInit {
     lstAnuncios: any;
     lstPromo: any;
     lstTipoPromo: any;
+    json: any;
 
     constructor(
         private _promociones_service: PromocionesService,
@@ -97,7 +98,35 @@ export class MispromocionesPage implements OnInit {
         this.barcodeScanner.scan().then(barcodeData => {
             let d1= JSON.stringify(barcodeData);
             console.log('Barcode data'+ d1);
-            alert(d1);
+            this.json = JSON.parse(barcodeData.text)
+            console.log(this.json );
+            console.log("this.json.id_promocion",this.json.id_promocion)
+            console.log("this.json.id_persona",this.json.id_persona)
+            console.log("this.json.id_cupon",this.json.id_cupon)
+            console.log("this.idPersona",this.id_proveedor)
+            let cupon = {
+                "id_promocion": this.json.id_promocion,
+                "id_persona": this.json.id_persona,
+                "id_cupon_promocion":this.json.id_cupon,
+                "id_persona_aplica":this.id_proveedor,
+            };
+              this._promociones_service.validarCupon(cupon).subscribe(
+                
+                    (response) => {
+                        if (response.code === 200) {
+        
+                            this._notificacionService.exito("Se valido cupón correctamente");
+                          }
+                          if (response.code === 500) {
+                            this._notificacionService.error("Cupón no valido");
+                          }
+                    },
+                    (error) => {
+                        this._notificacionService.error(error);
+                        
+                    }
+                );
+            // alert(this.json);
            }).catch(err => {
                console.log('Error', err);
            });

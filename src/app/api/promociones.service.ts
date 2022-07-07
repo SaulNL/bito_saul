@@ -9,6 +9,7 @@ import { PublicacionesModel } from '../Modelos/PublicacionesModel';
 import { HTTP } from '@ionic-native/http/ngx';
 import {FiltroCatVariableModel} from "../Modelos/catalogos/FiltroCatVariableModel";
 import {RegistrarQuienVioMiPromocionModel} from "../Modelos/RegistrarQuienVioMiPromocionModel";
+import { ValidarPromocion } from '../Modelos/ValidarPromocion';
 
 @Injectable({
   providedIn: 'root'
@@ -279,7 +280,23 @@ export class PromocionesService {
           })).pipe(map(data => {
         return data;
       }));
-    }
+  }
+
+  validarCupon(cupon:ValidarPromocion): Observable<any> {
+    const body = JSON.stringify(cupon);
+    console.log( body)
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post( this.url + 'api/promociones/cupon/aplicar',body, AppSettings.getHeadersToken())
+        .then( data => {
+          console.log( data.data)
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        })).pipe(map(data => {
+      return data;
+    }));
+  }
   
   guardar(variable: PromocionesModel): Observable<any> {
     

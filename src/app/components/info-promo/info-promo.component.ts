@@ -67,40 +67,33 @@ export class InfoPromoComponent implements OnInit {
       });
   }
 
-  async crearModal( ){
-    this.guardarCupon();
-    const modal = await this.modalController.create({
-      component: ViewqrPromocionComponent,
-      componentProps: {
-        'promocion': this.promocion,
-        'idPersona': this.idPersona,
-        'id_cupon_promocion':this.id_cupon_promocion
-      }
-    });
-    
-    return await modal.present();
-    
-  }
-
-  guardarCupon() {
-    
-      //const contra = {id_negocio:this.promocion, id_persona:this.idPersona};
-      this._promociones.solicitarCupon(this.promocion.id_promocion, this.idPersona).subscribe(
-        respuesta =>{
-          if (respuesta.code === 200){
-
-           console.log( respuesta.data)
-           console.log( respuesta.data.id_cupon_promocion)
-           this.id_cupon_promocion=respuesta.data.id_cupon_promocion
-          }
-          if (respuesta.code === 402){
-            console.log( respuesta)
-            //this.notificaciones.alerta(respuesta.message);
-          }
-         //this.loader = false;
+  async crearModal() {
+    await  this.guardarCupon();
+      const modal = await this.modalController.create({
+        component: ViewqrPromocionComponent,
+        componentProps: {
+          'promocion': this.promocion,
+          'idPersona': this.idPersona,
+          'id_cupon_promocion': this.id_cupon_promocion
         }
-      );
-    
-  }
-
+      });
+  
+      return await modal.present();
+  
+    }
+  
+    async guardarCupon() {
+      //const contra = {id_negocio:this.promocion, id_persona:this.idPersona};
+      var respuesta = await this._promociones.solicitarCupon(this.promocion.id_promocion, this.idPersona).toPromise();
+      if (respuesta.code === 200) {
+        
+        this.id_cupon_promocion = respuesta.data.id_cupon_promocion
+      }
+      if (respuesta.code === 402) {
+        
+        //this.notificaciones.alerta(respuesta.message);
+      }
+      //this.loader = false;
+  
+    }
 }
