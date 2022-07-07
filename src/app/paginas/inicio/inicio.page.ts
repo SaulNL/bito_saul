@@ -86,7 +86,7 @@ export class InicioPage implements OnInit {
   ) {
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
-    
+
     this.Filtros.idEstado = 29;
     const byCategorias = localStorage.getItem("filtroactual");
     if (
@@ -99,10 +99,10 @@ export class InicioPage implements OnInit {
       this.Filtros = dato;
       this.filtroActivo = true;
       this.selectionAP = false;
-     
+
     } else {
       this.filtroActivo = false;
-     
+
     }
     this.listaCategorias = new Array<ICategoriaNegocio>();
     this.listaIdsMapa = [];
@@ -156,9 +156,9 @@ export class InicioPage implements OnInit {
   }
 
   ngOnInit(): void {
-    
-    
-    
+
+
+
     this.user = this.util.getUserData();
     this.load();
     this.route.queryParams.subscribe((params) => {
@@ -206,12 +206,12 @@ export class InicioPage implements OnInit {
     }
     const pagina = localStorage.getItem('Page');
 
-      if(pagina==='Requerimiento'){
-        window.location.assign("/tabs/inicio");
-        localStorage.removeItem("Page");
-      }
+    if (pagina === 'Requerimiento') {
+      window.location.assign("/tabs/inicio");
+      localStorage.removeItem("Page");
+    }
     localStorage.removeItem("productos");
-    localStorage.setItem('negocios',('active'));
+    localStorage.setItem('negocios', ('active'));
   }
 
   private load() {
@@ -238,7 +238,7 @@ export class InicioPage implements OnInit {
    * @author Omar
    */
   scrollToTop() {
-    this.content.scrollToTop(500).then((r) => {});
+    this.content.scrollToTop(500).then((r) => { });
   }
 
   public recargar(event: any) {
@@ -305,7 +305,7 @@ export class InicioPage implements OnInit {
         this.negociosIdMapa();
         if (
           this.listaCategorias[this.lengthLista - 1].nombre ==
-            this.listaCategorias[this.lengthLista].nombre ||
+          this.listaCategorias[this.lengthLista].nombre ||
           this.listaCategorias[this.lengthLista - 1].nombre == ""
         ) {
           this.listaCategorias[this.lengthLista].nombre = "";
@@ -331,8 +331,7 @@ export class InicioPage implements OnInit {
       throw throwError("");
     }
   }
-
-  cargarCategorias() {
+  public async cargarCategorias() {
     const byCategorias = localStorage.getItem("filtroactual");
     if (
       byCategorias !== null &&
@@ -344,49 +343,57 @@ export class InicioPage implements OnInit {
       this.Filtros = dato;
       this.filtroActivo = true;
     }
-    this.principalSercicio
-      .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
-      .then(  async (respuesta) => {
-        this.validarResultadosDeCategorias(respuesta);
-      await  this. procesar(respuesta,1);
-        //
-        const byCategorias = localStorage.getItem("filtroactual");
-        
-        if (
-          byCategorias !== null &&
-          byCategorias !== undefined &&
-          byCategorias !== "" &&
-          byCategorias.length > 0
-        ) {
-          
-          this.filtroActivo = true;
-        }
-      })
-      .catch((error) => {
-        this.loader = false;
-        // this.notificaciones.error("Error al buscar los datos" + error.message);
-        this.notificaciones.error("No hay conexión a internet, conectate a una red");
-      });
-       this.principalSercicio
-      .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
-      .then((respuesta) => {});
+    try {
+      var respuesta = await this.principalSercicio
+        .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
+      this.validarResultadosDeCategorias(respuesta);
+      //await this.procesar(respuesta, 1);
+      const byCategorias2 = localStorage.getItem("filtroactual");
+      if (
+        byCategorias2 !== null &&
+        byCategorias2 !== undefined &&
+        byCategorias2 !== "" &&
+        byCategorias2.length > 0
+      ) {
+        this.filtroActivo = true;
+      }
+      this.loader = false;
+    } catch (error) {
+      this.loader = false;
+      // this.notificaciones.error("Error al buscar los datos" + error.message);
+      this.notificaciones.error("No hay conexión a internet, conectate a una red");
+    }
   }
-  
- public async procesar(response: any, i: number ) {
-    if(response.data.lst_cat_negocios.last_page>=i){
-      var response2=  await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, i);
+  public async cargarCargarNegociosMapas() {
+    this.loader = true;
+    try {
+      var respuesta = await this.principalSercicio
+        .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
+      await this.procesar(respuesta, 0);
+      this.loader = false;
+    } catch (error) {
+      this.loader = false;
+      // this.notificaciones.error("Error al buscar los datos" + error.message);
+      this.notificaciones.error("No hay conexión a internet, conectate a una red");
+    }
+
+  }
+  public async procesar(response: any, i: number) {
+    if (response.data.lst_cat_negocios.last_page >= i) {
+      var response2 = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, i);
       await this.validarResultadosDeCategoriasAll(response2);
-      this.procesar(response, i + 1);
-      return 
-    }else{
+      i=i+1;
+  await    this.procesar(response,i );
+      return
+    } else {
       this.loader = false;
       return
     }
   }
 
-  buscarNegocios(seMuestraElLoader: boolean) {
+  public async buscarNegocios(seMuestraElLoader: boolean) {
     this.loader = seMuestraElLoader;
-    this.listaIdsMapa=[];
+    this.listaIdsMapa = [];
     if (seMuestraElLoader === true) {
       this.siguientePagina = 1;
       this.listaCategorias = [];
@@ -409,9 +416,9 @@ export class InicioPage implements OnInit {
     }
     this.selectionAP
       ? (this.Filtros.organizacion =
-          this.objectSelectAfiliacionPlaza.id_organizacion)
+        this.objectSelectAfiliacionPlaza.id_organizacion)
       : "";
-    this.cargarCategorias();
+    await this.cargarCategorias();
   }
 
   async configToad(mensaje) {
@@ -482,6 +489,10 @@ export class InicioPage implements OnInit {
 
   async abrirModalMapa() {
     //  let listaIds = [68, 95, 116, 52, 155, 20, 142];
+    this.listaIdsMapa = [];
+   await this.buscarNegocios(true);
+    await this.cargarCargarNegociosMapas();
+    //await this.buscarNegocios(false);
     const modal = await this.modalController.create({
       component: MapaNegociosComponent,
       componentProps: {
@@ -492,7 +503,7 @@ export class InicioPage implements OnInit {
   }
 
   public negociosIdMapa() {
- 
+
     let listaIds = [];
     this.listaCategorias.map((l) => {
       l.negocios.map((n) => {
@@ -502,7 +513,7 @@ export class InicioPage implements OnInit {
   }
 
   public obtenerNegocios(listaCategoriasAll: ICategoriaNegocio[]) {
- 
+
     let listaIds = [];
     listaCategoriasAll.map((l) => {
       l.negocios.map((n) => {
@@ -541,17 +552,17 @@ export class InicioPage implements OnInit {
         "Este negocio aún no cumple los requisitos mínimos"
       );
     } else {
-     
-      if(this.tFiltro===true){
+
+      if (this.tFiltro === true) {
         localStorage.setItem("isRedirected", "false");
         this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
-        
-        
-      }else{
+
+
+      } else {
         localStorage.setItem("isRedirected", "true");
-      this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
+        this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
       }
-      
+
     }
   }
   negocioRutaByLogin(url: string) {

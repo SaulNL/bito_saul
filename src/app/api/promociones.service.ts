@@ -272,7 +272,7 @@ export class PromocionesService {
       this.http.setDataSerializer("utf8");
       return from(this.http.post( this.url + 'api/promociones/cupon/solicitar',body, AppSettings.getHeadersToken())
           .then( data => {
-            console.log( data.data)
+           
             return JSON.parse(data.data);
           })
           .catch((error) => {
@@ -284,11 +284,10 @@ export class PromocionesService {
 
   validarCupon(cupon:ValidarPromocion): Observable<any> {
     const body = JSON.stringify(cupon);
-    console.log( body)
     this.http.setDataSerializer("utf8");
     return from(this.http.post( this.url + 'api/promociones/cupon/aplicar',body, AppSettings.getHeadersToken())
         .then( data => {
-          console.log( data.data)
+
           return JSON.parse(data.data);
         })
         .catch((error) => {
