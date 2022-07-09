@@ -171,10 +171,10 @@ export class DatosPedidoNegocioPage implements OnInit {
             let urlIos: string = 'https://www.google.com.mx/maps/@'+ this.pedido.direccion.latitud + ","+ this.pedido.direccion.longitud + ",17z";
             this.socialSharing.share('Dirección:'+ this.pedido.direccion.direccion, 'Dirección:', '', urlIos);
         }else{
-            let url = 'https://www.google.com.mx/maps/@'
+            let url = 'https://www.google.com/maps/search/?api=1&query='
             + this.pedido.direccion.latitud + ","
-            + this.pedido.direccion.longitud + ",17z"
-            this.socialSharing.share('Dirección:', 'Dirección:', '', '' + this.pedido.direccion.direccion + ' ' + url);
+            + this.pedido.direccion.longitud+"&zoom=15"
+            this.socialSharing.share('Dirección:', 'Dirección:', '','' + this.pedido.direccion.direccion + ' ' + url);
         }
        
     }

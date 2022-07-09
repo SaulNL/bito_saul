@@ -8,9 +8,9 @@
 }
 
 #qrcode {
-  margin-left: 7vw;
-  width: 75vw !important;
-  height: 24% !important;
+  margin-left: 10vw;
+  width: 70vw !important;
+  height: 70vw !important;
   background-size: 100% 100%;
 }
 svg{
@@ -48,8 +48,8 @@ ion-content #imagenesFondo {
   background-image: url(https://ecoevents.blob.core.windows.net/comprandoando/fondos_promociones/cupones/FondoCuponPantalla.png);
   background-size: 100% 100%;
   background-repeat: no-repeat;
-position: relative;
-width: 100%; /* for IE 6 */
+  position: relative;
+  width: 100%; /* for IE 6 */
 }
 .font-color-e3dd2a{
   color: #e3dd2a;

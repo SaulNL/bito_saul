@@ -105,6 +105,7 @@ export class MispromocionesPage implements OnInit {
         this.barcodeScanner.scan().then(barcodeData => {
             
             this.encode =barcodeData.text;
+            
             this.decode = atob(this.encode);
 
             this.json_cupon= JSON.parse(this.decode);
@@ -123,7 +124,7 @@ export class MispromocionesPage implements OnInit {
                             this._notificacionService.exito("Se valido cupón correctamente");
                           }
                           if (response.code === 420) {
-                            this._notificacionService.error("Cupón no valido");
+                            this._notificacionService.error(response.message);
                           }
                     },
                     (error) => {

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HaversineService, GeoCoord } from "ng2-haversine";
 import { ViewqrPromocionComponent } from '../viewqr-promocion/viewqr-promocion.component';
 import { PromocionesService } from 'src/app/api/promociones.service';
+import { ToadNotificacionService } from 'src/app/api/toad-notificacion.service';
 
 /*
 declare var require: any;
@@ -30,7 +31,8 @@ export class InfoPromoComponent implements OnInit {
               public modalController: ModalController, 
               private router: Router, 
               private _haversineService: HaversineService,
-              private _promociones: PromocionesService
+              private _promociones: PromocionesService,
+              private notificaciones: ToadNotificacionService
               ) { 
   }
 
@@ -83,7 +85,7 @@ export class InfoPromoComponent implements OnInit {
     }
   
     async guardarCupon() {
-      //const contra = {id_negocio:this.promocion, id_persona:this.idPersona};
+
       var respuesta = await this._promociones.solicitarCupon(this.promocion.id_promocion, this.idPersona).toPromise();
       if (respuesta.code === 200) {
         
@@ -91,9 +93,8 @@ export class InfoPromoComponent implements OnInit {
       }
       if (respuesta.code === 402) {
         
-        //this.notificaciones.alerta(respuesta.message);
+        this.notificaciones.alerta(respuesta.message);
       }
-      //this.loader = false;
   
     }
 }

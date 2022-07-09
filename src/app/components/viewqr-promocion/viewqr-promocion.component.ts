@@ -56,7 +56,7 @@ export class ViewqrPromocionComponent implements OnInit {
       text: this.urlData,
       colorLight: '#ffffff',
       colorDark: '#000000',
-      dotScale: 0.5,
+      dotScale: 0.8,
       width: screen.width,
       height: screen.height-500,
       correctLevel: QRCode.CorrectLevel.H,
