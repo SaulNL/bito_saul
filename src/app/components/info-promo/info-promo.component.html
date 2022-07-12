@@ -14,7 +14,7 @@
     </ion-row>
     <ion-row>
       <ion-col class="ion-text-center">
-        <h2 class="sinMargin">{{ promocion.descripcion }}</h2>
+        <h2 class="sinMargin">{{ promocion.descripcion }} </h2>
       </ion-col>
     </ion-row>
     <hr>
@@ -36,7 +36,7 @@
           <ion-col size="6" >
             <label *ngIf="promocion.porcentaje !== null" >{{ promocion.porcentaje}} %</label>
             <span *ngIf="promocion.porcentaje !== null" class="promocion"> de descuento</span></ion-col>
-          <ion-col size="6"><ion-button (click)="onClick()" class="bg-rosa" size="small" mode="ios" expand="full">
+          <ion-col *ngIf="idPersona!=null" size="6"><ion-button (click)="crearModal()" class="bg-rosa" size="small" mode="ios" expand="full">
             Solicitar Cupón
           </ion-button></ion-col>
         </ion-row>

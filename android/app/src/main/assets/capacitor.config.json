@@ -9,5 +9,12 @@
 			"launchShowDuration": 3000
 		}
 	},
+<<<<<<< HEAD
 	"cordova": {}
+=======
+	"cordova": {},
+	"server": {
+		"url": "http://192.168.0.4:8101"
+	}
+>>>>>>> dev-bere
 }

@@ -54,21 +54,21 @@ export class ViewQrPage implements OnInit {
 
       title: 'BITOO!',
       titleFont: "normal normal bold 18px Arial", //font. default is "bold 16px Arial"
-      titleColor: "#FFFFFF", // color. default is "#000"
-      titleBackgroundColor: "#CE4EB2", // background color. default is "#fff"
+      titleColor: "#000000", // color. default is "#000"
+      titleBackgroundColor: "#ffffff", // background color. default is "#fff"
       titleHeight: 70, // height, including subTitle. default is 0
       titleTop: 25, // draws y coordinates. default is 30
 
       subTitle: 'www.bitoo.com.mx', // content
-      subTitleFont: "normal normal normal 14px Arial", // font. default is "14px Arial"
-      subTitleColor: "#FFFFFF", // color. default is "4F4F4F"
+      subTitleFont: "normal normal normal 16px Arial", // font. default is "14px Arial"
+      subTitleColor: "#000000", // color. default is "4F4F4F"
       subTitleTop: 50, // draws y coordinates. default is 0
 
 
       text: AppSettings.URL_FRONT + this.negocioTO.url_negocio + 'qr',
-      logo: 'assets/images/bitooicon.png',
+      //logo: 'assets/images/bitooicon.png',
       colorLight: '#ffffff',
-      colorDark: '#f100db',
+      colorDark: '#000000',
       dotScale: 0.4,
       width: screen.width,
       height: screen.height-500,

@@ -185,11 +185,9 @@ export class AgregarPromocionPage implements OnInit {
   }
 
   decripcionSelect() {
-    console.log("Entro a description");
     if (this.publicacion.id_negocio.toString() !== "undefined") {
       this.lstNegocios.map((valor) => {
         if (valor.id_negocio === Number(this.publicacion.id_negocio)) {
-          console.log(valor.id_negocio)
           this.descripcionString = valor.descripcion;
         }
       });
@@ -446,7 +444,6 @@ export class AgregarPromocionPage implements OnInit {
           (response) => {
             if (response.code === 200) {
               this.lstPlazas= Object.values(response.data);
-             console.log( this.lstPlaza);
             } else {
               this.lstPlazas = [];
             }
@@ -475,13 +472,11 @@ export class AgregarPromocionPage implements OnInit {
 
 
   public productosCategoriasObtener(){
-    console.log(this.seleccionTo.id_negocio);
     
     this._promociones_service.obtenerDetalleDeNegocio(this.seleccionTo.id_negocio).subscribe(
       response => {
         if (response.code === 200 && response.agrupados != null) {
           this.productos = response.agrupados;
-          console.log(this.productos);
          this.cats = [];
          this.prod = [];
 
@@ -535,7 +530,6 @@ export class AgregarPromocionPage implements OnInit {
 
             });
           }
-          console.log(this.prod);
         }
        
       },
@@ -577,7 +571,6 @@ export class AgregarPromocionPage implements OnInit {
   }
 
   agregarHorario() {
-    console.log("horario",this.nuevoHorario.id_horario_promocion)
     if (this.nuevoHorario.id_horario_promocion === null || this.nuevoHorario.id_horario_promocion  === undefined) {
       this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
       this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
@@ -613,7 +606,6 @@ export class AgregarPromocionPage implements OnInit {
     this.horarioini = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_inicio + ":ssZ");
     this.horariofin = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_fin + ":ssZ");
     this.nuevoHorario.dias = horario.dias;
-    console.log("dias", horario.dias)
     this.nuevoHorario.id_horario_promocion  = horario.id_horario_promocion;
   }
 

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, Input, OnInit, ViewChild} from "@angular/core";
 import {PromocionesModel} from "../../Modelos/PromocionesModel";
 import {PromocionesService} from "../../api/promociones.service";
 import {ToadNotificacionService} from "../../api/toad-notificacion.service";
@@ -9,6 +9,7 @@ import {ModalPublicarComponent} from "src/app/components/modal-publicar/modal-pu
 import {QuienVioModel} from "../../Modelos/QuienVioModel";
 import {ModalInfoPromoComponent} from "../../components/modal-info-promo/modal-info-promo.component";
 import {Router, ActivatedRoute} from "@angular/router";
+import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 
 @Component({
     selector: "app-mispromociones",
@@ -58,6 +59,11 @@ export class MispromocionesPage implements OnInit {
     lstAnuncios: any;
     lstPromo: any;
     lstTipoPromo: any;
+    json: any;
+    data: string;
+    decode: string;
+    encode: string;
+    json_cupon: any;
 
     constructor(
         private _promociones_service: PromocionesService,
@@ -65,7 +71,8 @@ export class MispromocionesPage implements OnInit {
         private alertController: AlertController,
         public modalController: ModalController,
         private _router: Router,
-        private active: ActivatedRoute
+        private active: ActivatedRoute,
+        private barcodeScanner: BarcodeScanner,
     ) {
         this.blnActivaPromocion = true;
     }
@@ -89,6 +96,45 @@ export class MispromocionesPage implements OnInit {
                 }
             }
         });
+    }
+    /**
+   * funcion para escanear cupon
+   * @author Bere
+   */
+    public escanearQR(){
+        this.barcodeScanner.scan().then(barcodeData => {
+            
+            this.encode =barcodeData.text;
+            
+            this.decode = atob(this.encode);
+
+            this.json_cupon= JSON.parse(this.decode);
+           
+            let cupon = {
+                "id_promocion": this.json_cupon.idPromo,
+                "id_persona": this.json_cupon.idPer,
+                "id_cupon_promocion":this.json_cupon.idCupon,
+                "id_persona_aplica":this.id_proveedor,
+            };
+              this._promociones_service.validarCupon(cupon).subscribe(
+                
+                    (response) => {
+                        if (response.code === 200) {
+        
+                            this._notificacionService.exito("Se valido cupón correctamente");
+                          }
+                          if (response.code === 420) {
+                            this._notificacionService.error(response.message);
+                          }
+                    },
+                    (error) => {
+                        this._notificacionService.error(error);
+                        
+                    }
+                );
+           }).catch(err => {
+               console.log('Error', err);
+           });
     }
 
     agregar() {

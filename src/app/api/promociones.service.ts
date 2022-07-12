@@ -9,6 +9,7 @@ import { PublicacionesModel } from '../Modelos/PublicacionesModel';
 import { HTTP } from '@ionic-native/http/ngx';
 import {FiltroCatVariableModel} from "../Modelos/catalogos/FiltroCatVariableModel";
 import {RegistrarQuienVioMiPromocionModel} from "../Modelos/RegistrarQuienVioMiPromocionModel";
+import { ValidarPromocion } from '../Modelos/ValidarPromocion';
 
 @Injectable({
   providedIn: 'root'
@@ -266,6 +267,36 @@ export class PromocionesService {
     }));
   }
 
+  solicitarCupon(id_promocion: number, id_persona:number): Observable<any> {
+      const body = JSON.stringify({id_promocion:id_promocion, id_persona:id_persona});
+      this.http.setDataSerializer("utf8");
+      return from(this.http.post( this.url + 'api/promociones/cupon/solicitar',body, AppSettings.getHeadersToken())
+          .then( data => {
+           
+            return JSON.parse(data.data);
+          })
+          .catch((error) => {
+            return error;
+          })).pipe(map(data => {
+        return data;
+      }));
+  }
+
+  validarCupon(cupon:ValidarPromocion): Observable<any> {
+    const body = JSON.stringify(cupon);
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post( this.url + 'api/promociones/cupon/aplicar',body, AppSettings.getHeadersToken())
+        .then( data => {
+
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        })).pipe(map(data => {
+      return data;
+    }));
+  }
+  
   guardar(variable: PromocionesModel): Observable<any> {
     
     const body = JSON.stringify(variable);
