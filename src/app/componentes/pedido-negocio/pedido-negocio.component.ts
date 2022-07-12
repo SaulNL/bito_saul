@@ -20,6 +20,7 @@ import { MsPersonaModel } from 'src/app/Modelos/MsPersonaModel';
 import { CatLocalidadModel } from 'src/app/Modelos/CatLocalidadModel';
 import { PersonaService } from '../../api/persona.service';
 
+
 const { Geolocation } = Plugins;
 declare var google: any;
 @Component({
@@ -36,6 +37,8 @@ export class PedidoNegocioComponent implements OnInit {
     @Input() public _costoEntrega: any;
     @Input() lista: any;
     @Input() negocioNombre: string;
+    @Input() public latNegocio: number;
+    @Input() public logNegocio: number;
     public static readonly TIPO_DE_PAGO_INVALIDO = -1; // Puede ser cualquier numero menor a 0;
     tipoEnvio: any;
     private map: Map;
@@ -84,6 +87,14 @@ export class PedidoNegocioComponent implements OnInit {
     public blnBuscadoLocalidades: boolean;
     public direccionUser: any;
     negocioTO: any;
+    distancia: any;
+    tiempo: any;
+    kilometros: number;
+    minutos: number;
+    convenioEntrega: number;
+    costoDeEnvio: any;
+    origen: any;
+    destino: any;
     constructor(
         private utilsCls: UtilsCls,
         private modalController: ModalController,
@@ -128,6 +139,7 @@ export class PedidoNegocioComponent implements OnInit {
         this.loadMap();
         this.sumarLista();
         this.cargarTipoDePagos();
+        console.log("lat-lon",this.latNegocio, this.logNegocio)
     }
     cargarTipoDePagos(){
         this.negocioService.obtenerTiposDePagosPorNegocio(this.idNegocio)
@@ -644,4 +656,69 @@ export class PedidoNegocioComponent implements OnInit {
                 this.mesajes.error("Ocurrió un error al consultar la dirección, intente de nuevo más tarde ");
         })
     }
+
+    activar(){
+        this.origen =this.latNegocio+','+this.logNegocio
+        console.log("origen",this.origen)
+        this.getCoordinates();
+        console.log(this.address);
+        // this.getCoordinatesMap.getPosts(this.address)
+        // .then(async data => {
+        //     let arrayPosts: any = data;
+        //     let latitud = arrayPosts.results[0].geometry.location.lat;
+        //     let longitud = arrayPosts.results[0].geometry.location.lng;
+
+        //     this.lat = latitud;
+        //     this.lng = longitud;
+        // })
+        console.log("destino",this.lat,this.lng)
+        this.destino=this.lat+','+this.lng;
+        this.getCoordinatesMap.getDistanciaKmTiempo(this.origen,this.destino)
+            .then(async data => {
+                let arrayPosts: any = data;
+                console.log(arrayPosts)
+
+               
+            })
+       
+        //this.getDistanciaKmTiempo(this.origen,this.destino)
+
+    }
+
+
+    
+
+    // getDistanciaKmTiempo(origen: any, destino: number) {
+    //     this.getCoordinatesMap.getDistanciaKmTiempo(origen, destino, legs => {
+    //       if (legs !== null) {
+    //         this.distancia = legs.distance.text;
+    //         this.tiempo = legs.duration.text;
+    //         //En este apartado le paso los parametros que bienen de la api de google para que calcule el costo de envio
+    //         this.kilometros = parseFloat(this.distancia);
+    //         // console.log(this.kilometros);
+    //         this.minutos = parseFloat(this.tiempo);
+    //         // console.log(this.minutos);
+    //         this.calcularCostoDeEnvio(this.minutos,this.kilometros);
+          
+    //       }
+    //     })
+    //   }
+
+    calcularCostoDeEnvio(minutos: any, kilometros: any){
+        // console.log("estoy entrando acalcular ");
+        this.negocioService.calcularCostoDeEnvio(minutos, kilometros).subscribe(
+          response => {
+            // console.log(response);
+            // this.convenioEntrega = localStorage.getItem('convenioEntrega');
+            if ( this.convenioEntrega == 1) {
+            if (this._utils_cls.is_success_response(response.code)) {
+            this.costoDeEnvio = response.data.total;
+            }
+          }
+          }, error => {
+            //this._notificacionService.pushError(error);
+          }
+        );
+    
+      }
 }

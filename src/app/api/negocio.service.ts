@@ -271,7 +271,7 @@ export class NegocioService {
         const body = JSON.stringify({ id_giro: id , id_tipo_negocio: negocio_id });
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
-            this.url + 'buscar/giro/categorias',
+            this.url + 'api/solicitudes/obtener/postulados',
             body, AppSettings.getHeadersToken())
             .then((data) => {
                 return JSON.parse(data.data);
@@ -280,6 +280,9 @@ export class NegocioService {
                 return error;
             }));
     }
+
+  
+    
 
     /**
      * Funcion para obtener el catalogo de organizaciones
@@ -345,6 +348,21 @@ export class NegocioService {
             .catch((error) => {
                 return error;
             }));
+    }
+
+
+    calcularCostoDeEnvio(minutos: number, kilometros: number): Observable<any> {
+        const body = JSON.stringify( { minutos: minutos, kilometros: kilometros} );
+        // this.http.setDataSerializer("utf8");
+        return from(this._http.post( this.url + 'api/pedidos/calcularEnvio',body, AppSettings.getHeadersToken())
+            .then( data => {
+              return JSON.parse(data.data);
+            })
+            .catch((error) => {
+              return error;
+            })).pipe(map(data => {
+          return data;
+        }));
     }
 
     activarDesactivar(id_negocio: number, cambio: boolean): Observable<any> {

@@ -305,6 +305,7 @@ export class PerfilNegocioPage implements OnInit {
       .obteneretalleNegocio(this.negocio, this.user.id_persona)
       .subscribe(
         (response) => {
+          console.log("conevio",response.data)
           if (response.data !== null) {
             this.informacionNegocio = response.data;
             
@@ -626,6 +627,8 @@ console.log("resp",response)
         _consumoSitio: this.informacionNegocio.consumo_sitio,
         _costoEntrega: this.informacionNegocio.costo_entrega,
         negocioNombre: this.informacionNegocio.nombre_comercial,
+        latNegocio:this.latitudNeg,
+        logNegocio: this.longitudNeg
       },
     });
     await modal.present();

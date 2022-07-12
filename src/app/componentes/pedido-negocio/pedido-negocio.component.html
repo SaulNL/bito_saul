@@ -189,6 +189,31 @@
         </ion-row>
       </ion-grid>
     </div>
+         
+    <div class="ion-text-center">
+      <p>
+        Tiempo de entrega entre la ubicación del negocio & la dirección del usuario
+       </p>
+      <p>
+        Distancia Km: {{kilometros}}
+       </p>
+     
+       <p>
+        Tiempo Hrs/Min: {{this.minutos}}
+       </p>
+       <ion-row class="ion-align-items-center">
+        <ion-col class="ion-text-center">
+          <ion-button  size="small" class="bg-rosa " type="button" (click)="activar()">
+            <ion-icon name="navigate-circle-outline"></ion-icon>
+            Confirmar Dirección
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+    </div>
+      
+       
+
     <h3 class="ion-text-center">Lista de artículos</h3>
     <ion-item *ngFor="let p of lista; let i = index">
      <ion-grid>

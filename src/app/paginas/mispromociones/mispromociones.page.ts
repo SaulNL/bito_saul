@@ -59,8 +59,6 @@ export class MispromocionesPage implements OnInit {
     lstAnuncios: any;
     lstPromo: any;
     lstTipoPromo: any;
-    json: any;
-    data: string;
     decode: string;
     encode: string;
     json_cupon: any;
