@@ -116,6 +116,7 @@ export class PerfilNegocioPage implements OnInit {
   public idProduct: string;
   private latitudNeg: any;
   private longitudNeg: any;
+  private convenio_entrega: any;
   constructor(
     private nativeHTTP: HTTP,
     private file: File,
@@ -305,10 +306,9 @@ export class PerfilNegocioPage implements OnInit {
       .obteneretalleNegocio(this.negocio, this.user.id_persona)
       .subscribe(
         (response) => {
-          console.log("conevio",response.data)
           if (response.data !== null) {
             this.informacionNegocio = response.data;
-            
+            this.convenio_entrega=this.informacionNegocio.convenio_entrega;
             this.latitudNeg = this.informacionNegocio.latitud;
             this.longitudNeg = this.informacionNegocio.longitud;
             this.loadMap();
@@ -628,7 +628,8 @@ console.log("resp",response)
         _costoEntrega: this.informacionNegocio.costo_entrega,
         negocioNombre: this.informacionNegocio.nombre_comercial,
         latNegocio:this.latitudNeg,
-        logNegocio: this.longitudNeg
+        logNegocio: this.longitudNeg,
+        convenio:this.convenio_entrega
       },
     });
     await modal.present();

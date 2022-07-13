@@ -10,6 +10,9 @@ export class PedidoNegocioModel {
     public numeroMesa: number;
     public direccion: string;
     public idTipoPago: number;
+    public costo_envio :number;
+    public minutos :number;
+    public kilometros :number;
     public pedido: Array<ProductoPedidoModule>;
 
     constructor(idNegocio: number, idPersona: number, idTipoPedido: number, pedido: Array<ProductoPedidoModule>, idTipoPago: number) {

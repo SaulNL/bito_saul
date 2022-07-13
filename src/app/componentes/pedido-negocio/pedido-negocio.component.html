@@ -190,16 +190,19 @@
       </ion-grid>
     </div>
          
-    <div class="ion-text-center">
+    <div class="ion-text-center" *ngIf="convenio===1">
       <p>
         Tiempo de entrega entre la ubicación del negocio & la dirección del usuario
        </p>
       <p>
-        Distancia Km: {{kilometros}}
+        Distancia Km: {{distancia}}
        </p>
      
        <p>
-        Tiempo Hrs/Min: {{this.minutos}}
+        Tiempo Hrs/Min: {{tiempo}}
+       </p>
+       <p>
+        Costo de envio :{{costoDeEnvio}}
        </p>
        <ion-row class="ion-align-items-center">
         <ion-col class="ion-text-center">
@@ -247,8 +250,12 @@
       </ion-label>
     </ion-item>
     <ion-item *ngIf="tipoEnvio === 2">
+      <ion-label *ngIf="convenio===1">
+        <h3>Costo de envio convenio</h3>
+        <h3>{{costoEntrega | currency}}</h3>
+      </ion-label>
       <ion-label *ngIf="blnCosto">
-        <h3>Costo de envio</h3>
+        <h3>Costo de envio xd</h3>
         <h3>{{costoEntrega | currency}}</h3>
       </ion-label>
       <ion-label *ngIf="blnCostoLetra">

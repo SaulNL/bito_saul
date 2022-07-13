@@ -39,6 +39,7 @@ export class PedidoNegocioComponent implements OnInit {
     @Input() negocioNombre: string;
     @Input() public latNegocio: number;
     @Input() public logNegocio: number;
+    @Input() public convenio: number;
     public static readonly TIPO_DE_PAGO_INVALIDO = -1; // Puede ser cualquier numero menor a 0;
     tipoEnvio: any;
     private map: Map;
@@ -92,9 +93,11 @@ export class PedidoNegocioComponent implements OnInit {
     kilometros: number;
     minutos: number;
     convenioEntrega: number;
-    costoDeEnvio: any;
+    costoDeEnvio: number;
     origen: any;
     destino: any;
+    dstn: number;
+    tmp: number;
     constructor(
         private utilsCls: UtilsCls,
         private modalController: ModalController,
@@ -139,7 +142,6 @@ export class PedidoNegocioComponent implements OnInit {
         this.loadMap();
         this.sumarLista();
         this.cargarTipoDePagos();
-        console.log("lat-lon",this.latNegocio, this.logNegocio)
     }
     cargarTipoDePagos(){
         this.negocioService.obtenerTiposDePagosPorNegocio(this.idNegocio)
@@ -441,6 +443,13 @@ export class PedidoNegocioComponent implements OnInit {
                     this.pedido.latitud = this.lat;
                     this.pedido.longitud = this.lng;
                     this.pedido.direccion = this.address;
+                   
+                    if(this.convenio===1){
+                        this.pedido.costo_envio=this.costoEntrega;
+                        this.pedido.kilometros = parseFloat(this.distancia);
+                        this.pedido.minutos= parseFloat(this.tiempo);
+                        
+                    }
                     this.registrarPedido(this.pedido);
                     break;
                 case 3:
@@ -553,14 +562,20 @@ export class PedidoNegocioComponent implements OnInit {
     }
 
     validarCosto() {
-        if (parseInt(this._costoEntrega) >= 0) {
-            this.costoEntrega = parseInt(this._costoEntrega);
-            this.blnCosto = true;
-            this.blnCostoLetra = false;
-        } else {
-            this.blnCosto = false;
-            this.blnCostoLetra = true;
+        if(this.convenio!=0){
+           
+        }else{
+            if (parseInt(this._costoEntrega) >= 0) {
+                this.costoEntrega = parseInt(this._costoEntrega);
+                this.blnCosto = true;
+                this.blnCostoLetra = false;
+            } else {
+                this.blnCosto = false;
+                this.blnCostoLetra = true;
+            }
+
         }
+        
     }
 
     async presentAlertCancelar() {
@@ -657,68 +672,69 @@ export class PedidoNegocioComponent implements OnInit {
         })
     }
 
-    activar(){
-        this.origen =this.latNegocio+','+this.logNegocio
-        console.log("origen",this.origen)
-        this.getCoordinates();
-        console.log(this.address);
-        // this.getCoordinatesMap.getPosts(this.address)
-        // .then(async data => {
-        //     let arrayPosts: any = data;
-        //     let latitud = arrayPosts.results[0].geometry.location.lat;
-        //     let longitud = arrayPosts.results[0].geometry.location.lng;
+    async activar() {
 
-        //     this.lat = latitud;
-        //     this.lng = longitud;
-        // })
-        console.log("destino",this.lat,this.lng)
-        this.destino=this.lat+','+this.lng;
-        this.getCoordinatesMap.getDistanciaKmTiempo(this.origen,this.destino)
+        this.origen = this.latNegocio + ',' + this.logNegocio
+        this.address = "";
+        if (this.calle != "") {
+            this.address += this.calle + ", ";
+        }
+        if (this.numeroExt != "") {
+            this.address += this.numeroExt + ", ";
+        }
+        if (this.colonia != "") {
+            this.address += this.colonia + ", ";
+        }
+        if (this.IdLocalidad != "") {
+            this.address += this.IdLocalidad + ", ";
+        }
+        if (this.cp != "") {
+            this.address += this.cp + ", ";
+        }
+        if (this.IdMunicipio.nombre != "") {
+            this.address += this.IdMunicipio.nombre + ", ";
+        }
+        if (this.IdEstado.nombre != "") {
+            this.address += this.IdEstado.nombre + ", México";
+        }
+        this.getCoordinatesMap.getPosts(this.address)
             .then(async data => {
                 let arrayPosts: any = data;
-                console.log(arrayPosts)
+                let latitud = arrayPosts.results[0].geometry.location.lat;
+                let longitud = arrayPosts.results[0].geometry.location.lng;
 
-               
-            })
-       
-        //this.getDistanciaKmTiempo(this.origen,this.destino)
+                this.lat = latitud;
+                this.lng = longitud;
+                
+               this.geocodeLatLng2();
+            }).catch((error) => {
+                this.mesajes.error("Ocurrió un error al consultar la dirección, intente de nuevo más tarde ");
+        })
+      
+        this.destino = this.lat + ',' + this.lng;
+        var responseDistKm = await this.getCoordinatesMap.getDistanciaKmTiempo(this.origen, this.destino).toPromise();
+
+        if (responseDistKm.status == "OK") {
+
+
+            this.distancia = responseDistKm.routes[0].legs[0].distance.text;
+            this.tiempo = responseDistKm.routes[0].legs[0].duration.text;
+
+            this.dstn = parseFloat(this.distancia);
+
+            this.tmp = parseFloat(this.tiempo);
+
+            var response = await this.negocioService.calcularCostoDeEnvio(this.tmp, this.dstn).toPromise();
+            this.costoDeEnvio = response.data.total;
+             this.costoEntrega=this.costoDeEnvio;
+             this.sumarLista();
+            
+
+        } else {
+            this.distancia = "";
+            this.tiempo = "";
+        }
 
     }
 
-
-    
-
-    // getDistanciaKmTiempo(origen: any, destino: number) {
-    //     this.getCoordinatesMap.getDistanciaKmTiempo(origen, destino, legs => {
-    //       if (legs !== null) {
-    //         this.distancia = legs.distance.text;
-    //         this.tiempo = legs.duration.text;
-    //         //En este apartado le paso los parametros que bienen de la api de google para que calcule el costo de envio
-    //         this.kilometros = parseFloat(this.distancia);
-    //         // console.log(this.kilometros);
-    //         this.minutos = parseFloat(this.tiempo);
-    //         // console.log(this.minutos);
-    //         this.calcularCostoDeEnvio(this.minutos,this.kilometros);
-          
-    //       }
-    //     })
-    //   }
-
-    calcularCostoDeEnvio(minutos: any, kilometros: any){
-        // console.log("estoy entrando acalcular ");
-        this.negocioService.calcularCostoDeEnvio(minutos, kilometros).subscribe(
-          response => {
-            // console.log(response);
-            // this.convenioEntrega = localStorage.getItem('convenioEntrega');
-            if ( this.convenioEntrega == 1) {
-            if (this._utils_cls.is_success_response(response.code)) {
-            this.costoDeEnvio = response.data.total;
-            }
-          }
-          }, error => {
-            //this._notificacionService.pushError(error);
-          }
-        );
-    
-      }
 }
