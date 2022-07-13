@@ -251,9 +251,9 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     subCategorias() {
-        if (this.isProductPage) {
-            this.categoria = null;
-        }
+        // if (this.isProductPage) {
+        //     this.categoria = null;
+        // }
         this.filtroServicio.obtenerCategoriasGiro(this.categoria).subscribe(
             response => {
                 this.listaCategorias = response.data;

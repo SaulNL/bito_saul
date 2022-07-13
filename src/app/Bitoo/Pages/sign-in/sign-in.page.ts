@@ -27,6 +27,7 @@ import { ConfigGlobal } from "../../config/config-global";
 import { ResponderModel } from "../../models/responder-model";
 import { ValidatorData } from "../../helper/validations";
 import { ResponseCommon } from "../../helper/is-success-response";
+import { AppSettings } from '../../../AppSettings';
 
 @Component({
   selector: "app-sign-in",
@@ -47,6 +48,8 @@ export class SignInPage implements OnInit {
   public loadApple: boolean;
   public passwordType: string;
   public showPassword: boolean;
+  public versionActualSistema: number;
+  public releaseDate: string;
 
   constructor(
     private loginService: LoginService,
@@ -67,6 +70,8 @@ export class SignInPage implements OnInit {
     this.init();
     this.ionViewDidEnter();
     this.ionViewWillLeave();
+    this.versionActualSistema = (this.platform.is('android')) ? AppSettings.VERSION_ANDROID : AppSettings.VERSION_IOS;
+    this.releaseDate = AppSettings.RELEASE_DATE;
   }
 
   ngOnInit() {

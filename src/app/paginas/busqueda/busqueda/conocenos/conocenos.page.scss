@@ -20,6 +20,17 @@
     position: relative;
 }
 
+.swiper-slide img{
+    height: 15vh !important;
+}
+.swiper-zoom-container>img, .swiper-zoom-container>svg, .swiper-zoom-container>canvas{
+    object-fit: unset;
+}
+
+ion-slides {
+    --bullet-background-active: #f8307c;
+ }
+
 .alexis {
     background-image: url(https://ecoevents.blob.core.windows.net/comprandoando/conocenos/Alexis.png);
     background-repeat: no-repeat;
