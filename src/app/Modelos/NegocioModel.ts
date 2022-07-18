@@ -58,6 +58,7 @@ export class NegocioModel {
   public verificado: Boolean;
   plazasTodo: any;
   public plazas: any;
+  public afiliaciones: any;
   constructor(
     id_negocio = null,
     rfc = null,

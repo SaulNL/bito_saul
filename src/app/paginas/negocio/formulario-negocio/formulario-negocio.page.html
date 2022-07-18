@@ -105,7 +105,7 @@
           </div>
           <ion-item>
             <ion-label position="stacked">SubCategoría <span style="color: red">*</span></ion-label>
-            <ion-select placeholder="{{ tipoSubAux }}" name="idtipoSubCategorias" required #tipoSubCategoria="ngModel"
+            <ion-select placeholder="{{ tipoSubAux }}" name="idtipoSubCategorias"  #tipoSubCategoria="ngModel"
               ok-text="Ok" cancel-text="Cancelar" [(ngModel)]="negocioTO.id_categoria_negocio">
               <ng-container *ngFor="let item of listaSubCategorias">
                 <ion-select-option [value]="item.id_categoria">{{item.nombre}}
@@ -135,6 +135,30 @@
               </ion-select-option>
             </ion-select>
           </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Convenio con:</ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idCnvn" name="idCnvn"
+              #organizaciones="ngModel" [(ngModel)]="negocioTO.afiliaciones" placeholder="{{ tipoCnvn }}">
+              <ion-select-option *ngFor="let cvn of lstConvenio" [value]="cvn.id_organizacion">{{cvn.nombre}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Fecha de fin de convenio: </ion-label>
+            <ion-datetime  
+              value="this.cnvn_date convenio_date | date: 'dd/MM/yyyy'"
+              display-format="DD/MM/YYYY "
+              placeholder="{{convenio_date}}"
+              id="afiliadoEmpresa"
+              name="afiliadoEmpresa" [(ngModel)]="this.cnvn_date " 
+              
+              >
+              
+            </ion-datetime> 
+           
+          </ion-item>
+
           <ion-item>
             <ion-label position="stacked">Se encuentra en la Plaza: </ion-label>
             <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idPlaza" name="idPlaza" #plazas="ngModel"

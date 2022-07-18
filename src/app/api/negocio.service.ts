@@ -293,7 +293,7 @@ export class NegocioService {
         const body = JSON.stringify({});
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
-            this.url + 'api/catalogo/organizaciones/obtenerTodas',
+            this.url + 'api/catalogo/organizaciones/obtenerTodasActivas',
             body, AppSettings.getHeadersToken())
             .then((data) => {
                 return JSON.parse(data.data);
@@ -316,6 +316,20 @@ export class NegocioService {
                 return error;
             }));
     }
+
+    obtenerConvenio(): Observable<any> {
+        const body = JSON.stringify({});
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/catalogo/afiliaciones/obtenerTodasActivas',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+      }
 
     /**
      * Servicio para validar disponivilidad de url del negocio

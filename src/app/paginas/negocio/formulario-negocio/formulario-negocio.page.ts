@@ -13,7 +13,7 @@ import { ModalController } from '@ionic/angular';
 import { RecorteImagenComponent } from '../../../components/recorte-imagen/recorte-imagen.component';
 import { ActionSheetController } from '@ionic/angular';
 import { HorarioNegocioModel } from '../../../Modelos/HorarioNegocioModel';
-import * as moment from 'moment';
+import moment from 'moment';
 import { CatLocalidadModel } from './../../../Modelos/CatLocalidadModel';
 import { CatMunicipioModel } from './../../../Modelos/CatMunicipioModel';
 import { CatEstadoModel } from './../../../Modelos/CatEstadoModel';
@@ -102,6 +102,11 @@ export class FormularioNegocioPage implements OnInit {
   public colorInfo: any;
   public colorDomicilio: any;
   public colorContacto: any;
+  public lstConvenio: any;
+  public tipoCnvn: any;
+  public convenio_date: any;
+  public cnvn_date:any;
+  public dateObject: any;
   constructor(
     private alertController: AlertController,
     private router: Router,
@@ -268,6 +273,7 @@ export class FormularioNegocioPage implements OnInit {
       this.obtenerTipoNegocio();
       this.obtenerCatOrganizaciones();
       this.obtenerCaPlazas();
+      this.obtenerConvenio();
       this.categoriaPrincipal({ value: 0 });
       this.subcategorias({ value: 0 });
     } else {
@@ -277,6 +283,10 @@ export class FormularioNegocioPage implements OnInit {
           this.obtenerTipoNegocio();
           this.obtenerCatOrganizaciones();
           this.obtenerCaPlazas();
+          this.obtenerConvenio();
+          this.negocioTO.afiliacionesTodo.forEach(element => {
+          this.convenio_date=element.fecha_fin;
+          });
           const archivo = new ArchivoComunModel();
           archivo.archivo_64 = this.negocioTO.url_logo;
           archivo.nombre_archivo = this.negocioTO.id_negocio.toString();
@@ -458,6 +468,21 @@ export class FormularioNegocioPage implements OnInit {
 
             if (element.id_organizacion == elements) {
               this.tipoPlzAux = element.nombre;
+            }
+          });
+        });
+      }
+    });
+  }
+
+  public obtenerConvenio() {
+    this.negocioServico.obtenerConvenio().subscribe((response) => {
+      this.lstConvenio = Object.values(response.data);
+      if (this.negocioTO.id_negocio != null) {
+        this.lstConvenio.forEach((element) => {
+          this.negocioTO.afiliaciones.forEach((elements) => {
+            if (element.id_organizacion == elements) {
+              this.tipoCnvn = element.nombre;
             }
           });
         });
@@ -786,7 +811,7 @@ export class FormularioNegocioPage implements OnInit {
     }
   }
 
-  guardar() {
+  guardar( formulario) {
     const formularioInfo = document.getElementById('formNegocio');
     this.loader = true;
     if (this.negocioTO.logo === null ||
@@ -846,7 +871,20 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.otra_subcategoria = '';
     this.negocioGuardar.organizaciones = this.negocioTO.organizaciones;
     this.negocioGuardar.plazas = this.negocioTO.plazas;
-    this.negocioGuardar.nombre_organizacion = '';
+  
+    if (this.cnvn_date === undefined){
+      this.dateObject = this.convenio_date;
+    } else{
+      this.dateObject =this.cnvn_date.substr(0,this.cnvn_date.indexOf( "T" )); 
+    }
+    
+    this.negocioGuardar.afiliaciones =  this.negocioTO.afiliaciones.map((organizacion)  => {
+      return {
+        id: organizacion,
+        fecha_fin: this.dateObject, 
+      }
+    });
+    
     if (this.negocioGuardar.organizaciones !== undefined && this.negocioGuardar.organizaciones.length > 0) {
       this.negocioGuardar.nombre_organizacion = this.negocioTO.nombre_organizacion
     }
