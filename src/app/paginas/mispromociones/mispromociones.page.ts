@@ -117,12 +117,13 @@ export class MispromocionesPage implements OnInit {
               this._promociones_service.validarCupon(cupon).subscribe(
                 
                     (response) => {
-                        if (response.code === 200) {
-        
+
+                        if (response.data.exito === true) {
+                            
                             this._notificacionService.exito("Se valido cupón correctamente");
                           }
-                          if (response.code === 420) {
-                            this._notificacionService.error(response.message);
+                          if (response.data.exito === false) {
+                                this._notificacionService.error(response.data.mensaje);
                           }
                     },
                     (error) => {
