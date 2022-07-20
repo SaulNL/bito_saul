@@ -116,7 +116,7 @@
               [min]="minDate"
               [max]="maxDate"
               value="{{usuarioSistema.fecha_nacimiento | date: 'yyyy-MM-dd'}}"
-              (ionChange)="convercionFechaNac($event)"
+              
               required
             ></ion-datetime>
             <ion-icon
@@ -137,6 +137,57 @@
               [(ngModel)]="usuarioSistema.correo"
             ></ion-input>
           </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Afiliado a:</ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idAfl" name="idAfl"
+                placeholder="{{ tipoAfl }}" (ionChange)="afiliado($event)">
+              <ion-select-option *ngFor="let afl of lstAfiliaciones" [value]="afl.id_organizacion">{{afl.nombre}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item *ngIf="this.afl_etiqueta===true">
+            <ion-label position="stacked">{{this.etiqueta_name}}</ion-label>
+            <ion-input
+              value="{{valueIdentificacion}}"
+              id="identificacion"
+              name="identificacion"
+              [(ngModel)]="this.identficacionAfl"
+              placeholder="{{this.valueIdentificacion}}"
+            ></ion-input>
+          </ion-item>
+          <ion-item *ngIf="this.nombre_empresa_afl===true">
+            <ion-label position="stacked">Nombre de la empresa:</ion-label>
+            <ion-input
+              id="nombreEmpresaAfl"
+              name="nombreEmpresaAfl"
+              [(ngModel)]='nombreEmpresaAfl'
+              
+            ></ion-input>
+          </ion-item>
+
+
+          <ion-item>
+            <ion-label position="stacked">La empresa en la que colaboras pertenece a alguna afiliación:</ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idOrg" name="idOrg"
+                placeholder="{{ tipoOrg }}" (ionChange)="organizacion($event)">
+              <ion-select-option *ngFor="let org of lstOrganizaciones" [value]="org.id_organizacion">{{org.nombre}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item *ngIf="this.nombre_empresa===true">
+            <ion-label position="stacked">Nombre de la empresa:</ion-label>
+            <ion-input
+              id="nombreEmpresa"
+              name="nombreEmpresa"
+              [(ngModel)]='nombreEmpresa'
+            ></ion-input>
+          </ion-item>
+          
+          
+
         </ion-list>
         <ion-button type="submit" class="bg-rosa" expand="block"
           >Actualizar</ion-button

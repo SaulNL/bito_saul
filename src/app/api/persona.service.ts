@@ -27,6 +27,7 @@ export class PersonaService {
   }
   guardar(busquedaTO: MsPersonaModel): Observable<any> {
     const body = JSON.stringify(busquedaTO);
+    console.log(body);
     this._http.setDataSerializer("utf8");
     return from(this._http.post(this.url + 'api/proveedoresUsuario/guardarPersonaProveedor', body,AppSettings.getHeadersToken())
     .then((data) => {
@@ -108,4 +109,52 @@ export class PersonaService {
       return error;
     }));
   }
+
+
+  obtenerAfiliaciones(): Observable<any> {
+    const body = JSON.stringify({});
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(
+        this.url + 'api/catalogo/afiliaciones/obtenerTodasActivas',
+        body, AppSettings.getHeadersToken())
+        .then((data) => {
+            return JSON.parse(data.data);
+        })
+        .catch((error) => {
+            return error;
+        }));
+  }
+
+
+  obtenerOrganizaciones(): Observable<any> {
+    const body = JSON.stringify({});
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(
+        this.url + 'api/catalogo/organizaciones/obtenerTodasActivas',
+        body, AppSettings.getHeadersToken())
+        .then((data) => {
+            return JSON.parse(data.data);
+        })
+        .catch((error) => {
+            return error;
+        }));
+  }
+
+  obtenerOrgAfilUsuario(idUsuario: number): Observable<any> {
+    const body = JSON.stringify({id_usuario_sistema : idUsuario});
+    console.log("body",body)
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(
+        this.url + 'api/catalogos/adminUser/obtenerOrgAfilUsuario',
+        body, AppSettings.getHeadersToken())
+        .then((data) => {
+            return JSON.parse(data.data);
+        })
+        .catch((error) => {
+            return error;
+        }));
+  }
+
+
+  
 }
