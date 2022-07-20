@@ -145,18 +145,14 @@
             </ion-select>
           </ion-item>
           <ion-item>
-            <ion-label position="stacked">Fecha de fin de convenio: </ion-label>
-            <ion-datetime  
-              value="this.cnvn_date convenio_date | date: 'dd/MM/yyyy'"
-              display-format="DD/MM/YYYY "
-              placeholder="{{convenio_date}}"
+            <ion-label position="stacked">Fecha de fin de convenio:</ion-label>
+            <ion-datetime #picker displayFormat="D/MM/YYYY" 
+              value="{{ convenio_date  | date: 'yyyy-MM-dd'}}" 
               id="afiliadoEmpresa"
-              name="afiliadoEmpresa" [(ngModel)]="this.cnvn_date " 
-              
-              >
-              
-            </ion-datetime> 
-           
+              name="afiliadoEmpresa" 
+              [(ngModel)]="this.cnvn_date " 
+            ></ion-datetime>
+            <ion-icon slot="end" name="calendar-outline" (click)="picker.open()"></ion-icon>
           </ion-item>
 
           <ion-item>
