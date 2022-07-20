@@ -30,7 +30,7 @@ export class MsPersonaModel{
   public ineAtras: ArchivoComunModel;
   public imagen: string;
   public telefono: any;
-
+  public afiliaciones: any;
   constructor(
     id_persona:number = 0,
     nombre:string = '',
