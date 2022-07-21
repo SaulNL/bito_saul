@@ -11,6 +11,7 @@ import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { Router } from "@angular/router";
 import { RecorteImagenComponent } from 'src/app/components/recorte-imagen/recorte-imagen.component';
 import { SessionUtil } from './../../utils/sessionUtil';
+import { ConvenioModel } from '../../Modelos/ConvenioModel';
 
 
 
@@ -35,27 +36,24 @@ export class DatosBasicosPage implements OnInit {
   resizeToWidth: number = 0;
   resizeToHeight: number = 0;
   maintainAspectRatio: boolean = false;
-  lstAfiliaciones: any;
-  tipoAfl: any;
-  tipoOrg: any;
-  lstOrganizaciones: any;
-  idConvenio: number;
-  afl_etiqueta: boolean;
-  etiqueta_name: any;
-  nombre_empresa: boolean;
-  etiqueta: any;
-  afiliaciones: any;
-  identficacionAfl: any;
-  nombreEmpresa: any;
-  organizaciones: any;
-  lstAflUsuario: any;
-  lstOrgUsuario: any;
-  nombre_empresa_afl: boolean;
-  array: any;
-  nombreEmpresaAfl: any;
-  arrayAfl: any;
-  arrayOrg: any;
-  valueIdentificacion: any;
+  
+  public lstAfiliaciones: any;
+  public tipoAfl: any;
+  public tipoOrg: any;
+  public lstOrganizaciones: any;
+  public afl_etiqueta: boolean;
+  public etiqueta_name: any;
+  public nombre_empresa: boolean;
+  public identficacionAfl: any;
+  public nombreEmpresa: string;
+  public lstAflUsuario: any;
+  public lstOrgUsuario: any;
+  public arrayAfl: any;
+  public arrayOrg: any;
+  public arrayAflOrg: any;
+  public idAfl: number;
+  public nom_empresa: string;
+  public organizacion_id: number[];
 
   constructor(
     private servicioPersona: PersonaService,
@@ -79,7 +77,7 @@ export class DatosBasicosPage implements OnInit {
     this.setDataBasicUser();
     this.obtenerOrgAfilUsuario();
     this.obtenerAfiliaciones();
-    this.publicobtenerOrganizaciones();
+    this.obtenerOrganizaciones();
   }
 
   private actualizarUsuario(user) {
@@ -101,54 +99,63 @@ export class DatosBasicosPage implements OnInit {
       }
     );
   }
+
   actualizarDatos(formBasicos: NgForm) {
+    const user = JSON.parse(localStorage.getItem('u_data'));
     this.loader = true;
 
-    // this.arrayAfl;
-    // console.log("this.array",this.arrayAfl)
-    
-    if(this.arrayAfl != undefined){
-      this.afiliaciones =  this.arrayAfl.map((afiliacion)  => {
-        return {
-          id_usuario: this.usuarioSistema.id_persona,
-          id_organizacion: afiliacion,
-          identificacion: this.identficacionAfl,
-          nombre_empresa:  afiliacion === 99998 ? this.nombreEmpresaAfl : "",
-           
-        }
+    this.arrayAfl
+    if (this.arrayAfl === undefined) {
+      this.arrayAfl = []
+    }
+    if (this.arrayOrg === undefined) {
+      this.arrayOrg = []
+    }
+
+    this.arrayAflOrg = this.arrayAfl.concat(this.arrayOrg);
+
+    if (this.arrayAflOrg !== undefined) {
+
+      this.usuarioSistema.afiliaciones = Array<ConvenioModel>();
+
+      this.arrayAfl.forEach(afi => {
+        const afiliacion = new ConvenioModel();
+        afiliacion.id_organizacion = afi;
+
+        afiliacion.id_usuario = user.usuario.id_usuario_sistema;
+
+        afiliacion.identificacion = this.identficacionAfl;
+
+        afiliacion.nombre_empresa = ""
+
+        this.usuarioSistema.afiliaciones.push(afiliacion);
       });
-    }else{
-      this.afiliaciones = {}
-    }
-    
-    console.log(JSON.stringify(this.afiliaciones))
 
-    if(this.arrayOrg != undefined){
-      this.organizaciones =  this.arrayOrg.map((organizacion)  => {
-        return {
-          id_usuario: this.usuarioSistema.id_persona,
-          id_organizacion: organizacion,
-          identificacion:"",
-          nombre_empresa:  organizacion === 9999 ? this.nombreEmpresa : "",
-           
-        }
+      this.arrayOrg.forEach(org => {
+
+
+        this.lstOrganizaciones.forEach((element) => {
+          if (element.id_organizacion == org) {
+
+            this.nom_empresa = element.nombre;
+
+
+            const afiliacion = new ConvenioModel();
+            afiliacion.id_organizacion = org;
+
+            afiliacion.id_usuario = user.usuario.id_usuario_sistema;
+
+            afiliacion.identificacion = "";
+
+            afiliacion.nombre_empresa = org === 9999 ? this.nombreEmpresa : this.nom_empresa;
+
+            this.usuarioSistema.afiliaciones.push(afiliacion);
+          }
+        });
       });
-      console.log(JSON.stringify(this.afiliaciones))
-    }else{
-      this.organizaciones={}
-    }
 
-    if(this.arrayOrg != undefined || this.arrayAfl != undefined){
-
-   
-    
-   this.afiliaciones=this.afiliaciones.concat(this.organizaciones);
-
-    this.usuarioSistema.afiliaciones=this.afiliaciones;
     }
    
-    // let d2 = JSON.stringify(   this.usuarioSistema.afiliaciones);
-    // console.log("AFL",d2)
     const miPrimeraPromise = new Promise((resolve, reject) => {
       this.servicioPersona.guardar(this.usuarioSistema).subscribe(
         data => {
@@ -257,39 +264,25 @@ export class DatosBasicosPage implements OnInit {
 
   afiliado(evento) {
     const theValue = parseInt(evento.detail.value);
-    const afl = evento.detail.value.map(item => parseInt(item));
-    this.arrayAfl = afl;
-    console.log(afl)
-    const found =afl.find(element => element === 99998);
-    this.idConvenio = theValue;
+  
+    this.arrayAfl = [theValue];
+    // const found =afl.find(element => element === 99998);
+    
     if (theValue != null) {
       this.afl_etiqueta = true;
     }
-    if (found == 99998) {
-      this.nombre_empresa_afl = true;
-    } else {
-      this.nombre_empresa_afl = false;
-    }
+    // if (theValue== 99998) {
+    //   this.nombre_empresa_afl = true;
+    // } else {
+    //   this.nombre_empresa_afl = false;
+    // }
     let filteredArr = this.lstAfiliaciones.find(data => data.id_organizacion === theValue);
    
 
     this.etiqueta_name =  filteredArr.etiqueta_identificacion != null ? filteredArr.etiqueta_identificacion : "No.";
 
-    
-    
-    // this.afiliaciones =  evento.detail.value.map((organizacion)  => {
-    //   return {
-    //     id_usuario: this.usuarioSistema.id_persona,
-    //     id_organizacion: organizacion,
-    //     nombre_empresa:""
-         
-    //   }
-    // });
-    // console.log(JSON.stringify(this.afiliaciones))
-    
-
-    
   }
+
   public obtenerAfiliaciones() {
     this.servicioPersona.obtenerAfiliaciones().subscribe((response) => {
       this.lstAfiliaciones = Object.values(response.data);
@@ -297,13 +290,11 @@ export class DatosBasicosPage implements OnInit {
         this.lstAfiliaciones.forEach((element) => {
           this.lstAflUsuario.forEach((elements) => {
             if (element.id_organizacion == elements.id_organizacion) {
+              this.idAfl=elements.id_organizacion
               this.tipoAfl = element.nombre;
               this.etiqueta_name = element.etiqueta_identificacion
               this.afl_etiqueta = true;
-              this.valueIdentificacion = elements.identificacion;
-              // console.log("this.valueIdentificacion",this.valueIdentificacion)
-              // console.log("element",elements)
-              // console.log("element",element)
+              this.identficacionAfl = elements.identificacion;
             }
           });
         });
@@ -315,9 +306,7 @@ export class DatosBasicosPage implements OnInit {
     
     const org = evento.detail.value.map(item => parseInt(item));
     this.arrayOrg = org;
-    console.log(org)
     const found =org.find(element => element === 9999);
-   console.log(found)
     if (found == 9999) {
       this.nombre_empresa = true;
     } else {
@@ -330,18 +319,14 @@ export class DatosBasicosPage implements OnInit {
   }
 
 
-  publicobtenerOrganizaciones() {
+  obtenerOrganizaciones() {
     this.servicioPersona.obtenerOrganizaciones().subscribe((response) => {
       this.lstOrganizaciones = Object.values(response.data);
-      console.log(this.lstOrgUsuario)
-      if (this.lstOrgUsuario.length>0) {
+      if (this.lstOrgUsuario.length >0) {
         this.lstOrganizaciones .forEach((element) => {
           this.lstOrgUsuario.forEach((elements) => {
-          
-            if (element.id_organizacion == elements.id_organizacion) {
-              this.tipoOrg = element.nombre;
-              console.log("element",element);
-              console.log("elements",elements);
+            if (element.id_organizacion == elements.id_organizacion) {           
+              this.tipoOrg = element.nombre; 
               if (elements.id_organizacion == 9999) {
                 this.nombre_empresa = true;
                 this.nombreEmpresa = elements.nombre_empresa
@@ -357,18 +342,18 @@ export class DatosBasicosPage implements OnInit {
 
   public obtenerOrgAfilUsuario(){
     const user = JSON.parse(localStorage.getItem('u_data'));
-    this.servicioPersona.obtenerOrgAfilUsuario(user.id_persona)
+    this.servicioPersona.obtenerOrgAfilUsuario(user.usuario.id_usuario_sistema)
       .subscribe(
         (response) => {
-
-          console.log(response)
           if (response.code === 200) {
             this.lstAflUsuario = Object.values(response.data.list_afiliaciones_usuario);
             this.lstOrgUsuario = Object.values(response.data.list_organizaciones_usuario);
             
-            console.log("lstAflUsuario",this.lstAflUsuario);
-            console.log("lstAOrgUsuario",this.lstOrgUsuario);
-            // console.log("OrgAfilUsuario",response.data);
+              this.organizacion_id = []
+              let array = this.lstOrgUsuario;
+              for( const item of array){
+                this.organizacion_id.push(item.id_organizacion);
+              }
           } else {
             this.lstAflUsuario = [];
             this.lstOrgUsuario = [];
