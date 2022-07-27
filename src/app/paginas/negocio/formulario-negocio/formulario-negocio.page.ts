@@ -1029,7 +1029,7 @@ export class FormularioNegocioPage implements OnInit {
     this.convenioId = convenio.id_organizacion
 
     this.cnvn_fecha = convenio.fecha_fin
-    this.convenio.splice(i);
+    this.convenio.splice(i,1);
   }
   cancelarConvenio() {
     this.convenioId = null;
