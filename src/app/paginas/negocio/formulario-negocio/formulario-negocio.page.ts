@@ -363,7 +363,7 @@ export class FormularioNegocioPage implements OnInit {
     } else {
       idE = evento.value;
     }
-    this.negocioServico.obtenerCategoriasProdServ(idE,this.negocioTO.id_tipo_negocio).subscribe(
+    this.negocioServico.obtenerCategorias(idE).subscribe(
       respuesta => {
         this.listaSubCategorias = Array();
         if (respuesta.code === 200) {
@@ -1081,6 +1081,6 @@ export class FormularioNegocioPage implements OnInit {
 }
 
 eliminarConvenio(i) {
-  this.convenio.splice(i);
+  this.convenio.splice(i,1);
 }
 }
