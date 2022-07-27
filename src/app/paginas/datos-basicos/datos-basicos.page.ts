@@ -101,7 +101,7 @@ export class DatosBasicosPage implements OnInit {
   }
 
   actualizarDatos(formBasicos: NgForm) {
-    const user = JSON.parse(localStorage.getItem('u_data'));
+    const usuario_sistema = JSON.parse(localStorage.getItem("u_sistema"));
     this.loader = true;
 
     this.arrayAfl
@@ -122,7 +122,7 @@ export class DatosBasicosPage implements OnInit {
         const afiliacion = new ConvenioModel();
         afiliacion.id_organizacion = afi;
 
-        afiliacion.id_usuario = user.usuario.id_usuario_sistema;
+        afiliacion.id_usuario = usuario_sistema.id_usuario_sistema;
 
         afiliacion.identificacion = this.identficacionAfl;
 
@@ -143,7 +143,7 @@ export class DatosBasicosPage implements OnInit {
             const afiliacion = new ConvenioModel();
             afiliacion.id_organizacion = org;
 
-            afiliacion.id_usuario = user.usuario.id_usuario_sistema;
+            afiliacion.id_usuario = usuario_sistema.id_usuario_sistema;
 
             afiliacion.identificacion = "";
 
@@ -341,8 +341,8 @@ export class DatosBasicosPage implements OnInit {
 
 
   public obtenerOrgAfilUsuario(){
-    const user = JSON.parse(localStorage.getItem('u_data'));
-    this.servicioPersona.obtenerOrgAfilUsuario(user.usuario.id_usuario_sistema)
+    const usuario_sistema = JSON.parse(localStorage.getItem("u_sistema"));
+    this.servicioPersona.obtenerOrgAfilUsuario(usuario_sistema.id_usuario_sistema)
       .subscribe(
         (response) => {
           if (response.code === 200) {

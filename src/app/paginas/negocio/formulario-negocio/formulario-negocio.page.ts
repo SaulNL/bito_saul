@@ -107,6 +107,13 @@ export class FormularioNegocioPage implements OnInit {
   public convenio_date: any;
   public cnvn_date:any;
   public dateObject: any;
+ 
+ 
+  convenioId: number;
+  cnvn_fecha: any;
+  dateFormat: any;
+  convenio: any[];
+  nameConvenio: any;
   constructor(
     private alertController: AlertController,
     private router: Router,
@@ -127,6 +134,8 @@ export class FormularioNegocioPage implements OnInit {
     this.negLugar = false;
     this.negocioGuardar = new NegocioModel();
     this.nuevoHorario = new HorarioNegocioModel();
+    this.convenio = new Array();
+    
     this.blnActivaHoraF = true;
     this.blnActivaDias = true;
     this.blnActivaHorario = true;
@@ -284,8 +293,16 @@ export class FormularioNegocioPage implements OnInit {
           this.obtenerCatOrganizaciones();
           this.obtenerCaPlazas();
           this.obtenerConvenio();
+
           this.negocioTO.afiliacionesTodo.forEach(element => {
-          this.convenio_date=element.fecha_fin;
+
+            let afiliacion = {
+              "id_organizacion": element.id_organizacion,
+              "fecha_fin": element.fecha_fin,
+              "nombre":element.organizacion.nombre
+             }
+             this.convenio.push(afiliacion);
+           
           });
           const archivo = new ArchivoComunModel();
           archivo.archivo_64 = this.negocioTO.url_logo;
@@ -877,13 +894,18 @@ export class FormularioNegocioPage implements OnInit {
     } else{
       this.dateObject =this.cnvn_date.substr(0,this.cnvn_date.indexOf( "T" )); 
     }
+    this.negocioTO.afiliaciones=[]
     
-    this.negocioGuardar.afiliaciones =  this.negocioTO.afiliaciones.map((organizacion)  => {
-      return {
-        id: organizacion,
-        fecha_fin: this.dateObject, 
-      }
-    });
+    this.convenio.forEach(element => {
+
+      let afiliacion = {
+        "id": element.id_organizacion,
+        "fecha_fin": element.fecha_fin,
+       }
+       this.negocioTO.afiliaciones.push(afiliacion);
+  
+    })
+    this.negocioGuardar.afiliaciones =  this.negocioTO.afiliaciones;
     
     if (this.negocioGuardar.organizaciones !== undefined && this.negocioGuardar.organizaciones.length > 0) {
       this.negocioGuardar.nombre_organizacion = this.negocioTO.nombre_organizacion
@@ -1003,4 +1025,62 @@ export class FormularioNegocioPage implements OnInit {
   async nextTab(tab){
     this.segmentModel = tab;
   }
+  editarConvenio(convenio, i) {
+    this.convenioId = convenio.id_organizacion
+
+    this.cnvn_fecha = convenio.fecha_fin
+    this.convenio.splice(i);
+  }
+  cancelarConvenio() {
+    this.convenioId = null;
+    this.cnvn_fecha = null;
+  }
+ agregarConvenio(){
+
+  
+
+        this.dateFormat =this.cnvn_fecha.substr(0,this.cnvn_fecha.indexOf( "T" ));
+       
+        let filteredArr = this.lstConvenio.find(data => data.id_organizacion === this.convenioId);
+        this.nameConvenio= filteredArr.nombre;
+
+        let afiliacion = {
+          "id_organizacion": this.convenioId,
+          "fecha_fin": this.dateFormat,
+          "nombre":this.nameConvenio
+         }
+         this.convenio.push(afiliacion);
+         this.convenioId = null;
+        this.cnvn_fecha = null;
+
+ }
+
+
+ async presentAlertEliminarConvenio(i) {
+  const alert = await this.alertController.create({
+    cssClass: 'my-custom-class',
+    header: '¿Esta seguro que desa Eliminar el registro?',
+    message: 'Recuerde que la acción es ireversible',
+    buttons: [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: (blah) => {
+        }
+      }, {
+        role: 'destructive',
+        text: 'Confirmar',
+        handler: () => {
+          this.eliminarConvenio(i);
+        }
+      }
+    ]
+  });
+  await alert.present();
+}
+
+eliminarConvenio(i) {
+  this.convenio.splice(i);
+}
 }
