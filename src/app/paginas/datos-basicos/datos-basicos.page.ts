@@ -43,7 +43,7 @@ export class DatosBasicosPage implements OnInit {
   public lstOrganizaciones: any;
   public afl_etiqueta: boolean;
   public etiqueta_name: any;
-  public nombre_empresa: boolean;
+
   public identficacionAfl: any;
   public nombreEmpresa: string;
   public lstAflUsuario: any;
@@ -52,7 +52,7 @@ export class DatosBasicosPage implements OnInit {
   public arrayOrg: any;
   public arrayAflOrg: any;
   public idAfl: number;
-  public nom_empresa: string;
+
   public organizacion_id: number[];
 
   constructor(
@@ -104,7 +104,7 @@ export class DatosBasicosPage implements OnInit {
     const usuario_sistema = JSON.parse(localStorage.getItem("u_sistema"));
     this.loader = true;
 
-    this.arrayAfl
+   
     if (this.arrayAfl === undefined) {
       this.arrayAfl = []
     }
@@ -131,14 +131,8 @@ export class DatosBasicosPage implements OnInit {
         this.usuarioSistema.afiliaciones.push(afiliacion);
       });
 
+      
       this.arrayOrg.forEach(org => {
-
-
-        this.lstOrganizaciones.forEach((element) => {
-          if (element.id_organizacion == org) {
-
-            this.nom_empresa = element.nombre;
-
 
             const afiliacion = new ConvenioModel();
             afiliacion.id_organizacion = org;
@@ -147,13 +141,12 @@ export class DatosBasicosPage implements OnInit {
 
             afiliacion.identificacion = "";
 
-            afiliacion.nombre_empresa = org === 9999 ? this.nombreEmpresa : this.nom_empresa;
+            afiliacion.nombre_empresa = this.nombreEmpresa 
 
             this.usuarioSistema.afiliaciones.push(afiliacion);
-          }
-        });
-      });
 
+      });
+      
     }
    
     const miPrimeraPromise = new Promise((resolve, reject) => {
@@ -305,16 +298,7 @@ export class DatosBasicosPage implements OnInit {
   organizacion(evento) {
     
     const org = evento.detail.value.map(item => parseInt(item));
-    this.arrayOrg = org;
-    const found =org.find(element => element === 9999);
-    if (found == 9999) {
-      this.nombre_empresa = true;
-    } else {
-
-      this.nombre_empresa = false;
-    }
-   
-
+    this.arrayOrg = org; 
 
   }
 
@@ -327,10 +311,7 @@ export class DatosBasicosPage implements OnInit {
           this.lstOrgUsuario.forEach((elements) => {
             if (element.id_organizacion == elements.id_organizacion) {           
               this.tipoOrg = element.nombre; 
-              if (elements.id_organizacion == 9999) {
-                this.nombre_empresa = true;
                 this.nombreEmpresa = elements.nombre_empresa
-              }
               
             }
           });

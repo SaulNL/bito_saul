@@ -179,13 +179,12 @@
             </ion-select>
           </ion-item>
 
-          <ion-item *ngIf="this.nombre_empresa===true">
-            <ion-label position="stacked">Nombre de la empresa:  <span>*</span></ion-label>
+          <ion-item >
+            <ion-label position="stacked">Nombre de la empresa: </ion-label>
             <ion-input
               id="nombreEmpresa"
               name="nombreEmpresa"
               [(ngModel)]='nombreEmpresa'
-              required
             ></ion-input>
           </ion-item>
           

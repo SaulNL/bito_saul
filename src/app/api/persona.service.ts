@@ -27,7 +27,6 @@ export class PersonaService {
   }
   guardar(busquedaTO: MsPersonaModel): Observable<any> {
     const body = JSON.stringify(busquedaTO);
-    console.log(body);
     this._http.setDataSerializer("utf8");
     return from(this._http.post(this.url + 'api/proveedoresUsuario/guardarPersonaProveedor', body,AppSettings.getHeadersToken())
     .then((data) => {
@@ -142,7 +141,6 @@ export class PersonaService {
 
   obtenerOrgAfilUsuario(idUsuario: number): Observable<any> {
     const body = JSON.stringify({id_usuario_sistema : idUsuario});
-    console.log("body",body)
     this._http.setDataSerializer('utf8');
     return from(this._http.post(
         this.url + 'api/catalogos/adminUser/obtenerOrgAfilUsuario',
