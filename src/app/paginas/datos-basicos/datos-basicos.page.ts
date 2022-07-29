@@ -276,7 +276,8 @@ export class DatosBasicosPage implements OnInit {
 
   }
 
-  public obtenerAfiliaciones() {
+  async obtenerAfiliaciones() {
+    await  this.obtenerOrgAfilUsuario();
     this.servicioPersona.obtenerAfiliaciones().subscribe((response) => {
       this.lstAfiliaciones = Object.values(response.data);
       if (this.lstAflUsuario.length >0) {
@@ -303,7 +304,8 @@ export class DatosBasicosPage implements OnInit {
   }
 
 
-  obtenerOrganizaciones() {
+  async obtenerOrganizaciones() {
+    await  this.obtenerOrgAfilUsuario();
     this.servicioPersona.obtenerOrganizaciones().subscribe((response) => {
       this.lstOrganizaciones = Object.values(response.data);
       if (this.lstOrgUsuario.length >0) {
@@ -321,14 +323,13 @@ export class DatosBasicosPage implements OnInit {
   }
 
 
-  public obtenerOrgAfilUsuario(){
+  async obtenerOrgAfilUsuario(){
     const usuario_sistema = JSON.parse(localStorage.getItem("u_sistema"));
-    this.servicioPersona.obtenerOrgAfilUsuario(usuario_sistema.id_usuario_sistema)
-      .subscribe(
-        (response) => {
-          if (response.code === 200) {
-            this.lstAflUsuario = Object.values(response.data.list_afiliaciones_usuario);
-            this.lstOrgUsuario = Object.values(response.data.list_organizaciones_usuario);
+    var respuesta = await this.servicioPersona.obtenerOrgAfilUsuario(usuario_sistema.id_usuario_sistema).toPromise();
+
+          if (respuesta.code === 200) {
+            this.lstAflUsuario = Object.values(respuesta.data.list_afiliaciones_usuario);
+            this.lstOrgUsuario = Object.values(respuesta.data.list_organizaciones_usuario);
             
               this.organizacion_id = []
               let array = this.lstOrgUsuario;
@@ -338,11 +339,6 @@ export class DatosBasicosPage implements OnInit {
           } else {
             this.lstAflUsuario = [];
             this.lstOrgUsuario = [];
-          }
-        },
-        (error) => {
-          //this._notificacionService.error(error);
-        }
-      );
+          }    
   }
 }
