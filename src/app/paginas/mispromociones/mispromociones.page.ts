@@ -62,6 +62,7 @@ export class MispromocionesPage implements OnInit {
     decode: string;
     encode: string;
     json_cupon: any;
+    id_persona: any;
 
     constructor(
         private _promociones_service: PromocionesService,
@@ -77,6 +78,7 @@ export class MispromocionesPage implements OnInit {
 
     ngOnInit() {
         this.usuario = JSON.parse(localStorage.getItem("u_data"));
+        this.id_persona = this.usuario.id_persona
         this.id_proveedor = this.usuario.proveedor.id_proveedor;
         this.publicacionesHechas = 0;
         this.publicacionesPermitidas = 0;
@@ -112,10 +114,10 @@ export class MispromocionesPage implements OnInit {
                 "id_promocion": this.json_cupon.idPromo,
                 "id_persona": this.json_cupon.idPer,
                 "id_cupon_promocion":this.json_cupon.idCupon,
-                "id_persona_aplica":this.id_proveedor,
+                "id_persona_aplica":this.id_persona,
             };
               this._promociones_service.validarCupon(cupon).subscribe(
-                
+
                     (response) => {
 
                         if (response.data.exito === true) {
