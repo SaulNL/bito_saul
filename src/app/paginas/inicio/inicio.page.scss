@@ -3,7 +3,7 @@
 }
 
 .fixed {
-  height: 18em;
+  height: 23em;
 }
 
 .img-card-w {
@@ -52,14 +52,21 @@ ion-card-header {
   padding-top: 3rem;
 }
 
+.likegegi {
+  bottom: 7rem;
+  position: absolute;
+}
+.fixed {
+  height: 20em;
+}
 
 @media (min-width: 412px) {
   .likegegi {
-    bottom: 5rem;
+    bottom: 7rem;
     position: absolute;
   }
   .fixed {
-    height: 18em;
+    height: 20em;
   }
 }
 
