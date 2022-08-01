@@ -87,13 +87,13 @@ export class ViewqrPromocionComponent implements OnInit {
     html2canvas(document.querySelector("#contenido")).then(canvas => {
 
       this.capturedImage = canvas.toDataURL();
-      const fileName = 'qr_promo' + this.numeroAleatorioDecimales(10, 1000) + promocion.promocion + '.png';
+      const fileName = 'qr_promo' + this.numeroAleatorioDecimales(10, 1000) + promocion.nombre_comercial + '.png';
       Filesystem.writeFile({
         path: fileName,
         data: canvas.toDataURL().toString(),
         directory: FilesystemDirectory.Documents
       }).then(() => {
-        this.notifi.exito('Se descargo correctamente qr de ' + promocion.promocion);
+        this.notifi.exito('Se descargo correctamente cupón de ' + promocion.nombre_comercial);
       }, error => {
         this.notifi.error(error);
       });

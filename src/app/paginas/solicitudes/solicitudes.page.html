@@ -17,6 +17,9 @@
  <app-spinner [loader]="loading(loaderSc, loaderSp)" [message]="cargando"></app-spinner>
  <ion-content *ngIf="!loaderSc && !loaderSp" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
    <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
+   <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-card>
     <div class="ion-text-center ion-margin-top">
       <strong>Requerimientos de compra creados</strong>

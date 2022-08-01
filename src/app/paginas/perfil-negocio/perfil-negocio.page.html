@@ -870,7 +870,7 @@
           *ngFor="let cat of informacionNegocio.catProductos; let i = index"
         >
           <ion-item class="w-100 bg-gris">
-            <p style="font-size: 18px" (click)="mostrarProducto(cat.nombre)">
+            <p style="font-size: 18px " class="ion-text-start" (click)="mostrarProducto(cat.nombre)">
               {{cat.nombre}}
             </p>
             <ion-icon
