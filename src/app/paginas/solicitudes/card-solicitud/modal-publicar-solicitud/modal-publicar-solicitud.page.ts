@@ -143,7 +143,9 @@ export class ModalPublicarSolicitudPage implements OnInit {
                     (response: any) => {
                         if (response.code === 200) {
                             this.notificaciones.exito('Se público correctamente la solicitud');
-                            this.router.navigate(['/tabs/home/solicitudes']);
+                            this.router.navigate(["/tabs/home/solicitudes"], {
+                                queryParams: { special: true },
+                              });
                             this.loader = false;
                             form.resetForm();
                             //  this.buscar();
