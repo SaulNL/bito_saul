@@ -890,10 +890,12 @@ console.log("resp",response)
       if (this.navegacion) {
         this.goBackTo();
         this.navegacion = false;
+        console.log("entro");
       } else {
         // this.router.navigate(['/tabs/inicio']);
+        console.log("aqui")
         this.router.navigateByUrl("/tabs/inicio");
-        // this.router.navigate(['/tabs/inicio'], { queryParams: { special: true } });
+        //this.router.navigate(['/tabs/inicio'], { queryParams: { special: true } });
         this.contador = 0;
       }
     }
