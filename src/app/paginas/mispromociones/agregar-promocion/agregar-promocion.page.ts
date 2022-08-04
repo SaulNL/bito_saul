@@ -61,9 +61,9 @@ export class AgregarPromocionPage implements OnInit {
   public lstPlazas: Array<CatOrganizacionesModel>;
   public lstDias: Array<DiasPromoArray>;
   lstPlaza: any;
-  lstOrg: unknown[];
+  lstOrg: any[];
   verSeleccion: any;
-  lstPlazaOrg: unknown[];
+  lstPlazaOrg: any[];
   public diasArray = [
     { id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null },
     { id: 2, dia: 'Martes', horarios: [], hi: null, hf: null },
@@ -87,6 +87,18 @@ export class AgregarPromocionPage implements OnInit {
   public blnActivaHorario: boolean;
   public posicionHorario: number;
   
+  producto: number[] =[];
+  categoria: string[] = [];
+  tipoPromocion: any;
+  tipoCate: string;
+  tipoProd: string;
+  org: number[] =[];
+  lstAfl: any;
+  arrayDias: any;
+  lstConvenio: any[];
+  tipoCvn: string[];
+  plz: number[] = [];
+  cnv: number[] = [];  
   
   constructor(
     private alertController: AlertController,
@@ -109,6 +121,9 @@ export class AgregarPromocionPage implements OnInit {
   }
 
   ngOnInit() {
+    this.obtenerCatOrganizaciones();
+    this.obtenerCaPlazas();
+    this.obtenerConvenio();
     this.route.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.seleccionTo = JSON.parse(params.special);
@@ -117,6 +132,65 @@ export class AgregarPromocionPage implements OnInit {
     if (this.seleccionTo.id_promocion === 0) {
       this.seleccionTo.id_promocion = null;
     }
+
+    if(this.seleccionTo.id_alcance_promocion !=null || this.seleccionTo.id_alcance_promocion !=undefined){
+      if (this.seleccionTo.id_alcance_promocion=== 2 ) {
+        this.productosCategoriasObtener();
+      }
+      if (this.seleccionTo.id_alcance_promocion=== 3) {
+        this.categoriasProductos();
+      }
+    }
+    
+    if(this.seleccionTo.productos.length>0){
+      
+    for (const item of this.seleccionTo.productos) {
+
+      if (item.id_producto != null) {
+        this.producto.push(item.id_producto);
+      }
+      if (item.id_categoria != null) {
+        this.categoria.push(item.id_categoria);
+      }
+
+      this.seleccionTo.categorias = this.categoria;
+
+      this.seleccionTo.productos = this.producto;
+
+    }
+    }
+
+    for( const item of this.seleccionTo.organizaciones){
+      this.org.push(item.id_organizacion);
+    }
+    
+    for( const item of this.seleccionTo.plazas){
+      this.plz.push(item.id_organizacion);
+    }
+    
+    for( const item of this.seleccionTo.convenios){
+      this.cnv.push(item.id_organizacion);
+    }
+   
+    
+    if (this.seleccionTo.dias.length > 0) {
+      this.arrayDias = this.seleccionTo.dias;
+      this.seleccionTo.dias = [];
+      this.arrayDias.forEach(dia => {
+        let diasArr = dia.dias.split(',');
+        const dias = {
+          "id_horario_promocion": dia.id_horario_promocion,
+          "dias": diasArr,
+          "hora_inicio": dia.hora_inicio,
+          "hora_fin": dia.hora_fin,
+          "activo": true,
+        }
+
+        this.seleccionTo.dias.push(dias);
+      });
+
+    }
+
     this.usuario = JSON.parse(localStorage.getItem("u_data"));
     this.btnCambiarImagen = true;
     this.blnImgCuadrada = true;
@@ -171,12 +245,19 @@ export class AgregarPromocionPage implements OnInit {
 
   obtenerAlcancePromocion() {
    
-    this._negocio_service
     this._promociones_service.obtenerAlcancePromocion()
       .subscribe(
         (response) => {
           this.lstAlcance = response.data.list_cat_alcance_promocion;
-          
+
+          if (this.seleccionTo.id_alcance_promocion !=null) {
+            this.lstAlcance.forEach((element) => {
+                if (element.id_alcance_promocion == this.seleccionTo.id_alcance_promocion) {           
+                  this.tipoPromocion = element.nombre; 
+                }
+             
+            });
+          }
         },
         (error) => {
           this._notificacionService.error(error);
@@ -371,9 +452,7 @@ export class AgregarPromocionPage implements OnInit {
       if (this.seleccionTo.tags.length === 0) {
         this.seleccionTo.tags = [];
       }
-      
-      
-
+    
       this._promociones_service.guardar(this.seleccionTo).subscribe(
         (response) => {
           if (this._utils_cls.is_success_response(response.code)) {
@@ -415,22 +494,10 @@ export class AgregarPromocionPage implements OnInit {
   }
 
  
-  plazaAfiliacion(event){
-    this.tipoPlazaAfi = parseInt(event.detail.value);
-    if (this.tipoPlazaAfi=== 1) {
-      this.obtenerCaPlazas();
-    
-      
-    }
-    if (this.tipoPlazaAfi=== 2) {
-      this.obtenerCatOrganizaciones();
-      
-    }
-  }
   
   promoAplicable(event){
     this.tipoAplicable = parseInt(event.detail.value);
-    if (this.tipoAplicable=== 2) {
+    if (this.tipoAplicable=== 2  ) {
       this.productosCategoriasObtener();
     }
     if (this.tipoAplicable=== 3) {
@@ -444,6 +511,17 @@ export class AgregarPromocionPage implements OnInit {
           (response) => {
             if (response.code === 200) {
               this.lstPlazas= Object.values(response.data);
+             
+              if (this.seleccionTo.plazas.length >0) {
+                this.lstPlazas.forEach((element) => {
+                  this.seleccionTo.plazas.forEach((elements) => {
+                    if (element.id_organizacion == elements.id_organizacion) {
+                      this.seleccionTo.plazas=this.plz;
+                    }
+                  });
+                });
+              }
+              
             } else {
               this.lstPlazas = [];
             }
@@ -454,12 +532,52 @@ export class AgregarPromocionPage implements OnInit {
         );
   }
 
+  public obtenerConvenio() {
+    this._negocio_service.obtenerConvenio().subscribe((response) => {
+
+      if (response.code === 200) {
+
+        this.lstConvenio = Object.values(response.data);
+       
+        if (this.seleccionTo.convenios.length >0) {
+          this.lstConvenio.forEach((element) => {
+            this.seleccionTo.convenios.forEach((elements) => {
+              if (element.id_organizacion == elements.id_organizacion) {
+                this.seleccionTo.convenios=this.cnv;
+              }
+            });
+          });
+        }
+     
+      }else {
+              this.lstConvenio = [];
+            }
+      
+    },
+    (error) => {
+      this._notificacionService.error(error);
+    }
+    );
+  }
+
   public obtenerCatOrganizaciones() {
       this._negocio_service.obtenerCatOrganizaciones()
         .subscribe(
           (response) => {
             if (response.code === 200) {
-              this.lstPlazas = Object.values(response.data);
+              this.lstAfl = Object.values(response.data);
+
+              if (this.seleccionTo.organizaciones.length >0) {
+                this.lstAfl.forEach((element) => {
+                  this.seleccionTo.organizaciones.forEach((elements) => {
+                    if (element.id_organizacion == elements.id_organizacion) {
+                      this.seleccionTo.organizaciones=this.org;
+                    }
+                  });
+                });
+              }
+
+             
             } else {
               this.lstPlazas= [];
             }
@@ -488,7 +606,17 @@ export class AgregarPromocionPage implements OnInit {
                     idProducto: y.idProducto,
                     nombre:y.nombre
                   })
-                
+                  if (this.producto.length >0) {
+                    this.prod .forEach((element) => {
+                      this.producto.forEach((elements) => {
+                        if (element.idProducto == elements) {           
+                          this.tipoProd = element.nombre; 
+                           
+                          
+                        }
+                      });
+                    });
+                  }
                 })
           
               })
@@ -525,6 +653,20 @@ export class AgregarPromocionPage implements OnInit {
                   this.prod.push({
                     id_categoria:catprod.id_categoria,
                     nombre:catprod.nombre});
+
+
+                    if (this.categoria.length >0) {
+                      this.prod .forEach((element) => {
+                        this.categoria.forEach((elements) => {
+                          if (element.id_categoria == elements) {           
+                            this.tipoCate = element.nombre; 
+                             
+                            
+                          }
+                        });
+                      });
+                    }
+                    
                 }
               }
 
@@ -571,12 +713,12 @@ export class AgregarPromocionPage implements OnInit {
   }
 
   agregarHorario() {
-    if (this.nuevoHorario.id_horario_promocion === null || this.nuevoHorario.id_horario_promocion  === undefined) {
+    if (this.nuevoHorario.id_horario_promocion === null || this.nuevoHorario.id_horario_promocion === undefined) {
       this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
       this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
       this.nuevoHorario.activo = true;
       this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
-      this.nuevoHorario.id_horario_promocion  = null;
+      this.nuevoHorario.id_horario_promocion = null;
       if (this.posicionHorario >= 0) {
         this.seleccionTo.dias[this.posicionHorario] = this.nuevoHorario;
       } else {
@@ -605,8 +747,8 @@ export class AgregarPromocionPage implements OnInit {
     this.posicionHorario = i;
     this.horarioini = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_inicio + ":ssZ");
     this.horariofin = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_fin + ":ssZ");
-    this.nuevoHorario.dias = horario.dias;
-    this.nuevoHorario.id_horario_promocion  = horario.id_horario_promocion;
+    this.nuevoHorario.dias = horario.dias; 
+    this.nuevoHorario.id_horario_promocion = horario.id_horario_promocion;
   }
 
   async presentAlertEliminar(i) {
@@ -634,7 +776,7 @@ export class AgregarPromocionPage implements OnInit {
   }
 
   eliminarHorario(i) {
-    this.seleccionTo.dias.splice(i);
+    this.seleccionTo.dias.splice(i,1);
   }
 
 
