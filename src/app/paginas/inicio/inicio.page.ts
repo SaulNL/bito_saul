@@ -22,6 +22,7 @@ import { UtilsCls } from "../../utils/UtilsCls";
 import { PermisoModel } from "src/app/Modelos/PermisoModel";
 import { ValidarPermisoService } from "../../api/validar-permiso.service";
 import { ICategoriaNegocio } from "src/app/interfaces/ICategoriaNegocio";
+import { INegocios } from 'src/app/interfaces/INegocios';
 import { Observable, throwError } from "rxjs";
 import { runInThisContext } from "vm";
 import { LocalStorageUtil } from "../../utils/localStorageUtil";
@@ -331,6 +332,20 @@ export class InicioPage implements OnInit {
       throw throwError("");
     }
   }
+  
+  async validarResultadosTodos(respuesta: any) {
+    const cantidadDeResultados = respuesta.data.lst_cat_negocios.length;
+    //console.log(cantidadDeResultados);
+    if (cantidadDeResultados > 0) {
+      //if (this.actualPagina > 1) {
+        this.obtenerNegocios2([respuesta.data.lst_cat_negocios]);
+      //} else {
+        //this.obtenerNegocios(respuesta.data.lst_cat_negocios);
+      //}
+    } else {
+      throw throwError("");
+    }
+  }
   public async cargarCategorias() {
     const byCategorias = localStorage.getItem("filtroactual");
     if (
@@ -380,11 +395,17 @@ export class InicioPage implements OnInit {
   }
   public async procesar(response: any, i: number) {
     if (response.data.lst_cat_negocios.last_page >= i) {
-      var response2 = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, i);
-      await this.validarResultadosDeCategoriasAll(response2);
-      i=i+1;
-  await    this.procesar(response,i );
-      return
+      if(this.Filtros.idCategoriaNegocio == null){
+        var responseNegociosTodos = await this.principalSercicio.obtenerNegociosTodosMapa();
+        await this.validarResultadosTodos(responseNegociosTodos);
+      }else{
+        var response2 = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, i);
+        await this.validarResultadosDeCategoriasAll(response2);
+        i=i+1;
+        await    this.procesar(response,i );
+        
+        return
+      }
     } else {
       this.loader = false;
       return
@@ -491,7 +512,7 @@ export class InicioPage implements OnInit {
     //  let listaIds = [68, 95, 116, 52, 155, 20, 142];
     this.listaIdsMapa = [];
    await this.buscarNegocios(true);
-    await this.cargarCargarNegociosMapas();
+   await this.cargarCargarNegociosMapas();
     //await this.buscarNegocios(false);
     const modal = await this.modalController.create({
       component: MapaNegociosComponent,
@@ -525,6 +546,22 @@ export class InicioPage implements OnInit {
     }
   }
 
+  public obtenerNegocios2(listaCategoriasAll: INegocios[]) {
+
+    let listaIds = [];
+    listaCategoriasAll.map((l) => {
+      //negocios.map((n) => {
+        listaIds.push(l);
+      //});
+    });
+    
+    let tamano = listaIds[0].length;
+    
+
+    for (let index = 0; index < listaIds[0].length; index++) {
+      this.listaIdsMapa.push(listaIds[0][index].id_negocio);
+    }
+  }
 
   public regresarBitoo() {
     localStorage.removeItem("org");
