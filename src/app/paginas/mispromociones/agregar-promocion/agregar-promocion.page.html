@@ -112,21 +112,23 @@
         <div *ngIf="seleccionTo.id_tipo_promocion===2">
           <ion-item *ngIf="!loaderNegocios">
             <ion-label position="stacked"> Promoción aplicable a :<span>*</span> </ion-label>
-            <ion-select value="-1" (ionChange)="promoAplicable($event)"
+            <ion-select  (ionChange)="promoAplicable($event)"
             [value]="seleccionTo.id_alcance_promocion"
-            name="id_alcance_promocion"
+            name="aplicable"
+            id="aplicable"
             [(ngModel)]="seleccionTo.id_alcance_promocion"
+            placeholder="{{ tipoPromocion }}"
             required
             >
-              <div *ngFor="let row of lstAlcance" >
-                <ion-select-option [value]="row.id_alcance_promocion" 
+              
+                <ion-select-option *ngFor="let row of lstAlcance" [value]="row.id_alcance_promocion" 
                   >{{row.nombre}}</ion-select-option
                 >
-              </div>
+             
             </ion-select>
           </ion-item>
 
-          <ion-item *ngIf="this.tipoAplicable===2 ">
+          <ion-item *ngIf="seleccionTo.id_alcance_promocion===2 ">
             <ion-label position="stacked"> Producto<span>*</span> </ion-label>
             <ion-select
               [value]="seleccionTo.productos"
@@ -134,6 +136,7 @@
               [(ngModel)]="seleccionTo.productos"
               multiple
               #productos="ngModel"
+              placeholder="{{tipoProd}}"
               required
             >
               <div *ngFor="let row of prod" >
@@ -143,7 +146,7 @@
               </div>
             </ion-select>
           </ion-item>
-          <ion-item *ngIf="tipoAplicable===3">
+          <ion-item *ngIf="seleccionTo.id_alcance_promocion===3">
             <ion-label position="stacked">Categoría:<span>*</span> </ion-label>
             <ion-select
               [value]="seleccionTo.categorias"
@@ -151,6 +154,7 @@
               [(ngModel)]="seleccionTo.categorias"
               multiple
               #categorias="ngModel"
+              placeholder="{{tipoCate}}"
               required
             >
               <div *ngFor="let row of prod" >
@@ -161,34 +165,51 @@
             </ion-select>
           </ion-item>
 
-            <ion-item >
+            <!-- <ion-item >
               <ion-label position="stacked"> Valido Para:</ion-label>
-              <ion-select value="-1" (ionChange)="plazaAfiliacion($event)">
+              <ion-select  (ionChange)="plazaAfiliacion($event)"
+              [value]="valido"
+                >
                 <ion-select-option value="1">Plaza</ion-select-option>
                 <ion-select-option value="2">Afiliación</ion-select-option>
                
               </ion-select>
-            </ion-item>
+            </ion-item> -->
   
-          <ion-item *ngIf="this.tipoPlazaAfi===1">
+          <ion-item >
             <ion-label position="stacked">Plaza</ion-label>
             <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idPlaza" [value]=""
             name="plazas"
             [(ngModel)]="seleccionTo.plazas"
-            required
+            
+            
              >
               <ion-select-option *ngFor="let plz of this.lstPlazas" [value]="plz.id_organizacion">{{plz.nombre}} 
               </ion-select-option>
             </ion-select>
           </ion-item>
-          <ion-item *ngIf="this.tipoPlazaAfi===2">
+          <ion-item >
             <ion-label position="stacked">Afiliación </ion-label>
-            <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idPlaza" [value]=""
+            <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idAfl" [value]=""
             name="organizaciones"
             [(ngModel)]="seleccionTo.organizaciones"
-            required
+            
+            
+            
              >
-              <ion-select-option *ngFor="let plz of this.lstPlazas" [value]="plz.id_organizacion"> {{plz.nombre}} 
+              <ion-select-option *ngFor="let plz of this.lstAfl" [value]="plz.id_organizacion"> {{plz.nombre}} 
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item >
+            <ion-label position="stacked">Convenio </ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idCvn" [value]=""
+            name="convenios"
+            [(ngModel)]="seleccionTo.convenios"
+                     
+             >
+              <ion-select-option *ngFor="let cvn of lstConvenio" [value]="cvn.id_organizacion"> {{cvn.nombre}} 
               </ion-select-option>
             </ion-select>
           </ion-item>
@@ -245,8 +266,8 @@
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Dias de la Semana</ion-label>
-            <ion-select [disabled]="blnActivaDias" ok-text="Ok" cancel-text="Cancelar" multiple name="dias" 
-              #dias="ngModel" [(ngModel)]="nuevoHorario.dias" (ionChange)="diasSeleccionado($event)" >
+            <ion-select [disabled]="blnActivaDias" ok-text="Ok" cancel-text="Cancelar" multiple #dias="ngModel"
+              name="dias" (ionChange)="diasSeleccionado($event)" [(ngModel)]="nuevoHorario.dias">
               <ion-select-option *ngFor="let dia of diasArray" [value]="dia.dia">{{dia.dia}}</ion-select-option>
             </ion-select>
           </ion-item>

@@ -60,11 +60,12 @@ export class PromocionesModel {
   public maximo_red: any;
   public porcentaje: any;
 
-  public dias:Array<HorarioPromocionModel>;
-  public organizaciones:Array<number> = new Array<number>();
-  public plazas:Array<number> = new Array<number>();
-  public productos:Array<string> = new Array<string>();
+  public dias:Array<any>;
+  public organizaciones:Array<any> = new Array<any>();
+  public plazas:Array<any> = new Array<any>();
+  public productos:Array<any> = new Array<any>();
   public categorias:Array<string> = new Array<string>();
+  public convenios:Array<any> = new Array<any>();
 
   constructor(id_promocion: number = 0, id_negocio: number=0, promocion: string = '', tags: Array<string> = [], terminos: string = '', imagen: any = '', imagenBanner: any = '', imagenPoster: any = '', url_imagen: string = '', url_imagen_banner: string = '', url_imagen_poster: string = '', activo: boolean = null, fecha_inicio: Date = null, fecha_fin: Date = null, proveedor: string = '', nombre_comercial: string = '', select = 0, id_tipo_promocion: any = '', id_alcance_promocion: any ='', minimo: any = '',maximo_red: any='',porcentaje: any='', productos: Array<any> = [], categorias: Array<any> = [], organizaciones: Array<any> = [], plazas: Array<any> = []) {
     this.id_promocion = id_promocion;

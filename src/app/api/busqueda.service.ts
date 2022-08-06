@@ -33,6 +33,7 @@ export class BusquedaService {
       return respuesta;
     }));
   }
+  
   public obtenerNegocioPorCategoria(filtro, pagina: number): Promise<any>{
     const body = JSON.stringify({filtros: filtro, page: pagina});
      this.http.setDataSerializer("utf8");
@@ -78,5 +79,15 @@ export class BusquedaService {
     return datos.pipe(map(data => {
         return data;
     }));
+  }
+
+  public obtenerNegociosTodosMapa(): Promise<any>{
+    const body = JSON.stringify({});
+     this.http.setDataSerializer("utf8");
+    return this.http.post(`${this.url}api/negocios/obtenerTodosMapa`,body, AppSettings.getHeaders())
+    .then( data => {
+      let respuesta: any =  JSON.parse(data.data);
+      return respuesta;
+    });
   }
 }
