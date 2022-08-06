@@ -10,6 +10,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 import {FiltroCatVariableModel} from "../Modelos/catalogos/FiltroCatVariableModel";
 import {RegistrarQuienVioMiPromocionModel} from "../Modelos/RegistrarQuienVioMiPromocionModel";
 import { ValidarPromocion } from '../Modelos/ValidarPromocion';
+import { CambiarCuponEstatus } from '../Modelos/CambiarCuponEstatus';
 
 @Injectable({
   providedIn: 'root'
@@ -184,6 +185,64 @@ export class PromocionesService {
       return data;
     }));
   }
+
+
+
+  // obtenerListaPromocionesSolicitadas(id_promocion: number): Observable<any> {
+  //   const body = JSON.stringify({id_promocion: id_promocion});
+  //   this.http.setDataSerializer("utf8");
+  //   return from(this.http.post( this.url + 'api/promociones/cupon/listaSolicitados',body, AppSettings.getHeaders())
+  //       .then( data => {
+  //         return JSON.parse(data.data);
+  //       })
+  //       .catch((error) => {
+  //         return error;
+  //       })).pipe(map(data => {
+  //     return data;
+  //   }));
+  // }
+  obtenerListaPromocionesSolicitadas(id_promocion: number): Observable<any> {
+    const body = JSON.stringify({id_promocion: id_promocion});
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post( this.url + 'api/promociones/cupon/listaSolicitados',body, AppSettings.getHeadersToken())
+        .then( data => {
+
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        })).pipe(map(data => {
+      return data;
+    }));
+  }
+
+  CambiarEstatusCupon(cupon:CambiarCuponEstatus): Observable<any> {
+    const body = JSON.stringify(cupon);
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post( this.url + 'api/promociones/cupon/validar',body, AppSettings.getHeadersToken())
+        .then( data => {
+
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        })).pipe(map(data => {
+      return data;
+    }));
+  }
+
+  // public obtenerListaPromocionesSolicitadas(idPromotion: number): Promise<any>{
+  //   //const body = JSON.stringify({});
+  //   const body = JSON.stringify({id_promocion: idPromotion});
+  //    this.http.setDataSerializer("utf8");
+  //   return this.http.post(`${this.url}api/promociones/cupon/listaSolicitados`,body, AppSettings.getHeaders())
+  //   .then( data => {
+  //     let respuesta: any =  JSON.parse(data.data);
+  //     return respuesta;
+  //   });
+  // }
+
+  
 
   quienVioMiPromotion(promotion: RegistrarQuienVioMiPromocionModel): Observable<any> {
     const body = JSON.stringify(promotion);

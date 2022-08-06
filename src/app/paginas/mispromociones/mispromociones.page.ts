@@ -10,6 +10,7 @@ import {QuienVioModel} from "../../Modelos/QuienVioModel";
 import {ModalInfoPromoComponent} from "../../components/modal-info-promo/modal-info-promo.component";
 import {Router, ActivatedRoute} from "@angular/router";
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+import { PromocionesSolicitadasModel } from '../../Modelos/PromocionesSolicitadasModel'
 
 @Component({
     selector: "app-mispromociones",
@@ -51,11 +52,13 @@ export class MispromocionesPage implements OnInit {
     public lstQuienVioPublicacionActiva: false;
     public btnLoaderModal = false;
     public lstQuienVioPublicacion: Array<QuienVioModel>;
+    public lstPromocionesSolicitadas: Array<PromocionesSolicitadasModel>;
     public numeroVisto: number;
     public blnActivaPromocion: boolean;
     public mostrarListaPromocionesPublicadas = false;
     public mostrarListaAnunciosPublicadas = false;
     public msj = 'Cargando';
+    public id: any;
     lstAnuncios: any;
     lstPromo: any;
     lstTipoPromo: any;
@@ -84,6 +87,7 @@ export class MispromocionesPage implements OnInit {
         this.publicacionesPermitidas = 0;
         this.lstPromocionesPublicadas = new Array<PromocionesModel>();
         this.lstQuienVioPublicacion = new Array<QuienVioModel>();
+        this.lstPromocionesSolicitadas = new Array<PromocionesSolicitadasModel>();
         this.lstQuienVioPublicacionActiva = false;
         this.seleccionTO = new PromocionesModel();
         this.promocion = new PromocionesModel();
@@ -411,6 +415,7 @@ export class MispromocionesPage implements OnInit {
         this.lstQuienVioPublicacionActiva = estatus;
 
         this.quienVioPublicacion(id_promocion);
+        this.listaPromocionesSolicitadas(id_promocion);
     }
 
     quienVioPublicacion(id_promocion) {
@@ -424,6 +429,19 @@ export class MispromocionesPage implements OnInit {
                 (error) => {
                 }
             );
+    }
+
+    listaPromocionesSolicitadas(id_promocion){
+        this.btnLoaderModal = true;
+        this.id = id_promocion;
+        this._promociones_service.obtenerListaPromocionesSolicitadas(id_promocion).subscribe(
+            (response) => {
+                this.lstPromocionesSolicitadas = response.data;
+            },
+            (error) => {
+            }
+        );
+        
     }
 
     quienNumeroVioPublicacion(id_promocion) {
@@ -441,10 +459,13 @@ export class MispromocionesPage implements OnInit {
     }
 
     async infoPromocion() {
+        console.log("funcion infoPromocion");
         const modal = await this.modalController.create({
             component: ModalInfoPromoComponent,
             cssClass: "my-custom-class",
             componentProps: {
+                lstPromocionesSolicitadas:  this.lstPromocionesSolicitadas,
+                id: this.id,
                 lstQuienVioPublicacion: this.lstQuienVioPublicacion,
                 lstQuienVioPublicacionActiva: this.lstQuienVioPublicacionActiva,
                 btnLoaderModal: this.btnLoaderModal,

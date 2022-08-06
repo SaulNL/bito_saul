@@ -32,4 +32,61 @@
           <p><strong>Visto: </strong> {{numeroVisto}} <strong>veces</strong> </p>
         </div>
       </div>
+
+  <div *ngIf="lstPromocionesSolicitadas.length !== 0">
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <h2>Validación de promociones</h2>
+      </div>
+      <!-- <div *ngIf="lstPromocionesSolicitadas.length === 0">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" style="display: flex; justify-content: center; align-items: center; color: red;">
+          <span><strong>Lo sentimos!</strong> Aún no ven tu promoción.</span>
+        </div>
+      </div> -->
+    <div>
+
+      <div *ngIf="lstPromocionesSolicitadas !== 0">
+        <ion-grid>
+          <ion-row *ngFor="let lsts of lstPromocionesSolicitadas; index as index">
+            <ion-col size="7" size-lg >
+              <div><strong>No.</strong></div>
+              <div><strong>Nombre:</strong></div>
+              <div><strong>Solicitado:</strong>
+              <p class="espacio">         </p>
+              </div>
+              <div><strong>Fecha de solicitud
+                   de cupón:</strong></div>
+              <div><strong>Validado:</strong>
+              <p class="espacio">         </p>
+              </div>
+              <div><strong>Fecha de validación:</strong></div>
+              <div><strong>No aplicado:</strong>
+              <p class="espacio">         </p>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>{{ index + 1 }}</div>
+              <div>{{ lsts.nombresolicitante }} {{ lsts.paternosolicitante }}</div>
+              <div>
+                <ion-checkbox color="danger" [checked]="true" (ionChange)="dejar(lsts.id_cupon_promocion,1)" [value]="1" id="1" name="hola" disabled></ion-checkbox>
+              </div>
+              <div>{{ lsts.fc_solicitud | date:'M/d/yy' }}</div>
+              <div>
+                <ion-checkbox color="danger" [checked]="lsts.id_estatus_cupon === 2" (ionChange)="dejar(lsts.id_cupon_promocion,2)" (click)="falseFormControl.setValue(false)" [value]="2"  id="2" name="hola"></ion-checkbox>
+              </div>
+              <div>
+                <div *ngIf="lsts.fc_aplicacion === null">
+                  <div>No validado</div>
+                </div>
+                <div *ngIf="lsts.fc_aplicacion !== null"></div>
+                  <div>{{ lsts.fc_aplicacion }}</div>
+                </div>
+              <div>
+                <ion-checkbox color="danger" [checked]="lsts.id_estatus_cupon === 3" (ionChange)="dejar(lsts.id_cupon_promocion,3)" (click)="trueFormControl.setValue(false)" [value]="3"  id="3" name="hola"></ion-checkbox>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </div>
+  </div>
 </ion-content>
