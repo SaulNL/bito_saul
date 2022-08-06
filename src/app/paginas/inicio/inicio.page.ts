@@ -362,8 +362,11 @@ export class InicioPage implements OnInit {
       var respuesta = await this.principalSercicio
         .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
       this.validarResultadosDeCategorias(respuesta);
+      //console.log("respuest cargar c");
+      //console.log(respuesta);
       //await this.procesar(respuesta, 1);
       const byCategorias2 = localStorage.getItem("filtroactual");
+      //console.log("filtro actual")
       if (
         byCategorias2 !== null &&
         byCategorias2 !== undefined &&
@@ -395,11 +398,20 @@ export class InicioPage implements OnInit {
   }
   public async procesar(response: any, i: number) {
     if (response.data.lst_cat_negocios.last_page >= i) {
-      if(this.Filtros.idCategoriaNegocio == null){
-        var responseNegociosTodos = await this.principalSercicio.obtenerNegociosTodosMapa();
-        await this.validarResultadosTodos(responseNegociosTodos);
+      console.log(this.Filtros);
+      console.log(this.Filtros.idCategoriaNegocio);
+      if(this.Filtros.idCategoriaNegocio == null  && this.Filtros.abierto == null && this.Filtros.blnEntrega == null
+         && this.Filtros.idGiro == null  && this.Filtros.intEstado == 0
+         && this.Filtros.idLocalidad == null && this.Filtros.idMunicipio == null && this.Filtros.latitud == 0 && this.Filtros.longitud == 0
+         && this.Filtros.organizacion == null && this.Filtros.strBuscar == "" && this.Filtros.strMunicipio == ""
+         && this.Filtros.tipoBusqueda == 0
+        ){
+          //console.log("entro");
+          var responseNegociosTodos = await this.principalSercicio.obtenerNegociosTodosMapa();
+          await this.validarResultadosTodos(responseNegociosTodos);
       }else{
         var response2 = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, i);
+        //console.log(response2);
         await this.validarResultadosDeCategoriasAll(response2);
         i=i+1;
         await    this.procesar(response,i );
@@ -503,6 +515,7 @@ export class InicioPage implements OnInit {
   private buscarSeleccionado(seleccionado: any) {
     this.seleccionado = seleccionado;
     this.Filtros = new FiltrosModel();
+    console.log(this.Filtros);
     this.Filtros.idCategoriaNegocio = [seleccionado.id_categoria];
     this.Filtros.idGiro = [seleccionado.idGiro];
     this.buscarNegocios(true);
@@ -570,6 +583,7 @@ export class InicioPage implements OnInit {
   borrarFiltros() {
     localStorage.removeItem("byCategorias");
     this.Filtros = new FiltrosModel();
+    console.log(this.Filtros)
     this.Filtros.idEstado = 29;
     /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
     this.filtroActivo = false;
