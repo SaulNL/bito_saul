@@ -4,6 +4,7 @@ import { QuienVioModel } from '../../Modelos/QuienVioModel';
 import {PromocionesService} from "../../api/promociones.service";
 import {ToadNotificacionService} from "../../api/toad-notificacion.service";
 import { FormControl } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-modal-info-promo',
@@ -19,9 +20,8 @@ export class ModalInfoPromoComponent implements OnInit {
   @Input() public btnLoaderModal: boolean;
   @Input() public numeroVisto: number;
 
-
-  public trueFormControl = new FormControl(false);
-  public falseFormControl = new FormControl(false);
+ 
+  public selected: any; 
 
   constructor( 
     public modalController: ModalController, 
@@ -29,6 +29,10 @@ export class ModalInfoPromoComponent implements OnInit {
     public _notificacionService: ToadNotificacionService) { }
 
   ngOnInit() {
+    console.log(this.lstPromocionesSolicitadas);
+    let pipe = new DatePipe('en-US');
+    
+    this.selected = pipe.transform(Date(), 'yyyy/MM/dd HH:mm:ss');
   }
 
   dismiss() {
@@ -82,7 +86,7 @@ export class ModalInfoPromoComponent implements OnInit {
       "id_cupon_promocion": id_cupon_promocion,
       "id_estatus_cupon": estatus,
       "id_persona_aplica": "",
-      "fc_aplicacion": "",
+      "fc_aplicacion": estatus === 3 ? "" : this.selected,
     };
     this._promociones_service.CambiarEstatusCupon(cupon).subscribe(
 
