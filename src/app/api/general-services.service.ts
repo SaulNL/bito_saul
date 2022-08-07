@@ -164,11 +164,11 @@ export class GeneralServicesService {
       }));
   }
 
-  obtenerOrganizaciones(): Observable<any> {
+  obtenerOrganizaciones(idUsuario , idProveedor): Observable<any> {
     this.http.setDataSerializer("utf8");
-    const body = JSON.stringify({});
+    const body = JSON.stringify({id_usuario:idUsuario,id_proveedor:idProveedor});
     return from(this.http.post(
-      this.url + 'api/catalogo/organizaciones/obtenerTodas',
+      this.url + 'api/catalogo/organizaciones/obtenerTodasActivasUsuario',
       body, AppSettings.getHeaders())
       .then((data) => {
         return JSON.parse(data.data);

@@ -45,8 +45,10 @@ export class PlazasAfiliacionesComponent implements OnInit {
     //   this.afiliacion = this.validarPermiso.isChecked(this.permisos, 'ver_afiliacion')
     //   this.obtenerOrganizacion();
     // }
-    this.obtenerOrganizacion();
     this.obtenerPlazas();
+    if(this.idUsuario!=null){
+      this.obtenerOrganizacion();
+    }
   }
 
   public cerrarModal() {
@@ -68,7 +70,9 @@ export class PlazasAfiliacionesComponent implements OnInit {
 
   public obtenerOrganizacion() {
     this.loaderOrg = false;
-    this.generalService.obtenerOrganizaciones().subscribe(
+    const user = JSON.parse(localStorage.getItem('u_data'));
+    this.generalService.obtenerOrganizaciones(this.idUsuario,user.proveedor.id_proveedor)
+   .subscribe(
       response => {
         if (response.code === 200 && response.data.length > 0) {
           this.listAfiliacines = response.data;
