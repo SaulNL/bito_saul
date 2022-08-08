@@ -24,6 +24,8 @@ export class PlazasAfiliacionesComponent implements OnInit {
   public showHidenAfiliacion: boolean;
   public afiliacion: boolean;
   public plaza: boolean;
+  idProvedor: any;
+  listConvenios: AfiliacionPlazaModel[];
   constructor(
     private modalCtr: ModalController,
     private validarPermiso: ValidarPermisoService,
@@ -71,11 +73,26 @@ export class PlazasAfiliacionesComponent implements OnInit {
   public obtenerOrganizacion() {
     this.loaderOrg = false;
     const user = JSON.parse(localStorage.getItem('u_data'));
-    this.generalService.obtenerOrganizaciones(this.idUsuario,user.proveedor.id_proveedor)
+    
+    if(user.hasOwnProperty('proveedor')===false){
+      this.idProvedor=null;
+    }else{
+      this.idProvedor=user.proveedor.id_proveedor;
+    }    
+    this.generalService.obtenerOrganizaciones(this.idUsuario,this.idProvedor)
    .subscribe(
       response => {
-        if (response.code === 200 && response.data.length > 0) {
+        if (response.code === 200 ) {
+          
           this.listAfiliacines = response.data;
+          
+          this.listConvenios=response.convenios;
+          
+          if(this.listConvenios.length<0){
+            this.listConvenios=[];
+          }
+          this.listAfiliacines=this.listAfiliacines.concat(this.listConvenios);
+          console.log(this.listAfiliacines)
         } else {
           this.afiliacion = false;
         }

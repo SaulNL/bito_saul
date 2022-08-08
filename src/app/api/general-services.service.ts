@@ -169,7 +169,7 @@ export class GeneralServicesService {
     const body = JSON.stringify({id_usuario:idUsuario,id_proveedor:idProveedor});
     return from(this.http.post(
       this.url + 'api/catalogo/organizaciones/obtenerTodasActivasUsuario',
-      body, AppSettings.getHeaders())
+      body, AppSettings.getHeadersToken())
       .then((data) => {
         return JSON.parse(data.data);
       })
