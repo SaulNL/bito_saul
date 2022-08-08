@@ -5,6 +5,7 @@ import { AfiliacionPlazaModel } from './../../Modelos/AfiliacionPlazaModel';
 import { ModalController } from '@ionic/angular';
 import { Component, Input, OnInit } from '@angular/core';
 import { GeneralServicesService } from 'src/app/api/general-services.service';
+import { UtilsCls } from 'src/app/utils/UtilsCls';
 
 @Component({
   selector: 'app-plazas-afiliaciones',
@@ -24,7 +25,7 @@ export class PlazasAfiliacionesComponent implements OnInit {
   public showHidenAfiliacion: boolean;
   public afiliacion: boolean;
   public plaza: boolean;
-  idProvedor: any;
+  idProvedor: number=null;
   listConvenios: AfiliacionPlazaModel[];
   constructor(
     private modalCtr: ModalController,
@@ -73,12 +74,13 @@ export class PlazasAfiliacionesComponent implements OnInit {
   public obtenerOrganizacion() {
     this.loaderOrg = false;
     const user = JSON.parse(localStorage.getItem('u_data'));
+    const usuario_sistema = JSON.parse(localStorage.getItem("u_sistema"));
+    this.idUsuario=usuario_sistema.id_usuario_sistema
     
-    if(user.hasOwnProperty('proveedor')===false){
-      this.idProvedor=null;
-    }else{
+    if(user.proveedor !=null){
       this.idProvedor=user.proveedor.id_proveedor;
-    }    
+    }
+      
     this.generalService.obtenerOrganizaciones(this.idUsuario,this.idProvedor)
    .subscribe(
       response => {
