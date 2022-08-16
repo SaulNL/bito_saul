@@ -77,6 +77,7 @@ export class CategoriasPage implements OnInit {
   }
 
   seleccionarCategoria(subCategoria) {
+    localStorage.setItem("todo", "todo");
     localStorage.removeItem("byCategorias");
     localStorage.setItem("byCategorias", JSON.stringify(subCategoria));
     localStorage.setItem("seleccionado", JSON.stringify(subCategoria));

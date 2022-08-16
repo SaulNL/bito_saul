@@ -15,6 +15,7 @@ import { TabsPage } from "./tabs.page";
 import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/filtros-busqueda.component";
 import {InputLugaresEntregaComponent} from '../../components/input-lugares-entrega/input-lugares-entrega.component';
 import { ModalLoguearseComponent } from '../../componentes/modal-loguearse/modal-loguearse.component'
+import { BannerAnunciosComponent } from '../../componentes/banner-anuncios/banner-anuncios.component';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { ModalLoguearseComponent } from '../../componentes/modal-loguearse/modal
   declarations: [
     TabsPage,
     BannerPromocionesComponent,
+    BannerAnunciosComponent,
     ToolbarBusquedaComponent,
     BotonTopComponent,
     InputTagsComponent,
@@ -39,6 +41,7 @@ import { ModalLoguearseComponent } from '../../componentes/modal-loguearse/modal
   ],
   exports: [
     BannerPromocionesComponent,
+    BannerAnunciosComponent,
     ToolbarBusquedaComponent,
     BotonTopComponent,
     InputTagsComponent,

@@ -26,7 +26,8 @@ import { INegocios } from 'src/app/interfaces/INegocios';
 import { Observable, throwError } from "rxjs";
 import { runInThisContext } from "vm";
 import { LocalStorageUtil } from "../../utils/localStorageUtil";
-import { LOCAL_STORAGE_KEY } from "src/app/utils/localStorageKey";
+
+import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 
 @Component({
   selector: "app-tab3",
@@ -48,6 +49,7 @@ export class InicioPage implements OnInit {
   strBuscar: any;
   private seleccionado: any;
   loader: any;
+  loaderNegocios: any;
   listaIdsMapa: any;
   filtroActivo: boolean = true;
   user: any;
@@ -64,12 +66,19 @@ export class InicioPage implements OnInit {
   public categoriasEstaVacios = true;
   public nombreCategoria = "";
   public actualPagina = 0;
+  public actuacGiro=0;
   public totalDePaginas = 0;
   public seHaceScroll = false;
   public siguientePagina = this.actualPagina + 1;
+  public siguienteGiro = this.actuacGiro +1;
   public mensaje = InicioPage.MENSAJE_CUANDO_CARGA;
   public totalDePaginasPorConsulta = 0;
   activedPage: string;
+  
+  lstCatTipoGiro: any;
+  idGiro: number=null;
+  todos: number;
+  todo: number;
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -83,11 +92,21 @@ export class InicioPage implements OnInit {
     private util: UtilsCls,
     private auth0Service: Auth0Service,
     private validarPermiso: ValidarPermisoService,
-    private platform: Platform
+    private platform: Platform,
+    private vibration: Vibration
+    
   ) {
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
-
+    this.obtenergiros();
+    const org = localStorage.getItem("org");
+    if(org!=null){
+      
+    }else{
+      this.obtenerPrincipalInicio();
+      this.loaderNegocios=true;
+    }
+    
     this.Filtros.idEstado = 29;
     const byCategorias = localStorage.getItem("filtroactual");
     if (
@@ -109,7 +128,8 @@ export class InicioPage implements OnInit {
     this.listaIdsMapa = [];
     this.user = this.util.getUserData();
     this.existeSesion = this.util.existe_sesion();
-    this.selectionAP = false;
+   //aqui para cargar
+   this.loaderNegocios=true;
     this.tFiltro = false;
     this.afiliacion = true;
     this.isIOS = this.platform.is("ios");
@@ -127,6 +147,7 @@ export class InicioPage implements OnInit {
       this.Filtros = new FiltrosModel();
       this.Filtros.idEstado = 29;
       const byCategorias = localStorage.getItem("filtroactual");
+      console.log("entro uno")
       if (
         byCategorias !== null &&
         byCategorias !== undefined &&
@@ -144,6 +165,7 @@ export class InicioPage implements OnInit {
       this.ruta.navigate(["/tabs/categorias"]);
     }
     const byCategorias = localStorage.getItem("filtroactual");
+    console.log("entro dos")
     if (
       byCategorias !== null &&
       byCategorias !== undefined &&
@@ -166,6 +188,14 @@ export class InicioPage implements OnInit {
       if (params.buscarNegocios && params) {
         this.load();
         const byCategorias = localStorage.getItem("filtroactual");
+        const org = localStorage.getItem("org");
+        if(org!=null){
+      
+        }else{
+          this.obtenerPrincipalInicio();
+          this.loaderNegocios=true;
+        }
+        console.log("entro tres")
         if (
           byCategorias !== null &&
           byCategorias !== undefined &&
@@ -182,6 +212,7 @@ export class InicioPage implements OnInit {
       if (params.byLogin && params) {
         this.negocioRutaByLogin(params.byLogin);
         const byCategorias = localStorage.getItem("filtroactual");
+        console.log("entro cuatro")
         if (
           byCategorias !== null &&
           byCategorias !== undefined &&
@@ -195,6 +226,7 @@ export class InicioPage implements OnInit {
       }
     });
     const byCategorias = localStorage.getItem("filtroactual");
+    console.log("entro cinco xd")
     if (
       byCategorias !== null &&
       byCategorias !== undefined &&
@@ -262,7 +294,7 @@ export class InicioPage implements OnInit {
       localStorage.setItem("resetFiltro", "1");
       estatusFiltro = localStorage.getItem("resetFiltro");
       this.Filtros = new FiltrosModel();
-      // this.Filtros.idGiro = [dato.idGiro != null ? dato.idGiro : 1];
+      //this.Filtros.idGiro = [dato.idGiro != null ? dato.idGiro : 1];
       this.Filtros.idCategoriaNegocio = [dato.id_categoria];
       this.buscarNegocios(true);
       localStorage.removeItem("seleccionado");
@@ -293,15 +325,20 @@ export class InicioPage implements OnInit {
 
   async validarResultadosDeCategorias(respuesta: any) {
     const cantidadDeResultados = respuesta.data.lst_cat_negocios.data.length;
+    if(cantidadDeResultados < 0){
+      this.listaCategorias = [];
+      this.selectionAP = true;
+    }
     if (cantidadDeResultados > 0) {
       this.actualPagina = respuesta.data.lst_cat_negocios.current_page;
       this.siguientePagina = this.actualPagina + 1;
+      this.siguienteGiro = this.actuacGiro +1;
       this.totalDePaginas = respuesta.data.lst_cat_negocios.total;
       this.totalDePaginasPorConsulta = respuesta.data.lst_cat_negocios.to;
       this.categoriasEstaVacios = false;
       this.lengthLista = this.listaCategorias.length;
 
-      if (this.actualPagina > 1) {
+      if (this.actualPagina > 1 || this.actuacGiro >1) {
         this.listaCategorias.push(...respuesta.data.lst_cat_negocios.data);
         this.negociosIdMapa();
         if (
@@ -323,7 +360,7 @@ export class InicioPage implements OnInit {
   async validarResultadosDeCategoriasAll(respuesta: any) {
     const cantidadDeResultados = respuesta.data.lst_cat_negocios.data.length;
     if (cantidadDeResultados > 0) {
-      if (this.actualPagina > 1) {
+      if (this.actualPagina > 1 || this.actuacGiro >1) {
         this.obtenerNegocios([...respuesta.data.lst_cat_negocios.data]);
       } else {
         this.obtenerNegocios(respuesta.data.lst_cat_negocios.data);
@@ -348,6 +385,7 @@ export class InicioPage implements OnInit {
   }
   public async cargarCategorias() {
     const byCategorias = localStorage.getItem("filtroactual");
+    console.log("entro seis xd")
     if (
       byCategorias !== null &&
       byCategorias !== undefined &&
@@ -358,15 +396,15 @@ export class InicioPage implements OnInit {
       this.Filtros = dato;
       this.filtroActivo = true;
     }
-    try {
+    try {     
       var respuesta = await this.principalSercicio
-        .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
+        .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)        
       this.validarResultadosDeCategorias(respuesta);
       //console.log("respuest cargar c");
       //console.log(respuesta);
       //await this.procesar(respuesta, 1);
       const byCategorias2 = localStorage.getItem("filtroactual");
-      //console.log("filtro actual")
+      console.log("entro siete")
       if (
         byCategorias2 !== null &&
         byCategorias2 !== undefined &&
@@ -398,8 +436,6 @@ export class InicioPage implements OnInit {
   }
   public async procesar(response: any, i: number) {
     if (response.data.lst_cat_negocios.last_page >= i) {
-      console.log(this.Filtros);
-      console.log(this.Filtros.idCategoriaNegocio);
       if(this.Filtros.idCategoriaNegocio == null  && this.Filtros.abierto == null && this.Filtros.blnEntrega == null
          && this.Filtros.idGiro == null  && this.Filtros.intEstado == 0
          && this.Filtros.idLocalidad == null && this.Filtros.idMunicipio == null && this.Filtros.latitud == 0 && this.Filtros.longitud == 0
@@ -451,7 +487,16 @@ export class InicioPage implements OnInit {
       ? (this.Filtros.organizacion =
         this.objectSelectAfiliacionPlaza.id_organizacion)
       : "";
-    await this.cargarCategorias();
+      this.loaderNegocios=false;
+      const todo = localStorage.getItem("todo");
+       if(todo==='todo'){
+        await this.cargarCategorias();
+       }else{
+        this.loader = false;
+       }
+      //await this.cargarCategorias();
+    
+    
   }
 
   async configToad(mensaje) {
@@ -467,7 +512,16 @@ export class InicioPage implements OnInit {
     this.Filtros = new FiltrosModel();
     this.Filtros.strBuscar = event;
     this.tFiltro = true;
+    localStorage.setItem("todo", "todo");
+  
+    
+    if(event===null){
+      localStorage.removeItem("filtroactual");
+      this.obtenerPrincipalInicio();
+    }else{
     this.buscarNegocios(true);
+    }
+    
   }
 
   abrirFiltros() {
@@ -484,6 +538,8 @@ export class InicioPage implements OnInit {
       this.Filtros = res;
       let d1 = JSON.stringify(res);
       localStorage.setItem("filtroactual", d1);
+      console.log("entro ocho")
+      localStorage.setItem("todo", "todo");
       this.buscarNegocios(true);
     });
 
@@ -515,7 +571,6 @@ export class InicioPage implements OnInit {
   private buscarSeleccionado(seleccionado: any) {
     this.seleccionado = seleccionado;
     this.Filtros = new FiltrosModel();
-    console.log(this.Filtros);
     this.Filtros.idCategoriaNegocio = [seleccionado.id_categoria];
     this.Filtros.idGiro = [seleccionado.idGiro];
     this.buscarNegocios(true);
@@ -578,12 +633,13 @@ export class InicioPage implements OnInit {
 
   public regresarBitoo() {
     localStorage.removeItem("org");
+    localStorage.removeItem("todo");
+    this.obtenerPrincipalInicio();
     location.reload();
   }
   borrarFiltros() {
     localStorage.removeItem("byCategorias");
     this.Filtros = new FiltrosModel();
-    console.log(this.Filtros)
     this.Filtros.idEstado = 29;
     /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
     this.filtroActivo = false;
@@ -595,6 +651,13 @@ export class InicioPage implements OnInit {
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.filtroActivo = false;
+    localStorage.removeItem("todo");
+    const org = localStorage.getItem("org");
+    if(org===null){
+      this.obtenerPrincipalInicio();
+    }else{
+      this.activar()
+    }
     this.buscarNegocios(true);
   }
   negocioRuta(negocioURL) {
@@ -629,5 +692,74 @@ export class InicioPage implements OnInit {
     } else {
       event.target.disabled = true;
     }
+  }
+
+  public obtenerPrincipalInicio(){
+ 
+    this.principalSercicio.obtenerPrincipalInicio()
+      .subscribe(
+        (response) => {
+        
+          if (response.code === 200) {
+            this.listaCategorias = response.data;
+            this.loaderNegocios=false;
+          }
+        },
+        (error) => {
+          //this._notificacionService.error(error);
+        }
+      );
+  }
+
+  public obtenergiros() {
+    this.principalSercicio.obtenerGiros().subscribe(
+      response => {
+        this.lstCatTipoGiro= response.data;
+        this.lstCatTipoGiro.map(i => {
+          const aux = i.nombre;
+          i.nombreB = aux.replace(' y ', (' y' + '<div></div>'));
+        });
+      },
+      error => {
+        this.notificaciones.error(error);
+      }
+    );
+  }
+  async buscarByGiro(event){
+    
+    this.Filtros = new FiltrosModel();
+    this.Filtros.idEstado = 29;
+    this.filtroActivo = true;
+    this.loaderNegocios=true;
+    localStorage.setItem("todo", "todo");
+    this.idGiro =event;    
+    this.Filtros.idGiro=[this.idGiro];
+    this.selectionAP
+      ? (this.Filtros.organizacion =
+        this.objectSelectAfiliacionPlaza.id_organizacion)
+      : "";
+    var respuesta = await this.principalSercicio
+        .obtenerNegocioPorCategoria(this.Filtros, this.siguienteGiro)
+      if(respuesta.data.lst_cat_negocios.total>0){
+        this.validarResultadosDeCategorias(respuesta);
+      }else{
+        this.listaCategorias=[];
+        this.selectionAP = true;
+      }
+      this.loaderNegocios=false;
+
+  }
+
+  async activar(){
+    this.Filtros = new FiltrosModel();
+    this.Filtros.idEstado = 29;
+    this.selectionAP
+      ? (this.Filtros.organizacion =
+        this.objectSelectAfiliacionPlaza.id_organizacion)
+      : "";
+    localStorage.setItem("todo", "todo");
+    var respuesta = await this.principalSercicio
+        .obtenerNegocioPorCategoria(this.Filtros, this.siguienteGiro)
+      this.validarResultadosDeCategorias(respuesta);
   }
 }

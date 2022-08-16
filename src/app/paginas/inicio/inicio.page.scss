@@ -51,6 +51,14 @@
 ion-card-header {
   padding-top: 3rem;
 }
+.promo {
+  position:absolute;
+  top:0;
+  left:0;
+  right:62%;
+  bottom:10%;
+  width: 80%;
+}
 
 .likegegi {
   bottom: 7rem;
@@ -70,3 +78,11 @@ ion-card-header {
   }
 }
 
+.image-center{ margin:0 auto; }
+small{
+  --color: #fa4f72;
+}
+
+ion-slide{
+  width: 5em !important; height: 7em;
+}

@@ -36,6 +36,7 @@
     [tieneFiltro]="tFiltro"
   ></app-banner-promociones>
   <app-spinner [loader]="loader" [message]="msj"></app-spinner>
+  <app-spinner  [loader]="loaderNegocios" [message]="msj"></app-spinner>
   <div *ngIf="!loader">
     <ion-item>
       <ion-buttons *ngIf="!selectionAP">
@@ -92,67 +93,105 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+    <ion-slides [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }" scrollbar="md">
+      <ion-slide>
+        <li class="nav-item">
+          <a style="text-decoration: none;" class="nav-link" [ngClass]="{active:pintarGiroID == null}" id="pills-home-todos" data-toggle="pill"
+            href="#pills-home" role="tab" (click)="activar()" aria-controls="pills-home"
+            aria-selected="true">
+            <ion-avatar class="image-center"> <img src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png"> </ion-avatar>
+            
+            
+            <p style="font-size: 12.5px">Todas </p>
+          </a>
+        </li>
+      </ion-slide>
+      <ion-slide *ngFor="let giro of this.lstCatTipoGiro">
+      
+        
+        <ion-row class="ion-text-center" (click)="buscarByGiro(giro.id_giro)">
+          <ion-col >
+          <ion-item color="none" lines="none">
+            <ion-avatar class="image-center"> <img src="{{giro.url_icon}}"> </ion-avatar>
+            
+          </ion-item>
+          <ion-item class="ion-text-center" color="none" lines="none">
+            
+            <small style="font-size: 10px;">{{giro.nombre}}</small>
+          </ion-item>
+          </ion-col> 
+      </ion-row>  
+      </ion-slide>
+    </ion-slides>
+
     <ion-refresher *ngIf="!isIOS" slot="fixed" (ionRefresh)="recargar($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <ion-grid *ngIf="listaCategorias.length !== 0">
-      <ion-row *ngFor="let cat of listaCategorias">
-        <ion-text class="w-100">
-          <h2>{{cat.nombre}}</h2>
-        </ion-text>
-        <ion-col
-          sizeLg="3"
-          sizeXs="6"
-          sizeSm="4"
-          sizeMd="4"
-          *ngFor="let proveedor of cat.negocios"
-        >
-          <ion-card class="m-0 fixed">
-            <div (click)="negocioRuta(proveedor.url_negocio)">
-              <img
-                class="img-card-w"
-                src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
-                [srcset]="proveedor.url_logo"
-                alt="Falla al cargar la imagen"
-              />
-              <ion-card-header>
-                <ion-card-subtitle
-                  >{{proveedor.nombre_comercial}}
-                  <ion-icon
-                    *ngIf="proveedor.verificado"
-                    class="text-rosa"
-                    name="checkmark-circle"
-                  ></ion-icon>
-                </ion-card-subtitle>
-                <ion-badge
-                  *ngIf="proveedor.abierto == 'ABIERTO'"
-                  color="success"
-                  >Abierto</ion-badge
+    
+    <div *ngIf="!loaderNegocios">
+      <ion-grid *ngIf="listaCategorias.length !== 0">
+        <ion-row *ngFor="let cat of listaCategorias">
+          <ion-text class="w-100">
+            <h2>{{cat.nombre}}</h2>
+          </ion-text>
+          <ion-col
+            sizeLg="3"
+            sizeXs="6"
+            sizeSm="4"
+            sizeMd="4"
+            *ngFor="let proveedor of cat.negocios"
+          >
+            <ion-card class="m-0 fixed">
+              <div (click)="negocioRuta(proveedor.url_negocio)">
+                <img
+                  class="img-card-w"
+                  src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
+                  [srcset]="proveedor.url_logo"
+                  alt="Falla al cargar la imagen"
+                />
+                <ion-card-header>
+                  <ion-card-subtitle
+                    >{{proveedor.nombre_comercial}}
+                    <ion-icon
+                      *ngIf="proveedor.verificado"
+                      class="text-rosa"
+                      name="checkmark-circle"
+                    ></ion-icon>
+                  </ion-card-subtitle>
+                  <ion-badge
+                    *ngIf="proveedor.abierto == 'ABIERTO'"
+                    color="success"
+                    >Abierto</ion-badge
+                  >
+                  <ion-badge
+                    *ngIf="proveedor.abierto !== 'ABIERTO'"
+                    color="danger"
+                    >Cerrado</ion-badge
+                  >
+                </ion-card-header>
+                <!-- <ion-card-content>
+                                    <div class="ui-search-item__title">
+                                        {{proveedor.descripcion}}
+                                    </div>
+                                </ion-card-content> -->
+              </div>
+              <div *ngIf="cat.nombre==='Negocios con promociones'" class="promotion-item__container" class="promo"> 
+                <ion-img src="../../../assets/images/promo/PRO.png"></ion-img>
+                <!-- <IMG SRC="assets/images/PROMOCION1.png">  -->
+              </div>
+              <div *ngIf="existeSesion" class="likegegi">
+                <app-dar-like-negocio
+                  [negocio]="proveedor"
+                  [usuario]="user"
+                  [mostrarLike]="existeSesion"
                 >
-                <ion-badge
-                  *ngIf="proveedor.abierto !== 'ABIERTO'"
-                  color="danger"
-                  >Cerrado</ion-badge
-                >
-              </ion-card-header>
-              <!-- <ion-card-content>
-                                  <div class="ui-search-item__title">
-                                      {{proveedor.descripcion}}
-                                  </div>
-                              </ion-card-content> -->
-            </div>
-            <div *ngIf="existeSesion" class="likegegi">
-              <app-dar-like-negocio
-                [negocio]="proveedor"
-                [usuario]="user"
-                [mostrarLike]="existeSesion"
-              >
-              </app-dar-like-negocio>
-            </div>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+                </app-dar-like-negocio>
+              </div>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
     <ion-grid *ngIf="listaCategorias.length === 0 && selectionAP === false">
       <ion-text color="primary">
         <h2>No se encontraron negocios relacionados</h2>
@@ -173,4 +212,8 @@
       [msj]="mensaje"
     ></app-infinito-scroll>
   </div>
+  <app-banner-anuncios
+  
+></app-banner-anuncios>
+
 </ion-content>

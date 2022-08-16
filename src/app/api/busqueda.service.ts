@@ -81,6 +81,46 @@ export class BusquedaService {
     }));
   }
 
+  obtenerBannerAvisos(): Observable<any> {
+    const body = JSON.stringify({});
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/catalogos/obtener/avisosInferior', body,
+      AppSettings.getHeaders())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+  }
+
+  obtenerGiros(): Observable<any> {
+    const body = JSON.stringify({});
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'buscar/giros', body,
+      AppSettings.getHeaders())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+  }
+
+  obtenerPrincipalInicio(): Observable<any> {
+    const body = JSON.stringify({});
+    this.http.setDataSerializer('utf8');
+    return from(this.http.post(
+        this.url + 'api/negocios/obtenerPrincipalInicio',
+        body,  AppSettings.getHeaders())
+        .then((data) => {
+            return JSON.parse(data.data);
+        })
+        .catch((error) => {
+            return error;
+        }));
+  }
+
   public obtenerNegociosTodosMapa(): Promise<any>{
     const body = JSON.stringify({});
      this.http.setDataSerializer("utf8");

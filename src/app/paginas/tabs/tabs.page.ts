@@ -48,7 +48,7 @@ export class TabsPage implements OnInit {
     const pagina = localStorage.getItem('activedPage');
     const prod = localStorage.getItem('productos');
     const neg = localStorage.getItem('negocios');
-
+      
    
 
     if (neg==='active' && this.isIos){
@@ -93,7 +93,8 @@ export class TabsPage implements OnInit {
     localStorage.setItem("resetFiltro", "0");
     localStorage.setItem("activedPage", "inicio");
     this.activedPage = localStorage.getItem("activedPage");
-    localStorage.setItem('negocios',('active'))
+    localStorage.setItem('negocios',('active'));
+    localStorage.removeItem("todo");
   }
 
   promociones() {
@@ -105,6 +106,7 @@ export class TabsPage implements OnInit {
     localStorage.setItem("activedPage", "promociones");
     this.activedPage = localStorage.getItem("activedPage");
     localStorage.removeItem("productos");
+    localStorage.removeItem("todo");
   }
   solicitudes() {
     localStorage.removeItem("activedPage");
@@ -114,6 +116,7 @@ export class TabsPage implements OnInit {
     this.activedPage = localStorage.getItem("activedPage");
     // this.router.navigate(['/tabs/home/solicitud']);
     localStorage.removeItem("productos");
+    localStorage.removeItem("todo");
   }
 
   productos() {
@@ -126,6 +129,7 @@ export class TabsPage implements OnInit {
     this.activedPage = localStorage.getItem("activedPage");
     this.mostrarLoguearse();
     localStorage.removeItem("productos");
+    localStorage.removeItem("todo");
   }
 
   requerimientos() {
@@ -135,6 +139,7 @@ export class TabsPage implements OnInit {
     localStorage.setItem("activedPage", "requerimientos");
     this.activedPage = localStorage.getItem("activedPage");
     localStorage.removeItem("productos");
+    localStorage.removeItem("todo");
   }
 
   perfil() {
@@ -147,6 +152,7 @@ export class TabsPage implements OnInit {
     });
     localStorage.removeItem("productos");
     localStorage.removeItem("negocios");
+    localStorage.removeItem("todo");
   }
   login() {
     localStorage.removeItem("byCategorias");

@@ -68,6 +68,7 @@ export class PlazasAfiliacionesComponent implements OnInit {
     const existSelection = localStorage.getItem('org');
     (existSelection) ? localStorage.removeItem('org') : '';
     localStorage.setItem('org', JSON.stringify(selected));
+    localStorage.setItem("todo", "todo");
     location.reload();
   }
 
