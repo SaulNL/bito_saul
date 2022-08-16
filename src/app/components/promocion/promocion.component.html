@@ -46,10 +46,10 @@
             <strong><p class="promocion">{{promocion.fecha_fin !== null ? promocion.fecha_fin_public : promocion.fecha_inicio_public}} | {{promocion.nombre_comercial}}</p></strong>
           </ion-row>
           <strong *ngFor="let dia of promocion.dias ">
-            <p *ngIf="dia.hora_inicio.length > 0 " class="promocion">{{ dia.hora_inicio}} -{{dia.hora_fin}} |
+            <p *ngIf="dia.hora_inicio !=null " class="promocion">{{ dia.hora_inicio}} -{{dia.hora_fin}} |
               {{promocion.nombre_comercial}}</p>
           
-            <ng-container *ngIf="dia.hora_inicio.length === 0; then thenTemplate;"></ng-container>
+            <ng-container *ngIf="dia.hora_inicio == null; then thenTemplate;"></ng-container>
             <ng-template #thenTemplate>
               <p class="promocion">{{ dia.dias}} | {{promocion.nombre_comercial}}
               </p>
