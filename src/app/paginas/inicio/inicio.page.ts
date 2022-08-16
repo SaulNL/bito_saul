@@ -27,7 +27,7 @@ import { Observable, throwError } from "rxjs";
 import { runInThisContext } from "vm";
 import { LocalStorageUtil } from "../../utils/localStorageUtil";
 
-import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
+
 
 @Component({
   selector: "app-tab3",
@@ -93,7 +93,6 @@ export class InicioPage implements OnInit {
     private auth0Service: Auth0Service,
     private validarPermiso: ValidarPermisoService,
     private platform: Platform,
-    private vibration: Vibration
     
   ) {
     this.byLogin = false;
