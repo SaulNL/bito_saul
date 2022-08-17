@@ -459,7 +459,7 @@ export class MispromocionesPage implements OnInit {
     }
 
     async infoPromocion() {
-        console.log("funcion infoPromocion");
+        
         const modal = await this.modalController.create({
             component: ModalInfoPromoComponent,
             cssClass: "my-custom-class",

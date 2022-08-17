@@ -53,7 +53,7 @@ export class TabsPage implements OnInit {
 
     if (neg==='active' && this.isIos){
       this.activedPage = 'inicio';
-      console.log("entro para activar inicio");
+    
     }
     
     if (prod==='active' && this.router.navigate(['/tabs/productos'], {
@@ -62,7 +62,7 @@ export class TabsPage implements OnInit {
       }
     }) && this.isIos){
       this.activedPage = 'productos';
-      console.log("entro para activar productos");
+      
     }
 
     if(pagina==='promociones' && this.isAndroid){
