@@ -95,14 +95,17 @@
     </ion-grid>
     <ion-slides [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }" scrollbar="md">
       <ion-slide>
+        
         <li class="nav-item">
-          <a style="text-decoration: none;" class="nav-link" [ngClass]="{active:pintarGiroID == null}" id="pills-home-todos" data-toggle="pill"
+          <a  class="todas"  id="pills-home-todos" data-toggle="pill"
             href="#pills-home" role="tab" (click)="activar()" aria-controls="pills-home"
             aria-selected="true">
-            <ion-avatar class="image-center"> <img src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png"> </ion-avatar>
+            <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img class="img-gris" src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png"> </ion-avatar>
+            <ion-avatar *ngIf="idTodo ===true"  style="margin-bottom: 1.2rem;" class="image-center"> <img  src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png"> </ion-avatar>
             
             
-            <p style="font-size: 12.5px">Todas </p>
+            <p *ngIf="idTodo ===true" class="giro-color" style="font-size: 10px;">Todas </p>
+            <p *ngIf="idTodo !=true" style="font-size: 12px;">Todas </p>
           </a>
         </li>
       </ion-slide>
@@ -112,12 +115,14 @@
         <ion-row class="ion-text-center" (click)="buscarByGiro(giro.id_giro)">
           <ion-col >
           <ion-item color="none" lines="none">
-            <ion-avatar class="image-center"> <img src="{{giro.url_icon}}"> </ion-avatar>
+            <ion-avatar *ngIf="idGiro != giro.id_giro" class="image-center"> <img class="img-gris" src="{{giro.url_icon}}"> </ion-avatar>
+            <ion-avatar *ngIf="idGiro==giro.id_giro" class="image-center"> <img src="{{giro.url_icon}}"> </ion-avatar>
             
           </ion-item>
           <ion-item class="ion-text-center" color="none" lines="none">
             
-            <small style="font-size: 10px;">{{giro.nombre}}</small>
+            <small *ngIf="idGiro != giro.id_giro"  style="font-size: 10px;">{{giro.nombre}}</small>
+            <small *ngIf="idGiro==giro.id_giro" class="giro-color" >{{giro.nombre}}</small>
           </ion-item>
           </ion-col> 
       </ion-row>  

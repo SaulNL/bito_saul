@@ -20,6 +20,22 @@
   z-index: 1;
 }
 
+.img-gris{
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+
+}
+
+.giro-color{
+  color:  #a74eef;
+  font-size: 10px;
+}
+
+.todas{
+  text-decoration: none;
+  color: rgb(48, 47, 47);
+  font-size: 12px;
+}
 @media (max-width: 500px) {
   .bosar {
     width: 13vw;

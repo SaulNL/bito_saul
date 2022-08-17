@@ -66,11 +66,11 @@ export class InicioPage implements OnInit {
   public categoriasEstaVacios = true;
   public nombreCategoria = "";
   public actualPagina = 0;
-  public actuacGiro=0;
+  public actualGiro=0;
   public totalDePaginas = 0;
   public seHaceScroll = false;
   public siguientePagina = this.actualPagina + 1;
-  public siguienteGiro = this.actuacGiro +1;
+  public siguienteGiro = this.actualGiro +1;
   public mensaje = InicioPage.MENSAJE_CUANDO_CARGA;
   public totalDePaginasPorConsulta = 0;
   activedPage: string;
@@ -79,6 +79,7 @@ export class InicioPage implements OnInit {
   idGiro: number=null;
   todos: number;
   todo: number;
+  idTodo: boolean;
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -146,7 +147,6 @@ export class InicioPage implements OnInit {
       this.Filtros = new FiltrosModel();
       this.Filtros.idEstado = 29;
       const byCategorias = localStorage.getItem("filtroactual");
-      console.log("entro uno")
       if (
         byCategorias !== null &&
         byCategorias !== undefined &&
@@ -164,7 +164,6 @@ export class InicioPage implements OnInit {
       this.ruta.navigate(["/tabs/categorias"]);
     }
     const byCategorias = localStorage.getItem("filtroactual");
-    console.log("entro dos")
     if (
       byCategorias !== null &&
       byCategorias !== undefined &&
@@ -194,7 +193,7 @@ export class InicioPage implements OnInit {
           this.obtenerPrincipalInicio();
           this.loaderNegocios=true;
         }
-        console.log("entro tres")
+       
         if (
           byCategorias !== null &&
           byCategorias !== undefined &&
@@ -211,7 +210,6 @@ export class InicioPage implements OnInit {
       if (params.byLogin && params) {
         this.negocioRutaByLogin(params.byLogin);
         const byCategorias = localStorage.getItem("filtroactual");
-        console.log("entro cuatro")
         if (
           byCategorias !== null &&
           byCategorias !== undefined &&
@@ -225,7 +223,7 @@ export class InicioPage implements OnInit {
       }
     });
     const byCategorias = localStorage.getItem("filtroactual");
-    console.log("entro cinco xd")
+   
     if (
       byCategorias !== null &&
       byCategorias !== undefined &&
@@ -235,6 +233,14 @@ export class InicioPage implements OnInit {
       const dato = JSON.parse(byCategorias);
       this.Filtros = dato;
       this.filtroActivo = true;
+    }
+    
+    const activar = localStorage.getItem('activarTodos');
+    if(activar === 'true'){
+      this.idTodo=true;
+      
+    }else{
+      this.idTodo=false;
     }
     const pagina = localStorage.getItem('Page');
 
@@ -331,13 +337,13 @@ export class InicioPage implements OnInit {
     if (cantidadDeResultados > 0) {
       this.actualPagina = respuesta.data.lst_cat_negocios.current_page;
       this.siguientePagina = this.actualPagina + 1;
-      this.siguienteGiro = this.actuacGiro +1;
+      //this.siguienteGiro = this.actualGiro +1;
       this.totalDePaginas = respuesta.data.lst_cat_negocios.total;
       this.totalDePaginasPorConsulta = respuesta.data.lst_cat_negocios.to;
       this.categoriasEstaVacios = false;
       this.lengthLista = this.listaCategorias.length;
 
-      if (this.actualPagina > 1 || this.actuacGiro >1) {
+      if (this.actualPagina > 1 || this.actualGiro >1) {
         this.listaCategorias.push(...respuesta.data.lst_cat_negocios.data);
         this.negociosIdMapa();
         if (
@@ -359,7 +365,7 @@ export class InicioPage implements OnInit {
   async validarResultadosDeCategoriasAll(respuesta: any) {
     const cantidadDeResultados = respuesta.data.lst_cat_negocios.data.length;
     if (cantidadDeResultados > 0) {
-      if (this.actualPagina > 1 || this.actuacGiro >1) {
+      if (this.actualPagina > 1 || this.actualGiro >1) {
         this.obtenerNegocios([...respuesta.data.lst_cat_negocios.data]);
       } else {
         this.obtenerNegocios(respuesta.data.lst_cat_negocios.data);
@@ -371,7 +377,6 @@ export class InicioPage implements OnInit {
   
   async validarResultadosTodos(respuesta: any) {
     const cantidadDeResultados = respuesta.data.lst_cat_negocios.length;
-    //console.log(cantidadDeResultados);
     if (cantidadDeResultados > 0) {
       //if (this.actualPagina > 1) {
         this.obtenerNegocios2([respuesta.data.lst_cat_negocios]);
@@ -384,7 +389,6 @@ export class InicioPage implements OnInit {
   }
   public async cargarCategorias() {
     const byCategorias = localStorage.getItem("filtroactual");
-    console.log("entro seis xd")
     if (
       byCategorias !== null &&
       byCategorias !== undefined &&
@@ -403,7 +407,6 @@ export class InicioPage implements OnInit {
       //console.log(respuesta);
       //await this.procesar(respuesta, 1);
       const byCategorias2 = localStorage.getItem("filtroactual");
-      console.log("entro siete")
       if (
         byCategorias2 !== null &&
         byCategorias2 !== undefined &&
@@ -537,7 +540,6 @@ export class InicioPage implements OnInit {
       this.Filtros = res;
       let d1 = JSON.stringify(res);
       localStorage.setItem("filtroactual", d1);
-      console.log("entro ocho")
       localStorage.setItem("todo", "todo");
       this.buscarNegocios(true);
     });
@@ -633,6 +635,7 @@ export class InicioPage implements OnInit {
   public regresarBitoo() {
     localStorage.removeItem("org");
     localStorage.removeItem("todo");
+    localStorage.removeItem("activarTodos");
     this.obtenerPrincipalInicio();
     location.reload();
   }
@@ -647,6 +650,7 @@ export class InicioPage implements OnInit {
   borrarFiltrosP() {
     localStorage.removeItem("filtroactual");
     localStorage.removeItem("byCategorias");
+    this.idGiro=null;
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.filtroActivo = false;
@@ -725,12 +729,13 @@ export class InicioPage implements OnInit {
     );
   }
   async buscarByGiro(event){
-    
+    localStorage.removeItem("activarTodos");
+    localStorage.setItem("todo", "todo");
+    this.idTodo=false;
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.filtroActivo = true;
     this.loaderNegocios=true;
-    localStorage.setItem("todo", "todo");
     this.idGiro =event;    
     this.Filtros.idGiro=[this.idGiro];
     this.selectionAP
@@ -750,6 +755,9 @@ export class InicioPage implements OnInit {
   }
 
   async activar(){
+    localStorage.setItem("activarTodos", "true");
+    this.idTodo=true;
+    this.idGiro =null;
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.selectionAP
