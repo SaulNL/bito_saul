@@ -687,7 +687,7 @@ export class InicioPage implements OnInit {
     this.ruta.navigate(["/tabs/negocio/" + url]);
   }
   cargarMasPaginas(event: any) {
-    if (this.totalDePaginasPorConsulta < this.totalDePaginas) {
+    if ( this.totalDePaginas>=this.totalDePaginasPorConsulta ) {
       this.buscarNegocios(false);
       setTimeout(() => {
         event.target.complete();
@@ -743,7 +743,8 @@ export class InicioPage implements OnInit {
         this.objectSelectAfiliacionPlaza.id_organizacion)
       : "";
     var respuesta = await this.principalSercicio
-        .obtenerNegocioPorCategoria(this.Filtros, this.siguienteGiro)
+        .obtenerNegocioPorCategoria(this.Filtros, this.siguienteGiro);
+        this.listaCategorias=[];
       if(respuesta.data.lst_cat_negocios.total>0){
         this.validarResultadosDeCategorias(respuesta);
       }else{
