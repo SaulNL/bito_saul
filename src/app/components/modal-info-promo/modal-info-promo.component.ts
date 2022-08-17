@@ -29,7 +29,7 @@ export class ModalInfoPromoComponent implements OnInit {
     public _notificacionService: ToadNotificacionService) { }
 
   ngOnInit() {
-    console.log(this.lstPromocionesSolicitadas);
+
     let pipe = new DatePipe('en-US');
     
     this.selected = pipe.transform(Date(), 'yyyy/MM/dd HH:mm:ss');

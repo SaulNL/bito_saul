@@ -95,7 +95,13 @@ export class PlazasAfiliacionesComponent implements OnInit {
             this.listConvenios=[];
           }
           this.listAfiliacines=this.listAfiliacines.concat(this.listConvenios);
-          console.log(this.listAfiliacines)
+          var hash = {};
+          this.listAfiliacines = this.listAfiliacines.filter(function(current) {
+            var exists = !hash[current.id_organizacion];
+            hash[current.id_organizacion] = true;
+            return exists;
+          });
+          
         } else {
           this.afiliacion = false;
         }

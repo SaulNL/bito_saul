@@ -137,6 +137,7 @@ export class PromocionesPage implements OnInit {
                     }
                     if (response.data !== null) {
                         this.lstPromociones = response.data;
+                        console.log(this.lstPromociones);
                         this.loader = false;
                         // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}
                     } else {

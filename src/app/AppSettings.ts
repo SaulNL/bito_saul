@@ -15,9 +15,9 @@ export class AppSettings {
     public static IMG_ERROR_SOLICITUD = 'https://ecoevents.blob.core.windows.net/comprandoando/img_default/Promo%20banner.png';
     public static IMG_CATEGORIAS_TODAS = 'https://ecoevents.blob.core.windows.net/comprandoando/Categor%C3%ADas/Separador%20categor%C3%ADa%20web/Todas%20las%20categor%C3%ADas.png';
 
-    public static RELEASE_DATE = "17 de junio de 2022";
+    public static RELEASE_DATE = "16 de agosto de 2022";
     public static VERSION_SISTEMA = 28;
-    public static VERSION_ANDROID = 33;
+    public static VERSION_ANDROID = 38; //ESTA SE TIENE QUE ACTUALIZAR
     public static ID_DB_PLATFORM_ANDROID = 55; //ESTO NO SE DEBE MOVER EN FUTURAS VERSIONES, FUNCIONA COMO ID PARA ENCONTRARLO EN LA TABLA DE VARIABLE
     public static ID_DB_PLATFORM_IOS = 57; //ESTO NO SE DEBE MOVER EN FUTURAS VERSIONES, FUNCIONA COMO ID PARA ENCONTRARLO EN LA TABLA DE VARIABLE
     public static VERSION_IOS = 4; //ESTA SE TIENE QUE ACTUALIZAR
