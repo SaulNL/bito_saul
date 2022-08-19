@@ -503,7 +503,7 @@
   <ion-card>
     <ion-card-content>
       <form #formNegoContacto="ngForm" (ngSubmit)="guardar(formNegoContacto)">
-        <ion-list lines="none">
+        <ion-list>
           <ion-item>
             <ion-label position="floating">Teléfono oficina :</ion-label>
             <ion-input id="idTelefonoNegocio" name="idTelefonoNegocio" #telefonoNegocio="ngModel"
@@ -524,41 +524,43 @@
             <ion-input id="idCorreoNegocio" name="idCorreoNegocio" #correoNegocio="ngModel"
               [(ngModel)]="negocioTO.correo"></ion-input>
           </ion-item>
-          <ion-item>
-            <ion-avatar slot="start">
-              <img src="./../../../../../assets/images/fb.png" alt="" />
-            </ion-avatar>
-            <ion-input id="idFaceNegocio" name="idFaceNegocio" #faceNegocio="ngModel"
-              [(ngModel)]="negocioTO.id_facebook" placeholder="Facebook :"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-avatar slot="start">
-              <img src="./../../../../../assets/images/tw.png" alt="" />
-            </ion-avatar>
-            <ion-input id="idTwiNegocio" name="idTwiNegocio" #twiNegocio="ngModel" [(ngModel)]="negocioTO.twitter"
-              placeholder="Twitter :"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-avatar slot="start">
-              <img src="./../../../../../assets/images/insta.png" alt="" />
-            </ion-avatar>
-            <ion-input id="idInstNegocio" name="idInstNegocio" #instNegocio="ngModel" [(ngModel)]="negocioTO.instagram"
-              placeholder="Instagram :"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-avatar slot="start">
-              <img src="./../../../../../assets/images/yt.png" alt="" />
-            </ion-avatar>
-            <ion-input id="idYouNegocio" name="idYouNegocio" #youNegocio="ngModel" [(ngModel)]="negocioTO.youtube"
-              placeholder="Youtube :"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-avatar slot="start">
-              <img src="./../../../../../assets/images/tt.png" alt="" />
-            </ion-avatar>
-            <ion-input id="idTikNegocio" name="idTikNegocio" #tikNegocio="ngModel" [(ngModel)]="negocioTO.tiktok"
-              placeholder="TikTok :"></ion-input>
-          </ion-item>
+         <ion-list lines="none">
+            <ion-item>
+              <ion-avatar slot="start">
+                <img src="./../../../../../assets/images/fb.png" alt="" />
+              </ion-avatar>
+              <ion-input id="idFaceNegocio" name="idFaceNegocio" #faceNegocio="ngModel"
+                [(ngModel)]="negocioTO.id_facebook" placeholder="Facebook :"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-avatar slot="start">
+                <img src="./../../../../../assets/images/tw.png" alt="" />
+              </ion-avatar>
+              <ion-input id="idTwiNegocio" name="idTwiNegocio" #twiNegocio="ngModel" [(ngModel)]="negocioTO.twitter"
+                placeholder="Twitter :"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-avatar slot="start">
+                <img src="./../../../../../assets/images/insta.png" alt="" />
+              </ion-avatar>
+              <ion-input id="idInstNegocio" name="idInstNegocio" #instNegocio="ngModel" [(ngModel)]="negocioTO.instagram"
+                placeholder="Instagram :"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-avatar slot="start">
+                <img src="./../../../../../assets/images/yt.png" alt="" />
+              </ion-avatar>
+              <ion-input id="idYouNegocio" name="idYouNegocio" #youNegocio="ngModel" [(ngModel)]="negocioTO.youtube"
+                placeholder="Youtube :"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-avatar slot="start">
+                <img src="./../../../../../assets/images/tt.png" alt="" />
+              </ion-avatar>
+              <ion-input id="idTikNegocio" name="idTikNegocio" #tikNegocio="ngModel" [(ngModel)]="negocioTO.tiktok"
+                placeholder="TikTok :"></ion-input>
+            </ion-item>
+          </ion-list>
           <ion-item>
             <ion-label>Los campos con * son obligatorios</ion-label>
           </ion-item>
