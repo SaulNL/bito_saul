@@ -492,4 +492,12 @@ export class MispromocionesPage implements OnInit {
     public loading(pc: any, pr: any) {
         return pc === true && pr === true ? true : false;
     }
+
+    public recargar(event: any) {
+        setTimeout(() => {
+          event.target.complete();
+          this.ngOnInit();
+         
+        }, 2000);
+    }
 }

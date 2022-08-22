@@ -3,7 +3,7 @@ import {ModalController} from '@ionic/angular';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
 import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { ICupon } from 'src/app/interfaces/icupon';
+import { ICupoon } from 'src/app/interfaces/ICupon';
 
 import { Plugins, FilesystemDirectory } from '@capacitor/core';
 import { File } from '@ionic-native/file/ngx';
@@ -44,7 +44,7 @@ export class ViewqrPromocionComponent implements OnInit {
 
   ngAfterViewInit(): void {
 
-    const cupon: ICupon = {
+    const cupon: ICupoon = {
       "idPromo": this.promocion.id_promocion,
       "idPer": this.idPersona,
       "idCupon": this.id_cupon_promocion
@@ -77,11 +77,11 @@ export class ViewqrPromocionComponent implements OnInit {
   }
 
   descargar() {
-    if (this.platform.is('ios')) {
+    //if (this.platform.is('ios')) {
       //this.descargarIOS();
-    } else {
+    //} else {
       this.crearImagen(this.promocion);
-    }
+    //}
   }
   crearImagen(promocion) {
     html2canvas(document.querySelector("#contenido")).then(canvas => {

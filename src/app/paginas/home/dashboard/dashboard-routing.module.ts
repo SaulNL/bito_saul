@@ -47,6 +47,10 @@ const routes: Routes = [
       {
         path: 'estadisticas',
         loadChildren: () => import('../../estadisticas/estadisticas.module').then(m => m.EstadisticasPageModule)
+      },
+      {
+        path: 'privacidad',
+        loadChildren: () => import('../../aviso-privacidad-cuenta/aviso-privacidad-cuenta.module').then(m => m.AvisoPrivacidadCuentaPageModule )
       }
 
     ]
