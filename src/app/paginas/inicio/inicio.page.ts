@@ -742,6 +742,8 @@ export class InicioPage implements OnInit {
       ? (this.Filtros.organizacion =
         this.objectSelectAfiliacionPlaza.id_organizacion)
       : "";
+    let d1 = JSON.stringify(this.Filtros);
+    localStorage.setItem("filtroactual", d1);
     var respuesta = await this.principalSercicio
         .obtenerNegocioPorCategoria(this.Filtros, this.siguienteGiro);
         this.listaCategorias=[];
