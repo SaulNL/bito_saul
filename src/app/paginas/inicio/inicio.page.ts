@@ -117,6 +117,9 @@ export class InicioPage implements OnInit {
     ) {
       const dato = JSON.parse(byCategorias);
       this.Filtros = dato;
+      if (localStorage.getItem("filtroActivo") === "true" && !this.isIOS) {
+        this.filtroActivo = true;
+      }
       this.filtroActivo = true;
       this.selectionAP = false;
 
@@ -157,7 +160,13 @@ export class InicioPage implements OnInit {
         this.Filtros = dato;
         this.filtroActivo = true;
       } else {
-        this.filtroActivo = false;
+        
+        if (localStorage.getItem("filtroActivo") === "true" && !this.isIOS) {
+          this.filtroActivo = true;
+        }else{
+          this.filtroActivo = false;
+        }
+        
       }
       localStorage.removeItem("filter");
       localStorage.setItem("isRedirected", "false");
@@ -288,6 +297,18 @@ export class InicioPage implements OnInit {
   }
 
   ionViewWillEnter() {
+
+
+    if(!this.isIOS){
+      this.platform.backButton.subscribeWithPriority(10, () => {
+        const byCategorias = localStorage.getItem("byCategorias");
+        if(byCategorias!=null){
+        this.ruta.navigate(['/tabs/categorias']);
+        }      
+      });
+    }
+    
+
     let categoria = localStorage.getItem("seleccionado");
     if (this.filtroActivo === false) {
       localStorage.setItem("resetFiltro", "0");
@@ -650,6 +671,7 @@ export class InicioPage implements OnInit {
   borrarFiltrosP() {
     localStorage.removeItem("filtroactual");
     localStorage.removeItem("byCategorias");
+    localStorage.removeItem("filtroActivo");
     this.idGiro=null;
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
