@@ -14,24 +14,47 @@ import * as L from 'leaflet';
 export class MapaNegociosComponent implements OnInit {
   map: Map;
   public marker: Marker<any>;
-  public latitud: any;
-  public longitud: any;
+  // public latitud: any;
+  // public longitud: any;
   @Input() public listaIds: Array<any>;
+  @Input() public banderaInicio: boolean;
+  @Input() public latitud: any;
+  @Input() public longitud: any;
   public lstNegocios: Array<any>;
   url = `${AppSettings.URL}`;
   public iconoMarker: string;
   public urlNegocio: string;
+  public zoom: number;
+
   constructor(
     private _generalService: GeneralServicesService,
     private notificaciones: ToadNotificacionService,
     public modalController: ModalController
   ) {
-    this.latitud = 19.31905;
-    this.longitud = -98.19982;
+    //this.latitud = 19.31905;
+    //this.longitud = -98.19982;
   }
 
   ngOnInit() {
+    // console.log(this.banderaInicio);
+    // console.log(this.latitud);
+    // console.log(this.longitud);
     this.cagarMapa();
+    // this.getListaNegocios();
+    
+    if(this.banderaInicio === true){
+      this.latitud;
+      this.longitud;
+    }else{
+      this.latitud = 19.31905;
+      this.longitud = -98.19982;
+    } 
+    
+    if(this.latitud === 19.31905 && this.longitud === -98.19982 ){
+       this.zoom = 10;
+    }else{
+      this.zoom = 15;
+    }
     // this.getListaNegocios();
   }
   /**
@@ -39,7 +62,7 @@ export class MapaNegociosComponent implements OnInit {
    */
   public cagarMapa() {
     setTimeout(it => {
-      this.map = new Map("mapaId", {dragging: !L.Browser.mobile, touchZoom: true,  tap: !L.Browser.mobile}).setView([this.latitud, this.longitud], 10, );
+      this.map = new Map("mapaId", {dragging: !L.Browser.mobile, touchZoom: true,  tap: !L.Browser.mobile}).setView([this.latitud, this.longitud],this.zoom, );
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: ''}).addTo(this.map);
       this.getListaNegocios();
     }, 500);

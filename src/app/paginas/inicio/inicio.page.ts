@@ -26,7 +26,11 @@ import { INegocios } from 'src/app/interfaces/INegocios';
 import { Observable, throwError } from "rxjs";
 import { runInThisContext } from "vm";
 import { LocalStorageUtil } from "../../utils/localStorageUtil";
+import { AlertController } from "@ionic/angular";
+import { Plugins } from '@capacitor/core';
 
+const { Geolocation } = Plugins;
+declare var google: any;
 
 
 @Component({
@@ -80,6 +84,22 @@ export class InicioPage implements OnInit {
   todos: number;
   todo: number;
   idTodo: boolean;
+  
+  public miUbicacionlongitud: number;
+  public miUbicacionlatitud: number;
+  public estasUbicacion: string;
+  public municipio: any;
+  public blnUbicacion: any;
+  public latitud: any;
+  public longitud: any;
+  public ubicacion: any;
+  public tipoBusqueda: any;
+
+  public banderaUbicacion: boolean;
+  public banderaInicio: boolean;
+  
+  
+
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -94,7 +114,7 @@ export class InicioPage implements OnInit {
     private auth0Service: Auth0Service,
     private validarPermiso: ValidarPermisoService,
     private platform: Platform,
-    
+    public alertController: AlertController  
   ) {
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
@@ -126,6 +146,7 @@ export class InicioPage implements OnInit {
     }
     this.listaCategorias = new Array<ICategoriaNegocio>();
     this.listaIdsMapa = [];
+    this.banderaInicio = false;
     this.user = this.util.getUserData();
     this.existeSesion = this.util.existe_sesion();
    //aqui para cargar
@@ -375,6 +396,80 @@ export class InicioPage implements OnInit {
     }
   }
   
+  async getCurrentPosition() {
+    const gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
+    const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
+
+        this.blnUbicacion = true;
+        this.miUbicacionlatitud = res.coords.latitude;
+        this.miUbicacionlongitud = res.coords.longitude;
+        this.latitud = this.miUbicacionlatitud;
+        this.longitud = this.miUbicacionlongitud;
+        try {
+            this.ubicacion = 'ubicacion';
+            this.tipoBusqueda = 1;
+            this.geocodeLatLng();
+        } catch (e) {
+        }
+        console.log("latitud y longitus")
+        console.log(this.latitud);
+        console.log(this.longitud);
+    }).catch(error => {
+
+        this.blnUbicacion = false;
+        this.ubicacion = 'localidad';
+        //this.filtros.tipoBusqueda = 0;
+        this.latitud = undefined;
+        this.longitud = undefined;
+        this.AlertActivarUbicacion();
+        //this.cerrarModal();
+    }
+    );  
+  }
+
+  public geocodeLatLng() {
+    // @ts-ignore
+    const geocoder = new google.maps.Geocoder;
+    const latlng = {
+        lat: parseFloat(String(this.miUbicacionlatitud)),
+        lng: parseFloat(String(this.miUbicacionlongitud))
+    };
+    geocoder.geocode({ location: latlng }, (results, status) => {
+        if (status === 'OK') {
+            if (results[0]) {
+                //this.loader = false;
+
+                let posicion = results[0].address_components.length;
+                posicion = posicion - 4;
+                this.estasUbicacion = results[0].formatted_address;
+                this.municipio = results[0].address_components[posicion].long_name;
+            } else {
+
+            }
+        } else {
+
+            //this.loader = false;
+        }
+    });
+  }
+
+  async AlertActivarUbicacion() {
+    const alert = await this.alertController.create({
+      header: 'Bitoo!',
+      message: "Activa tu ubicación para poder ver los negocios cerca de ti",
+      buttons: [
+        {
+            text: "Aceptar",
+            cssClass: 'text-grey',
+            // handler: () => {
+            //   this.cerrarModal();
+            // }
+        },
+      ],
+    });
+    await alert.present();
+  }
+
   async validarResultadosTodos(respuesta: any) {
     const cantidadDeResultados = respuesta.data.lst_cat_negocios.length;
     if (cantidadDeResultados > 0) {
@@ -444,10 +539,13 @@ export class InicioPage implements OnInit {
          && this.Filtros.organizacion == null && this.Filtros.strBuscar == "" && this.Filtros.strMunicipio == ""
          && this.Filtros.tipoBusqueda == 0
         ){
+          this.banderaInicio = true;
+          this.getCurrentPosition();
           //console.log("entro");
           var responseNegociosTodos = await this.principalSercicio.obtenerNegociosTodosMapa();
           await this.validarResultadosTodos(responseNegociosTodos);
       }else{
+        this.banderaInicio = false;
         var response2 = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, i);
         //console.log(response2);
         await this.validarResultadosDeCategoriasAll(response2);
@@ -587,6 +685,9 @@ export class InicioPage implements OnInit {
       component: MapaNegociosComponent,
       componentProps: {
         listaIds: this.listaIdsMapa,
+        latitud: this.latitud,
+        longitud: this.longitud,
+        banderaInicio: this.banderaInicio
       },
     });
     await modal.present();
