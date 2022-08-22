@@ -180,9 +180,9 @@
                                     </div>
                                 </ion-card-content> -->
               </div>
-              <div *ngIf="cat.nombre==='Negocios con promociones'" class="promotion-item__container" class="promo"> 
-                <ion-img src="../../../assets/images/promo/PRO.png"></ion-img>
-                <!-- <IMG SRC="assets/images/PROMOCION1.png">  -->
+              <div *ngIf="cat.nombre==='Negocios con promociones'"  class="promo" (click)="negocioRuta(proveedor.url_negocio)"> 
+                <ion-img src="../../../assets/images/promo/etiqueta_promo.png"></ion-img>
+  
               </div>
               <div *ngIf="existeSesion" class="likegegi">
                 <app-dar-like-negocio
