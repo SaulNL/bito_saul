@@ -899,6 +899,19 @@ console.log("resp",response)
         this.contador = 0;
       }
     }
+    if(!this.isIOS){
+      this.platform.backButton.subscribeWithPriority(10, () => {
+        console.log('Handler was called!');
+        const byCategorias = localStorage.getItem("byCategorias");
+        console.log(byCategorias)
+        if(byCategorias!=null){
+          localStorage.setItem("filtroActivo", "true");
+        }else{
+          console.log("entro")
+        }
+      });
+    }
+    
   }
 
   ionViewDidLeave() {
