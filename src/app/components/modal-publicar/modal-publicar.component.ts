@@ -153,7 +153,9 @@ export class ModalPublicarComponent implements OnInit {
             if (response.code === 200) {
               form.resetForm();
               this.dismiss();
-              this.router.navigate(['/tabs/home/promociones']);
+              this.router.navigate(["/tabs/home/promociones"], {
+                queryParams: { special: true },
+              });
               this._notificacionService.exito('se publico correctamente');
             }
           },
