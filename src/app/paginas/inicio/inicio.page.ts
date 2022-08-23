@@ -120,9 +120,9 @@ export class InicioPage implements OnInit {
     this.Filtros = new FiltrosModel();
     this.obtenergiros();
     const org = localStorage.getItem("org");
-    if(org!=null){
-      
-    }else{
+    const categorias = localStorage.getItem("byCategorias");
+
+    if(org===null && categorias===null){
       this.obtenerPrincipalInicio();
       this.loaderNegocios=true;
     }
