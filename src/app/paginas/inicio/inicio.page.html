@@ -147,7 +147,7 @@
             *ngFor="let proveedor of cat.negocios"
           >
             <ion-card class="m-0 fixed">
-              <div (click)="negocioRuta(proveedor.url_negocio)">
+              <div (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)">
                 <img
                   class="img-card-w"
                   src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
@@ -155,6 +155,9 @@
                   alt="Falla al cargar la imagen"
                 />
                 <ion-card-header>
+                  <ion-row   class="ion-justify-content-center">
+                    <ion-spinner *ngIf="idNegocio===proveedor.id_negocio"  name="dots" class="spinner-color"></ion-spinner>
+                  </ion-row>
                   <ion-card-subtitle
                     >{{proveedor.nombre_comercial}}
                     <ion-icon
@@ -180,7 +183,7 @@
                                     </div>
                                 </ion-card-content> -->
               </div>
-              <div *ngIf="cat.nombre==='Negocios con promociones'"  class="promo" (click)="negocioRuta(proveedor.url_negocio)"> 
+              <div *ngIf="cat.nombre==='Negocios con promociones' || proveedor.tienepromociones == 1"  class="promo" (click)="negocioRuta(proveedor.url_negocio,  proveedor.id_negocio)"> 
                 <ion-img src="../../../assets/images/promo/etiqueta_promo.png"></ion-img>
   
               </div>

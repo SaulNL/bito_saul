@@ -1,4 +1,4 @@
-<ion-card  (click)="crearModal()">
+<ion-card  (click)="modal()">
   <img 
    src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTrNdWOVG0us26NN-771ygyqcPWQ4T2KXQuiPJgSKyndpDiv5X_&usqp=CAU"
    [srcset]="promocion.url_imagen" alt="Falla al cargar imagen">
@@ -8,6 +8,10 @@
         <ion-row *ngIf="promocion.giro_negocio !== null" class="ion-justify-content-center">
           <ion-badge>{{ promocion.giro_negocio }}</ion-badge>
         </ion-row>
+        <ion-row *ngIf="idPromo===promocion.id_promocion && !loader" class="ion-justify-content-center">
+          <ion-spinner   name="dots" class="spinner-color"></ion-spinner>
+        </ion-row>
+        
         <ion-row class="ion-justify-content-center promocion" style="font-size: medium;">
           <strong>Anuncio</strong>
         </ion-row>
@@ -33,6 +37,9 @@
       <ion-grid>
         <ion-row *ngIf="promocion.giro_negocio !== null" class="ion-justify-content-center">
           <ion-badge>{{ promocion.giro_negocio }}</ion-badge>
+        </ion-row>
+        <ion-row *ngIf="idPromo===promocion.id_promocion && !loader" class="ion-justify-content-center">
+          <ion-spinner   name="dots" class="ion-justify-content-center spinner-color"></ion-spinner>
         </ion-row>
         <ion-row class="ion-justify-content-center promocion" style="font-size: medium;">
           <strong>Promoción</strong>

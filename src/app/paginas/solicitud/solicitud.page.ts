@@ -1,5 +1,5 @@
 import { AfiliacionPlazaModel } from "./../../Modelos/AfiliacionPlazaModel";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Output, ViewChild } from "@angular/core";
 import { FiltrosModel } from "../../Modelos/FiltrosModel";
 import { FiltrosService } from "../../api/filtros.service";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
@@ -50,6 +50,8 @@ export class SolicitudPage implements OnInit {
   public existeSesion: boolean;
   public typeLogin: OptionBackLogin;
   obj: any;
+  loaderSolicitud: boolean=true;
+  idSolicitud: any;
   constructor(
     private filtrosService: FiltrosService,
     private serviceProveedores: ProveedorServicioService,
@@ -64,6 +66,11 @@ export class SolicitudPage implements OnInit {
     this.isIos = this.platform.is("ios");
     this.existeSesion = _utils_cls.existe_sesion();
     this.typeLogin = new OptionBackLogin();
+    
+    this.platform.backButton.subscribeWithPriority(85288880, () => {
+    this.dismiss();
+    
+  });
   }
 
   ngOnInit() {
@@ -187,8 +194,12 @@ export class SolicitudPage implements OnInit {
   masInformacion(solicitud: any) {
     this.mostrarSolicitud = this._utils_cls.existe_sesion();
     if (this.mostrarSolicitud) {
+      this.loaderSolicitud = false;
+      this.idSolicitud = solicitud.id_solicitud;
+      setTimeout(()=>{      
       this.accionSolicitud(solicitud);
-      this.modalDetalleSolicitud(solicitud);
+      this.modalDetalleSolicitud(solicitud);                      
+      }, 1000);
     } else {
       this.typeLogin.type = "requerimiento";
       this.typeLogin.url = "";
@@ -209,9 +220,22 @@ export class SolicitudPage implements OnInit {
         solicitud: solicitud,
       },
     });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const user = data['data'];
+        this.loaderSolicitud=true;
+        
+    });
     return await modal.present();
   }
 
+  dismiss() {
+    this.modalController.dismiss({
+      'dismissed': true,
+    });
+  }
+  
   accionSolicitud(solicitud) {
     this.solicitud = solicitud;
     this.visteMiSolicitud(solicitud);

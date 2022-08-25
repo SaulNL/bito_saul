@@ -72,6 +72,7 @@
                     <h2 style="color: black; font-weight: bolder">
                       {{ solicitud.solicitud }}
                     </h2>
+                    <ion-spinner *ngIf="!loaderSolicitud && this.idSolicitud===solicitud.id_solicitud"  name="dots" class="spinner-color"></ion-spinner>
                   </div>
                 </ion-col>
               </ion-row>

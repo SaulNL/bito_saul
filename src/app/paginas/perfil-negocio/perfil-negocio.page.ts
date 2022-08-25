@@ -883,6 +883,7 @@ console.log("resp",response)
   }
 
   salir() {
+    localStorage.setItem("loaderNegocio", "true");
     if (this.bolsa.length > 0) {
       this.mensajeBolsa();
     } else {
@@ -901,13 +902,9 @@ console.log("resp",response)
     }
     if(!this.isIOS){
       this.platform.backButton.subscribeWithPriority(10, () => {
-        console.log('Handler was called!');
         const byCategorias = localStorage.getItem("byCategorias");
-        console.log(byCategorias)
         if(byCategorias!=null){
           localStorage.setItem("filtroActivo", "true");
-        }else{
-          console.log("entro")
         }
       });
     }

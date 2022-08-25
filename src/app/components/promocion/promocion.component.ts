@@ -12,11 +12,22 @@ export class PromocionComponent implements OnInit {
 
   @Input() promocion: PromocionesModel;
   @Input() idPersona: number | null;
-  
+  idPromo: number;
+  loader: boolean=true;
+
   constructor( public modalController: ModalController ) {
   }
 
   ngOnInit() {
+  }
+
+
+  modal(){
+    this.loader = false;
+    this.idPromo =this.promocion.id_promocion;
+    setTimeout(()=>{                     
+      this.crearModal();
+    }, 1000);
   }
 
   async crearModal( ){
@@ -27,6 +38,11 @@ export class PromocionComponent implements OnInit {
         'idPersona': this.idPersona
       }
     });
+    modal.onDidDismiss()
+    .then((data) => {
+      const user = data['data'];
+      this.loader=true;
+  });
     return await modal.present();
   }
 

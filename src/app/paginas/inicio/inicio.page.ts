@@ -97,6 +97,7 @@ export class InicioPage implements OnInit {
 
   public banderaUbicacion: boolean;
   public banderaInicio: boolean;
+  public idNegocio: number;
   
   
 
@@ -319,6 +320,10 @@ export class InicioPage implements OnInit {
 
   ionViewWillEnter() {
 
+    if (localStorage.getItem("loaderNegocio") === "true" ) {
+      this.idNegocio=null;
+      localStorage.removeItem("loaderNegocio");
+    }
 
     if(!this.isIOS){
       this.platform.backButton.subscribeWithPriority(10, () => {
@@ -786,24 +791,29 @@ export class InicioPage implements OnInit {
     }
     this.buscarNegocios(true);
   }
-  negocioRuta(negocioURL) {
-    if (negocioURL == "") {
-      this.notificaciones.error(
-        "Este negocio aún no cumple los requisitos mínimos"
-      );
-    } else {
-
-      if (this.tFiltro === true) {
-        localStorage.setItem("isRedirected", "false");
-        this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
-
-
+  negocioRuta(negocioURL, proveedor) {
+    
+    this.idNegocio=proveedor;
+    setTimeout(()=>{            
+      if (negocioURL == "") {
+        this.notificaciones.error(
+          "Este negocio aún no cumple los requisitos mínimos"
+        );
       } else {
-        localStorage.setItem("isRedirected", "true");
-        this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
+  
+        if (this.tFiltro === true) {
+          localStorage.setItem("isRedirected", "false");
+          this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
+  
+  
+        } else {
+          localStorage.setItem("isRedirected", "true");
+          this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
+        }
+  
       }
-
-    }
+  }, 1000);
+    
   }
   negocioRutaByLogin(url: string) {
     localStorage.setItem("isRedirected", "false");
