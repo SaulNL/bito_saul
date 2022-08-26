@@ -10,20 +10,139 @@
 </ion-header>
 <ion-content fullscreen>
   <ion-card class="ion-text-center ion-margin">
-    <br />
     <img [src]="promocionTO.url_imagen_banner" />
-    <br />
-    <ion-label
-      ><h1>
-        <strong>{{ promocionTO.promocion }}</strong>
-      </h1></ion-label
-    >
-    <ion-label
-      ><strong>{{
-        "DE " + promocionTO.fecha_inicio + " A " + promocionTO.fecha_fin
-      }}</strong></ion-label
-    >
-    <br />
-    <br />
+
+    <ion-card-content *ngIf="!loader">
+      <br>
+      <ion-label class="message">
+        cargando
+      </ion-label>
+      <div class="spinner">
+        <ion-spinner class="spinner-color"></ion-spinner>
+      </div>
+      <br>
+    </ion-card-content>
+
+    <div *ngIf="promocionTO.id_tipo_promocion===2 && loader && !existeAfl">
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <h1 class="sinMargin rosa">{{ promocionTO.nombre_comercial }}</h1>
+        </ion-col>
+      </ion-row>
+      <!-- <ion-row>
+        <ion-col class="ion-text-center">
+          <h2 class="sinMargin">{{promocionTO.descripcion }} </h2>
+        </ion-col>
+      </ion-row> -->
+      <hr>
+      <ion-row>
+        <ion-col class="ion-text-center">
+
+          <h2 class="sinMargin">Promoción</h2>
+          <br>
+          <h2 class="sinMargin promocion">{{promocionTO.promocion}}</h2>
+
+        </ion-col>
+      </ion-row>
+
+      <ion-grid>
+        <ion-row class="ion-text-center">
+          <ion-col size="6">
+            <label *ngIf="promocionTO.porcentaje !== null">{{ promocionTO.porcentaje}} %</label>
+            <span *ngIf="promocionTO.porcentaje !== null" class="promocion"> de descuento</span>
+          </ion-col>
+          <ion-col *ngIf="idPersona!=null" size="6">
+            <ion-button (click)="crearModal()" class="bg-rosa" size="small" mode="ios" expand="full">
+              Solicitar Cupón
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <h2 class="promocion" style="color: grey;">{{ promocionTO.terminos }}</h2>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+
+        <ion-col class="ion-text-center">
+          <h2 class="sinMargin rosa" *ngFor="let org of promocionTO.organizaciones">{{org.nombre}}</h2>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col class="ion-text-center" *ngFor="let dia of promocionTO.dias">
+          <h2 class="promocion">Quedan <span style="color: #fa4f72;">{{ promocionTO.restanDias }} días</span>, Aplica:
+            <span style="color: #fa4f72;"> {{ dia.dias}} de {{ dia.hora_inicio}} a {{dia.hora_fin}} </span>
+          </h2>
+        </ion-col>
+      </ion-row>
+
+      <!-- <ion-grid>
+        <ion-row>
+          <ion-col size="12" class="ion-text-center">
+            <label>CONTACTA AL PROVEEDOR</label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" class="ion-text-center">
+            <p class="promocion">
+              Dirección: {{ promocionTO.calle }} {{ promocionTO.numero_ext }} {{ promocionTO.colonia }}, {{ promocionTO.nombre_localidad !== undefined ? promocionTO.nombre_localidad + ', ': '' }}{{ promocionTO.nombre_municipio }}, {{promocionTO.nombre_estado }}
+            </p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" class="ion-text-center" *ngIf="blnPermisoUbicacion">
+             <h2 class="promocion">A {{ promocion.distanciaNegocio}} Km cerca de tí.</h2>
+             <ion-badge color="danger"><a href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{promocion.latitud}},{{promocion.longitud}}"
+              target="_blank">Ir al lugar</a></ion-badge>
+          </ion-col>
+          <ion-col size="12" class="ion-text-center" *ngIf="!blnPermisoUbicacion">
+            <h2 class="aDefault promocion" matTooltip="Bitoo no puede obtener tu ubicación. Por favor activa los permisos de ubicación del navegador para poder determinar la distancia a la que se encuentra el negocio">
+                Distancia desconocida
+            </h2>
+         </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" class="ion-text-center">
+            <h2>Enviale un whats: <a href="https://api.whatsapp.com/send?phone=+52{{promocion.celular}}" target="_blank" style="background-color: #1c7430" class="text-white">
+              {{celular}}
+            </a></h2>
+          </ion-col>
+        </ion-row>
+      </ion-grid> -->
+
+    </div>
+
+
+    <div *ngIf="loader">
+
+      <div *ngIf="!existeSesion || existeAfl ">
+        <ion-label>
+          <h1>
+            <strong>{{ promocionTO.promocion }}</strong>
+          </h1>
+        </ion-label>
+        <hr>
+        <div *ngIf="promocionTO.id_tipo_promocion===2 and promocionTO.organizaciones!=null">
+          <h6>Esta promoción aplica solo para :</h6>
+
+          <ion-label *ngFor="let org of promocionTO.organizaciones"> <b>{{org.nombre}} / </b> </ion-label>
+          <h6 *ngIf="!existeSesion">Regístrate o inicia sesión para disfrutrar de estos beneficios. </h6>
+          <h6 *ngIf="existeAfl && existeSesion">Regístra tu afiliación a la que perteneces para disfrutrar de estos beneficios.</h6>
+
+        </div>
+
+        <div *ngIf="promocionTO.id_tipo_promocion===1 && loader">
+          <ion-label><strong>{{
+              "DE " + promocionTO.fecha_inicio + " A " + promocionTO.fecha_fin
+              }}</strong></ion-label>
+        </div>
+
+      </div>
+    </div>
+
+    <br>
   </ion-card>
 </ion-content>

@@ -2,3 +2,76 @@ img{
     height: 100px;
     
 }
+
+hr {
+    height: 3px !important;
+    width: 50% !important;
+    background: #fa4f72 !important;
+    display: block !important;
+    margin-top: none;
+  }
+
+  .sinMargin {
+    margin: 0;
+    color: black;
+}
+
+.promocion {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+label {
+    font-weight: bold;
+    color:  #fa4f72;
+    font-size: 18px;
+}
+
+.rosa {
+    color: #fa4f72;
+}hr {
+    height: 3px !important;
+    width: 50% !important;
+    background: #fa4f72 !important;
+    display: block !important;
+    margin-top: none;
+  }
+
+  .sinMargin {
+    margin: 0;
+    color: black;
+}
+
+.promocion {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+label {
+    font-weight: bold;
+    color:  #fa4f72;
+    font-size: 18px;
+}
+
+.rosa {
+    color: #fa4f72;
+}
+
+.spinner-color {
+    --color: #FA4F72;
+  }
+  
+  .spinner {
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .message {
+    position: fixed;
+    top: 28%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #FA4F72;
+  }
+  

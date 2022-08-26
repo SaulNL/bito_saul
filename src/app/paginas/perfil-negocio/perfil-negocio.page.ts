@@ -1167,6 +1167,8 @@ console.log("resp",response)
         idPersona: this.idPersona,
         latitud: this.miLat,
         longitud: this.miLng,
+        celular:this.informacionNegocio.celular,
+        
       },
     });
     await modal.present();

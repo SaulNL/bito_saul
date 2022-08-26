@@ -16,6 +16,7 @@ import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/fil
 import {InputLugaresEntregaComponent} from '../../components/input-lugares-entrega/input-lugares-entrega.component';
 import { ModalLoguearseComponent } from '../../componentes/modal-loguearse/modal-loguearse.component'
 import { BannerAnunciosComponent } from '../../componentes/banner-anuncios/banner-anuncios.component';
+import { ModalPromocionNegocioComponent } from '../../componentes/modal-promocion-negocio/modal-promocion-negocio.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { BannerAnunciosComponent } from '../../componentes/banner-anuncios/banne
     RecorteImagenComponent,
     FiltrosBusquedaComponent,
     PlazasAfiliacionesComponent,
-    ModalLoguearseComponent
+    ModalLoguearseComponent,
+    ModalPromocionNegocioComponent
   ],
   exports: [
     BannerPromocionesComponent,
@@ -50,7 +52,8 @@ import { BannerAnunciosComponent } from '../../componentes/banner-anuncios/banne
     RecorteImagenComponent,
     FiltrosBusquedaComponent,
     PlazasAfiliacionesComponent,
-    ModalLoguearseComponent
+    ModalLoguearseComponent,
+    ModalPromocionNegocioComponent
   ],
 })
 export class TabsPageModule {}
