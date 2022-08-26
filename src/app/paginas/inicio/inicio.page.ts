@@ -122,11 +122,16 @@ export class InicioPage implements OnInit {
     this.obtenergiros();
     const org = localStorage.getItem("org");
     const categorias = localStorage.getItem("byCategorias");
-
-    if(org===null && categorias===null){
-      this.obtenerPrincipalInicio();
-      this.loaderNegocios=true;
+    if (localStorage.getItem("activarTodos") === "true" ) {
+      this.filtroActivo = true;
+    }else{
+      if(org===null && categorias===null){
+        this.obtenerPrincipalInicio();
+        this.loaderNegocios=true;
+        
+      }
     }
+    
     
     this.Filtros.idEstado = 29;
     const byCategorias = localStorage.getItem("filtroactual");
@@ -209,8 +214,6 @@ export class InicioPage implements OnInit {
 
   ngOnInit(): void {
 
-
-
     this.user = this.util.getUserData();
     this.load();
     this.route.queryParams.subscribe((params) => {
@@ -266,10 +269,8 @@ export class InicioPage implements OnInit {
       this.filtroActivo = true;
     }
     
-    const activar = localStorage.getItem('activarTodos');
-    if(activar === 'true'){
+    if (localStorage.getItem("activarTodos") === "true" ) {
       this.idTodo=true;
-      
     }else{
       this.idTodo=false;
     }
@@ -619,6 +620,7 @@ export class InicioPage implements OnInit {
         await this.cargarCategorias();
        }else{
         this.loader = false;
+        this.obtenerPrincipalInicio();
        }
       //await this.cargarCategorias();
     
@@ -831,7 +833,7 @@ export class InicioPage implements OnInit {
   }
 
   public obtenerPrincipalInicio(){
- 
+    this.idTodo=false;
     this.principalSercicio.obtenerPrincipalInicio()
       .subscribe(
         (response) => {
@@ -891,9 +893,13 @@ export class InicioPage implements OnInit {
   }
 
   async activar(){
+    localStorage.removeItem("filtroactual");
+    localStorage.removeItem("byCategorias");
+    localStorage.removeItem("filtroActivo");
     localStorage.setItem("activarTodos", "true");
     this.idTodo=true;
     this.idGiro =null;
+    this.filtroActivo=false; 
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.selectionAP

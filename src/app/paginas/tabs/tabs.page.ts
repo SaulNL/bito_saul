@@ -95,6 +95,7 @@ export class TabsPage implements OnInit {
     this.activedPage = localStorage.getItem("activedPage");
     localStorage.setItem('negocios',('active'));
     localStorage.removeItem("todo");
+    localStorage.removeItem("activarTodos")
   }
 
   promociones() {
