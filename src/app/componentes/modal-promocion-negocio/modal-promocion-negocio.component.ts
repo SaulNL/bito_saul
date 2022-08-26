@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { PromocionesModel } from 'src/app/Modelos/busqueda/PromocionesModel';
+import { PromocionesModel } from 'src/app/Modelos/PromocionesModel';
 import {RegistrarPromotionService} from "../../api/registrar-promotion.service";
 import { UtilsCls } from '../../utils/UtilsCls';
 import { PersonaService } from '../../api/persona.service';
@@ -8,6 +8,7 @@ import { PromocionesService } from '../../api/promociones.service';
 import { ViewqrPromocionComponent } from '../../components/viewqr-promocion/viewqr-promocion.component';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
 import  moment from 'moment';
+import { HaversineService } from 'ng2-haversine';
 
 @Component({
   selector: 'app-modal-promocion-negocio',
@@ -31,19 +32,24 @@ export class ModalPromocionNegocioComponent implements OnInit {
   private id_cupon_promocion: number;
   loader: boolean;
   public fechaHoy = moment();
+  public miLat: any;
+  public miLng: any;
+  public blnPermisoUbicacion: any;
+  public motrarContacto = true;
   constructor(
     public modalController: ModalController,
     private vioPromo: RegistrarPromotionService,
     private util: UtilsCls,
     private servicioPersona: PersonaService,
     private _promociones: PromocionesService,
-    private notificaciones: ToadNotificacionService
+    private notificaciones: ToadNotificacionService,
+    private _haversineService: HaversineService,
   ) { 
     this.existeSesion = this.util.existe_sesion();
   }
 
   ngOnInit() {
-
+    
     if(this.existeSesion){
       this.obtenerOrgAfilUsuario();
     }else{
@@ -52,8 +58,9 @@ export class ModalPromocionNegocioComponent implements OnInit {
     if(this.promocionTO.id_tipo_promocion===1){
       this.loader=true;
     }
+    this.calcularDistancia(this.promocionTO);
     this.calcularDias(this.promocionTO);
-    this.vioPromo.registrarQuienVio(this.promocionTO.id_promocion, this.idPersona, this.latitud, this.longitud);
+    this.registrarVisitaAPromotion()
   }
 
   cerrar() {
@@ -61,8 +68,35 @@ export class ModalPromocionNegocioComponent implements OnInit {
     this.promocionTO = new PromocionesModel();
   }
 
+  private registrarVisitaAPromotion() {
+    this.vioPromo.registrarQuienVio(this.promocionTO.id_promocion, this.idPersona, this.latitud, this.longitud);
+}
+
   public calcularDias(promocion: any) {
     promocion.restanDias = Math.abs(this.fechaHoy.diff(promocion.fecha_fin_public, 'days'));
+  }
+
+  private calcularDistancia(promocion: any) {
+    navigator.geolocation.getCurrentPosition(posicion => {
+            this.miLat = posicion.coords.latitude;
+            this.miLng = posicion.coords.longitude;
+            this.registrarVisitaAPromotion();
+            this.blnPermisoUbicacion = true;
+            let start = {
+                latitude: this.miLat,
+                longitude: this.miLng
+            }
+            let end = {
+                latitude: promocion.latitud,
+                longitude: promocion.longitud
+            };
+            let dis = this._haversineService.getDistanceInKilometers(start, end);
+            promocion.distanciaNegocio = dis.toFixed(2);
+        },
+        error => {
+            this.blnPermisoUbicacion = false;
+            this.registrarVisitaAPromotion();
+        });
 }
   
   async obtenerOrgAfilUsuario(){

@@ -29,11 +29,11 @@
           <h1 class="sinMargin rosa">{{ promocionTO.nombre_comercial }}</h1>
         </ion-col>
       </ion-row>
-      <!-- <ion-row>
+      <ion-row>
         <ion-col class="ion-text-center">
-          <h2 class="sinMargin">{{promocionTO.descripcion }} </h2>
+          <h2 class="sinMargin">{{ descripcion }} </h2>
         </ion-col>
-      </ion-row> -->
+      </ion-row>
       <hr>
       <ion-row>
         <ion-col class="ion-text-center">
@@ -79,7 +79,7 @@
         </ion-col>
       </ion-row>
 
-      <!-- <ion-grid>
+      <ion-grid>
         <ion-row>
           <ion-col size="12" class="ion-text-center">
             <label>CONTACTA AL PROVEEDOR</label>
@@ -106,17 +106,17 @@
         </ion-row>
         <ion-row>
           <ion-col size="12" class="ion-text-center">
-            <h2>Enviale un whats: <a href="https://api.whatsapp.com/send?phone=+52{{promocion.celular}}" target="_blank" style="background-color: #1c7430" class="text-white">
+            <h2>Enviale un whats: <a href="https://api.whatsapp.com/send?phone=+52{{celular}}" target="_blank" style="background-color: #1c7430" class="text-white">
               {{celular}}
             </a></h2>
           </ion-col>
         </ion-row>
-      </ion-grid> -->
+      </ion-grid>
 
     </div>
 
 
-    <div *ngIf="loader">
+    <div *ngIf="loader && promocionTO.id_tipo_promocion===2">
 
       <div *ngIf="!existeSesion || existeAfl ">
         <ion-label>
@@ -125,7 +125,7 @@
           </h1>
         </ion-label>
         <hr>
-        <div *ngIf="promocionTO.id_tipo_promocion===2 and promocionTO.organizaciones!=null">
+        <div *ngIf="promocionTO.organizaciones!=null">
           <h6>Esta promoción aplica solo para :</h6>
 
           <ion-label *ngFor="let org of promocionTO.organizaciones"> <b>{{org.nombre}} / </b> </ion-label>
@@ -134,13 +134,25 @@
 
         </div>
 
-        <div *ngIf="promocionTO.id_tipo_promocion===1 && loader">
-          <ion-label><strong>{{
-              "DE " + promocionTO.fecha_inicio + " A " + promocionTO.fecha_fin
-              }}</strong></ion-label>
-        </div>
 
       </div>
+    </div>
+
+    <div *ngIf="loader && promocionTO.id_tipo_promocion===1">
+    
+      <ion-label>
+        <h1>
+          <strong>{{ promocionTO.promocion }}</strong>
+        </h1>
+      </ion-label>
+      <hr>
+    
+    
+    
+      <ion-label><strong>{{
+          "DE " + promocionTO.fecha_inicio + " A " + promocionTO.fecha_fin
+          }}</strong></ion-label>
+       
     </div>
 
     <br>

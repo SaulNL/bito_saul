@@ -36,7 +36,7 @@ import { DetalleProductoComponent } from "../../componentes/detalle-producto/det
 import { PedidoNegocioComponent } from "../../componentes/pedido-negocio/pedido-negocio.component";
 import { AuthGuardService } from "../../api/auth-guard.service";
 import { NavBarServiceService } from "src/app/api/busqueda/nav-bar-service.service";
-import { PromocionesModel } from "src/app/Modelos/busqueda/PromocionesModel";
+import { PromocionesModel } from "src/app/Modelos/PromocionesModel";
 import { File } from "@ionic-native/File/ngx";
 import { HTTP } from "@ionic-native/http/ngx";
 import { icon, Map, Marker, marker, tileLayer } from "leaflet";
@@ -891,10 +891,10 @@ console.log("resp",response)
       if (this.navegacion) {
         this.goBackTo();
         this.navegacion = false;
-        console.log("entro");
+        
       } else {
         // this.router.navigate(['/tabs/inicio']);
-        console.log("aqui")
+       
         this.router.navigateByUrl("/tabs/inicio");
         //this.router.navigate(['/tabs/inicio'], { queryParams: { special: true } });
         this.contador = 0;
@@ -1168,6 +1168,7 @@ console.log("resp",response)
         latitud: this.miLat,
         longitud: this.miLng,
         celular:this.informacionNegocio.celular,
+        descripcion:this.informacionNegocio.descripcion,
         
       },
     });
