@@ -66,6 +66,8 @@ export class MispromocionesPage implements OnInit {
     encode: string;
     json_cupon: any;
     id_persona: any;
+    public loaderModal: boolean=true;
+    public idPromo: number;
 
     constructor(
         private _promociones_service: PromocionesService,
@@ -416,6 +418,8 @@ export class MispromocionesPage implements OnInit {
 
         this.quienVioPublicacion(id_promocion);
         this.listaPromocionesSolicitadas(id_promocion);
+        this.loaderModal=false;
+        this.idPromo=id_promocion;
     }
 
     quienVioPublicacion(id_promocion) {
@@ -451,6 +455,7 @@ export class MispromocionesPage implements OnInit {
                 (response) => {
                     this.numeroVisto = response.data;
                     this.btnLoaderModal = false;
+                    this.loaderModal=true;
                     this.infoPromocion();
                 },
                 (error) => {
