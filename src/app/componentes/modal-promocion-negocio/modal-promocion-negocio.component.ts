@@ -8,7 +8,7 @@ import { PromocionesService } from '../../api/promociones.service';
 import { ViewqrPromocionComponent } from '../../components/viewqr-promocion/viewqr-promocion.component';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
 import  moment from 'moment';
-import { HaversineService } from 'ng2-haversine';
+import { HaversineService, GeoCoord } from "ng2-haversine";
 
 @Component({
   selector: 'app-modal-promocion-negocio',
@@ -36,6 +36,7 @@ export class ModalPromocionNegocioComponent implements OnInit {
   public miLng: any;
   public blnPermisoUbicacion: any;
   public motrarContacto = true;
+  public distanciaNegocio: string;
   constructor(
     public modalController: ModalController,
     private vioPromo: RegistrarPromotionService,
@@ -91,7 +92,7 @@ export class ModalPromocionNegocioComponent implements OnInit {
                 longitude: promocion.longitud
             };
             let dis = this._haversineService.getDistanceInKilometers(start, end);
-            promocion.distanciaNegocio = dis.toFixed(2);
+            this.distanciaNegocio = dis.toFixed(2);
         },
         error => {
             this.blnPermisoUbicacion = false;
