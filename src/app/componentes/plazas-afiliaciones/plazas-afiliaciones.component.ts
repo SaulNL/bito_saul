@@ -27,6 +27,8 @@ export class PlazasAfiliacionesComponent implements OnInit {
   public plaza: boolean;
   idProvedor: number=null;
   listConvenios: AfiliacionPlazaModel[];
+  public selectAflPlz: boolean;
+  public selectIdAflPlz: number;
   constructor(
     private modalCtr: ModalController,
     private validarPermiso: ValidarPermisoService,
@@ -41,6 +43,8 @@ export class PlazasAfiliacionesComponent implements OnInit {
     this.existPlz = false;
     this.afiliacion = true;
     this.plaza = false;
+    this.selectAflPlz=false;
+    this.selectIdAflPlz=null;
   }
 
   ngOnInit() {
@@ -65,11 +69,15 @@ export class PlazasAfiliacionesComponent implements OnInit {
     this.showHidenAfiliacion = !change;
   }
   public selectOption(selected: AfiliacionPlazaModel) {
+    this.selectAflPlz=true;
+    this.selectIdAflPlz=selected.id_organizacion;
     const existSelection = localStorage.getItem('org');
     (existSelection) ? localStorage.removeItem('org') : '';
     localStorage.setItem('org', JSON.stringify(selected));
     localStorage.setItem("todo", "todo");
+    setTimeout(()=>{      
     location.reload();
+  }, 500);
   }
 
   public obtenerOrganizacion() {

@@ -34,7 +34,8 @@
                         <img src="{{plz.icon}}">
                     </ion-avatar>
                     <ion-label>{{ plz.nombre}}</ion-label>
-                    <ion-icon slot="end" name="enter-outline"></ion-icon>
+                    <ion-icon *ngIf="!selectAflPlz || selectIdAflPlz !=plz.id_organizacion"  slot="end" name="enter-outline"></ion-icon>
+                    <ion-icon *ngIf="selectAflPlz && selectIdAflPlz===plz.id_organizacion" class="icon" slot="end" name="enter-outline"></ion-icon>
                 </ion-item>
             </ion-list>
             <div class="ion-padding" *ngIf="!loaderPlz">
@@ -71,7 +72,8 @@
                         <img src="{{org.icon}}">
                     </ion-avatar>
                     <ion-label>{{ org.nombre}}</ion-label>
-                    <ion-icon slot="end" name="enter-outline"></ion-icon>
+                    <ion-icon *ngIf="!selectAflPlz || selectIdAflPlz !=org.id_organizacion"  slot="end" name="enter-outline"></ion-icon>
+                    <ion-icon *ngIf="selectAflPlz && selectIdAflPlz===org.id_organizacion" class="icon" slot="end" name="enter-outline"></ion-icon>
                 </ion-item>
             </ion-list>
             <div class="ion-padding" *ngIf="!loaderOrg">
