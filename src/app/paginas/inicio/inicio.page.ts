@@ -122,14 +122,18 @@ export class InicioPage implements OnInit {
     this.obtenergiros();
     const org = localStorage.getItem("org");
     const categorias = localStorage.getItem("byCategorias");
-    if (localStorage.getItem("activarTodos") === "true" ) {
+
+    if(localStorage.getItem("idGiro") != null){
+      this.idGiro=JSON.parse( localStorage.getItem("idGiro"));
+    }
+
+    if(localStorage.getItem("activarTodos") === "true"){
       this.filtroActivo = true;
-    }else{
-      if(org===null && categorias===null){
-        this.obtenerPrincipalInicio();
-        this.loaderNegocios=true;
-        
-      }
+    }
+
+    if(org === null && categorias === null && this.idGiro === null ){
+      this.obtenerPrincipalInicio();
+      this.loaderNegocios=true;
     }
     
     
@@ -221,9 +225,7 @@ export class InicioPage implements OnInit {
         this.load();
         const byCategorias = localStorage.getItem("filtroactual");
         const org = localStorage.getItem("org");
-        if(org!=null){
-      
-        }else{
+        if(org === null){
           this.obtenerPrincipalInicio();
           this.loaderNegocios=true;
         }
@@ -438,9 +440,6 @@ export class InicioPage implements OnInit {
             this.geocodeLatLng();
         } catch (e) {
         }
-        console.log("latitud y longitus")
-        console.log(this.latitud);
-        console.log(this.longitud);
     }).catch(error => {
 
         this.blnUbicacion = false;
@@ -780,16 +779,19 @@ export class InicioPage implements OnInit {
     localStorage.removeItem("filtroactual");
     localStorage.removeItem("byCategorias");
     localStorage.removeItem("filtroActivo");
+    localStorage.removeItem("idGiro");
     this.idGiro=null;
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.filtroActivo = false;
     localStorage.removeItem("todo");
     const org = localStorage.getItem("org");
+    if(org!=null){
+      this.activar();
+    }
+
     if(org===null){
-      this.obtenerPrincipalInicio();
-    }else{
-      this.activar()
+      this.selectionAP = null;
     }
     this.buscarNegocios(true);
   }
@@ -871,7 +873,8 @@ export class InicioPage implements OnInit {
     this.Filtros.idEstado = 29;
     this.filtroActivo = true;
     this.loaderNegocios=true;
-    this.idGiro =event;    
+    this.idGiro =event;   
+    localStorage.setItem("idGiro",JSON.stringify(this.idGiro)) 
     this.Filtros.idGiro=[this.idGiro];
     this.selectionAP
       ? (this.Filtros.organizacion =
@@ -896,6 +899,7 @@ export class InicioPage implements OnInit {
     localStorage.removeItem("filtroactual");
     localStorage.removeItem("byCategorias");
     localStorage.removeItem("filtroActivo");
+    localStorage.removeItem("idGiro");
     localStorage.setItem("activarTodos", "true");
     this.idTodo=true;
     this.idGiro =null;
