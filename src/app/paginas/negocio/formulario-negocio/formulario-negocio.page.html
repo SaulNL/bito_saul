@@ -105,7 +105,8 @@
           </div>
           <ion-item>
             <ion-label position="stacked">SubCategoría <span style="color: red">*</span></ion-label>
-            <ion-select placeholder="{{ tipoSubAux }}" name="idtipoSubCategorias" required #tipoSubCategoria="ngModel"
+            <ion-spinner *ngIf="!loaderSubCategoria" name="lines-small"></ion-spinner>
+            <ion-select *ngIf="loaderSubCategoria" placeholder="{{ tipoSubAux }}" name="idtipoSubCategorias" required #tipoSubCategoria="ngModel"
               ok-text="Ok" cancel-text="Cancelar" [(ngModel)]="negocioTO.id_categoria_negocio">
               <ng-container *ngFor="let item of listaSubCategorias">
                 <ion-select-option [value]="item.id_categoria">{{item.nombre}}
@@ -113,9 +114,9 @@
               </ng-container>
             </ion-select>
           </ion-item>
-          <div *ngIf="tipoSubCategoria.invalid" class="alert">
-            <div>Seleccione un tipo subcategoria</div>
-          </div>
+          <!-- <div *ngIf="tipoSubCategoria.invalid" class="alert">
+            <div>Seleccione un tipo subcategoria</div> 
+          </div> -->
           <ion-item>
             <ion-label position="stacked">Descripción del Negocio <span style="color: red">*</span>
             </ion-label>

@@ -114,6 +114,7 @@ export class FormularioNegocioPage implements OnInit {
   dateFormat: any;
   convenio: any[];
   nameConvenio: any;
+  loaderSubCategoria: boolean;
   constructor(
     private alertController: AlertController,
     private router: Router,
@@ -145,6 +146,7 @@ export class FormularioNegocioPage implements OnInit {
     this.btnEstado = false;
     this.btnMuncipio = true;
     this.btnLocalidad = true;
+    this.loaderSubCategoria =true;
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
     this.list_cat_localidad = new Array<CatLocalidadModel>();
@@ -283,8 +285,8 @@ export class FormularioNegocioPage implements OnInit {
       this.obtenerCatOrganizaciones();
       this.obtenerCaPlazas();
       this.obtenerConvenio();
-      this.categoriaPrincipal({ value: 0 });
-      this.subcategorias({ value: 0 });
+      // this.categoriaPrincipal({ value: 0 });
+      // this.subcategorias({ value: 0 });
     } else {
       this.negocioServico.buscarNegocio(id).subscribe(
         response => {
@@ -360,13 +362,19 @@ export class FormularioNegocioPage implements OnInit {
     if (evento.type === 'ionChange') {
       this.negocioTO.id_categoria_negocio = [];
       idE = evento.detail.value;
+      if(idE>0){
+        this.loaderSubCategoria=false;
+      }
+      
     } else {
       idE = evento.value;
     }
-    this.negocioServico.obtenerCategorias(idE).subscribe(
+    
+    this.negocioServico.obtenerCategoriasProdServ(idE,this.negocioTO.id_tipo_negocio).subscribe(
       respuesta => {
         this.listaSubCategorias = Array();
         if (respuesta.code === 200) {
+          this.loaderSubCategoria=true;
           this.listaSubCategorias = respuesta.data;
           this.listaSubCategorias.forEach(element => {
             if (element.id_categoria == this.negocioTO.id_categoria_negocio) {
