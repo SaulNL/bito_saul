@@ -98,6 +98,8 @@ export class InicioPage implements OnInit {
   public banderaUbicacion: boolean;
   public banderaInicio: boolean;
   public idNegocio: number;
+  mostrarloaderInicio: boolean;
+  loaderInicio: boolean;
   
   
 
@@ -120,8 +122,6 @@ export class InicioPage implements OnInit {
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
     this.obtenergiros();
-    const org = localStorage.getItem("org");
-    const categorias = localStorage.getItem("byCategorias");
 
     if(localStorage.getItem("idGiro") != null){
       this.idGiro=JSON.parse( localStorage.getItem("idGiro"));
@@ -130,12 +130,6 @@ export class InicioPage implements OnInit {
     if(localStorage.getItem("activarTodos") === "true"){
       this.filtroActivo = true;
     }
-
-    if(org === null && categorias === null && this.idGiro === null ){
-      this.obtenerPrincipalInicio();
-      this.loaderNegocios=true;
-    }
-    
     
     this.Filtros.idEstado = 29;
     const byCategorias = localStorage.getItem("filtroactual");
@@ -166,6 +160,7 @@ export class InicioPage implements OnInit {
    this.loaderNegocios=true;
     this.tFiltro = false;
     this.afiliacion = true;
+    this.mostrarloaderInicio=true;
     this.isIOS = this.platform.is("ios");
     this.route.queryParams.subscribe((params) => {
       this.subscribe = this.platform.backButton.subscribe(() => {
@@ -224,11 +219,6 @@ export class InicioPage implements OnInit {
       if (params.buscarNegocios && params) {
         this.load();
         const byCategorias = localStorage.getItem("filtroactual");
-        const org = localStorage.getItem("org");
-        if(org === null){
-          this.obtenerPrincipalInicio();
-          this.loaderNegocios=true;
-        }
        
         if (
           byCategorias !== null &&
@@ -615,12 +605,18 @@ export class InicioPage implements OnInit {
       : "";
       this.loaderNegocios=false;
       const todo = localStorage.getItem("todo");
-       if(todo==='todo'){
+       if(todo==='todo' ||  localStorage.getItem("org")!=null){
         await this.cargarCategorias();
-       }else{
-        this.loader = false;
-        this.obtenerPrincipalInicio();
        }
+     
+      const org = localStorage.getItem("org");
+      const categorias = localStorage.getItem("byCategorias");
+
+      if(org === null && categorias === null && this.idGiro === null &&  localStorage.getItem("todo") ===null){
+        this.loader = false;
+        this.selectionAP = null;
+        this.obtenerPrincipalInicio();
+      }
       //await this.cargarCategorias();
     
     
@@ -646,7 +642,8 @@ export class InicioPage implements OnInit {
       localStorage.removeItem("filtroactual");
       this.obtenerPrincipalInicio();
     }else{
-    this.buscarNegocios(true);
+      this.buscarNegocios(true);
+      this.selectionAP = false;
     }
     
   }
@@ -764,7 +761,6 @@ export class InicioPage implements OnInit {
     localStorage.removeItem("org");
     localStorage.removeItem("todo");
     localStorage.removeItem("activarTodos");
-    this.obtenerPrincipalInicio();
     location.reload();
   }
   borrarFiltros() {
@@ -835,14 +831,20 @@ export class InicioPage implements OnInit {
   }
 
   public obtenerPrincipalInicio(){
+    localStorage.removeItem("todo");
     this.idTodo=false;
+    this.loaderInicio=true;
     this.principalSercicio.obtenerPrincipalInicio()
       .subscribe(
         (response) => {
         
           if (response.code === 200) {
             this.listaCategorias = response.data;
-            this.loaderNegocios=false;
+            setTimeout(() => {
+              this.loaderInicio=false;
+            this.mostrarloaderInicio=false;
+            }, 800);
+            
           }
         },
         (error) => {

@@ -37,6 +37,7 @@
   ></app-banner-promociones>
   <app-spinner [loader]="loader" [message]="msj"></app-spinner>
   <app-spinner  [loader]="loaderNegocios" [message]="msj"></app-spinner>
+  <app-spinner *ngIf="mostrarloaderInicio"  [loader]="loaderInicio" [message]="msj"></app-spinner>
   <div *ngIf="!loader">
     <ion-item>
       <ion-buttons *ngIf="!selectionAP">

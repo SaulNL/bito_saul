@@ -107,7 +107,6 @@ export class TabsPage implements OnInit {
     localStorage.setItem("activedPage", "promociones");
     this.activedPage = localStorage.getItem("activedPage");
     localStorage.removeItem("productos");
-    localStorage.removeItem("todo");
   }
   solicitudes() {
     localStorage.removeItem("activedPage");
@@ -117,7 +116,6 @@ export class TabsPage implements OnInit {
     this.activedPage = localStorage.getItem("activedPage");
     // this.router.navigate(['/tabs/home/solicitud']);
     localStorage.removeItem("productos");
-    localStorage.removeItem("todo");
   }
 
   productos() {
@@ -130,7 +128,6 @@ export class TabsPage implements OnInit {
     this.activedPage = localStorage.getItem("activedPage");
     this.mostrarLoguearse();
     localStorage.removeItem("productos");
-    localStorage.removeItem("todo");
   }
 
   requerimientos() {
@@ -140,7 +137,6 @@ export class TabsPage implements OnInit {
     localStorage.setItem("activedPage", "requerimientos");
     this.activedPage = localStorage.getItem("activedPage");
     localStorage.removeItem("productos");
-    localStorage.removeItem("todo");
   }
 
   perfil() {
