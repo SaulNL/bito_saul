@@ -39,13 +39,9 @@ export class MapaNegociosComponent implements OnInit {
     // console.log(this.banderaInicio);
     // console.log(this.latitud);
     // console.log(this.longitud);
-    this.cagarMapa();
     // this.getListaNegocios();
     
-    if(this.banderaInicio === true){
-      this.latitud;
-      this.longitud;
-    }else{
+    if(this.banderaInicio !== true){
       this.latitud = 19.31905;
       this.longitud = -98.19982;
     } 
@@ -53,16 +49,17 @@ export class MapaNegociosComponent implements OnInit {
     if(this.latitud === 19.31905 && this.longitud === -98.19982 ){
        this.zoom = 10;
     }else{
-      this.zoom = 15;
+      this.zoom = 14;
     }
-    // this.getListaNegocios();
+    
+    this.cagarMapa();
   }
   /**
    * Funcion para cargar el mapa
    */
   public cagarMapa() {
     setTimeout(it => {
-      this.map = new Map("mapaId", {dragging: !L.Browser.mobile, touchZoom: true,  tap: !L.Browser.mobile}).setView([this.latitud, this.longitud],this.zoom, );
+      this.map = new Map("mapaId").setView([this.latitud, this.longitud],this.zoom );
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: ''}).addTo(this.map);
       this.getListaNegocios();
     }, 500);
