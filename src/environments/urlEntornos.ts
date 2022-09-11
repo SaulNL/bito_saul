@@ -30,9 +30,9 @@ export const URLS_ENTORNOS =
     URL_FRONT:'https://dev-front-bitoo.azurewebsites.net/'
   },
   beta:{
-    API_ENDPOINT:'https://beta-bitoo-back.azurewebsites.net/',
-    URL_REGISTRO:'https://beta-bitoo.azurewebsites.net/registro',
-    URL_FRONT:'https://beta-bitoo.azurewebsites.net/'
+    API_ENDPOINT:'http://132.145.168.176:8081/',
+    URL_REGISTRO:'http://132.145.168.176:8081/registro',
+    URL_FRONT:'https://http://132.145.168.176:8081/'
   },
   local:{
     API_ENDPOINT:'http://192.168.0.8/',
