@@ -89,7 +89,7 @@ export class InicioPage implements OnInit {
   public miUbicacionlatitud: number;
   public estasUbicacion: string;
   public municipio: any;
-  public blnUbicacion: any;
+  public blnUbicacion: boolean;
   public latitud: any;
   public longitud: any;
   public ubicacion: any;
@@ -417,9 +417,8 @@ export class InicioPage implements OnInit {
   
   async getCurrentPosition() {
     const gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
-    const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
-
-        this.blnUbicacion = true;
+    await Geolocation.getCurrentPosition(gpsOptions).then(res => {
+        this.loader = false;
         this.miUbicacionlatitud = res.coords.latitude;
         this.miUbicacionlongitud = res.coords.longitude;
         this.latitud = this.miUbicacionlatitud;
@@ -431,14 +430,10 @@ export class InicioPage implements OnInit {
         } catch (e) {
         }
     }).catch(error => {
-
-        this.blnUbicacion = false;
         this.ubicacion = 'localidad';
-        //this.filtros.tipoBusqueda = 0;
         this.latitud = undefined;
         this.longitud = undefined;
         this.AlertActivarUbicacion();
-        //this.cerrarModal();
     }
     );  
   }
@@ -453,8 +448,6 @@ export class InicioPage implements OnInit {
     geocoder.geocode({ location: latlng }, (results, status) => {
         if (status === 'OK') {
             if (results[0]) {
-                //this.loader = false;
-
                 let posicion = results[0].address_components.length;
                 posicion = posicion - 4;
                 this.estasUbicacion = results[0].formatted_address;
@@ -464,7 +457,6 @@ export class InicioPage implements OnInit {
             }
         } else {
 
-            //this.loader = false;
         }
     });
   }
@@ -539,10 +531,8 @@ export class InicioPage implements OnInit {
       var respuesta = await this.principalSercicio
         .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
       await this.procesar(respuesta, 0);
-      this.loader = false;
     } catch (error) {
       this.loader = false;
-      // this.notificaciones.error("Error al buscar los datos" + error.message);
       this.notificaciones.error("No hay conexión a internet, conectate a una red");
     }
 
@@ -556,17 +546,14 @@ export class InicioPage implements OnInit {
          && this.Filtros.tipoBusqueda == 0
         ){
           this.banderaInicio = true;
-          this.getCurrentPosition();
-          //console.log("entro");
           var responseNegociosTodos = await this.principalSercicio.obtenerNegociosTodosMapa();
           await this.validarResultadosTodos(responseNegociosTodos);
       }else{
         this.banderaInicio = false;
         var response2 = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, i);
-        //console.log(response2);
         await this.validarResultadosDeCategoriasAll(response2);
         i=i+1;
-        await    this.procesar(response,i );
+        await this.procesar(response,i );
         
         return
       }
@@ -700,11 +687,11 @@ export class InicioPage implements OnInit {
   }
 
   async abrirModalMapa() {
-    //  let listaIds = [68, 95, 116, 52, 155, 20, 142];
-    this.listaIdsMapa = [];
+   this.listaIdsMapa = [];
    await this.buscarNegocios(true);
-   await this.cargarCargarNegociosMapas();
-    //await this.buscarNegocios(false);
+   await this.cargarCargarNegociosMapas()
+   await this.getCurrentPosition();
+
     const modal = await this.modalController.create({
       component: MapaNegociosComponent,
       componentProps: {
@@ -713,7 +700,7 @@ export class InicioPage implements OnInit {
         longitud: this.longitud,
         banderaInicio: this.banderaInicio
       },
-    });
+    });  
     await modal.present();
   }
 

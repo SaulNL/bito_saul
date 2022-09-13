@@ -36,10 +36,6 @@ export class MapaNegociosComponent implements OnInit {
   }
 
   ngOnInit() {
-    // console.log(this.banderaInicio);
-    // console.log(this.latitud);
-    // console.log(this.longitud);
-    // this.getListaNegocios();
     
     if(this.banderaInicio !== true){
       this.latitud = 19.31905;
