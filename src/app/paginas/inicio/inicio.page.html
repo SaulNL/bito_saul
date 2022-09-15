@@ -86,6 +86,7 @@
             size="small"
             class="bg-rosa"
             type="button"
+            [disabled]="listaCategorias.length === 0"
             (click)="abrirModalMapa()"
           >
             <ion-icon name="map-outline"></ion-icon>

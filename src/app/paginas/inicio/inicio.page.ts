@@ -312,6 +312,7 @@ export class InicioPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.getCurrentPosition();
 
     if (localStorage.getItem("loaderNegocio") === "true" ) {
       this.idNegocio=null;
@@ -415,10 +416,10 @@ export class InicioPage implements OnInit {
     }
   }
   
-  async getCurrentPosition() {
-    const gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
-    await Geolocation.getCurrentPosition(gpsOptions).then(res => {
-        this.loader = false;
+  public getCurrentPosition(){
+    let gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
+    Geolocation.getCurrentPosition(gpsOptions).then(res => {
+      console.log("latitu y longituuuuuuuuuudddddd")
         this.miUbicacionlatitud = res.coords.latitude;
         this.miUbicacionlongitud = res.coords.longitude;
         this.latitud = this.miUbicacionlatitud;
@@ -531,6 +532,7 @@ export class InicioPage implements OnInit {
       var respuesta = await this.principalSercicio
         .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
       await this.procesar(respuesta, 0);
+      this.loader = false;
     } catch (error) {
       this.loader = false;
       this.notificaciones.error("No hay conexión a internet, conectate a una red");
@@ -690,7 +692,6 @@ export class InicioPage implements OnInit {
    this.listaIdsMapa = [];
    await this.buscarNegocios(true);
    await this.cargarCargarNegociosMapas()
-   await this.getCurrentPosition();
 
     const modal = await this.modalController.create({
       component: MapaNegociosComponent,
