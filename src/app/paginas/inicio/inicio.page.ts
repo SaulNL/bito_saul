@@ -312,7 +312,9 @@ export class InicioPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.getCurrentPosition();
+    if(this.isIOS){
+      this.getCurrentPosition();
+    }
 
     if (localStorage.getItem("loaderNegocio") === "true" ) {
       this.idNegocio=null;
@@ -548,6 +550,9 @@ export class InicioPage implements OnInit {
          && this.Filtros.tipoBusqueda == 0
         ){
           this.banderaInicio = true;
+          if(!this.isIOS){
+            this.getCurrentPosition();
+          }
           var responseNegociosTodos = await this.principalSercicio.obtenerNegociosTodosMapa();
           await this.validarResultadosTodos(responseNegociosTodos);
       }else{
