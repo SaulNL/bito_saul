@@ -60,7 +60,7 @@ export class InicioPage implements OnInit {
   public existeSesion: boolean;
   public msj = "Cargando";
   public tFiltro: boolean;
-  private objectSelectAfiliacionPlaza: AfiliacionPlazaModel;
+  public objectSelectAfiliacionPlaza: AfiliacionPlazaModel;
   public persona: number | null;
   public permisos: Array<PermisoModel> | null;
   public afiliacion: boolean;
@@ -612,7 +612,8 @@ export class InicioPage implements OnInit {
         this.obtenerPrincipalInicio();
       }
       //await this.cargarCategorias();
-    
+      
+      this.loader = false;
     
   }
 

@@ -42,19 +42,24 @@
     <ion-item>
       <ion-buttons *ngIf="!selectionAP">
         <ion-button (click)="openPlazasAfiliacionesModal()">
-          Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span>
-          <ion-icon name="caret-down-outline"></ion-icon>
+          <small class="text">Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span></small>
+          <ion-icon class="icono" name="caret-down-outline"></ion-icon>
         </ion-button>
       </ion-buttons>
       <ion-buttons *ngIf="selectionAP">
         <ion-chip (click)="regresarBitoo()" color="danger">
           <ion-icon name="log-out-outline"></ion-icon>
-          <ion-label>Regresar a bitoo</ion-label>
+          <ion-label>Regresar a Bitoo</ion-label>
         </ion-chip>
       </ion-buttons>
+      <ion-button size="small" class="bg-rosa" type="button" [disabled]="listaCategorias.length === 0" (click)="abrirModalMapa()" 
+      style="z-index: 3; position:absolute; left: 17.5em; bottom: 0.6em;">
+        <ion-icon name="map-outline"></ion-icon>
+        Mapa
+      </ion-button>
       <ion-buttons *ngIf="filtroActivo" slot="end">
         <ion-chip (click)="borrarFiltrosP()" color="danger">
-          <ion-icon name="trash-outline" color="danger"></ion-icon>
+          <ion-icon class="icono" name="trash-outline" color="danger"></ion-icon>
           <ion-label>Borrar Filtros</ion-label>
         </ion-chip>
       </ion-buttons>
@@ -81,18 +86,6 @@
             {{objectSelectAfiliacionPlaza.nombre}}
           </p>
         </div>
-        <ion-col size="12" class="ion-text-center">
-          <ion-button
-            size="small"
-            class="bg-rosa"
-            type="button"
-            [disabled]="listaCategorias.length === 0"
-            (click)="abrirModalMapa()"
-          >
-            <ion-icon name="map-outline"></ion-icon>
-            Mapa
-          </ion-button>
-        </ion-col>
       </ion-row>
     </ion-grid>
     <ion-slides [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }" scrollbar="md">
@@ -138,7 +131,7 @@
     <div *ngIf="!loaderNegocios">
       <ion-grid *ngIf="listaCategorias.length !== 0">
         <ion-row *ngFor="let cat of listaCategorias">
-          <ion-text class="w-100">
+          <ion-text class="w-100" style="margin: -25px 5px auto; ">
             <h2>{{cat.nombre}}</h2>
           </ion-text>
           <ion-col
