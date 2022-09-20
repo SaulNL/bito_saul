@@ -48,24 +48,26 @@
       </ion-buttons>
       <ion-buttons *ngIf="selectionAP">
         <ion-chip (click)="regresarBitoo()" color="danger">
-          <ion-icon name="log-out-outline"></ion-icon>
-          <ion-label>Regresar a Bitoo</ion-label>
+          <ion-icon class="icono" name="log-out-outline"></ion-icon>
+          <ion-label><span class="text">Regresar a Bitoo</span></ion-label>
         </ion-chip>
       </ion-buttons>
-      <ion-button size="small" class="bg-rosa" type="button" [disabled]="listaCategorias.length === 0" (click)="abrirModalMapa()" 
-      style="z-index: 3; position:absolute; left: 17.5em; bottom: 0.6em;">
-        <ion-icon name="map-outline"></ion-icon>
-        Mapa
-      </ion-button>
-      <ion-buttons *ngIf="filtroActivo" slot="end">
+      <ion-buttons style="margin: auto 5.5px;">
+        <ion-chip size="small" class="bg-rosa" [disabled]="listaCategorias.length === 0" (click)="abrirModalMapa()">
+          <ion-icon class="icono texto-blanco" name="map-outline"></ion-icon>
+          <ion-label><span class="text">Mapa</span></ion-label>
+        </ion-chip>
+      </ion-buttons>
+      
+      <ion-buttons *ngIf="filtroActivo">
         <ion-chip (click)="borrarFiltrosP()" color="danger">
           <ion-icon class="icono" name="trash-outline" color="danger"></ion-icon>
-          <ion-label>Borrar Filtros</ion-label>
+          <ion-label><span class="text">Borrar Filtros</span></ion-label>
         </ion-chip>
       </ion-buttons>
-      <ion-buttons slot="end" *ngIf="!filtroActivo">
-        <ion-button (click)="abrirFiltros()"
-          >Filtros
+      <ion-buttons *ngIf="!filtroActivo">
+        <ion-button class="text2" (click)="abrirFiltros()"
+          ><span>Filtros</span>
           <ion-icon name="filter-outline"></ion-icon>
         </ion-button>
       </ion-buttons>
