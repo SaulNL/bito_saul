@@ -2,7 +2,7 @@
  
     <app-toolbar-busqueda
       [placeHolder]=" objectSelectAfiliacionPlaza !== null && objectSelectAfiliacionPlaza !== undefined ? 'Buscar negocios en ' + objectSelectAfiliacionPlaza.nombre : 'Buscar negocios' "
-      (buscarEmit)="buscarToolbar($event)" titulo="Negocio"
+      (buscarEmit)="buscarToolbar($event)" titulo="Inicio"
     ></app-toolbar-busqueda>
 
 </ion-toolbar>
@@ -53,12 +53,11 @@
         </ion-chip>
       </ion-buttons>
       <ion-buttons style="margin: auto 5.5px;">
-        <ion-chip size="small" class="bg-rosa" [disabled]="listaCategorias.length === 0" (click)="abrirModalMapa()">
-          <ion-icon class="icono texto-blanco" name="map-outline"></ion-icon>
-          <ion-label><span class="text">Mapa</span></ion-label>
-        </ion-chip>
+        <ion-button size="small" class="mapa" shape="round" [disabled]="listaCategorias.length === 0" (click)="abrirModalMapa()">
+          <ion-icon class="icono" name="map-outline"></ion-icon>
+          <small>Mapa</small>
+        </ion-button>
       </ion-buttons>
-      
       <ion-buttons *ngIf="filtroActivo">
         <ion-chip (click)="borrarFiltrosP()" color="danger">
           <ion-icon class="icono" name="trash-outline" color="danger"></ion-icon>
@@ -163,16 +162,6 @@
                       name="checkmark-circle"
                     ></ion-icon>
                   </ion-card-subtitle>
-                  <ion-badge
-                    *ngIf="proveedor.abierto == 'ABIERTO'"
-                    color="success"
-                    >Abierto</ion-badge
-                  >
-                  <ion-badge
-                    *ngIf="proveedor.abierto !== 'ABIERTO'"
-                    color="danger"
-                    >Cerrado</ion-badge
-                  >
                 </ion-card-header>
                 <!-- <ion-card-content>
                                     <div class="ui-search-item__title">
@@ -184,13 +173,25 @@
                 <ion-img src="../../../assets/images/promo/etiqueta_promo.png"></ion-img>
   
               </div>
-              <div *ngIf="existeSesion" class="likegegi">
+              <div class="likegegi">
                 <app-dar-like-negocio
                   [negocio]="proveedor"
                   [usuario]="user"
                   [mostrarLike]="existeSesion"
                 >
                 </app-dar-like-negocio>
+                <div class="badge">
+                  <ion-badge
+                      *ngIf="proveedor.abierto == 'ABIERTO'"
+                      color="success"
+                      >Abierto
+                  </ion-badge>
+                  <ion-badge
+                      *ngIf="proveedor.abierto !== 'ABIERTO'"
+                      color="danger"
+                      >Cerrado
+                  </ion-badge>
+                </div>
               </div>
             </ion-card>
           </ion-col>

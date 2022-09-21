@@ -13,9 +13,6 @@
           <ion-badge>{{bolsa.length}}</ion-badge>
         </ion-button>
       </strong>
-      <ion-button (click)="compartir()" *ngIf="existeSesion">
-        <ion-icon name="share-social-outline"></ion-icon>
-      </ion-button>
       <ion-button (click)="presentActionSheet()" *ngIf="existeSesion">
         <ion-icon name="ellipsis-vertical-outline"></ion-icon>
       </ion-button>
@@ -245,6 +242,9 @@
                 (click)="llamar(informacionNegocio.telefono)"
               >
                 <ion-icon class="telefono" name="call"></ion-icon>
+              </ion-fab-button>
+              <ion-fab-button size="small" color="light" (click)="compartir()" *ngIf="existeSesion">
+                <ion-icon name="share-social-outline"></ion-icon>
               </ion-fab-button>
             </div>
           </ion-col>
