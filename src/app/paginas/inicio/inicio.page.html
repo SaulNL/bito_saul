@@ -169,17 +169,11 @@
                                     </div>
                                 </ion-card-content> -->
               </div>
-              <div *ngIf="cat.nombre==='Negocios con promociones' || proveedor.tienepromociones == 1"  class="promo" (click)="negocioRuta(proveedor.url_negocio,  proveedor.id_negocio)"> 
+              <div *ngIf="proveedor.tienepromociones == 1"  class="promo" (click)="negocioRuta(proveedor.url_negocio,  proveedor.id_negocio)"> 
                 <ion-img src="../../../assets/images/promo/etiqueta_promo.png"></ion-img>
   
               </div>
               <div class="likegegi">
-                <app-dar-like-negocio
-                  [negocio]="proveedor"
-                  [usuario]="user"
-                  [mostrarLike]="existeSesion"
-                >
-                </app-dar-like-negocio>
                 <div class="badge">
                   <ion-badge
                       *ngIf="proveedor.abierto == 'ABIERTO'"
@@ -192,6 +186,12 @@
                       >Cerrado
                   </ion-badge>
                 </div>
+                <app-dar-like-negocio
+                  [negocio]="proveedor"
+                  [usuario]="user"
+                  [mostrarLike]="existeSesion"
+                >
+                </app-dar-like-negocio>
               </div>
             </ion-card>
           </ion-col>
