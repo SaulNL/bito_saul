@@ -69,7 +69,17 @@
 }
 
 .text2{
-  font-size: 13px;
+  font-size: 12.5px;
+}
+
+.mapa{
+  --background: linear-gradient(90deg, #fa4f72, #a74eef);
+  color: white;
+  font-size: 12px;
+}
+
+.mapa .icono{
+  padding-right: 5px;
 }
 
 ion-card-header {
@@ -87,6 +97,7 @@ ion-card-header {
 .likegegi {
   bottom: 7rem;
   position: absolute;
+  display: flex;
 }
 .fixed {
   height: 16.3em;
@@ -99,6 +110,7 @@ ion-card-header {
   .likegegi {
     bottom: 7rem;
     position: absolute;
+    display: flex;
   }
   .fixed {
     height: 20em;
@@ -112,4 +124,14 @@ small{
 
 ion-slide{
   width: 5em !important; height: 7em;
+}
+
+.badge{
+  margin-top: 6px;
+  margin-left: 10px;
+}
+
+.badge ion-badge{
+  padding: 8px;
+  border-radius: 50px;
 }

@@ -2,6 +2,8 @@ import { ProveedorServicioService } from "./../../api/busqueda/proveedores/prove
 import { ToadNotificacionService } from "./../../api/toad-notificacion.service";
 import { Component, Input, OnInit } from "@angular/core";
 import { MsNegocioModel } from "../../Modelos/busqueda/MsNegocioModel";
+import { AlertController } from "@ionic/angular";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-dar-like-negocio",
@@ -15,25 +17,58 @@ export class DarLikeNegocioComponent implements OnInit {
 
   constructor(
     private servicioNegocio: ProveedorServicioService,
-    private notificacion: ToadNotificacionService
+    private notificacion: ToadNotificacionService, 
+    private alertController: AlertController,
+    private router: Router,
   ) {}
 
   ngOnInit() {}
 
+  public async alerta(){
+    const alert = await this.alertController.create({
+      header: 'Bitoo!',
+      message: "¿Ya tienes una cuenta?",
+        buttons: [
+            {
+                text: "Iniciar sesión",
+                cssClass: 'text-grey',
+                handler: () => {
+                    this.router.navigate(['/tabs/login']);
+                }
+            },
+            {
+                text: "Registrate",
+                cssClass: 'text-rosa',
+                handler: () => {
+                    this.router.navigate(["/tabs/login/sign-up"]);
+                },
+            },
+        ],
+    });
+
+    await alert.present();
+  }
+
   public darLike(negocio: any) {
-    this.servicioNegocio.darLike(negocio, this.usuario).subscribe(
-      (response) => {
-        if (response.code === 200) {
-          negocio.likes = response.data;
-          negocio.usuario_like = 1;
-          this.notificacion.exito(response.message);
-        } else {
-          negocio.likes = response.data;
-          negocio.usuario_like = 0;
-          this.notificacion.alerta(response.message);
-        }
-      },
-      (error) => {}
-    );
+
+    if (!this.mostrarLike) {
+      this.alerta();
+    } else {
+
+      this.servicioNegocio.darLike(negocio, this.usuario).subscribe(
+        (response) => {
+          if (response.code === 200) {
+            negocio.likes = response.data;
+            negocio.usuario_like = 1;
+            this.notificacion.exito(response.message);
+          } else {
+            negocio.likes = response.data;
+            negocio.usuario_like = 0;
+            this.notificacion.alerta(response.message);
+          }
+        },
+        (error) => {}
+      );
+    }
   }
 }
