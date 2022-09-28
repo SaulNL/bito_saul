@@ -175,13 +175,14 @@
               *ngIf="existeSesion"
               style="display: flex; justify-content: center"
             >
-              <ion-fab-button
-                size="small"
-                *ngIf="informacionNegocio.tipo_negocio || informacionNegocio.tipo_negocio === null;"
-                href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
-                target="_self"
-              >
-                <ion-icon name="navigate" style="color: royalblue"></ion-icon>
+                <ion-fab-button
+                  size="small"
+                  color="light"
+                  *ngIf="informacionNegocio.tipo_negocio || informacionNegocio.tipo_negocio === null;"
+                  href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
+                  target="_self"
+                >
+                <ion-icon name="location-sharp" color="primary"></ion-icon>
               </ion-fab-button>
               <ion-fab-button
                 size="small"
