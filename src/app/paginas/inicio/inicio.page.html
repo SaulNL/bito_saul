@@ -208,7 +208,7 @@
             </ion-card>
           </ion-col>
           <ion-button color="light" size="small" (click)="obtenerPrincipalInicio(cat.nombre)" 
-            *ngIf="!banderaVerMas && !filtroActivo && !selectionAP">
+            *ngIf="!banderaVerMas && !filtroActivo && !idTodo && !selectionAP">
             <span class="texto-ver-mas">Ver todos los negocios {{cat.nombre}}</span>
             <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
           </ion-button>

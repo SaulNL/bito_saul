@@ -758,7 +758,11 @@ export class InicioPage implements OnInit {
     localStorage.removeItem("org");
     localStorage.removeItem("todo");
     localStorage.removeItem("activarTodos");
-    location.reload();
+
+    this.objectSelectAfiliacionPlaza = null;
+    this.borrarFiltros();
+    this.borrarFiltrosP();
+    
   }
   borrarFiltros() {
     localStorage.removeItem("byCategorias");
@@ -880,9 +884,7 @@ export class InicioPage implements OnInit {
     }
 
       if (destacados != null) {
-
-        console.log("entrpo en destacadoooooooooooooosssssss")
-        
+        this.activar();        
       } else {
         let body = { tipo: convenio != null ? convenio : promocion};
 
@@ -982,5 +984,7 @@ export class InicioPage implements OnInit {
     var respuesta = await this.principalSercicio
         .obtenerNegocioPorCategoria(this.Filtros, this.siguienteGiro)
       this.validarResultadosDeCategorias(respuesta);
+      this.loader = false;
+      this.scrollToTop();
   }
 }
