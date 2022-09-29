@@ -39,38 +39,39 @@
   <app-spinner  [loader]="loaderNegocios" [message]="msj"></app-spinner>
   <app-spinner *ngIf="mostrarloaderInicio"  [loader]="loaderInicio" [message]="msj"></app-spinner>
   <div *ngIf="!loader">
-    <ion-item>
-      <ion-buttons *ngIf="!selectionAP">
-        <ion-button (click)="openPlazasAfiliacionesModal()">
-          <small class="text">Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span></small>
-          <ion-icon class="icono" name="caret-down-outline"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-      <ion-buttons *ngIf="selectionAP">
-        <ion-chip (click)="regresarBitoo()" color="danger">
-          <ion-icon class="icono" name="log-out-outline"></ion-icon>
-          <ion-label><span class="text">Regresar a Bitoo</span></ion-label>
-        </ion-chip>
-      </ion-buttons>
-      <ion-buttons style="margin: auto 5.5px;">
-        <ion-button size="small" class="mapa" shape="round" [disabled]="listaCategorias.length === 0" (click)="abrirModalMapa()">
-          <ion-icon class="icono" name="map-outline"></ion-icon>
-          <small>Mapa</small>
-        </ion-button>
-      </ion-buttons>
-      <ion-buttons *ngIf="filtroActivo">
-        <ion-chip (click)="borrarFiltrosP()" color="danger">
-          <ion-icon class="icono" name="trash-outline" color="danger"></ion-icon>
-          <ion-label><span class="text">Borrar Filtros</span></ion-label>
-        </ion-chip>
-      </ion-buttons>
-      <ion-buttons *ngIf="!filtroActivo">
-        <ion-button class="text2" (click)="abrirFiltros()"
-          ><span>Filtros</span>
-          <ion-icon name="filter-outline"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-item>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="12">
+          <ion-buttons>
+            <ion-chip mode="ios" *ngIf="!selectionAP" color="dark" (click)="openPlazasAfiliacionesModal()">
+              <small class="text">Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span></small>
+              <ion-icon class="icono" name="caret-down-outline"></ion-icon>
+            </ion-chip>
+
+            <ion-chip *ngIf="selectionAP" (click)="regresarBitoo()" color="danger">
+              <ion-icon class="icono" name="log-out-outline"></ion-icon>
+              <ion-label><span class="text">Regresar a Bitoo</span></ion-label>
+            </ion-chip>
+
+            <ion-button style="margin: 0 20px;" size="small" class="mapa" shape="round" [disabled]="listaCategorias.length === 0" (click)="abrirModalMapa()">
+              <ion-icon class="icono" name="map-outline"></ion-icon>
+              <small>Mapa</small>
+            </ion-button>
+
+            <ion-chip *ngIf="filtroActivo" (click)="borrarFiltrosP()" color="danger">
+              <ion-icon class="icono" name="trash-outline" color="danger"></ion-icon>
+              <ion-label><span class="text">Borrar Filtros</span></ion-label>
+            </ion-chip>
+
+            <ion-chip mode="ios" *ngIf="!filtroActivo" class="text2" color="dark" (click)="abrirFiltros()"
+              ><span>Filtros</span>
+              <ion-icon name="filter-outline"></ion-icon>
+            </ion-chip>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
     <ion-grid>
       <ion-row class="ion-align-items-center">
         <div
@@ -131,16 +132,28 @@
     
     <div *ngIf="!loaderNegocios">
       <ion-grid *ngIf="listaCategorias.length !== 0">
-        <ion-row *ngFor="let cat of listaCategorias">
-          <ion-text class="w-100" style="margin: -25px 5px auto; ">
+        <ion-row *ngFor="let cat of listaCategorias" class="ion-padding">
+          
+          <ion-text class="nombre-categoria w-100" *ngIf="!banderaVerMas">
             <h2>{{cat.nombre}}</h2>
           </ion-text>
+          <div style="display: flex;" *ngIf="banderaVerMas">
+            <ion-text class="nombre-categoria w-100">
+              <h2>{{cat.nombre}}</h2>
+            </ion-text>
+            <ion-buttons class="boton-regresar">
+              <ion-chip (click)="obtenerPrincipalInicio()" color="dark">
+                <ion-icon class="icono" name="chevron-back-outline"></ion-icon>
+                <ion-label><span>Regresar</span></ion-label>
+              </ion-chip>
+            </ion-buttons>
+          </div>
           <ion-col
             sizeLg="3"
             sizeXs="6"
             sizeSm="4"
             sizeMd="4"
-            *ngFor="let proveedor of cat.negocios"
+            *ngFor="let proveedor of !banderaVerMas ? cat.negocios : listaVerMas "
           >
             <ion-card class="m-0 fixed">
               <div (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)">
@@ -171,7 +184,6 @@
               </div>
               <div *ngIf="proveedor.tienepromociones == 1"  class="promo" (click)="negocioRuta(proveedor.url_negocio,  proveedor.id_negocio)"> 
                 <ion-img src="../../../assets/images/promo/etiqueta_promo.png"></ion-img>
-  
               </div>
               <div class="likegegi">
                 <div class="badge">
@@ -195,6 +207,11 @@
               </div>
             </ion-card>
           </ion-col>
+          <ion-button color="light" size="small" (click)="obtenerPrincipalInicio(cat.nombre)" 
+            *ngIf="!banderaVerMas && !filtroActivo && !idTodo && !selectionAP">
+            <span class="texto-ver-mas">Ver todos los negocios {{cat.nombre}}</span>
+            <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+          </ion-button>
         </ion-row>
       </ion-grid>
     </div>
@@ -211,12 +228,23 @@
         </h2>
       </ion-text>
     </ion-grid>
-    <app-infinito-scroll
-      *ngIf="true"
-      (respuesta)="cargarMasPaginas($event)"
-      [activado]="true"
-      [msj]="mensaje"
-    ></app-infinito-scroll>
+    <div *ngIf="!banderaVerMas">
+      <app-infinito-scroll
+        *ngIf="true"
+        (respuesta)="cargarMasPaginas($event)"
+        [activado]="true"
+        [msj]="mensaje"
+      ></app-infinito-scroll>
+    </div>
+
+    <div *ngIf="banderaVerMas">
+      <ion-infinite-scroll threshold="50px" (ionInfinite)="cargarMasNegocios($event)">
+        <ion-infinite-scroll-content
+          loadingSpinner="bubbles"
+          [loadingText]="mensaje">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </div>
   </div>
   <app-banner-anuncios
   
