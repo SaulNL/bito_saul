@@ -100,8 +100,9 @@ export class InicioPage implements OnInit {
   public idNegocio: number;
   mostrarloaderInicio: boolean;
   loaderInicio: boolean;
-  
-  
+  banderaVerMas = false;
+  listaVerMas: any[] = [];
+  mostrarNegocios: any = 4;
 
   constructor(
     public loadingController: LoadingController,
@@ -592,6 +593,7 @@ export class InicioPage implements OnInit {
     ) {
       this.Filtros.idCategoriaNegocio = [dato.id_categoria];
       this.filtroActivo = true;
+      this.banderaVerMas = false;
     }
     this.selectionAP
       ? (this.Filtros.organizacion =
@@ -599,7 +601,8 @@ export class InicioPage implements OnInit {
       : "";
       this.loaderNegocios=false;
       const todo = localStorage.getItem("todo");
-       if(todo==='todo' ||  localStorage.getItem("org")!=null){
+
+       if(todo === 'todo' || localStorage.getItem('org') != null){
         await this.cargarCategorias();
        }
      
@@ -824,27 +827,95 @@ export class InicioPage implements OnInit {
     }
   }
 
-  public obtenerPrincipalInicio(){
+  cargarMasNegocios(event: any){
+    let negocios = [];
+    this.listaCategorias.map(e => negocios = e.negocios);
+
+    if (this.listaVerMas.length != negocios.length) {
+      setTimeout(() => {
+        this.mostrarNegocios += 4;
+        this.listaVerMas = negocios.slice(0, this.mostrarNegocios);
+        event.target.complete();
+        
+      }, 800);
+    } else {
+      event.target.disabled = true;
+    }
+    
+  }
+
+  public obtenerPrincipalInicio(nombre?: string){
     localStorage.removeItem("todo");
     this.idTodo=false;
+    this.loader = true;
     this.loaderInicio=true;
-    this.principalSercicio.obtenerPrincipalInicio()
-      .subscribe(
-        (response) => {
-        
-          if (response.code === 200) {
-            this.listaCategorias = response.data;
-            setTimeout(() => {
-              this.loaderInicio=false;
+    this.banderaVerMas= false;
+
+    let convenio = nombre == 'Con Convenio' ? 'convenio' : null;
+    let promocion = nombre == 'Con Promociones' ? 'promocion' : null;
+    let destacados = nombre == 'Destacados' ? 'destacados' : null;
+
+    if (nombre === undefined) {
+      this.principalSercicio.obtenerPrincipalInicio()
+        .subscribe(
+          (response) => {
+          
+            if (response.code === 200) {
+              this.listaCategorias = response.data;
+              setTimeout(() => {
+                this.loader = false;
+                this.loaderInicio=false;
+                this.mostrarloaderInicio=false;
+              }, 800);
+            }
+          },
+          (error) => {
+            this.loader = false;
+            this.loaderInicio=false;
             this.mostrarloaderInicio=false;
-            }, 800);
-            
+            //this._notificacionService.error(error);
           }
-        },
-        (error) => {
-          //this._notificacionService.error(error);
-        }
-      );
+        );
+        return false;
+    }
+
+      if (destacados != null) {
+
+        console.log("entrpo en destacadoooooooooooooosssssss")
+        
+      } else {
+        let body = { tipo: convenio != null ? convenio : promocion};
+
+        this.principalSercicio.obtenerPrincipalInicioTodos(body).subscribe(
+          (response) => {
+          
+            if (response.code === 200) {
+
+              this.banderaVerMas = true;
+              this.listaCategorias = response.data;
+              this.listaCategorias.map(e => {
+                this.listaVerMas = e.negocios.slice(0, 4);
+              });
+
+              setTimeout(() => {
+                this.loader = false;
+                this.loaderInicio=false;
+                this.mostrarloaderInicio=false;
+              }, 800);
+              
+            }
+          },
+          (error) => {
+            this.loader = false;
+            this.loaderInicio=false;
+            this.mostrarloaderInicio=false;
+            //this._notificacionService.error(error);
+          },
+          () => {
+            this.scrollToTop();
+          }
+        );
+      }
   }
 
   public obtenergiros() {
@@ -868,6 +939,7 @@ export class InicioPage implements OnInit {
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.filtroActivo = true;
+    this.banderaVerMas = false;
     this.loaderNegocios=true;
     this.idGiro =event;   
     localStorage.setItem("idGiro",JSON.stringify(this.idGiro)) 
