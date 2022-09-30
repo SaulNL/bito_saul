@@ -44,7 +44,7 @@
         <ion-col size="12">
           <ion-buttons>
             <ion-chip mode="ios" *ngIf="!selectionAP" color="dark" (click)="openPlazasAfiliacionesModal()">
-              <small class="text">Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span></small>
+              <small class="text">Plazas<span *ngIf="afiliacion"> y Afiliaciones</span></small>
               <ion-icon class="icono" name="caret-down-outline"></ion-icon>
             </ion-chip>
 
@@ -65,7 +65,7 @@
 
             <ion-chip mode="ios" *ngIf="!filtroActivo" class="text2" color="dark" (click)="abrirFiltros()"
               ><span>Filtros</span>
-              <ion-icon name="filter-outline"></ion-icon>
+              <ion-icon class="icono" name="filter-outline"></ion-icon>
             </ion-chip>
           </ion-buttons>
         </ion-col>
@@ -144,7 +144,7 @@
             <ion-buttons class="boton-regresar">
               <ion-chip (click)="obtenerPrincipalInicio()" color="dark">
                 <ion-icon class="icono" name="chevron-back-outline"></ion-icon>
-                <ion-label><span>Regresar</span></ion-label>
+                <ion-label class="text2">Regresar</ion-label>
               </ion-chip>
             </ion-buttons>
           </div>
@@ -167,8 +167,8 @@
                   <ion-row   class="ion-justify-content-center">
                     <ion-spinner *ngIf="idNegocio===proveedor.id_negocio"  name="dots" class="spinner-color"></ion-spinner>
                   </ion-row>
-                  <ion-card-subtitle
-                    >{{proveedor.nombre_comercial}}
+                  <ion-card-subtitle class="texto-comercio">
+                    {{proveedor.nombre_comercial}}
                     <ion-icon
                       *ngIf="proveedor.verificado"
                       class="text-rosa"
@@ -176,11 +176,6 @@
                     ></ion-icon>
                   </ion-card-subtitle>
                 </ion-card-header>
-                <!-- <ion-card-content>
-                                    <div class="ui-search-item__title">
-                                        {{proveedor.descripcion}}
-                                    </div>
-                                </ion-card-content> -->
               </div>
               <div *ngIf="proveedor.tienepromociones == 1"  class="promo" (click)="negocioRuta(proveedor.url_negocio,  proveedor.id_negocio)"> 
                 <ion-img src="../../../assets/images/promo/etiqueta_promo.png"></ion-img>
@@ -209,7 +204,7 @@
           </ion-col>
           <ion-button color="light" size="small" (click)="obtenerPrincipalInicio(cat.nombre)" 
             *ngIf="!banderaVerMas && !filtroActivo && !idTodo && !selectionAP">
-            <span class="texto-ver-mas">Ver todos los negocios {{cat.nombre}}</span>
+            <span class="texto-ver-mas">Ver todos los negocios {{cat.nombre}} </span>
             <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
           </ion-button>
         </ion-row>

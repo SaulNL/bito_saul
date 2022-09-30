@@ -72,6 +72,16 @@
   font-size: 13px;
 }
 
+@media (max-width: 500px) {
+  .text{
+    font-size: 9.5px;
+  }
+
+  .text2, .icono{
+    font-size: 10.2px;
+  }
+}
+
 .mapa{
   --background: linear-gradient(90deg, #fa4f72, #a74eef);
   color: white;
@@ -100,7 +110,7 @@ ion-card-header {
   display: flex;
 }
 .fixed {
-  height: 17em;
+  height: 17.3em;
 }
 .spinner-color {
   --color: #fa4f72;
@@ -127,7 +137,7 @@ ion-slide{
 }
 
 .badge{
-  margin-top: 6px;
+  margin-top: 4px;
   margin-left: 10px;
 }
 
@@ -149,5 +159,9 @@ ion-slide{
 }
 
 .boton-regresar{
-  margin: -12px 25px 5px;
+  margin: -12px 15px 5px;
+}
+
+.texto-comercio{
+  margin-top: 11px;
 }
