@@ -100,6 +100,7 @@ export class InicioPage implements OnInit {
   public idNegocio: number;
   mostrarloaderInicio: boolean;
   loaderInicio: boolean;
+  buscador = false;
   banderaVerMas = false;
   listaVerMas: any[] = [];
   mostrarNegocios: any = 4;
@@ -633,15 +634,16 @@ export class InicioPage implements OnInit {
     this.Filtros = new FiltrosModel();
     this.Filtros.strBuscar = event;
     this.tFiltro = true;
+    this.buscador = false;
     localStorage.setItem("todo", "todo");
   
-    
     if(event===null){
       localStorage.removeItem("filtroactual");
       this.obtenerPrincipalInicio();
     }else{
       this.buscarNegocios(true);
       this.selectionAP = false;
+      this.buscador = true
     }
     
   }

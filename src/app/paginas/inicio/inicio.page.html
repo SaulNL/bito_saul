@@ -43,7 +43,7 @@
       <ion-row>
         <ion-col size="12">
           <ion-buttons>
-            <ion-chip mode="ios" *ngIf="!selectionAP" color="dark" (click)="openPlazasAfiliacionesModal()">
+            <ion-chip *ngIf="!selectionAP" color="dark" (click)="openPlazasAfiliacionesModal()">
               <small class="text">Plazas<span *ngIf="afiliacion"> y Afiliaciones</span></small>
               <ion-icon class="icono" name="caret-down-outline"></ion-icon>
             </ion-chip>
@@ -63,7 +63,7 @@
               <ion-label><span class="text">Borrar Filtros</span></ion-label>
             </ion-chip>
 
-            <ion-chip mode="ios" *ngIf="!filtroActivo" class="text2" color="dark" (click)="abrirFiltros()"
+            <ion-chip *ngIf="!filtroActivo" class="text2" color="dark" (click)="abrirFiltros()"
               ><span>Filtros</span>
               <ion-icon class="icono" name="filter-outline"></ion-icon>
             </ion-chip>
@@ -203,7 +203,7 @@
             </ion-card>
           </ion-col>
           <ion-button color="light" size="small" (click)="obtenerPrincipalInicio(cat.nombre)" 
-            *ngIf="!banderaVerMas && !filtroActivo && !idTodo && !selectionAP">
+            *ngIf="!banderaVerMas && !filtroActivo && !idTodo && !selectionAP && !buscador">
             <span class="texto-ver-mas">Ver todos los negocios {{cat.nombre}} </span>
             <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
           </ion-button>
