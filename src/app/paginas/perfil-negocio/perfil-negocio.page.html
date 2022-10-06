@@ -65,13 +65,18 @@
               >
                 <h2>
                   {{informacionNegocio.nombre_comercial}}
-                  <ion-icon
+                  <!--ion-icon
                     *ngIf="informacionNegocio.verificado"
                     class="text-rosa"
                     name="checkmark-circle"
                   >
-                  </ion-icon>
+                  </ion-icon-->
                 </h2>
+                <div >
+                  <ion-icon *ngIf="informacionNegocio.verificado"                    
+                    src="../../../assets/icon/certificado_icon.svg" size="large">
+                  </ion-icon>   
+                </div> 
               </ion-text>
             </ion-col>
             <ion-grid>

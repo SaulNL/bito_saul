@@ -169,11 +169,11 @@
                   </ion-row>
                   <ion-card-subtitle class="texto-comercio">
                     {{proveedor.nombre_comercial}}
-                    <ion-icon
-                      *ngIf="proveedor.verificado"
+                    <!--ion-icon
+                      *ngIf="!proveedor.verificado"
                       class="text-rosa"
                       name="checkmark-circle"
-                    ></ion-icon>
+                    ></ion-icon-->
                   </ion-card-subtitle>
                 </ion-card-header>
               </div>
@@ -199,6 +199,11 @@
                   [mostrarLike]="existeSesion"
                 >
                 </app-dar-like-negocio>
+              </div>
+              <div class="icon-cert-card">
+                <ion-icon *ngIf="proveedor.verificado"                                      
+                  src="../../../assets/icon/certificado_icon.svg" size="large">
+                </ion-icon>
               </div>
             </ion-card>
           </ion-col>
