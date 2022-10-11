@@ -41,10 +41,12 @@ export class FormSolicitudPage implements OnInit {
   public btnMuncipio: boolean;
   public btnLocalidad: boolean;
   public tipoNegoAux: any;
+  public negoAux: any;
   public tipoGiroAux: any;
   public tipoSubAux: any;
   public tipoOrg: any;
   public listTipoNegocio: any;
+  public listMiNegocio: any;
   public listCategorias: any;
   public listaSubCategorias: any;
   public resizeToWidth: number = 0;
@@ -88,6 +90,7 @@ export class FormSolicitudPage implements OnInit {
         this.actualTO = JSON.parse(params.special);
         this.obtenerTipoNegocio();
         this.obtenerCatOrganizaciones();
+        this.obtenerMisNegocios();
       }
     });
     this.list_cat_estado = new Array<CatEstadoModel>();
@@ -455,6 +458,24 @@ export class FormSolicitudPage implements OnInit {
       },
       (error) => {
         this.listTipoNegocio = [];
+      }
+    );
+    this.categoriaPrincipal({ value: 0 });
+  }
+  public obtenerMisNegocios() {
+    this.negocioServico.misNegocios(this.usuario.proveedor.id_proveedor).subscribe(
+      (response) => {
+        if (response.code === 200) {
+          this.listMiNegocio = response.data;  
+          this.listMiNegocio.forEach((element) => {
+            if (element.id_negocio == this.actualTO.id_negocio) {
+              this.negoAux = element.nombre_comercial;
+            }
+          });       
+        }
+      },
+      (error) => {
+        this.listMiNegocio = [];
       }
     );
     this.categoriaPrincipal({ value: 0 });

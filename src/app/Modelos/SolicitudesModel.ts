@@ -3,6 +3,7 @@ import {DetDomicilioModel} from './busqueda/DetDomicilioModel';
 export class SolicitudesModel {
   public id_solicitud: number;
   public solicitud: string;
+  public datosnegocio:string
   public descripcion: string;
   public tags: Array<string> = new Array<string>();
   public fecha_inicio: Date;
