@@ -91,6 +91,27 @@
             <div>Seleccione un tipo negocio</div>
           </div>
           <ion-item>
+            <ion-label position="stacked">Negocio</ion-label>
+            <ion-select
+              placeholder="{{ negoAux }}"
+              name="idNegocio"
+              required
+              #idNegocio="ngModel"
+              [(ngModel)]="actualTO.id_negocio"
+              ok-text="Ok"
+              cancel-text="Cancelar"
+            >
+              <ng-container *ngFor="let item of listMiNegocio">
+                <ion-select-option [value]="item.id_negocio"
+                  >{{item.nombre_comercial}}</ion-select-option
+                >
+              </ng-container>
+            </ion-select>
+          </ion-item>
+          <div *ngIf="tipoNegocio.invalid" class="alert">
+            <div>Seleccione un negocio</div>
+          </div>
+          <ion-item>
             <ion-label position="stacked">Categoría</ion-label>
             <ion-select
               placeholder="{{ tipoGiroAux }}"

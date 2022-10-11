@@ -63,6 +63,7 @@ export class SolicitudPage implements OnInit {
     private platform: Platform,
     public alertController: AlertController
   ) {
+    this.user = JSON.parse(localStorage.getItem("u_data"));
     this.isIos = this.platform.is("ios");
     this.existeSesion = _utils_cls.existe_sesion();
     this.typeLogin = new OptionBackLogin();
@@ -170,8 +171,11 @@ export class SolicitudPage implements OnInit {
     if (this.plazaAfiliacion != null) {
       this.anyFiltros.organizacion = this.plazaAfiliacion.id_organizacion;
     }
-    this.servicioSolicitudes
-      .obtenerSolicitudesPublicadas(this.anyFiltros)
+    if(this.user != null || this.user != undefined){
+      this.anyFiltros.id_persona=this.user.id_persona;
+    }
+    this.servicioSolicitudes    
+      .obtenerSolicitudesPublicadas(this.anyFiltros)          
       .subscribe(
         (response) => {
           if (response.data !== null) {
