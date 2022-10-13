@@ -29,7 +29,7 @@ import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { ActionSheetController } from "@ionic/angular";
 import { ModalController } from "@ionic/angular";
 import { DenunciaNegocioPage } from "./denuncia-negocio/denuncia-negocio.page";
-import { Plugins } from "@capacitor/core";
+import { Plugins, FilesystemDirectory } from "@capacitor/core";
 import { CalificarNegocioComponent } from "../../componentes/calificar-negocio/calificar-negocio.component";
 import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveedor-servicio.service";
 import { DetalleProductoComponent } from "../../componentes/detalle-producto/detalle-producto.component";
@@ -40,6 +40,7 @@ import { PromocionesModel } from "src/app/Modelos/PromocionesModel";
 import { File } from "@ionic-native/File/ngx";
 import { HTTP } from "@ionic-native/http/ngx";
 import { icon, Map, Marker, marker, tileLayer } from "leaflet";
+import { Downloader, DownloadRequest, NotificationVisibility } from "@ionic-native/downloader/ngx";
 /* import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer/ngx'; */
 /* import { FileTransfer, FileUploadOptions, FileTransferObject } from '@awesome-cordova-plugins/file-transfer/ngx'; */
 
@@ -127,7 +128,9 @@ export class PerfilNegocioPage implements OnInit {
     private notificacionService: ToadNotificacionService,
     private location: Location,
     private util: UtilsCls,
+    private downloader: Downloader,
     private sideBarService: SideBarService,
+    public notificaciones: ToadNotificacionService,
     private actionSheetController: ActionSheetController,
     public modalController: ModalController,
     private serviceProveedores: ProveedorServicioService,
@@ -511,40 +514,87 @@ export class PerfilNegocioPage implements OnInit {
     this.abrirVentana("tel:" + telefono);
   }
 
-  abrirVentana(ruta) {
-    /*  this.negocioService.obtenerPDF(ruta).subscribe(
-            (response) => {
-console.log("resp",response)
-            });
-                var oReq = new XMLHttpRequest();
-                oReq.open("GET", ruta, true);
-                oReq.responseType = "blob";
-                oReq.onload = function (oEvent) {
-                    var blob = oReq.response; 
-                    if (blob) {
-                        console.log("blob",blob);
-                        
-                        var url = window.URL.createObjectURL(blob);
-                       
-                        var reader = new FileReader();
-                        reader.addEventListener("loadend", function() {
-                        });
-                        reader.readAsText(blob);
-                    } else console.error('we didnt get an XHR response!');
-                };
-                oReq.send(null); */
-    /*  console.log(this.platform)
-       this.file.copyFile(ruta, 'p.pdf', this.file.dataDirectory, 'name.pdf').then(result => {
-           this.fileOpener.open(result.nativeURL, 'application/pdf');
-       }) */
-    /* const options: DocumentViewerOptions = {
-            title: 'my pdf'
+  descargarCarta(ruta) {
+    let nombreArchivo = ruta.split('/');
+    nombreArchivo = nombreArchivo.slice(-1)
+
+    let extencion = nombreArchivo.toString().split('.');
+    extencion = extencion.slice(-1);
+
+    let nombre = this.informacionNegocio.nombre_comercial;
+    this.msj = 'Descargando archivo....';
+    this.loader = true;
+
+    if (this.isIOS) {
+      setTimeout(() => {
+        const options: any = {
+          method: "get",
+          responseType: "blob",
+          headers: {
+            accept: this.getMimetype(extencion),
+          },
+        };
+        this.nativeHTTP.sendRequest(ruta, options)
+          .then((response) => {
+            let blob: Blob = response.data;
+            this.file
+              .writeFile(
+                this.file.documentsDirectory,
+                'carta_' + nombre + '.' + extencion, blob, { replace: true, append: false })
+              .then((response) => {
+                Share.share({
+                  title: 'carta_' + nombre,
+                  url: response.nativeURL,
+                }).then((resShare) => {
+  
+                });
+              })
+              .catch((error) => this.notificaciones.error(error));
+          })
+          .catch((error) => this.notificaciones.error(error));
+        this.loader = false;
+      }, 700);
+
+    } else {
+      var request: DownloadRequest = {
+        uri: ruta,
+        title: 'carta_' + nombre,
+        description: "",
+        mimeType: "",
+        visibleInDownloadsUi: true,
+        notificationVisibility: NotificationVisibility.VisibleNotifyCompleted,
+        destinationInExternalFilesDir: {
+          dirType: "",
+          subPath: FilesystemDirectory.Documents + "/" + 'carta_' + nombre + '.' + extencion
         }
-        this.document.viewDocument(ruta, 'application/pdf',options); */
-    /*   console.log("cambio5");
-        Capacitor.convertFileSrc(ruta);
-        window.location.href = ruta; */
-    /*  window.open(ruta,"_self"); */
+      };
+      this.downloader.download(request).then((location: string) => {
+        this.notificaciones.exito("El Archivo se descargo con exito")
+        this.loader = false;
+      }).catch((error: any) => {
+        this.loader = false;
+        this.notificaciones.error(error)
+      });
+    }
+  }
+
+  getMimetype(name) {
+    if (name.indexOf("pdf") >= 0) {
+
+      return "application/pdf";
+    } else if (name.indexOf("png") >= 0) {
+
+      return "image/png";
+    } else if (name.indexOf("jpeg") >= 0) {
+
+      return "image/jpeg";
+    } else if (name.indexOf("jpg") >= 0) {
+
+      return "image/jpg";
+    }
+  }
+
+  abrirVentana(ruta) {
     window.open(
       ruta,
       "_blank",
@@ -883,6 +933,7 @@ console.log("resp",response)
   }
 
   salir() {
+    this.msj = "Cargando";
     localStorage.setItem("loaderNegocio", "true");
     if (this.bolsa.length > 0) {
       this.mensajeBolsa();
