@@ -551,7 +551,8 @@ export class PerfilNegocioPage implements OnInit {
               })
               .catch((error) => this.notificaciones.error(error));
           })
-          .catch((error) => this.notificaciones.error(error));
+          .catch((error) => this.notificaciones.error(error))
+          .finally(() => this.loadMap());
         this.loader = false;
       }, 700);
 
@@ -569,12 +570,13 @@ export class PerfilNegocioPage implements OnInit {
         }
       };
       this.downloader.download(request).then((location: string) => {
-        this.notificaciones.exito("El Archivo se descargo con exito")
+        this.notificaciones.exito("El Archivo se descargo con exito");
         this.loader = false;
       }).catch((error: any) => {
         this.loader = false;
         this.notificaciones.error(error)
-      });
+      })
+      .finally(() => this.loadMap());
     }
   }
 
