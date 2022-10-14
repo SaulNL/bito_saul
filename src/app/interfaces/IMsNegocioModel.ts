@@ -14,6 +14,7 @@ export interface IMsNegocio {
   rfc?: string;
   descripcion?: string;
   nombre_comercial?: string;
+  nombre_corto?: String;
   url_logo?: string;
   id_tipo_negocio?: number;
   id_domicilio?: number;
