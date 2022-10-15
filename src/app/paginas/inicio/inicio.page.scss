@@ -71,6 +71,11 @@
 .text2{
   font-size: 13px;
 }
+.verTodos{
+  justify-content: center;
+  width: 100%;
+  font-size: 18px;
+}
 
 @media (max-width: 500px) {
   .text{
@@ -80,6 +85,9 @@
   .text2, .icono{
     font-size: 10.2px;
   }
+}
+.verTodos, .icono{
+  font-size: 15px;
 }
 
 .mapa{

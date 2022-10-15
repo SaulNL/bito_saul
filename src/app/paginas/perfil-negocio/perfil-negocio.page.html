@@ -875,17 +875,20 @@
         <ion-row
           *ngFor="let cat of informacionNegocio.catProductos; let i = index"
         >
-          <ion-item class="w-100 bg-gris">
-            <p style="font-size: 18px; " class="ion-text-start" (click)="mostrarProducto(cat.nombre)">
-              {{cat.nombre}}
-            </p>
+        <div style="width: 100%;" (click)="mostrarProducto(cat.nombre)" ng-click = "scrollTop()">  
+          <ion-item class="w-100 bg-gris">            
+            <p 
+            [class]="!negocioSub &&  nameSub === cat.nombre ? 'tooggle' : 'tooggle-none'" >
+              {{cat.nombre}}                
+            </p> 
             <ion-icon
-              (click)="mostrarProducto(cat.nombre)"
+              [class]="!negocioSub &&  nameSub === cat.nombre ? 'icon-color-select' : ''"                          
               slot="end"
-              [name]="!negocioSub &&  nameSub === cat.nombre ? 'caret-down-outline' : 'caret-forward-outline'"
-            >
-            </ion-icon>
-          </ion-item>
+              [name]="!negocioSub &&  nameSub === cat.nombre ? 'caret-down-outline' : 'caret-forward-outline'"              
+              >
+            </ion-icon>                                
+          </ion-item>                   
+        </div>                            
           <ng-container *ngIf="!negocioSub &&  nameSub === cat.nombre">
             <ion-col
               size="6"
@@ -992,17 +995,19 @@
           </ion-col>
         </ion-row>
         <ion-row *ngFor="let cat of informacionNegocio.catServicos">
-          <ion-item class="w-100 bg-gris">
-            <p style="font-size: 18px;" class="ion-text-start" (click)="mostrarServicio(cat.nombre)">
-              {{cat.nombre}}
-            </p>
-            <ion-icon
-              (click)="mostrarServicio(cat.nombre)"
-              slot="end"
-              [name]="!servicioSub &&  namelesSub === cat.nombre ? 'caret-down-outline' : 'caret-forward-outline'"
-            >
-            </ion-icon>
-          </ion-item>
+          <div style="width: 100%;" (click)="mostrarServicio(cat.nombre)">  
+            <ion-item class="w-100 bg-gris">
+              <p [class]="!servicioSub &&  namelesSub === cat.nombre ? 'tooggle' : 'tooggle-none'" >
+                {{cat.nombre}}
+              </p>
+              <ion-icon
+                [class]="!servicioSub &&  namelesSub === cat.nombre ? 'icon-color-select' : ''"
+                slot="end"
+                [name]="!servicioSub &&  namelesSub === cat.nombre ? 'caret-down-outline' : 'caret-forward-outline'"
+              >
+              </ion-icon>
+            </ion-item>                       
+          </div>           
           <ng-container *ngIf="!servicioSub &&  namelesSub === cat.nombre">
             <ion-col size="6" *ngFor="let producto of cat.servicios">
               <ion-card class="m-0 cardsps fixed">

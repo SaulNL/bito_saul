@@ -399,12 +399,24 @@ export class InicioPage implements OnInit {
           this.listaCategorias[this.lengthLista].nombre = "";
         }
       } else {
-        this.listaCategorias = respuesta.data.lst_cat_negocios.data;
+        console.log("sin ordenar +++++++++++++++++++")
+        console.log(JSON.stringify(respuesta.data.lst_cat_negocios.data))
+        let aux = this.ordenarRandom(respuesta.data.lst_cat_negocios.data) //id_categoria_negocio    
+        this.listaCategorias = aux;
         this.negociosIdMapa();
       }
     } else {
       throw throwError("");
     }
+  }
+  ordenarRandom(listaCat:any[]){
+    console.log("entra random+++++++++++++++++++")
+    let nuevaLista:any[]=[];
+    nuevaLista=listaCat.sort(function() { return Math.random() - 0.5 });/*(function (a, b) {
+      return (a.id_categoria_negocio - b.id_categoria_negocio)
+  })*/  
+    console.log(JSON.stringify(nuevaLista)) 
+    return nuevaLista;
   }
 
   async validarResultadosDeCategoriasAll(respuesta: any) {
