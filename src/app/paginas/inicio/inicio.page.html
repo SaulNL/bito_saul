@@ -214,7 +214,7 @@
           </ion-button-->
           <ion-chip class="verTodos" color="dark" (click)="obtenerPrincipalInicio(cat.nombre)"
             *ngIf="!banderaVerMas && !filtroActivo && !idTodo && !selectionAP && !buscador">
-            <span>Ver todos los negocios {{cat.nombre}}</span>
+            <span class="texto-ver-mas">Ver todos los negocios {{cat.nombre}}</span>
             <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
           </ion-chip>
         </ion-row>
