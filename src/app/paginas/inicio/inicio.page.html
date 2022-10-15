@@ -168,12 +168,12 @@
                     <ion-spinner *ngIf="idNegocio===proveedor.id_negocio"  name="dots" class="spinner-color"></ion-spinner>
                   </ion-row>
                   <ion-card-subtitle class="texto-comercio">
-                    {{proveedor.nombre_comercial}}
+                    {{proveedor.nombre_corto != "" ? proveedor.nombre_corto : proveedor.nombre_comercial}}
                     <!--ion-icon
-                      *ngIf="proveedor.verificado"
+                      *ngIf="!proveedor.verificado"
                       class="text-rosa"
                       name="checkmark-circle"
-                    ></ion-icon-->
+                    ></ion-icon---->
                   </ion-card-subtitle>
                 </ion-card-header>
               </div>

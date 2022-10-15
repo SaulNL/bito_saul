@@ -179,6 +179,27 @@ export class DatosPedidoNegocioPage implements OnInit {
        
     }
 
+    shareCliente() {
+        let cliente = this.pedido.persona.nombre;
+            cliente = cliente != null ? cliente : 'Sin dato';
+        let telefono = this.pedido.persona.telefono;
+            telefono = telefono != null ? telefono : 'Sin dato';
+        let celular = this.pedido.persona.celular;
+            celular = celular != null ? celular : 'Sin dato';
+        let correo = this.pedido.persona.correo;
+            correo = correo != null ? correo : 'Sin dato';
+        let direccion = this.pedido.direccion.direccion;
+            direccion = direccion != null ? direccion : "Sin dato";
+
+        this.socialSharing.share(
+        'Cliente: ' + cliente + ', ' +
+        'Teléfono: ' + telefono + ', ' +
+        'Celular: ' + celular + ', ' +
+        'Correo: ' + correo + ', ' +
+        'Dirección: ' + direccion, 'Cliente:', '','');
+    }
+
+
     public gLatLng(lat, lng) {
         const coder = new google.maps.Geocoder;
         const lnr = {

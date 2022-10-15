@@ -1,13 +1,13 @@
 {
-	"appId": "mx.com.softura.bitoo.produccion",
-	"appName": "Bitoo",
-	"bundledWebRuntime": false,
-	"npmClient": "npm",
-	"webDir": "www",
-	"plugins": {
-		"SplashScreen": {
-			"launchShowDuration": 3000
-		}
-	},
-	"cordova": {}
+  "appId": "mx.com.softura.bitoo.produccion",
+  "appName": "Bitoo",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 3000
+    }
+  },
+  "cordova": {}
 }

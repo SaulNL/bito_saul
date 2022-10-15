@@ -44,16 +44,20 @@
             <div>
               <p style=" margin: 0 0 0px !important;">{{pedido.persona.nombre}}</p>
               <div *ngIf="pedido.id_estatus_pedido < 5">
-                <small class="d-block">Telefono: {{pedido.persona.telefono}}</small>
+                <small class="d-block">Teléfono: {{pedido.persona.telefono}}</small>
                 <small class="d-block">Celular: {{pedido.persona.celular}}</small>
                 <small class="d-block">Correo: {{pedido.persona.correo}}</small>
                 <small *ngIf="pedido.id_tipo_pedido === 1" class="d-block">Numero de mesa: {{pedido.mesa}}</small>
                 <small *ngIf="pedido.id_tipo_pedido === 2" class="d-block">Dirección:
                   {{pedido.direccion.direccion}}</small>
               </div>
+              
               <ion-button expand="full" (click)="shareSocial()" color="primary" *ngIf="pedido.id_tipo_pedido === 2">
                 <ion-icon name="share-social-outline"></ion-icon> Compartir dirección
-                </ion-button>
+              </ion-button>
+              <ion-button expand="full" (click)="shareCliente()" color="primary" *ngIf="pedido.id_tipo_pedido === 2">
+                <ion-icon name="share-social-outline"></ion-icon> Compartir datos del cliente
+              </ion-button>
             </div>
           </ion-col>
         </ion-row>
