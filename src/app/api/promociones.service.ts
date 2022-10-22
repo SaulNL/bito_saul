@@ -358,4 +358,16 @@ export class PromocionesService {
 
   }
 
+  obtenerPromocion(idPromocion): Observable<any>{
+    const body = JSON.stringify({idPromocion});
+    this.http.setDataSerializer('utf8');
+    return from(this.http.post(`${this.url}api/promociones/buscar/id`, body, AppSettings.getHeaders())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
+    }));
+  }
+
 }

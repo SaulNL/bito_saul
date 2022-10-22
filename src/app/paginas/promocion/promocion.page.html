@@ -1,13 +1,25 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-buttons slot="start">
+      <ion-button (click)="salir()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Promoción</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngFor="let promocion of promociones">
   <div> 
     <div class="contenedor">
       <img class="image" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/no_imagen.png" [srcset]="promocion.url_imagen">
       <div class="middle-modal">
-        <button class="boton" (click)="masInformacion(promocion)">Más información</button>
+        <button class="boton" (click)="masInformacion()">Más información</button>
       </div>
     </div>
   </div>
   <ion-grid>
-    <ion-row (click)="masInformacion(promocion)">
+    <ion-row (click)="masInformacion()">
       <ion-col class="ion-text-center" >
         <h1 class="sinMargin rosa">{{ promocion.nombre_comercial }}</h1>
       </ion-col>
@@ -20,9 +32,9 @@
     <hr>
       <ion-row>
         <ion-col class="ion-text-center">
-          <div *ngIf="promocion.id_tipo_promocion===1">
+          <!-- <div *ngIf="promocion.id_tipo_promocion===1">
             <h2 class="sinMargin">Anuncio</h2>
-          </div>
+          </div> -->
           <div *ngIf="promocion.id_tipo_promocion===2">
             <h2 class="sinMargin">Promoción</h2>
             <br>
@@ -36,14 +48,14 @@
           <ion-col size="6" >
             <label *ngIf="promocion.porcentaje !== null" >{{ promocion.porcentaje}} %</label>
             <span *ngIf="promocion.porcentaje !== null" class="promocion"> de descuento</span></ion-col>
-          <ion-col *ngIf="idPersona!=null" size="6"><ion-button (click)="crearModal()" class="bg-rosa" size="small" mode="ios" expand="full">
+          <ion-col *ngIf="idPersona!=null" size="6"><ion-button (click)="modalCupon(promocion)" class="bg-rosa" size="small" mode="ios" expand="full">
             Solicitar Cupón
           </ion-button></ion-col>
         </ion-row>
       </ion-grid>
       <ion-row>
         <ion-col size="12" style="text-align: center;">
-          <ion-button (click)="compartir(promocion)" shape="round" fill="outline" size="small" color="danger">
+          <ion-button (click)="compartir()" shape="round" fill="outline" size="small" color="danger">
             <ion-icon name="share-social-outline" slot="start"></ion-icon>
             Compartir
           </ion-button>
@@ -59,10 +71,12 @@
      
         <ion-col class="ion-text-center">
           <h2 class="sinMargin rosa" *ngFor="let org of promocion.organizaciones ">{{org.nombre}}</h2>
+          <h2 class="sinMargin rosa" *ngFor="let con of promocion.convenios ">{{con.nombre}}</h2>
+          <h2 class="sinMargin rosa" *ngFor="let pla of promocion.plazas ">{{pla.nombre}}</h2>
         </ion-col>
       </ion-row>
     </div>
-    <div *ngIf="promocion.id_tipo_promocion===1">
+    <!-- <div *ngIf="promocion.id_tipo_promocion===1">
       <ion-row>
         <ion-col class="ion-text-center">
           <h2 class="sinMargin promocion">{{ promocion.promocion }}</h2>
@@ -74,7 +88,7 @@
           <h2 class="promocion" style="color: grey;">{{ promocion.terminos }}</h2>
         </ion-col>
       </ion-row>
-    </div>
+    </div> -->
     <div *ngIf="promocion.id_tipo_promocion===2">
       <ion-row>
         <ion-col class="ion-text-center" *ngFor="let dia of promocion.dias">
@@ -160,3 +174,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+</ion-content>
