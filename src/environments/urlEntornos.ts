@@ -32,7 +32,7 @@ export const URLS_ENTORNOS =
   beta:{
     API_ENDPOINT:'http://132.145.168.176:8081/',
     URL_REGISTRO:'http://132.145.168.176:8081/registro',
-    URL_FRONT:'https://http://132.145.168.176:8081/'
+    URL_FRONT:'https://132.145.168.176:8081/'
   },
   local:{
     API_ENDPOINT:'http://192.168.0.8/',

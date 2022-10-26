@@ -441,9 +441,7 @@ export class SignUpPage implements OnInit {
           this.SetSocialNetworkLoadTurnOf(selectedSocialNetwork);
         } else {
           this.SetSocialNetworkLoadTurnOf(selectedSocialNetwork);
-          this.toadNotificacionService.alerta(
-            "Usuario y/o contraseña incorrectos"
-          );
+          this.toadNotificacionService.alerta("Usuario y/o contraseña incorrectos");
         }
       },
       (error) => {
