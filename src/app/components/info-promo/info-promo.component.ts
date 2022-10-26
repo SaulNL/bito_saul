@@ -6,6 +6,7 @@ import { ViewqrPromocionComponent } from '../viewqr-promocion/viewqr-promocion.c
 import { PromocionesService } from 'src/app/api/promociones.service';
 import { ToadNotificacionService } from 'src/app/api/toad-notificacion.service';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { AppSettings } from 'src/app/AppSettings';
 
 /*
 declare var require: any;
@@ -101,8 +102,7 @@ export class InfoPromoComponent implements OnInit {
     }
 
   compartir(promocion){
-    this.router.navigate(["/tabs/promocion/" + promocion.id_promocion]);
-    /* let url = AppSettings.URL_FRONT + 'promocion/' + ;
-    this.socialSharing.share('😎¡Te recomiendo esta promoción!🤩', 'Promoción', promocion.url_imagen, url ); */
+    let url = AppSettings.URL_FRONT + 'promocion/' + promocion.id_promocion;
+    this.socialSharing.share('😃¡Te recomiendo esta promoción!😉', 'Promoción', promocion.url_imagen, url );
   }
 }

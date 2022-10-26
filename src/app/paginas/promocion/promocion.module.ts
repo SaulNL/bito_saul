@@ -7,14 +7,21 @@ import { IonicModule } from '@ionic/angular';
 import { PromocionPageRoutingModule } from './promocion-routing.module';
 
 import { PromocionPage } from './promocion.page';
+import { SpinnerModule } from '../../componentes/spinner/spinner.module';
+import { ViewqrPromocionComponent } from '../../components/viewqr-promocion/viewqr-promocion.component';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PromocionPageRoutingModule
+    PromocionPageRoutingModule,
+    SpinnerModule,
   ],
-  declarations: [PromocionPage]
+  providers: [
+    SocialSharing,
+  ],
+  declarations: [PromocionPage, ViewqrPromocionComponent]
 })
 export class PromocionPageModule {}

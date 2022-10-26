@@ -10,6 +10,8 @@ import { PromocionesModel } from 'src/app/Modelos/PromocionesModel';
 import { ViewqrPromocionComponent } from 'src/app/components/viewqr-promocion/viewqr-promocion.component';
 import { UtilsCls } from 'src/app/utils/UtilsCls';
 import { ModalController } from '@ionic/angular';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { AppSettings } from 'src/app/AppSettings';
 
 @Component({
   selector: 'app-promocion',
@@ -21,7 +23,7 @@ export class PromocionPage implements OnInit {
   hoy: any;
   miLat: any;
   miLng: any;
-  loader = false;
+  loader = true;
   idPromo: number;
   motrarContacto = true;
   idPersona: number | null;
@@ -29,7 +31,6 @@ export class PromocionPage implements OnInit {
   blnPermisoUbicacion = false;
   id_cupon_promocion: number;
   promociones: Array<PromocionesModel>;
-  
   fechaHoy = moment();
   diasArray = [
         {id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null},
@@ -45,7 +46,7 @@ export class PromocionPage implements OnInit {
     private notificacionService: ToadNotificacionService, private route: ActivatedRoute,
     private _promociones: PromocionesService, private _haversineService: HaversineService,
     private vioPromotionL: RegistrarPromotionService, private utils: UtilsCls,
-    public modalController: ModalController) { 
+    public modalController: ModalController, private socialSharing: SocialSharing) { 
       this.miLat = null; this.miLng = null; 
     }
 
@@ -69,15 +70,20 @@ export class PromocionPage implements OnInit {
   }
 
   obtenerInfoPromo() {
+    this.loader = true;
     this._promociones.obtenerPromocion(this.idPromo).subscribe(response => {
-      console.log("prpmocionnnnnnnnnnnnn " +  JSON.stringify(response))
-      this.promociones = response.data;
+      if (response.code == 200) {
+        this.promociones = response.data;
 
-      this.promociones.forEach(promo => {
-        this.calcularDistancia(promo);
-        this.calcularDias(promo);
-        this.horarios(null, promo);
-      })
+        this.promociones.forEach(promo => {
+          this.calcularDistancia(promo);
+          this.calcularDias(promo);
+          this.horarios(null, promo);
+        });
+      } else {
+        this.promociones = [];
+      }
+      this.loader = false;
     })
   }
 
@@ -209,8 +215,9 @@ export class PromocionPage implements OnInit {
 
   }
 
-  compartir() {
-
+  compartir(promocion){
+    let url = AppSettings.URL_FRONT + 'promocion/' + promocion.id_promocion;
+    this.socialSharing.share('😃¡Te recomiendo esta promoción!😉', 'Promoción', promocion.url_imagen, url );
   }
 
   async modalCupon(promo) {
@@ -240,10 +247,6 @@ export class PromocionPage implements OnInit {
       this.notificacionService.alerta(respuesta.message);
     }
   
-  }
-
-  salir() {
-    this.router.navigateByUrl("/tabs/promociones");
   }
 
 }
