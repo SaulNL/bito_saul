@@ -77,3 +77,42 @@
 .texto-info-domicilio{
   font-size: 10px;
 }
+.slider{
+  width: 100%;
+  height: 30%;
+}
+.foto-card {
+  width: 100%;
+  height: 160px;
+  box-shadow: none;
+  border-radius: 12px;
+  
+  img {
+      object-fit: cover;
+      width: 98%;
+      transform: scale(1.1, 1.1) rotate(1deg);
+      transition: 600ms all ease-in-out;
+  }
+}
+
+.swiper-slide-active {
+  transform: scale(1.05, 1.05);
+
+  .foto-card {
+      img {
+          transform: scale(1, 1);
+      }
+  }
+}
+
+.swiper-slide {
+  transition: 400ms all ease-in-out;
+}
+.boton{
+  position:absolute; 
+  top:-1%; 
+  right:-1%;
+  border-radius: 25px;
+  color: rebeccapurple;
+  --ion-item-background:rgba(255, 255, 255, 0.527);
+}

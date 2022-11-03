@@ -36,29 +36,48 @@
   </ng-container>
   <div class="ion-padding" style="background-color: white">
     <ion-card class="w-200" style="justify-content: center">
-      <ion-grid>
-        <div style="display: flex; justify-content: center">
+      <ion-grid>                                  
+        <!--div style="display: flex; justify-content: center;">   
           <ion-row>
-            <ion-col
-              class="ion-align-items-left ion-justify-content-left"
-              size="4"
-            >
-              <ion-avatar
-                style="
-                  height: auto;
-                  width: 120px;
-                  margin: auto;
-                  margin-left: -10px;
-                "
-              >
-                <img
-                  src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
-                  [srcset]="informacionNegocio.url_logo"
-                />
-              </ion-avatar>
-            </ion-col>
-          </ion-row>
+                  <ion-col
+                    class="ion-align-items-left ion-justify-content-left"
+                    size="4"
+                  >
+                    <ion-avatar
+                      style="
+                        height: auto;
+                        width: 120px;
+                        margin: auto;
+                        margin-left: -10px;
+                      "
+                    >
+                      <img
+                        src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+                        [srcset]="informacionNegocio.url_logo"
+                      />
+                    </ion-avatar>
+                  </ion-col>
+          </ion-row>                                      
+        </div-->
+        <div>          
           <ion-row>
+            <ion-item  class="slider">
+              <ion-slides [options]="slideOpts">         
+                <ion-slide> <!-- style="background-color: red;"-->   
+                  <ion-card class="avatar-card">
+                    <img
+                          src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+                          [srcset]="informacionNegocio.url_logo"
+                        />                                                                                       
+                  </ion-card>                                                                     
+                </ion-slide>  <!--style="width: 100%;"-->                 
+                <ion-slide  *ngFor="let foto of fotografiasArray"><!-- style="background-color: red;"-->
+                  <ion-card class="foto-card">                                                                                                     
+                    <img *ngIf="foto.archivo_64!=null || foto.archivo_64!=''" src="{{foto.url_imagen}}">
+                  </ion-card>
+                </ion-slide>
+              </ion-slides>
+            </ion-item>
             <ion-col size="12">
               <ion-text
                 class="ion-align-items-center ion-text-center ion-justify-content-center"

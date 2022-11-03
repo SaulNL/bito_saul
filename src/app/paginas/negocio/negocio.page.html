@@ -36,9 +36,16 @@
           </ion-label>
           <ion-button slot="end" size="small" (click)="viewQr(item)">
             <ion-icon name="qr-code-outline"></ion-icon>
-          </ion-button>
-        </ion-item>
-      </ion-card-header>
+          </ion-button>          
+        </ion-item> 
+        <ion-item>
+          <ion-button slot="end" size="small" (click)="agregarSucursal(item)">
+            <ion-icon name="add-outline"></ion-icon>
+            <!--p>Crear sucursal</p-->
+            <p>Clonar negocio</p>
+          </ion-button> 
+        </ion-item>                      
+      </ion-card-header>      
     </ion-card>
   </ion-list>
   <div *ngIf="listaNegocios.length === 0">

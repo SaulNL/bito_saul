@@ -28,7 +28,7 @@ export class LikeProductComponent implements OnInit {
           this.toadNotificacionService.success(response.message);
         } else {
           this.productLike.like = false;
-          this.toadNotificacionService.alert(response.message);
+          this.toadNotificacionService.alerta(response.message);
         }
       }, () => {
         this.toadNotificacionService.error('Error, intentelo más tarde');

@@ -118,6 +118,14 @@ export class PerfilNegocioPage implements OnInit {
   private latitudNeg: any;
   private longitudNeg: any;
   private convenio_entrega: any;
+  private fotografiasArray:any[];
+  slideOpts = {
+    autoHeight: true,
+    slidesPerView: 1,
+    centeredSlides: true,
+    loop: false,
+    spaceBetween: 10,
+  }
   constructor(
     private nativeHTTP: HTTP,
     private file: File,
@@ -311,6 +319,8 @@ export class PerfilNegocioPage implements OnInit {
         (response) => {
           if (response.data !== null) {
             this.informacionNegocio = response.data;
+            //console.log("obtenerInformacionNegocio perfilNego"+JSON.stringify(this.informacionNegocio.id_negocio))
+            this.buscarNegocio(this.informacionNegocio.id_negocio);
             this.convenio_entrega=this.informacionNegocio.convenio_entrega;
             this.latitudNeg = this.informacionNegocio.latitud;
             this.longitudNeg = this.informacionNegocio.longitud;
@@ -360,6 +370,17 @@ export class PerfilNegocioPage implements OnInit {
         }
       );
     // this.loader = false;
+  }
+  buscarNegocio(id:any){
+    this.negocioService.buscarNegocio(id).subscribe(
+      response => {
+        let negocioTO = response.data;  
+        this.fotografiasArray= negocioTO.fotografias 
+        //console.log("buscarNegocio perfilNego: "+JSON.stringify(this.fotografiasArray))    
+      },
+      error => {
+      }
+    );
   }
 
   obtenerProductos() {

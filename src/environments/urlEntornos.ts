@@ -35,8 +35,8 @@ export const URLS_ENTORNOS =
     URL_FRONT:'https://132.145.168.176:8081/'
   },
   local:{
-    API_ENDPOINT:'http://192.168.0.8/',
-    URL_REGISTRO:'http://192.168.0.8/registro',
-    URL_FRONT:'http://192.168.0.8/'
+    API_ENDPOINT:'http://192.168.1.72/',
+    URL_REGISTRO:'http://192.168.1.72/registro',
+    URL_FRONT:'http://192.168.1.72/'
   }
 };
