@@ -118,7 +118,7 @@ export class PerfilNegocioPage implements OnInit {
   private latitudNeg: any;
   private longitudNeg: any;
   private convenio_entrega: any;
-  private fotografiasArray:any[];
+  public fotografiasArray:any[];
   slideOpts = {
     autoHeight: true,
     slidesPerView: 1,

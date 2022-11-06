@@ -110,7 +110,10 @@ export class FormularioNegocioPage implements OnInit {
  public seEstaClonando: boolean = false;
  public nombreAnterior:any;
  public direccionAnterior:any;
- public fotografiasArray: any[];
+ public fotografiasArray: any[]
+ public galeriaFull:boolean=false;
+ public numeroFotos:number;
+ public logo:any;
   convenioId: number;
   cnvn_fecha: any;
   dateFormat: any;
@@ -118,7 +121,7 @@ export class FormularioNegocioPage implements OnInit {
   nameConvenio: any;
   loaderSubCategoria: boolean;
   slideOpts = {
-    slidesPerView: 1.5,
+    slidesPerView: 1,
     centeredSlides: true,
     loop: false,
     spaceBetween: 10,
@@ -171,6 +174,8 @@ export class FormularioNegocioPage implements OnInit {
         this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
         this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
         // this.setearDireccion();
+        this.fotografiasArray=this.negocioTO.fotografias;
+        this.numeroFotos=this.fotografiasArray.length;
       }
       else if(params && params.clonar){
         this.seEstaClonando=true;
@@ -180,9 +185,14 @@ export class FormularioNegocioPage implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.special) {
         const datos = JSON.parse(params.special);
-        this.negocioTO = datos.info;
+        this.negocioTO = datos.info;  
+        //this.buscarNegocio(this.negocioTO.id_negocio)
         this.fotografiasArray=this.negocioTO.fotografias;
-        console.log("fotografiasArray####"+JSON.stringify(this.fotografiasArray))
+        console.log("fotografiasArray####"+JSON.stringify(this.fotografiasArray))          
+        this.numeroFotos=this.fotografiasArray.length;
+        if(this.numeroFotos>=3){
+          this.galeriaFull=true
+        }
         this.nombreAnterior = this.negocioTO.nombre_comercial;
         this.direccionAnterior = this.negocioTO.det_domicilio;
         this.negocioGuardar = datos.pys;
@@ -293,8 +303,19 @@ export class FormularioNegocioPage implements OnInit {
 
 
   }
-
+  public infoNegocio(id: any) {
+    console.log("buscar")
+      this.negocioServico.buscarNegocio(id).subscribe(
+        response => {
+          this.negocioTO = response.data;          
+          this.logo=this.negocioTO.logo.archivo_64
+        },
+        error => {
+        }
+      );    
+  }
   public buscarNegocio(id: any) {
+    console.log("buscar")
     if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
       this.obtenerTipoNegocio();
       this.obtenerCatOrganizaciones();
@@ -328,6 +349,7 @@ export class FormularioNegocioPage implements OnInit {
           this.negocioTO.local = archivo;
           this.categoriaPrincipal({ value: this.negocioTO.id_tipo_negocio });
           this.subcategorias({ value: this.negocioTO.id_giro });
+          //this.logo=this.negocioTO.logo.archivo_64
         },
         error => {
         }
@@ -486,10 +508,11 @@ export class FormularioNegocioPage implements OnInit {
                       archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
                       archivo.archivo_64 = file_64;
                     }
-                    this.negocioTO.fotografias.push(archivo);
-                    
-                    console.log("fotografiasArray"+JSON.stringify(this.fotografiasArray))
-                    
+                    this.fotografiasArray.push(archivo)
+                    this.numeroFotos++
+                    if(this.numeroFotos>=3){
+                      this.galeriaFull=true
+                    }                    
                   }
                 );
               } else {
@@ -503,8 +526,11 @@ export class FormularioNegocioPage implements OnInit {
                   const archivo = new ArchivoComunModel();
                   archivo.nombre_archivo = nombre_archivo,
                     archivo.archivo_64 = r.data;
-                    this.negocioTO.fotografias.push(archivo);
-                    console.log(JSON.stringify(this.negocioTO.fotografias))
+                    this.fotografiasArray.push(archivo)
+                    this.numeroFotos++
+                    if(this.numeroFotos>=3){
+                      this.galeriaFull=true
+                    }                    
                 }
               }
               );
@@ -512,6 +538,13 @@ export class FormularioNegocioPage implements OnInit {
           };
         };
       }
+    }
+  }
+  public borrarFoto(posicion:number){    
+    this.fotografiasArray.splice(posicion, 1);
+    this.numeroFotos--
+    if(this.numeroFotos<3){
+      this.galeriaFull=false
     }
   }
   async abrirModal(evento, width, heigh) {
@@ -935,8 +968,8 @@ export class FormularioNegocioPage implements OnInit {
         }else if((this.negocioGuardar.nombre_comercial != this.nombreAnterior) && (dirActual.calle != dirAnterior)){
           console.log(this.negocioGuardar.nombre_comercial +" Y "+ this.nombreAnterior) 
           console.log(dirActual.calle+" Y "+dirAnterior)
-          console.log("NegocioGuardar#####",JSON.stringify(this.negocioGuardar))
-          /*this.negocioServico.guardar(this.negocioGuardar).subscribe(
+          //console.log("NegocioGuardar#####",JSON.stringify(this.negocioGuardar))
+          this.negocioServico.guardar(this.negocioGuardar).subscribe(
             response => {
               if (response.code === 200) {
                 this.notificaciones.exito('Tu negocio se guardo exitosamente');                                          
@@ -951,7 +984,7 @@ export class FormularioNegocioPage implements OnInit {
               this.notificaciones.error(error);                                                                                 
               this.loader = false;
             }
-          );*/
+          );
         }        
       }else{
         this.negocioServico.guardar(this.negocioGuardar).subscribe(
@@ -1067,7 +1100,7 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.tipo_pago_tarjeta_debito = this.negocioTO.tipo_pago_tarjeta_debito;
     this.negocioGuardar.tipo_pago_efectivo = this.negocioTO.tipo_pago_efectivo;
 
-    this.negocioGuardar.fotografias = this.negocioTO.fotografias;
+    this.negocioGuardar.fotografias = this.fotografiasArray
     if (this.negocioTO.det_domicilio.id_domicilio != null) {
       this.negocioGuardar.det_domicilio.id_domicilio = this.negocioTO.det_domicilio.id_domicilio;
     }

@@ -57,7 +57,7 @@ export class ToadNotificacionService {
     const Toast = Swal.mixin({
       toast: true,
       position: 'top-right',
-      timer: 2000,
+      timer: 5000,
       timerProgressBar: true,
     })
     Toast.fire({
@@ -80,7 +80,7 @@ export class ToadNotificacionService {
     const Toast = Swal.mixin({
       toast: true,
       position: 'top-right',
-      timer: 2000,
+      timer: 5000,
       timerProgressBar: true,
     })
     Toast.fire({
@@ -103,7 +103,7 @@ export class ToadNotificacionService {
     const Toast = Swal.mixin({
       toast: true,
       position: 'top-right',
-      timer: 3000,
+      timer: 7000,
       timerProgressBar: false,
     })
     Toast.fire({
@@ -126,7 +126,7 @@ export class ToadNotificacionService {
     const Toast = Swal.mixin({
       toast: true,
       position: 'top-right',
-      timer: 2000,
+      timer: 6000,
       timerProgressBar: true,
     })
     Toast.fire({
@@ -149,7 +149,7 @@ export class ToadNotificacionService {
     const Toast = Swal.mixin({
       toast: true,
       position: 'top-right',
-      timer: 2000,
+      timer: 5000,
       timerProgressBar: true,
     })
     Toast.fire({
@@ -172,7 +172,7 @@ export class ToadNotificacionService {
     const Toast = Swal.mixin({
       toast: true,
       position: 'top-right',
-      timer: 2000,
+      timer: 9000,
       timerProgressBar: true,
     })
     Toast.fire({

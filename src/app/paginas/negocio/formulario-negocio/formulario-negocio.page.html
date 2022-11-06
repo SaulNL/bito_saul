@@ -61,29 +61,36 @@
         <div>
           <ion-item  class="slider">
             <ion-slides [options]="slideOpts">                            
-              <ion-slide *ngFor="let foto of negocioTO.fotografias">
-                <ion-card class="foto-card">                                 
-                  <!--ion-item class="boton">
-                    <input type="file" hidden id="imageUpload" accept="image/*" (change)="subir_imagen_cuadrada($event)" />
-                    <label for="imageUpload">
-                      <ion-icon style="size: 10px;" name="camera-outline"></ion-icon>
+              <ion-slide *ngFor="let foto of fotografiasArray; let i = index">               
+                  <ion-card>
+                    <img src={{foto.url_imagen}}/>                    
+                    <img *ngIf="(foto.archivo_64 != null || foto.archivo_64 != '')" src="{{foto.archivo_64}}">                                        
+                    <ion-label (click)="borrarFoto(i)" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>                  
+                  </ion-card>
+              </ion-slide>  
+              <ion-slide style="height:100%; margin-bottom: 5px;" *ngIf="galeriaFull != true">
+                <ion-card>                 
+                    <ion-icon                      
+                      name="image"
+                      role="img"
+                      class="md hydrated size-icon"
+                      aria-label="image"
+                    ></ion-icon>                  
+                    <label class="custom-file-input">
+                      <input
+                        type="file"
+                        #fileInput
+                        id="imagen-producto-uno"
+                        accept="image/*"                     
+                        (click)="fileInput.value = null"
+                        (change)="agregarFoto($event)"
+                      />
                     </label>
-                  </ion-item-->                              
-                  <img src="{{foto.url_imagen}}">
-                  <img *ngIf="(foto.archivo_64 != null || foto.archivo_64 != '')" src="{{foto.archivo_64}}">
                 </ion-card>
-              </ion-slide>              
+              </ion-slide>            
             </ion-slides>
           </ion-item> 
-        </div>
-        <div style="display: flex; justify-content: center; align-items: center">
-          <ion-button>Añadir fotografías
-            <input type="file" hidden id="addFoto" accept="image/*" (change)="agregarFoto($event)"/>
-            <label for="addFoto">
-              <ion-icon name="images-outline" ></ion-icon>
-            </label>          
-          </ion-button>
-        </div>
+        </div>        
         <div style="display: flex; justify-content: center; align-items: center"
           *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null && seEstaClonando == false)">
           <ion-button size="small" *ngIf=" negocioTO.url_negocio !== null" (click)="solicitarCambioUrl()" color="primary">
@@ -595,7 +602,7 @@
             <ion-label>Los campos con * son obligatorios</ion-label>
           </ion-item>
         </ion-list>
-        <ion-button *ngIf="seEstaClonando == false" [disabled]="contactoInvalid(formNegoContacto.invalid, negocioTO.dias)" expand="block" type="submit"
+        <ion-button *ngIf="(seEstaClonando == false) && (negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)" [disabled]="contactoInvalid(formNegoContacto.invalid, negocioTO.dias)" expand="block" type="submit"
           class="bg-rosa">
           <span *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</span>
         </ion-button>

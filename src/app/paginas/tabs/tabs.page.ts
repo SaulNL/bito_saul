@@ -7,6 +7,7 @@ import { Platform, AlertController } from '@ionic/angular';
 import {AfiliacionPlazaModel} from "../../Modelos/AfiliacionPlazaModel";
 import { exists } from "fs";
 import { ReloadComponent } from "src/app/Bitoo/components/reload/reload.component";
+import { NotificacionesService } from "src/app/api/usuario/notificaciones.service";
 
 @Component({
   selector: "app-tabs",
@@ -21,14 +22,17 @@ export class TabsPage implements OnInit {
   public isIos: boolean;
   public isAndroid: boolean;
   private plazaAfiliacion: AfiliacionPlazaModel | null;
-
+  public misNotificaciones: any;
+  public notifSinLeer :number =0;
+  public id_proveedor:any;
   constructor(
       private util: UtilsCls,
       private sideBarService: SideBarService,
       private router: Router,
       private auth0: Auth0Service,
       private platform: Platform,
-      public alertController: AlertController
+      public alertController: AlertController,
+      private notificacionesServide : NotificacionesService, 
   ) {
     this.existeSesion = util.existe_sesion();
     this.activedPage = "";
@@ -48,7 +52,18 @@ export class TabsPage implements OnInit {
     const pagina = localStorage.getItem('activedPage');
     const prod = localStorage.getItem('productos');
     const neg = localStorage.getItem('negocios');
-      
+    var id_proveedor: number = +localStorage.getItem('id_proveedor');
+    this.notificacionesServide.obtenerNotificaciones(id_proveedor).subscribe(
+      response => {
+        if (response.code === 200){          
+          this.misNotificaciones= response.data;
+          this.notificacionesSinAbrir();
+        }            
+      },
+      error => {
+      }
+    );
+    this.actualizarNotificaciones(localStorage.getItem('id_proveedor'));
    
 
     if (neg==='active' && this.isIos){
@@ -198,5 +213,31 @@ export class TabsPage implements OnInit {
     });
     await alert.present();
   }
+
+  obtenerNotificaciones(id_proveedor: any){
+    this.notificacionesServide.obtenerNotificaciones(id_proveedor).subscribe(
+      response => {
+        if (response.code === 200){          
+          this.misNotificaciones= response.data;
+          this.notificacionesSinAbrir();
+        }            
+      },
+      error => {
+      }
+    );
+  }
+
+  notificacionesSinAbrir(){    
+    this.notifSinLeer = this.misNotificaciones.filter(item =>{
+      return item.estatus == 1;
+    }).length;
+  }
+
+  actualizarNotificaciones(id_proveedor:any){
+    setInterval(( ) =>{
+      this.obtenerNotificaciones(id_proveedor);
+    }, 30000);
+  }
+  
 
 }
