@@ -47,12 +47,18 @@
     </ion-tab-button>
 
     <ion-tab-button *ngIf="usuario !== null" (click)="perfil()">
-      <ion-avatar>
-        <img
-          src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
-          [srcset]="usuario.imagen"
-        />
-      </ion-avatar>
+      <div>        
+        <ion-avatar>
+          <img
+            src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
+            [srcset]="usuario.imagen"
+          />                
+        </ion-avatar>
+      </div>
+      <ion-fab>
+        <p class="notif" *ngIf="notifSinLeer == 0 ; else hayNotificaciones">0</p>      
+        <ng-template #hayNotificaciones><p class="notif" #hayNotificaciones>{{notifSinLeer}}</p></ng-template>
+      </ion-fab>      
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

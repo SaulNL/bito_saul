@@ -466,9 +466,9 @@ export class FormSolicitudPage implements OnInit {
     this.negocioServico.misNegocios(this.usuario.proveedor.id_proveedor).subscribe(
       (response) => {
         if (response.code === 200) {
-          this.listMiNegocio = response.data;  
-          this.listMiNegocio.forEach((element) => {
-            if (element.id_negocio == this.actualTO.id_negocio) {
+          this.listMiNegocio = response.data;
+          this.listMiNegocio.forEach(element => {
+            if (element.id_negocio == this.actualTO.id_negocio) {             
               this.negoAux = element.nombre_comercial;
             }
           });       

@@ -59,6 +59,7 @@ export class NegocioModel {
   plazasTodo: any;
   public plazas: any;
   public afiliaciones: any;
+  public fotografias: any;
   constructor(
     id_negocio = null,
     rfc = null,
@@ -79,7 +80,8 @@ export class NegocioModel {
     tiempo_entrega_kilometro = null,
     costo_entrega = 30,
     otra_categoria = null,
-    otra_subcategoria = null
+    otra_subcategoria = null,    
+    fotografias=[],
   ) {
     this.id_negocio = id_negocio;
     this.rfc = rfc;
@@ -106,5 +108,6 @@ export class NegocioModel {
     this.dias= new Array<HorarioNegocioModel>() ;
     this.otra_categoria = otra_categoria;
     this.otra_subcategoria = otra_categoria;
+    this.fotografias = fotografias;
   }
 }

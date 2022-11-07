@@ -287,3 +287,90 @@ p {
 .icon-color-select{
   color: #fa4f72;
 }
+.urlNegocio{
+  text-align: center;
+  width: 100%;
+  font-size: 18px;    
+}
+.urlNegocio h6{
+  color: #fa4f72; 
+  font-size: smaller;  
+}
+.slider{
+  margin-top: 0px;
+  width: 100%;    
+  line-height:0;
+}
+.swiper-slide-active {
+  transform: scale(1.05, 1.05);
+}
+.swiper-slide {
+  transition: 400ms all ease-in-out;
+}
+
+.avatar-preview {
+  width: 280px;
+  height: 280px;
+  margin: 5px;
+ // position: relative;
+  border-radius: 100%;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+ // right: -12vh;
+  background-image: url(https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg);
+  background-repeat: no-repeat !important;
+  background-position: center;
+  background-size: contain;
+}
+.avatar-preview > div {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 100% !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+.foto-preview {
+  width: 290px;
+  height: 290px;
+  margin: 5px;
+ // position: relative;
+  border-radius: 0%;
+  border: 3px solid #a1a1a1;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+ // right: -12vh;
+  background-image: url(https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg);
+  background-repeat: no-repeat !important;
+  background-position: center;
+  background-size: contain;
+}
+.foto-preview > div {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0% !important;
+  
+}
+.arrows{
+  height: 100%;
+  width: fit-content;
+  display: flex;
+  align-items: center; 
+  background: rgb(250,79,114);
+  background: radial-gradient(circle, rgba(250,79,114,1) 0%, rgba(167,78,239,1) 100%); 
+  color: white;
+}
+.arrowsDeactivated{
+  height: 100%;
+  width: fit-content;
+  display: flex;
+  align-items: center; 
+  background: rgb(224,150,165);
+background: radial-gradient(circle, rgba(224,150,165,1) 0%, rgba(127,64,180,1) 100%);
+  color: white;
+  
+}
+.difuminar{     
+  background-color: rgba(255, 255, 255, 0.24);/*rgba(94,7,35, 0.3); */
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px); 
+}

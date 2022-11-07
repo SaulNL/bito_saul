@@ -34,31 +34,68 @@
       </ion-slide>
     </ion-slides>
   </ng-container>
-  <div class="ion-padding" style="background-color: white">
-    <ion-card class="w-200" style="justify-content: center">
-      <ion-grid>
-        <div style="display: flex; justify-content: center">
-          <ion-row>
-            <ion-col
-              class="ion-align-items-left ion-justify-content-left"
-              size="4"
-            >
-              <ion-avatar
-                style="
-                  height: auto;
-                  width: 120px;
-                  margin: auto;
-                  margin-left: -10px;
-                "
-              >
-                <img
+  <ng-container>  
+    <ion-item  class="slider">
+      <div (click)="back()" 
+        [class]="currentIndex !== 0 ? 'arrows' : 'arrowsDeactivated'">
+        <ion-icon name="chevron-back-outline" size="large"></ion-icon>           
+      </div> 
+      <ion-slides [options]="slideOpts" #carrusel (ionSlideDidChange)="SlideChanges(carrusel)">                
+        <ion-slide style="background-image: url({{logo}});"> <!-- style="background-color: red;"--> 
+          <div class="difuminar">
+            <!--ion-card class="avatar-card">
+            <img
                   src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
                   [srcset]="informacionNegocio.url_logo"
-                />
-              </ion-avatar>
-            </ion-col>
-          </ion-row>
+                />                                                                                       
+            </ion-card-->   
+            <ion-card class="avatar-preview">              
+              <div style="background-image: url({{informacionNegocio.url_logo}});">               
+              </div>                       
+            </ion-card>
+          </div>                                                                              
+        </ion-slide>              
+        <ion-slide *ngFor="let foto of fotografiasArray">       
+            <ion-card class="foto-preview" style="background-color: rebeccapurple;">
+              <div *ngIf="foto.url_imagen!=null || foto.url_imagen!=''" [ngStyle]="{
+                'background-image': 'url('+foto.url_imagen+')'}"></div>            
+            </ion-card>          
+        </ion-slide>
+      </ion-slides>
+      <div (click)="next()" 
+        [class]="currentIndex !== 3 ? 'arrows' : 'arrowsDeactivated'">
+        <ion-icon name="chevron-forward-outline" size="large"></ion-icon>           
+      </div> 
+    </ion-item>
+  </ng-container>
+  <div style="background-color: white">
+    <ion-card class="w-200" style="justify-content: center">
+      <ion-grid>                                  
+        <!--div style="display: flex; justify-content: center;">   
           <ion-row>
+                  <ion-col
+                    class="ion-align-items-left ion-justify-content-left"
+                    size="4"
+                  >
+                    <ion-avatar
+                      style="
+                        height: auto;
+                        width: 120px;
+                        margin: auto;
+                        margin-left: -10px;
+                      "
+                    >
+                      <img
+                        src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+                        [srcset]="informacionNegocio.url_logo"
+                      />
+                    </ion-avatar>
+                  </ion-col>
+          </ion-row>                                      
+        </div-->
+        <div>          
+          <ion-row>
+            
             <ion-col size="12">
               <ion-text
                 class="ion-align-items-center ion-text-center ion-justify-content-center"
@@ -159,6 +196,9 @@
               class="ion-align-items-center ion-text-center ion-justify-content-center"
             >
               <h6>{{informacionNegocio.descripcion}}</h6>
+            </ion-text>
+            <ion-text class="urlNegocio">
+              <h6>{{urlData}}</h6>
             </ion-text>
           </ion-col>
           <!-- <div>

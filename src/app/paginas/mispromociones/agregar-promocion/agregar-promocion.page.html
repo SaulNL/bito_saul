@@ -102,7 +102,7 @@
             required
           >
             <div *ngFor="let row of lstNegocios" (change)="decripcionSelect()">
-              <ion-select-option [value]="row.id_negocio"
+              <ion-select-option *ngIf="row.activo !=0 && row.activo != '0'" [value]="row.id_negocio"
                 >{{row.nombre_comercial}}</ion-select-option
               >
             </div>

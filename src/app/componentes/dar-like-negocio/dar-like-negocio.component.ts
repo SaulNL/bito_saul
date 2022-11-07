@@ -60,7 +60,7 @@ export class DarLikeNegocioComponent implements OnInit {
           if (response.code === 200) {
             negocio.likes = response.data;
             negocio.usuario_like = 1;
-            this.notificacion.exito(response.message);
+            this.notificacion.success(response.message);
           } else {
             negocio.likes = response.data;
             negocio.usuario_like = 0;

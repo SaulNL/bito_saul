@@ -117,6 +117,8 @@ export class SignInPage implements OnInit {
     optionSesion: SelectedOptionSesionModel
   ) {
     ConfigGlobal.setUser(response);
+    let id_proveedor = response.data.usuario_sistema.ms_persona.proveedor.id_proveedor
+    localStorage.setItem("id_proveedor", id_proveedor);
     localStorage.setItem("isRedirected", "false");
     const optionEnterLogin = localStorage.getItem("optionLogin");
     this.inicializeNotification();

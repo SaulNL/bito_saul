@@ -56,6 +56,7 @@ export class CardNegocioPage implements OnInit {
       (response) => {
         this.negocioTO = response.data;
         this.btload = true;
+        //console.log("fun buscarNegocio: ", JSON.stringify(this.negocioTO))
       },
       (error) => {
 
@@ -66,6 +67,7 @@ export class CardNegocioPage implements OnInit {
 
   inforNegocio() {
     const negocio = this.negocioTO;
+    //console.log("card Negocio negocio---------"+JSON.stringify(negocio))
     this.guard.activeForm = true;
     this.negocioTO = JSON.parse(JSON.stringify(negocio));
     this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
@@ -74,11 +76,32 @@ export class CardNegocioPage implements OnInit {
       pys: this.negocioGuardar,
     };
     let navigationExtras = JSON.stringify(all);
+    //console.log("card Negocio navigationExtras inforNegocio---------"+navigationExtras)
     this.router.navigate(['/tabs/home/negocio/card-negocio/formulario-negocio'], {
       queryParams: { special: navigationExtras }
     });
   }
 
+  /*crearSucursal() {
+    const negocio = this.negocioTO;    
+    this.guard.activeForm = true;    
+    
+    console.log("card Negocio crearSucursal---------"+JSON.stringify(negocio))
+    this.negocioTO = JSON.parse(JSON.stringify(negocio));
+    this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
+    let all = {
+      info: this.negocioTO,
+      pys: this.negocioGuardar, 
+    };
+    let navigationExtras = JSON.stringify(all);
+    console.log("card Negocio all---------"+navigationExtras)
+    let clonar = "true"
+    console.log("card Negocio navigationExtras crearSucursal---------"+navigationExtras)
+    this.router.navigate(['/tabs/home/negocio/card-negocio/formulario-negocio'], {
+      queryParams: { special: navigationExtras, clonar: clonar }
+    });
+  }
+*/
   regresar() {
     this.router.navigate(["/tabs/home/negocio"], {
       queryParams: { special: true },

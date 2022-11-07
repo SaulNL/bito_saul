@@ -107,14 +107,25 @@ export class FormularioNegocioPage implements OnInit {
   public convenio_date: any;
   public cnvn_date:any;
   public dateObject: any;
- 
- 
+ public seEstaClonando: boolean = false;
+ public nombreAnterior:any;
+ public direccionAnterior:any;
+ public fotografiasArray: any[]
+ public galeriaFull:boolean=false;
+ public numeroFotos:number;
+ public logo:any;
   convenioId: number;
   cnvn_fecha: any;
   dateFormat: any;
   convenio: any[];
   nameConvenio: any;
   loaderSubCategoria: boolean;
+  slideOpts = {
+    slidesPerView: 1,
+    centeredSlides: true,
+    loop: false,
+    spaceBetween: 10,
+  }
   constructor(
     private alertController: AlertController,
     private router: Router,
@@ -163,13 +174,27 @@ export class FormularioNegocioPage implements OnInit {
         this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
         this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
         // this.setearDireccion();
+        this.fotografiasArray=this.negocioTO.fotografias;
+        this.numeroFotos=this.fotografiasArray.length;
+      }
+      else if(params && params.clonar){
+        this.seEstaClonando=true;
       }
     });
 
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.special) {
         const datos = JSON.parse(params.special);
-        this.negocioTO = datos.info;
+        this.negocioTO = datos.info;  
+        //this.buscarNegocio(this.negocioTO.id_negocio)
+        this.fotografiasArray=this.negocioTO.fotografias;
+        console.log("fotografiasArray####"+JSON.stringify(this.fotografiasArray))          
+        this.numeroFotos=this.fotografiasArray.length;
+        if(this.numeroFotos>=3){
+          this.galeriaFull=true
+        }
+        this.nombreAnterior = this.negocioTO.nombre_comercial;
+        this.direccionAnterior = this.negocioTO.det_domicilio;
         this.negocioGuardar = datos.pys;
         this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
         this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
@@ -278,8 +303,19 @@ export class FormularioNegocioPage implements OnInit {
 
 
   }
-
+  public infoNegocio(id: any) {
+    console.log("buscar")
+      this.negocioServico.buscarNegocio(id).subscribe(
+        response => {
+          this.negocioTO = response.data;          
+          this.logo=this.negocioTO.logo.archivo_64
+        },
+        error => {
+        }
+      );    
+  }
   public buscarNegocio(id: any) {
+    console.log("buscar")
     if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
       this.obtenerTipoNegocio();
       this.obtenerCatOrganizaciones();
@@ -313,6 +349,7 @@ export class FormularioNegocioPage implements OnInit {
           this.negocioTO.local = archivo;
           this.categoriaPrincipal({ value: this.negocioTO.id_tipo_negocio });
           this.subcategorias({ value: this.negocioTO.id_giro });
+          //this.logo=this.negocioTO.logo.archivo_64
         },
         error => {
         }
@@ -441,6 +478,73 @@ export class FormularioNegocioPage implements OnInit {
           };
         };
       }
+    }
+  }
+  public agregarFoto(event) {           
+    let nombre_archivo;
+    if (event.target.files && event.target.files.length) {
+      let height;
+      let width;
+      for (const archivo of event.target.files) {
+        const reader = this._utils_cls.getFileReader();
+        reader.readAsDataURL(archivo);
+        reader.onload = () => {
+          nombre_archivo = archivo.name;
+          const img = new Image();
+          img.src = reader.result as string;
+          img.onload = () => {
+            height = img.naturalHeight;
+            width = img.naturalWidth;
+            if (width === 400 && height === 400) {
+              const file_name = archivo.name;
+              const file = archivo;
+              if (file.size < 3145728) {
+                let file_64: any;
+                const utl = new UtilsCls();
+                utl.getBase64(file).then(
+                  data => {
+                    const archivo = new ArchivoComunModel();
+                    if (file_name != null) {
+                      archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
+                      archivo.archivo_64 = file_64;
+                    }
+                    this.fotografiasArray.push(archivo)
+                    this.numeroFotos++
+                    if(this.numeroFotos>=3){
+                      this.galeriaFull=true
+                    }                    
+                  }
+                );
+              } else {
+                this.notificaciones.alerta('El tama\u00F1o m\u00E1ximo de archivo es de 3 Mb, por favor intente con otro archivo');
+              }
+            } else {
+              this.resizeToWidth = 400;
+              this.resizeToHeight = 400;
+              this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
+                if (r !== undefined) {
+                  const archivo = new ArchivoComunModel();
+                  archivo.nombre_archivo = nombre_archivo,
+                    archivo.archivo_64 = r.data;
+                    this.fotografiasArray.push(archivo)
+                    this.numeroFotos++
+                    if(this.numeroFotos>=3){
+                      this.galeriaFull=true
+                    }                    
+                }
+              }
+              );
+            }
+          };
+        };
+      }
+    }
+  }
+  public borrarFoto(posicion:number){    
+    this.fotografiasArray.splice(posicion, 1);
+    this.numeroFotos--
+    if(this.numeroFotos<3){
+      this.galeriaFull=false
     }
   }
   async abrirModal(evento, width, heigh) {
@@ -849,22 +953,57 @@ export class FormularioNegocioPage implements OnInit {
      
     } else {
       this.datos();
-      this.negocioServico.guardar(this.negocioGuardar).subscribe(
-        response => {
-          if (response.code === 200) {
-            this.notificaciones.exito('Tu negocio se guardo exitosamente');  
+      if(this.seEstaClonando == true){
+        this.negocioGuardar.id_negocio=null;
+        let dirActual=this.negocioGuardar.det_domicilio;
+        let dirAnterior=this.direccionAnterior.calle;
+        if(this.negocioGuardar.nombre_comercial == this.nombreAnterior){
+          this.nextTab("informacion")      
+          this.notificaciones.error('El nombre del negocio debe ser direfente');
+          this.loader = false;      
+        }else if(dirActual.calle == dirAnterior){
+          this.nextTab("domicilio")   
+          this.notificaciones.error('El domicilio debe ser direfente');
+          this.loader = false;    
+        }else if((this.negocioGuardar.nombre_comercial != this.nombreAnterior) && (dirActual.calle != dirAnterior)){
+          console.log(this.negocioGuardar.nombre_comercial +" Y "+ this.nombreAnterior) 
+          console.log(dirActual.calle+" Y "+dirAnterior)
+          //console.log("NegocioGuardar#####",JSON.stringify(this.negocioGuardar))
+          this.negocioServico.guardar(this.negocioGuardar).subscribe(
+            response => {
+              if (response.code === 200) {
+                this.notificaciones.exito('Tu negocio se guardo exitosamente');                                          
+                this.loader = false;
+                this.router.navigate(['/tabs/home/negocio']);
+              } else {
+                this.loader = false;
+                this.notificaciones.alerta('Error al guardar, intente nuevamente');
+              }
+            },
+            error => {
+              this.notificaciones.error(error);                                                                                 
+              this.loader = false;
+            }
+          );
+        }        
+      }else{
+        this.negocioServico.guardar(this.negocioGuardar).subscribe(
+          response => {
+            if (response.code === 200) {
+              this.notificaciones.exito('Tu negocio se guardo exitosamente');               
+              this.loader = false;
+              this.router.navigate(['/tabs/home/negocio']);
+            } else {
+              this.loader = false;
+              this.notificaciones.alerta('Error al guardar, intente nuevamente');
+            }
+          },
+          error => {
+            this.notificaciones.error(error);             
             this.loader = false;
-            this.router.navigate(['/tabs/home/negocio']);
-          } else {
-            this.loader = false;
-            this.notificaciones.alerta('Error al guardar, intente nuevamente');
           }
-        },
-        error => {
-          this.notificaciones.error(error);  
-          this.loader = false;
-        }
-      );
+        );
+      }            
     }
   }
 
@@ -961,6 +1100,7 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.tipo_pago_tarjeta_debito = this.negocioTO.tipo_pago_tarjeta_debito;
     this.negocioGuardar.tipo_pago_efectivo = this.negocioTO.tipo_pago_efectivo;
 
+    this.negocioGuardar.fotografias = this.fotografiasArray
     if (this.negocioTO.det_domicilio.id_domicilio != null) {
       this.negocioGuardar.det_domicilio.id_domicilio = this.negocioTO.det_domicilio.id_domicilio;
     }

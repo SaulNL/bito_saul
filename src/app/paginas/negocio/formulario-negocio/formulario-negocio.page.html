@@ -39,7 +39,6 @@
     <ion-card-content>
       <form #formNegocio="ngForm" (ngSubmit)="guardar(formNegocio)">
         <div class="form-group" style="display: flex; justify-content: center; align-items: center">
-
           <div class="avatar-upload">
             <div class="avatar-edit">
               <input type="file" hidden id="imageUpload" accept="image/*" (change)="subir_imagen_cuadrada($event)" />
@@ -59,8 +58,41 @@
         <div style="display: flex; justify-content: center; align-items: center">
           <ion-label> www.bitoo.com.mx/{{negocioTO.url_negocio}}</ion-label>
         </div>
+        <div>
+          <ion-item  class="slider">
+            <ion-slides [options]="slideOpts">                            
+              <ion-slide *ngFor="let foto of fotografiasArray; let i = index">               
+                  <ion-card>
+                    <img src={{foto.url_imagen}}/>                    
+                    <img *ngIf="(foto.archivo_64 != null || foto.archivo_64 != '')" src="{{foto.archivo_64}}">                                        
+                    <ion-label (click)="borrarFoto(i)" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>                  
+                  </ion-card>
+              </ion-slide>  
+              <ion-slide style="height:100%; margin-bottom: 5px;" *ngIf="galeriaFull != true">
+                <ion-card>                 
+                    <ion-icon                      
+                      name="image"
+                      role="img"
+                      class="md hydrated size-icon"
+                      aria-label="image"
+                    ></ion-icon>                  
+                    <label class="custom-file-input">
+                      <input
+                        type="file"
+                        #fileInput
+                        id="imagen-producto-uno"
+                        accept="image/*"                     
+                        (click)="fileInput.value = null"
+                        (change)="agregarFoto($event)"
+                      />
+                    </label>
+                </ion-card>
+              </ion-slide>            
+            </ion-slides>
+          </ion-item> 
+        </div>        
         <div style="display: flex; justify-content: center; align-items: center"
-          *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">
+          *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null && seEstaClonando == false)">
           <ion-button size="small" *ngIf=" negocioTO.url_negocio !== null" (click)="solicitarCambioUrl()" color="primary">
             solicitar cambio de url
           </ion-button>
@@ -361,10 +393,10 @@
             <ion-label>Los campos con <span style="color: red">*</span>son
               obligatorios</ion-label>
           </ion-item>
-          <ion-button expand="block" type="submit" class="bg-rosa"
-          [disabled]="infoInvalid(formNegocio.invalid, negocioTO.dias)"
-          *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar
-        </ion-button>
+          <ion-button expand="block" type="submit" class="bg-rosa" *ngIf="(seEstaClonando == false) && (negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)"
+          [disabled]="infoInvalid(formNegocio.invalid, negocioTO.dias)">          
+          <span *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</span>      
+        </ion-button>        
         </ion-list>
         <ion-button (click)="nextTab('contacto')" expand="block" type="submit"
         class="bg-rosa">Siguiente
@@ -489,10 +521,14 @@
             <ion-label>Los campos con <span style="color: red">*</span> son
               obligatorios</ion-label>
           </ion-item>
-          <ion-button expand="block" type="submit" class="bg-rosa"
+          <ion-button expand="block" type="submit" class="bg-rosa" *ngIf="seEstaClonando == false"
             [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
             <span *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined">Guardar</span>
             <span *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined">Actualizar</span>
+          </ion-button>
+          <ion-button expand="block" type="submit" class="bg-rosa" *ngIf="seEstaClonando == true"
+            [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
+            <span>Guardar</span>
           </ion-button>
         </ion-list>
       </form>
@@ -566,8 +602,9 @@
             <ion-label>Los campos con * son obligatorios</ion-label>
           </ion-item>
         </ion-list>
-        <ion-button [disabled]="contactoInvalid(formNegoContacto.invalid, negocioTO.dias)" expand="block" type="submit"
-          class="bg-rosa" *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar
+        <ion-button *ngIf="(seEstaClonando == false) && (negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)" [disabled]="contactoInvalid(formNegoContacto.invalid, negocioTO.dias)" expand="block" type="submit"
+          class="bg-rosa">
+          <span *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</span>
         </ion-button>
       </form>
       <ion-button (click)="nextTab('domicilio')" expand="block" type="submit"
