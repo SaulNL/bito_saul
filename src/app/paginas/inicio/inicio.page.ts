@@ -385,6 +385,7 @@ export class InicioPage implements OnInit {
       //this.siguienteGiro = this.actualGiro +1;
       this.totalDePaginas = respuesta.data.lst_cat_negocios.total;
       this.totalDePaginasPorConsulta = respuesta.data.lst_cat_negocios.to;
+      console.log("totPaginas: "+ JSON.stringify(this.totalDePaginas+" Pag-PorConsulta: "+JSON.stringify(this.totalDePaginasPorConsulta)))
       this.categoriasEstaVacios = false;
       this.lengthLista = this.listaCategorias.length;
 
@@ -401,8 +402,9 @@ export class InicioPage implements OnInit {
       } else {
         console.log("sin ordenar +++++++++++++++++++")
         console.log(JSON.stringify(respuesta.data.lst_cat_negocios.data))
-        let aux = this.ordenarRandom(respuesta.data.lst_cat_negocios.data) //id_categoria_negocio    
-        this.listaCategorias = aux;
+        /*let aux = this.ordenarRandom(respuesta.data.lst_cat_negocios.data) //id_categoria_negocio    
+        this.listaCategorias = aux;*/
+        this.listaCategorias = respuesta.data.lst_cat_negocios.data
         this.negociosIdMapa();
       }
     } else {
@@ -835,6 +837,7 @@ export class InicioPage implements OnInit {
     this.ruta.navigate(["/tabs/negocio/" + url]);
   }
   cargarMasPaginas(event: any) {
+    console.log("mas paginas")
     if ( this.totalDePaginas>=this.totalDePaginasPorConsulta ) {
       this.buscarNegocios(false);
       setTimeout(() => {
@@ -848,7 +851,7 @@ export class InicioPage implements OnInit {
   cargarMasNegocios(event: any){
     let negocios = [];
     this.listaCategorias.map(e => negocios = e.negocios);
-
+    console.log("Tamaño de lista"+this.listaCategorias.length)
     if (this.listaVerMas.length != negocios.length) {
       setTimeout(() => {
         this.mostrarNegocios += 4;

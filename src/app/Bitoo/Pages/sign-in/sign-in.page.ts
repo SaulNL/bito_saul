@@ -163,8 +163,9 @@ export class SignInPage implements OnInit {
     optionSesion: SelectedOptionSesionModel
   ) {
     try {
-      this.loginService.login(user).subscribe(
+      this.loginService.login(user).subscribe(        
         (response) => {
+          console.log("USEEEEEER"+JSON.stringify(user));
           if (response.code === 200) {
             this.proccessSuccessAfterSignIn(response, optionSesion);
           } else {

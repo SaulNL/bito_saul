@@ -23,7 +23,7 @@ export class TabsPage implements OnInit {
   public isAndroid: boolean;
   private plazaAfiliacion: AfiliacionPlazaModel | null;
   public misNotificaciones: any;
-  public notifSinLeer :number =0;
+  public notifSinLeer :number = +localStorage.getItem("notifSinLeer");
   public id_proveedor:any;
   constructor(
       private util: UtilsCls,
@@ -228,9 +228,12 @@ export class TabsPage implements OnInit {
   }
 
   notificacionesSinAbrir(){    
-    this.notifSinLeer = this.misNotificaciones.filter(item =>{
+    localStorage.setItem("notifSinLeer",this.misNotificaciones.filter(item =>{
       return item.estatus == 1;
-    }).length;
+    }).length)
+    this.notifSinLeer = +localStorage.getItem("notifSinLeer")/*this.misNotificaciones.filter(item =>{
+      return item.estatus == 1;
+    }).length;*/
   }
 
   actualizarNotificaciones(id_proveedor:any){
