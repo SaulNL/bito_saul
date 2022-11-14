@@ -326,6 +326,7 @@ export class FormularioNegocioPage implements OnInit {
     } else {
       this.negocioServico.buscarNegocio(id).subscribe(
         response => {
+          console.log("Datos jale: ", JSON.stringify(response.data))
           this.negocioTO = response.data;
           this.obtenerTipoNegocio();
           this.obtenerCatOrganizaciones();
@@ -977,7 +978,7 @@ export class FormularioNegocioPage implements OnInit {
                 this.router.navigate(['/tabs/home/negocio']);
               } else {
                 this.loader = false;
-                this.notificaciones.alerta('Error al guardar, intente nuevamente');
+                this.notificaciones.alerta(response.message);
               }
             },
             error => {
@@ -995,7 +996,7 @@ export class FormularioNegocioPage implements OnInit {
               this.router.navigate(['/tabs/home/negocio']);
             } else {
               this.loader = false;
-              this.notificaciones.alerta('Error al guardar, intente nuevamente');
+              this.notificaciones.alerta(response.message);
             }
           },
           error => {
