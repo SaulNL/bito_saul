@@ -17,7 +17,8 @@
   [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar promociones en ' + plazaAfiliacionNombre.nombre : 'Buscar promociones sobre productos, servicios y más...' "
   (buscarEmit)="buscarToolbar($event)" titulo="Promociones"
 ></app-toolbar-busqueda>
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" 
+  [scrollEvents]="true">
   <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
   <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
   <ion-item>
@@ -71,9 +72,11 @@
 
   <div *ngIf="!loader">
     <app-recargar (respuesta)="recargar($event)"></app-recargar>
-    <ion-grid *ngFor="let categorias of lstPromociones" class=".categoria">
+    <ion-grid *ngFor="let categorias of lstPromociones;let i = index" class=".categoria">
       <ion-row class="categoria">
-        <h2>{{ categorias.nombre }}</h2>
+        <h2 *ngIf="i == posicionRandom" id="imagenCarta">{{ categorias.nombre }}</h2>
+        <h2  *ngIf="i != posicionRandom">{{ categorias.nombre }}</h2>
+        <h2  *ngIf="(i == lstPromociones.length-1)">{{this.scroll()}}</h2>
       </ion-row>
       <ion-row *ngFor="let promocion of categorias.promociones">
         <ion-col size="12">
