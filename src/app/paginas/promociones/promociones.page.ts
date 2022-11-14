@@ -22,6 +22,8 @@ import { ModalLoguearseComponent } from 'src/app/componentes/modal-loguearse/mod
 export class PromocionesPage implements OnInit {
     private loaderPrincipal: HTMLIonLoadingElement;
     public lstPromociones: Array<PromocionesModel>;
+    public posicionRandom : number=0;
+    public rep:number=0;
     public anyFiltros: FiltrosModel;
     public loader: boolean = false;
     public Filtros: FiltrosModel;
@@ -110,7 +112,23 @@ export class PromocionesPage implements OnInit {
             this.obtenerPromociones();
         }
     }
+    public aleatorio(a,b) {
+        return Math.round(Math.random()*(b-a)+parseInt(a));
+    }
 
+    public scroll(){         
+        var elem= document.getElementById("imagenCarta")
+        if(elem!=null){
+            this.rep++
+        }
+        if (this.rep<=1){           
+            function scrolling() {                 
+                console.log("Mostrando elemento random.."+this.posicionRandom)
+                elem.scrollIntoView();             
+            }   
+            setTimeout(scrolling, 1000);                         
+        }                                 
+    }
     public obtenerPromociones() {
         if (navigator.geolocation && this.anyFiltros.tipoBusqueda === 1) {
             navigator.geolocation.getCurrentPosition((posicion) => {
@@ -139,6 +157,7 @@ export class PromocionesPage implements OnInit {
                         this.lstPromociones = response.data;
                         console.log(this.lstPromociones);
                         this.loader = false;
+                        this.posicionRandom= this.aleatorio(1,this.lstPromociones.length)-1                                                
                         // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}
                     } else {
                         this.lstPromociones = [];  
