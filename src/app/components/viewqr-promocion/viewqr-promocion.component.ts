@@ -127,7 +127,6 @@ export class ViewqrPromocionComponent implements OnInit {
              // console.log("organiziiiiiiiiiiiiiiiiiii" + JSON.stringify(this.lstOrganizaciones))
             }
           })
-         
         this.lstOrganizaciones.forEach(orgu => {
           this.org_usu=orgu
           //console.log("ORGANIZACION2" + JSON.stringify(this.org_usu));
