@@ -12,6 +12,7 @@ import { PromocionComponent } from '../../components/promocion/promocion.compone
 import { ModalPromocionComponent } from '../../components/modal-promocion/modal-promocion.component';
 import { InfoPromoComponent } from '../../components/info-promo/info-promo.component';
 import { ViewqrPromocionComponent } from 'src/app/components/viewqr-promocion/viewqr-promocion.component';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { ViewqrPromocionComponent } from 'src/app/components/viewqr-promocion/vi
     ModalPromocionComponent,
     ViewqrPromocionComponent,
     InfoPromoComponent
-  ]
+  ],
+  providers: [ SocialSharing ], 
 })
 export class Tab2PageModule {}

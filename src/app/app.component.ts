@@ -121,6 +121,9 @@ export class AppComponent {
                                 let urlTempP = match.$link.path.slice(1);
                                 const urlPlaza = urlTempP.slice(6);
                                 this.obtenerPlaza(urlPlaza);
+                            } else if(match.$link.path.includes('promocion')) {
+                                this.router.navigateByUrl("/tabs" + match.$link["path"]);
+                                this.modalController.dismiss();
                             } else {
                                 this.router.navigateByUrl('/tabs/negocio' + match.$link["path"]);
                                 this.modalController.dismiss();

@@ -34,6 +34,10 @@ const routes: Routes = [
         loadChildren: () => import('../categorias/categorias.module').then(m => m.CategoriasPageModule), canActivate: [AuthGuardService]
       },
       {
+        path: 'promocion/:id',
+        loadChildren: () => import('../promocion/promocion.module').then( m => m.PromocionPageModule)
+      },
+      {
         path: 'negocio/:negocio',
         loadChildren: () => import('../perfil-negocio/perfil-negocio.module').then(m => m.PerfilNegocioPageModule)
       },
