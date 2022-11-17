@@ -22,6 +22,7 @@ import {
   ToastController,
 } from "@ionic/angular";
 import { NegocioService } from "../../api/negocio.service";
+import { BusquedaService } from "src/app/api/busqueda.service";
 import { Geolocation, Capacitor } from "@capacitor/core";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { Location } from "@angular/common";
@@ -52,6 +53,7 @@ import { ProductoModel } from "../../Modelos/ProductoModel";
 import { ProductosService } from "../../api/productos.service";
 import { ComentariosNegocioComponent } from "../../componentes/comentarios-negocio/comentarios-negocio.component";
 import { OptionBackLogin } from "src/app/Modelos/OptionBackLoginModel";
+import { FiltrosModel } from "src/app/Modelos/FiltrosModel";
 /* import { WebView } from '@awesome-cordova-plugins/ionic-webview/ngx'; */
 
 @Component({
@@ -61,6 +63,7 @@ import { OptionBackLogin } from "src/app/Modelos/OptionBackLoginModel";
   providers: [CreateObjects],
 })
 export class PerfilNegocioPage implements OnInit {
+  public Filtros: FiltrosModel;
   public listaComentarios: [];
   public mostrarComentarios: boolean;
   public seccion: any;
@@ -137,6 +140,7 @@ export class PerfilNegocioPage implements OnInit {
     private route: ActivatedRoute,
     private toadController: ToastController,
     private negocioService: NegocioService,
+    private BusquedaService:BusquedaService,
     private notificacionService: ToadNotificacionService,
     private location: Location,
     private util: UtilsCls,
@@ -154,6 +158,7 @@ export class PerfilNegocioPage implements OnInit {
     private servicioProductos: ProductosService,
     private createObject: CreateObjects /* private document: DocumentViewer, */ /* private transfer: FileTransfer, */ /* private webview: WebView */
   ) {
+    this.Filtros = new FiltrosModel();
     this.toProductDetail = false;
     this.motrarContacto = true;
     this.seccion = "productos";
@@ -324,7 +329,11 @@ export class PerfilNegocioPage implements OnInit {
           if (response.data !== null) {
             this.informacionNegocio = response.data;
             this.logo = this.informacionNegocio.url_logo
-            this.buscarNegocio(this.informacionNegocio.id_negocio);
+            console.log("informacionNegocio: "+JSON.stringify(this.informacionNegocio))
+            this.Filtros.idNegocio=this.informacionNegocio.id_negocio  
+            this.Filtros.kilometros=10 
+            this.Filtros.limpiarF=false;            
+            this.buscarDetalleNegocio(this.Filtros,1)
             this.convenio_entrega=this.informacionNegocio.convenio_entrega;
             this.latitudNeg = this.informacionNegocio.latitud;
             this.longitudNeg = this.informacionNegocio.longitud;
@@ -375,18 +384,20 @@ export class PerfilNegocioPage implements OnInit {
       );
     // this.loader = false;
   }
-  buscarNegocio(id:any){
-    this.negocioService.buscarNegocio(id).subscribe(
+  
+  async buscarDetalleNegocio(filtro:any, pagina:any){
+    const body = JSON.stringify({filtros: filtro, page: pagina})
+    console.log("Body---> "+body)
+    var response = await this.BusquedaService.getDatosNegocioSinMapearCategoría(filtro,pagina).subscribe(
       response => {
         let negocioTO = response.data;  
-        this.fotografiasArray= negocioTO.fotografias 
-        /*this.fotografiasArray.forEach(element => {
-          console.log("fotografiasArray: "+JSON.stringify(element))    
-        });*/
+        let data = negocioTO.lst_cat_negocios.data[0]
+        this.fotografiasArray= data.fotografias 
+        //console.log("fotografiasArray: "+JSON.stringify(this.fotografiasArray))        
       },
       error => {
       }
-    );
+    );    
   }
 
   obtenerProductos() {
