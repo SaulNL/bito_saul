@@ -1,7 +1,7 @@
 import { PlazasAfiliacionesComponent } from "../../componentes/plazas-afiliaciones/plazas-afiliaciones.component";
 import { AfiliacionPlazaModel } from "../../Modelos/AfiliacionPlazaModel";
 import { Auth0Service } from "../../api/busqueda/auth0.service";
-import { Component, EventEmitter, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, EventEmitter, OnInit, ViewChild } from "@angular/core";
 import {
   IonContent,
   LoadingController,
@@ -39,7 +39,7 @@ declare var google: any;
   styleUrls: ["inicio.page.scss"],
   providers: [SideBarService],
 })
-export class InicioPage implements OnInit {
+export class InicioPage implements OnInit, AfterViewInit {
   @ViewChild(IonContent) content: IonContent;
   public static readonly MENSAJE_CUANDO_CARGA = "Cargar más";
   public static readonly PAGINAS_POR_CONSULTA = 20;
@@ -104,6 +104,12 @@ export class InicioPage implements OnInit {
   banderaVerMas = false;
   listaVerMas: any[] = [];
   mostrarNegocios: any = 4;
+  paginaPivote: number;
+  primeraPagRandom: number;
+  paginaPrevia: number;
+  scrollAmount: any;
+  isLoading: boolean;
+  consultaTerminada: boolean=true;
 
   constructor(
     public loadingController: LoadingController,
@@ -277,6 +283,22 @@ export class InicioPage implements OnInit {
     localStorage.removeItem("productos");
     localStorage.setItem('negocios', ('active'));
   }
+  ngAfterViewInit() {
+    //this.loaderSuperior=document.getElementById('cargaArriba');
+    this.content.ionScroll.subscribe(($event) =>{
+      this.scrollAmount = $event.detail.scrollTop
+      if(this.scrollAmount<10){
+        console.log("Consulta termiinada? "+this.consultaTerminada)
+      }
+      if(this.scrollAmount<10 && this.consultaTerminada==true && this.paginaPrevia>0){
+        this.consultaTerminada=false;
+        this.isLoading=true;
+        this.cargarMasPaginasArriba($event)
+      }else{
+        this.isLoading=false;
+      }
+    })
+}
 
   private load() {
     const selected = localStorage.getItem("org");
@@ -385,13 +407,13 @@ export class InicioPage implements OnInit {
       //this.siguienteGiro = this.actualGiro +1;
       this.totalDePaginas = respuesta.data.lst_cat_negocios.total;
       this.totalDePaginasPorConsulta = respuesta.data.lst_cat_negocios.to;
-      console.log("totPaginas: "+ JSON.stringify(this.totalDePaginas+" Pag-PorConsulta: "+JSON.stringify(this.totalDePaginasPorConsulta)))
+      console.log("\ntotalNegocios: "+ JSON.stringify(this.totalDePaginas+"\n"+"Negocios-PorConsulta: "+JSON.stringify(this.totalDePaginasPorConsulta))+"\nPagina actual: "+this.actualPagina+"\nSiguiente Pagina: "+this.siguientePagina)
       this.categoriasEstaVacios = false;
       this.lengthLista = this.listaCategorias.length;
 
       if (this.actualPagina > 1 || this.actualGiro >1) {
         this.listaCategorias.push(...respuesta.data.lst_cat_negocios.data);
-        this.negociosIdMapa();
+        this.negociosIdMapa(false);
         if (
           this.listaCategorias[this.lengthLista - 1].nombre ==
           this.listaCategorias[this.lengthLista].nombre ||
@@ -405,7 +427,7 @@ export class InicioPage implements OnInit {
         /*let aux = this.ordenarRandom(respuesta.data.lst_cat_negocios.data) //id_categoria_negocio    
         this.listaCategorias = aux;*/
         this.listaCategorias = respuesta.data.lst_cat_negocios.data
-        this.negociosIdMapa();
+        this.negociosIdMapa(false);
       }
     } else {
       throw throwError("");
@@ -730,7 +752,7 @@ export class InicioPage implements OnInit {
     await modal.present();
   }
 
-  public negociosIdMapa() {
+  public negociosIdMapa(requiereScroll:boolean) {
 
     let listaIds = [];
     this.listaCategorias.map((l) => {
@@ -738,6 +760,15 @@ export class InicioPage implements OnInit {
         listaIds.push(n);
       });
     });
+    if(requiereScroll){      
+      this.content.scrollToPoint(0,20)
+      this.consultaTerminada=true;
+      console.log("Consulta termiinada en map? "+this.consultaTerminada)
+    }else{
+      this.consultaTerminada=true;
+      console.log("Consulta termiinada en map? "+this.consultaTerminada)
+    }
+    
   }
 
   public obtenerNegocios(listaCategoriasAll: ICategoriaNegocio[]) {
@@ -952,6 +983,8 @@ export class InicioPage implements OnInit {
     );
   }
   async buscarByGiro(event){
+    this.primeraPagRandom=0;
+    this.paginaPrevia=0;
     localStorage.removeItem("activarTodos");
     localStorage.setItem("todo", "todo");
     this.idTodo=false;
@@ -969,11 +1002,19 @@ export class InicioPage implements OnInit {
       : "";
     let d1 = JSON.stringify(this.Filtros);
     localStorage.setItem("filtroactual", d1);
+
+    var pagRandom =await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, this.siguienteGiro);
+    var rand= await this.random(1,Math.ceil((pagRandom.data.lst_cat_negocios.total/20)))
+    console.log("Pagina random : "+rand)
+    this.primeraPagRandom=rand;    
+    this.paginaPivote=rand;
+    this.paginaPrevia=this.paginaPivote
     var respuesta = await this.principalSercicio
-        .obtenerNegocioPorCategoria(this.Filtros, this.siguienteGiro);
+        .obtenerNegocioPorCategoria(this.Filtros, rand)// rand this.siguienteGiro);
+    console.log("\nNegocios totales: "+respuesta.data.lst_cat_negocios.total+"\n"+"Negocios obtenidos: "+respuesta.data.lst_cat_negocios.to+"\n"+" Pagina aleatoria que se muestra: "+respuesta.data.lst_cat_negocios.current_page)
         this.listaCategorias=[];
       if(respuesta.data.lst_cat_negocios.total>0){
-        this.validarResultadosDeCategorias(respuesta);
+        this.validarResultadosDeCategoriaSeleccionada(respuesta.data,false);//this.validarResultadosDeCategoriaSeleccionada(respuesta.data) this.validarResultadosDeCategorias(respuesta);
       }else{
         this.listaCategorias=[];
         this.selectionAP = true;
@@ -983,6 +1024,10 @@ export class InicioPage implements OnInit {
   }
 
   async activar(){
+    console.log("Activar Method")
+    this.listaCategorias=[];
+    this.primeraPagRandom=0;
+    this.paginaPrevia=0;
     localStorage.removeItem("filtroactual");
     localStorage.removeItem("byCategorias");
     localStorage.removeItem("filtroActivo");
@@ -998,10 +1043,173 @@ export class InicioPage implements OnInit {
         this.objectSelectAfiliacionPlaza.id_organizacion)
       : "";
     localStorage.setItem("todo", "todo");
+    var pagRandom =await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, this.siguienteGiro);
+    var rand= await this.random(1,Math.ceil((pagRandom.data.lst_cat_negocios.total/20)))
+    console.log("Pagina random : "+rand)
+    this.primeraPagRandom=rand;    
+    this.paginaPivote=rand;
+    this.paginaPrevia=this.paginaPivote
     var respuesta = await this.principalSercicio
-        .obtenerNegocioPorCategoria(this.Filtros, this.siguienteGiro)
-      this.validarResultadosDeCategorias(respuesta);
+        .obtenerNegocioPorCategoria(this.Filtros, rand)//this.siguienteGiro)
+    this.validarResultadosDeCategorias(await respuesta);
+    this.loader = false;
+    this.scrollToTop();
+  }
+
+  //####### PARA CATEGORÍA SELECCIONADA SE AHISLAN METODOS PARA MOSTRAR NEGOCIOS ALEATORIOS###########
+  public random(min, max) {
+    return Math.floor((Math.random() * (max - min + 1)) + min);
+  }
+  async validarResultadosDeCategoriaSeleccionada(respuesta: any, buscaArriba:boolean) {    
+    const cantidadDeResultados = respuesta.lst_cat_negocios.data.length;
+    console.log("validarResultadosDeCategoriaSeleccionada############## \ncon boolean de buscar arriba = "+buscaArriba+
+    "\nY cantidad de resultados = "+cantidadDeResultados)
+    if(cantidadDeResultados < 0){
+      this.listaCategorias = [];
+      this.selectionAP = true;
+    }        
+    if (cantidadDeResultados > 0) {
+      if(buscaArriba==true){
+        console.log("Unshift---------------")
+        this.listaCategorias.unshift(...respuesta.lst_cat_negocios.data);
+        this.negociosIdMapa(true)
+        /*if (
+          this.listaCategorias[this.lengthLista - 1].nombre ==
+          this.listaCategorias[this.lengthLista].nombre ||
+          this.listaCategorias[this.lengthLista - 1].nombre == ""
+        ) {
+          this.listaCategorias[this.lengthLista].nombre = "";
+        }*/
+      }else{
+        console.log("Push---------------")
+        this.actualPagina = respuesta.lst_cat_negocios.current_page;
+        this.siguientePagina = this.actualPagina + 1;
+        //this.siguienteGiro = this.actualGiro +1;
+        this.totalDePaginas = respuesta.lst_cat_negocios.total;
+        this.totalDePaginasPorConsulta = respuesta.lst_cat_negocios.to;
+        console.log("\ntotalNegocios: "+ JSON.stringify(this.totalDePaginas+"\nNegocios-PorConsulta: "+JSON.stringify(this.totalDePaginasPorConsulta))+"\nPagina actual: "+this.actualPagina+"\nSiguiente Pagina: "+this.siguientePagina)
+        this.categoriasEstaVacios = false;
+        this.lengthLista = this.listaCategorias.length;
+        
+        if (this.actualPagina >= this.primeraPagRandom || this.actualGiro >1) {
+          this.listaCategorias.push(...respuesta.lst_cat_negocios.data);
+          this.negociosIdMapa(false);
+          /*var lenLista=this.lengthLista
+          console.log("se buca NOMBRE EN validarResultadosDeCategoriaSeleccionada\n"+lenLista+"\n"+          
+          JSON.stringify(this.listaCategorias[(lenLista-1)])+"\n"+
+          JSON.stringify(this.listaCategorias[lenLista]))
+          if(this.listaCategorias[this.lengthLista - 1].hasOwnProperty('nombre') && 
+            this.listaCategorias[this.lengthLista].hasOwnProperty('nombre')){
+              if (
+                this.listaCategorias[this.lengthLista - 1].nombre ==
+                this.listaCategorias[this.lengthLista].nombre ||
+                this.listaCategorias[this.lengthLista - 1].nombre == ""
+              ) {
+                this.listaCategorias[this.lengthLista].nombre = "";
+              }
+          }*/          
+        }else {
+          console.log(JSON.stringify(respuesta.lst_cat_negocios.data))
+          this.listaCategorias = respuesta.lst_cat_negocios.data
+          this.negociosIdMapa(false);
+        }
+      }      
+    } else {
+      throw throwError("");
+    }
+  }
+  cargarMasPaginasArriba(event: any) {
+    this.paginaPrevia--
+    console.log("mas paginas arriba, se carga la pagina: "+this.paginaPrevia)    
+    if (this.totalDePaginasPorConsulta > 20) {
+      this.buscarNegociosArriba(false);
+      setTimeout(() => {
+        event.target.complete();
+      }, 800); // 800 es el tiempo que se tarda por cargar, sin tener un lag por las 20 paginas que se consultan
+    } else {
+      event.target.disabled = true;
+    }
+  }
+  public async buscarNegociosArriba(seMuestraElLoader: boolean) {
+    console.log("buscarNegociosArriba#####################")
+    this.loader = seMuestraElLoader;
+    this.listaIdsMapa = [];
+    
+    const usr = this.user;
+    if (usr.id_persona !== undefined) {
+      this.Filtros.id_persona = usr.id_persona;
+    }
+    const byCategorias = localStorage.getItem("byCategorias");
+    const dato = JSON.parse(byCategorias);
+    if (
+      byCategorias !== null &&
+      byCategorias !== undefined &&
+      byCategorias !== "" &&
+      byCategorias.length > 0
+    ) {
+      this.Filtros.idCategoriaNegocio = [dato.id_categoria];
+      this.filtroActivo = true;
+      this.banderaVerMas = false;
+    }
+    this.selectionAP
+      ? (this.Filtros.organizacion =
+        this.objectSelectAfiliacionPlaza.id_organizacion)
+      : "";
+      this.loaderNegocios=false;
+      const todo = localStorage.getItem("todo");
+
+       if(todo === 'todo' || localStorage.getItem('org') != null){
+        await this.cargarCategoriasArriba();
+       }
+     
+      const org = localStorage.getItem("org");
+      const categorias = localStorage.getItem("byCategorias");
+
+      if(org === null && categorias === null && this.idGiro === null &&  localStorage.getItem("todo") ===null){
+        this.loader = false;
+        this.selectionAP = null;
+        this.obtenerPrincipalInicio();
+      }
+      //await this.cargarCategorias();
+      
       this.loader = false;
-      this.scrollToTop();
+    
+  }
+  public async cargarCategoriasArriba() {
+    console.log("cargarCategoriasArriba")
+    const byCategorias = localStorage.getItem("filtroactual");
+    if (
+      byCategorias !== null &&
+      byCategorias !== undefined &&
+      byCategorias !== "" &&
+      byCategorias.length > 0
+    ) {
+      const dato = JSON.parse(byCategorias);
+      this.Filtros = dato;
+      this.filtroActivo = true;
+    }
+    try {     
+      var respuesta = await this.principalSercicio
+        .obtenerNegocioPorCategoria(this.Filtros, this.paginaPrevia)   
+        
+        console.log("Pagina previa obtenida: "+ respuesta.data.lst_cat_negocios.current_page+"\nSiguiente pagina previa"+
+        respuesta.data.lst_cat_negocios.current_page)
+
+      this.validarResultadosDeCategoriaSeleccionada(respuesta.data,true);
+      const byCategorias2 = localStorage.getItem("filtroactual");
+      if (
+        byCategorias2 !== null &&
+        byCategorias2 !== undefined &&
+        byCategorias2 !== "" &&
+        byCategorias2.length > 0
+      ) {
+        this.filtroActivo = true;
+      }
+      this.loader = false;
+    } catch (error) {
+      this.loader = false;
+      // this.notificaciones.error("Error al buscar los datos" + error.message);
+      this.notificaciones.error("No hay conexión a internet, conectate a una red");
+    }
   }
 }

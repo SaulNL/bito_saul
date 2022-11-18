@@ -16,6 +16,7 @@ export class FiltrosModel {
   public idNegocio: number;
   public abierto: any;
   public organizacion: number | null;
+  public limpiarF: boolean;
   public id_persona: number;
   public user: any;
   public typeGetOption;
