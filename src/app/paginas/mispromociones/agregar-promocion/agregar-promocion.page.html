@@ -534,6 +534,23 @@
             </ion-button>
           </div>
         </div>
+     <!-- ----- AQUI COMIENZA PARTE DE MOSTRAR EL VIDEO --- -->
+        <div *ngIf="seleccionTo.id_tipo_promocion===1" class="btn btn-info btn-raised">
+          <br>
+          <ion-card>
+            <div class="ion-text-center"> Subir Video
+              </div>
+            </ion-card><br>
+          <div class="btn btn-info btn-raised">
+          
+            <ion-input id="custom-input" type="file" (change)="videoo($event)" accept="video/mp4"></ion-input>
+          </div>
+          
+            <video controls #video autoplay preload="auto" width="100%" height="315">
+              <source *ngIf="data?.video" src="{{data?.video}}" type="video/mp4" />
+           </video>
+           </div>
+            
         <!--? Input banner -->
         <div
           style="
@@ -543,6 +560,8 @@
             margin-top: 10px;
           "
         >
+        
+        
           <div style="width: 50%">
             <ion-button class="bg-rosa" type="submit" expand="full" [disabled]="!formVariable.valid"
               >Guardar</ion-button
