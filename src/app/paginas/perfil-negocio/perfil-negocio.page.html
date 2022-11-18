@@ -429,7 +429,7 @@
         <br />
         <ion-row *ngIf="informacionNegocio.tipo_negocio >=1">
           <ion-col>
-            <div id="mapIdPedido" style="height: 200px"></div>
+            <div #mapContainer id="mapIdPedido" style="height: 200px"></div>
           </ion-col>
         </ion-row>
 
@@ -449,13 +449,13 @@
               </h6>
             </ion-col>
             <ion-col *ngIf="informacionNegocio.tipo_negocio >=1" size="6" style="margin-top: 0%; align-items: center">
-              <center>
+              <!--center-->
                 <a
                   href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
                   style="font-size: 15px; font-weight: bolder"
                   >CÓMO LLEGAR</a
                 >
-              </center>
+              <!--/center-->
             </ion-col>
           </ion-row>
           <ion-row>

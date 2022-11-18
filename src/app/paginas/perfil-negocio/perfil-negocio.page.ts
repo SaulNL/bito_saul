@@ -12,7 +12,7 @@ import {
 import { AddToProductInterface } from "../../Bitoo/models/add-To-Product-model";
 import { ProductInterface } from "../../Bitoo/models/product-model";
 import { AppSettings } from "./../../AppSettings";
-import { Component, EventEmitter, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
   AlertController,
@@ -62,12 +62,13 @@ import { FiltrosModel } from "src/app/Modelos/FiltrosModel";
   styleUrls: ["./perfil-negocio.page.scss"],
   providers: [CreateObjects],
 })
-export class PerfilNegocioPage implements OnInit {
+export class PerfilNegocioPage implements OnInit, AfterViewInit {
   public Filtros: FiltrosModel;
   public listaComentarios: [];
   public mostrarComentarios: boolean;
   public seccion: any;
   private map: Map;
+  @ViewChild('mapContainer')  mapContainer: Map;
   public negocio: string;
   public informacionNegocio: any;
   public loader: boolean;
@@ -265,12 +266,51 @@ export class PerfilNegocioPage implements OnInit {
         this.location.back();
       }
     });
+
+    this.route.queryParams.subscribe((params) => {
+      if (params.clickBanner && params) {
+        console.log("Vienes del baner de promociones, el id de esta promo es: "+params.promo)
+        this.negocioService.obteneretalleNegocio(this.negocio, this.user.id_persona).subscribe((response) => {
+          if (response.data !== null) {
+            this.informacionNegocio = response.data;            
+            this.promociones = this.informacionNegocio.promociones; 
+            console.log("TAMAÑO DE LISTA PROMOS-----"+this.promociones.length)
+            this.promociones.forEach(promo => {
+              console.log("Promo clikeada: "+params.promo+" --> Promo de lista: "+promo.id_promocion)
+              if(promo.id_promocion == params.promo){
+                console.log("OK Coincidencia --> "+promo.id_promocion)
+                this.abrirModalPromocion(promo)
+              }
+            });           
+          } else {
+
+          }          
+        }
+      );
+      }
+    });
+
     this.getCurrentPosition();
     this.idPersona = this.existeSesion ? this.user.id_persona : null;
     localStorage.removeItem("negocios");
   }
 
-  loadMap() {
+  ngAfterViewInit(): void {
+    var intentos =0;
+    var inter = setInterval(( ) =>{            
+        if(this.mapContainer!=null || this.mapContainer!= undefined){
+          this.loadMap();
+          clearInterval(inter);
+        }    
+        else{
+          intentos++
+          if(intentos>5){
+            clearInterval(inter);
+          }
+        }      
+    }, 1000);    
+  }
+  async loadMap() {
     setTimeout((it) => {
       const lat = this.latitudNeg;
       const lng = this.longitudNeg;
@@ -337,7 +377,7 @@ export class PerfilNegocioPage implements OnInit {
             this.convenio_entrega=this.informacionNegocio.convenio_entrega;
             this.latitudNeg = this.informacionNegocio.latitud;
             this.longitudNeg = this.informacionNegocio.longitud;
-            this.loadMap();
+            
             this.promociones = this.informacionNegocio.promociones;
             if (
               this.informacionNegocio.url_negocio !== null &&
@@ -1250,7 +1290,7 @@ export class PerfilNegocioPage implements OnInit {
     }
   }
 
-  async abrirModalPromocion(promo: PromocionesModel) {
+  async abrirModalPromocion(promo: PromocionesModel) {  //aQUI SE ABRE MODAL DE PROMO
     const modal = await this.modalController.create({
       component: ModalPromocionNegocioComponent,
       componentProps: {

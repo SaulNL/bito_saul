@@ -762,9 +762,13 @@ export class InicioPage implements OnInit, AfterViewInit {
     });
     if(requiereScroll){      
       this.content.scrollToPoint(0,20)
-    }    
-    this.consultaTerminada=true;
-    console.log("Consulta termiinada en map? "+this.consultaTerminada)
+      this.consultaTerminada=true;
+      console.log("Consulta termiinada en map? "+this.consultaTerminada)
+    }else{
+      this.consultaTerminada=true;
+      console.log("Consulta termiinada en map? "+this.consultaTerminada)
+    }
+    
   }
 
   public obtenerNegocios(listaCategoriasAll: ICategoriaNegocio[]) {
