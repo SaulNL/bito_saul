@@ -124,6 +124,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   private longitudNeg: any;
   private convenio_entrega: any;
   public fotografiasArray:any[];
+  public promocionDefault: string;
   public logo:any;
   currentIndex:Number = 0;
   @ViewChild('carrusel')  slides: IonSlides;
@@ -412,10 +413,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
           } else {
             this.presentError();
           }
-          this.loader = false;
-          // setTimeout((it) => {
-          // this.loadMap();
-          // }, 100);
+          //this.loader = false;
         },
         () => {
           confirm("Error al cargar");
@@ -1138,7 +1136,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
       };
       const dis = haversineCalculator(start, end);
       this.distanciaNegocio = dis.toFixed(2);
-    }, 3000);
+      this.loader = false;
+    }, 1500);
   }
 
   agregarBolsaDeta(pro) {
@@ -1481,16 +1480,13 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   next(){
     this.slides.slideNext();    
   }  
-SlideChanges(slide: IonSlides) {
-  slide.getActiveIndex().then((index: number) => {
-   this.currentIndex= index;
-      console.log("Index: "+this.currentIndex)
-      if (this.currentIndex == 0){
-        console.log("Inicio")
-      }
-      if(this.currentIndex == 3){
-        console.log("Fin")
-      }
-  });
-} 
+  SlideChanges(slide: IonSlides) {
+    slide.getActiveIndex().then((index: number) => {
+    this.currentIndex= index;
+        if (this.currentIndex == 0){
+        }
+        if(this.currentIndex == 3){
+        }
+    });
+  } 
 }

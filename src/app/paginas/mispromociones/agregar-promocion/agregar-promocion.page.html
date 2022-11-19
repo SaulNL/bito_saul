@@ -541,14 +541,20 @@
             <div class="ion-text-center"> Subir Video
               </div>
             </ion-card><br>
-          <div class="btn btn-info btn-raised">
-          
-            <ion-input id="custom-input" type="file" (change)="videoo($event)" accept="video/mp4"></ion-input>
+          <div>
+            
+            <input type="file" hidden id="imageUpload" accept="video/mp4" (change)="videoo($event)"/>
+              <label for="imageUpload">
+                <ion-icon name="camera-outline" style="position: relative; top: 7px"></ion-icon>
+              </label>
+            
           </div>
+
+          <video controls autoplay *ngIf="base != null" width="100%" height="350">
+            <source type="video/mp4" [src]="base">
+          </video>
           
-            <video controls #video autoplay preload="auto" width="100%" height="315">
-              <source *ngIf="data?.video" src="{{data?.video}}" type="video/mp4" />
-           </video>
+           
            </div>
             
         <!--? Input banner -->

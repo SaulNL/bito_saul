@@ -93,7 +93,7 @@ export class AgregarPromocionPage implements OnInit {
   public nuevoHorario: HorarioPromocionModel;
   public blnActivaHorario: boolean;
   public posicionHorario: number;
-  
+  public base: any = null;
   producto: number[] =[];
   categoria: string[] = [];
   tipoPromocion: any;
@@ -285,27 +285,25 @@ export class AgregarPromocionPage implements OnInit {
       this.descripcionString = undefined;
     }
   }
-  public videoo($event:any) {
-    let fileList: FileList = $event.target.files;
-    this.data = {};
-    if (fileList.length > 0) {
-        let file: File = fileList[0];
-        console.log('video seleccionado', file);
-        console.log('video nombre', file.name);
-        this.nombre_video=file.name;
-        console.log('NOMBRE: ', file.name);
+  public videoo(event:any) {
+    let nombre_archivo;
+    this.base = null
+    if (event.target.files && event.target.files.length) {
   
-        let myReader: FileReader = new FileReader();
-        let that = this;
-        myReader.onloadend = (loadEvent: any) => {
-            console.log('video', myReader.result);
-            this.data.video = myReader.result;
-  
-            this.data.type = file.type;
-            console.log('video---', this.data.video);
+      for (const archivo of event.target.files) {
+        const reader = this._utils_cls.getFileReader();
+        reader.readAsDataURL(archivo);
+        reader.onload = () => {
+
+          nombre_archivo = archivo.name;
+          console.log('nombre del archivo' + JSON.stringify(nombre_archivo));
+
+          let data = reader.result as string;
+          console.log("baseeeeeeeee 64" + JSON.stringify(data))         
+            this.base = data;            
+          };
         };
-        myReader.readAsDataURL(file);
-    }
+      }
   }
   public fileChangeListener($event) {
    
