@@ -304,6 +304,20 @@ export class NegocioService {
             }));
     }
 
+    obtenerCatDistintivos(): Observable<any> {
+        const body = JSON.stringify({});
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/catalogo/distintivos/obtenerTodosActivos',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
     obtenerPlazas(): Observable<any> {
         const body = JSON.stringify({});
         this._http.setDataSerializer('utf8');
@@ -358,9 +372,12 @@ export class NegocioService {
             this.url + 'api/proveedor/guardar_negocio',
             body, AppSettings.getHeadersToken())
             .then((data) => {
+                console.log("HOLA--------SERVICIO" + JSON.stringify(data.data));
                 return JSON.parse(data.data);
+              
             })
             .catch((error) => {
+                console.log("HOLA--------ERROR-" + JSON.stringify(error));
                 return error;
             }));
     }

@@ -23,6 +23,7 @@ const { Geolocation } = Plugins;
 import { GeneralServicesService } from './../../../api/general-services.service';
 import { LoadingController } from '@ionic/angular';
 import { UbicacionMapa } from '../../../api/ubicacion-mapa.service';
+import { CatDistintivosModel } from 'src/app/Modelos/CatDistintivosModel';
 
 @Component({
   selector: 'app-formulario-negocio',
@@ -47,6 +48,7 @@ export class FormularioNegocioPage implements OnInit {
   public tags: string;
   public lugaresEntrega: string;
   public lstOrganizaciones: Array<CatOrganizacionesModel>;
+  public lstDistintivos: Array<CatDistintivosModel>;
   public lstPlazas: Array<CatOrganizacionesModel>;
   public urlNegocioLibre = true;
   public controladorTiempo: any;
@@ -80,6 +82,7 @@ export class FormularioNegocioPage implements OnInit {
   public tipoGiroAux: any;
   public tipoSubAux: any;
   public tipoOrgAux: any;
+  public tipoDistAux: any;
   public tipoPlzAux: any;
   public blnActivaNegocioFisico: boolean;
   public msj = 'Guardando';
@@ -321,6 +324,7 @@ export class FormularioNegocioPage implements OnInit {
       this.obtenerCatOrganizaciones();
       this.obtenerCaPlazas();
       this.obtenerConvenio();
+      this.obtenerCatDistintivos();
       // this.categoriaPrincipal({ value: 0 });
       // this.subcategorias({ value: 0 });
     } else {
@@ -332,6 +336,7 @@ export class FormularioNegocioPage implements OnInit {
           this.obtenerCatOrganizaciones();
           this.obtenerCaPlazas();
           this.obtenerConvenio();
+          this.obtenerCatDistintivos();
 
           this.negocioTO.afiliacionesTodo.forEach(element => {
 
@@ -582,6 +587,21 @@ export class FormularioNegocioPage implements OnInit {
           this.negocioTO.organizaciones.forEach((elements) => {
             if (element.id_organizacion == elements) {
               this.tipoOrgAux = element.nombre;
+            }
+          });
+        });
+      }
+    });
+  }
+
+  public obtenerCatDistintivos() {
+    this.negocioServico.obtenerCatDistintivos().subscribe((response) => {
+      this.lstDistintivos = Object.values(response.data);
+      if (this.negocioTO.id_negocio != null) {
+        this.lstDistintivos.forEach((element) => {
+          this.negocioTO.distintivos.forEach((elements) => {
+            if (element.id_distintivo == elements) {
+              this.tipoDistAux = element.nombre;
             }
           });
         });
@@ -979,11 +999,14 @@ export class FormularioNegocioPage implements OnInit {
               } else {
                 this.loader = false;
                 this.notificaciones.alerta(response.message);
+                alert(response);
+                console.log("HOLA---------" + JSON.stringify(response));
               }
             },
             error => {
               this.notificaciones.error(error);                                                                                 
               this.loader = false;
+              console.log("ERROR:--------" + JSON.stringify(error));
             }
           );
         }        
@@ -1036,6 +1059,7 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.otra_subcategoria = '';
     this.negocioGuardar.organizaciones = this.negocioTO.organizaciones;
     this.negocioGuardar.plazas = this.negocioTO.plazas;
+    this.negocioGuardar.distintivos = this.negocioTO.distintivos;
   
     if (this.cnvn_date === undefined){
       this.dateObject = this.convenio_date;
@@ -1057,6 +1081,9 @@ export class FormularioNegocioPage implements OnInit {
     
     if (this.negocioGuardar.organizaciones !== undefined && this.negocioGuardar.organizaciones.length > 0) {
       this.negocioGuardar.nombre_organizacion = this.negocioTO.nombre_organizacion
+    }
+    if (this.negocioGuardar.distintivos !== undefined && this.negocioGuardar.distintivos.length > 0) {
+      this.negocioGuardar.nombre_distintivos = this.negocioTO.nombre_distintivos
     }
 
     if (this.negtag == true) {

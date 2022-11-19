@@ -160,6 +160,20 @@
               el descripcion es requerido
             </div>
           </div>
+
+          <ion-item>
+            <ion-label position="stacked">Distintivos</ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idDistintivos" name="idDist"
+              #distintivos="ngModel" [(ngModel)]="negocioTO.distintivos" placeholder="{{ tipoDistAux }}">
+              <ion-select-option *ngFor="let dist of lstDistintivos" [value]="dist.id_distintivo">{{dist.nombre}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div>
+            <div>Seleccione sus distintivos</div>
+          </div>
+
+
           <ion-item>
             <ion-label position="stacked">Afiliado a</ion-label>
             <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idOrganiza" name="idOrganiza"
