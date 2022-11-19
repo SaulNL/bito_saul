@@ -200,8 +200,9 @@ export class BannerPromocionesComponent implements OnInit {
 
   
    masInformacion(promocion: any) {
+     var promo = promocion.id_promocion;
     this._router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
-          queryParams: { route: true }});
+          queryParams: { route: true , clickBanner: true, promo:promo}});
     this.modalController.dismiss();
   }
 

@@ -144,4 +144,16 @@ export class BusquedaService {
       return respuesta;
     });
   }
+
+  
+  public getDatosNegocioSinMapearCategoría(filtro, pagina: number): Observable<any> {
+    const body = JSON.stringify({filtros: filtro, page: pagina});
+    this.http.setDataSerializer("utf8");
+    let datos = from(this.http.post(`${this.url}api/negocios/obtener`,body, AppSettings.getHeaders())
+    .then( data => {      
+      return JSON.parse(data.data);
+    }));   
+    return datos;
+  }
+  
 }

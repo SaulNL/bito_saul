@@ -60,7 +60,7 @@
         </div>
         <div>
           <ion-item  class="slider">
-            <ion-slides [options]="slideOpts">                            
+            <ion-slides [options]="slideOpts" style="width: 500px;">                            
               <ion-slide *ngFor="let foto of fotografiasArray; let i = index">               
                   <ion-card>
                     <img src={{foto.url_imagen}}/>                    

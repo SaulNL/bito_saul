@@ -12,7 +12,7 @@ import {
 import { AddToProductInterface } from "../../Bitoo/models/add-To-Product-model";
 import { ProductInterface } from "../../Bitoo/models/product-model";
 import { AppSettings } from "./../../AppSettings";
-import { Component, EventEmitter, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
   AlertController,
@@ -22,6 +22,7 @@ import {
   ToastController,
 } from "@ionic/angular";
 import { NegocioService } from "../../api/negocio.service";
+import { BusquedaService } from "src/app/api/busqueda.service";
 import { Geolocation, Capacitor } from "@capacitor/core";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { Location } from "@angular/common";
@@ -52,6 +53,7 @@ import { ProductoModel } from "../../Modelos/ProductoModel";
 import { ProductosService } from "../../api/productos.service";
 import { ComentariosNegocioComponent } from "../../componentes/comentarios-negocio/comentarios-negocio.component";
 import { OptionBackLogin } from "src/app/Modelos/OptionBackLoginModel";
+import { FiltrosModel } from "src/app/Modelos/FiltrosModel";
 /* import { WebView } from '@awesome-cordova-plugins/ionic-webview/ngx'; */
 
 @Component({
@@ -60,11 +62,13 @@ import { OptionBackLogin } from "src/app/Modelos/OptionBackLoginModel";
   styleUrls: ["./perfil-negocio.page.scss"],
   providers: [CreateObjects],
 })
-export class PerfilNegocioPage implements OnInit {
+export class PerfilNegocioPage implements OnInit, AfterViewInit {
+  public Filtros: FiltrosModel;
   public listaComentarios: [];
   public mostrarComentarios: boolean;
   public seccion: any;
   private map: Map;
+  @ViewChild('mapContainer')  mapContainer: Map;
   public negocio: string;
   public informacionNegocio: any;
   public loader: boolean;
@@ -120,6 +124,7 @@ export class PerfilNegocioPage implements OnInit {
   private longitudNeg: any;
   private convenio_entrega: any;
   public fotografiasArray:any[];
+  public promocionDefault: string;
   public logo:any;
   currentIndex:Number = 0;
   @ViewChild('carrusel')  slides: IonSlides;
@@ -137,6 +142,7 @@ export class PerfilNegocioPage implements OnInit {
     private route: ActivatedRoute,
     private toadController: ToastController,
     private negocioService: NegocioService,
+    private BusquedaService:BusquedaService,
     private notificacionService: ToadNotificacionService,
     private location: Location,
     private util: UtilsCls,
@@ -154,6 +160,7 @@ export class PerfilNegocioPage implements OnInit {
     private servicioProductos: ProductosService,
     private createObject: CreateObjects /* private document: DocumentViewer, */ /* private transfer: FileTransfer, */ /* private webview: WebView */
   ) {
+    this.Filtros = new FiltrosModel();
     this.toProductDetail = false;
     this.motrarContacto = true;
     this.seccion = "productos";
@@ -260,12 +267,51 @@ export class PerfilNegocioPage implements OnInit {
         this.location.back();
       }
     });
+
+    this.route.queryParams.subscribe((params) => {
+      if (params.clickBanner && params) {
+        console.log("Vienes del baner de promociones, el id de esta promo es: "+params.promo)
+        this.negocioService.obteneretalleNegocio(this.negocio, this.user.id_persona).subscribe((response) => {
+          if (response.data !== null) {
+            this.informacionNegocio = response.data;            
+            this.promociones = this.informacionNegocio.promociones; 
+            console.log("TAMAÑO DE LISTA PROMOS-----"+this.promociones.length)
+            this.promociones.forEach(promo => {
+              console.log("Promo clikeada: "+params.promo+" --> Promo de lista: "+promo.id_promocion)
+              if(promo.id_promocion == params.promo){
+                console.log("OK Coincidencia --> "+promo.id_promocion)
+                this.abrirModalPromocion(promo)
+              }
+            });           
+          } else {
+
+          }          
+        }
+      );
+      }
+    });
+
     this.getCurrentPosition();
     this.idPersona = this.existeSesion ? this.user.id_persona : null;
     localStorage.removeItem("negocios");
   }
 
-  loadMap() {
+  ngAfterViewInit(): void {
+    var intentos =0;
+    var inter = setInterval(( ) =>{            
+        if(this.mapContainer!=null || this.mapContainer!= undefined){
+          this.loadMap();
+          clearInterval(inter);
+        }    
+        else{
+          intentos++
+          if(intentos>5){
+            clearInterval(inter);
+          }
+        }      
+    }, 1000);    
+  }
+  async loadMap() {
     setTimeout((it) => {
       const lat = this.latitudNeg;
       const lng = this.longitudNeg;
@@ -324,11 +370,15 @@ export class PerfilNegocioPage implements OnInit {
           if (response.data !== null) {
             this.informacionNegocio = response.data;
             this.logo = this.informacionNegocio.url_logo
-            this.buscarNegocio(this.informacionNegocio.id_negocio);
+            console.log("informacionNegocio: "+JSON.stringify(this.informacionNegocio))
+            this.Filtros.idNegocio=this.informacionNegocio.id_negocio  
+            this.Filtros.kilometros=10 
+            this.Filtros.limpiarF=false;            
+            this.buscarDetalleNegocio(this.Filtros,1)
             this.convenio_entrega=this.informacionNegocio.convenio_entrega;
             this.latitudNeg = this.informacionNegocio.latitud;
             this.longitudNeg = this.informacionNegocio.longitud;
-            this.loadMap();
+            
             this.promociones = this.informacionNegocio.promociones;
             if (
               this.informacionNegocio.url_negocio !== null &&
@@ -363,10 +413,7 @@ export class PerfilNegocioPage implements OnInit {
           } else {
             this.presentError();
           }
-          this.loader = false;
-          // setTimeout((it) => {
-          // this.loadMap();
-          // }, 100);
+          //this.loader = false;
         },
         () => {
           confirm("Error al cargar");
@@ -375,18 +422,20 @@ export class PerfilNegocioPage implements OnInit {
       );
     // this.loader = false;
   }
-  buscarNegocio(id:any){
-    this.negocioService.buscarNegocio(id).subscribe(
+  
+  async buscarDetalleNegocio(filtro:any, pagina:any){
+    const body = JSON.stringify({filtros: filtro, page: pagina})
+    console.log("Body---> "+body)
+    var response = await this.BusquedaService.getDatosNegocioSinMapearCategoría(filtro,pagina).subscribe(
       response => {
         let negocioTO = response.data;  
-        this.fotografiasArray= negocioTO.fotografias 
-        /*this.fotografiasArray.forEach(element => {
-          console.log("fotografiasArray: "+JSON.stringify(element))    
-        });*/
+        let data = negocioTO.lst_cat_negocios.data[0]
+        this.fotografiasArray= data.fotografias 
+        //console.log("fotografiasArray: "+JSON.stringify(this.fotografiasArray))        
       },
       error => {
       }
-    );
+    );    
   }
 
   obtenerProductos() {
@@ -1087,7 +1136,8 @@ export class PerfilNegocioPage implements OnInit {
       };
       const dis = haversineCalculator(start, end);
       this.distanciaNegocio = dis.toFixed(2);
-    }, 3000);
+      this.loader = false;
+    }, 1500);
   }
 
   agregarBolsaDeta(pro) {
@@ -1239,7 +1289,7 @@ export class PerfilNegocioPage implements OnInit {
     }
   }
 
-  async abrirModalPromocion(promo: PromocionesModel) {
+  async abrirModalPromocion(promo: PromocionesModel) {  //aQUI SE ABRE MODAL DE PROMO
     const modal = await this.modalController.create({
       component: ModalPromocionNegocioComponent,
       componentProps: {
@@ -1430,16 +1480,13 @@ export class PerfilNegocioPage implements OnInit {
   next(){
     this.slides.slideNext();    
   }  
-SlideChanges(slide: IonSlides) {
-  slide.getActiveIndex().then((index: number) => {
-   this.currentIndex= index;
-      console.log("Index: "+this.currentIndex)
-      if (this.currentIndex == 0){
-        console.log("Inicio")
-      }
-      if(this.currentIndex == 3){
-        console.log("Fin")
-      }
-  });
-} 
+  SlideChanges(slide: IonSlides) {
+    slide.getActiveIndex().then((index: number) => {
+    this.currentIndex= index;
+        if (this.currentIndex == 0){
+        }
+        if(this.currentIndex == 3){
+        }
+    });
+  } 
 }

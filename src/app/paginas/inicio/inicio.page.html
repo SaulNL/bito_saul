@@ -44,7 +44,7 @@
         <ion-col size="12">
           <ion-buttons>
             <ion-chip *ngIf="!selectionAP" color="dark" (click)="openPlazasAfiliacionesModal()">
-              <small class="text">Plazas<span *ngIf="afiliacion"> y Afiliaciones</span></small>
+              <small class="text">Destacados</small>
               <ion-icon class="icono" name="caret-down-outline"></ion-icon>
             </ion-chip>
 
@@ -94,8 +94,8 @@
       <ion-slide>
         
         <li class="nav-item">
-          <a  class="todas"  id="pills-home-todos" data-toggle="pill"
-            href="#pills-home" role="tab" (click)="activar()" aria-controls="pills-home"
+          <a  class="todas"  id="pills-home-todos" 
+            role="tab" (click)="activar()" 
             aria-selected="true">
             <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img class="img-gris" src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png"> </ion-avatar>
             <ion-avatar *ngIf="idTodo ===true"  style="margin-bottom: 1.2rem;" class="image-center"> <img  src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png"> </ion-avatar>
@@ -129,10 +129,14 @@
     <ion-refresher *ngIf="!isIOS" slot="fixed" (ionRefresh)="recargar($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    
+    <ion-row *ngIf="paginaPrevia>0" style="justify-content: center;" (click)="cargarMasPaginasArriba($event)"
+    [ngClass]="isLoading==true? 'loaderArribaShow' : 'loaderArribaHide'">
+      <ion-spinner #cargaArriba id="cargaArriba" name="bubbles"></ion-spinner>
+      <p>Cargando negocios</p>
+    </ion-row><!-- [style]="cordenada <= 5 ? 'visibility: visible' : 'visibility: hidden;'" -->
     <div *ngIf="!loaderNegocios">
       <ion-grid *ngIf="listaCategorias.length !== 0">
-        <ion-row *ngFor="let cat of listaCategorias" class="ion-padding">
+        <ion-row *ngFor="let cat of listaCategorias; index as i" class="ion-padding">
           
           <ion-text class="nombre-categoria w-100" *ngIf="!banderaVerMas">
             <h2>{{cat.nombre}}</h2>
