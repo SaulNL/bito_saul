@@ -36,7 +36,9 @@ export class AgregarPromocionPage implements OnInit {
   public descripcionString: string;
   public btnCambiarImagen: boolean;
   public blnImgCuadrada: boolean;
+  public blnVideoCuadrada: boolean;
   public procesando_img: boolean;
+  public procesando_vid: boolean;
   public maintainAspectRatio: boolean = false;
   public resizeToWidth: number = 0;
   public resizeToHeight: number = 0;
@@ -64,6 +66,11 @@ export class AgregarPromocionPage implements OnInit {
   lstOrg: any[];
   verSeleccion: any;
   lstPlazaOrg: any[];
+  public data:any;
+ public video:any;
+ public nombre_video;
+ public arreglo: any;
+
   public diasArray = [
     { id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null },
     { id: 2, dia: 'Martes', horarios: [], hi: null, hf: null },
@@ -109,7 +116,7 @@ export class AgregarPromocionPage implements OnInit {
     public modalController: ModalController,
     private _router: Router,
     private _promociones_service: PromocionesService,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
   ) {
     this.seleccionTo = new PromocionesModel();
     this.publicacion = new PublicacionesModel();
@@ -195,6 +202,8 @@ export class AgregarPromocionPage implements OnInit {
     this.btnCambiarImagen = true;
     this.blnImgCuadrada = true;
     this.blnImgCuadrada = !(this.seleccionTo.url_imagen !== "");
+    this.blnVideoCuadrada = true;
+    this.blnVideoCuadrada = !(this.seleccionTo.url_video !== "");
     this.blnImgRectangulo = !(this.seleccionTo.url_imagen_banner !== "");
     this.blnImgPoster = !(this.seleccionTo.url_imagen_poster !== "");
     this.buscarNegocios();
@@ -276,7 +285,71 @@ export class AgregarPromocionPage implements OnInit {
       this.descripcionString = undefined;
     }
   }
+  public videoo($event:any) {
+    let fileList: FileList = $event.target.files;
+    this.data = {};
+    if (fileList.length > 0) {
+        let file: File = fileList[0];
+        console.log('video seleccionado', file);
+        console.log('video nombre', file.name);
+        this.nombre_video=file.name;
+        console.log('NOMBRE: ', file.name);
+  
+        let myReader: FileReader = new FileReader();
+        let that = this;
+        myReader.onloadend = (loadEvent: any) => {
+            console.log('video', myReader.result);
+            this.data.video = myReader.result;
+  
+            this.data.type = file.type;
+            console.log('video---', this.data.video);
+        };
+        myReader.readAsDataURL(file);
+    }
+  }
+  public fileChangeListener($event) {
+   
+    for (const archivo of $event.target.files) {
+     const reader = this._utils_cls.getFileReader();
+     reader.readAsDataURL(archivo);
+     reader.onload = () => {
+       this.nombre_video = archivo.name;
+       console.log("NOMBRE VIDEO- " + JSON.stringify(this.nombre_video));
+   
+    this.arreglo = JSON.parse(localStorage.getItem('u_sistema'));
+      console.log("ARREGLO ", JSON.stringify(this.arreglo));
+      
+     ;
+     let fileList: FileList = $event.target.files;
+     this.data = {};
+     if (fileList.length > 0) {
+         let file: File = fileList[0];
+       
+         console.log('video seleccionado', file);
+        // console.log("video selecionado" + JSON.stringify(file));
+         this.seleccionTo.url_video=this.nombre_video;
+         console.log("NOMBRE VIDEO: " + JSON.stringify(this.seleccionTo));
+         this.video = true;
+         this.seleccionTo.video = file;
+         console.log("VIDEO FILE: " + JSON.stringify(this.seleccionTo));
 
+         let myReader: FileReader = new FileReader();
+         let that = this;
+         myReader.onload = () => {
+             console.log('video', myReader.result);
+            
+             this.data.video = myReader.result;
+             this.data.type = file.type;
+         };
+         myReader.readAsDataURL(file);
+         console.log("video selecionado2" + JSON.stringify(file));
+ 
+       }
+     } 
+
+     }
+   
+ }
   public subir_imagen_cuadrada(event) {
     if (event.target.files && event.target.files.length) {
       let height;
@@ -307,6 +380,8 @@ export class AgregarPromocionPage implements OnInit {
 
                   imagen.archivo_64 = file_64;
                   this.seleccionTo.imagen = imagen;
+                  console.log("IMAGEN JAJA" + JSON.stringify(this.seleccionTo));
+ 
                   this.procesando_img = false;
                   this.blnImgCuadrada = false;
                 });
@@ -330,6 +405,71 @@ export class AgregarPromocionPage implements OnInit {
         };
       }
     }
+  }
+
+  public subir_video(event) {
+    for (const archivo of event.target.files) {
+      const reader = this._utils_cls.getFileReader();
+      reader.readAsDataURL(archivo);
+      reader.onload = () => {
+        this.nombre_video = archivo.name;
+        console.log("NOMBRE VIDEO- " + JSON.stringify(this.nombre_video));
+      
+    if (event.target.files && event.target.files.length) {
+      let height;
+      let width;
+      for (const archivo of event.target.files) {
+        const reader = this._utils_cls.getFileReader();
+        reader.readAsDataURL(archivo);
+        reader.onload = () => {
+          const vid = new Image();
+          const file_name = archivo.name;
+          vid.src = reader.result as string;
+          vid.onload = () => {
+            height = vid.naturalHeight;
+            width = vid.naturalWidth;
+
+            if (width === 500 && height === 500) {
+              this.procesando_vid = true;
+
+              const file = archivo;
+              if (file.size < 3145728) {
+                let file_64: any;
+                const utl = new UtilsCls();
+                utl.getBase64(file).then((data) => {
+                  file_64 = data;
+                  const video = new ArchivoComunModel();
+                  video.nombre_archivo =
+                    this._utils_cls.convertir_nombre(file_name);
+
+                  video.archivo_64 = file_64;
+                  this.seleccionTo.video = video;
+                  console.log("VIDEO JAJA" + JSON.stringify(this.seleccionTo));
+ 
+                  this.procesando_vid = false;
+                  this.blnVideoCuadrada = false;
+                });
+              } else {
+                this._notificacionService.alerta("archivo pesado");
+              }
+            } else {
+              this.maintainAspectRatio = true;
+              this.resizeToWidth = 500;
+              this.resizeToHeight = 500;
+              this.tipoImagen = 1;
+              this.fileChangeEvent(event);
+              this.abrirModalImagen(
+                vid.src,
+                file_name,
+                this.resizeToWidth,
+                this.resizeToHeight
+              );
+            }
+          };
+        };
+      }
+    }
+      }}
   }
 
   fileChangeEvent(event: any): void {
@@ -461,6 +601,7 @@ export class AgregarPromocionPage implements OnInit {
               queryParams: { special: true },
             });
             this._notificacionService.exito("Se guardó correctamente");
+            console.log("GUARDADO: " + JSON.stringify(this.seleccionTo));
             this.loader = false;
           }
         },
