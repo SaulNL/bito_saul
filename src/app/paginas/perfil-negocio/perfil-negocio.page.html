@@ -190,6 +190,13 @@
             </ion-grid>
           </ion-row>
         </div>
+        <ion-row class="row_insignias">
+          <ion-slides [options]="slideOptsInsignias" class="row_insignias">                
+            <ion-slide *ngFor="let distintivo of insignias">               
+                <img class="img_insignia" src="{{distintivo.icon}}" alt="insignia" (click)="clickDistintivo(distintivo.nombre, distintivo.nombre)">                                                                                                                                              
+            </ion-slide>                          
+          </ion-slides>
+        </ion-row>
         <ion-row>
           <ion-col size="12">
             <ion-text
@@ -1129,5 +1136,18 @@
         </ion-row>
       </ion-grid>
     </ion-card>
+  </div>
+  <div [ngClass]="showPopUp? 'bottom_info_distintivo_up' : 'bottom_info_distintivo'">              
+    <div class="contenedor_popup">      
+      <div class="icon_close">
+        <ion-icon name="close" (click)="closePopUp()"></ion-icon>
+      </div>
+      <div class="popup_content">
+        <h4>{{insigniaTitle}}</h4>
+        <div>
+          <p>{{insigniaDescrip}}</p>
+        </div>
+      </div>          
+    </div>               
   </div>
 </ion-content>

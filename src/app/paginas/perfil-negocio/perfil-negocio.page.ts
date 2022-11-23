@@ -134,6 +134,17 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     loop: false,
     spaceBetween: 10,
   }
+  slideOptsInsignias = {
+    autoHeight: false,
+    slidesPerView: 7,
+    centeredSlides: false,
+    loop: false,
+    spaceBetween: 1,
+  }
+  insignias: any;
+  showPopUp: boolean;
+  insigniaTitle: string;
+  insigniaDescrip: string;
   constructor(
     private nativeHTTP: HTTP,
     private file: File,
@@ -431,8 +442,10 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     var response = await this.BusquedaService.getDatosNegocioSinMapearCategoría(filtro,pagina).subscribe(
       response => {
         let negocioTO = response.data;  
-        let data = negocioTO.lst_cat_negocios.data[0]
+        let data = negocioTO.lst_cat_negocios.data[0] 
         this.fotografiasArray= data.fotografias 
+        this.insignias=data.distintivos
+        console.log("insignias: "+JSON.stringify(this.insignias))
         //console.log("fotografiasArray: "+JSON.stringify(this.fotografiasArray))        
       },
       error => {
@@ -1493,4 +1506,14 @@ SlideChanges(slide: IonSlides) {
       }
   });
 } 
+clickDistintivo(tag:string, object:any){
+  console.log("Clickeo sobre la insignia de: "+ tag+" con la descripcion: "+JSON.stringify(object))
+  this.showPopUp=true;
+  this.insigniaTitle=tag
+  this.insigniaDescrip=tag
+}
+closePopUp(){
+  console.log("Cerró el popup")
+  this.showPopUp=false;
+}
 }
