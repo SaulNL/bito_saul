@@ -462,7 +462,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   public getCurrentPosition(){
     let gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
     Geolocation.getCurrentPosition(gpsOptions).then(res => {
-      console.log("latitu y longituuuuuuuuuudddddd")
         this.miUbicacionlatitud = res.coords.latitude;
         this.miUbicacionlongitud = res.coords.longitude;
         this.latitud = this.miUbicacionlatitud;

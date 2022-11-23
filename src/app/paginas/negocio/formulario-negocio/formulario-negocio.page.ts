@@ -121,7 +121,7 @@ export class FormularioNegocioPage implements OnInit {
   nameConvenio: any;
   loaderSubCategoria: boolean;
   slideOpts = {
-    slidesPerView: 1,
+    slidesPerView: 1.5,
     centeredSlides: true,
     loop: false,
     spaceBetween: 10,
