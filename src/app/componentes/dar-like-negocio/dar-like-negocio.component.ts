@@ -15,6 +15,8 @@ export class DarLikeNegocioComponent implements OnInit {
   @Input() public usuario: any;
   @Input() public mostrarLike: any;
 
+  public loaderLike = false;
+
   constructor(
     private servicioNegocio: ProveedorServicioService,
     private notificacion: ToadNotificacionService, 
@@ -50,22 +52,22 @@ export class DarLikeNegocioComponent implements OnInit {
   }
 
   public darLike(negocio: any) {
-
     if (!this.mostrarLike) {
       this.alerta();
     } else {
-
+      
+      this.loaderLike = true;
+      
       this.servicioNegocio.darLike(negocio, this.usuario).subscribe(
         (response) => {
           if (response.code === 200) {
             negocio.likes = response.data;
             negocio.usuario_like = 1;
-            this.notificacion.success(response.message);
           } else {
             negocio.likes = response.data;
             negocio.usuario_like = 0;
-            this.notificacion.alerta(response.message);
           }
+          this.loaderLike = false;
         },
         (error) => {}
       );

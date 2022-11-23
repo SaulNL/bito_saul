@@ -128,9 +128,11 @@ ion-card-header {
 
 @media (min-width: 412px) {
   .likegegi {
-    bottom: 7rem;
+    bottom: 0px;//7rem;
     position: absolute;
     display: flex;
+    width: 100%;
+    height: fit-content;
   }
   .fixed {
     height: 20em;
