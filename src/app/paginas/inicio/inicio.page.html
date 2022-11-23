@@ -167,23 +167,62 @@
                   [srcset]="proveedor.url_logo"
                   alt="Falla al cargar la imagen"
                 />
-                <ion-card-header>
+                <!--ion-card-header>
                   <ion-row   class="ion-justify-content-center">
                     <ion-spinner *ngIf="idNegocio===proveedor.id_negocio"  name="dots" class="spinner-color"></ion-spinner>
                   </ion-row>
                   <ion-card-subtitle class="texto-comercio">
                     {{proveedor.nombre_corto != "" ? proveedor.nombre_corto : proveedor.nombre_comercial}}
-                    <!--ion-icon
-                      *ngIf="!proveedor.verificado"
-                      class="text-rosa"
-                      name="checkmark-circle"
-                    ></ion-icon---->
+                   
                   </ion-card-subtitle>
-                </ion-card-header>
-              </div>
+                </ion-card-header-->
+              </div>                           
               <div *ngIf="proveedor.tienepromociones == 1"  class="promo" (click)="negocioRuta(proveedor.url_negocio,  proveedor.id_negocio)"> 
                 <ion-img src="../../../assets/images/promo/etiqueta_promo.png"></ion-img>
               </div>
+
+              <div [style]="!proveedor.verificado && proveedor.distintivos.length < 1 ? 'margin: 10px 5px 0px 5px;' : 'margin:-18px 5px 0px 5px;'"><!-- style="margin:-18px 5px 0px 5px;" -->
+                <p style="font-weight:bold; font-size:16px; text-align: center;"> 
+                  {{proveedor.nombre_corto != "" ? proveedor.nombre_corto : proveedor.nombre_comercial}} 
+                </p>
+              </div>
+
+              <div class="icon-cert-card" *ngIf="proveedor.verificado || proveedor.distintivos.length > 0">
+                <div class="one" *ngIf="proveedor.verificado">
+                  <ion-icon                                     
+                    src="../../../assets/icon/certificado_icon.svg" size="large">
+                  </ion-icon>                  
+                </div>                  
+                <div [ngClass]="!proveedor.verificado? 'one' : 'two'" *ngIf="proveedor.distintivos[0]!=null || proveedor.distintivos[0]!=undefined" (click)="clickDistintivo(proveedor.distintivos[0].nombre, proveedor.distintivos[0])">
+                  <img [src]="proveedor.distintivos[0].icon" alt="xsd" style="width:18px; height:auto; margin-top: 10px;">                   
+                </div>
+                <div [ngClass]="!proveedor.verificado? 'two' : 'three'" *ngIf="proveedor.distintivos[1]!=null || proveedor.distintivos[1]!=undefined" (click)="clickDistintivo(proveedor.distintivos[1].nombre, proveedor.distintivos[1])">
+                  <img [src]="proveedor.distintivos[1].icon" alt="xsd" style="width:18px; height:auto; margin-top: 10px;"> 
+                </div>
+                <div [ngClass]="!proveedor.verificado? 'three' : 'four'" *ngIf="proveedor.distintivos[2]!=null || proveedor.distintivos[2]!=undefined" (click)="clickDistintivo(proveedor.distintivos[2].nombre, proveedor.distintivos[2])">
+                  <img [src]="proveedor.distintivos[2].icon" alt="xsd" style="width:18px; height:auto; margin-top: 10px;"> 
+                </div>
+                <div [ngClass]="!proveedor.verificado? 'four' : 'five'" *ngIf="proveedor.distintivos[3]!=null || proveedor.distintivos[3]!=undefined" (click)="clickDistintivo(proveedor.distintivos[3].nombre, proveedor.distintivos[3])">
+                  <img [src]="proveedor.distintivos[3].icon" alt="xsd" style="width:18px; height:auto; margin-top: 10px;"> 
+                </div>   
+                <!--div class="one" *ngIf="!proveedor.verificado && (proveedor.distintivos[3]!=null || proveedor.distintivos[3]!=undefined)" (click)="clickDistintivo(proveedor.distintivos[3].nombre)">
+                  <img [src]="proveedor.distintivos[3].icon" alt="xsd"
+                  style="width:18px; height:auto; margin-top: 10px;">
+                </div-->            
+                <!--ion-item *ngFor="let distintivo of proveedor.distintivos">
+                  <ion-icon                                      
+                    [src]="distintivo.icon" size="large">
+                  </ion-icon>  
+                </ion-item-->  
+                <!--{{distintivo.icon}}--> 
+                <!--ion-avatar *ngFor="let distintivo of proveedor.distintivos">
+                  <img *ngIf="distintivo.nombre == 'Artesanos'" [src]="distintivo.icon">
+                </ion-avatar-->                                          
+              </div>               
+
+              <ion-row   class="ion-justify-content-center">
+                <ion-spinner *ngIf="idNegocio===proveedor.id_negocio"  name="dots" class="spinner-color"></ion-spinner>
+              </ion-row>
               <div class="likegegi">
                 <div class="badge">
                   <ion-badge
@@ -204,11 +243,7 @@
                 >
                 </app-dar-like-negocio>
               </div>
-              <div class="icon-cert-card">
-                <ion-icon *ngIf="proveedor.verificado"                                      
-                  src="../../../assets/icon/certificado_icon.svg" size="large">
-                </ion-icon>
-              </div>
+              
             </ion-card>
           </ion-col>
           <!--ion-button color="light" size="small" (click)="obtenerPrincipalInicio(cat.nombre)" 
@@ -222,7 +257,20 @@
             <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
           </ion-chip>
         </ion-row>
-      </ion-grid>
+      </ion-grid>      
+      <div [ngClass]="showPopUp? 'bottom_info_distintivo_up' : 'bottom_info_distintivo'">              
+        <div class="contenedor_popup">      
+          <div class="icon_close">
+            <ion-icon name="close" (click)="closePopUp()"></ion-icon>
+          </div>
+          <div class="popup_content">
+            <h4>{{insigniaTitle}}</h4>
+            <div>
+              <p>{{insigniaDescrip}}</p>
+            </div>
+          </div>          
+        </div>               
+      </div>
     </div>
     <ion-grid *ngIf="listaCategorias.length === 0 && selectionAP === false">
       <ion-text color="primary">

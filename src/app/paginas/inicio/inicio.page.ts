@@ -110,6 +110,9 @@ export class InicioPage implements OnInit, AfterViewInit {
   scrollAmount: any;
   isLoading: boolean;
   consultaTerminada: boolean=true;
+  showPopUp: boolean;
+  insigniaTitle: string;
+  insigniaDescrip: string;
 
   constructor(
     public loadingController: LoadingController,
@@ -1210,5 +1213,15 @@ export class InicioPage implements OnInit, AfterViewInit {
       // this.notificaciones.error("Error al buscar los datos" + error.message);
       this.notificaciones.error("No hay conexión a internet, conectate a una red");
     }
+  }
+  clickDistintivo(tag:string, object:any){
+    console.log("Clickeo sobre la insignia de: "+ tag+" con la descripcion: "+JSON.stringify(object))
+    this.showPopUp=true;
+    this.insigniaTitle=tag
+    this.insigniaDescrip=tag
+  }
+  closePopUp(){
+    console.log("Cerró el popup")
+    this.showPopUp=false;
   }
 }

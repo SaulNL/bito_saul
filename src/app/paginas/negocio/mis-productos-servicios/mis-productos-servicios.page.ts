@@ -907,7 +907,10 @@ export class MisProductosServiciosPage implements OnInit {
     this.subir_imagen_cuadrada(event);
   }
   public updateBorrado(event: any) {
-    this.productoNuevo.imagen.splice(event.po, 1);
+    let id = event.po
+    let idStr=id.toString()
+    //this.productoNuevo.imagen.splice(event.po, 1); No es un array, es un objeto
+    delete this.productoNuevo.imagen[idStr]
   }
 
   public isService(type: number) {
