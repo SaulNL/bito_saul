@@ -194,30 +194,17 @@
                   </ion-icon>                  
                 </div>                  
                 <div [ngClass]="!proveedor.verificado? 'one' : 'two'" *ngIf="proveedor.distintivos[0]!=null || proveedor.distintivos[0]!=undefined" (click)="clickDistintivo(proveedor.distintivos[0].nombre, proveedor.distintivos[0])">
-                  <img [src]="proveedor.distintivos[0].icon" alt="xsd" style="width:18px; height:auto; margin-top: 10px;">                   
+                  <img [src]="proveedor.distintivos[0].icon" alt="xsd" style="width:40px; height:40px; margin-top: 0px;">                   
                 </div>
                 <div [ngClass]="!proveedor.verificado? 'two' : 'three'" *ngIf="proveedor.distintivos[1]!=null || proveedor.distintivos[1]!=undefined" (click)="clickDistintivo(proveedor.distintivos[1].nombre, proveedor.distintivos[1])">
-                  <img [src]="proveedor.distintivos[1].icon" alt="xsd" style="width:18px; height:auto; margin-top: 10px;"> 
+                  <img [src]="proveedor.distintivos[1].icon" alt="xsd" style="width:40px; height:40px; margin-top: 0px;"><!--width:20px; height:auto; margin-top: 10px;-->
                 </div>
                 <div [ngClass]="!proveedor.verificado? 'three' : 'four'" *ngIf="proveedor.distintivos[2]!=null || proveedor.distintivos[2]!=undefined" (click)="clickDistintivo(proveedor.distintivos[2].nombre, proveedor.distintivos[2])">
-                  <img [src]="proveedor.distintivos[2].icon" alt="xsd" style="width:18px; height:auto; margin-top: 10px;"> 
+                  <img [src]="proveedor.distintivos[2].icon" alt="xsd" style="width:40px; height:40px; margin-top: 0px;"> 
                 </div>
                 <div [ngClass]="!proveedor.verificado? 'four' : 'five'" *ngIf="proveedor.distintivos[3]!=null || proveedor.distintivos[3]!=undefined" (click)="clickDistintivo(proveedor.distintivos[3].nombre, proveedor.distintivos[3])">
-                  <img [src]="proveedor.distintivos[3].icon" alt="xsd" style="width:18px; height:auto; margin-top: 10px;"> 
-                </div>   
-                <!--div class="one" *ngIf="!proveedor.verificado && (proveedor.distintivos[3]!=null || proveedor.distintivos[3]!=undefined)" (click)="clickDistintivo(proveedor.distintivos[3].nombre)">
-                  <img [src]="proveedor.distintivos[3].icon" alt="xsd"
-                  style="width:18px; height:auto; margin-top: 10px;">
-                </div-->            
-                <!--ion-item *ngFor="let distintivo of proveedor.distintivos">
-                  <ion-icon                                      
-                    [src]="distintivo.icon" size="large">
-                  </ion-icon>  
-                </ion-item-->  
-                <!--{{distintivo.icon}}--> 
-                <!--ion-avatar *ngFor="let distintivo of proveedor.distintivos">
-                  <img *ngIf="distintivo.nombre == 'Artesanos'" [src]="distintivo.icon">
-                </ion-avatar-->                                          
+                  <img [src]="proveedor.distintivos[3].icon" alt="xsd" style="width:40px; height:40px; margin-top: 0px;"> 
+                </div>                                                            
               </div>               
 
               <ion-row   class="ion-justify-content-center">

@@ -907,7 +907,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     let convenio = nombre == 'Con Convenio' ? 'convenio' : null;
     let promocion = nombre == 'Con Promociones' ? 'promocion' : null;
-    let destacados = nombre == 'Destacados' ? 'destacados' : null;
+    let destacados = nombre == 'Destacados' ? 'destacados' : null;//Aqui es por "Mas vistos" cuando este listo el servicio
 
     if (nombre === undefined) {
       this.principalSercicio.obtenerPrincipalInicio()
@@ -1055,7 +1055,8 @@ export class InicioPage implements OnInit, AfterViewInit {
         .obtenerNegocioPorCategoria(this.Filtros, rand)//this.siguienteGiro)
     this.validarResultadosDeCategorias(await respuesta);
     this.loader = false;
-    this.scrollToTop();
+    this.content.scrollToPoint(0,20);
+    //this.scrollToTop();
   }
 
   //####### PARA CATEGORÍA SELECCIONADA SE AHISLAN METODOS PARA MOSTRAR NEGOCIOS ALEATORIOS###########

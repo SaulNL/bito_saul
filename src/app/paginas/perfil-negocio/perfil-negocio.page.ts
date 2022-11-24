@@ -137,10 +137,10 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
   slideOptsInsignias = {
     autoHeight: false,
-    slidesPerView: 7,
+    slidesPerView: 8,
     centeredSlides: false,
     loop: false,
-    spaceBetween: 1,
+    spaceBetween: 0,
   }
   insignias: any;
   showPopUp: boolean;
@@ -1509,7 +1509,7 @@ clickDistintivo(tag:string, object:any){
   console.log("Clickeo sobre la insignia de: "+ tag+" con la descripcion: "+JSON.stringify(object))
   this.showPopUp=true;
   this.insigniaTitle=tag
-  this.insigniaDescrip=tag
+  this.insigniaDescrip=object
 }
 closePopUp(){
   console.log("Cerró el popup")
