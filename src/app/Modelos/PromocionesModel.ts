@@ -12,6 +12,7 @@ export class PromocionesModel {
   public terminos: string;
   public imagen: any;
   public video: any;
+  public vip: any;
   public imagenBanner: any;
   public imagenPoster: any;
   public url_imagen: string;

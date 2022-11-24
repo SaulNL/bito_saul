@@ -6,6 +6,7 @@ import {HorarioNegocioModel} from './HorarioNegocioModel';
 export class NegocioModel {
 
   public id_negocio: number;
+  public vip: any;
   public rfc: string;
   public descripcion: string;
   public nombre_comercial: string;

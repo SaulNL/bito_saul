@@ -323,6 +323,7 @@ export class PromocionesService {
     return from(this.http.post(this.url + 'api/promociones/guardar', body, AppSettings.getHeadersToken())
     .then((data) => {
       return JSON.parse(data.data);
+      
     })
     .catch((error) => {
       return error;
