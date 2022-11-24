@@ -110,6 +110,9 @@ export class InicioPage implements OnInit, AfterViewInit {
   scrollAmount: any;
   isLoading: boolean;
   consultaTerminada: boolean=true;
+  showPopUp: boolean;
+  insigniaTitle: string;
+  insigniaDescrip: string;
 
   constructor(
     public loadingController: LoadingController,
@@ -904,7 +907,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     let convenio = nombre == 'Con Convenio' ? 'convenio' : null;
     let promocion = nombre == 'Con Promociones' ? 'promocion' : null;
-    let destacados = nombre == 'Destacados' ? 'destacados' : null;
+    let destacados = nombre == 'Destacados' ? 'destacados' : null;//Aqui es por "Mas vistos" cuando este listo el servicio
 
     if (nombre === undefined) {
       this.principalSercicio.obtenerPrincipalInicio()
@@ -1052,7 +1055,8 @@ export class InicioPage implements OnInit, AfterViewInit {
         .obtenerNegocioPorCategoria(this.Filtros, rand)//this.siguienteGiro)
     this.validarResultadosDeCategorias(await respuesta);
     this.loader = false;
-    this.scrollToTop();
+    this.content.scrollToPoint(0,20);
+    //this.scrollToTop();
   }
 
   //####### PARA CATEGORÍA SELECCIONADA SE AHISLAN METODOS PARA MOSTRAR NEGOCIOS ALEATORIOS###########
@@ -1210,5 +1214,15 @@ export class InicioPage implements OnInit, AfterViewInit {
       // this.notificaciones.error("Error al buscar los datos" + error.message);
       this.notificaciones.error("No hay conexión a internet, conectate a una red");
     }
+  }
+  clickDistintivo(tag:string, object:any){
+    console.log("Clickeo sobre la insignia de: "+ tag+" con la descripcion: "+JSON.stringify(object))
+    this.showPopUp=true;
+    this.insigniaTitle=tag
+    this.insigniaDescrip=tag
+  }
+  closePopUp(){
+    console.log("Cerró el popup")
+    this.showPopUp=false;
   }
 }
