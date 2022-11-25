@@ -117,6 +117,9 @@ export class AgregarPromocionPage implements OnInit {
   blnAgregarVideo= false;
   mostrarVideo: any;
   blnCambiarVideo = false;
+  logs: string[] = [];
+  currentFood = undefined;
+  selectNegocio = false;
   
   constructor(
     private alertController: AlertController,
@@ -232,6 +235,27 @@ export class AgregarPromocionPage implements OnInit {
 
   public agregarTags(event) {
     this.tags = event;
+  }
+  pushLog(msg) {
+    this.logs.unshift(msg);
+  }
+  obtenerVip(e) {
+    this.pushLog('ionChange value: ' + e.detail.value);
+    this.currentFood = e.target.value;
+   // this.pushLog('ES VIP: ' + this.currentFood);
+    for (const negocio of this.lstNegocios) { 
+      if (negocio.id_negocio == this.seleccionTo.id_negocio) { 
+        if (negocio.vip == 1) { 
+          this.mostrarVideo = true; 
+          this.selectNegocio = true;
+          break; 
+        } else { 
+          this.mostrarVideo = false; 
+          this.selectNegocio = false;
+          break; 
+        } 
+      } 
+    }
   }
 
   buscarNegocios() {
@@ -356,6 +380,7 @@ export class AgregarPromocionPage implements OnInit {
                   //this.procesando_img = false;
                   this.blnVideoCuadrada = false;
                   this.blnCambiarVideo = true;
+                  this.selectNegocio = false;
                 }
               );
             }

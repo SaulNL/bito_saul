@@ -96,19 +96,19 @@
         <ion-item *ngIf="!loaderNegocios">
           <ion-label position="stacked"> Relacione su negocio:<span>*</span> </ion-label>
           <ion-select
-            [value]="seleccionTo.id_negocio"
             name="negocio"
             [(ngModel)]="seleccionTo.id_negocio"
+            (ionChange)="obtenerVip($event)"
             required
           >
-            <div *ngFor="let row of lstNegocios" (change)="decripcionSelect()">
+            <div *ngFor="let row of lstNegocios">
               <ion-select-option *ngIf="row.activo !=0 && row.activo != '0'" [value]="row.id_negocio"
                 >{{row.nombre_comercial}}</ion-select-option
               >
             </div>
           </ion-select>
         </ion-item>
-
+       
         <div *ngIf="seleccionTo.id_tipo_promocion===2">
           <ion-item *ngIf="!loaderNegocios">
             <ion-label position="stacked"> Promoción aplicable a :<span>*</span> </ion-label>
@@ -536,7 +536,7 @@
         </div>
      <!-- ----- AQUI COMIENZA PARTE DE MOSTRAR EL VIDEO --- -->
 
-     <div *ngIf="mostrarVideo">
+     <div *ngIf="mostrarVideo || selectNegocio">
         <div *ngIf="seleccionTo.id_tipo_promocion===1" class="btn btn-info btn-raised">
           <br>
           <ion-card>
@@ -546,8 +546,7 @@
           <video controls autoplay *ngIf="base != null" width="100%" height="350">
             <source type="video/mp4" [src]="base">
           </video>
-          <h8 *ngIf="nombrevid === true"> {{nom_vid}} </h8>
-
+        
           <div class="row" *ngIf="base != null || !blnVideoCuadrada"  style="margin-left: 0px;">
           <div class="ion-text-center" *ngIf="base === null">
               <div class="contenido">
@@ -560,25 +559,23 @@
           <div *ngIf="!blnVideoCuadrada && base != null">
             <input type="file" hidden id="imageUpload" accept="video/mp4" (change)="videoo($event)"/>
             <label for="imageUpload">
-              <h8>El video es opcional. </h8>
+              <h6>El video es opcional. </h6>
               <ion-button color="warning" expand="full">
-               <h7 > Cambiar Video <ion-icon name="videocam-outline"></ion-icon></h7>
+               <h6> Cambiar Video <ion-icon name="videocam-outline"></ion-icon></h6>
             </ion-button>
             </label>
           </div>
-
           <br>
-          <div *ngIf="!blnVideoCuadrada && base === null">
+
+          <div *ngIf="selectNegocio || !blnVideoCuadrada && base === null">
             <app-spinner [loader]="loader" [message]="msj"></app-spinner>
             <input type="file" hidden id="imageUpload" accept="video/mp4" (change)="videoo($event)"/>
               <label for="imageUpload">
-                <h8>El video es opcional. </h8>
+                <h6>El video es opcional. </h6>
                
-                <ion-button *ngIf="seleccionTo.url_video !== undefined && seleccionTo.video === undefined" class="bg-rosa" expand="full">
-                 <h7 *ngIf="nombrevid != true"> Subir video <ion-icon name="videocam-outline"></ion-icon></h7>
+                <ion-button *ngIf="selectNegocio || seleccionTo.url_video !== undefined && seleccionTo.video === undefined" class="bg-rosa" expand="full">
+                 <h6 *ngIf="nombrevid != true"> Subir video <ion-icon name="videocam-outline"></ion-icon></h6>
               </ion-button>
-          
-                <h8 *ngIf="nombrevid === true"> {{nom_vid}} </h8>
               </label>
             </div>     
          </div>
