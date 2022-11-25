@@ -158,7 +158,13 @@ export class FiltrosBusquedaComponent implements OnInit {
     public obtenerCatalogos() {
         this.filtroServicio.tipoNegocios().subscribe(
             response => {
-                this.lstCatTipoNegocio = response.data.catTipoNegocio;
+                console.log("catalogos: "+JSON.stringify(response.data.catTipoNegocio))
+                let aux = response.data.catTipoNegocio;
+                aux.forEach((cat, index) => {
+                    if(cat.id_tipo_negocio!=3){
+                        this.lstCatTipoNegocio.push(cat)
+                    }
+                });                
             },
             error => {
             }
