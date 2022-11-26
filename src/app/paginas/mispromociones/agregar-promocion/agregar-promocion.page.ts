@@ -9,7 +9,7 @@ import { PublicacionesModel } from "../../../Modelos/PublicacionesModel";
 import { UtilsCls } from "../../../utils/UtilsCls";
 import { ArchivoComunModel } from "../../../Modelos/ArchivoComunModel";
 import { RecorteImagenComponent } from "../../../components/recorte-imagen/recorte-imagen.component";
-import { ModalController } from "@ionic/angular";
+import { ModalController, Platform } from "@ionic/angular";
 import { PromocionesService } from "../../../api/promociones.service";
 import { LoadingController } from "@ionic/angular";
 import { CatOrganizacionesModel } from './../../../Modelos/CatOrganizacionesModel';
@@ -69,11 +69,16 @@ export class AgregarPromocionPage implements OnInit {
   verSeleccion: any;
   lstPlazaOrg: any[];
   public data:any;
- public video:any;
- public nombre_video;
- public arreglo: any;
- nombrevid: boolean;
- nom_vid: any;
+  public loaderGuardar = false;
+  public nuevoRegistro = false;
+  loaderVideo = false;
+  nombre_video: any;
+  mostrarVideo: any;
+  base64Video = null;
+  negocioVip: any;
+  vip : any;
+
+  public arreglo: any;
 
 
   public diasArray = [
@@ -98,7 +103,7 @@ export class AgregarPromocionPage implements OnInit {
   public nuevoHorario: HorarioPromocionModel;
   public blnActivaHorario: boolean;
   public posicionHorario: number;
-  public base: any = null;
+  public isIos: boolean;
   producto: number[] =[];
   categoria: string[] = [];
   tipoPromocion: any;
@@ -111,15 +116,9 @@ export class AgregarPromocionPage implements OnInit {
   tipoCvn: string[];
   plz: number[] = [];
   cnv: number[] = [];  
-  vip : any;
   v: any;
-  negocioVip: any;
-  blnAgregarVideo= false;
-  mostrarVideo: any;
-  blnCambiarVideo = false;
   logs: string[] = [];
   currentFood = undefined;
-  selectNegocio = false;
   
   constructor(
     private alertController: AlertController,
@@ -131,7 +130,9 @@ export class AgregarPromocionPage implements OnInit {
     private _router: Router,
     private _promociones_service: PromocionesService,
     public loadingController: LoadingController,
+    private platform: Platform,
   ) {
+    this.isIos = this.platform.is("ios");
     this.seleccionTo = new PromocionesModel();
     this.publicacion = new PublicacionesModel();
     this.loader = false;
@@ -216,9 +217,6 @@ export class AgregarPromocionPage implements OnInit {
     this.btnCambiarImagen = true;
     this.blnImgCuadrada = true;
     this.blnImgCuadrada = !(this.seleccionTo.url_imagen !== "");
-    this.blnVideoCuadrada = true;
-    this.blnVideoCuadrada = !(this.seleccionTo.url_video !== "");
-    this.blnCambiarVideo = false;
     this.blnImgRectangulo = !(this.seleccionTo.url_imagen_banner !== "");
     this.blnImgPoster = !(this.seleccionTo.url_imagen_poster !== "");
     this.buscarNegocios();
@@ -230,6 +228,9 @@ export class AgregarPromocionPage implements OnInit {
     }else{
       this.seleccionTo.id_tipo_promocion = this.seleccionTo.id_tipo_promocion;
     }
+    this.base64Video = null;
+    this.seleccionTo.video = null;
+    this.seleccionTo.id_promocion == null ? this.nuevoRegistro = true : this.nuevoRegistro = false; 
     
   }
 
@@ -240,18 +241,15 @@ export class AgregarPromocionPage implements OnInit {
     this.logs.unshift(msg);
   }
   obtenerVip(e) {
-    this.pushLog('ionChange value: ' + e.detail.value);
-    this.currentFood = e.target.value;
-   // this.pushLog('ES VIP: ' + this.currentFood);
     for (const negocio of this.lstNegocios) { 
       if (negocio.id_negocio == this.seleccionTo.id_negocio) { 
         if (negocio.vip == 1) { 
           this.mostrarVideo = true; 
-          this.selectNegocio = true;
           break; 
         } else { 
-          this.mostrarVideo = false; 
-          this.selectNegocio = false;
+          this.mostrarVideo = false;
+          this.base64Video = null
+          this.seleccionTo.video = null;
           break; 
         } 
       } 
@@ -266,16 +264,13 @@ export class AgregarPromocionPage implements OnInit {
         (response) => {
           this.lstNegocios = response.data;
           this.loaderNegocios = false;
-          this.base = null;
           for (const negocio of this.lstNegocios) { 
             if (negocio.id_negocio == this.seleccionTo.id_negocio) { 
               if (negocio.vip == 1) { 
                 this.mostrarVideo = true; 
-                console.log('SOY VIP' + JSON.stringify(negocio.vip));
                 break; 
               } else { 
                 this.mostrarVideo = false; 
-                console.log('NOOOO VIP' + JSON.stringify(negocio.vip));
                 break; 
               } 
             } 
@@ -336,101 +331,38 @@ export class AgregarPromocionPage implements OnInit {
     }
   }
 
-  public videoo(event:any) {
-   this.loader = true;
-    let nombre_archivo;
-    this.base = null
+  public seleccionarVideo(event:any) {
     if (event.target.files && event.target.files.length) {
      
-      for (const archivo of event.target.files) {
-        const reader = this._utils_cls.getFileReader();
-        reader.readAsDataURL(archivo);
-        reader.onload = () => {
-
-          nombre_archivo = archivo.name;
-          console.log('nombre del archivo' + JSON.stringify(nombre_archivo));
-          this.seleccionTo.url_video = nombre_archivo;
-          
-          this.nom_vid=nombre_archivo;
-          this.nombrevid =true;
-
-          let data = reader.result as string;
-          console.log("baseeeeeeeee 64" + JSON.stringify(data));        
-            this.base = data; 
-            console.log("baseeeeeeeee 648" + JSON.stringify(this.base));    
-            this.loader = false   
-            this.procesando_vid = true;
-            this.seleccionTo.video = data;  
-            this.tipoImagen = 3;    
-            this.blnVideoCuadrada = false;
-            this.blnCambiarVideo = true;
-            const file = archivo;
-            const file_name = archivo.name;
-            if (file.size < 100000000) {
-              let file_64: any;
-              const utl = new UtilsCls();
-              utl.getBase64(file).then(
-                data => {
-                  file_64 = data;
-                  const video = new ArchivoComunModel();
-                  video.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
-                  video.archivo_64 = file_64;
-                  this.seleccionTo.video = video;
-                  console.log("SELECCION VIDEO: " + JSON.stringify(this.base)); 
-                  //this.procesando_img = false;
-                  this.blnVideoCuadrada = false;
-                  this.blnCambiarVideo = true;
-                  this.selectNegocio = false;
-                }
-              );
-            }
-          };
-        }; 
-      } this.procesando_vid = false;
-  }
-  public fileChangeListener($event) {
-   
-    for (const archivo of $event.target.files) {
-     const reader = this._utils_cls.getFileReader();
-     reader.readAsDataURL(archivo);
-     reader.onload = () => {
-       this.nombre_video = archivo.name;
-       console.log("NOMBRE VIDEO- " + JSON.stringify(this.nombre_video));
-   
-    this.arreglo = JSON.parse(localStorage.getItem('u_sistema'));
-      console.log("ARREGLO ", JSON.stringify(this.arreglo));
-      
-     ;
-     let fileList: FileList = $event.target.files;
-     this.data = {};
-     if (fileList.length > 0) {
-         let file: File = fileList[0];
-       
-         console.log('video seleccionado', file);
-        // console.log("video selecionado" + JSON.stringify(file));
-         this.seleccionTo.url_video=this.nombre_video;
-         console.log("NOMBRE VIDEO: " + JSON.stringify(this.seleccionTo));
-         this.video = true;
-         this.seleccionTo.video = file;
-         console.log("VIDEO FILE: " + JSON.stringify(this.seleccionTo));
-
-         let myReader: FileReader = new FileReader();
-         let that = this;
-         myReader.onload = () => {
-             console.log('video', myReader.result);
+      let archivo = event.target.files[0];
+      if (archivo.size < 100000000) {
             
-             this.data.video = myReader.result;
-             this.data.type = file.type;
-         };
-         myReader.readAsDataURL(file);
-         console.log("video selecionado2" + JSON.stringify(file));
- 
-       }
-     } 
+        let utl = new UtilsCls();
+        let nombre_video = null;
+        if (this.isIos) {
+          let quitarExtension = archivo.name.toString().slice(0, -3);
+          nombre_video = quitarExtension + 'mp4';
+        } else {
+          nombre_video = archivo.name;
+        }
+        
 
-     }
-   
- }
+        utl.getBase64(archivo).then((data) => {
+              
+          let cortarData = data.toString().slice(20);
+          let base64Video = 'data:video/mp4' + cortarData;
+          let video = new ArchivoComunModel();
+          video.nombre_archivo = this._utils_cls.convertir_nombre(nombre_video);
+          video.archivo_64 = base64Video;
+          this.base64Video = video;
+          this.seleccionTo.video = this.base64Video;               
+        });      
+      } else {
+        this._notificacionService.alerta("Lo sentimos, el archivo supera los 100 MB");
+      }   
+    }
+  }   
+
   public subir_imagen_cuadrada(event) {
     if (event.target.files && event.target.files.length) {
       let height;
@@ -485,71 +417,6 @@ export class AgregarPromocionPage implements OnInit {
         };
       }
     }
-  }
-
-  public subir_video(event) {
-    for (const archivo of event.target.files) {
-      const reader = this._utils_cls.getFileReader();
-      reader.readAsDataURL(archivo);
-      reader.onload = () => {
-        this.nombre_video = archivo.name;
-        console.log("NOMBRE VIDEO- " + JSON.stringify(this.nombre_video));
-      
-    if (event.target.files && event.target.files.length) {
-      let height;
-      let width;
-      for (const archivo of event.target.files) {
-        const reader = this._utils_cls.getFileReader();
-        reader.readAsDataURL(archivo);
-        reader.onload = () => {
-          const vid = new Image();
-          const file_name = archivo.name;
-          vid.src = reader.result as string;
-          vid.onload = () => {
-            height = vid.naturalHeight;
-            width = vid.naturalWidth;
-
-            if (width === 500 && height === 500) {
-              this.procesando_vid = true;
-
-              const file = archivo;
-              if (file.size < 3145728) {
-                let file_64: any;
-                const utl = new UtilsCls();
-                utl.getBase64(file).then((data) => {
-                  file_64 = data;
-                  const video = new ArchivoComunModel();
-                  video.nombre_archivo =
-                    this._utils_cls.convertir_nombre(file_name);
-
-                  video.archivo_64 = file_64;
-                  this.seleccionTo.video = video;
-                  console.log("VIDEO JAJA" + JSON.stringify(this.seleccionTo));
- 
-                  this.procesando_vid = false;
-                  this.blnVideoCuadrada = false;
-                });
-              } else {
-                this._notificacionService.alerta("archivo pesado");
-              }
-            } else {
-              this.maintainAspectRatio = true;
-              this.resizeToWidth = 500;
-              this.resizeToHeight = 500;
-              this.tipoImagen = 1;
-              this.fileChangeEvent(event);
-              this.abrirModalImagen(
-                vid.src,
-                file_name,
-                this.resizeToWidth,
-                this.resizeToHeight
-              );
-            }
-          };
-        };
-      }
-    }
-      }}
   }
 
   fileChangeEvent(event: any): void {
@@ -692,8 +559,7 @@ export class AgregarPromocionPage implements OnInit {
               queryParams: { special: true },
             });
             this._notificacionService.exito("Se guardó correctamente");
-            console.log("GUARDADO: " + JSON.stringify(this.seleccionTo));
-            this.base = null;
+            this.base64Video = null;
             this.loader = false;
           }
         },
