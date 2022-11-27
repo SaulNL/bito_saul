@@ -83,4 +83,22 @@
             </div>
         </ion-card-content>
     </ion-card>
+    
+    <ion-card *ngIf="vip">
+        <ion-card-content *ngIf="vip">
+            <ion-list *ngIf="loaderVip">
+                <ion-item *ngFor="let negocios of listNegociosVip">
+                    <ion-avatar slot="end">
+                        <img src="{{negocios.url_logo}}">
+                    </ion-avatar>
+                    <ion-label>{{ negocios.nombre_comercial}}</ion-label>
+                </ion-item>
+            </ion-list>
+            <div class="ion-padding" *ngIf="!loaderVip">
+                <div class="spinner">
+                    <ion-spinner class="spinner-color"></ion-spinner>
+                </div>
+            </div>
+        </ion-card-content>
+    </ion-card>
 </ion-content>

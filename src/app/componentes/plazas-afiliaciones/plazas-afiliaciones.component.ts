@@ -6,6 +6,8 @@ import { ModalController } from '@ionic/angular';
 import { Component, Input, OnInit } from '@angular/core';
 import { GeneralServicesService } from 'src/app/api/general-services.service';
 import { UtilsCls } from 'src/app/utils/UtilsCls';
+import { NegocioModel } from 'src/app/Modelos/NegocioModel';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-plazas-afiliaciones',
@@ -17,34 +19,47 @@ export class PlazasAfiliacionesComponent implements OnInit {
   @Input() permisos: Array<PermisoModel> | null;
   public loaderPlz: boolean;
   public loaderOrg: boolean;
+  public loaderVip: boolean;
   public listAfiliacines: Array<AfiliacionPlazaModel>;
   public listPlazas: Array<AfiliacionPlazaModel>;
+  public listNegociosVip: Array<NegocioModel>;
   public existOrg: boolean;
   public existPlz: boolean;
+  public existVip: boolean;
   public showHidenPlaza: boolean;
   public showHidenAfiliacion: boolean;
+  public showHidenVip: boolean;
   public afiliacion: boolean;
   public plaza: boolean;
+  public vip: boolean;
   idProvedor: number=null;
   listConvenios: AfiliacionPlazaModel[];
   public selectAflPlz: boolean;
   public selectIdAflPlz: number;
+  public selectVip: number;
+  
   constructor(
     private modalCtr: ModalController,
+    private router: Router,
     private validarPermiso: ValidarPermisoService,
     private generalService: GeneralServicesService,
     private notificaciones: ToadNotificacionService
   ) {
     this.showHidenPlaza = false;
     this.showHidenAfiliacion = false;
+    this.showHidenVip = false;
     this.loaderOrg = true;
     this.loaderPlz = true;
+    this.loaderVip = true;
     this.existOrg = false;
     this.existPlz = false;
+    this.existVip = false;
     this.afiliacion = true;
     this.plaza = false;
+    this.vip = false;
     this.selectAflPlz=false;
     this.selectIdAflPlz=null;
+    this.selectVip=null;
   }
 
   ngOnInit() {
@@ -52,6 +67,7 @@ export class PlazasAfiliacionesComponent implements OnInit {
     //   this.afiliacion = this.validarPermiso.isChecked(this.permisos, 'ver_afiliacion')
     //   this.obtenerOrganizacion();
     // }
+    this.obtenerNegociosVip() 
     this.obtenerPlazas();
     if(this.idUsuario!=null){
       this.obtenerOrganizacion();
@@ -68,6 +84,9 @@ export class PlazasAfiliacionesComponent implements OnInit {
   public shAfiliacion(change: boolean) {
     this.showHidenAfiliacion = !change;
   }
+  public shVip(change: boolean) {
+    this.showHidenVip = !change;
+  }
   public selectOption(selected: AfiliacionPlazaModel) {
     this.selectAflPlz=true;
     this.selectIdAflPlz=selected.id_organizacion;
@@ -79,6 +98,19 @@ export class PlazasAfiliacionesComponent implements OnInit {
     location.reload();
   }, 500);
   }
+
+ /* public selectOptionVip(selected: NegocioModel) {
+   
+    this.selectVip = selected.id_negocio;
+    
+    const existSelection = localStorage.getItem('vip');
+    (existSelection) ? localStorage.removeItem('vip') : '';
+    localStorage.setItem('vip', JSON.stringify(selected));
+    localStorage.setItem("todo", "todo");
+    setTimeout(()=>{      
+    location.reload();
+  }, 500);
+  }*/
 
   public obtenerOrganizacion() {
     this.loaderOrg = false;
@@ -136,6 +168,26 @@ export class PlazasAfiliacionesComponent implements OnInit {
       }, error => {
         this.notificaciones.error(error);
         this.loaderPlz = true;
+      }
+    );
+  }
+
+  public obtenerNegociosVip() {
+    this.vip = true;
+    this.loaderVip = false;
+    this.generalService.obtenerPrincipalVip().subscribe(
+      response => {
+        if (response.code === 200) {
+          this.listNegociosVip = response.data.lst_cat_negocios;
+          console.log("NEGOCIOS VIP: " + JSON.stringify(this.listNegociosVip));
+
+        } else {
+          this.vip = false;
+        }
+        this.loaderVip = true;
+      }, error => {
+        this.notificaciones.error(error);
+        this.loaderVip = true;
       }
     );
   }

@@ -114,7 +114,24 @@ export class GeneralServicesService {
         return error;
       }));
   }
-
+ /**
+   * Servicio listado de negocios VIP
+   */
+  obtenerPrincipalVip(): Observable<any> {
+    const body = JSON.stringify({});
+    this.http.setDataSerializer('utf8');
+    return from(this.http.post(
+        this.url + 'api/negocios/vip/obtener',
+        body,  AppSettings.getHeaders())
+        .then((data) => {
+          console.log("NEGOCIOS VIP: " + JSON.stringify(data.data));
+            return JSON.parse(data.data);
+           
+        })
+        .catch((error) => {
+            return error;
+        }));
+  }
   /**
    * Servicio para obtener el tiempo de espera por sms
    */
