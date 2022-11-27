@@ -99,18 +99,24 @@ export class PlazasAfiliacionesComponent implements OnInit {
   }, 500);
   }
 
- /* public selectOptionVip(selected: NegocioModel) {
+ public selectOptionVip(selected2: NegocioModel) {
    
-    this.selectVip = selected.id_negocio;
+    this.selectVip = selected2.url_negocio;
     
     const existSelection = localStorage.getItem('vip');
     (existSelection) ? localStorage.removeItem('vip') : '';
-    localStorage.setItem('vip', JSON.stringify(selected));
-    localStorage.setItem("todo", "todo");
+    localStorage.setItem('vip', JSON.stringify(selected2));
+    if(this.selectVip != null){
+      var promo = this.selectVip;
+      this.router.navigate(['/tabs/negocio/' + this.selectVip], {
+            queryParams: { route: true , clickBanner: true, promo:promo}});
+    }
+    
     setTimeout(()=>{      
-    location.reload();
+      this.modalCtr.dismiss();
   }, 500);
-  }*/
+  localStorage.setItem("todo", "todo");
+  }
 
   public obtenerOrganizacion() {
     this.loaderOrg = false;

@@ -87,7 +87,7 @@
     <ion-card *ngIf="vip">
         <ion-card-content *ngIf="vip">
             <ion-list *ngIf="loaderVip">
-                <ion-item *ngFor="let negocios of listNegociosVip">
+                <ion-item *ngFor="let negocios of listNegociosVip" (click)="selectOptionVip(negocios)">
                     <ion-avatar slot="end">
                         <img src="{{negocios.url_logo}}">
                     </ion-avatar>
