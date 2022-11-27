@@ -115,7 +115,7 @@ export class PlazasAfiliacionesComponent implements OnInit {
     setTimeout(()=>{      
       this.modalCtr.dismiss();
   }, 500);
-  localStorage.setItem("todo", "todo");
+
   }
 
   public obtenerOrganizacion() {
