@@ -9,6 +9,8 @@ import { ViewqrPromocionComponent } from '../../components/viewqr-promocion/view
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
 import  moment from 'moment';
 import { HaversineService, GeoCoord } from "ng2-haversine";
+import { Router } from '@angular/router';
+import { noUndefined } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-modal-promocion-negocio',
@@ -37,7 +39,11 @@ export class ModalPromocionNegocioComponent implements OnInit {
   public blnPermisoUbicacion: any;
   public motrarContacto = true;
   public distanciaNegocio: string;
+  public hoy: any;
+  public video: boolean;
+
   constructor(
+    private router: Router,
     public modalController: ModalController,
     private vioPromo: RegistrarPromotionService,
     private util: UtilsCls,
@@ -50,7 +56,9 @@ export class ModalPromocionNegocioComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+     this.hoy = new Date();
+    this.hoy = this.hoy.getDay() !== 0 ? this.hoy.getDay() : 7;
+
     if(this.existeSesion){
       this.obtenerOrgAfilUsuario();
     }else{
@@ -59,14 +67,25 @@ export class ModalPromocionNegocioComponent implements OnInit {
     if(this.promocionTO.id_tipo_promocion===1){
       this.loader=true;
     }
+    if(this.promocionTO.url_video != null || this.promocionTO.url_video != undefined ||
+      this.promocionTO.video != null || this.promocionTO.video != undefined){
+      this.video = true;
+  
+    }else{
+    
+      this.video = false;
+    }
     this.calcularDistancia(this.promocionTO);
     this.calcularDias(this.promocionTO);
     this.registrarVisitaAPromotion()
   }
+  masInformacion() {
 
+  }
   cerrar() {
     this.modalController.dismiss();
     this.promocionTO = new PromocionesModel();
+    this.router.navigateByUrl("/tabs/inicio");
   }
 
   private registrarVisitaAPromotion() {
