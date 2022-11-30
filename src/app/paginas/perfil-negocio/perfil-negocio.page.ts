@@ -491,12 +491,19 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
               response.data.servicios.length > 0
             ) {
               this.seccion = "servicios";
-            }
-            if (
+            }else if (
+              this.promociones !== undefined &&
+              this.promociones.length > 0 && 
+              (response.data.productos === undefined || response.data.productos.length === 0) && 
+              (response.data.servicios === undefined || response.data.servicios.length === 0)
+            ) {
+              this.seccion = "anuncios";
+            }else if (
               (response.data.productos === undefined ||
                 response.data.productos.length === 0) &&
               (response.data.servicios === undefined ||
-                response.data.servicios.length === 0)
+                response.data.servicios.length === 0 ) && 
+              (this.promociones == undefined  || this.promociones.length === 0)
             ) {
               this.seccion = "ubicacion";
             }
