@@ -155,7 +155,7 @@ export class PromocionesPage implements OnInit {
                     }
                     if (response.data !== null) {
                         this.lstPromociones = response.data;
-                        console.log(this.lstPromociones);
+                        //console.log("lista promos de promos page"+JSON.stringify(this.lstPromociones));
                         this.loader = false;
                         this.posicionRandom= this.aleatorio(1,this.lstPromociones.length)-1                                                
                         // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}

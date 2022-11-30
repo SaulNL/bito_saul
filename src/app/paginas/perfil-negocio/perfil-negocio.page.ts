@@ -282,7 +282,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       if (params.clickBanner && params) {
         console.log("Vienes del baner de promociones, el id de esta promo es: "+params.promo)
-        this.negocioService.obteneretalleNegocio(this.negocio, this.user.id_persona).subscribe((response) => {
+        /*this.negocioService.obteneretalleNegocio(this.negocio, this.user.id_persona).subscribe((response) => {
           if (response.data !== null) {
             this.informacionNegocio = response.data;            
             this.promociones = this.informacionNegocio.promociones; 
@@ -298,7 +298,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
           }          
         }
-      );
+      );*/
       }
     });
 
@@ -1294,15 +1294,15 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     }
   }
 
-  public detallePromocion(promocion: PromocionesModel) {
+  async detallePromocion(promocion: PromocionesModel) {
     if (promocion !== new PromocionesModel()) {
-      setTimeout(() => {
-        this.abrirModalPromocion(promocion);
+      setTimeout(async () => {
+        await this.abrirModalPromocion(promocion);
       }, 200);
     }
   }
 
-  async abrirModalPromocion(promo: PromocionesModel) {  //aQUI SE ABRE MODAL DE PROMO
+  async abrirModalPromocion(promo: any) {  //aQUI SE ABRE MODAL DE PROMO
     const modal = await this.modalController.create({
       component: ModalPromocionNegocioComponent,
       componentProps: {
@@ -1310,12 +1310,12 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         idPersona: this.idPersona,
         latitud: this.miLat,
         longitud: this.miLng,
-        celular:this.informacionNegocio.celular,
-        descripcion:this.informacionNegocio.descripcion,
+        celular:promo.celular,
+        descripcion:promo.descripcion,
         
       },
     });
-    await modal.present();
+    modal.present();
   }
 
   public darLike(producto: ProductoModel) {
