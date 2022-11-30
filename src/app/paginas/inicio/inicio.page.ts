@@ -17,17 +17,15 @@ import { ActivatedRoute } from "@angular/router";
 import { MapaNegociosComponent } from "../../componentes/mapa-negocios/mapa-negocios.component";
 import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Router } from "@angular/router";
-import { ProveedorServicioService } from "../../api/busqueda/proveedores/proveedor-servicio.service";
 import { UtilsCls } from "../../utils/UtilsCls";
 import { PermisoModel } from "src/app/Modelos/PermisoModel";
 import { ValidarPermisoService } from "../../api/validar-permiso.service";
 import { ICategoriaNegocio } from "src/app/interfaces/ICategoriaNegocio";
 import { INegocios } from 'src/app/interfaces/INegocios';
-import { Observable, throwError } from "rxjs";
-import { runInThisContext } from "vm";
-import { LocalStorageUtil } from "../../utils/localStorageUtil";
+import { throwError } from "rxjs";
 import { AlertController } from "@ionic/angular";
 import { Plugins } from '@capacitor/core';
+import { PersonaService } from "src/app/api/persona.service";
 
 const { Geolocation } = Plugins;
 declare var google: any;
@@ -113,6 +111,8 @@ export class InicioPage implements OnInit, AfterViewInit {
   showPopUp: boolean;
   insigniaTitle: string;
   insigniaDescrip: string;
+  loaderVerMas = false;
+  favoritos: any[] = [];
 
   constructor(
     public loadingController: LoadingController,
@@ -123,12 +123,12 @@ export class InicioPage implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private eventosServicios: SideBarService,
     private ruta: Router,
-    private serviceProveedores: ProveedorServicioService,
+    private personaServcie: PersonaService,
     private util: UtilsCls,
     private auth0Service: Auth0Service,
     private validarPermiso: ValidarPermisoService,
     private platform: Platform,
-    public alertController: AlertController  
+    public alertController: AlertController
   ) {
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
@@ -435,6 +435,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     } else {
       throw throwError("");
     }
+
+    this.obtenerNegociosFav();
   }
   ordenarRandom(listaCat:any[]){
     console.log("entra random+++++++++++++++++++")
@@ -655,8 +657,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       }
       //await this.cargarCategorias();
       
-      this.loader = false;
-    
+      this.loader = false;    
   }
 
   async configToad(mensaje) {
@@ -869,16 +870,15 @@ export class InicioPage implements OnInit, AfterViewInit {
     localStorage.setItem("isRedirected", "false");
     this.ruta.navigate(["/tabs/negocio/" + url]);
   }
-  cargarMasPaginas(event: any) {
-    console.log("mas paginas")
+  cargarMasPaginas() {
+    this.loaderVerMas = true;
     if ( this.totalDePaginas>=this.totalDePaginasPorConsulta ) {
       this.buscarNegocios(false);
       setTimeout(() => {
-        event.target.complete();
-      }, 800); // 800 es el tiempo que se tarda por cargar, sin tener un lag por las 20 paginas que se consultan
-    } else {
-      event.target.disabled = true;
-    }
+        this.loaderVerMas = false;
+
+      }, 7000); // es el tiempo que se tarda por cargar, sin tener un lag por las 20 paginas que se consultan
+    } 
   }
 
   cargarMasNegocios(event: any){
@@ -907,7 +907,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     let convenio = nombre == 'Con Convenio' ? 'convenio' : null;
     let promocion = nombre == 'Con Promociones' ? 'promocion' : null;
-    let destacados = nombre == 'Destacados' ? 'destacados' : null;//Aqui es por "Mas vistos" cuando este listo el servicio
+    let masVistos = nombre == 'Más Vistos' ? 'mas vistos' : null;//Aqui es por "Mas vistos" cuando este listo el servicio
 
     if (nombre === undefined) {
       this.principalSercicio.obtenerPrincipalInicio()
@@ -916,6 +916,8 @@ export class InicioPage implements OnInit, AfterViewInit {
           
             if (response.code === 200) {
               this.listaCategorias = response.data;
+              this.obtenerNegociosFav();
+
               setTimeout(() => {
                 this.loader = false;
                 this.loaderInicio=false;
@@ -933,7 +935,7 @@ export class InicioPage implements OnInit, AfterViewInit {
         return false;
     }
 
-      if (destacados != null) {
+      if (masVistos != null) {
         this.activar();        
       } else {
         let body = { tipo: convenio != null ? convenio : promocion};
@@ -948,6 +950,8 @@ export class InicioPage implements OnInit, AfterViewInit {
               this.listaCategorias.map(e => {
                 this.listaVerMas = e.negocios.slice(0, 4);
               });
+
+              this.obtenerNegociosFav();
 
               setTimeout(() => {
                 this.loader = false;
@@ -968,6 +972,29 @@ export class InicioPage implements OnInit, AfterViewInit {
           }
         );
       }
+
+      
+  }
+
+  obtenerNegociosFav() {
+    this.personaServcie.obtenerNegociosFavoritos(this.user.id_persona).subscribe(r =>{
+      if (r.code == 200) {
+        let favoritos = r.data;
+
+        for (const categoria of this.listaCategorias) {
+          for (const nego of categoria.negocios) {
+            for (const fav of favoritos) {
+              if (nego.id_negocio == fav.id_negocio) {
+                nego.usuario_like = 1;
+              }
+            }
+          }
+        }
+      }
+      
+    });
+      
+
   }
 
   public obtenergiros() {

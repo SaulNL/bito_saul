@@ -272,3 +272,16 @@ ion-slide{
   transition:  bottom 0.6s;
   z-index:800;  
 }
+
+.ver-mas {
+  margin: 0 60px 15px;
+}
+
+.spinner {
+  display: flex;
+}
+
+.spinner > span {
+ margin-top: 9px;
+ margin-left: 5px;
+}
