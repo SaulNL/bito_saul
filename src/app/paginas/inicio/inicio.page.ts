@@ -907,7 +907,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     let convenio = nombre == 'Con Convenio' ? 'convenio' : null;
     let promocion = nombre == 'Con Promociones' ? 'promocion' : null;
-    let destacados = nombre == 'Más vistos' ? 'más vistos' : null;//Aqui es por "Mas vistos" cuando este listo el servicio
+    let masVistos = nombre == 'Más vistos' ? 'más vistos' : null;//Aqui es por "Mas vistos" cuando este listo el servicio
 
     if (nombre === undefined) {
       this.principalSercicio.obtenerPrincipalInicio()

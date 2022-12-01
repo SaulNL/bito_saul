@@ -41,6 +41,7 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   public anuncio_promo:string="Promoción";
   public motrarContacto = true;
   public distanciaNegocio: string="";
+  hoy: any;
   constructor(private router: Router,
     public modalController: ModalController,
     private vioPromo: RegistrarPromotionService,
@@ -74,9 +75,7 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
     this.calcularDias(this.promocionTO);
     this.registrarVisitaAPromotion()
   }
-  masInformacion() {
-
-  }
+  
   cerrar() {
     this.modalController.dismiss();
     this.promocionTO = new PromocionesModel();
