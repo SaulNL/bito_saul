@@ -59,7 +59,9 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    
+     this.hoy = new Date();
+    this.hoy = this.hoy.getDay() !== 0 ? this.hoy.getDay() : 7;
+
     if(this.existeSesion){
       this.obtenerOrgAfilUsuario();
     }else{
@@ -72,10 +74,13 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
     this.calcularDias(this.promocionTO);
     this.registrarVisitaAPromotion()
   }
+  masInformacion() {
 
+  }
   cerrar() {
     this.modalController.dismiss();
     this.promocionTO = new PromocionesModel();
+    this.router.navigateByUrl("/tabs/inicio");
   }
 
   private registrarVisitaAPromotion() {

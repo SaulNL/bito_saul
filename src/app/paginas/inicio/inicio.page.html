@@ -222,6 +222,7 @@
                       color="danger"
                       >Cerrado
                   </ion-badge>
+                  {{proveedor.usuario_like}}
                 </div>
                 <app-dar-like-negocio
                   [negocio]="proveedor"
@@ -272,14 +273,30 @@
         </h2>
       </ion-text>
     </ion-grid>
-    <div *ngIf="!banderaVerMas">
+    <ion-grid *ngIf="!loader">
+      <ion-row class="ion-padding">
+        <ion-col size="12">
+          <div *ngIf="!banderaVerMas" class="ver-mas">
+            <ion-button (click)="cargarMasPaginas()" expand="block" fill="outline" 
+            color="medium" size="small" shape="round">
+              <span *ngIf="!loaderVerMas">Ver mas negocios</span>
+              <div *ngIf="loaderVerMas" class="spinner">
+                <ion-spinner color="medium" name="lines-small"></ion-spinner>
+                <span>Cargando</span>
+              </div>
+            </ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <!-- <div *ngIf="!banderaVerMas">
       <app-infinito-scroll
         *ngIf="true"
         (respuesta)="cargarMasPaginas($event)"
         [activado]="true"
         [msj]="mensaje"
       ></app-infinito-scroll>
-    </div>
+    </div> -->
 
     <div *ngIf="banderaVerMas">
       <ion-infinite-scroll threshold="50px" (ionInfinite)="cargarMasNegocios($event)">

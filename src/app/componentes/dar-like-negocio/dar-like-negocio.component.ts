@@ -57,6 +57,11 @@ export class DarLikeNegocioComponent implements OnInit {
     } else {
       
       this.loaderLike = true;
+      if ( negocio.usuario_like !== 0){
+        negocio.usuario_like = 0;
+      }else {
+        negocio.usuario_like = 1;
+      }
       
       this.servicioNegocio.darLike(negocio, this.usuario).subscribe(
         (response) => {

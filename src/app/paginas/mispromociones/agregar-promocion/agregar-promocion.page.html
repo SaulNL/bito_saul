@@ -532,12 +532,10 @@
             <div class="ion-text-center">Subir Video</div>
           </ion-card>
           <div *ngIf="seleccionTo.url_video != ''">
-            <video controls style="width: 100%; height: 350;" class="image" alt="Falla al cargar video" 
-            width="200" height="200" *ngIf="!nuevoRegistro && base64Video == null">
+            <video controls style="width: 100%; height: 350;" class="image" alt="Falla al cargar video" *ngIf="!nuevoRegistro && base64Video == null">
                 <source [src]="seleccionTo.url_video + '#t=0.5'" type="video/mp4">
             </video>
-          </div>
-          
+          </div>          
 
           <div class="row" style="margin-left: 0px;">
             <div class="ion-text-center">
@@ -555,9 +553,10 @@
             <h6>El video es opcional.</h6>
             <ion-button expand="full" class="bg-rosa">
               <input type="file" name="video1" hidden accept="video/mp4" id="video" (change)="seleccionarVideo($event)"/>
-              <label for="video" class="upload">
-                Seleccionar video <ion-icon name="videocam-outline" style="margin-left: 5px"></ion-icon>
+              <label for="video" [ngClass]="isIos ? 'upload' : 'uploadAndroid'">
+                Seleccionar video
               </label>
+              <ion-icon name="videocam-outline" style="margin-left: 5px"></ion-icon>
             </ion-button>
           </div>
           

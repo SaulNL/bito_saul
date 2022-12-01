@@ -230,8 +230,7 @@ export class AgregarPromocionPage implements OnInit {
     }
     this.base64Video = null;
     this.seleccionTo.video = null;
-    this.seleccionTo.id_promocion == null ? this.nuevoRegistro = true : this.nuevoRegistro = false; 
-    
+    this.seleccionTo.id_promocion == null ? this.nuevoRegistro = true : this.nuevoRegistro = false;    
   }
 
   public agregarTags(event) {
@@ -240,7 +239,7 @@ export class AgregarPromocionPage implements OnInit {
   pushLog(msg) {
     this.logs.unshift(msg);
   }
-  obtenerVip(e) {
+  obtenerVip() {
     for (const negocio of this.lstNegocios) { 
       if (negocio.id_negocio == this.seleccionTo.id_negocio) { 
         if (negocio.vip == 1) { 
@@ -348,9 +347,14 @@ export class AgregarPromocionPage implements OnInit {
         
 
         utl.getBase64(archivo).then((data) => {
-              
-          let cortarData = data.toString().slice(20);
-          let base64Video = 'data:video/mp4' + cortarData;
+          let base64Video = null;
+          if (this.isIos) {
+            let cortarData = data.toString().slice(20);
+            base64Video = 'data:video/mp4' + cortarData;
+          } else {
+            base64Video = data;
+          }
+          
           let video = new ArchivoComunModel();
           video.nombre_archivo = this._utils_cls.convertir_nombre(nombre_video);
           video.archivo_64 = base64Video;
@@ -517,8 +521,9 @@ export class AgregarPromocionPage implements OnInit {
     }
   }
 
-  public guardar(form: NgForm) {
+  public guardar(form?: NgForm) {
     this.loader = true;
+    this.msj = 'Guardando';
     if (
       (this.seleccionTo.imagen === undefined ||
         this.seleccionTo.imagen === null ||
@@ -530,11 +535,7 @@ export class AgregarPromocionPage implements OnInit {
       this.seleccionTo.imagenBanner === "") &&
       (this.seleccionTo.url_imagen_banner === undefined ||
         this.seleccionTo.url_imagen_banner === "") &&
-        (this.seleccionTo.video === undefined ||
-          this.seleccionTo.video === null,
-        this.seleccionTo.imagenBanner === "") &&
-        (this.seleccionTo.url_video === undefined ||
-          this.seleccionTo.url_video === "")
+        (this.seleccionTo.imagenBanner === "")
     ) {
       this.loader = false;
       this._notificacionService.error(

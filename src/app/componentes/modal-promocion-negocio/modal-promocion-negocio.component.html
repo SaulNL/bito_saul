@@ -141,10 +141,9 @@
           <h6 *ngIf="existeAfl && existeSesion">Regístra tu afiliación a la que perteneces para disfrutrar de estos beneficios.</h6>
 
         </div>
-
-
       </div>
     </div>
+
 
     <div *ngIf="loader && promocionTO.id_tipo_promocion===1">
       <ion-row (click)="masInformacion(promocionTO)">
@@ -258,9 +257,10 @@
       <ion-label><strong>{{
           "Del " + promocionTO.fecha_inicio + " al " + promocionTO.fecha_fin
           }}</strong></ion-label>
-       
+          
+        </ion-col>
+      </ion-row>
     </div>
-
-    <br>
   </ion-card>
 </ion-content>
+        
