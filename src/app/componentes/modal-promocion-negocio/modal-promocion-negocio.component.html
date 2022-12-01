@@ -25,7 +25,7 @@
 
     <div *ngIf="promocionTO.id_tipo_promocion===2 && loader && !existeAfl">
       <ion-row>
-        <ion-col class="ion-text-center">
+        <ion-col class="ion-text-center" (click)="masInformacion(promocionTO)">
           <h1 class="sinMargin rosa">{{ promocionTO.nombre_comercial }}</h1>
         </ion-col>
       </ion-row>

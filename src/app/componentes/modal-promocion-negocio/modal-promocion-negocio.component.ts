@@ -148,8 +148,8 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   }
 
   masInformacion(promocion: any) {
-    this.router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
-          queryParams: { route: true }});
+    /*this.router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
+          queryParams: { route: true }});*/
   this.modalController.dismiss();
 }
   compartir(promocion){
