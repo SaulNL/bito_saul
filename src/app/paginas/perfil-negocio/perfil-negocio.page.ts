@@ -282,7 +282,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       if (params.clickBanner && params) {
         console.log("Vienes del baner de promociones, el id de esta promo es: "+params.promo)
-        /*this.negocioService.obteneretalleNegocio(this.negocio, this.user.id_persona).subscribe((response) => {
+        this.negocioService.obteneretalleNegocio(this.negocio, this.user.id_persona).subscribe((response) => {
           if (response.data !== null) {
             this.informacionNegocio = response.data;            
             this.promociones = this.informacionNegocio.promociones; 
@@ -298,7 +298,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
           }          
         }
-      );*/
+      );
       }
     });
 
@@ -356,7 +356,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
   ionViewWillEnter() {
     this.navBarServiceService.cambio.subscribe((respuesta) => {
-      this.detallePromocion(respuesta);
+      //this.detallePromocion(respuesta);
     });
   }
 
