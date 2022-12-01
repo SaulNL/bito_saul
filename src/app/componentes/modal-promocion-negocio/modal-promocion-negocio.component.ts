@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { PromocionesModel } from 'src/app/Modelos/PromocionesModel';
 import {RegistrarPromotionService} from "../../api/registrar-promotion.service";
@@ -9,8 +9,9 @@ import { ViewqrPromocionComponent } from '../../components/viewqr-promocion/view
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
 import  moment from 'moment';
 import { HaversineService, GeoCoord } from "ng2-haversine";
+import { AppSettings } from 'src/app/AppSettings';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { Router } from '@angular/router';
-import { noUndefined } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-modal-promocion-negocio',
@@ -18,7 +19,7 @@ import { noUndefined } from '@angular/compiler/src/util';
   styleUrls: ['./modal-promocion-negocio.component.scss'],
   providers: [UtilsCls],
 })
-export class ModalPromocionNegocioComponent implements OnInit {
+export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   @Input() promocionTO: PromocionesModel;
   @Input() idPersona: number | null;
   @Input() latitud: any;
@@ -36,14 +37,11 @@ export class ModalPromocionNegocioComponent implements OnInit {
   public fechaHoy = moment();
   public miLat: any;
   public miLng: any;
-  public blnPermisoUbicacion: any;
+  public blnPermisoUbicacion: boolean;
+  public anuncio_promo:string="Promoción";
   public motrarContacto = true;
-  public distanciaNegocio: string;
-  public hoy: any;
-  public video: boolean;
-
-  constructor(
-    private router: Router,
+  public distanciaNegocio: string="";
+  constructor(private router: Router,
     public modalController: ModalController,
     private vioPromo: RegistrarPromotionService,
     private util: UtilsCls,
@@ -51,8 +49,13 @@ export class ModalPromocionNegocioComponent implements OnInit {
     private _promociones: PromocionesService,
     private notificaciones: ToadNotificacionService,
     private _haversineService: HaversineService,
+    private socialSharing: SocialSharing
   ) { 
     this.existeSesion = this.util.existe_sesion();
+  }
+  ngAfterViewInit(): void {
+    this.calcularDistancia(this.promocionTO);
+    this.anuncio_promo= this.promocionTO.id_tipo_promocion ==1 ? "Anuncio": "Promoción"    
   }
 
   ngOnInit() {
@@ -67,15 +70,7 @@ export class ModalPromocionNegocioComponent implements OnInit {
     if(this.promocionTO.id_tipo_promocion===1){
       this.loader=true;
     }
-    if(this.promocionTO.url_video != null || this.promocionTO.url_video != undefined ||
-      this.promocionTO.video != null || this.promocionTO.video != undefined){
-      this.video = true;
-  
-    }else{
-    
-      this.video = false;
-    }
-    this.calcularDistancia(this.promocionTO);
+    //this.calcularDistancia(this.promocionTO);
     this.calcularDias(this.promocionTO);
     this.registrarVisitaAPromotion()
   }
@@ -96,10 +91,10 @@ export class ModalPromocionNegocioComponent implements OnInit {
     promocion.restanDias = Math.abs(this.fechaHoy.diff(promocion.fecha_fin_public, 'days'));
   }
 
-  private calcularDistancia(promocion: any) {
-    navigator.geolocation.getCurrentPosition(posicion => {
-            this.miLat = posicion.coords.latitude;
-            this.miLng = posicion.coords.longitude;
+  public calcularDistancia(promocion: any) {
+    navigator.geolocation.getCurrentPosition(async posicion => {
+            this.miLat = await posicion.coords.latitude;
+            this.miLng = await posicion.coords.longitude;
             this.registrarVisitaAPromotion();
             this.blnPermisoUbicacion = true;
             let start = {
@@ -144,7 +139,7 @@ export class ModalPromocionNegocioComponent implements OnInit {
   }
 
   async crearModal() {
-    await  this.guardarCupon();
+      this.guardarCupon();
       const modal = await this.modalController.create({
         component: ViewqrPromocionComponent,
         componentProps: {
@@ -155,9 +150,17 @@ export class ModalPromocionNegocioComponent implements OnInit {
       });
   
       return await modal.present();
-  
   }
 
+  masInformacion(promocion: any) {
+    /*this.router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
+          queryParams: { route: true }});*/
+  this.modalController.dismiss();
+}
+  compartir(promocion){
+    let url = AppSettings.URL_FRONT + 'promocion/' + promocion.id_promocion;
+    this.socialSharing.share('😃¡Te recomiendo esta promoción!😉', 'Promoción', promocion.url_imagen, url );
+  }
   async guardarCupon() {
 
     var respuesta = await this._promociones.solicitarCupon(this.promocionTO.id_promocion, this.idPersona).toPromise();

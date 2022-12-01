@@ -7,6 +7,14 @@ import { HorarioPromocionModel } from './HorarioPromocionModel';
 
 export class PromocionesModel {
   public id_promocion: number;
+  public celular: string;
+  public descripcion: string;
+  public calle: string;
+  public numero_ext: string;
+  public colonia: string;
+  public nombre_localidad: string;
+  public nombre_municipio: string;
+  public nombre_estado: string;
   public promocion: string;
   public tags: Array<string> = new Array<string>();
   public terminos: string;
@@ -70,9 +78,17 @@ export class PromocionesModel {
   public categorias:Array<string> = new Array<string>();
   public convenios:Array<any> = new Array<any>();
 
-  constructor(id_promocion: number = 0, id_negocio: number=0, promocion: string = '', tags: Array<string> = [], terminos: string = '', imagen: any = '', video: any = '', imagenBanner: any = '', imagenPoster: any = '', url_imagen: string = '', url_imagen_banner: string = '', url_imagen_poster: string = '', url_video: string = '', activo: boolean = null, fecha_inicio: Date = null, fecha_fin: Date = null, proveedor: string = '', nombre_comercial: string = '', select = 0, id_tipo_promocion: any = '', id_alcance_promocion: any ='', minimo: any = '',maximo_red: any='',porcentaje: any='', productos: Array<any> = [], categorias: Array<any> = [], organizaciones: Array<any> = [], plazas: Array<any> = []) {
-    this.id_promocion = id_promocion;
+  constructor( calle: string='',
+     numero_ext: string='',
+     colonia: string='',
+     nombre_localidad: string='',
+     nombre_municipio: string='',
+     nombre_estado: string='',
+    id_promocion: number = 0, id_negocio: number=0, promocion: string = '',celular:string='',descripcion:string='', tags: Array<string> = [], terminos: string = '', imagen: any = '', video: any = '', imagenBanner: any = '', imagenPoster: any = '', url_imagen: string = '', url_imagen_banner: string = '', url_imagen_poster: string = '', url_video: string = '', activo: boolean = null, fecha_inicio: Date = null, fecha_fin: Date = null, proveedor: string = '', nombre_comercial: string = '', select = 0, id_tipo_promocion: any = '', id_alcance_promocion: any ='', minimo: any = '',maximo_red: any='',porcentaje: any='', productos: Array<any> = [], categorias: Array<any> = [], organizaciones: Array<any> = [], plazas: Array<any> = []) {
+    this.id_promocion = id_promocion; 
     this.promocion = promocion;
+    this.celular=celular;
+    this.descripcion=descripcion,
     this.tags = tags;
     this.terminos = terminos;
     this.imagen = imagen;

@@ -1,6 +1,6 @@
 <ion-header translucent>
   <ion-toolbar class="tolbar">
-    <ion-title>Promocion</ion-title>
+    <ion-title>{{anuncio_promo}}</ion-title>
     <ion-buttons slot="end" (click)="cerrar()">
       <ion-button>
         <ion-icon name="close-outline"></ion-icon>
@@ -25,7 +25,7 @@
 
     <div *ngIf="promocionTO.id_tipo_promocion===2 && loader && !existeAfl">
       <ion-row>
-        <ion-col class="ion-text-center">
+        <ion-col class="ion-text-center" (click)="masInformacion(promocionTO)">
           <h1 class="sinMargin rosa">{{ promocionTO.nombre_comercial }}</h1>
         </ion-col>
       </ion-row>
@@ -58,6 +58,14 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+      <ion-row>
+        <ion-col size="12" style="text-align: center;">
+          <ion-button (click)="compartir(promocionTO)" shape="round" fill="outline" size="small" color="danger">
+            <ion-icon name="share-social-outline" slot="start"></ion-icon>
+            Compartir
+          </ion-button>
+        </ion-col>
+      </ion-row>
       <ion-row>
         <ion-col class="ion-text-center">
           <h2 class="promocion" style="color: grey;">{{ promocionTO.terminos }}</h2>
@@ -138,9 +146,8 @@
 
 
     <div *ngIf="loader && promocionTO.id_tipo_promocion===1">
-    
-      <ion-row (click)="masInformacion()">
-        <ion-col class="ion-text-center">
+      <ion-row (click)="masInformacion(promocionTO)">
+        <ion-col class="ion-text-center" >
           <h1 class="sinMargin rosa">{{ promocionTO.nombre_comercial }}</h1>
         </ion-col>
       </ion-row>
@@ -150,88 +157,105 @@
         </ion-col>
       </ion-row>
       <hr>
-
-      <ion-row>
-        <ion-col class="ion-text-center">
-          <h2 class="sinMargin">Anuncio.</h2>
-          <br>
-          <h2 class="sinMargin promocion">{{promocionTO.promocion}}</h2>
-        </ion-col>
-      </ion-row>
-
-      <div *ngIf="video">
+        <ion-row>
+          <ion-col class="ion-text-center">
+            <div>
+              <h2 class="sinMargin">Anuncio</h2>
+            </div>
+          </ion-col>
+        </ion-row>
+      <div>
+        <ion-row>
+          <ion-col class="ion-text-center">
+            <h2 class="sinMargin promocion">{{ promocionTO.promocion }} </h2>
+          </ion-col>
+        </ion-row>
+      
+        <ion-row>
+          <ion-col class="ion-text-center">
+            <h2 class="promocion" style="color: grey;">{{ promocionTO.terminos }} </h2>
+          </ion-col>
+        </ion-row>
+      </div>      
+       <!-- ----- VISUALIZACION Y REPRODUCCION DE VIDEO EN ANUNCIO DE NEGOCIO VIP --- -->
       <video controls autoplay *ngIf="promocionTO.url_video != null && promocionTO.url_video != undefined" width="100%" height="300">
         <source type="video/mp4" src="{{promocionTO.url_video}}">
       </video>
-      </div>
-
+      <!-- ----- ------------- --- -->  
       <ion-row>
         <ion-col size="12">
-          <ion-grid>
-            <ion-row>
-              <ion-col size="12" class="ion-text-center">
-                <label>CONTACTA AL PROVEEDOR</label>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="12" class="ion-text-center">
-                <p class="promocion">
-                  Dirección: {{ promocionTO.calle }} {{ promocionTO.numero_ext }} {{
-                  promocionTO.colonia }}, {{ promocionTO.nombre_localidad !==
-                  undefined ? promocionTO.nombre_localidad + ', ': '' }}{{
-                  promocionTO.nombre_municipio }}, {{promocionTO.nombre_estado }}
-                </p>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col
-                size="12"
-                class="ion-text-center"
-                *ngIf="blnPermisoUbicacion"
-              >
-                <h2 class="promocion">
-                  A {{ promocionTO.distanciaNegocio}} Km cerca de tí.
-                </h2>
-                <ion-badge color="danger"
-                  ><a
-                    href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{promocion.latitud}},{{promocion.longitud}}"
-                    target="_blank"
-                    >Ir al lugar</a
-                  ></ion-badge
-                >
-              </ion-col>
-              <ion-col
-                size="12"
-                class="ion-text-center"
-                *ngIf="!blnPermisoUbicacion"
-              >
-                <h2
-                  class="aDefault promocion"
-                  matTooltip="Bitoo no puede obtener tu ubicación. Por favor activa los permisos de ubicación del navegador para poder determinar la distancia a la que se encuentra el negocio"
-                >
-                  Distancia desconocida
-                </h2>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="12" class="ion-text-center">
-                <h2>
-                  Enviale un whats:
-                  <a
-                    href="https://api.whatsapp.com/send?phone=+52{{promocionTO.celular}}"
-                    target="_blank"
-                    style="background-color: #1c7430"
-                    class="text-white"
-                  >
-                    {{promocionTO.celular}}
-                  </a>
-                </h2>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-
-          <ion-label><strong>{{
-          "DE " + promocionTO.fecha_inicio + " A " + promocionTO.fecha_fin
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12" class="ion-text-center">
+                    <label>CONTACTA AL PROVEEDOR</label>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="12" class="ion-text-center">
+                    <p class="promocion">
+                      Dirección: {{ promocionTO.calle }} {{ promocionTO.numero_ext }} {{ promocionTO.colonia }}, {{ promocionTO.nombre_localidad !== undefined ? promocionTO.nombre_localidad + ', ': '' }}{{ promocionTO.nombre_municipio }}, {{promocionTO.nombre_estado }}
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="12" class="ion-text-center" *ngIf="blnPermisoUbicacion">
+                     <h2 class="promocion">A {{ distanciaNegocio }} Km cerca de tí.</h2>
+                     <ion-badge color="danger"><a href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{promocionTO.latitud}},{{promocionTO.longitud}}"
+                      target="_blank">Ir al lugar</a></ion-badge>
+                  </ion-col>
+                  <ion-col size="12" class="ion-text-center" *ngIf="!blnPermisoUbicacion">
+                    <h2 class="aDefault promocion" matTooltip="Bitoo no puede obtener tu ubicación. Por favor activa los permisos de ubicación del navegador para poder determinar la distancia a la que se encuentra el negocio">
+                        Distancia desconocida
+                    </h2>
+                 </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="12" class="ion-text-center">
+                    <h2>Enviale un whats: <a href="https://api.whatsapp.com/send?phone=+52{{promocionTO.celular}}" target="_blank" style="background-color: #1c7430" class="text-white">
+                      {{promocionTO.celular}}
+                    </a></h2>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <!--ion-grid> La propiedad estatus no está definida en el response en promociónTO
+                <ion-row>
+                  <ion-col size=12>
+                    <div (click)="motrarContacto = !motrarContacto;" class="list">
+                      <ul>
+                        <li>{{ promocionTO.estatus.tipo === 1 ? 'Abierto' : 'Cerrado'}}</li>
+                        <li class="lista">
+                          <div>
+                            {{ promocionTO.estatus.mensaje }}
+                          </div>
+                          <div style="margin: 0px 5px" *ngIf="!motrarContacto" >
+                              <ion-icon name="arrow-up-outline"></ion-icon>
+                          </div>
+                          <div style="margin: 0px 5px" *ngIf="motrarContacto">
+                            <ion-icon name="arrow-down-outline"></ion-icon>
+                          </div>
+                        </li>
+                      </ul>
+                      <div style="margin: 0px 5px" *ngIf="!motrarContacto && promocionTO.estatus!==undefined">
+                        <ion-list>                          
+                        </ion-list>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid-->
+        </ion-col>
+      </ion-row>
+      <!--ion-label> Descripción de promo/anuncio redundante ya esta arriba
+        <h1>
+          <strong>{{ promocionTO.promocion }}</strong>
+        </h1>
+      </ion-label-->
+      <hr>
+    
+    
+    
+      <ion-label><strong>{{
+          "Del " + promocionTO.fecha_inicio + " al " + promocionTO.fecha_fin
           }}</strong></ion-label>
           
         </ion-col>

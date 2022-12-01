@@ -93,6 +93,24 @@ export class BannerPromocionesComponent implements OnInit {
   public obtenerPromociones(filtro: any) {
     if(!this.tieneFiltro){
       filtro.strBuscar='';
+      filtro.intEstado = 0;
+      filtro.strMunicipio = "";
+      filtro.typeGetOption=true;
+        filtro.kilometros = null;
+        filtro.latitud = 0;
+        filtro.longitud = 0;
+        filtro.idTipoNegocio = null;
+        filtro.blnEntrega = null;
+        filtro.idGiro = null;
+        filtro.idCategoriaNegocio = null;
+        filtro.idEstado = 29;
+        filtro.idMunicipio = null;
+        filtro.idLocalidad = null;
+        filtro.abierto = null;
+        filtro.tipoBusqueda = 0;
+        filtro.id_persona = null;
+        filtro.organizacion=null;
+      /*filtro.strBuscar='';
       filtro.intEstado = null;
       filtro.strMunicipio = null;
         filtro.kilometros = 10;
@@ -107,12 +125,30 @@ export class BannerPromocionesComponent implements OnInit {
         filtro.idLocalidad = null;
         filtro.abierto = null;
         filtro.tipoBusqueda = 0;
-        filtro.id_persona = null;
+        filtro.id_persona = null;*/
     }
     this.plazaAfiliacion = JSON.parse(localStorage.getItem('org'));
     if (this.plazaAfiliacion != null) {
       filtro.organizacion = this.plazaAfiliacion.id_organizacion;
     }
+    /*await this.servicioPromociones.buscarPromocinesPublicadasModulo(filtro).subscribe(
+      response => {
+        let lstCatPromos = response.data
+        lstCatPromos.forEach((categoria,index) => {
+          this.lstPromociones.push(lstCatPromos[index].promociones)//response.data;
+        });
+
+        this.lstPromociones.forEach((promo,index) => {
+          console.log("cada promo: "+JSON.stringify(promo))
+        });
+        
+        console.log("lista prmomos de banenr: "+this.lstPromociones.length)//JSON.stringify(this.lstPromociones))
+        //this.loaderPromo = false;
+      },
+      error => {
+        // this._notificacionService.pushError(error);
+      }
+    );*/
     this.servicioPromociones.buscarPromocinesPublicadasFiltros(filtro).subscribe(
       response => {
         this.lstPromociones = response.data;
@@ -200,9 +236,10 @@ export class BannerPromocionesComponent implements OnInit {
 
   
    masInformacion(promocion: any) {
-     var promo = promocion.id_promocion;
+    //console.log("promo antes de abrir link:"+JSON.stringify(promocion)) AQUI VAMOS BIEN, ES EL MISMO JSON QUE EL DE PROMOS
+     let promo = promocion.id_promocion;
     this._router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
-          queryParams: { route: true , clickBanner: true, promo:promo}});
+          queryParams: { route: true , clickBanner: true, promo: promo}});
     this.modalController.dismiss();
   }
 

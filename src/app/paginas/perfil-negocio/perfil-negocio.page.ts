@@ -356,7 +356,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
   ionViewWillEnter() {
     this.navBarServiceService.cambio.subscribe((respuesta) => {
-      this.detallePromocion(respuesta);
+      //this.detallePromocion(respuesta);
     });
   }
 
@@ -1301,15 +1301,15 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     }
   }
 
-  public detallePromocion(promocion: PromocionesModel) {
+  async detallePromocion(promocion: PromocionesModel) {
     if (promocion !== new PromocionesModel()) {
-      setTimeout(() => {
-        this.abrirModalPromocion(promocion);
+      setTimeout(async () => {
+        await this.abrirModalPromocion(promocion);
       }, 200);
     }
   }
 
-  async abrirModalPromocion(promo: PromocionesModel) {  //aQUI SE ABRE MODAL DE PROMO
+  async abrirModalPromocion(promo: any) {  //aQUI SE ABRE MODAL DE PROMO
     const modal = await this.modalController.create({
       component: ModalPromocionNegocioComponent,
       componentProps: {
@@ -1317,12 +1317,12 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         idPersona: this.idPersona,
         latitud: this.miLat,
         longitud: this.miLng,
-        celular:this.informacionNegocio.celular,
-        descripcion:this.informacionNegocio.descripcion,
+        celular:promo.celular,
+        descripcion:promo.descripcion,
         
       },
     });
-    await modal.present();
+    modal.present();
   }
 
   public darLike(producto: ProductoModel) {

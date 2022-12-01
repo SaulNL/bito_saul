@@ -17,7 +17,7 @@ import {InputLugaresEntregaComponent} from '../../components/input-lugares-entre
 import { ModalLoguearseComponent } from '../../componentes/modal-loguearse/modal-loguearse.component'
 import { BannerAnunciosComponent } from '../../componentes/banner-anuncios/banner-anuncios.component';
 import { ModalPromocionNegocioComponent } from '../../componentes/modal-promocion-negocio/modal-promocion-negocio.component';
-
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 @NgModule({
   imports: [
     IonicModule,
@@ -55,5 +55,6 @@ import { ModalPromocionNegocioComponent } from '../../componentes/modal-promocio
     ModalLoguearseComponent,
     ModalPromocionNegocioComponent
   ],
+  providers: [ SocialSharing ],
 })
 export class TabsPageModule {}
