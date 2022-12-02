@@ -251,12 +251,12 @@
               </ion-select-option>
             </ion-select>
           </ion-item>
-          <ion-label>Ayudanos a que la busqueda de tu negocio sea mas
+          <ion-label>Ayúdanos a que la búsqueda de tu negocio sea más
             efectiva</ion-label>
           <ion-item>
             <app-input-tags [tags]="negocioTO.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
           </ion-item>
-          <ion-label>Horiario de antención <span style="color: red">*</span></ion-label>
+          <ion-label>Horario de atención <span style="color: red">*</span></ion-label>
           <ion-item>
             <ion-label stacked> Horario Inicial </ion-label>
             <ion-datetime display-format="H:mm" picker-format="H:mm" name="feInicio" #feInicio="ngModel"
@@ -268,7 +268,7 @@
               #fechaFinal="ngModel" [(ngModel)]="horariofin" (ionChange)="validarHoraFinal($event)"></ion-datetime>
           </ion-item>
           <ion-item>
-            <ion-label position="stacked">Dias de la Semana</ion-label>
+            <ion-label position="stacked">Días de la Semana</ion-label>
             <ion-select [disabled]="blnActivaDias" ok-text="Ok" cancel-text="Cancelar" multiple #dias="ngModel"
               name="dias" (ionChange)="diasSeleccionado($event)" [(ngModel)]="nuevoHorario.dias">
               <ion-select-option *ngFor="let dia of diasArray" [value]="dia.dia">{{dia.dia}}</ion-select-option>
