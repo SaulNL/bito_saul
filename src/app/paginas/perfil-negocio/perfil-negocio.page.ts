@@ -281,17 +281,21 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
     this.route.queryParams.subscribe((params) => {
       if (params.clickBanner && params) {
-        console.log("Vienes del baner de promociones, el id de esta promo es: "+params.promo)
+        //console.log("Vienes del baner de promociones, el id de esta promo es: "+params.promo)
         this.negocioService.obteneretalleNegocio(this.negocio, this.user.id_persona).subscribe((response) => {
           if (response.data !== null) {
             this.informacionNegocio = response.data;            
             this.promociones = this.informacionNegocio.promociones; 
-            console.log("TAMAÑO DE LISTA PROMOS-----"+this.promociones.length)
+            //console.log("TAMAÑO DE LISTA PROMOS-----"+this.promociones.length)
             this.promociones.forEach(promo => {
-              console.log("Promo clikeada: "+params.promo+" --> Promo de lista: "+promo.id_promocion)
+              //console.log("Promo clikeada: "+params.promo+" --> Promo de lista: "+promo.id_promocion)
               if(promo.id_promocion == params.promo){
-                console.log("OK Coincidencia --> "+promo.id_promocion)
-                this.abrirModalPromocion(promo)
+                //promo.estatus=this.estatus
+                //promo.diasArray= this.diasArray
+                //console.log("OK Coincidencia --> "+promo.id_promocion)
+                setTimeout(() => {
+                  this.abrirModalPromocion(promo)
+                },1000)                                                                                
               }
             });           
           } else {
@@ -381,7 +385,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
           if (response.data !== null) {
             this.informacionNegocio = response.data;
             this.logo = this.informacionNegocio.url_logo
-            console.log("informacionNegocio: "+JSON.stringify(this.informacionNegocio))
+            
             this.Filtros.idNegocio=this.informacionNegocio.id_negocio  
             this.Filtros.kilometros=10 
             this.Filtros.limpiarF=false;            
@@ -435,16 +439,15 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
   
   async buscarDetalleNegocio(filtro:any, pagina:any){
-    const body = JSON.stringify({filtros: filtro, page: pagina})
-    console.log("Body---> "+body)
-    var response = await this.BusquedaService.getDatosNegocioSinMapearCategoría(filtro,pagina).subscribe(
+    
+    
+    await this.BusquedaService.getDatosNegocioSinMapearCategoría(filtro,pagina).subscribe(
       response => {
         let negocioTO = response.data;  
         let data = negocioTO.lst_cat_negocios.data[0] 
         this.fotografiasArray= data.fotografias 
         this.insignias=data.distintivos
-        console.log("insignias: "+JSON.stringify(this.insignias))
-        //console.log("fotografiasArray: "+JSON.stringify(this.fotografiasArray))        
+              
       },
       error => {
       }
@@ -1503,23 +1506,23 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 SlideChanges(slide: IonSlides) {
   slide.getActiveIndex().then((index: number) => {
    this.currentIndex= index;
-      console.log("Index: "+this.currentIndex)
+   
       if (this.currentIndex == 0){
-        console.log("Inicio")
+
       }
       if(this.currentIndex == 3){
-        console.log("Fin")
+
       }
   });
 } 
 clickDistintivo(tag:string, object:any){
-  console.log("Clickeo sobre la insignia de: "+ tag+" con la descripcion: "+JSON.stringify(object))
+
   this.showPopUp=true;
   this.insigniaTitle=tag
   this.insigniaDescrip=object
 }
 closePopUp(){
-  console.log("Cerró el popup")
+
   this.showPopUp=false;
 }
 }
