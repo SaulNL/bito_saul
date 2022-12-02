@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
   providers: [UtilsCls],
 })
 export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
-  @Input() promocionTO: PromocionesModel;
+  @Input() promocionTO: any;
   @Input() idPersona: number | null;
   @Input() latitud: any;
   @Input() longitud: any;
@@ -42,6 +42,16 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   public motrarContacto = true;
   public distanciaNegocio: string="";
   hoy: any;
+  public diasArray = [
+    { id: 1, dia: "Lunes", horarios: [], hi: null, hf: null },
+    { id: 2, dia: "Martes", horarios: [], hi: null, hf: null },
+    { id: 3, dia: "Miércoles", horarios: [], hi: null, hf: null },
+    { id: 4, dia: "Jueves", horarios: [], hi: null, hf: null },
+    { id: 5, dia: "Viernes", horarios: [], hi: null, hf: null },
+    { id: 6, dia: "Sábado", horarios: [], hi: null, hf: null },
+    { id: 7, dia: "Domingo", horarios: [], hi: null, hf: null },
+  ];
+  public estatus: { tipo: number; mensaje: string };
   constructor(private router: Router,
     public modalController: ModalController,
     private vioPromo: RegistrarPromotionService,
@@ -60,6 +70,9 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.horarios(this.promocionTO.horarios);
+    this.promocionTO.estatus=this.estatus
+    this.promocionTO.diasArray= this.diasArray
      this.hoy = new Date();
     this.hoy = this.hoy.getDay() !== 0 ? this.hoy.getDay() : 7;
 
@@ -88,6 +101,138 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
 
   public calcularDias(promocion: any) {
     promocion.restanDias = Math.abs(this.fechaHoy.diff(promocion.fecha_fin_public, 'days'));
+  }
+
+  private horarios(horarios: any) {
+    this.estatus = { tipo: 0, mensaje: "No abre hoy" };
+    const hros = horarios;
+    let hoy: any;
+    hoy = new Date();
+    this.hoy = hoy.getDay() !== 0 ? hoy.getDay() : 7;
+    const diasArray = JSON.parse(JSON.stringify(this.diasArray));
+    if (hros !== undefined) {
+      hros.forEach((horarioTmp) => {
+        diasArray.map((dia) => {
+          if (
+            horarioTmp.dias.includes(dia.dia) &&
+            horarioTmp.hora_inicio !== undefined &&
+            horarioTmp.hora_fin !== undefined
+          ) {
+            let dato = {}            
+            dato = { 
+              texto: horarioTmp.hora_inicio + " a " + horarioTmp.hora_fin,
+              hi: horarioTmp.hora_inicio,
+              hf: horarioTmp.hora_fin,
+            };
+            console.log(JSON.stringify(dato))
+            console.log("dia.horarios={}"+JSON.stringify(dia.horarios))
+            dia.horarios.push(dato);
+          }
+        });
+      });
+      console.log("se duplica?? arraydias"+JSON.stringify(diasArray))
+      diasArray.map((dia) => {
+        if (dia.id === this.hoy) {
+          const now = new Date(
+            1995,
+            11,
+            18,
+            hoy.getHours(),
+            hoy.getMinutes(),
+            0,
+            0
+          );
+          let abieto = null;
+          let index = null;
+          const listaAux = [];
+          if (dia.horarios.length !== 0) {
+            dia.horarios.map((item, i) => {
+              const inicio = item.hi.split(":");
+              // tslint:disable-next-line:radix
+              const fi = new Date(
+                1995,
+                11,
+                18,
+                parseInt(inicio[0]),
+                parseInt(inicio[1]),
+                0,
+                0
+              );
+              const fin = item.hf.split(":");
+              let aux = 18;
+              // tslint:disable-next-line:radix
+              if (parseInt(inicio[0]) > parseInt(fin[0])) {
+                aux = 19;
+              }
+              // tslint:disable-next-line:radix
+              const ff = new Date(
+                1995,
+                11,
+                aux,
+                parseInt(fin[0]),
+                parseInt(fin[1]),
+                0,
+                0
+              );
+              listaAux.push({
+                valor: (fi.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+                index: i,
+              });
+              if (now >= fi && now <= ff) {
+                abieto = true;
+                index = i;
+              }
+            });
+            if (abieto) {
+              this.estatus = {
+                tipo: 1,
+                mensaje: "Cierra a las " + dia.horarios[index].hf,
+              };
+            } else {
+              let listaValores: Array<number> = [];
+              let siHay = false;
+              listaAux.map((item) => {
+                listaValores.push(item.valor);
+                if (item.valor > 0) {
+                  siHay = true;
+                }
+              });
+              if (siHay) {
+                listaValores = listaValores.filter((item) => {
+                  return item >= 0;
+                });
+              }
+              const valor = Math.min.apply(null, listaValores);
+              const valorMax = Math.max.apply(null, listaValores);
+              if (valor > 0) {
+                listaAux.map((item) => {
+                  if (item.valor === valor) {
+                    index = item.index;
+                  }
+                });
+                this.estatus = {
+                  tipo: 0,
+                  mensaje: "Abre a las " + dia.horarios[index].hi,
+                };
+              } else {
+                listaAux.map((item) => {
+                  if (item.valor === valorMax) {
+                    index = item.index;
+                  }
+                });
+                this.estatus = {
+                  tipo: 0,
+                  mensaje: "Cerró a las " + dia.horarios[index].hf,
+                };
+              }
+            }
+          } else {
+            this.estatus = { tipo: 0, mensaje: "No abre hoy" };
+          }
+        }
+      });
+      this.diasArray = diasArray;
+    }
   }
 
   public calcularDistancia(promocion: any) {
