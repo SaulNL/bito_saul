@@ -99,7 +99,8 @@ export class SolicitudPage implements OnInit {
     this.mostrarLoguearse();
     if (localStorage.getItem("isRedirected") === "false" ) {
       localStorage.setItem("isRedirected", "true");
-        location.reload();
+      //location.reload();
+      localStorage.removeItem("activedPage");
     }
   }
 

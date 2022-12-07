@@ -76,7 +76,8 @@ export class PromocionesPage implements OnInit {
         this.idPersona = (this.utils.existSession()) ? this.utils.getIdUsuario() : null;
         if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
             localStorage.setItem("isRedirected", "true");
-            location.reload();
+            //location.reload(); **Esto es lo que hace que se vea una pantalla negra
+            localStorage.removeItem("activedPage");
         }
         const selected = localStorage.getItem("org");
         if (selected != null) {

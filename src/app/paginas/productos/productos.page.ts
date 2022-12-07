@@ -115,7 +115,8 @@ export class ProductosPage {
 
     if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
       localStorage.setItem("isRedirected", "true");
-      location.reload();
+      //location.reload();
+      localStorage.removeItem("activedPage");
     }
 
     const selected = localStorage.getItem("org");

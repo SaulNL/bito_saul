@@ -77,7 +77,8 @@ export class SignInPage implements OnInit {
   ngOnInit() {
     if (localStorage.getItem("isRedirected") === "false" && !this.isIos) {
       localStorage.setItem("isRedirected", "true");
-      location.reload();
+      //location.reload();
+      localStorage.removeItem("activedPage");
     }
 
     this.activeRoute.queryParams.subscribe((params) => {
