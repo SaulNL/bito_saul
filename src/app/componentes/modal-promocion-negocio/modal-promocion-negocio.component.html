@@ -23,7 +23,7 @@
       <br>
     </ion-card-content>
 
-    <div *ngIf="promocionTO.id_tipo_promocion===2 && loader && !existeAfl">
+    <div *ngIf="promocionTO.id_tipo_promocion===2 && loader ">
       <ion-row>
         <ion-col class="ion-text-center" (click)="masInformacion(promocionTO)">
           <h1 class="sinMargin rosa">{{ promocionTO.nombre_comercial }}</h1>
@@ -129,16 +129,17 @@
       <div *ngIf="!existeSesion || existeAfl ">
         <ion-label>
           <h1>
-            <strong>{{ promocionTO.promocion }}</strong>
+           <!-- <strong>{{ promocionTO.promocion }}</strong>-->
           </h1>
         </ion-label>
         <hr>
         <div *ngIf="promocionTO.organizaciones!=null">
           <h6>Esta promoción aplica solo para :</h6>
 
-          <ion-label *ngFor="let org of promocionTO.organizaciones"> <b>{{org.nombre}} / </b> </ion-label>
+         <ion-label *ngFor="let org of promocionTO.organizaciones"> <b *ngIf="promoAfil === true">{{org.nombre}} / </b> </ion-label>
+          <ion-label *ngIf="promoPublico === true"> <b >Público en general </b> </ion-label>
           <h6 *ngIf="!existeSesion">Regístrate o inicia sesión para disfrutrar de estos beneficios. </h6>
-          <h6 *ngIf="existeAfl && existeSesion">Regístra tu afiliación a la que perteneces para disfrutrar de estos beneficios.</h6>
+          <h6 *ngIf="existeAfl && existeSesion && !promoPublico">Regístra tu afiliación a la que perteneces para disfrutrar de estos beneficios.</h6>
 
         </div>
       </div>
