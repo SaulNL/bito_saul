@@ -51,5 +51,16 @@
         <ion-button (click)="showMore()" class="text-capitalize background-bitoo" mode="ios" expand="block" fill="clear" shape="round">
             {{business.name}} <ion-icon slot="end" name="storefront-outline"></ion-icon>
         </ion-button>
+
+        <ion-row>
+            <div class="controlesGrid">        
+              <div class="back" [class]="prodEnPos > 0 ? 'back' : 'arrowsDeactivated'">                  
+                <ion-icon (click)="back()" name="chevron-back-outline" size="large"></ion-icon>        
+              </div>
+              <div class="next" [class]="prodEnPos < lstProductos.length-1 ? 'next' : 'arrowsDeactivated'">
+                <ion-icon (click)="next()" name="chevron-forward-outline" size="large"></ion-icon>           
+              </div>
+            </div>      
+          </ion-row>
     </ion-card>
 </ion-content>
