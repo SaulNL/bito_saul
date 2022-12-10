@@ -866,7 +866,7 @@
                       alt="Falla al cargar la imagen"
                     />
                     <ion-card-header>
-                      <ion-card-title>{{promo.promocion}}</ion-card-title>
+                      <ion-card-title class ="nomCard">{{promo.promocion}}</ion-card-title>
                       <ion-card-subtitle *ngIf="promo.terminos != null">
                         {{ (promo.terminos.length>100)? (promo.terminos | slice:0:80)+'..':(promo.terminos) }}
                       </ion-card-subtitle>

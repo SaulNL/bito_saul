@@ -31,6 +31,7 @@ import { ActivatedRoute, Params } from "@angular/router";
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
 import { LoaderComponent } from "../../components/loader/loader.component";
+import { ProductoModel } from "src/app/Modelos/ProductoModel";
 
 @Component({
   selector: "app-product-detail",
@@ -48,6 +49,8 @@ export class ProductDetailPage implements OnInit {
   public productLike: ProductLikeInterface;
   public purchaseMessage: string;
   public subscribe: Subscription;
+  lstProductos: Array<ProductoModel>;
+  prodEnPos: number;
   constructor(
     private activatedRoute: ActivatedRoute,
     private businessService: NegocioService,
@@ -68,6 +71,17 @@ export class ProductDetailPage implements OnInit {
         this.inicializeModels();
         const product: ProductInterface = JSON.parse(params.product);
         this.init(product);
+      }
+      if (params.producto) {        
+        this.lstProductos=JSON.parse(localStorage.getItem('lstProductosOriginal'))
+        let productoid=params.producto
+        //console.log("\nTamaño lista del local storage al abrir producto: "+this.lstProductos.length+"\nEl id del producto abierto es: "+productoid)
+        this.lstProductos.forEach((producto, i) => {
+          if(producto.idProducto == productoid){
+              //console.log("Aqui esta el producto en la pos :"+ i)
+              this.prodEnPos=i;
+          }
+        });
       }
 
       if (params.byProfile) {
@@ -309,4 +323,29 @@ export class ProductDetailPage implements OnInit {
     this.toadNotificacionService.error("No se pudo cargar su producto");
     this.loaderTurnOff();
   }
+
+  back(){
+    if(this.lstProductos.length > 0 && this.prodEnPos >0){
+        this.inicializeModels();
+        this.prodEnPos--        
+        let producto = this.lstProductos[this.prodEnPos] 
+        console.log("\nPosicion: "+(this.prodEnPos+1)+" de: "+this.lstProductos.length+"\nProductoTO: "+JSON.stringify(producto))
+        const product: ProductInterface = this.createObject.createProduct(producto);
+        this.init(product);
+    }else{
+        console.log("No hay mas promos atras")
+    }       
+}
+next(){  
+    if(this.prodEnPos < this.lstProductos.length-1){
+      this.inicializeModels();
+      this.prodEnPos++
+      console.log("Posicion: "+(this.prodEnPos+1)+" de: "+this.lstProductos.length)
+      const product: ProductInterface = this.createObject.createProduct(this.lstProductos[this.prodEnPos]);
+      this.product=product
+      this.init(product);
+    }else{
+        console.log("No hay mas promos adelante")
+    }          
+}
 }

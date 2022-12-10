@@ -41,6 +41,8 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   public anuncio_promo:string="Promoción";
   public motrarContacto = true;
   public distanciaNegocio: string="";
+  public promoPublico = false;
+  public promoAfil = false;
   hoy: any;
   public diasArray = [
     { id: 1, dia: "Lunes", horarios: [], hi: null, hf: null },
@@ -268,11 +270,21 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
             this.lstOrgUsuario = Object.values(respuesta.data.list_organizaciones_usuario);
 
             this.listAfiliacines=this.listAfiliacines.concat(this.lstOrgUsuario);
+            if(this.promocionTO.organizaciones.length>0){
+
+              this.promoAfil = true;
+              this.promoPublico = false;
+              //console.log("ORGANIZACIONES SI AFILIACION PROMO: " + JSON.stringify(this.promocionTO.organizaciones));
+            }else{
+              this.promoPublico =true;
+              this.promoAfil = false;
+              //console.log("ORGANIZACIONES NO AFILIACION PROMO: " + JSON.stringify(this.promocionTO.organizaciones));
+            }
             
             if(this.listAfiliacines.length>0){
               this.existeAfl =false;
               this.loader=true;
-
+              
             }else{
               this.existeAfl =true;
               this.loader=true;
