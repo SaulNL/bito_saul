@@ -308,6 +308,7 @@ export class ProductosPage {
    * @author Paola Coba
    */
   public obtenerProductoPorLetra(filtro: FiltroABCModel) {
+    localStorage.removeItem('lstProductosOriginal');
     this.loader = true;
     let letra = filtro.letra;
     if (filtro.id === this.filtroCheckend) {
@@ -325,7 +326,12 @@ export class ProductosPage {
         this.anyFiltros.letraInicial = filtro.letra;
         this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
           (response) => {
-            this.lstProductosOriginal = response.data.lstProductos;
+            this.lstProductosOriginal = response.data.lstProductos; 
+            localStorage.setItem('lstProductosOriginal', JSON.stringify(this.lstProductosOriginal));           
+            this.lstProductosOriginal.forEach(prod => {
+              //console.log("Prod 1.- "+JSON.stringify(prod))
+            });
+            //console.log("tamaño lista listaProdLetra del push: "+this.lstProductosOriginal.length)
             this.lstProductos = this.lstProductosOriginal.slice(0, 6);
             this.loader = false;
           },
@@ -363,7 +369,7 @@ export class ProductosPage {
   public abrirProducto(producto: ProductoModel) {
     const product: ProductInterface = this.createObject.createProduct(producto);
     this._router.navigate(["/tabs/productos/product-detail"], {
-      queryParams: { product: JSON.stringify(product) },
+      queryParams: { product: JSON.stringify(product),producto:producto.idProducto },
     });
   }
 
