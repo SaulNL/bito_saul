@@ -121,19 +121,20 @@ export class BusquedaService {
         }));
   }
 
-  obtenerPrincipalInicioTodos(data: any): Observable<any> {
-    const body = JSON.stringify(data);
-    this.http.setDataSerializer('utf8');
-    return from(this.http.post(
-        this.url + 'api/negocios/obtenerPrincipalInicioTodos',
-        body,  AppSettings.getHeaders())
-        .then((data) => {
-            return JSON.parse(data.data);
-        })
-        .catch((error) => {
-            return error;
-        }));
-  }
+  // ESTE SERVICIO ERA PARA TRAER LA LISTA DE SOLO LOS PRIMEROS DIEZ(CONVENIO, PROMOCIÓN Y MAS VISTOS )
+  // obtenerPrincipalInicioTodos(data: any): Observable<any> {
+  //   const body = JSON.stringify(data);
+  //   this.http.setDataSerializer('utf8');
+  //   return from(this.http.post(
+  //       this.url + 'api/negocios/obtenerPrincipalInicioTodos',
+  //       body,  AppSettings.getHeaders())
+  //       .then((data) => {
+  //           return JSON.parse(data.data);
+  //       })
+  //       .catch((error) => {
+  //           return error;
+  //       }));
+  // }
 
   public obtenerNegociosTodosMapa(): Promise<any>{
     const body = JSON.stringify({});

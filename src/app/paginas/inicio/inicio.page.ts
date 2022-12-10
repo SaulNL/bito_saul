@@ -42,9 +42,11 @@ export class InicioPage implements OnInit, AfterViewInit {
   public static readonly MENSAJE_CUANDO_CARGA = "Cargar más";
   public static readonly PAGINAS_POR_CONSULTA = 20;
   public lengthLista: number;
+  public totalPaginas: number;
   public cordenada: number;
   public Filtros: FiltrosModel;
   public listaCategorias: Array<ICategoriaNegocio>;
+  public listaCompleta: any;
   private modal: any;
   public selectionAP: boolean;
   public anyFiltros: FiltrosModel;
@@ -69,12 +71,12 @@ export class InicioPage implements OnInit, AfterViewInit {
   public nombreCategoria = "";
   public actualPagina = 0;
   public actualGiro=0;
-  public totalDePaginas = 0;
+  public totalDeNegocios = 0;
   public seHaceScroll = false;
   public siguientePagina = this.actualPagina + 1;
   public siguienteGiro = this.actualGiro +1;
   public mensaje = InicioPage.MENSAJE_CUANDO_CARGA;
-  public totalDePaginasPorConsulta = 0;
+  public totalDeNegociosPorConsulta = 0;
   activedPage: string;
   
   lstCatTipoGiro: any;
@@ -95,7 +97,11 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   public banderaUbicacion: boolean;
   public banderaInicio: boolean;
+  public banderaVerMenos: boolean;
+  public banderaMasNegocios: boolean;
   public idNegocio: number;
+  public mapa: boolean;
+  public indice: number;
   mostrarloaderInicio: boolean;
   loaderInicio: boolean;
   buscador = false;
@@ -165,10 +171,12 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.listaCategorias = new Array<ICategoriaNegocio>();
     this.listaIdsMapa = [];
     this.banderaInicio = false;
+    this.banderaVerMenos = false;
+    this.banderaMasNegocios = false;
     this.user = this.util.getUserData();
     this.existeSesion = this.util.existe_sesion();
-   //aqui para cargar
-   this.loaderNegocios=true;
+    //aqui para cargar
+    this.loaderNegocios=true;
     this.tFiltro = false;
     this.afiliacion = true;
     this.mostrarloaderInicio=true;
@@ -273,6 +281,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
     
     if (localStorage.getItem("activarTodos") === "true" ) {
+      this.banderaVerMas == false
       this.idTodo=true;
     }else{
       this.idTodo=false;
@@ -287,6 +296,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     localStorage.setItem('negocios', ('active'));
   }
   ngAfterViewInit() {
+    this.banderaVerMas = false;
     //this.loaderSuperior=document.getElementById('cargaArriba');
     this.content.ionScroll.subscribe(($event) =>{
       this.scrollAmount = $event.detail.scrollTop
@@ -301,7 +311,7 @@ export class InicioPage implements OnInit, AfterViewInit {
         this.isLoading=false;
       }
     })
-}
+  }
 
   private load() {
     const selected = localStorage.getItem("org");
@@ -399,6 +409,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   async validarResultadosDeCategorias(respuesta: any) {
+    this.banderaVerMas == false;
     const cantidadDeResultados = respuesta.data.lst_cat_negocios.data.length;
     if(cantidadDeResultados < 0){
       this.listaCategorias = [];
@@ -408,15 +419,17 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.actualPagina = respuesta.data.lst_cat_negocios.current_page;
       this.siguientePagina = this.actualPagina + 1;
       //this.siguienteGiro = this.actualGiro +1;
-      this.totalDePaginas = respuesta.data.lst_cat_negocios.total;
-      this.totalDePaginasPorConsulta = respuesta.data.lst_cat_negocios.to;
-      console.log("\ntotalNegocios: "+ JSON.stringify(this.totalDePaginas+"\n"+"Negocios-PorConsulta: "+JSON.stringify(this.totalDePaginasPorConsulta))+"\nPagina actual: "+this.actualPagina+"\nSiguiente Pagina: "+this.siguientePagina)
+      this.totalDeNegocios = respuesta.data.lst_cat_negocios.total;
+      this.totalPaginas=Math.ceil((this.totalDeNegocios/20));
+      this.totalDeNegociosPorConsulta = respuesta.data.lst_cat_negocios.to;
+      //console.log("\ntotalNegocios: "+ JSON.stringify(this.totalDeNegocios+"\n"+"Negocios-PorConsulta: "+JSON.stringify(this.totalDeNegociosPorConsulta))+"\nPagina actual: "+this.actualPagina+"\nSiguiente Pagina: "+this.siguientePagina)
       this.categoriasEstaVacios = false;
       this.lengthLista = this.listaCategorias.length;
-
+      this.banderaVerMas == false;
       if (this.actualPagina > 1 || this.actualGiro >1) {
         this.listaCategorias.push(...respuesta.data.lst_cat_negocios.data);
         this.negociosIdMapa(false);
+        this.banderaVerMas == false;
         if (
           this.listaCategorias[this.lengthLista - 1].nombre ==
           this.listaCategorias[this.lengthLista].nombre ||
@@ -426,7 +439,7 @@ export class InicioPage implements OnInit, AfterViewInit {
         }
       } else {
         console.log("sin ordenar +++++++++++++++++++")
-        console.log(JSON.stringify(respuesta.data.lst_cat_negocios.data))
+        //console.log(JSON.stringify(respuesta.data.lst_cat_negocios.data))
         /*let aux = this.ordenarRandom(respuesta.data.lst_cat_negocios.data) //id_categoria_negocio    
         this.listaCategorias = aux;*/
         this.listaCategorias = respuesta.data.lst_cat_negocios.data
@@ -449,6 +462,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   async validarResultadosDeCategoriasAll(respuesta: any) {
+    this.banderaVerMas == false;
     const cantidadDeResultados = respuesta.data.lst_cat_negocios.data.length;
     if (cantidadDeResultados > 0) {
       if (this.actualPagina > 1 || this.actualGiro >1) {
@@ -524,6 +538,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   async validarResultadosTodos(respuesta: any) {
+    //console.log("paso 5 mapa");
     const cantidadDeResultados = respuesta.data.lst_cat_negocios.length;
     if (cantidadDeResultados > 0) {
       //if (this.actualPagina > 1) {
@@ -535,8 +550,10 @@ export class InicioPage implements OnInit, AfterViewInit {
       throw throwError("");
     }
   }
+
   public async cargarCategorias() {
     const byCategorias = localStorage.getItem("filtroactual");
+    this.banderaVerMas == false;
     if (
       byCategorias !== null &&
       byCategorias !== undefined &&
@@ -570,33 +587,50 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.notificaciones.error("No hay conexión a internet, conectate a una red");
     }
   }
-  public async cargarCargarNegociosMapas() {
+  
+  public async cargarCargarNegociosMapas() 
+  {
+    //console.log("paso 3 mapa");
     this.loader = true;
     try {
-      var respuesta = await this.principalSercicio
+      if(this.Filtros.idCategoriaNegocio == null  && this.Filtros.abierto == null && this.Filtros.blnEntrega == null
+        && this.Filtros.idGiro == null  && this.Filtros.intEstado == 0
+        && this.Filtros.idLocalidad == null && this.Filtros.idMunicipio == null && this.Filtros.latitud == 0 && this.Filtros.longitud == 0
+        && this.Filtros.organizacion == null && this.Filtros.strBuscar == "" && this.Filtros.strMunicipio == ""
+        && this.Filtros.tipoBusqueda == 0
+       ){
+        await this.procesar(null, 0);
+      }else{
+        var respuesta = await this.principalSercicio
         .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
-      await this.procesar(respuesta, 0);
-      this.loader = false;
+        //console.log(respuesta)
+        await this.procesar(respuesta, 0);
+      }
+      //this.loader = false;
     } catch (error) {
       this.loader = false;
-      this.notificaciones.error("No hay conexión a internet, conectate a una red");
+      //this.notificaciones.error("No hay conexión a internet, conectate a una red");
     }
 
   }
+
   public async procesar(response: any, i: number) {
-    if (response.data.lst_cat_negocios.last_page >= i) {
+    //if (response.data.lst_cat_negocios.last_page >= i) {
       if(this.Filtros.idCategoriaNegocio == null  && this.Filtros.abierto == null && this.Filtros.blnEntrega == null
          && this.Filtros.idGiro == null  && this.Filtros.intEstado == 0
          && this.Filtros.idLocalidad == null && this.Filtros.idMunicipio == null && this.Filtros.latitud == 0 && this.Filtros.longitud == 0
          && this.Filtros.organizacion == null && this.Filtros.strBuscar == "" && this.Filtros.strMunicipio == ""
          && this.Filtros.tipoBusqueda == 0
         ){
+          //console.log("paso 4 mapa")
           this.banderaInicio = true;
+          this.loader = true;
           if(!this.isIOS){
             this.getCurrentPosition();
           }
           var responseNegociosTodos = await this.principalSercicio.obtenerNegociosTodosMapa();
           await this.validarResultadosTodos(responseNegociosTodos);
+          //console.log(responseNegociosTodos)
       }else{
         this.banderaInicio = false;
         var response2 = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, i);
@@ -606,13 +640,14 @@ export class InicioPage implements OnInit, AfterViewInit {
         
         return
       }
-    } else {
-      this.loader = false;
-      return
-    }
+    //} else {
+      //this.loader = false;
+      //return
+    //}
   }
 
   public async buscarNegocios(seMuestraElLoader: boolean) {
+    //console.log("paso 2 mapa")
     this.loader = seMuestraElLoader;
     this.listaIdsMapa = [];
     if (seMuestraElLoader === true) {
@@ -649,8 +684,9 @@ export class InicioPage implements OnInit, AfterViewInit {
      
       const org = localStorage.getItem("org");
       const categorias = localStorage.getItem("byCategorias");
-
-      if(org === null && categorias === null && this.idGiro === null &&  localStorage.getItem("todo") ===null){
+      //console.log(this.mapa);
+      //Agregue la condición this.mapa para evitar que cargue el inicio antes de entrar
+      if(org === null && categorias === null && this.idGiro === null &&  localStorage.getItem("todo") ===null && !this.mapa  ){
         this.loader = false;
         this.selectionAP = null;
         this.obtenerPrincipalInicio();
@@ -740,6 +776,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   async abrirModalMapa() {
    this.listaIdsMapa = [];
+   this.mapa = true;
    await this.buscarNegocios(true);
    await this.cargarCargarNegociosMapas()
 
@@ -749,14 +786,15 @@ export class InicioPage implements OnInit, AfterViewInit {
         listaIds: this.listaIdsMapa,
         latitud: this.latitud,
         longitud: this.longitud,
-        banderaInicio: this.banderaInicio
+        banderaInicio: this.banderaInicio,
+        funcionNegocios: this.obtenerPrincipalInicio()
       },
     });  
     await modal.present();
   }
 
   public negociosIdMapa(requiereScroll:boolean) {
-
+    this.banderaVerMas == false;
     let listaIds = [];
     this.listaCategorias.map((l) => {
       l.negocios.map((n) => {
@@ -768,6 +806,8 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.consultaTerminada=true;
       console.log("Consulta termiinada en map? "+this.consultaTerminada)
     }else{
+      this.listaVerMas = []; 
+      this.banderaVerMas == false;
       this.consultaTerminada=true;
       console.log("Consulta termiinada en map? "+this.consultaTerminada)
     }
@@ -788,7 +828,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   public obtenerNegocios2(listaCategoriasAll: INegocios[]) {
-
+    //console.log("paso 6")
     let listaIds = [];
     listaCategoriasAll.map((l) => {
       //negocios.map((n) => {
@@ -802,6 +842,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     for (let index = 0; index < listaIds[0].length; index++) {
       this.listaIdsMapa.push(listaIds[0][index].id_negocio);
     }
+    this.loader = false;
+    this.mapa = false; 
   }
 
   public regresarBitoo() {
@@ -842,6 +884,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
     this.buscarNegocios(true);
   }
+  
   negocioRuta(negocioURL, proveedor) {
     
     this.idNegocio=proveedor;
@@ -872,7 +915,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
   cargarMasPaginas() {
     this.loaderVerMas = true;
-    if ( this.totalDePaginas>=this.totalDePaginasPorConsulta ) {
+    if ( this.totalDeNegocios>=this.totalDeNegociosPorConsulta ) {
       this.buscarNegocios(false);
       setTimeout(() => {
         this.loaderVerMas = false;
@@ -884,7 +927,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   cargarMasNegocios(event: any){
     let negocios = [];
     this.listaCategorias.map(e => negocios = e.negocios);
-    console.log("Tamaño de lista"+this.listaCategorias.length)
+    //console.log("Tamaño de lista"+this.listaCategorias.length)
     if (this.listaVerMas.length != negocios.length) {
       setTimeout(() => {
         this.mostrarNegocios += 4;
@@ -904,20 +947,28 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.loader = true;
     this.loaderInicio=true;
     this.banderaVerMas= false;
-
-    let convenio = nombre == 'Con Convenio' ? 'convenio' : null;
-    let promocion = nombre == 'Con Promociones' ? 'promocion' : null;
-    let masVistos = nombre == 'Más Vistos' ? 'Más Vistos' : null;//Aqui es por "Mas vistos" cuando este listo el servicio
-
+    
     if (nombre === undefined) {
       this.principalSercicio.obtenerPrincipalInicio()
         .subscribe(
           (response) => {
-          
             if (response.code === 200) {
               this.listaCategorias = response.data;
-              this.obtenerNegociosFav();
-
+              let uno = this.listaCategorias[0].negocios.slice(0,10);
+              let dos = this.listaCategorias[1].negocios.slice(0,10);
+              let tres =this.listaCategorias[2].negocios.slice(0,10);
+              this.obtenerNegociosFav(); 
+              this.banderaVerMas = true;
+              this.listaVerMas = [{'nombre': 'Con convenio','negocios' : uno},{'nombre': 'Con promociones','negocios': dos},{'nombre': 'Más Vistos','negocios':tres}];
+              if(this.listaVerMas[0].negocios.length <= 10){
+                this.banderaMasNegocios = true;
+              } 
+              if(this.listaVerMas[1].negocios.length <= 10){
+                this.banderaMasNegocios = false;
+              }     
+              if(this.listaVerMas[2].negocios.length <= 10){
+                this.banderaMasNegocios = true;
+              }
               setTimeout(() => {
                 this.loader = false;
                 this.loaderInicio=false;
@@ -933,50 +984,65 @@ export class InicioPage implements OnInit, AfterViewInit {
           }
         );
         return false;
-    }
-
-      if (masVistos != null) {
-        this.activar();        
-      } else {
-        let body = { tipo: convenio != null ? convenio : promocion};
-
-        this.principalSercicio.obtenerPrincipalInicioTodos(body).subscribe(
-          (response) => {
-          
-            if (response.code === 200) {
-
-              this.banderaVerMas = true;
-              this.listaCategorias = response.data;
-              this.listaCategorias.map(e => {
-                this.listaVerMas = e.negocios.slice(0, 4);
-              });
-
-              this.obtenerNegociosFav();
-
-              setTimeout(() => {
-                this.loader = false;
-                this.loaderInicio=false;
-                this.mostrarloaderInicio=false;
-              }, 800);
-              
-            }
-          },
-          (error) => {
-            this.loader = false;
-            this.loaderInicio=false;
-            this.mostrarloaderInicio=false;
-            //this._notificacionService.error(error);
-          },
-          () => {
-            this.scrollToTop();
-          }
-        );
-      }
-
-      
+    }      
   }
 
-  obtenerNegociosFav() {
+  cargarMasNegociosInicio(nombre) {
+    this.indice = nombre === 'Con promociones' ? this.indice = 1 :  nombre ===  'Con convenio' ? this.indice = 0 : this.indice = 2;
+    this.listaCompleta = this.listaCategorias[this.indice];
+    let len = this.listaVerMas[this.indice].negocios.length
+    let lenCat = this.listaCategorias[this.indice].negocios.length;
+    let dif = this.listaCategorias[this.indice].negocios.length-this.listaVerMas[this.indice].negocios.length;
+
+    if(len <  lenCat)
+    {
+      console.log(len);
+      console.log(dif);
+
+      for (let i = len; i <= len + 3 ; i++) 
+      { 
+        if(i+1 <= lenCat)
+        {
+          let nuevosDatos = this.listaVerMas[this.indice].negocios.push(this.listaCategorias[this.indice].negocios[i]);
+          //console.log(nuevosDatos);
+        }
+      }
+
+      if(dif <= 1)
+      {
+          if(this.listaVerMas[this.indice].negocios.length > 10)
+          {
+            this.banderaVerMenos = true; 
+            this.banderaMasNegocios = false;
+          }
+      }
+
+    }
+  }
+
+  cargarMenosNegociosInicio(nombre)
+  {
+    console.log("entro");
+    this.indice = nombre === 'Con promociones' ? this.indice = 1 :  nombre ===  'Con convenio' ? this.indice = 0 : this.indice = 2;
+    this.listaVerMas[this.indice].negocios.splice(10,this.listaCategorias[this.indice].negocios.length);
+    console.log(this.listaCategorias);
+    console.log(this.listaVerMas);
+    if(this.listaVerMas[this.indice].negocios.length <= 10){
+      console.log("entro if");
+      this.banderaMasNegocios = true;
+      this.banderaVerMenos = false;
+    } else{
+      this.banderaVerMenos = true;
+      this.banderaMasNegocios = false;
+    }
+  
+    if(this.indice == 0){
+      this.scrollToTop();
+    }
+  }
+
+  obtenerNegociosFav() 
+  {
     this.personaServcie.obtenerNegociosFavoritos(this.user.id_persona).subscribe(r =>{
       if (r.code == 200) {
         let favoritos = r.data;
@@ -1014,6 +1080,8 @@ export class InicioPage implements OnInit, AfterViewInit {
   async buscarByGiro(event){
     this.primeraPagRandom=0;
     this.paginaPrevia=0;
+    this.totalDeNegocios = 0;
+    this.totalPaginas = 0;
     localStorage.removeItem("activarTodos");
     localStorage.setItem("todo", "todo");
     this.idTodo=false;
@@ -1035,6 +1103,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     var pagRandom =await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, this.siguienteGiro);
     var rand= await this.random(1,Math.ceil((pagRandom.data.lst_cat_negocios.total/20)))
     console.log("Pagina random : "+rand)
+    this.totalPaginas = this.totalPaginas=Math.ceil((this.totalDeNegocios/20));
     this.primeraPagRandom=rand;    
     this.paginaPivote=rand;
     this.paginaPrevia=this.paginaPivote
@@ -1053,7 +1122,8 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   async activar(){
-    console.log("Activar Method")
+    this.banderaVerMas == false;
+    //console.log("Activar Method")
     this.listaCategorias=[];
     this.primeraPagRandom=0;
     this.paginaPrevia=0;
@@ -1100,7 +1170,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     }        
     if (cantidadDeResultados > 0) {
       if(buscaArriba==true){
-        console.log("Unshift---------------")
+        //console.log("Unshift---------------")
         this.listaCategorias.unshift(...respuesta.lst_cat_negocios.data);
         this.negociosIdMapa(true)
         /*if (
@@ -1111,13 +1181,13 @@ export class InicioPage implements OnInit, AfterViewInit {
           this.listaCategorias[this.lengthLista].nombre = "";
         }*/
       }else{
-        console.log("Push---------------")
+        //console.log("Push---------------")
         this.actualPagina = respuesta.lst_cat_negocios.current_page;
         this.siguientePagina = this.actualPagina + 1;
         //this.siguienteGiro = this.actualGiro +1;
-        this.totalDePaginas = respuesta.lst_cat_negocios.total;
-        this.totalDePaginasPorConsulta = respuesta.lst_cat_negocios.to;
-        console.log("\ntotalNegocios: "+ JSON.stringify(this.totalDePaginas+"\nNegocios-PorConsulta: "+JSON.stringify(this.totalDePaginasPorConsulta))+"\nPagina actual: "+this.actualPagina+"\nSiguiente Pagina: "+this.siguientePagina)
+        this.totalDeNegocios = respuesta.lst_cat_negocios.total;
+        this.totalDeNegociosPorConsulta = respuesta.lst_cat_negocios.to;
+        console.log("\ntotalNegocios: "+ JSON.stringify(this.totalDeNegocios+"\nNegocios-PorConsulta: "+JSON.stringify(this.totalDeNegociosPorConsulta))+"\nPagina actual: "+this.actualPagina+"\nSiguiente Pagina: "+this.siguientePagina)
         this.categoriasEstaVacios = false;
         this.lengthLista = this.listaCategorias.length;
         
@@ -1151,7 +1221,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   cargarMasPaginasArriba(event: any) {
     this.paginaPrevia--
     console.log("mas paginas arriba, se carga la pagina: "+this.paginaPrevia)    
-    if (this.totalDePaginasPorConsulta > 20) {
+    if (this.totalDeNegociosPorConsulta > 20) {
       this.buscarNegociosArriba(false);
       setTimeout(() => {
         event.target.complete();

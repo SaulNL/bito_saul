@@ -136,28 +136,16 @@
     </ion-row><!-- [style]="cordenada <= 5 ? 'visibility: visible' : 'visibility: hidden;'" -->
     <div *ngIf="!loaderNegocios">
       <ion-grid *ngIf="listaCategorias.length !== 0">
-        <ion-row *ngFor="let cat of listaCategorias; index as i" class="ion-padding">
-          
-          <ion-text class="nombre-categoria w-100" *ngIf="!banderaVerMas">
+        <ion-row *ngFor="let cat of !banderaVerMas || listaVerMas.length === 0 ? listaCategorias : listaVerMas; index as i" class="ion-padding">
+          <ion-text class="nombre-categoria w-100">
             <h2>{{cat.nombre}}</h2>
           </ion-text>
-          <div style="display: flex;" *ngIf="banderaVerMas">
-            <ion-text class="nombre-categoria w-100">
-              <h2>{{cat.nombre}}</h2>
-            </ion-text>
-            <ion-buttons class="boton-regresar">
-              <ion-chip (click)="obtenerPrincipalInicio()" color="dark">
-                <ion-icon class="icono" name="chevron-back-outline"></ion-icon>
-                <ion-label class="text2">Regresar</ion-label>
-              </ion-chip>
-            </ion-buttons>
-          </div>
           <ion-col
             sizeLg="3"
             sizeXs="6"
             sizeSm="4"
             sizeMd="4"
-            *ngFor="let proveedor of !banderaVerMas ? cat.negocios : listaVerMas "
+            *ngFor="let proveedor of cat.negocios"
           >
             <ion-card class="m-0 fixed">
               <div (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)">
@@ -233,18 +221,29 @@
               
             </ion-card>
           </ion-col>
-          <!--ion-button color="light" size="small" (click)="obtenerPrincipalInicio(cat.nombre)" 
-            *ngIf="!banderaVerMas && !filtroActivo && !idTodo && !selectionAP && !buscador">
-            <span class="texto-ver-mas">Ver todos los negocios {{cat.nombre}} </span>
-            <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
-          </ion-button-->
-          <ion-chip class="verTodos" color="dark" (click)="obtenerPrincipalInicio(cat.nombre)"
-            *ngIf="!banderaVerMas && !filtroActivo && !idTodo && !selectionAP && !buscador">
+          <!-- Este iba ha buscar los negocios dependiendo la categoria -->
+          <!-- <ion-chip class="verTodos" color="dark" (click)="obtenerPrincipalInicio(cat.nombre)"
+            *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador">
             <span class="texto-ver-mas">Ver todos los negocios {{cat.nombre}}</span>
             <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
-          </ion-chip>
+          </ion-chip> -->
+          <div *ngIf="banderaMasNegocios">
+            <ion-chip class="verTodos" color="dark" (click)="cargarMasNegociosInicio(cat.nombre)"
+              *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador">
+              <span class="texto-ver-mas">Ver más negocios {{cat.nombre}}</span>
+              <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+            </ion-chip>
+          </div>
+          <div *ngIf="banderaVerMenos">
+            <ion-chip class="verTodos" color="dark" (click)="cargarMenosNegociosInicio(cat.nombre)"
+              *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador ">
+              <span class="texto-ver-mas">Ver menos negocios {{cat.nombre}}</span>
+              <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+            </ion-chip>
+          </div>
         </ion-row>
-      </ion-grid>      
+      </ion-grid>
+
       <div [ngClass]="showPopUp? 'bottom_info_distintivo_up' : 'bottom_info_distintivo'">              
         <div class="contenedor_popup">      
           <div class="icon_close">
@@ -273,9 +272,13 @@
       </ion-text>
     </ion-grid>
     <ion-grid *ngIf="!loader">
-      <ion-row class="ion-padding">
+      <!-- <span>actual page = {{actualPagina}}</span>
+      <span>total Paginas = {{totalPaginas}}</span>
+      <span>total negocios = {{totalDeNegocios}}</span> -->
+      <ion-row *ngIf="(actualPagina < totalPaginas) && totalDeNegocios>20" class="ion-padding">
+        
         <ion-col size="12">
-          <div *ngIf="!banderaVerMas" class="ver-mas">
+          <div class="ver-mas">
             <ion-button (click)="cargarMasPaginas()" expand="block" fill="outline" 
             color="medium" size="small" shape="round">
               <span *ngIf="!loaderVerMas">Ver mas negocios</span>
@@ -297,14 +300,15 @@
       ></app-infinito-scroll>
     </div> -->
 
-    <div *ngIf="banderaVerMas">
+    <!-- Se ocupaba cuando redirigia a ver mas negociosX -->
+    <!-- <div *ngIf="banderaVerMas"> 
       <ion-infinite-scroll threshold="50px" (ionInfinite)="cargarMasNegocios($event)">
         <ion-infinite-scroll-content
           loadingSpinner="bubbles"
           [loadingText]="mensaje">
         </ion-infinite-scroll-content>
       </ion-infinite-scroll>
-    </div>
+    </div> -->
   </div>
   <app-banner-anuncios
   
