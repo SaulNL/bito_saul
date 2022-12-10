@@ -1101,15 +1101,16 @@ export class InicioPage implements OnInit, AfterViewInit {
     localStorage.setItem("filtroactual", d1);
 
     var pagRandom =await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, this.siguienteGiro);
+    this.totalDeNegocios=pagRandom.data.lst_cat_negocios.total
     var rand= await this.random(1,Math.ceil((pagRandom.data.lst_cat_negocios.total/20)))
     console.log("Pagina random : "+rand)
-    this.totalPaginas = this.totalPaginas=Math.ceil((this.totalDeNegocios/20));
+    this.totalPaginas = Math.ceil((this.totalDeNegocios/20));
     this.primeraPagRandom=rand;    
     this.paginaPivote=rand;
     this.paginaPrevia=this.paginaPivote
     var respuesta = await this.principalSercicio
         .obtenerNegocioPorCategoria(this.Filtros, rand)// rand this.siguienteGiro);
-    console.log("\nNegocios totales: "+respuesta.data.lst_cat_negocios.total+"\n"+"Negocios obtenidos: "+respuesta.data.lst_cat_negocios.to+"\n"+" Pagina aleatoria que se muestra: "+respuesta.data.lst_cat_negocios.current_page)
+    console.log("\nNegocios totales: "+respuesta.data.lst_cat_negocios.total+"\n"+"Negocios obtenidos: "+respuesta.data.lst_cat_negocios.to+"\n"+"Pagina aleatoria que se muestra: "+respuesta.data.lst_cat_negocios.current_page+" de: "+this.totalPaginas)
         this.listaCategorias=[];
       if(respuesta.data.lst_cat_negocios.total>0){
         this.validarResultadosDeCategoriaSeleccionada(respuesta.data,false);//this.validarResultadosDeCategoriaSeleccionada(respuesta.data) this.validarResultadosDeCategorias(respuesta);
@@ -1162,8 +1163,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
   async validarResultadosDeCategoriaSeleccionada(respuesta: any, buscaArriba:boolean) {    
     const cantidadDeResultados = respuesta.lst_cat_negocios.data.length;
-    console.log("validarResultadosDeCategoriaSeleccionada############## \ncon boolean de buscar arriba = "+buscaArriba+
-    "\nY cantidad de resultados = "+cantidadDeResultados)
+    console.log("\n"+"validarResultadosDeCategoriaSeleccionada##############")
     if(cantidadDeResultados < 0){
       this.listaCategorias = [];
       this.selectionAP = true;
@@ -1187,7 +1187,7 @@ export class InicioPage implements OnInit, AfterViewInit {
         //this.siguienteGiro = this.actualGiro +1;
         this.totalDeNegocios = respuesta.lst_cat_negocios.total;
         this.totalDeNegociosPorConsulta = respuesta.lst_cat_negocios.to;
-        console.log("\ntotalNegocios: "+ JSON.stringify(this.totalDeNegocios+"\nNegocios-PorConsulta: "+JSON.stringify(this.totalDeNegociosPorConsulta))+"\nPagina actual: "+this.actualPagina+"\nSiguiente Pagina: "+this.siguientePagina)
+        //console.log("\ntotalNegocios: "+ JSON.stringify(this.totalDeNegocios+"\n"+"Negocios-PorConsulta: "+JSON.stringify(this.totalDeNegociosPorConsulta))+"\nPagina actual: "+this.actualPagina+"\nSiguiente Pagina: "+this.siguientePagina)
         this.categoriasEstaVacios = false;
         this.lengthLista = this.listaCategorias.length;
         
@@ -1292,8 +1292,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       var respuesta = await this.principalSercicio
         .obtenerNegocioPorCategoria(this.Filtros, this.paginaPrevia)   
         
-        console.log("Pagina previa obtenida: "+ respuesta.data.lst_cat_negocios.current_page+"\nSiguiente pagina previa"+
-        respuesta.data.lst_cat_negocios.current_page)
+        //console.log("Pagina previa obtenida: "+ respuesta.data.lst_cat_negocios.current_page+"\nSiguiente pagina previa"+respuesta.data.lst_cat_negocios.current_page)
 
       this.validarResultadosDeCategoriaSeleccionada(respuesta.data,true);
       const byCategorias2 = localStorage.getItem("filtroactual");
