@@ -865,6 +865,9 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.buscarNegocios(true);
   }
   borrarFiltrosP() {
+    this.loader = true;
+    this.loaderInicio = true;
+    this.mostrarloaderInicio = true;
     localStorage.removeItem("filtroactual");
     localStorage.removeItem("byCategorias");
     localStorage.removeItem("filtroActivo");
@@ -883,6 +886,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.selectionAP = null;
     }
     this.buscarNegocios(true);
+    this.obtenerPrincipalInicio();
   }
   
   negocioRuta(negocioURL, proveedor) {
@@ -1134,6 +1138,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     localStorage.removeItem("idGiro");
     localStorage.setItem("activarTodos", "true");
     this.idTodo=true;
+    this.loader = true;
     this.idGiro =null;
     this.filtroActivo=false; 
     this.Filtros = new FiltrosModel();

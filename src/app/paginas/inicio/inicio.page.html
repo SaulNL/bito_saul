@@ -58,9 +58,9 @@
               <small>Mapa</small>
             </ion-button>
 
-            <ion-chip *ngIf="filtroActivo" (click)="borrarFiltrosP()" color="danger">
-              <ion-icon class="icono" name="trash-outline" color="danger"></ion-icon>
-              <ion-label><span class="text">Borrar Filtros</span></ion-label>
+            <ion-chip *ngIf="filtroActivo || idTodo === true" (click)="borrarFiltrosP()" color="danger">
+              <ion-icon class="icono" name="log-out-outline"></ion-icon>
+              <ion-label><span class="text">Regresar a Bitoo</span></ion-label>
             </ion-chip>
 
             <ion-chip *ngIf="!filtroActivo" class="text2" color="dark" (click)="abrirFiltros()"
