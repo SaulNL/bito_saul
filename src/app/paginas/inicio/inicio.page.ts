@@ -99,6 +99,10 @@ export class InicioPage implements OnInit, AfterViewInit {
   public banderaInicio: boolean;
   public banderaVerMenos: boolean;
   public banderaMasNegocios: boolean;
+  public banderaMasPr: boolean;
+  public banderaMenosPr:boolean;
+  public banderaMasVistos:boolean;
+  public banderaMenosVistos:boolean;
   public idNegocio: number;
   public mapa: boolean;
   public indice: number;
@@ -968,10 +972,10 @@ export class InicioPage implements OnInit, AfterViewInit {
                 this.banderaMasNegocios = true;
               } 
               if(this.listaVerMas[1].negocios.length <= 10){
-                this.banderaMasNegocios = false;
+                this.banderaMasPr = true;
               }     
               if(this.listaVerMas[2].negocios.length <= 10){
-                this.banderaMasNegocios = true;
+                this.banderaMasVistos = true;
               }
               setTimeout(() => {
                 this.loader = false;
@@ -996,12 +1000,9 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.listaCompleta = this.listaCategorias[this.indice];
     let len = this.listaVerMas[this.indice].negocios.length
     let lenCat = this.listaCategorias[this.indice].negocios.length;
-    let dif = this.listaCategorias[this.indice].negocios.length-this.listaVerMas[this.indice].negocios.length;
 
     if(len <  lenCat)
     {
-      console.log(len);
-      console.log(dif);
 
       for (let i = len; i <= len + 3 ; i++) 
       { 
@@ -1011,37 +1012,57 @@ export class InicioPage implements OnInit, AfterViewInit {
           //console.log(nuevosDatos);
         }
       }
+    }
 
-      if(dif <= 1)
+    let dif = this.listaCategorias[this.indice].negocios.length-this.listaVerMas[this.indice].negocios.length;
+
+    if(dif < 1)
+    {
+      if(this.listaVerMas[0].negocios.length > 10)
       {
-          if(this.listaVerMas[this.indice].negocios.length > 10)
-          {
-            this.banderaVerMenos = true; 
-            this.banderaMasNegocios = false;
-          }
+        this.banderaVerMenos = true; 
+        this.banderaMasNegocios = false;
       }
-
+      if(this.listaVerMas[1].negocios.length > 10)
+      {
+        this.banderaMenosPr = true; 
+        this.banderaMasPr = false;
+      }
+      if(this.listaVerMas[2].negocios.length > 10)
+      {
+        this.banderaMenosVistos = true; 
+        this.banderaMasVistos = false;
+      }
     }
   }
 
   cargarMenosNegociosInicio(nombre)
   {
-    console.log("entro");
     this.indice = nombre === 'Con promociones' ? this.indice = 1 :  nombre ===  'Con convenio' ? this.indice = 0 : this.indice = 2;
     this.listaVerMas[this.indice].negocios.splice(10,this.listaCategorias[this.indice].negocios.length);
-    console.log(this.listaCategorias);
-    console.log(this.listaVerMas);
-    if(this.listaVerMas[this.indice].negocios.length <= 10){
-      console.log("entro if");
+    
+    if(this.listaVerMas[0].negocios.length <= 10){
       this.banderaMasNegocios = true;
       this.banderaVerMenos = false;
     } else{
       this.banderaVerMenos = true;
       this.banderaMasNegocios = false;
     }
-  
-    if(this.indice == 0){
-      this.scrollToTop();
+
+    if(this.listaVerMas[1].negocios.length <= 10){
+      this.banderaMasPr = true;
+      this.banderaMenosPr = false;
+    } else{
+      this.banderaMenosPr = true;
+      this.banderaMasPr = false;
+    }
+
+    if(this.listaVerMas[2].negocios.length <= 10){
+      this.banderaMasVistos = true;
+      this.banderaMenosVistos = false;
+    } else{
+      this.banderaMenosVistos = true;
+      this.banderaMasVistos = false;
     }
   }
 
