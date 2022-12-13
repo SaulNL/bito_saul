@@ -20,7 +20,7 @@ export class MapaNegociosComponent implements OnInit {
   @Input() public banderaInicio: boolean;
   @Input() public latitud: any;
   @Input() public longitud: any;
-  @Input() public funcionNegocios: any;
+  //@Input() public funcionNegocios: any;
 
   public lstNegocios: Array<any>;
   url = `${AppSettings.URL}`;
@@ -101,7 +101,6 @@ export class MapaNegociosComponent implements OnInit {
   }
  cerrarModal(){
   this.modalController.dismiss();
-  this.funcionNegocios;
-  //location.reload();
+  //this.funcionNegocios;
  }
 }

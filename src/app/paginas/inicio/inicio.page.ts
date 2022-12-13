@@ -104,7 +104,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   public banderaMasVistos:boolean;
   public banderaMenosVistos:boolean;
   public idNegocio: number;
-  public mapa: boolean;
   public indice: number;
   mostrarloaderInicio: boolean;
   loaderInicio: boolean;
@@ -689,11 +688,10 @@ export class InicioPage implements OnInit, AfterViewInit {
       const org = localStorage.getItem("org");
       const categorias = localStorage.getItem("byCategorias");
       //console.log(this.mapa);
-      //Agregue la condición this.mapa para evitar que cargue el inicio antes de entrar
-      if(org === null && categorias === null && this.idGiro === null &&  localStorage.getItem("todo") ===null && !this.mapa  ){
+      if(org === null && categorias === null && this.idGiro === null &&  localStorage.getItem("todo") ===null){
         this.loader = false;
         this.selectionAP = null;
-        this.obtenerPrincipalInicio();
+        this.obtenerPrincipalInicio(); //Abre el inicio cuando se abre la app por primera vez
       }
       //await this.cargarCategorias();
       
@@ -780,7 +778,6 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   async abrirModalMapa() {
    this.listaIdsMapa = [];
-   this.mapa = true;
    await this.buscarNegocios(true);
    await this.cargarCargarNegociosMapas()
 
@@ -791,7 +788,7 @@ export class InicioPage implements OnInit, AfterViewInit {
         latitud: this.latitud,
         longitud: this.longitud,
         banderaInicio: this.banderaInicio,
-        funcionNegocios: this.obtenerPrincipalInicio()
+        //funcionNegocios: this.obtenerPrincipalInicio()
       },
     });  
     await modal.present();
@@ -847,7 +844,6 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.listaIdsMapa.push(listaIds[0][index].id_negocio);
     }
     this.loader = false;
-    this.mapa = false; 
   }
 
   public regresarBitoo() {
