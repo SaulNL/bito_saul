@@ -72,7 +72,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   public actualPagina = 0;
   public actualGiro=0;
   public totalDeNegocios = 0;
-  public seHaceScroll = false;
+  public loaderTop: boolean=false
   public siguientePagina = this.actualPagina + 1;
   public siguienteGiro = this.actualGiro +1;
   public mensaje = InicioPage.MENSAJE_CUANDO_CARGA;
@@ -122,6 +122,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   insigniaDescrip: string;
   loaderVerMas = false;
   favoritos: any[] = [];
+  buttonDisabled: boolean;
 
   constructor(
     public loadingController: LoadingController,
@@ -234,7 +235,8 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-
+    this.isLoading=false
+    this.loaderTop=false    
     this.user = this.util.getUserData();
     this.load();
     this.route.queryParams.subscribe((params) => {
@@ -300,20 +302,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
   ngAfterViewInit() {
     this.banderaVerMas = false;
-    //this.loaderSuperior=document.getElementById('cargaArriba');
-    this.content.ionScroll.subscribe(($event) =>{
-      this.scrollAmount = $event.detail.scrollTop
-      if(this.scrollAmount<10){
-        console.log("Consulta termiinada? "+this.consultaTerminada)
-      }
-      if(this.scrollAmount<10 && this.consultaTerminada==true && this.paginaPrevia>0){
-        this.consultaTerminada=false;
-        this.isLoading=true;
-        this.cargarMasPaginasArriba($event)
-      }else{
-        this.isLoading=false;
-      }
-    })
+
   }
 
   private load() {
@@ -431,7 +420,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.banderaVerMas == false;
       if (this.actualPagina > 1 || this.actualGiro >1) {
         this.listaCategorias.push(...respuesta.data.lst_cat_negocios.data);
-        this.negociosIdMapa(false);
+        this.negociosIdMapa();
         this.banderaVerMas == false;
         if (
           this.listaCategorias[this.lengthLista - 1].nombre ==
@@ -446,7 +435,7 @@ export class InicioPage implements OnInit, AfterViewInit {
         /*let aux = this.ordenarRandom(respuesta.data.lst_cat_negocios.data) //id_categoria_negocio    
         this.listaCategorias = aux;*/
         this.listaCategorias = respuesta.data.lst_cat_negocios.data
-        this.negociosIdMapa(false);
+        this.negociosIdMapa();
       }
     } else {
       throw throwError("");
@@ -794,25 +783,27 @@ export class InicioPage implements OnInit, AfterViewInit {
     await modal.present();
   }
 
-  public negociosIdMapa(requiereScroll:boolean) {
+  public negociosIdMapa() {
     this.banderaVerMas == false;
     let listaIds = [];
     this.listaCategorias.map((l) => {
       l.negocios.map((n) => {
         listaIds.push(n);
       });
-    });
-    if(requiereScroll){      
-      this.content.scrollToPoint(0,20)
-      this.consultaTerminada=true;
-      console.log("Consulta termiinada en map? "+this.consultaTerminada)
+    }); 
+    this.listaVerMas = []; 
+    this.banderaVerMas == false;
+    this.consultaTerminada=true;
+    //console.log("Consulta termiinada en map? "+this.consultaTerminada)
+    if(this.paginaPrevia<=1 || this.paginaPrevia==undefined){
+      this.loaderTop=false
+      //console.log("loadertop <=1 pagprev= "+this.paginaPrevia)
     }else{
-      this.listaVerMas = []; 
-      this.banderaVerMas == false;
-      this.consultaTerminada=true;
-      console.log("Consulta termiinada en map? "+this.consultaTerminada)
+      this.loaderTop=true
+      //console.log("loadertop > 1 pagprev= "+this.paginaPrevia)
     }
-    
+    this.buttonDisabled=false;
+
   }
 
   public obtenerNegocios(listaCategoriasAll: ICategoriaNegocio[]) {
@@ -1194,7 +1185,8 @@ export class InicioPage implements OnInit, AfterViewInit {
       if(buscaArriba==true){
         //console.log("Unshift---------------")
         this.listaCategorias.unshift(...respuesta.lst_cat_negocios.data);
-        this.negociosIdMapa(true)
+        this.negociosIdMapa()
+        this.isLoading=false;        
         /*if (
           this.listaCategorias[this.lengthLista - 1].nombre ==
           this.listaCategorias[this.lengthLista].nombre ||
@@ -1215,7 +1207,7 @@ export class InicioPage implements OnInit, AfterViewInit {
         
         if (this.actualPagina >= this.primeraPagRandom || this.actualGiro >1) {
           this.listaCategorias.push(...respuesta.lst_cat_negocios.data);
-          this.negociosIdMapa(false);
+          this.negociosIdMapa();
           /*var lenLista=this.lengthLista
           console.log("se buca NOMBRE EN validarResultadosDeCategoriaSeleccionada\n"+lenLista+"\n"+          
           JSON.stringify(this.listaCategorias[(lenLista-1)])+"\n"+
@@ -1233,24 +1225,21 @@ export class InicioPage implements OnInit, AfterViewInit {
         }else {
           console.log(JSON.stringify(respuesta.lst_cat_negocios.data))
           this.listaCategorias = respuesta.lst_cat_negocios.data
-          this.negociosIdMapa(false);
+          this.negociosIdMapa();
         }
       }      
     } else {
       throw throwError("");
     }
   }
-  cargarMasPaginasArriba(event: any) {
-    this.paginaPrevia--
+  cargarMasPaginasArriba() {//Bloquear boton
+    this.isLoading=true;    
+    this.paginaPrevia--    
+    this.buttonDisabled=true;    
     console.log("mas paginas arriba, se carga la pagina: "+this.paginaPrevia)    
     if (this.totalDeNegociosPorConsulta > 20) {
-      this.buscarNegociosArriba(false);
-      setTimeout(() => {
-        event.target.complete();
-      }, 800); // 800 es el tiempo que se tarda por cargar, sin tener un lag por las 20 paginas que se consultan
-    } else {
-      event.target.disabled = true;
-    }
+      this.buscarNegociosArriba(false);     
+    } 
   }
   public async buscarNegociosArriba(seMuestraElLoader: boolean) {
     console.log("buscarNegociosArriba#####################")
