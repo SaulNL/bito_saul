@@ -13,8 +13,14 @@
 }
 
 .nomCard {
-  font-size: 14px;
+  font-size: 13px;
+  margin-bottom: 8px;
 }
+
+.nomCard > ion-card-subtitle {
+  font-size: 11px;
+}
+
 input[type="radio"] {
   display: none;
 }
