@@ -799,6 +799,10 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.loaderTop=false
       //console.log("loadertop <=1 pagprev= "+this.paginaPrevia)
     }else{
+      this.listaVerMas = []; 
+      this.banderaVerMas == false;
+      this.consultaTerminada=true;
+      console.log("Consulta termiinada en map? "+this.consultaTerminada)
       this.loaderTop=true
       //console.log("loadertop > 1 pagprev= "+this.paginaPrevia)
     }
