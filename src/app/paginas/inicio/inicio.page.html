@@ -129,11 +129,25 @@
     <ion-refresher *ngIf="!isIOS" slot="fixed" (ionRefresh)="recargar($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <ion-row *ngIf="paginaPrevia>0" style="justify-content: center;" (click)="cargarMasPaginasArriba($event)"
+    <!--ion-row *ngIf="paginaPrevia>0" style="justify-content: center;" (click)="cargarMasPaginasArriba($event)"
     [ngClass]="isLoading==true? 'loaderArribaShow' : 'loaderArribaHide'">
       <ion-spinner #cargaArriba id="cargaArriba" name="bubbles"></ion-spinner>
       <p>Cargando negocios</p>
-    </ion-row><!-- [style]="cordenada <= 5 ? 'visibility: visible' : 'visibility: hidden;'" -->
+    </ion-row-->    
+    <ion-row *ngIf="loaderTop" [ngClass]="loaderTop? 'loaderArribaShow' : 'loaderArribaHide'">
+      <ion-col size="12">
+        <div class="ver-mas">
+          <ion-button (click)="cargarMasPaginasArriba()" expand="block" fill="outline" 
+          color="medium" size="small" shape="round" disabled={{buttonDisabled}}>
+            <span *ngIf="!isLoading">Ver mas negocios</span>
+            <div *ngIf="isLoading" class="spinner">
+              <ion-spinner color="medium" name="lines-small"></ion-spinner>
+              <span>Cargando</span>
+            </div>
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>    
     <div *ngIf="!loaderNegocios">
       <ion-grid *ngIf="listaCategorias.length !== 0">
         <ion-row *ngFor="let cat of !banderaVerMas || listaVerMas.length === 0 ? listaCategorias : listaVerMas; index as i" class="ion-padding">
@@ -227,19 +241,53 @@
             <span class="texto-ver-mas">Ver todos los negocios {{cat.nombre}}</span>
             <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
           </ion-chip> -->
-          <div *ngIf="banderaMasNegocios">
-            <ion-chip class="verTodos" color="dark" (click)="cargarMasNegociosInicio(cat.nombre)"
-              *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador">
-              <span class="texto-ver-mas">Ver más negocios {{cat.nombre}}</span>
-              <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
-            </ion-chip>
+          <div *ngIf="i==0"> <!--botones con convenio -->
+            <div *ngIf="banderaMasNegocios">
+              <ion-chip class="verTodos" color="dark" (click)="cargarMasNegociosInicio(cat.nombre)"
+                *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador">
+                <span class="texto-ver-mas">Ver más negocios</span>
+                <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+              </ion-chip>
+            </div>
+            <div *ngIf="banderaVerMenos">
+              <ion-chip class="verTodos" color="dark" (click)="cargarMenosNegociosInicio(cat.nombre)"
+                *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador ">
+                <span class="texto-ver-mas">Ver menos negocios</span>
+                <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+              </ion-chip>
+            </div>
           </div>
-          <div *ngIf="banderaVerMenos">
-            <ion-chip class="verTodos" color="dark" (click)="cargarMenosNegociosInicio(cat.nombre)"
-              *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador ">
-              <span class="texto-ver-mas">Ver menos negocios {{cat.nombre}}</span>
-              <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
-            </ion-chip>
+          <div *ngIf="i==1"> <!-- botones con promociones -->
+            <div *ngIf="banderaMasPr">
+              <ion-chip class="verTodos" color="dark" (click)="cargarMasNegociosInicio(cat.nombre)"
+                *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador">
+                <span class="texto-ver-mas">Ver más negocios</span>
+                <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+              </ion-chip>
+            </div>
+            <div *ngIf="banderaMenosPr">
+              <ion-chip class="verTodos" color="dark" (click)="cargarMenosNegociosInicio(cat.nombre)"
+                *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador ">
+                <span class="texto-ver-mas">Ver menos negocios</span>
+                <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+              </ion-chip>
+            </div>
+          </div>
+          <div *ngIf="i==2"> <!--botones más vistos -->
+            <div *ngIf="banderaMasVistos">
+              <ion-chip class="verTodos" color="dark" (click)="cargarMasNegociosInicio(cat.nombre)"
+                *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador">
+                <span class="texto-ver-mas">Ver más negocios</span>
+                <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+              </ion-chip>
+            </div>
+            <div *ngIf="banderaMenosVistos">
+              <ion-chip class="verTodos" color="dark" (click)="cargarMenosNegociosInicio(cat.nombre)"
+                *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador ">
+                <span class="texto-ver-mas">Ver menos negocios</span>
+                <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+              </ion-chip>
+            </div>
           </div>
         </ion-row>
       </ion-grid>
