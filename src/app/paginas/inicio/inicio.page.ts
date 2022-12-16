@@ -97,12 +97,9 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   public banderaUbicacion: boolean;
   public banderaInicio: boolean;
-  public banderaVerMenos: boolean;
-  public banderaMasNegocios: boolean;
-  public banderaMasPr: boolean;
-  public banderaMenosPr:boolean;
-  public banderaMasVistos:boolean;
-  public banderaMenosVistos:boolean;
+  public verMasNegociosCon= false;
+  public verMasNegociosPromo= false;
+  public verMasNegociosVistos= false;
   public idNegocio: number;
   public indice: number;
   mostrarloaderInicio: boolean;
@@ -174,9 +171,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
     this.listaCategorias = new Array<ICategoriaNegocio>();
     this.listaIdsMapa = [];
-    this.banderaInicio = false;
-    this.banderaVerMenos = false;
-    this.banderaMasNegocios = false;
+    this.banderaInicio = false;   
     this.user = this.util.getUserData();
     this.existeSesion = this.util.existe_sesion();
     //aqui para cargar
@@ -960,13 +955,13 @@ export class InicioPage implements OnInit, AfterViewInit {
               this.banderaVerMas = true;
               this.listaVerMas = [{'nombre': 'Con convenio','negocios' : uno},{'nombre': 'Con promociones','negocios': dos},{'nombre': 'Más Vistos','negocios':tres}];
               if(this.listaVerMas[0].negocios.length <= 10){
-                this.banderaMasNegocios = true;
+                this.verMasNegociosCon = false;
               } 
               if(this.listaVerMas[1].negocios.length <= 10){
-                this.banderaMasPr = true;
+                this.verMasNegociosPromo = false;
               }     
               if(this.listaVerMas[2].negocios.length <= 10){
-                this.banderaMasVistos = true;
+                this.verMasNegociosVistos = false;
               }
               setTimeout(() => {
                 this.loader = false;
@@ -1007,23 +1002,13 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     let dif = this.listaCategorias[this.indice].negocios.length-this.listaVerMas[this.indice].negocios.length;
 
-    if(dif < 1)
+    if(dif < 4)
     {
-      if(this.listaVerMas[0].negocios.length > 10)
-      {
-        this.banderaVerMenos = true; 
-        this.banderaMasNegocios = false;
+
+      if(this.listaVerMas[this.indice].negocios.length > 10) {
+        this.indice == 0 ? this.verMasNegociosCon = true : this.indice == 1 ? this.verMasNegociosPromo = true : this.verMasNegociosVistos = true;
       }
-      if(this.listaVerMas[1].negocios.length > 10)
-      {
-        this.banderaMenosPr = true; 
-        this.banderaMasPr = false;
-      }
-      if(this.listaVerMas[2].negocios.length > 10)
-      {
-        this.banderaMenosVistos = true; 
-        this.banderaMasVistos = false;
-      }
+     
     }
   }
 
@@ -1032,28 +1017,10 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.indice = nombre === 'Con promociones' ? this.indice = 1 :  nombre ===  'Con convenio' ? this.indice = 0 : this.indice = 2;
     this.listaVerMas[this.indice].negocios.splice(10,this.listaCategorias[this.indice].negocios.length);
     
-    if(this.listaVerMas[0].negocios.length <= 10){
-      this.banderaMasNegocios = true;
-      this.banderaVerMenos = false;
+    if(this.listaVerMas[this.indice].negocios.length <= 10){
+      this.indice == 0 ? this.verMasNegociosCon = false : this.indice == 1 ? this.verMasNegociosPromo = false : this.verMasNegociosVistos = false;
     } else{
-      this.banderaVerMenos = true;
-      this.banderaMasNegocios = false;
-    }
-
-    if(this.listaVerMas[1].negocios.length <= 10){
-      this.banderaMasPr = true;
-      this.banderaMenosPr = false;
-    } else{
-      this.banderaMenosPr = true;
-      this.banderaMasPr = false;
-    }
-
-    if(this.listaVerMas[2].negocios.length <= 10){
-      this.banderaMasVistos = true;
-      this.banderaMenosVistos = false;
-    } else{
-      this.banderaMenosVistos = true;
-      this.banderaMasVistos = false;
+      this.indice == 0 ? this.verMasNegociosCon = true : this.indice == 1 ? this.verMasNegociosPromo = true : this.verMasNegociosVistos = true;
     }
   }
 
