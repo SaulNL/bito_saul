@@ -1293,11 +1293,11 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.notificaciones.error("No hay conexión a internet, conectate a una red");
     }
   }
-  clickDistintivo(tag:string, object:any){
-    console.log("Clickeo sobre la insignia de: "+ tag+" con la descripcion: "+JSON.stringify(object))
+  clickDistintivo(tag:string, object:string){
+    console.log("Clickeo sobre la insignia de: "+ tag+" con la descripcion: "+object)
     this.showPopUp=true;
     this.insigniaTitle=tag
-    this.insigniaDescrip=tag
+    this.insigniaDescrip=object
   }
   closePopUp(){
     console.log("Cerró el popup")

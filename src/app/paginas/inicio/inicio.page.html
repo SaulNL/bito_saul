@@ -190,8 +190,8 @@
                   </div>
                   <div class="distintivos">
                     <img *ngIf="proveedor.verificado === 1" class="distintivoIcon" src="assets/icon/certificado_icon.svg" matTooltip="Este negocio está verificado por Bitoo">
-                    <div class="distintivo" *ngFor="let distintivo of proveedor.distintivos.slice(0, proveedor.verificado === 1 ? 3 : 4);">
-                      <img class="distintivoIcon" (click)="clickDistintivo(proveedor.distintivos.nombre, proveedor.distintivos)" [src]="distintivo.icon">  
+                    <div class="distintivo" *ngFor="let distintivo of proveedor.distintivos.slice(0, proveedor.verificado === 1 ? 3 : 4); index as i">
+                      <img class="distintivoIcon" (click)="clickDistintivo(distintivo.nombre, distintivo.descripcion)" [src]="distintivo.icon">  
                     </div>
                   </div>
                 </div>
