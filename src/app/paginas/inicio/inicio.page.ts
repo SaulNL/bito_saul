@@ -595,7 +595,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       }
       //this.loader = false;
     } catch (error) {
-      this.loader = false;
+      //this.loader = false;
       //this.notificaciones.error("No hay conexión a internet, conectate a una red");
     }
 
@@ -776,6 +776,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       },
     });  
     await modal.present();
+    this.loader = false;
   }
 
   public negociosIdMapa() {
