@@ -152,11 +152,11 @@
       <div *ngIf="listaCategorias.length !== 0">
         <div *ngFor="let cat of !banderaVerMas || listaVerMas.length === 0 ? listaCategorias : listaVerMas; index as i">
           <div class="container-1">
-            <h2 >{{cat.nombre}}</h2>
+            <h2>{{cat.nombre}}</h2>
             <br>
           </div>
           <div class="container-2">
-              <div class="card" *ngFor="let proveedor of cat.negocios">
+              <ion-card *ngFor="let proveedor of cat.negocios">
                 <div>
                   <img *ngIf="proveedor.tienepromociones == 1" 
                   (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)" style="position: absolute; width: 170px; cursor: pointer;" 
@@ -186,7 +186,7 @@
                     </app-dar-like-negocio>                        
                   </div>
                   <div>
-                    <strong> {{proveedor.nombre_corto != "" ? proveedor.nombre_corto : proveedor.nombre_comercial}}</strong>
+                    <ion-card-title> {{proveedor.nombre_corto != "" ? proveedor.nombre_corto : proveedor.nombre_comercial}}</ion-card-title>
                   </div>
                   <div class="distintivos">
                     <img *ngIf="proveedor.verificado === 1" class="distintivoIcon" src="assets/icon/certificado_icon.svg" matTooltip="Este negocio está verificado por Bitoo">
@@ -195,30 +195,28 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </ion-card>
           </div>
           <div class="container-3">
-            <ion-chip *ngIf="i==0 && !filtroActivo && !idTodo && !selectionAP && !buscador" type="button" 
-            (click)="verMasNegociosCon ? cargarMenosNegociosInicio(cat.nombre) : cargarMasNegociosInicio(cat.nombre)" class="btn btn-block boton-ver-mas">
+            <ion-button shape="round" expand="full" size="small" *ngIf="i==0 && !filtroActivo && !idTodo && !selectionAP && !buscador" 
+            (click)="verMasNegociosCon ? cargarMenosNegociosInicio(cat.nombre) : cargarMasNegociosInicio(cat.nombre)" class="boton-ver-mas">
               <span class="texto-ver-mas" *ngIf="!verMasNegociosCon">Ver más negocios </span>
               <span class="texto-ver-mas" *ngIf="verMasNegociosCon">Ver menos negocios</span>
               <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
-
-            </ion-chip>
+            </ion-button>
   
-            <ion-chip *ngIf="i==1 && !filtroActivo && !idTodo && !selectionAP && !buscador" type="button" 
-            (click)="verMasNegociosPromo ? cargarMenosNegociosInicio(cat.nombre) : cargarMasNegociosInicio(cat.nombre)" class="btn btn-block boton-ver-mas">
+            <ion-button shape="round" expand="full" size="small" *ngIf="i==1 && !filtroActivo && !idTodo && !selectionAP && !buscador" 
+            (click)="verMasNegociosPromo ? cargarMenosNegociosInicio(cat.nombre) : cargarMasNegociosInicio(cat.nombre)" class="boton-ver-mas">
               <span class="texto-ver-mas" *ngIf="!verMasNegociosPromo">Ver más negocios </span>
               <span class="texto-ver-mas" *ngIf="verMasNegociosPromo">Ver menos negocios</span>
               <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
-
-            </ion-chip>
-            <ion-chip *ngIf="i==2 && !filtroActivo && !idTodo && !selectionAP && !buscador" type="button" 
-            (click)="verMasNegociosVistos ? cargarMenosNegociosInicio(cat.nombre) : cargarMasNegociosInicio(cat.nombre)" class="btn btn-block boton-ver-mas">
+            </ion-button>
+            <ion-button shape="round" expand="full" size="small" *ngIf="i==2 && !filtroActivo && !idTodo && !selectionAP && !buscador" 
+            (click)="verMasNegociosVistos ? cargarMenosNegociosInicio(cat.nombre) : cargarMasNegociosInicio(cat.nombre)" class="boton-ver-mas">
               <span class="texto-ver-mas" *ngIf="!verMasNegociosVistos">Ver más negocios </span>
               <span class="texto-ver-mas" *ngIf="verMasNegociosVistos">Ver menos negocios</span>
               <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
-            </ion-chip>
+            </ion-button>
           </div>
         </div>
       </div>
