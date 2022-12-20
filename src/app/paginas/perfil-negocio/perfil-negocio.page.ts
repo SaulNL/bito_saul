@@ -311,21 +311,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     localStorage.removeItem("negocios");
   }
 
-  ngAfterViewInit(): void {
-    var intentos =0;
-    var inter = setInterval(( ) =>{            
-        if(this.mapContainer!=null || this.mapContainer!= undefined){
-          this.loadMap();
-          clearInterval(inter);
-        }    
-        else{
-          intentos++
-          if(intentos>5){
-            clearInterval(inter);
-          }
-        }      
-    }, 1000);    
-  }
+  ngAfterViewInit(): void {}
+
   async loadMap() {
     setTimeout((it) => {
       const lat = this.latitudNeg;
@@ -377,7 +364,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
   obtenerInformacionNegocio() {
     this.loader = true;
-
     this.negocioService
       .obteneretalleNegocio(this.negocio, this.user.id_persona)
       .subscribe(
@@ -440,7 +426,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   
   async buscarDetalleNegocio(filtro:any, pagina:any){
     
-    
     await this.BusquedaService.getDatosNegocioSinMapearCategoría(filtro,pagina).subscribe(
       response => {
         let negocioTO = response.data;  
@@ -451,7 +436,22 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
       },
       error => {
       }
-    );    
+    );
+
+    var intentos =0;
+    var inter = setInterval(( ) =>{            
+        if(this.mapContainer!=null || this.mapContainer!= undefined){
+          this.loadMap();
+          clearInterval(inter);
+        }    
+        else{
+
+          intentos++
+          if(intentos>5){
+            clearInterval(inter);
+          }
+        }      
+    }, 1000);
   }
 
   obtenerProductos() {
