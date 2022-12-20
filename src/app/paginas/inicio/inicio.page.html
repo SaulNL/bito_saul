@@ -248,7 +248,7 @@
         </h2>
       </ion-text>
     </ion-grid>
-    <ion-grid *ngIf="!loader">
+    <ion-grid *ngIf="!loader && filtroActivo || idTodo || selectionAP || buscador">
       <!-- <span>actual page = {{actualPagina}}</span>
       <span>total Paginas = {{totalPaginas}}</span>
       <span>total negocios = {{totalDeNegocios}}</span> -->

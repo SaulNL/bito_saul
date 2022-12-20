@@ -252,3 +252,14 @@ ion-card-title {
   --color: rgb(43, 43, 43);
   font-size: 11px;
 }
+
+@media (max-width: 410px) {
+  .container-2{
+    margin: 0;
+    grid-template-columns: repeat(2, 11.5rem);
+  }
+
+  ion-card {
+    width: 176px;
+  }
+}
