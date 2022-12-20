@@ -253,10 +253,13 @@ ion-card-title {
   font-size: 11px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 410px) {
   .container-2{
     margin: 0;
-    display: grid;
     grid-template-columns: repeat(2, 11.5rem);
+  }
+
+  ion-card {
+    width: 176px;
   }
 }
