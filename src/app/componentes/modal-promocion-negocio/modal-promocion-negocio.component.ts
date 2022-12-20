@@ -94,7 +94,7 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   cerrar() {
     this.modalController.dismiss();
     this.promocionTO = new PromocionesModel();
-    this.router.navigateByUrl("/tabs/inicio");
+    this.router.navigateByUrl("/tabs/promociones");
   }
 
   private registrarVisitaAPromotion() {
