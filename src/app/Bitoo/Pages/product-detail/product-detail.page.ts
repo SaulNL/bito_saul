@@ -73,14 +73,7 @@ export class ProductDetailPage implements OnInit {
         this.init(product);
       }
       if (params.producto) {
-        this.lstProductos=JSON.parse(localStorage.getItem('lstProductosOriginal'))
-        let productoid=params.producto
-        //console.log("\nTamaño lista del local storage al abrir producto: "+this.lstProductos.length+"\nEl id del producto abierto es: "+productoid)
-        this.lstProductos.forEach((producto, i) => {
-          if(producto.idProducto == productoid){              //console.log("Aqui esta el producto en la pos :"+ i)
-              this.prodEnPos=i;
-          }
-        });
+        this.posicionProducto(params.producto);
       }
 
       if (params.byProfile) {
@@ -99,6 +92,8 @@ export class ProductDetailPage implements OnInit {
         this.inicializeModels();
         const product: ProductInterface = JSON.parse(params.productByFavorite);
         this.init(product);
+
+        this.posicionProducto(product.idProduct);
       }
     });
   }
@@ -119,6 +114,17 @@ export class ProductDetailPage implements OnInit {
    */
   ionViewDidLeave() {
     this.subscribe.unsubscribe();
+  }
+
+  posicionProducto(idProducto) {
+    this.lstProductos = JSON.parse(localStorage.getItem('lstProductosOriginal'))
+    let productoid = idProducto;
+
+    this.lstProductos.forEach((producto, i) => {
+      if(producto.idProducto == productoid) {
+          this.prodEnPos=i;
+      }
+    });
   }
 
   /**

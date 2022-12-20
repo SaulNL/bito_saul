@@ -79,6 +79,7 @@ export class ProductosFavoritosPage implements OnInit {
           (response) => {
             if (response.code === 200) {
               this.listaProductos = response.data.data;
+              localStorage.setItem('lstProductosOriginal', JSON.stringify(this.listaProductos));
               this.tamanoLista = this.listaProductos.length;
             }
             this.loader = false;
