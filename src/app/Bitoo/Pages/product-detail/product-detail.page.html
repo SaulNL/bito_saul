@@ -10,7 +10,7 @@
                   <div class="back" [class]="prodEnPos > 0 ? 'back' : 'arrowsDeactivated'">                  
                     <ion-icon (click)="back()" name="chevron-back-outline" size="large"></ion-icon>        
                   </div>
-                  <div class="next">
+                  <div class="next" [class]="prodEnPos == this.lstProductos.length-1 ? 'arrowsDeactivated' : 'back'">
                     <ion-icon (click)="next()" name="chevron-forward-outline" size="large"></ion-icon>           
                   </div>
                 </div>      

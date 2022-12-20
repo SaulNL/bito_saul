@@ -72,16 +72,8 @@ export class ProductDetailPage implements OnInit {
         const product: ProductInterface = JSON.parse(params.product);
         this.init(product);
       }
-      if (params.producto) {        
-        this.lstProductos=JSON.parse(localStorage.getItem('lstProductosOriginal'))
-        let productoid=params.producto
-        //console.log("\nTamaño lista del local storage al abrir producto: "+this.lstProductos.length+"\nEl id del producto abierto es: "+productoid)
-        this.lstProductos.forEach((producto, i) => {
-          if(producto.idProducto == productoid){
-              //console.log("Aqui esta el producto en la pos :"+ i)
-              this.prodEnPos=i;
-          }
-        });
+      if (params.producto) {
+        this.posicionProducto(params.producto);
       }
 
       if (params.byProfile) {
@@ -100,6 +92,8 @@ export class ProductDetailPage implements OnInit {
         this.inicializeModels();
         const product: ProductInterface = JSON.parse(params.productByFavorite);
         this.init(product);
+
+        this.posicionProducto(product.idProduct);
       }
     });
   }
@@ -120,6 +114,17 @@ export class ProductDetailPage implements OnInit {
    */
   ionViewDidLeave() {
     this.subscribe.unsubscribe();
+  }
+
+  posicionProducto(idProducto) {
+    this.lstProductos = JSON.parse(localStorage.getItem('lstProductosOriginal'))
+    let productoid = idProducto;
+
+    this.lstProductos.forEach((producto, i) => {
+      if(producto.idProducto == productoid) {
+          this.prodEnPos=i;
+      }
+    });
   }
 
   /**
@@ -335,17 +340,18 @@ export class ProductDetailPage implements OnInit {
     }else{
         console.log("No hay mas promos atras")
     }       
-}
-next(){  
+  }
+
+  next() {
     if(this.prodEnPos < this.lstProductos.length-1){
-      this.inicializeModels();
-      this.prodEnPos++
-      console.log("Posicion: "+(this.prodEnPos+1)+" de: "+this.lstProductos.length)
-      const product: ProductInterface = this.createObject.createProduct(this.lstProductos[this.prodEnPos]);
-      this.product=product
-      this.init(product);
+        this.inicializeModels();
+        this.prodEnPos++
+        console.log("Posicion: "+(this.prodEnPos+1)+" de: "+this.lstProductos.length)
+        const product: ProductInterface = this.createObject.createProduct(this.lstProductos[this.prodEnPos]);
+        this.product=product
+        this.init(product);
     }else{
-        console.log("No hay mas promos adelante")
+      console.log("No hay mas productos adelante")
     }          
-}
+  }
 }

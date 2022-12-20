@@ -207,6 +207,8 @@ export class ProductosPage {
           
           this.armarFiltroABC();
         } else {
+          localStorage.removeItem('lstProductosOriginal');
+
           this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
             response2 => {
             
@@ -214,6 +216,8 @@ export class ProductosPage {
                 this.blnBtnMapa=true;
                 const tempLstProduct = response2.data.lstProductos;
                 this.lstProductosOriginal =tempLstProduct;
+                localStorage.setItem('lstProductosOriginal', JSON.stringify(this.lstProductosOriginal));           
+
                 this.lstProductos =tempLstProduct.slice(0, 6);
                 this.loader = false;
               }else{
