@@ -848,6 +848,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     
   }
   borrarFiltros() {
+    this.isLoading = false;
+    this.loaderTop=false
     localStorage.removeItem("byCategorias");
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
@@ -876,6 +878,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     if(org===null){
       this.selectionAP = null;
     }
+    this.loaderTop=false
+    this.isLoading = false;
     this.buscarNegocios(true);
     this.obtenerPrincipalInicio();
   }
@@ -937,6 +941,8 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   public obtenerPrincipalInicio(nombre?: string){
+    this.isLoading = false;
+    this.loaderTop=false
     localStorage.removeItem("todo");
     this.idTodo=false;
     this.loader = true;
