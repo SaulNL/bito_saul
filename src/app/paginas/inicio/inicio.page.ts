@@ -859,8 +859,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
   borrarFiltrosP() {
     this.loader = true;
-    this.loaderInicio = true;
-    this.mostrarloaderInicio = true;
     localStorage.removeItem("filtroactual");
     localStorage.removeItem("byCategorias");
     localStorage.removeItem("filtroActivo");
@@ -880,8 +878,16 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
     this.loaderTop=false
     this.isLoading = false;
-    this.buscarNegocios(true);
-    this.obtenerPrincipalInicio();
+    if(this.objectSelectAfiliacionPlaza !== null && this.objectSelectAfiliacionPlaza !== undefined){
+      localStorage.setItem("activarTodos", "true");
+      localStorage.setItem("todo", "todo");
+      this.loader = true;
+      this.activar();
+      this.idTodo = false;
+    }else{
+      this.buscarNegocios(true);
+      this.obtenerPrincipalInicio();
+    }
   }
   
   negocioRuta(negocioURL, proveedor) {
