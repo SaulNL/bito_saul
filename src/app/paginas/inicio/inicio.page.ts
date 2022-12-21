@@ -48,7 +48,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   public listaCategorias: Array<ICategoriaNegocio>;
   public listaCompleta: any;
   private modal: any;
-  public selectionAP: boolean;
+  public selectionAP = false;
   public anyFiltros: FiltrosModel;
   strBuscar: any;
   private seleccionado: any;
@@ -674,7 +674,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       //console.log(this.mapa);
       if(org === null && categorias === null && this.idGiro === null &&  localStorage.getItem("todo") ===null){
         this.loader = false;
-        this.selectionAP = null;
+        this.selectionAP = false;
         this.obtenerPrincipalInicio(); //Abre el inicio cuando se abre la app por primera vez
       }
       //await this.cargarCategorias();
@@ -874,7 +874,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
 
     if(org===null){
-      this.selectionAP = null;
+      this.selectionAP = false;
     }
     this.loaderTop=false
     this.isLoading = false;
@@ -1262,7 +1262,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
       if(org === null && categorias === null && this.idGiro === null &&  localStorage.getItem("todo") ===null){
         this.loader = false;
-        this.selectionAP = null;
+        this.selectionAP = false;
         this.obtenerPrincipalInicio();
       }
       //await this.cargarCategorias();
