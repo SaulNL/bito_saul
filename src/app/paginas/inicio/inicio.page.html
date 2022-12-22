@@ -236,6 +236,13 @@
       </div>
     </div>
     <ion-grid *ngIf="listaCategorias.length === 0 && selectionAP === false">
+      <ion-button expand="block" fill="outline" 
+      color="medium" size="small" shape="round" disabled={{buttonDisabled}}>
+        <div class="spinner">
+          <ion-spinner color="medium" name="lines-small"></ion-spinner>
+          <span>Cargando negocios</span>
+        </div>
+      </ion-button>
       <ion-text color="primary">
         <h2>No se encontraron negocios relacionados</h2>
       </ion-text>
