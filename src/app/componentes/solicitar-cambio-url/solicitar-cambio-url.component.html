@@ -19,7 +19,7 @@
 <ion-content *ngIf="!loader">
   <ion-card>
     <div class="ion-text-center">
-      <h3>SOLICITUD CAMBIO URL</h3>
+      <h3>SOLICITUD DE CAMBIO DE URL</h3>
     </div>
     <ion-card-header>
       <ion-card-content>
@@ -33,7 +33,7 @@
             <div *ngIf="motivo.errors.required">el nombre es requerido</div>
           </div>
           <ion-item>
-            <ion-label position="stacked">Url nueva: <span style="color: red">*</span></ion-label>
+            <ion-label position="stacked">URL nueva: <span style="color: red">*</span></ion-label>
             <ion-input id="url" name="url" #url="ngModel"  [(ngModel)]="cambiarUrlTO.url"  required></ion-input>
           </ion-item>
           <div *ngIf="url.touched  && url.invalid" class="alert">
