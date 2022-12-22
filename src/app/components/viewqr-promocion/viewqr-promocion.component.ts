@@ -50,6 +50,8 @@ export class ViewqrPromocionComponent implements OnInit {
   registro2: any;
   registro3: any;
   organizaciones_cupon: any;
+  descarga: any;
+  des: any;
  
   constructor(
     public loadingController: LoadingController,
@@ -156,7 +158,16 @@ export class ViewqrPromocionComponent implements OnInit {
     //if (this.platform.is('ios')) {
       //this.descargarIOS();
     //} else {
-      this.crearImagen(this.promocion);
+      this.descarga = this.promocion.organizaciones;
+      this.descarga.forEach(nom => {
+      this.des = nom;
+      })
+      if(this.registro1 === true || this.registro2 === true){
+        this.crearImagen(this.promocion);
+      }
+      if(this.registro3 === true){
+        this.notifi.error('Este cupón no es valido para usted');
+      }
     //}
   }
   crearImagen(promocion) {
