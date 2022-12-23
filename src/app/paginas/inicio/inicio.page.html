@@ -134,7 +134,7 @@
       <ion-spinner #cargaArriba id="cargaArriba" name="bubbles"></ion-spinner>
       <p>Cargando negocios</p>
     </ion-row-->    
-    <ion-row *ngIf="loaderTop" [ngClass]="loaderTop? 'loaderArribaShow' : 'loaderArribaHide'">
+    <ion-row *ngIf="loaderTop && filtroActivo" [ngClass]="loaderTop? 'loaderArribaShow' : 'loaderArribaHide'">
       <ion-col size="12">
         <div class="ver-mas">
           <ion-button (click)="cargarMasPaginasArriba()" expand="block" fill="outline" 

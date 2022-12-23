@@ -37,7 +37,7 @@
   <ng-container>  
     <ion-item  class="slider">
       <div (click)="back()" 
-        [class]="currentIndex !== 0 ? 'arrows' : 'arrowsDeactivated'" *ngIf="fotografiasArray.length >= 1">
+        [class]="currentIndex !== 0 ? 'arrows' : 'arrowsDeactivated'" *ngIf="fotografiasArray?.length >= 1">
         <ion-icon name="chevron-back-outline" size="large"></ion-icon>           
       </div> 
       <ion-slides [options]="slideOpts" #carrusel (ionSlideDidChange)="SlideChanges(carrusel)">                
@@ -51,13 +51,12 @@
         </ion-slide>              
         <ion-slide *ngFor="let foto of fotografiasArray">       
             <ion-card class="foto-preview">
-              <img *ngIf="foto.url_imagen!=null || foto.url_imagen!=''"
-              [src]="foto.url_imagen"/>            
+              <img *ngIf="foto.url_imagen!=null || foto.url_imagen!=''" [src]="foto.url_imagen"/>            
             </ion-card>          
         </ion-slide>
       </ion-slides>
       <div (click)="next()" 
-        [class]="currentIndex !== fotografiasArray.length ? 'arrows' : 'arrowsDeactivated'" *ngIf="fotografiasArray.length >= 1">
+        [class]="currentIndex !== fotografiasArray.length ? 'arrows' : 'arrowsDeactivated'" *ngIf="fotografiasArray?.length >= 1">
         <ion-icon name="chevron-forward-outline" size="large"></ion-icon>           
       </div> 
     </ion-item>

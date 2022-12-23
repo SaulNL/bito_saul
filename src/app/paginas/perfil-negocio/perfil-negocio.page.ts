@@ -1358,7 +1358,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
           role: "cancel",
           cssClass: "secondary",
           handler: (blah) => {
-            this.router.navigate(["/"]);
+            this.router.navigate(["/tabs/productos/"]);
           },
         },
       ],
