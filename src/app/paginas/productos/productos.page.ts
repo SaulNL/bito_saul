@@ -14,7 +14,6 @@ import {
   AlertController,
 } from "@ionic/angular";
 import { Router, ActivatedRoute, Params } from "@angular/router";
-import { BusquedaService } from "../../api/busqueda.service";
 import { ProductosService } from "../../api/productos.service";
 import { FiltrosModel } from "../../Modelos/FiltrosModel";
 import { FiltroABCModel } from "../../Modelos/FiltroABCModel";
@@ -24,11 +23,9 @@ import { AnimationController } from "@ionic/angular";
 import { ModalProductosComponent } from "../../components/modal-productos/modal-productos.component";
 import { UtilsCls } from "../../utils/UtilsCls";
 import { PlazasAfiliacionesComponent } from "src/app/componentes/plazas-afiliaciones/plazas-afiliaciones.component";
-import { ValidarPermisoService } from "../../api/validar-permiso.service";
-import { Auth0Service } from "../../api/busqueda/auth0.service";
 import { PermisoModel } from "../../Modelos/PermisoModel";
 import { IPaginacion } from "../../interfaces/IPaginacion";
-import { ModalLoguearseComponent } from "src/app/componentes/modal-loguearse/modal-loguearse.component";
+import { PersonaService } from "src/app/api/persona.service";
 
 @Component({
   selector: "app-tab1",
@@ -81,8 +78,6 @@ export class ProductosPage {
   constructor(
     public loadingController: LoadingController,
     private _router: Router,
-    private toadController: ToastController,
-    private principalSercicio: BusquedaService,
     private servicioProductos: ProductosService,
     public modalController: ModalController,
     private notificaciones: ToadNotificacionService,
@@ -90,10 +85,9 @@ export class ProductosPage {
     public animationCtrl: AnimationController,
     private util: UtilsCls,
     private platform: Platform,
-    private validarPermiso: ValidarPermisoService,
-    private auth0Service: Auth0Service,
     private createObject: CreateObjects,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private personaService: PersonaService,
   ) {
     this.afiliacion = true;
     this.abc = false;
@@ -158,14 +152,6 @@ export class ProductosPage {
     this.existeSesion = this.util.existe_sesion();
     localStorage.setItem('productos',('active'));
     localStorage.removeItem("negocios");
-    //localStorage.removeItem("productos");
-    // if (this.existeSesion) {
-    //   this.permisos = this.auth0Service.getUserPermisos();
-    //   this.afiliacion = this.validarPermiso.isChecked(
-    //     this.permisos,
-    //     "ver_afiliacion"
-    //   );
-    // }
 
   }
 
@@ -216,8 +202,8 @@ export class ProductosPage {
                 this.blnBtnMapa=true;
                 const tempLstProduct = response2.data.lstProductos;
                 this.lstProductosOriginal =tempLstProduct;
+                this.obtenerProductosFav();
                 localStorage.setItem('lstProductosOriginal', JSON.stringify(this.lstProductosOriginal));           
-
                 this.lstProductos =tempLstProduct.slice(0, 6);
                 this.loader = false;
               }else{
@@ -332,10 +318,8 @@ export class ProductosPage {
           (response) => {
             this.lstProductosOriginal = response.data.lstProductos; 
             localStorage.setItem('lstProductosOriginal', JSON.stringify(this.lstProductosOriginal));           
-            this.lstProductosOriginal.forEach(prod => {
-              //console.log("Prod 1.- "+JSON.stringify(prod))
-            });
-            //console.log("tamaño lista listaProdLetra del push: "+this.lstProductosOriginal.length)
+          
+            this.obtenerProductosFav();
             this.lstProductos = this.lstProductosOriginal.slice(0, 6);
             this.loader = false;
           },
@@ -345,10 +329,6 @@ export class ProductosPage {
             );
           }
         );
-        /*   const tempLstProduct = this.lstProductos;
-        this.lstProductosOriginal = tempLstProduct;
-        this.lstProductos = tempLstProduct.slice(0, 6); 
-        this.loader = false;*/
       } catch (error) {
         this.notificaciones.error(
           "Ocurrió un error con el servidor, inténtelo más tarde"
@@ -515,7 +495,26 @@ export class ProductosPage {
     });
   }
 
-  
-
-  
+  obtenerProductosFav() {
+    if (this.user.id_persona !== undefined) {
+      this.personaService
+        .obtenerProductosFavoritos(this.user.id_persona)
+        .subscribe(
+          (response) => {
+            if (response.code === 200) {
+              let favoritos = response.data.data;
+              for (const pro of this.lstProductosOriginal) {
+                for (const fav of favoritos) {
+                  if (pro.idProducto === fav.idProducto) {  
+                    pro.usuario_dio_like = 1;
+                  }
+                }
+              }
+            }
+          },
+          (error) => {
+          }
+        );
+    }
+  }
 }

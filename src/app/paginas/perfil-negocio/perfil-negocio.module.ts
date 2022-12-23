@@ -12,7 +12,7 @@ import { PerfilNegocioPageRoutingModule } from './perfil-negocio-routing.module'
 import { PerfilNegocioPage } from './perfil-negocio.page';
 import {ComentariosNegocioComponent} from '../../componentes/comentarios-negocio/comentarios-negocio.component';
 import {DarLikeNegocioModule} from '../../componentes/dar-like-negocio/dar-like-negocio.module';
-import { ViewqrPromocionComponent } from '../../components/viewqr-promocion/viewqr-promocion.component';
+import { ViewQrPromocionComponent } from '../../components/viewqr-promocion/viewqr-promocion.component';
 
 
 @NgModule({
@@ -29,6 +29,6 @@ import { ViewqrPromocionComponent } from '../../components/viewqr-promocion/view
         PedidoNegocioModule,
         DenunciaNegocioPageModule,
     ],
-  declarations: [PerfilNegocioPage, ComentariosNegocioComponent,ViewqrPromocionComponent ]
+  declarations: [PerfilNegocioPage, ComentariosNegocioComponent]
 })
 export class PerfilNegocioPageModule {}

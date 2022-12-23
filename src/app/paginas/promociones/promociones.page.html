@@ -1,18 +1,3 @@
-<!-- <ion-toolbar class="tolbar">
-  <div style="display: flex">
-    <ion-buttons slot="start">
-      <ion-button class="blanco" (click)="verSolicitudes()">
-        <ion-icon name="list-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>Promociones</ion-title>
-    <app-toolbar-busqueda
-      [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar promociones en ' + plazaAfiliacionNombre.nombre : 'Buscar promociones sobre productos, servicios y más...' "
-      (buscarEmit)="buscarToolbar($event)"
-    ></app-toolbar-busqueda>
-  </div>
-</ion-toolbar> -->
-
 <app-toolbar-busqueda
   [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar promociones en ' + plazaAfiliacionNombre.nombre : 'Buscar promociones sobre productos, servicios y más...' "
   (buscarEmit)="buscarToolbar($event)" titulo="Promociones"
@@ -21,20 +6,6 @@
   [scrollEvents]="true">
   <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
   <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
-  <ion-item>
-    <ion-buttons *ngIf="!selectionAP">
-      <ion-button (click)="openPlazasAfiliacionesModal()">
-        Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span>
-        <ion-icon name="caret-down-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <!-- <ion-buttons *ngIf="selectionAP">
-            <ion-chip (click)="regresarBitoo()" color="danger">
-                <ion-icon name="log-out-outline"></ion-icon>
-                <ion-label>Regresar a bitoo</ion-label>
-            </ion-chip>
-        </ion-buttons> -->
-  </ion-item>
   <div
     *ngIf="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined"
     style="background-color: #3c3c3c; color: white; font-size: small"

@@ -24,6 +24,11 @@ export class DarLikeProductoComponent implements OnInit {
 
   public darLike(producto: ProductoModel) {
     this.loaderLike = true;
+    if (producto.usuario_dio_like !== 0){
+      producto.usuario_dio_like = 0;
+    }else {
+      producto.usuario_dio_like = 1;
+    }
     this.servicioProducto.darLike(producto, this.usuario).subscribe(
       (response) => {
         if (response.code === 200) {

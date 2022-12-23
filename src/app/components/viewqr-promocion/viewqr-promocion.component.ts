@@ -24,7 +24,7 @@ const { Share } = Plugins;
   styleUrls: ['./viewqr-promocion.component.scss'],
   providers: [ Auth0Service]
 })
-export class ViewqrPromocionComponent implements OnInit {
+export class ViewQrPromocionComponent implements OnInit {
   @ViewChild('qrcode', { static: false }) qrcode: ElementRef;
   @Input() promocion: any;
   @Input() idPersona: number | null;
