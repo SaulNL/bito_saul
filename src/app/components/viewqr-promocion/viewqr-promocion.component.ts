@@ -45,13 +45,12 @@ export class ViewqrPromocionComponent implements OnInit {
   public arreglo3: any[] = [];
   org_usu:any;
   loader: any;
+  loaderCupon = false;
   public msj = "Cargando";
   registro1: any;
   registro2: any;
   registro3: any;
   organizaciones_cupon: any;
-  descarga: any;
-  des: any;
  
   constructor(
     public loadingController: LoadingController,
@@ -155,25 +154,21 @@ export class ViewqrPromocionComponent implements OnInit {
   }
 
   descargar() {
-    //if (this.platform.is('ios')) {
-      //this.descargarIOS();
-    //} else {
-      this.descarga = this.promocion.organizaciones;
-      this.descarga.forEach(nom => {
-      this.des = nom;
-      })
+    this.loaderCupon = true;
+    setTimeout(() => {
       if(this.registro1 === true || this.registro2 === true){
         this.crearImagen(this.promocion);
       }
       if(this.registro3 === true){
+        this.loaderCupon = false;
         this.notifi.error('Este cupón no es valido para usted');
       }
-    //}
+    }, 200);
   }
   crearImagen(promocion) {
     html2canvas(document.querySelector("#contenido")).then(canvas => {
 
-      this.capturedImage = canvas.toDataURL();
+      
       const fileName = 'qr_promo' + this.numeroAleatorioDecimales(10, 1000) + promocion.nombre_comercial + '.png';
       Filesystem.writeFile({
         path: fileName,
@@ -184,7 +179,7 @@ export class ViewqrPromocionComponent implements OnInit {
       }, error => {
         this.notifi.error(error);
       });
-
+      this.loaderCupon = false;
     });
   }
 

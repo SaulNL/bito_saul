@@ -77,3 +77,16 @@ ion-img{
 .content-margin{
   padding: 1rem 1.5rem;
 }
+
+ion-spinner {
+  --color: white;
+}
+
+.spinner {
+  display: flex;
+}
+
+.spinner > span {
+ margin-top: 9px;
+ margin-left: 5px;
+}
