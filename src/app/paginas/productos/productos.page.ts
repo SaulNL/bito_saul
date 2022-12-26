@@ -107,11 +107,11 @@ export class ProductosPage {
       }
     });
 
-    if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
-      localStorage.setItem("isRedirected", "true");
-      //location.reload();
-      localStorage.removeItem("activedPage");
-    }
+    // if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
+    //   localStorage.setItem("isRedirected", "true");
+    //   //location.reload();
+    //   localStorage.removeItem("activedPage");
+    // }
 
     const selected = localStorage.getItem("org");
     if (selected != null) {
@@ -153,6 +153,15 @@ export class ProductosPage {
     localStorage.setItem('productos',('active'));
     localStorage.removeItem("negocios");
 
+  }
+
+  ionViewWillEnter()
+  {
+    if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
+      localStorage.setItem("isRedirected", "true");
+      location.reload();
+      //localStorage.removeItem("activedPage");
+    }
   }
 
   /**

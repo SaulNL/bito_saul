@@ -74,11 +74,11 @@ export class PromocionesPage implements OnInit {
 
     ngOnInit(): void {
         this.idPersona = (this.utils.existSession()) ? this.utils.getIdUsuario() : null;
-        if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
-            localStorage.setItem("isRedirected", "true");
-            //location.reload(); **Esto es lo que hace que se vea una pantalla negra
-            localStorage.removeItem("activedPage");
-        }
+        // if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
+        //     localStorage.setItem("isRedirected", "true");
+        //     //location.reload(); **Esto es lo que hace que se vea una pantalla negra
+        //     localStorage.removeItem("activedPage");
+        // }
         const selected = localStorage.getItem("org");
         if (selected != null) {
         this.plazaAfiliacionNombre = JSON.parse(
@@ -106,6 +106,15 @@ export class PromocionesPage implements OnInit {
                 }
             }
         });
+    }
+
+    ionViewWillEnter()
+    {
+        if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
+            localStorage.setItem("isRedirected", "true");
+            location.reload();
+            //localStorage.removeItem("activedPage");
+        }
     }
 
     public recargar(event: any) {
