@@ -37,33 +37,26 @@
   <ng-container>  
     <ion-item  class="slider">
       <div (click)="back()" 
-        [class]="currentIndex !== 0 ? 'arrows' : 'arrowsDeactivated'" *ngIf="fotografiasArray.length >= 2">
+        [class]="currentIndex !== 0 ? 'arrows' : 'arrowsDeactivated'" *ngIf="fotografiasArray?.length >= 1">
         <ion-icon name="chevron-back-outline" size="large"></ion-icon>           
       </div> 
       <ion-slides [options]="slideOpts" #carrusel (ionSlideDidChange)="SlideChanges(carrusel)">                
         <ion-slide > <!-- style="background-color: red;"--> 
           <div class="difuminar">
-            <!--ion-card class="avatar-card">
-            <img
-                  src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
-                  [srcset]="informacionNegocio.url_logo"
-                />                                                                                       
-            </ion-card-->   
-            <ion-card class="avatar-preview">              
-              <div style="background-image: url({{informacionNegocio.url_logo}});">               
-              </div>                       
+           
+            <ion-card class="avatar-preview">
+              <img loading="lazy" [src]="informacionNegocio.url_logo"/>
             </ion-card>
           </div>                                                                              
         </ion-slide>              
         <ion-slide *ngFor="let foto of fotografiasArray">       
             <ion-card class="foto-preview">
-              <div *ngIf="foto.url_imagen!=null || foto.url_imagen!=''" [ngStyle]="{
-                'background-image': 'url('+foto.url_imagen+')'}"></div>            
+              <img *ngIf="foto.url_imagen!=null || foto.url_imagen!=''" [src]="foto.url_imagen"/>            
             </ion-card>          
         </ion-slide>
       </ion-slides>
       <div (click)="next()" 
-        [class]="currentIndex !== fotografiasArray.length ? 'arrows' : 'arrowsDeactivated'" *ngIf="fotografiasArray.length >= 2">
+        [class]="currentIndex !== fotografiasArray.length ? 'arrows' : 'arrowsDeactivated'" *ngIf="fotografiasArray?.length >= 1">
         <ion-icon name="chevron-forward-outline" size="large"></ion-icon>           
       </div> 
     </ion-item>

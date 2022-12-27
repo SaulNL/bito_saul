@@ -28,11 +28,11 @@ export class MispromocionesPage implements OnInit {
     public id_proveedor: any;
     public lstPromocionesPublicadas: Array<PromocionesModel>;
     public promocion: PromocionesModel;
-    public loaderPc = false;
-    public loaderPr = false;
+    public loaderAnuncios = false;
     public btnBlockedNuevo = false;
-    public lstPromociones: Array<PromocionesModel>;
-    public lstPromocionesBK: Array<PromocionesModel>;
+    public listaPromoOriginal: Array<PromocionesModel> = [];
+    public listaPromociones: Array<PromocionesModel> = [];
+    public mostrarNegocios: any = 5;
     public publicacionesHechas: number;
     public publicacionesPermitidas: number;
     public lstPromocionesPublicadasBK: Array<PromocionesModel>;
@@ -153,8 +153,7 @@ export class MispromocionesPage implements OnInit {
     }
 
     buscar() {
-        this.loaderPc = true;
-        this.loaderPr = true;
+        this.loaderAnuncios = true;
         this.seleccionaPromocion = false;
         this.btnDetallePromocion = false;
         this.agregarPromocion = false;
@@ -162,18 +161,15 @@ export class MispromocionesPage implements OnInit {
         this.seleccionTO.id_proveedor = this.usuario.proveedor.id_proveedor;
         this._promociones_service.buscar(this.seleccionTO).subscribe(
             (response) => {
-                this.lstPromociones = response.data;
-                this.lstPromocionesBK = response.data;
+                this.listaPromoOriginal = response.data;
+                //this.listaPromociones = this.listaPromoOriginal.slice(0, 15);
                 this.filtro = "";
-                this.filtroAnuncio="";
-                window.scrollTo({top: 0, behavior: "smooth"});
+                this.filtroAnuncio="";                
                 this.obtenerNumeroPublicacionesPromocion();
                 this.obtenerPromocionesPublicadas();
             },
             (error) => {
                 this._notificacionService.error(error);
-                this.loaderPc = false;
-                this.loaderPr = false;
             }
         );
     }
@@ -192,17 +188,14 @@ export class MispromocionesPage implements OnInit {
                 (response) => {
                     this.publicacionesHechas = response.data.numPublicacionesPromo;
                     this.publicacionesPermitidas = response.data.numPubliPromoPermitidas;
-                    this.loaderPr = false;
                 },
                 (error) => {
                     this._notificacionService.error(error);
-                    this.loaderPr = false;
                 }
             );
     }
 
     public obtenerPromocionesPublicadas() {
-        this.loaderPc = true;
         this._promociones_service
             .obtenerPromocinesPublicadas(this.seleccionTO)
             .subscribe(
@@ -218,13 +211,12 @@ export class MispromocionesPage implements OnInit {
                     this.lstPromoPublicadasBK = this.lstPromo.filter(publicacion => publicacion.id_tipo_promocion === 2);
                     this.lstAnunciosBK = this.lstAnuncios.filter(publicacion => publicacion.id_tipo_promocion === 1);
                     this.lstPromocionesPublicadasBK = response.data;
-                    this.loaderPc = false;
                 },
                 (error) => {
                     this._notificacionService.error(error);
-                    this.loaderPc = false;
                 }
             );
+        this.loaderAnuncios = false;
     }
 
     public seleccionarPromocion(promocion: PromocionesModel) {
@@ -494,9 +486,6 @@ export class MispromocionesPage implements OnInit {
         }
     }
 
-    public loading(pc: any, pr: any) {
-        return pc === true && pr === true ? true : false;
-    }
 
     public recargar(event: any) {
         setTimeout(() => {

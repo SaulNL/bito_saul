@@ -178,6 +178,8 @@ export class TabsPage implements OnInit {
     this.router.navigate(["/tabs/home/perfil"], {
       queryParams: { special: true },
     });
+    localStorage.setItem("activedPage", "perfil2");
+    this.activedPage = localStorage.getItem("activedPage");
     localStorage.removeItem("productos");
     localStorage.removeItem("negocios");
     localStorage.removeItem("todo");

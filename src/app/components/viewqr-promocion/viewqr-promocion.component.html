@@ -12,7 +12,14 @@
 <ion-content #main id="main" >
   <app-spinner [loader]="loader" [message]="msj"></app-spinner>
   <div class="ion-text-center">
-    <ion-button expand="block" (click)="descargar()">Descargar</ion-button>
+    
+    <ion-button expand="block" (click)="descargar()" [disabled]="loaderCupon">
+      <div *ngIf="loaderCupon" class="spinner">
+        <ion-spinner name="bubbles"></ion-spinner>
+        <span>Generando cupón..</span>
+      </div>
+      <span *ngIf="!loaderCupon">Descargar</span>
+    </ion-button>
   </div>
   <div id="contenido" class="bg-promo">
     <div id="imagenesFondo" class="ion-text-center font-color content-margin">

@@ -1,22 +1,12 @@
-<ion-button (click)="darLike(negocio)" fill="clear" *ngIf="!loaderLike">
-  <ion-icon slot="start" *ngIf="negocio.usuario_like > 0; else like" role="img"
-    name="heart" aria-label="dollar" class="icon-fav">
+<ion-button (click)="darLike(negocio)" fill="clear" *ngIf="!loaderLike" class="boton-like">
+  <ion-icon slot="start" *ngIf="negocio.usuario_like > 0; else like"
+    name="heart" aria-label="logo ionic">
   </ion-icon>
   <ng-template #like>
-    <ion-icon slot="start" name="heart-outline" role="img" class="icon-fav" aria-label="logo ionic"></ion-icon>
+    <ion-icon slot="start" name="heart-outline" aria-label="logo ionic"></ion-icon>
   </ng-template>
-  <ion-label>{{ negocio.likes }}</ion-label>
+  {{ negocio.likes }}
 </ion-button>
-
-<!-- <ion-chip class="" (click)="darLike(negocio)" *ngIf="!loaderLike">  
-  <ion-icon *ngIf="negocio.usuario_like > 0; else like" class="text-rosa heartLike hydrated" role="img"
-    name="heart" aria-label="dollar">
-  </ion-icon>
-  <ng-template #like>
-    <ion-icon name="heart-outline" role="img" class="md hydrated heartNotLike" aria-label="logo ionic"></ion-icon>
-  </ng-template>
-  <ion-label class="hydrated"></ion-label>
-</ion-chip> -->
 
 <ion-button fill="clear" *ngIf="loaderLike">
   <ion-spinner style="color: rgb(255, 0, 98); width: 20px;"></ion-spinner>

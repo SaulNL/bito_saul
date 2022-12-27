@@ -5,7 +5,7 @@ import {RegistrarPromotionService} from "../../api/registrar-promotion.service";
 import { UtilsCls } from '../../utils/UtilsCls';
 import { PersonaService } from '../../api/persona.service';
 import { PromocionesService } from '../../api/promociones.service';
-import { ViewqrPromocionComponent } from '../../components/viewqr-promocion/viewqr-promocion.component';
+import { ViewQrPromocionComponent } from '../../components/viewqr-promocion/viewqr-promocion.component';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
 import  moment from 'moment';
 import { HaversineService, GeoCoord } from "ng2-haversine";
@@ -94,7 +94,7 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   cerrar() {
     this.modalController.dismiss();
     this.promocionTO = new PromocionesModel();
-    this.router.navigateByUrl("/tabs/inicio");
+    //this.router.navigateByUrl("/tabs/promociones");
   }
 
   private registrarVisitaAPromotion() {
@@ -297,7 +297,7 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   async crearModal() {
       this.guardarCupon();
       const modal = await this.modalController.create({
-        component: ViewqrPromocionComponent,
+        component: ViewQrPromocionComponent,
         componentProps: {
           'promocion': this.promocionTO,
           'idPersona': this.idPersona,

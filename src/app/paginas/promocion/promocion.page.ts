@@ -7,7 +7,7 @@ import moment from 'moment';
 import { HaversineService } from 'ng2-haversine';
 import { RegistrarPromotionService } from 'src/app/api/registrar-promotion.service';
 import { PromocionesModel } from 'src/app/Modelos/PromocionesModel';
-import { ViewqrPromocionComponent } from 'src/app/components/viewqr-promocion/viewqr-promocion.component';
+import { ViewQrPromocionComponent } from 'src/app/components/viewqr-promocion/viewqr-promocion.component';
 import { UtilsCls } from 'src/app/utils/UtilsCls';
 import { ModalController } from '@ionic/angular';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
@@ -223,7 +223,7 @@ export class PromocionPage implements OnInit {
   async modalCupon(promo) {
     await  this.guardarCupon(promo);
       const modal = await this.modalController.create({
-        component: ViewqrPromocionComponent,
+        component: ViewQrPromocionComponent,
         componentProps: {
           'promocion': promo,
           'idPersona': this.idPersona,

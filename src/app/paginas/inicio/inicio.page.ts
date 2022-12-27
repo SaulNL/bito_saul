@@ -48,7 +48,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   public listaCategorias: Array<ICategoriaNegocio>;
   public listaCompleta: any;
   private modal: any;
-  public selectionAP: boolean;
+  public selectionAP = false;
   public anyFiltros: FiltrosModel;
   strBuscar: any;
   private seleccionado: any;
@@ -595,7 +595,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       }
       //this.loader = false;
     } catch (error) {
-      this.loader = false;
+      //this.loader = false;
       //this.notificaciones.error("No hay conexión a internet, conectate a una red");
     }
 
@@ -674,7 +674,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       //console.log(this.mapa);
       if(org === null && categorias === null && this.idGiro === null &&  localStorage.getItem("todo") ===null){
         this.loader = false;
-        this.selectionAP = null;
+        this.selectionAP = false;
         this.obtenerPrincipalInicio(); //Abre el inicio cuando se abre la app por primera vez
       }
       //await this.cargarCategorias();
@@ -776,6 +776,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       },
     });  
     await modal.present();
+    this.loader = false;
   }
 
   public negociosIdMapa() {
@@ -847,6 +848,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     
   }
   borrarFiltros() {
+    this.isLoading = false;
+    this.loaderTop=false
     localStorage.removeItem("byCategorias");
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
@@ -856,8 +859,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
   borrarFiltrosP() {
     this.loader = true;
-    this.loaderInicio = true;
-    this.mostrarloaderInicio = true;
     localStorage.removeItem("filtroactual");
     localStorage.removeItem("byCategorias");
     localStorage.removeItem("filtroActivo");
@@ -873,10 +874,20 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
 
     if(org===null){
-      this.selectionAP = null;
+      this.selectionAP = false;
     }
-    this.buscarNegocios(true);
-    this.obtenerPrincipalInicio();
+    this.loaderTop=false
+    this.isLoading = false;
+    if(this.objectSelectAfiliacionPlaza !== null && this.objectSelectAfiliacionPlaza !== undefined){
+      localStorage.setItem("activarTodos", "true");
+      localStorage.setItem("todo", "todo");
+      this.loader = true;
+      this.activar();
+      this.idTodo = false;
+    }else{
+      this.buscarNegocios(true);
+      this.obtenerPrincipalInicio();
+    }
   }
   
   negocioRuta(negocioURL, proveedor) {
@@ -936,6 +947,8 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   public obtenerPrincipalInicio(nombre?: string){
+    this.isLoading = false;
+    this.loaderTop=false
     localStorage.removeItem("todo");
     this.idTodo=false;
     this.loader = true;
@@ -1249,7 +1262,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
       if(org === null && categorias === null && this.idGiro === null &&  localStorage.getItem("todo") ===null){
         this.loader = false;
-        this.selectionAP = null;
+        this.selectionAP = false;
         this.obtenerPrincipalInicio();
       }
       //await this.cargarCategorias();
