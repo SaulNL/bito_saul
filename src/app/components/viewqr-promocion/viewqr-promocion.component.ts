@@ -12,7 +12,6 @@ import html2canvas from 'html2canvas';
 import { Auth0Service } from 'src/app/api/auth0.service';
 import { PromocionesService } from '../../api/promociones.service';
 import {FiltrosModel} from '../../Modelos/FiltrosModel';
-import { CatOrganizacionesModel } from '../../Modelos/busqueda/CatOrganizacionesModel';
 
 
 const { Filesystem } = Plugins;
@@ -44,12 +43,12 @@ export class ViewQrPromocionComponent implements OnInit {
   public arreglo2: any;
   public arreglo3: any[] = [];
   org_usu:any;
-  loader: any;
+  loader = false;
   loaderCupon = false;
   public msj = "Cargando";
-  registro1: any;
-  registro2: any;
-  registro3: any;
+  registro1 = false;
+  registro2 = false;
+  registro3 = false;
   organizaciones_cupon: any;
  
   constructor(
@@ -93,7 +92,7 @@ export class ViewQrPromocionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loader = true; 
+    this.loader = true;
     this.nombreOrgUsuario();
 
   }
@@ -156,10 +155,10 @@ export class ViewQrPromocionComponent implements OnInit {
   descargar() {
     this.loaderCupon = true;
     setTimeout(() => {
-      if(this.registro1 === true || this.registro2 === true){
+      if(this.registro1 || this.registro2){
         this.crearImagen(this.promocion);
       }
-      if(this.registro3 === true){
+      if(this.registro3){
         this.loaderCupon = false;
         this.notifi.error('Este cupón no es valido para usted');
       }
