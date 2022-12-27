@@ -11,7 +11,7 @@ import { TabsPageModule } from '../tabs/tabs.module';
 import { PromocionComponent } from '../../components/promocion/promocion.component';
 import { ModalPromocionComponent } from '../../components/modal-promocion/modal-promocion.component';
 import { InfoPromoComponent } from '../../components/info-promo/info-promo.component';
-import { ViewqrPromocionComponent } from 'src/app/components/viewqr-promocion/viewqr-promocion.component';
+import { ViewQrPromocionComponent } from 'src/app/components/viewqr-promocion/viewqr-promocion.component';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 
@@ -30,7 +30,7 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
     PromocionesPage,
     PromocionComponent,
     ModalPromocionComponent,
-    ViewqrPromocionComponent,
+    ViewQrPromocionComponent,
     InfoPromoComponent
   ],
   providers: [ SocialSharing ], 

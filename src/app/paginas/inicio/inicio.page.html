@@ -134,7 +134,7 @@
       <ion-spinner #cargaArriba id="cargaArriba" name="bubbles"></ion-spinner>
       <p>Cargando negocios</p>
     </ion-row-->    
-    <ion-row *ngIf="loaderTop" [ngClass]="loaderTop? 'loaderArribaShow' : 'loaderArribaHide'">
+    <ion-row *ngIf="loaderTop && filtroActivo" [ngClass]="loaderTop? 'loaderArribaShow' : 'loaderArribaHide'">
       <ion-col size="12">
         <div class="ver-mas">
           <ion-button (click)="cargarMasPaginasArriba()" expand="block" fill="outline" 
@@ -149,148 +149,77 @@
       </ion-col>
     </ion-row>    
     <div *ngIf="!loaderNegocios">
-      <ion-grid *ngIf="listaCategorias.length !== 0">
-        <ion-row *ngFor="let cat of !banderaVerMas || listaVerMas.length === 0 ? listaCategorias : listaVerMas; index as i" class="ion-padding">
-          <ion-text class="nombre-categoria w-100">
+      <div *ngIf="listaCategorias.length !== 0">
+        <div *ngFor="let cat of !banderaVerMas || listaVerMas.length === 0 ? listaCategorias : listaVerMas">
+          <div class="container-1">
             <h2>{{cat.nombre}}</h2>
-          </ion-text>
-          <ion-col
-            sizeLg="3"
-            sizeXs="6"
-            sizeSm="4"
-            sizeMd="4"
-            *ngFor="let proveedor of cat.negocios"
-          >
-            <ion-card class="m-0 fixed">
-              <div (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)">
-                <img
-                  class="img-card-w"
-                  src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
-                  [srcset]="proveedor.url_logo"
-                  alt="Falla al cargar la imagen"
-                />
-                <!--ion-card-header>
-                  <ion-row   class="ion-justify-content-center">
-                    <ion-spinner *ngIf="idNegocio===proveedor.id_negocio"  name="dots" class="spinner-color"></ion-spinner>
-                  </ion-row>
-                  <ion-card-subtitle class="texto-comercio">
-                    {{proveedor.nombre_corto != "" ? proveedor.nombre_corto : proveedor.nombre_comercial}}
-                   
-                  </ion-card-subtitle>
-                </ion-card-header-->
-              </div>                           
-              <div *ngIf="proveedor.tienepromociones == 1"  class="promo" (click)="negocioRuta(proveedor.url_negocio,  proveedor.id_negocio)"> 
-                <ion-img src="../../../assets/images/promo/etiqueta_promo.png"></ion-img>
-              </div>
-              <div *ngIf="idNegocio===proveedor.id_negocio" class="ion-justify-content-center dots">
-                <ion-spinner name="dots" style="margin: -10px 0px 0px 0px;" class="spinner-color"></ion-spinner>
-              </div>
-              <div style="margin: -20px 5px 0px 5px;"><!-- [style]="!proveedor.verificado && proveedor.distintivos.length < 1 ? 'margin: 10px 5px 0px 5px;' : 'margin:10px 5px 0px 5px;'" -->
-                <p style="font-weight:bold; font-size:16px; text-align: center;"> 
-                  {{proveedor.nombre_corto != "" ? proveedor.nombre_corto : proveedor.nombre_comercial}} 
-                </p>
-              </div>
-
-              <div class="icon-cert-card" *ngIf="proveedor.verificado || proveedor.distintivos.length > 0">
-                <div class="one" *ngIf="proveedor.verificado">
-                  <ion-icon                                     
-                    src="../../../assets/icon/certificado_icon.svg" size="large">
-                  </ion-icon>                  
-                </div>                  
-                <div [ngClass]="!proveedor.verificado? 'one' : 'two'" *ngIf="proveedor.distintivos[0]!=null || proveedor.distintivos[0]!=undefined" (click)="clickDistintivo(proveedor.distintivos[0].nombre, proveedor.distintivos[0])">
-                  <img [src]="proveedor.distintivos[0].icon" alt="xsd" style="width:40px; height:40px; margin-top: 0px;">                   
+            <br>
+          </div>
+          <div class="container-2">
+              <ion-card *ngFor="let proveedor of cat.negocios">
+                <div>
+                  <img *ngIf="proveedor.tienepromociones == 1" 
+                  (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)" style="position: absolute; width: 170px; cursor: pointer;" 
+                  src="../../../assets/images/promo/etiqueta_promo.png">
+                  <div class="logo-negocio">
+                    <img (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)" loading="lazy"
+                        [src]="proveedor.url_logo !== null ? proveedor.url_logo : 'https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg'" 
+                        alt="Falla al cargar la imagen">
+                  </div>
+                  <div *ngIf="idNegocio===proveedor.id_negocio" class="ion-justify-content-center dots">
+                    <ion-spinner name="dots" style="margin: -10px 0px 0px 0px;" class="spinner-color"></ion-spinner>
+                  </div>
                 </div>
-                <div [ngClass]="!proveedor.verificado? 'two' : 'three'" *ngIf="proveedor.distintivos[1]!=null || proveedor.distintivos[1]!=undefined" (click)="clickDistintivo(proveedor.distintivos[1].nombre, proveedor.distintivos[1])">
-                  <img [src]="proveedor.distintivos[1].icon" alt="xsd" style="width:40px; height:40px; margin-top: 0px;"><!--width:20px; height:auto; margin-top: 10px;-->
+                <div class="header-card" *ngIf="proveedor.giro !== null">
+                  <div class="tag-giro">{{proveedor.giro }}</div>
                 </div>
-                <div [ngClass]="!proveedor.verificado? 'three' : 'four'" *ngIf="proveedor.distintivos[2]!=null || proveedor.distintivos[2]!=undefined" (click)="clickDistintivo(proveedor.distintivos[2].nombre, proveedor.distintivos[2])">
-                  <img [src]="proveedor.distintivos[2].icon" alt="xsd" style="width:40px; height:40px; margin-top: 0px;"> 
-                </div>
-                <div [ngClass]="!proveedor.verificado? 'four' : 'five'" *ngIf="proveedor.distintivos[3]!=null || proveedor.distintivos[3]!=undefined" (click)="clickDistintivo(proveedor.distintivos[3].nombre, proveedor.distintivos[3])">
-                  <img [src]="proveedor.distintivos[3].icon" alt="xsd" style="width:40px; height:40px; margin-top: 0px;"> 
-                </div>                                                            
-              </div>               
-                            
-
-              <div class="likegegi">
-                <div class="badge">
-                  <ion-badge
-                      *ngIf="proveedor.abierto == 'ABIERTO'"
-                      color="success"
-                      >Abierto
-                  </ion-badge>
-                  <ion-badge
-                      *ngIf="proveedor.abierto !== 'ABIERTO'"
-                      color="danger"
-                      >Cerrado
-                  </ion-badge>
-                </div>
-                <app-dar-like-negocio
-                  [negocio]="proveedor"
-                  [usuario]="user"
-                  [mostrarLike]="existeSesion"
-                >
-                </app-dar-like-negocio>
-              </div>
               
-            </ion-card>
-          </ion-col>
-          <!-- Este iba ha buscar los negocios dependiendo la categoria -->
-          <!-- <ion-chip class="verTodos" color="dark" (click)="obtenerPrincipalInicio(cat.nombre)"
-            *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador">
-            <span class="texto-ver-mas">Ver todos los negocios {{cat.nombre}}</span>
-            <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
-          </ion-chip> -->
-          <div *ngIf="i==0"> <!--botones con convenio -->
-            <div *ngIf="banderaMasNegocios">
-              <ion-chip class="verTodos" color="dark" (click)="cargarMasNegociosInicio(cat.nombre)"
-                *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador">
-                <span class="texto-ver-mas">Ver más negocios</span>
-                <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
-              </ion-chip>
-            </div>
-            <div *ngIf="banderaVerMenos">
-              <ion-chip class="verTodos" color="dark" (click)="cargarMenosNegociosInicio(cat.nombre)"
-                *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador ">
-                <span class="texto-ver-mas">Ver menos negocios</span>
-                <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
-              </ion-chip>
-            </div>
+                <div class="body-card">
+                  <div>
+                    <span [ngClass]="proveedor.abierto == 'ABIERTO' ? 'tag tag-green': 'tag tag-red'">{{proveedor.abierto}}</span>
+  
+                    <app-dar-like-negocio
+                    [negocio]="proveedor"
+                    [usuario]="user"
+                    [mostrarLike]="existeSesion"
+                    >
+                    </app-dar-like-negocio>                        
+                  </div>
+                  <div>
+                    <ion-card-title> {{proveedor.nombre_corto != "" ? proveedor.nombre_corto : proveedor.nombre_comercial}}</ion-card-title>
+                  </div>
+                  <div class="distintivos">
+                    <img *ngIf="proveedor.verificado === 1" class="distintivoIcon" src="assets/icon/certificado_icon.svg" matTooltip="Este negocio está verificado por Bitoo">
+                    <div class="distintivo" *ngFor="let distintivo of proveedor.distintivos.slice(0, proveedor.verificado === 1 ? 3 : 4); index as i">
+                      <img class="distintivoIcon" (click)="clickDistintivo(distintivo.nombre, distintivo.descripcion)" [src]="distintivo.icon">  
+                    </div>
+                  </div>
+                </div>
+              </ion-card>
           </div>
-          <div *ngIf="i==1"> <!-- botones con promociones -->
-            <div *ngIf="banderaMasPr">
-              <ion-chip class="verTodos" color="dark" (click)="cargarMasNegociosInicio(cat.nombre)"
-                *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador">
-                <span class="texto-ver-mas">Ver más negocios</span>
-                <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
-              </ion-chip>
-            </div>
-            <div *ngIf="banderaMenosPr">
-              <ion-chip class="verTodos" color="dark" (click)="cargarMenosNegociosInicio(cat.nombre)"
-                *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador ">
-                <span class="texto-ver-mas">Ver menos negocios</span>
-                <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
-              </ion-chip>
-            </div>
+          <div class="container-3">
+            <ion-button shape="round" expand="full" size="small" *ngIf="cat.nombre == 'Con convenio' && !filtroActivo && !idTodo && !selectionAP && !buscador" 
+            (click)="verMasNegociosCon ? cargarMenosNegociosInicio(cat.nombre) : cargarMasNegociosInicio(cat.nombre)" class="boton-ver-mas">
+              <span class="texto-ver-mas" *ngIf="!verMasNegociosCon">Ver más negocios </span>
+              <span class="texto-ver-mas" *ngIf="verMasNegociosCon">Ver menos negocios</span>
+              <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+            </ion-button>
+  
+            <ion-button shape="round" expand="full" size="small" *ngIf="cat.nombre == 'Con promociones' && !filtroActivo && !idTodo && !selectionAP && !buscador" 
+            (click)="verMasNegociosPromo ? cargarMenosNegociosInicio(cat.nombre) : cargarMasNegociosInicio(cat.nombre)" class="boton-ver-mas">
+              <span class="texto-ver-mas" *ngIf="!verMasNegociosPromo">Ver más negocios </span>
+              <span class="texto-ver-mas" *ngIf="verMasNegociosPromo">Ver menos negocios</span>
+              <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+            </ion-button>
+            <ion-button shape="round" expand="full" size="small" *ngIf="cat.nombre == 'Más Vistos' && !filtroActivo && !idTodo && !selectionAP && !buscador" 
+            (click)="verMasNegociosVistos ? cargarMenosNegociosInicio(cat.nombre) : cargarMasNegociosInicio(cat.nombre)" class="boton-ver-mas">
+              <span class="texto-ver-mas" *ngIf="!verMasNegociosVistos">Ver más negocios </span>
+              <span class="texto-ver-mas" *ngIf="verMasNegociosVistos">Ver menos negocios</span>
+              <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+            </ion-button>
           </div>
-          <div *ngIf="i==2"> <!--botones más vistos -->
-            <div *ngIf="banderaMasVistos">
-              <ion-chip class="verTodos" color="dark" (click)="cargarMasNegociosInicio(cat.nombre)"
-                *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador">
-                <span class="texto-ver-mas">Ver más negocios</span>
-                <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
-              </ion-chip>
-            </div>
-            <div *ngIf="banderaMenosVistos">
-              <ion-chip class="verTodos" color="dark" (click)="cargarMenosNegociosInicio(cat.nombre)"
-                *ngIf="!filtroActivo && !idTodo && !selectionAP && !buscador ">
-                <span class="texto-ver-mas">Ver menos negocios</span>
-                <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
-              </ion-chip>
-            </div>
-          </div>
-        </ion-row>
-      </ion-grid>
+        </div>
+      </div>
 
       <div [ngClass]="showPopUp? 'bottom_info_distintivo_up' : 'bottom_info_distintivo'">              
         <div class="contenedor_popup">      
@@ -307,8 +236,16 @@
       </div>
     </div>
     <ion-grid *ngIf="listaCategorias.length === 0 && selectionAP === false">
+      <ion-button expand="block" fill="outline" 
+      color="medium" size="small" shape="round" disabled={{buttonDisabled}}>
+        <div class="spinner">
+          <ion-spinner color="medium" name="lines-small"></ion-spinner>
+          <span>Cargando negocios</span>
+        </div>
+      </ion-button>
+      <br>
       <ion-text color="primary">
-        <h2>No se encontraron negocios relacionados</h2>
+        <!--<h2>No se encontraron negocios relacionados</h2>-->
       </ion-text>
     </ion-grid>
     <ion-grid *ngIf="listaCategorias.length === 0  && selectionAP === true">
@@ -319,7 +256,7 @@
         </h2>
       </ion-text>
     </ion-grid>
-    <ion-grid *ngIf="!loader">
+    <ion-grid *ngIf="!loader && filtroActivo || idTodo || selectionAP || buscador">
       <!-- <span>actual page = {{actualPagina}}</span>
       <span>total Paginas = {{totalPaginas}}</span>
       <span>total negocios = {{totalDeNegocios}}</span> -->

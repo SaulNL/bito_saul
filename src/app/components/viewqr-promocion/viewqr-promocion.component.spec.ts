@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ViewqrPromocionComponent } from './viewqr-promocion.component';
+import { ViewQrPromocionComponent } from './viewqr-promocion.component';
 
-describe('ViewqrPromocionComponent', () => {
-  let component: ViewqrPromocionComponent;
-  let fixture: ComponentFixture<ViewqrPromocionComponent>;
+describe('ViewQrPromocionComponent', () => {
+  let component: ViewQrPromocionComponent;
+  let fixture: ComponentFixture<ViewQrPromocionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewqrPromocionComponent ],
+      declarations: [ ViewQrPromocionComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ViewqrPromocionComponent);
+    fixture = TestBed.createComponent(ViewQrPromocionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

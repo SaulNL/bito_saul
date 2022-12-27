@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { HaversineService, GeoCoord } from "ng2-haversine";
-import { ViewqrPromocionComponent } from '../viewqr-promocion/viewqr-promocion.component';
+import { ViewQrPromocionComponent } from '../viewqr-promocion/viewqr-promocion.component';
 import { PromocionesService } from 'src/app/api/promociones.service';
 import { ToadNotificacionService } from 'src/app/api/toad-notificacion.service';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
@@ -75,7 +75,7 @@ export class InfoPromoComponent implements OnInit {
   async crearModal() {
     await  this.guardarCupon();
       const modal = await this.modalController.create({
-        component: ViewqrPromocionComponent,
+        component: ViewQrPromocionComponent,
         componentProps: {
           'promocion': this.promocion,
           'idPersona': this.idPersona,

@@ -70,7 +70,7 @@ export class AjustesPage implements OnInit {
         this.usuario = JSON.parse(localStorage.getItem('u_data'));
         if (localStorage.getItem("isRedirected") === "false") {
           localStorage.setItem("isRedirected", "true");
-          location.reload();
+          //location.reload();
         }
       }
     });

@@ -11,14 +11,13 @@
 	  </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
-<app-spinner [loader]="loading(loaderPc, loaderPr)" [message]="msj"></app-spinner>
-<ion-content *ngIf="!loaderPc && !loaderPr" [scrollEvents]="true"  (ionScroll)="cordenada = $event.detail.scrollTop">
+<app-spinner [loader]="loaderAnuncios" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loaderAnuncios" [scrollEvents]="true"  (ionScroll)="cordenada = $event.detail.scrollTop">
 		<ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
 			<ion-refresher-content></ion-refresher-content>
 	  	</ion-refresher>
 			<div>
-				<div *ngIf="!agregarPromocion">
+				<div>
 					<div>
 						<div>
 							<ion-card>
@@ -26,7 +25,7 @@
 									<div class="ion-text-center">
 									    <strong style="color: black;">Promociones creadas</strong>
 									</div>
-									<div *ngFor="let promocion of lstPromociones" >
+									<div *ngFor="let promocion of listaPromoOriginal">
 										<ion-item (click)="seleccionarPromocion(promocion)">
 											<ion-avatar slot="start" *ngIf="promocion.url_imagen === ''; else imagen">
 												<img  [src]="promocion.url_imagen_banner" [alt]="promocion.promocion">
@@ -45,6 +44,7 @@
 										</ion-item>
 									</div>
 								</ion-card-content>
+								 
 							</ion-card>
 						</div>
 

@@ -8,7 +8,7 @@ import { PromocionPageRoutingModule } from './promocion-routing.module';
 
 import { PromocionPage } from './promocion.page';
 import { SpinnerModule } from '../../componentes/spinner/spinner.module';
-import { ViewqrPromocionComponent } from '../../components/viewqr-promocion/viewqr-promocion.component';
+import { ViewQrPromocionComponent } from '../../components/viewqr-promocion/viewqr-promocion.component';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 @NgModule({
@@ -22,6 +22,6 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
   providers: [
     SocialSharing,
   ],
-  declarations: [PromocionPage, ViewqrPromocionComponent]
+  declarations: [PromocionPage]
 })
 export class PromocionPageModule {}

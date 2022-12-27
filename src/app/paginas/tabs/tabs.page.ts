@@ -8,6 +8,9 @@ import {AfiliacionPlazaModel} from "../../Modelos/AfiliacionPlazaModel";
 import { exists } from "fs";
 import { ReloadComponent } from "src/app/Bitoo/components/reload/reload.component";
 import { NotificacionesService } from "src/app/api/usuario/notificaciones.service";
+import moment from "moment";
+import { AdministracionService } from "src/app/api/administracion-service.service";
+import { FiltroCatVariableModel } from './../../Modelos/catalogos/FiltroCatVariableModel';
 
 @Component({
   selector: "app-tabs",
@@ -25,6 +28,15 @@ export class TabsPage implements OnInit {
   public misNotificaciones: any;
   public notifSinLeer :number = +localStorage.getItem("notifSinLeer");
   public id_proveedor:any;
+  showPopUp: boolean=false;
+  showPopUpGracias: boolean = false;
+  popUpTitle: string;
+  popUpDescrip: string;
+  infoPersona: any;
+  misEncuestas: any=[];
+  hayEncuesta:boolean=false
+  contesto: boolean=false;
+  filtroVariable : FiltroCatVariableModel= new FiltroCatVariableModel
   constructor(
       private util: UtilsCls,
       private sideBarService: SideBarService,
@@ -33,6 +45,7 @@ export class TabsPage implements OnInit {
       private platform: Platform,
       public alertController: AlertController,
       private notificacionesServide : NotificacionesService, 
+      private AdministracionService : AdministracionService
   ) {
     this.existeSesion = util.existe_sesion();
     this.activedPage = "";
@@ -63,7 +76,8 @@ export class TabsPage implements OnInit {
       error => {
       }
     );
-    this.actualizarNotificaciones(localStorage.getItem('id_proveedor'));
+    this.actualizarNotificaciones();
+    this.actualizarEncuestas();
    
 
     if (neg==='active' && this.isIos){
@@ -164,6 +178,8 @@ export class TabsPage implements OnInit {
     this.router.navigate(["/tabs/home/perfil"], {
       queryParams: { special: true },
     });
+    localStorage.setItem("activedPage", "perfil2");
+    this.activedPage = localStorage.getItem("activedPage");
     localStorage.removeItem("productos");
     localStorage.removeItem("negocios");
     localStorage.removeItem("todo");
@@ -214,17 +230,25 @@ export class TabsPage implements OnInit {
     await alert.present();
   }
 
-  obtenerNotificaciones(id_proveedor: any){
-    this.notificacionesServide.obtenerNotificaciones(id_proveedor).subscribe(
-      response => {
+  obtenerNotificaciones(){
+    var id_proveedor: number = +localStorage.getItem('id_proveedor');
+    if(id_proveedor!=null && id_proveedor!=undefined && id_proveedor!=0){
+      console.log("existe id_proveedor: "+id_proveedor)
+      this.notificacionesServide.obtenerNotificaciones(id_proveedor).subscribe(
+        response => {
+          if (response.code === 200){          
         if (response.code === 200){          
-          this.misNotificaciones= response.data;
-          this.notificacionesSinAbrir();
+          if (response.code === 200){          
+            this.misNotificaciones= response.data;
+            this.notificacionesSinAbrir();
+          }            
         }            
-      },
-      error => {
-      }
-    );
+          }            
+        },
+        error => {
+        }
+      );
+    }else{console.log("NO existe id_proveedor: ")}  
   }
 
   notificacionesSinAbrir(){    
@@ -236,11 +260,106 @@ export class TabsPage implements OnInit {
     }).length;*/
   }
 
-  actualizarNotificaciones(id_proveedor:any){
-    setInterval(( ) =>{
-      this.obtenerNotificaciones(id_proveedor);
-    }, 30000);
+  actualizarNotificaciones(){          
+    setInterval(( ) =>{     
+        //console.log("infoPersona: "+JSON.stringify(this.infoPersona))
+        this.obtenerNotificaciones();
+        /*setTimeout(() => {
+          this.obtenerEncuestas()
+        }, 3000); */          
+    }, 30000);         
   }
-  
+  async actualizarEncuestas(){  
+    this.filtroVariable.variable="intervaloTiempoPreguntaRapida";
+    //console.log(" Filtro variableeeeeeee: \n \n \n \n"+JSON.stringify(this.filtroVariable))
+    await this.AdministracionService.obtenerVariable(this.filtroVariable).subscribe(response =>{
+      //console.log("Response de variableeeeeeee: "+JSON.stringify(response))
+      let valor = response.data[0];
+      //console.log(" valorMostrarEncuesta: "+JSON.stringify(valor.valor))
+      localStorage.setItem('valorMostrarEncuesta', JSON.stringify(valor.valor));      
+    })       
+    const valorMostrarEncuesta = await Number(localStorage.getItem("valorMostrarEncuesta"))*60; 
+    //console.log("Las encuestas se actualizan cada: "+valorMostrarEncuesta*1000)
+    setInterval(( ) =>{   
+      //console.log("inicia")  
+      this.obtenerEncuestas()           
+    }, valorMostrarEncuesta*1000);         
+  }
+  obtenerEncuestas(){
+    this.contesto=false;
+    this.showPopUpGracias=false
+    let infoPersona = JSON.parse(localStorage.getItem('u_sistema'))
+    if(infoPersona!=null && infoPersona!=""){
+      console.log("existe id_persona: "+infoPersona.id_persona)
+      this.notificacionesServide.obtenerEncuestas(infoPersona.id_persona).subscribe(
+        response => {
+          //console.log("response:"+JSON.stringify(response))
+          if (response.code === 200){          
+            this.misEncuestas= response.data[0];
+            //console.log(JSON.stringify(this.misEncuestas))
+            if(this.misEncuestas != [] && this.misEncuestas != undefined){//.hasOwnProperty("id_pregunta_rapida")
+              //console.log("existe id_pregunta_rapida: ")
+              this.hayEncuesta=true;
+              //console.log("misEncuestas"+ JSON.stringify(this.misEncuestas))  
+              let opcionesArr = this.misEncuestas.opciones  
+              //console.log("opcionesArr"+JSON.stringify(opcionesArr))
+              //this.toastEncuesta(this.misEncuestas.titulo, (this.misEncuestas.duracion_pantalla*1000),this.misEncuestas.url_imagen,opcionesArr,this.misEncuestas.id_pregunta_rapida)
+              this.showPopUp=true;
+              setTimeout(() => {
+                this.closePopUp()
+              }, (this.misEncuestas.duracion_pantalla*1000));
+              //console.log("opcionesObj"+JSON.stringify(opcionesArr))
+            }else{
+              //console.log("No existe id_pregunta_rapida: ")
+              this.hayEncuesta=false;
+            }            
+          }else{
+            //console.log("nel")
+          }                     
+        },
+        error => {
+          console.log("error:"+error.message)
+        }        
+      );
+    }else{
+      //console.log("NO existe infoPersona")
+    }     
+  }  
 
+  enviarRespuesta(id_pregunta_rapida:number,id_opcion_pregunta_rapida: number){
+    this.closePopUp()
+    let infoPersona = JSON.parse(localStorage.getItem('u_sistema'))
+    let fecha_respuestas = moment().format('YYYY/MM/DD');
+    console.log("id_pregunta_rapida: "+id_pregunta_rapida+"\n"+
+    "id_opcion_pregunta_rapida: "+id_opcion_pregunta_rapida+"\n"+
+    "infoPersona: "+infoPersona.id_persona+"\n"+
+    "fecha_respuestas: "+fecha_respuestas)
+    this.notificacionesServide.guardarRespuestaEncuesta(id_pregunta_rapida,infoPersona.id_persona,id_opcion_pregunta_rapida,fecha_respuestas).subscribe(
+      response => {
+        if (response.code === 200){          
+          console.log("Respuesta codigo 200 "+JSON.stringify(response))          
+          this.contesto=true;          
+          this.showPopUpGracias=true;
+          setTimeout(() => {
+            this.closePopUpGracias()
+          },500);
+          
+        }else{
+          console.log("No se guardo codigo "+response.code)
+        }           
+      },
+      error => {
+        console.log("No se guardo error")
+      }
+    );
+  }
+  closePopUp(){
+    console.log("Cerró el popup 1")
+    this.showPopUp=false;    
+  }  
+
+  closePopUpGracias(){
+    console.log("Cerró el popup 2")
+    this.showPopUpGracias=false;    
+  }  
 }

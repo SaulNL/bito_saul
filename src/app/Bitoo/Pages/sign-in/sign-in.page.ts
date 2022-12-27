@@ -118,8 +118,14 @@ export class SignInPage implements OnInit {
     optionSesion: SelectedOptionSesionModel
   ) {
     ConfigGlobal.setUser(response);
-    let id_proveedor = response.data.usuario_sistema.ms_persona.proveedor.id_proveedor
-    localStorage.setItem("id_proveedor", id_proveedor);
+    //console.log(response.data.usuario_sistema.ms_persona.proveedor);
+    if (response.data.usuario_sistema.ms_persona.proveedor === null){
+      let id_proveedor = null;
+      localStorage.setItem("id_proveedor", id_proveedor);
+    }else{
+      let id_proveedor = response.data.usuario_sistema.ms_persona.proveedor.id_proveedor
+      localStorage.setItem("id_proveedor", id_proveedor);
+    }
     localStorage.setItem("isRedirected", "false");
     const optionEnterLogin = localStorage.getItem("optionLogin");
     this.inicializeNotification();
@@ -166,7 +172,7 @@ export class SignInPage implements OnInit {
     try {
       this.loginService.login(user).subscribe(        
         (response) => {
-          console.log("USEEEEEER"+JSON.stringify(user));
+          //console.log("USEEEEEER"+JSON.stringify(user));
           if (response.code === 200) {
             this.proccessSuccessAfterSignIn(response, optionSesion);
           } else {

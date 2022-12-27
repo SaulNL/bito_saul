@@ -115,21 +115,17 @@
       <ion-label class="hydrated" #datos (click)="abrirProducto(producto)">
         <h3>{{producto.nombre}}</h3>
         <p>
-          {{(producto.nombre_categoria1 != null)?producto.nombre_categoria1:'Sin
-          categoría'}}
+          {{producto.nombre_categoria1 != null ?producto.nombre_categoria1:'Sincategoría'}}
         </p>
         <p color="success">
-          ${{(producto.precio != '')?((producto.precio !=
-          null)?producto.precio:'Sin precio'):'Sin precio'}}
+          ${{producto.precio != '' ? producto.precio: producto.precio !=null ? producto.precio:'Sin precio'}}
         </p>
         <p>
-          {{(producto.descripcion != null)?producto.descripcion:'Sin
-          descripción'}}
+          {{producto.descripcion != null ? producto.descripcion:'Sin descripción'}}
         </p>
         <ion-badge color="primary">{{producto.tipo}}</ion-badge>
         <ion-badge color="medium"
-          >{{(producto.ubicacion !=
-          null)?producto.ubicacion.nombre_localidad:'Sin ubicación'}}
+          >{{producto.ubicacion !=null ? producto.ubicacion.nombre_localidad:'Sin ubicación'}}
         </ion-badge>
       </ion-label>
       <app-dar-like-producto
