@@ -77,7 +77,7 @@ export class TabsPage implements OnInit {
       }
     );
     this.actualizarNotificaciones();
-    this.actualizarEncuestas();
+    //this.actualizarEncuestas();
    
 
     if (neg==='active' && this.isIos){
@@ -297,7 +297,7 @@ export class TabsPage implements OnInit {
           if (response.code === 200){          
             this.misEncuestas= response.data[0];
             //console.log(JSON.stringify(this.misEncuestas))
-            if(this.misEncuestas != [] && this.misEncuestas != undefined){//.hasOwnProperty("id_pregunta_rapida")
+            if(this.misEncuestas.length > 0 && this.misEncuestas != undefined){//.hasOwnProperty("id_pregunta_rapida")
               //console.log("existe id_pregunta_rapida: ")
               this.hayEncuesta=true;
               //console.log("misEncuestas"+ JSON.stringify(this.misEncuestas))  
