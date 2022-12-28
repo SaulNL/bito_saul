@@ -262,59 +262,64 @@ export class TabsPage implements OnInit {
 
   actualizarNotificaciones(){          
     setInterval(( ) =>{     
-        //console.log("infoPersona: "+JSON.stringify(this.infoPersona))
+
         this.obtenerNotificaciones();
-        /*setTimeout(() => {
-          this.obtenerEncuestas()
-        }, 3000); */          
+                  
     }, 30000);         
   }
   async actualizarEncuestas(){  
     this.filtroVariable.variable="intervaloTiempoPreguntaRapida";
-    //console.log(" Filtro variableeeeeeee: \n \n \n \n"+JSON.stringify(this.filtroVariable))
+
     await this.AdministracionService.obtenerVariable(this.filtroVariable).subscribe(response =>{
-      //console.log("Response de variableeeeeeee: "+JSON.stringify(response))
-      let valor = response.data[0];
-      //console.log(" valorMostrarEncuesta: "+JSON.stringify(valor.valor))
-      localStorage.setItem('valorMostrarEncuesta', JSON.stringify(valor.valor));      
-    })       
-    const valorMostrarEncuesta = await Number(localStorage.getItem("valorMostrarEncuesta"))*60; 
-    //console.log("Las encuestas se actualizan cada: "+valorMostrarEncuesta*1000)
-    setInterval(( ) =>{   
-      //console.log("inicia")  
-      this.obtenerEncuestas()           
-    }, valorMostrarEncuesta*1000);         
+      let valor   
+      //console.log("response del tiempo ="+JSON.stringify(response)) 
+      if(response.data == undefined) {
+        valor = null;        
+      }else{
+        valor = response.data[0];//indice 0 por que solo se debe mostrar una encuesta a la vez
+        console.log("Se le asigna valor a obtenerVariable = "+valor.valor)
+        localStorage.setItem('valorMostrarEncuesta', JSON.stringify(valor.valor));
+        
+        let valorMostrarEncuesta = Number(localStorage.getItem("valorMostrarEncuesta"))*60;
+        if(valorMostrarEncuesta==0){
+          console.log("IF SEÑUELO")
+          valorMostrarEncuesta=60
+        } 
+        console.log("Las encuestas se actualizan cada: "+valorMostrarEncuesta*1000)
+        setInterval(( ) =>{               
+          this.obtenerEncuestas()           
+        }, valorMostrarEncuesta*1000); 
+      }                               
+    })              
   }
   obtenerEncuestas(){
     this.contesto=false;
     this.showPopUpGracias=false
     let infoPersona = JSON.parse(localStorage.getItem('u_sistema'))
     if(infoPersona!=null && infoPersona!=""){
-      console.log("existe id_persona: "+infoPersona.id_persona)
+      //console.log("existe id_persona: "+infoPersona.id_persona)
       this.notificacionesServide.obtenerEncuestas(infoPersona.id_persona).subscribe(
         response => {
-          //console.log("response:"+JSON.stringify(response))
+          //console.log("obtenerEncuestas = \n"+JSON.stringify(response))
           if (response.code === 200){          
             this.misEncuestas= response.data[0];
-            //console.log(JSON.stringify(this.misEncuestas))
-            if(this.misEncuestas.length > 0 && this.misEncuestas != undefined){//.hasOwnProperty("id_pregunta_rapida")
-              //console.log("existe id_pregunta_rapida: ")
+            
+            if(this.misEncuestas.hasOwnProperty("id_pregunta_rapida") && this.misEncuestas != undefined){
+              console.log("existe id_pregunta_rapida? "+this.misEncuestas.hasOwnProperty("id_pregunta_rapida"))
               this.hayEncuesta=true;
-              //console.log("misEncuestas"+ JSON.stringify(this.misEncuestas))  
-              let opcionesArr = this.misEncuestas.opciones  
-              //console.log("opcionesArr"+JSON.stringify(opcionesArr))
-              //this.toastEncuesta(this.misEncuestas.titulo, (this.misEncuestas.duracion_pantalla*1000),this.misEncuestas.url_imagen,opcionesArr,this.misEncuestas.id_pregunta_rapida)
+              //console.log("mi Encuesta = \n"+ JSON.stringify(this.misEncuestas))  
+
               this.showPopUp=true;
               setTimeout(() => {
                 this.closePopUp()
               }, (this.misEncuestas.duracion_pantalla*1000));
-              //console.log("opcionesObj"+JSON.stringify(opcionesArr))
+              
             }else{
-              //console.log("No existe id_pregunta_rapida: ")
+              console.log("No existe id_pregunta_rapida: ")
               this.hayEncuesta=false;
             }            
           }else{
-            //console.log("nel")
+            
           }                     
         },
         error => {
