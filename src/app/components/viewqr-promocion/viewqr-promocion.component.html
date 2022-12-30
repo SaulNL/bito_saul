@@ -12,13 +12,9 @@
 <ion-content #main id="main" >
   <app-spinner [loader]="loader" [message]="msj"></app-spinner>
   <div class="ion-text-center">
-    
-    <ion-button expand="block" (click)="descargar()" [disabled]="loaderCupon">
-      <div *ngIf="loaderCupon" class="spinner">
-        <ion-spinner name="bubbles"></ion-spinner>
-        <span>Generando cupón..</span>
-      </div>
-      <span *ngIf="!loaderCupon">Descargar</span>
+    <ion-button expand="block" (click)="descargar()">
+      <ion-spinner *ngIf="loaderCupon" name="bubbles"></ion-spinner>
+      <span>{{loaderCupon ? 'Generando cupón..' : 'Descargar'}}</span>
     </ion-button>
   </div>
   <div id="contenido" class="bg-promo">
@@ -44,11 +40,11 @@
         <ion-label>{{usuario.nombre}} {{usuario.paterno}} {{usuario.materno}}</ion-label>
       </ion-chip>
       
-      <p *ngIf="registro1 === true"> <span class="font-color-e3dd2a">• Cupón valido para cualquier usuario.</span></p>
+      <p *ngIf="registro1"> <span class="font-color-e3dd2a">• Cupón valido para cualquier usuario.</span></p>
         
-      <p *ngIf="registro2 === true"> <span class="font-color-e3dd2a">•</span>{{org_usu.nombre}}</p>
+      <p *ngIf="registro2"> <span class="font-color-e3dd2a">•</span>{{org_usu.nombre}}</p>
       
-      <p *ngIf="registro3 === true"> <span class="font-color-e3dd2a">• Usted debe registrar una afiliacion para validar el cupón.</span></p>
+      <p *ngIf="registro3"> <span class="font-color-e3dd2a">• Usted debe registrar una afiliacion para validar el cupón.</span></p>
 
       <div #qrcode id="qrcode" class="d-none d-sm-none d-md-block d-lg-block d-xl-block"></div>
       
