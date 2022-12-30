@@ -109,6 +109,19 @@ ion-label.sc-ion-label-md-h.sc-ion-label-md-s.md.hydrated {
     margin-bottom: 20px; 
     width: 100%;
   }
+  .flexButtons{
+    display: inline-flexbox; 
+    margin-top: 5px; 
+    width: 100%;
+  }
+  .flex_boton_respuesta{
+    background: linear-gradient(90deg, #fa4f72, #a74eef); 
+    color: white; 
+    border-radius:5px; 
+    border:none; 
+    width:150px; 
+    justify-self: center;
+  }
   .boton_respuesta{
     background: linear-gradient(90deg, #fa4f72, #a74eef); 
     color: white; 

@@ -230,9 +230,10 @@ export class TabsPage implements OnInit {
     await alert.present();
   }
 
-  obtenerNotificaciones(){
-    var id_proveedor: number = +localStorage.getItem('id_proveedor');
-    if(id_proveedor!=null && id_proveedor!=undefined && id_proveedor!=0){
+  obtenerNotificaciones(){    
+    console.log("PRUEBIOTAA: "+ typeof localStorage.getItem('id_proveedor'))
+    if(localStorage.getItem('id_proveedor')!="null" && localStorage.getItem('id_proveedor')!=undefined){
+      var id_proveedor: number = +localStorage.getItem('id_proveedor');
       console.log("existe id_proveedor: "+id_proveedor)
       this.notificacionesServide.obtenerNotificaciones(id_proveedor).subscribe(
         response => {
@@ -288,7 +289,7 @@ export class TabsPage implements OnInit {
         console.log("Las encuestas se actualizan cada: "+valorMostrarEncuesta*1000)
         setInterval(( ) =>{               
           this.obtenerEncuestas()           
-        }, valorMostrarEncuesta*1000); 
+        },10000)// valorMostrarEncuesta*1000); 
       }                               
     })              
   }
@@ -300,24 +301,25 @@ export class TabsPage implements OnInit {
       //console.log("existe id_persona: "+infoPersona.id_persona)
       this.notificacionesServide.obtenerEncuestas(infoPersona.id_persona).subscribe(
         response => {
-          //console.log("obtenerEncuestas = \n"+JSON.stringify(response))
-          if (response.code === 200){          
-            this.misEncuestas= response.data[0];
-            
-            if(this.misEncuestas.hasOwnProperty("id_pregunta_rapida") && this.misEncuestas != undefined){
-              console.log("existe id_pregunta_rapida? "+this.misEncuestas.hasOwnProperty("id_pregunta_rapida"))
-              this.hayEncuesta=true;
-              //console.log("mi Encuesta = \n"+ JSON.stringify(this.misEncuestas))  
+          console.log("obtenerEncuestas = \n"+JSON.stringify(response))
+          if (response.code === 200){  
+            if(response.data.length > 0){
+              this.misEncuestas= response.data[0];            
+              if(this.misEncuestas.hasOwnProperty("id_pregunta_rapida") && this.misEncuestas != undefined){
+                console.log("existe id_pregunta_rapida? "+this.misEncuestas.hasOwnProperty("id_pregunta_rapida"))
+                this.hayEncuesta=true;
+                //console.log("mi Encuesta = \n"+ JSON.stringify(this.misEncuestas))  
 
-              this.showPopUp=true;
-              setTimeout(() => {
-                this.closePopUp()
-              }, (this.misEncuestas.duracion_pantalla*1000));
-              
-            }else{
-              console.log("No existe id_pregunta_rapida: ")
-              this.hayEncuesta=false;
-            }            
+                this.showPopUp=true;
+                setTimeout(() => {
+                  this.closePopUp()
+                }, (this.misEncuestas.duracion_pantalla*1000));
+                
+              }else{
+                console.log("No existe id_pregunta_rapida: ")
+                this.hayEncuesta=false;
+              } 
+            }                             
           }else{
             
           }                     
@@ -331,7 +333,7 @@ export class TabsPage implements OnInit {
     }     
   }  
 
-  enviarRespuesta(id_pregunta_rapida:number,id_opcion_pregunta_rapida: number){
+  async enviarRespuesta(id_pregunta_rapida:number,id_opcion_pregunta_rapida: number){
     this.closePopUp()
     let infoPersona = JSON.parse(localStorage.getItem('u_sistema'))
     let fecha_respuestas = moment().format('YYYY/MM/DD');
@@ -339,7 +341,7 @@ export class TabsPage implements OnInit {
     "id_opcion_pregunta_rapida: "+id_opcion_pregunta_rapida+"\n"+
     "infoPersona: "+infoPersona.id_persona+"\n"+
     "fecha_respuestas: "+fecha_respuestas)
-    this.notificacionesServide.guardarRespuestaEncuesta(id_pregunta_rapida,infoPersona.id_persona,id_opcion_pregunta_rapida,fecha_respuestas).subscribe(
+    await this.notificacionesServide.guardarRespuestaEncuesta(id_pregunta_rapida,infoPersona.id_persona,id_opcion_pregunta_rapida,fecha_respuestas).subscribe(
       response => {
         if (response.code === 200){          
           console.log("Respuesta codigo 200 "+JSON.stringify(response))          
@@ -347,7 +349,7 @@ export class TabsPage implements OnInit {
           this.showPopUpGracias=true;
           setTimeout(() => {
             this.closePopUpGracias()
-          },500);
+          },2000);
           
         }else{
           console.log("No se guardo codigo "+response.code)
@@ -359,12 +361,12 @@ export class TabsPage implements OnInit {
     );
   }
   closePopUp(){
-    console.log("Cerró el popup 1")
+    console.log("Cerró el popup Encuesta")
     this.showPopUp=false;    
   }  
 
   closePopUpGracias(){
-    console.log("Cerró el popup 2")
+    console.log("Cerró el popup Gracias")
     this.showPopUpGracias=false;    
   }  
 }
