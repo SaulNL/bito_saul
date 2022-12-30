@@ -1,7 +1,7 @@
 import {AfiliacionPlazaModel} from '../../Modelos/AfiliacionPlazaModel';
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {PromocionesService} from "../../api/promociones.service";
-import {LoadingController, Platform} from "@ionic/angular";
+import {IonContent, LoadingController, Platform} from "@ionic/angular";
 import {FiltrosService} from "../../api/filtros.service";
 import {ProveedorServicioService} from "../../api/proveedor-servicio.service";
 import {ToadNotificacionService} from "../../api/toad-notificacion.service";
@@ -20,6 +20,7 @@ import { ModalLoguearseComponent } from 'src/app/componentes/modal-loguearse/mod
     styleUrls: ["promociones.page.scss"],
 })
 export class PromocionesPage implements OnInit {
+    @ViewChild(IonContent) content: IonContent;
     private loaderPrincipal: HTMLIonLoadingElement;
     public lstPromociones: Array<PromocionesModel>;
     public posicionRandom : number=0;
@@ -128,7 +129,8 @@ export class PromocionesPage implements OnInit {
 
     public scroll(){         
         var elem= document.getElementById("imagenCarta")
-        if(elem!=null){
+        var posicion;               
+        /*if(elem!=null){
             this.rep++
         }
         if (this.rep<=1){           
@@ -137,7 +139,19 @@ export class PromocionesPage implements OnInit {
                 elem.scrollIntoView();             
             }   
             setTimeout(scrolling, 1000);                         
-        }                                 
+        }*/
+        if (elem!=null){   
+            posicion = elem.getBoundingClientRect();                   
+            //elem.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});             
+            if(posicion.top != 0 && this.rep == 0){
+                this.rep++
+                
+                setTimeout(() => {
+                    this.content.scrollToPoint(0,posicion.top)
+                    console.log("Mostrando elemento random.."+this.posicionRandom +" pos ="+posicion.top+" conteo ="+ this.rep)
+                  }, 1000);                                
+            }                                                                                                                                                        
+        }                               
     }
     public obtenerPromociones() {
         if (navigator.geolocation && this.anyFiltros.tipoBusqueda === 1) {
@@ -164,11 +178,12 @@ export class PromocionesPage implements OnInit {
                     if (response.code === 402) {
                     }
                     if (response.data !== null) {
-                        this.lstPromociones = response.data;
+                        this.lstPromociones = response.data;                        
                         //console.log("lista promos de promos page"+JSON.stringify(this.lstPromociones));
                         this.loader = false;
-                        this.posicionRandom= this.aleatorio(1,this.lstPromociones.length)-1                                                
-                        // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}
+                        this.posicionRandom= this.aleatorio(0,this.lstPromociones.length-1) 
+                        console.log("posicionRandom = "+this.posicionRandom);                                               
+                        // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}                                   
                     } else {
                         this.lstPromociones = [];  
                     }
