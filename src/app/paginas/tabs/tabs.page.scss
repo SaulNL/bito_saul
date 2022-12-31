@@ -107,7 +107,8 @@ ion-label.sc-ion-label-md-h.sc-ion-label-md-s.md.hydrated {
     row-gap:5px; 
     margin-top: 5px; 
     margin-bottom: 20px; 
-    width: 100%;
+    //width: 100%;
+    margin: 0%;
   }
   .flexButtons{
     display: inline-flexbox; 
@@ -128,6 +129,39 @@ ion-label.sc-ion-label-md-h.sc-ion-label-md-s.md.hydrated {
     border-radius:5px; 
     border:none; width:80%; 
     justify-self: center;
+    margin-bottom: 5px;
+  }
+  .boton_respuesta2{
+    background: linear-gradient(90deg, #fa4f72, #a74eef); 
+    color: white; 
+    border-radius:5px; 
+    border:none; 
+    width:40%; 
+    justify-self: center;
+    margin-top: 5px;
+  }
+  .class1{
+    display:flex;
+    justify-content:center; 
+    margin-top:5px;
+  }
+  .class2{
+    display:flex;
+    justify-content:center; 
+    margin-top:5px;
+    justify-self: center; 
+    grid-column-start: 1; 
+    grid-column-end: 3;    
+  }
+  .gridMarginTop{
+    display:flex;
+    justify-content:center; 
+    margin-top:10px;
+  }
+  .gridMarginTop2{
+    display:flex;
+    justify-content:center; 
+    margin-top:40px;
   }
   .bottom_info_distintivo{
     width:100%;

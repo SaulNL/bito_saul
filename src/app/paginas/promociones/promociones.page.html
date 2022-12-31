@@ -45,7 +45,7 @@
     <app-recargar (respuesta)="recargar($event)"></app-recargar>
     <ion-grid *ngFor="let categorias of lstPromociones; index as i" class="categoria">
       <ion-row class="categoria">
-        <h2 *ngIf="i == posicionRandom" id="imagenCarta">{{ categorias.nombre }}{{i}}</h2>
+        <h2 *ngIf="i == posicionRandom" id="imagenCarta">{{ categorias.nombre }}</h2>
         <h2  *ngIf="i != posicionRandom">{{ categorias.nombre }}</h2>
         <!--h2  *ngIf="(i+1 == lstPromociones.length)">{{this.scroll()}}</-->
       </ion-row>
