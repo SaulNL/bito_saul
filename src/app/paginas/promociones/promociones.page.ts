@@ -111,10 +111,9 @@ export class PromocionesPage implements OnInit {
 
     ionViewWillEnter()
     {
-        if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
+        if (localStorage.getItem("isRedirected") === "false") {
             localStorage.setItem("isRedirected", "true");
             location.reload();
-            //localStorage.removeItem("activedPage");
         }
     }
 

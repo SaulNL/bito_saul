@@ -45,7 +45,7 @@
             </div>
         </ion-card-content>
     </ion-card>
-    <ion-card *ngIf="afiliacion">
+    <ion-card *ngIf="afiliacion && (idUsuario !=null || idUsuario !=undefined)">
         <ion-card-header>
             <ion-item *ngIf="!loaderOrg">
                 <ion-label>

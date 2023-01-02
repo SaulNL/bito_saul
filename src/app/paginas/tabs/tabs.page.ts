@@ -95,11 +95,11 @@ export class TabsPage implements OnInit {
       
     }
 
-    if(pagina==='promociones' && this.isAndroid){
+    if(pagina==='promociones'){
       this.activedPage = localStorage.getItem("activedPage");
     }
 
-    if(pagina==='productos' && this.isAndroid){
+    if(pagina==='productos'){
       this.activedPage = localStorage.getItem("activedPage");
       this.mostrarLoguearse();
     }

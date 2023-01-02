@@ -2,7 +2,7 @@ import {Component, Input, OnInit, ViewChild} from "@angular/core";
 import {PromocionesModel} from "../../Modelos/PromocionesModel";
 import {PromocionesService} from "../../api/promociones.service";
 import {ToadNotificacionService} from "../../api/toad-notificacion.service";
-import {AlertController, IonContent} from "@ionic/angular";
+import {AlertController, IonContent, Platform} from "@ionic/angular";
 import {PublicacionesModel} from "../../Modelos/PublicacionesModel";
 import {ModalController} from "@ionic/angular";
 import {ModalPublicarComponent} from "src/app/components/modal-publicar/modal-publicar.component";
@@ -66,6 +66,7 @@ export class MispromocionesPage implements OnInit {
     encode: string;
     json_cupon: any;
     id_persona: any;
+    isIOS = false;
     public loaderModal: boolean=true;
     public idPromo: number;
 
@@ -77,11 +78,13 @@ export class MispromocionesPage implements OnInit {
         private _router: Router,
         private active: ActivatedRoute,
         private barcodeScanner: BarcodeScanner,
+        private platform: Platform
     ) {
         this.blnActivaPromocion = true;
     }
 
     ngOnInit() {
+        this.isIOS = this.platform.is("ios");
         this.usuario = JSON.parse(localStorage.getItem("u_data"));
         this.id_persona = this.usuario.id_persona
         this.id_proveedor = this.usuario.proveedor.id_proveedor;

@@ -33,21 +33,27 @@
 
 @media (max-width: 500px) {
   .text{
-    font-size: 9.5px;
+    font-size: 9px;
   }
 
   .text2, .icono{
-    font-size: 10.2px;
+    font-size: 10px;
   }
 }
-.icono{
-  font-size: 15px;
+
+.ion-col {
+  text-align: right;
+}
+
+.ion-col-2 {
+  text-align: center;
 }
 
 .mapa{
-  --background: linear-gradient(90deg, #fa4f72, #a74eef);
+  --background: linear-gradient(90deg, #fa4f71e7, #a64eefeb);
   color: white;
   font-size: 12px;
+  margin-top: 8px;
 }
 
 .mapa .icono{
@@ -251,6 +257,10 @@ ion-card-title {
   --background: #d3d3d3;
   --color: rgb(43, 43, 43);
   font-size: 11px;
+}
+
+.icono-ver-mas{
+  font-size: 15px;
 }
 
 @media (max-width: 380px) {

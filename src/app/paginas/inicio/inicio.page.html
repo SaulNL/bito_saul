@@ -39,10 +39,9 @@
   <app-spinner  [loader]="loaderNegocios" [message]="msj"></app-spinner>
   <app-spinner *ngIf="mostrarloaderInicio"  [loader]="loaderInicio" [message]="msj"></app-spinner>
   <div *ngIf="!loader">
-    <ion-grid fixed>
+    <ion-grid>
       <ion-row>
-        <ion-col size="12">
-          <ion-buttons>
+        <ion-col class="ion-col" size-md="12">
             <ion-chip *ngIf="!selectionAP" color="dark" (click)="openPlazasAfiliacionesModal()">
               <small class="text">Destacados</small>
               <ion-icon class="icono" name="caret-down-outline"></ion-icon>
@@ -50,14 +49,16 @@
 
             <ion-chip *ngIf="selectionAP" (click)="regresarBitoo()" color="danger">
               <ion-icon class="icono" name="log-out-outline"></ion-icon>
-              <ion-label><span class="text">Regresar a Bitoo</span></ion-label>
+              <ion-label><span class="text">Volver a Bitoo</span></ion-label>
             </ion-chip>
-
-            <ion-button style="margin: 0 20px;" size="small" class="mapa" shape="round" [disabled]="listaCategorias.length === 0" (click)="abrirModalMapa()">
+        </ion-col>
+        <ion-col class="ion-col-2" size-md="6">
+            <ion-button mode="ios" size="small" class="mapa" shape="round" [disabled]="listaCategorias.length === 0" (click)="abrirModalMapa()">
               <ion-icon class="icono" name="map-outline"></ion-icon>
-              <small>Mapa</small>
+              <small>MAPA</small>
             </ion-button>
-
+        </ion-col>
+        <ion-col size-md="6">
             <ion-chip *ngIf="filtroActivo" (click)="borrarFiltrosP()" color="danger">
               <ion-icon class="icono" name="trash-outline" color="danger"></ion-icon>
               <ion-label><span class="text">Borrar Filtros</span></ion-label>
@@ -67,7 +68,6 @@
               ><span>Filtros</span>
               <ion-icon class="icono" name="filter-outline"></ion-icon>
             </ion-chip>
-          </ion-buttons>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -202,20 +202,20 @@
             (click)="verMasNegociosCon ? cargarMenosNegociosInicio(cat.nombre) : cargarMasNegociosInicio(cat.nombre)" class="boton-ver-mas">
               <span class="texto-ver-mas" *ngIf="!verMasNegociosCon">Ver más negocios </span>
               <span class="texto-ver-mas" *ngIf="verMasNegociosCon">Ver menos negocios</span>
-              <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+              <ion-icon class="icono-ver-mas" name="chevron-forward-outline"></ion-icon>
             </ion-button>
   
             <ion-button shape="round" expand="full" size="small" *ngIf="cat.nombre == 'Con promociones' && !filtroActivo && !idTodo && !selectionAP && !buscador" 
             (click)="verMasNegociosPromo ? cargarMenosNegociosInicio(cat.nombre) : cargarMasNegociosInicio(cat.nombre)" class="boton-ver-mas">
               <span class="texto-ver-mas" *ngIf="!verMasNegociosPromo">Ver más negocios </span>
               <span class="texto-ver-mas" *ngIf="verMasNegociosPromo">Ver menos negocios</span>
-              <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+              <ion-icon class="icono-ver-mas" name="chevron-forward-outline"></ion-icon>
             </ion-button>
             <ion-button shape="round" expand="full" size="small" *ngIf="cat.nombre == 'Más Vistos' && !filtroActivo && !idTodo && !selectionAP && !buscador" 
             (click)="verMasNegociosVistos ? cargarMenosNegociosInicio(cat.nombre) : cargarMasNegociosInicio(cat.nombre)" class="boton-ver-mas">
               <span class="texto-ver-mas" *ngIf="!verMasNegociosVistos">Ver más negocios </span>
               <span class="texto-ver-mas" *ngIf="verMasNegociosVistos">Ver menos negocios</span>
-              <ion-icon class="icono" name="chevron-forward-outline"></ion-icon>
+              <ion-icon class="icono-ver-mas" name="chevron-forward-outline"></ion-icon>
             </ion-button>
           </div>
         </div>

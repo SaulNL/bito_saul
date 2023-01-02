@@ -12,6 +12,8 @@
   </ion-toolbar>
 </ion-header>
 <app-spinner [loader]="loaderAnuncios" [message]="msj"></app-spinner>
+<app-boton-top [content]="content" [cordenada]="cordenada" *ngIf="isIOS"></app-boton-top>
+
 <ion-content *ngIf="!loaderAnuncios" [scrollEvents]="true"  (ionScroll)="cordenada = $event.detail.scrollTop">
 		<ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
 			<ion-refresher-content></ion-refresher-content>
@@ -47,8 +49,8 @@
 								 
 							</ion-card>
 						</div>
-
-						<app-boton-top [content]="content" [cordenada]="cordenada" ></app-boton-top>
+						
+						<app-boton-top [content]="content" [cordenada]="cordenada" *ngIf="!isIOS"></app-boton-top>
 
 						<ion-card>
 							<ion-card-content>
@@ -162,6 +164,6 @@
 					</div>
 				</div>
 
-			</div>		
+			</div> 	
 
 </ion-content>
