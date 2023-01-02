@@ -1,6 +1,6 @@
 
   <div *ngIf="hayEncuesta" [ngClass]="showPopUp? 'bottom_info_distintivo_up' : 'bottom_info_distintivo'">                  
-    <div class="contenedor_popup" *ngIf="contesto==false">                        
+    <div class="contenedor_popup">                        
       <div class="popup_content">     
         <div class="icon_close">  
           <h3 (click)="closePopUp()" style="margin-right: 5px; margin-top:5px;">✖</h3>                                                                  
@@ -11,13 +11,22 @@
         <div *ngIf="misEncuestas.url_imagen!='' && misEncuestas.url_imagen != undefined" style="margin-top:5px; margin-bottom:-3px">
           <img src="{{misEncuestas.url_imagen}}" alt="Imagen de encuesta"/>
         </div>
-        <div class="gridButtons">
-          <div *ngFor="let opcion of misEncuestas.opciones; index as i" style="display:flex;justify-content:center; margin-top:5px;">            
-            <button id='increase' class="boton_respuesta"
+
+        <div class="gridButtons" *ngIf="misEncuestas.opciones.length > 3 || misEncuestas.opciones.length < 3">          
+            <div *ngFor="let opcion of misEncuestas.opciones; index as i" [ngClass]="misEncuestas.opciones.length < 3 ? 'gridMarginTop2' : 'gridMarginTop' "><!--style="display:flex;justify-content:center; margin-top:5px;"-->                        
+              <button id='increase' class="boton_respuesta" 
                     (click)="enviarRespuesta(misEncuestas.id_pregunta_rapida, opcion.id_opcion_pregunta_rapida)">
-            {{opcion.descripcion}}
+                    {{opcion.descripcion}}
+              </button><br/><br/>
+            </div>                    
+        </div>
+        <div class="gridButtons" *ngIf="misEncuestas.opciones.length == 3" style="margin-top:10px">
+          <div *ngFor="let opcion of misEncuestas.opciones; index as i" [ngClass]=" i== misEncuestas.opciones.length-1 ?'class2' : 'class1'">                        
+            <button id='increase' [ngClass]=" i== misEncuestas.opciones.length-1 ?'boton_respuesta2' : 'boton_respuesta'"
+                    (click)="enviarRespuesta(misEncuestas.id_pregunta_rapida, opcion.id_opcion_pregunta_rapida)">
+                    {{opcion.descripcion}}
             </button><br/><br/>
-          </div>
+          </div>                    
         </div>
       </div>          
     </div>                   
@@ -32,7 +41,7 @@
           <h3>¡Perfecto!</h3>         
         </div>
         <div>
-          <h4>Muchas gracias por ayudarnos a conocer sus preferencias</h4>
+          <h4>{{mensajeRespondio}}</h4>
         </div>
       </div>          
     </div>
