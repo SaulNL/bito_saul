@@ -78,7 +78,7 @@ export class TabsPage implements OnInit {
       }
     );
     this.actualizarNotificaciones();
-    this.actualizarEncuestas();
+    //this.actualizarEncuestas();
    
 
     if (neg==='active' && this.isIos){
