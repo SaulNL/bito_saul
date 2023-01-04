@@ -1,7 +1,7 @@
 import { URLS_ENTORNOS } from '../environments/urlEntornos';
 export class AppSettings {
 
-    public static ENTORNO = URLS_ENTORNOS.produccion;
+    public static ENTORNO = URLS_ENTORNOS.beta;
     public static API_ENDPOINT = AppSettings.ENTORNO.API_ENDPOINT;
     public static URL_FRONT = AppSettings.ENTORNO.URL_FRONT;
     public static URL_REGISTRO = AppSettings.ENTORNO.URL_REGISTRO;
@@ -20,7 +20,7 @@ export class AppSettings {
     public static VERSION_ANDROID = 42; //ESTA SE TIENE QUE ACTUALIZAR
     public static ID_DB_PLATFORM_ANDROID = 55; //ESTO NO SE DEBE MOVER EN FUTURAS VERSIONES, FUNCIONA COMO ID PARA ENCONTRARLO EN LA TABLA DE VARIABLE
     public static ID_DB_PLATFORM_IOS = 57; //ESTO NO SE DEBE MOVER EN FUTURAS VERSIONES, FUNCIONA COMO ID PARA ENCONTRARLO EN LA TABLA DE VARIABLE
-    public static VERSION_IOS = 8; //ESTA SE TIENE QUE ACTUALIZAR
+    public static VERSION_IOS = 9; //ESTA SE TIENE QUE ACTUALIZAR
     public static ES_MOVIL = false;
     public static NUEVAS_FUNCIONES = true;
     public static APP_DOWNLOAD = 'https://play.google.com/store/apps/details?id=mx.com.softura.bitoo&hl=es';
