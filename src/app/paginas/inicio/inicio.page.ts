@@ -609,7 +609,6 @@ export class InicioPage implements OnInit, AfterViewInit {
           this.banderaInicio = false; 
           this.loader = true;       
           // return
-          console.log("entro")
           var responseNegociosCategorias = await this.principalSercicio.obtenerNegociosTodosFiltroMapa(this.Filtros);
           await this.validarResultadosTodos(responseNegociosCategorias);
       }
@@ -784,6 +783,11 @@ export class InicioPage implements OnInit, AfterViewInit {
    this.listaIdsMapa = [];
    //await this.buscarNegocios(true);
    await this.cargarCargarNegociosMapas()
+   //Vuelve a consultar las cordenadas por si las manda en null anteriormente
+   if(this.banderaInicio)
+   {
+    this.getCurrentPosition();
+   }
 
     const modal = await this.modalController.create({
       component: MapaNegociosComponent,
