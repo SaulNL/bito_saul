@@ -1003,7 +1003,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     if(len <  lenCat)
     {
 
-      for (let i = len; i <= len + 3 ; i++) 
+      for (let i = len; i <= lenCat ; i++) 
       { 
         if(i+1 <= lenCat)
         {
@@ -1025,7 +1025,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
   }
 
-  cargarMenosNegociosInicio(nombre)
+  cargarMenosNegociosInicio(nombre,ancla)
   {
     this.indice = nombre === 'Con promociones' ? this.indice = 1 :  nombre ===  'Con convenio' ? this.indice = 0 : this.indice = 2;
     this.listaVerMas[this.indice].negocios.splice(10,this.listaCategorias[this.indice].negocios.length);
@@ -1035,6 +1035,28 @@ export class InicioPage implements OnInit, AfterViewInit {
     } else{
       this.indice == 0 ? this.verMasNegociosCon = true : this.indice == 1 ? this.verMasNegociosPromo = true : this.verMasNegociosVistos = true;
     }
+    if (ancla=="ancla0"){//Se conservan posiciones estaticas de forma provicional 
+      this.content.scrollToPoint(0,330,500)
+    }if (ancla=="ancla1"){
+      this.content.scrollToPoint(0,1800,500)
+    }if (ancla=="ancla2"){
+      this.content.scrollToPoint(0,3500,500)
+    }
+     
+  //scrollToPoint posicion.top entrega un valor negativo y scrollInToView desplaza el top y tl bottom hacia arriba de forma incorrecta 
+    
+   /*var elem= document.getElementById(ancla)
+    var posicion;    
+    posicion= elem.getBoundingClientRect();
+    console.log("Categoria botone menos: "+this.indice+" Ancla: "+ancla+" PosicionTop: "+posicion.top+" PosicionBottom: "+posicion.bottom)    
+    if(elem != null){
+      posicion= elem.getBoundingClientRect();
+      console.log("Coordenadas :> bottom: "+posicion.bottom+ " Top: "+posicion.top)      
+      //this.content.scrollToPoint(0,Math.abs(posicion.top))
+      //elem.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+    }else{
+      console.log("null")
+    }*/
   }
 
   obtenerNegociosFav() 
