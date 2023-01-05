@@ -26,6 +26,7 @@ import { throwError } from "rxjs";
 import { AlertController } from "@ionic/angular";
 import { Plugins } from '@capacitor/core';
 import { PersonaService } from "src/app/api/persona.service";
+import { TouchSequence } from "selenium-webdriver";
 
 const { Geolocation } = Plugins;
 declare var google: any;
@@ -784,9 +785,10 @@ export class InicioPage implements OnInit, AfterViewInit {
    //await this.buscarNegocios(true);
    await this.cargarCargarNegociosMapas()
    //Vuelve a consultar las cordenadas por si las manda en null anteriormente
-   if(this.banderaInicio)
+   if(this.banderaInicio && this.latitud === undefined && this.longitud === undefined)
    {
-    this.getCurrentPosition();
+    this.latitud = 19.31905;
+    this.longitud = -98.19982;
    }
 
     const modal = await this.modalController.create({
