@@ -26,6 +26,7 @@ import { throwError } from "rxjs";
 import { AlertController } from "@ionic/angular";
 import { Plugins } from '@capacitor/core';
 import { PersonaService } from "src/app/api/persona.service";
+import { TouchSequence } from "selenium-webdriver";
 
 const { Geolocation } = Plugins;
 declare var google: any;
@@ -448,19 +449,20 @@ export class InicioPage implements OnInit, AfterViewInit {
     return nuevaLista;
   }
 
-  async validarResultadosDeCategoriasAll(respuesta: any) {
-    this.banderaVerMas == false;
-    const cantidadDeResultados = respuesta.data.lst_cat_negocios.data.length;
-    if (cantidadDeResultados > 0) {
-      if (this.actualPagina > 1 || this.actualGiro >1) {
-        this.obtenerNegocios([...respuesta.data.lst_cat_negocios.data]);
-      } else {
-        this.obtenerNegocios(respuesta.data.lst_cat_negocios.data);
-      }
-    } else {
-      throw throwError("");
-    }
-  }
+  //Esta función creo se esta ocupando solo para cuando hacia la paginacion del mapa
+  // async validarResultadosDeCategoriasAll(respuesta: any) {
+  //   this.banderaVerMas == false;
+  //   const cantidadDeResultados = respuesta.data.lst_cat_negocios.data.length;
+  //   if (cantidadDeResultados > 0) {
+  //     if (this.actualPagina > 1 || this.actualGiro >1) {
+  //       this.obtenerNegocios([...respuesta.data.lst_cat_negocios.data]);
+  //     } else {
+  //       this.obtenerNegocios(respuesta.data.lst_cat_negocios.data);
+  //     }
+  //   } else {
+  //     throw throwError("");
+  //   }
+  // }
   
   public getCurrentPosition(){
     let gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
@@ -586,29 +588,8 @@ export class InicioPage implements OnInit, AfterViewInit {
         && this.Filtros.organizacion == null && this.Filtros.strBuscar == "" && this.Filtros.strMunicipio == ""
         && this.Filtros.tipoBusqueda == 0
        ){
-        await this.procesar(null, 0);
-      }else{
-        var respuesta = await this.principalSercicio
-        .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
-        //console.log(respuesta)
-        await this.procesar(respuesta, 0);
-      }
-      //this.loader = false;
-    } catch (error) {
-      //this.loader = false;
-      //this.notificaciones.error("No hay conexión a internet, conectate a una red");
-    }
-
-  }
-
-  public async procesar(response: any, i: number) {
-    //if (response.data.lst_cat_negocios.last_page >= i) {
-      if(this.Filtros.idCategoriaNegocio == null  && this.Filtros.abierto == null && this.Filtros.blnEntrega == null
-         && this.Filtros.idGiro == null  && this.Filtros.intEstado == 0
-         && this.Filtros.idLocalidad == null && this.Filtros.idMunicipio == null && this.Filtros.latitud == 0 && this.Filtros.longitud == 0
-         && this.Filtros.organizacion == null && this.Filtros.strBuscar == "" && this.Filtros.strMunicipio == ""
-         && this.Filtros.tipoBusqueda == 0
-        ){
+          // console.log(this.Filtros);
+          // await this.procesar(null, 0);
           //console.log("paso 4 mapa")
           this.banderaInicio = true;
           this.loader = true;
@@ -619,19 +600,58 @@ export class InicioPage implements OnInit, AfterViewInit {
           await this.validarResultadosTodos(responseNegociosTodos);
           //console.log(responseNegociosTodos)
       }else{
-        this.banderaInicio = false;
-        var response2 = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, i);
-        await this.validarResultadosDeCategoriasAll(response2);
-        i=i+1;
-        await this.procesar(response,i );
-        
-        return
+          // console.log(this.Filtros);
+          // var respuesta = await this.principalSercicio
+          // .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
+          // //console.log(respuesta)
+          // await this.procesar(respuesta, 0);
+          // console.log(this.Filtros);
+          // await this.procesar(null, 0);
+          this.banderaInicio = false; 
+          this.loader = true;       
+          // return
+          var responseNegociosCategorias = await this.principalSercicio.obtenerNegociosTodosFiltroMapa(this.Filtros);
+          await this.validarResultadosTodos(responseNegociosCategorias);
       }
-    //} else {
       //this.loader = false;
-      //return
-    //}
+    } catch (error) {
+      this.loader = false;
+      this.notificaciones.error("No hay conexión a internet, conectate a una red");
+    }
+
   }
+
+  // public async procesar(response: any, i: number) {
+  //   //if (response.data.lst_cat_negocios.last_page >= i) {
+  //     if(this.Filtros.idCategoriaNegocio == null  && this.Filtros.abierto == null && this.Filtros.blnEntrega == null
+  //        && this.Filtros.idGiro == null  && this.Filtros.intEstado == 0
+  //        && this.Filtros.idLocalidad == null && this.Filtros.idMunicipio == null && this.Filtros.latitud == 0 && this.Filtros.longitud == 0
+  //        && this.Filtros.organizacion == null && this.Filtros.strBuscar == "" && this.Filtros.strMunicipio == ""
+  //        && this.Filtros.tipoBusqueda == 0
+  //       ){
+  //         //console.log("paso 4 mapa")
+  //         this.banderaInicio = true;
+  //         this.loader = true;
+  //         if(!this.isIOS){
+  //           this.getCurrentPosition();
+  //         }
+  //         var responseNegociosTodos = await this.principalSercicio.obtenerNegociosTodosMapa();
+  //         await this.validarResultadosTodos(responseNegociosTodos);
+  //         //console.log(responseNegociosTodos)
+  //     }else{
+  //       this.banderaInicio = false;
+  //       var response2 = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, i);
+  //       await this.validarResultadosDeCategoriasAll(response2);
+  //       i=i+1;
+  //       await this.procesar(response,i );
+        
+  //       return
+  //     }
+  //   //} else {
+  //     //this.loader = false;
+  //     //return
+  //   //}
+  // }
 
   public async buscarNegocios(seMuestraElLoader: boolean) {
     //console.log("paso 2 mapa")
@@ -762,8 +782,14 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   async abrirModalMapa() {
    this.listaIdsMapa = [];
-   await this.buscarNegocios(true);
+   //await this.buscarNegocios(true);
    await this.cargarCargarNegociosMapas()
+   //Vuelve a consultar las cordenadas por si las manda en null anteriormente
+   if(this.banderaInicio && this.latitud === undefined && this.longitud === undefined)
+   {
+    this.latitud = 19.31905;
+    this.longitud = -98.19982;
+   }
 
     const modal = await this.modalController.create({
       component: MapaNegociosComponent,
@@ -806,18 +832,18 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   }
 
-  public obtenerNegocios(listaCategoriasAll: ICategoriaNegocio[]) {
+  // public obtenerNegocios(listaCategoriasAll: ICategoriaNegocio[]) {
 
-    let listaIds = [];
-    listaCategoriasAll.map((l) => {
-      l.negocios.map((n) => {
-        listaIds.push(n);
-      });
-    });
-    for (let index = 0; index < listaIds.length; index++) {
-      this.listaIdsMapa.push(listaIds[index].id_negocio);
-    }
-  }
+  //   let listaIds = [];
+  //   listaCategoriasAll.map((l) => {
+  //     l.negocios.map((n) => {
+  //       listaIds.push(n);
+  //     });
+  //   });
+  //   for (let index = 0; index < listaIds.length; index++) {
+  //     this.listaIdsMapa.push(listaIds[index].id_negocio);
+  //   }
+  // }
 
   public obtenerNegocios2(listaCategoriasAll: INegocios[]) {
     //console.log("paso 6")
@@ -828,12 +854,10 @@ export class InicioPage implements OnInit, AfterViewInit {
       //});
     });
     
-    let tamano = listaIds[0].length;
-    
-
     for (let index = 0; index < listaIds[0].length; index++) {
       this.listaIdsMapa.push(listaIds[0][index].id_negocio);
     }
+
     this.loader = false;
   }
 

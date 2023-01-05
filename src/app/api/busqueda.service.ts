@@ -146,6 +146,16 @@ export class BusquedaService {
     });
   }
 
+  public obtenerNegociosTodosFiltroMapa(filtro): Promise<any>{
+    const body = JSON.stringify({filtros: filtro});
+     this.http.setDataSerializer("utf8");
+    return this.http.post(`${this.url}api/negocios/obtenerTodosMapa`,body, AppSettings.getHeaders())
+    .then( data => {
+      let respuesta: any =  JSON.parse(data.data);
+      return respuesta;
+    });
+  }
+
   
   public getDatosNegocioSinMapearCategoría(filtro, pagina: number): Observable<any> {
     const body = JSON.stringify({filtros: filtro, page: pagina});
