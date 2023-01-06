@@ -371,17 +371,4 @@ export class PromocionesService {
     }));
   }
 
-  features(idNegocio: number):Observable<any>{
-    const body = JSON.stringify({"id" : idNegocio});
-    console.log(body);
-    this.http.setDataSerializer('utf8');
-    return from(this.http.post(`${this.url}api/buscar/caracteristicasnegocio`, body, AppSettings.getHeadersToken())
-    .then((data) => {
-      return JSON.parse(data.data);
-    })
-    .catch((error) => {
-      return error;
-    }));
-  }
-
 }
