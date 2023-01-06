@@ -19,7 +19,7 @@ import { CatMunicipioModel } from 'src/app/Modelos/CatMunicipioModel';
 import { MsPersonaModel } from 'src/app/Modelos/MsPersonaModel';
 import { CatLocalidadModel } from 'src/app/Modelos/CatLocalidadModel';
 import { PersonaService } from '../../api/persona.service';
-
+import { PromocionesService } from 'src/app/api/promociones.service';
 
 const { Geolocation } = Plugins;
 declare var google: any;
@@ -40,6 +40,7 @@ export class PedidoNegocioComponent implements OnInit {
     @Input() public latNegocio: number;
     @Input() public logNegocio: number;
     @Input() public convenio: number;
+    features:boolean = false;
     public static readonly TIPO_DE_PAGO_INVALIDO = -1; // Puede ser cualquier numero menor a 0;
     tipoEnvio: any;
     private map: Map;
@@ -108,6 +109,7 @@ export class PedidoNegocioComponent implements OnInit {
         private guard: AuthGuardService,
         private servicioPersona: PersonaService,
         private _general_service: GeneralServicesService,
+        private promocionesService: PromocionesService,
         /* private geolocation: Geolocation, */
         private _utils_cls: UtilsCls,
         public getCoordinatesMap: UbicacionMapa,
@@ -142,6 +144,26 @@ export class PedidoNegocioComponent implements OnInit {
         this.loadMap();
         this.sumarLista();
         this.cargarTipoDePagos();
+        this.obtenerFeatures();
+    }
+    async obtenerFeatures(){
+        await this.promocionesService.features(this.idNegocio).subscribe(
+            response => {
+                console.log("FEATURES del id_negocio "+this.idNegocio+", "+JSON.stringify(response))
+                if (response.data.lenght != 0){                    
+                    response.data.forEach(feature => {
+                        if(feature.id_caracteristica == 2){
+                            this.features = true;
+                        }
+                    });
+                }else{
+                    this.features = false;
+                }
+            },
+            error => {
+                console.log("error"+error)
+            }
+        );
     }
     cargarTipoDePagos(){
         this.negocioService.obtenerTiposDePagosPorNegocio(this.idNegocio)
@@ -415,7 +437,7 @@ export class PedidoNegocioComponent implements OnInit {
         const telephoneUsuario = datos.celular;
         this.negocioService.registrarPedido(pedido).subscribe(
             (response) => {
-                if (response.code === 200) {
+                if (response.code === 200) {//Validar que el usuario ya haya regisrado su informacion(se queda CARGANDO)
                     this.enviarSms(telephoneUsuario, this.lista[0].idNegocio);
                     this.loader = false;
                 } else {
