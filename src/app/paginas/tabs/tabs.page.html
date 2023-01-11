@@ -8,8 +8,8 @@
         <div class="titlePopUp">                              
           <h4>{{misEncuestas.titulo}}</h4>         
         </div>
-        <div *ngIf="misEncuestas.url_imagen!='' && misEncuestas.url_imagen != undefined" style="margin-top:5px; margin-bottom:-3px">
-          <img src="{{misEncuestas.url_imagen}}" alt="Imagen de encuesta"/>
+        <div *ngIf="misEncuestas.url_imagen!='' && misEncuestas.url_imagen != undefined" style="margin-top:5px; margin-bottom:-3px;">
+          <img src="{{misEncuestas.url_imagen}}" alt="Imagen de encuesta" style="height: 90px; width: auto; max-width: 100%"/>
         </div>
 
         <div class="gridButtons" *ngIf="misEncuestas.opciones.length > 3 || misEncuestas.opciones.length < 3">          
