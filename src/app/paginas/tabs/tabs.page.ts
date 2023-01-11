@@ -352,7 +352,7 @@ export class TabsPage implements OnInit {
           this.showPopUpGracias=true;
           setTimeout(() => {
             this.closePopUpGracias()
-          },2000);
+          },5000);
           
         }else{
           //console.log("No se guardo codigo "+response.code)
