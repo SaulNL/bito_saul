@@ -129,6 +129,11 @@ export class FormularioNegocioPage implements OnInit {
     loop: false,
     spaceBetween: 10,
   }
+  features10: boolean = false;
+  numeroFotosPermitidas: number;
+  features12: boolean = false;
+  disabled: boolean;
+  disabledPhoto: boolean;
   constructor(
     private alertController: AlertController,
     private router: Router,
@@ -168,11 +173,14 @@ export class FormularioNegocioPage implements OnInit {
 
 
   ngOnInit() {
+    this.disabled=true
+    this.disabledPhoto=true
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.nuevoNegocio) {
         this.negocioTO = new NegocioModel();
         this.negocioTO.tags = [];
         this.negocioTO.lugares_entrega = [];
+        this.obtenerFeatures(this.negocioTO.id_negocio);
         this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
         this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
         this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
@@ -189,11 +197,12 @@ export class FormularioNegocioPage implements OnInit {
       if (params && params.special) {
         const datos = JSON.parse(params.special);
         this.negocioTO = datos.info;  
+        this.obtenerFeatures(this.negocioTO.id_negocio);
         //this.buscarNegocio(this.negocioTO.id_negocio)
         this.fotografiasArray=this.negocioTO.fotografias;
         console.log("fotografiasArray####"+JSON.stringify(this.fotografiasArray))          
         this.numeroFotos=this.fotografiasArray.length;
-        if(this.numeroFotos>=3){
+        if(this.numeroFotos >= this.numeroFotosPermitidas){
           this.galeriaFull=true
         }
         this.nombreAnterior = this.negocioTO.nombre_comercial;
@@ -486,6 +495,9 @@ export class FormularioNegocioPage implements OnInit {
       }
     }
   }
+  public avisoConvenio(event){
+    this.notificaciones.toastInfo("Registra un convenio para poder habilitar esta característica")
+  }
   public agregarFoto(event) {           
     let nombre_archivo;
     if (event.target.files && event.target.files.length) {
@@ -516,7 +528,7 @@ export class FormularioNegocioPage implements OnInit {
                     }
                     this.fotografiasArray.push(archivo)
                     this.numeroFotos++
-                    if(this.numeroFotos>=3){
+                    if(this.numeroFotos >= this.numeroFotosPermitidas){
                       this.galeriaFull=true
                     }                    
                   }
@@ -534,7 +546,7 @@ export class FormularioNegocioPage implements OnInit {
                     archivo.archivo_64 = r.data;
                     this.fotografiasArray.push(archivo)
                     this.numeroFotos++
-                    if(this.numeroFotos>=3){
+                    if(this.numeroFotos >= this.numeroFotosPermitidas){
                       this.galeriaFull=true
                     }                    
                 }
@@ -1258,5 +1270,35 @@ export class FormularioNegocioPage implements OnInit {
 
 eliminarConvenio(i) {
   this.convenio.splice(i,1);
+}
+
+async obtenerFeatures(id_negocio: number){
+  await this._general_service.features(id_negocio).subscribe(
+      response => {
+          console.log("FEATURES del id_negocio en formulario"+id_negocio+",\n"+JSON.stringify(response))
+          this.features10 = false;
+          if (response.data.lenght != 0){                    
+              response.data.forEach(feature => {
+                  if(feature.id_caracteristica == 10){                      
+                    this.numeroFotosPermitidas = feature.cantidad
+                    this.disabledPhoto=false
+                    this.features10 = true;                    
+                    console.log("\nfeatures 10 ok con un limite de fotos de: "+this.numeroFotosPermitidas)
+                  }
+                  if(feature.id_caracteristica == 12){
+                    console.log("\nfeatures 12 ok")   
+                    this.disabled=false                 
+                    this.features12 = true;
+                  }              
+              });
+          }else{
+            console.log("Features Vacío")  
+            
+          }
+      },
+      error => {
+          console.log("error"+error)
+      }
+  );
 }
 }

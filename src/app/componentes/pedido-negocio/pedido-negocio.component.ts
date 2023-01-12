@@ -19,7 +19,7 @@ import { CatMunicipioModel } from 'src/app/Modelos/CatMunicipioModel';
 import { MsPersonaModel } from 'src/app/Modelos/MsPersonaModel';
 import { CatLocalidadModel } from 'src/app/Modelos/CatLocalidadModel';
 import { PersonaService } from '../../api/persona.service';
-import { PromocionesService } from 'src/app/api/promociones.service';
+
 
 const { Geolocation } = Plugins;
 declare var google: any;
@@ -109,7 +109,6 @@ export class PedidoNegocioComponent implements OnInit {
         private guard: AuthGuardService,
         private servicioPersona: PersonaService,
         private _general_service: GeneralServicesService,
-        private promocionesService: PromocionesService,
         /* private geolocation: Geolocation, */
         private _utils_cls: UtilsCls,
         public getCoordinatesMap: UbicacionMapa,
@@ -147,7 +146,7 @@ export class PedidoNegocioComponent implements OnInit {
         this.obtenerFeatures();
     }
     async obtenerFeatures(){
-        await this.promocionesService.features(this.idNegocio).subscribe(
+        await this._general_service.features(this.idNegocio).subscribe(
             response => {
                 console.log("FEATURES del id_negocio "+this.idNegocio+", "+JSON.stringify(response))
                 if (response.data.lenght != 0){                    
