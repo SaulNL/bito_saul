@@ -40,6 +40,7 @@ export class PedidoNegocioComponent implements OnInit {
     @Input() public latNegocio: number;
     @Input() public logNegocio: number;
     @Input() public convenio: number;
+    features:boolean = false;
     public static readonly TIPO_DE_PAGO_INVALIDO = -1; // Puede ser cualquier numero menor a 0;
     tipoEnvio: any;
     private map: Map;
@@ -142,6 +143,26 @@ export class PedidoNegocioComponent implements OnInit {
         this.loadMap();
         this.sumarLista();
         this.cargarTipoDePagos();
+        this.obtenerFeatures();
+    }
+    async obtenerFeatures(){
+        await this._general_service.features(this.idNegocio).subscribe(
+            response => {
+                console.log("FEATURES del id_negocio "+this.idNegocio+", "+JSON.stringify(response))
+                if (response.data.lenght != 0){                    
+                    response.data.forEach(feature => {
+                        if(feature.id_caracteristica == 2){
+                            this.features = true;
+                        }
+                    });
+                }else{
+                    this.features = false;
+                }
+            },
+            error => {
+                console.log("error"+error)
+            }
+        );
     }
     cargarTipoDePagos(){
         this.negocioService.obtenerTiposDePagosPorNegocio(this.idNegocio)
@@ -415,7 +436,7 @@ export class PedidoNegocioComponent implements OnInit {
         const telephoneUsuario = datos.celular;
         this.negocioService.registrarPedido(pedido).subscribe(
             (response) => {
-                if (response.code === 200) {
+                if (response.code === 200) {//Validar que el usuario ya haya regisrado su informacion(se queda CARGANDO)
                     this.enviarSms(telephoneUsuario, this.lista[0].idNegocio);
                     this.loader = false;
                 } else {

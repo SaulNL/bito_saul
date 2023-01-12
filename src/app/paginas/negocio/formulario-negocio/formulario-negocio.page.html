@@ -76,8 +76,8 @@
                       class="md hydrated size-icon"
                       aria-label="image"
                     ></ion-icon>                  
-                    <label class="custom-file-input">
-                      <input
+                    <label [ngClass]="features10? 'custom-file-input' : 'custom-file-input-disabled' ">
+                      <input *ngIf="features10; else elseBlock"
                         type="file"
                         #fileInput
                         id="imagen-producto-uno"
@@ -85,6 +85,9 @@
                         (click)="fileInput.value = null"
                         (change)="agregarFoto($event)"
                       />
+                      <ng-template #elseBlock>
+                        <input/>
+                      </ng-template>
                     </label>
                 </ion-card>
               </ion-slide>            
@@ -161,12 +164,12 @@
             </div>
           </div>
 
-          <ion-item>
+          <ion-item disabled="{{disabled}}">
             <ion-label position="stacked">Distintivos</ion-label>
-            <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idDistintivos" name="idDist"
+            <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idDistintivos" name="idDist" *ngIf="features10"
               #distintivos="ngModel" [(ngModel)]="negocioTO.distintivos" placeholder="{{ tipoDistAux }}">
               <ion-select-option *ngFor="let dist of lstDistintivos" [value]="dist.id_distintivo">{{dist.nombre}}
-              </ion-select-option>
+              </ion-select-option>            
             </ion-select>
           </ion-item>
           <div>

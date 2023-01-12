@@ -121,6 +121,37 @@
   width: 200px;
   height: 180px;
 }
+.custom-file-input-disabled {
+	display: block;
+	position: relative;
+}
+.custom-file-input-disabled input {
+	visibility: hidden;
+	width: 100px
+}
+.custom-file-input-disabled:before {
+	content: 'Subir Imagen';
+	display: block;
+	background: #8b8b8b;
+	border-radius: 2px;
+	padding: 5px 0px;
+	outline: none;
+	white-space: nowrap;
+	color:white;
+	font-weight: bold;
+	text-align: center;
+	font-size: 10pt;
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+.custom-file-input-disabled:hover:before {
+	border-color: #a74eef;
+}
+.custom-file-input-disabled:active:before {
+	background: #a74eef;
+}
+
 .custom-file-input {
 	display: block;
 	position: relative;
