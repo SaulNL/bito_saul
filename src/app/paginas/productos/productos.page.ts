@@ -157,11 +157,28 @@ export class ProductosPage {
 
   ionViewWillEnter()
   {
-    if (localStorage.getItem("isRedirected") === "false") {
-      localStorage.setItem("isRedirected", "true");
-      location.reload();
-      //localStorage.removeItem("activedPage");
-    }
+    // if (localStorage.getItem("isRedirected") === "false") {
+    //   localStorage.setItem("isRedirected", "true");
+    //   location.reload();
+    //   //localStorage.removeItem("activedPage");
+    // }
+
+    //En esta funcion se vuelve a inicializar las variables para eliminar el reload
+    this.cargando = "Cargando";
+    this.isIOS = false;
+    let paginacion: IPaginacion = {
+      actualPagina: 1,
+      siguientePagina: 1,
+      mensaje: "",
+    };
+    this.afiliacion = true;
+    this.abc = false;
+    this.user = this.util.getUserData();
+    this.existeSesion = this.util.existe_sesion();
+    this.mensaje = "Cargando más productos...";
+    this.plazaAfiliacionNombre = "";
+    this.selectionAP = false;
+    this.ngOnInit();
   }
 
   /**

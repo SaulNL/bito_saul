@@ -85,7 +85,7 @@ export class PromocionesPage implements OnInit {
         this.plazaAfiliacionNombre = JSON.parse(
             String(localStorage.getItem("org")));
         };
-        this.selectionAP = true;
+        //this.selectionAP = true;
         this.loader = true;
         this.anyFiltros = new FiltrosModel();
         this.lstPromociones = new Array<PromocionesModel>();
@@ -111,10 +111,29 @@ export class PromocionesPage implements OnInit {
 
     ionViewWillEnter()
     {
-        if (localStorage.getItem("isRedirected") === "false") {
-            localStorage.setItem("isRedirected", "true");
-            location.reload();
-        }
+        // if (localStorage.getItem("isRedirected") === "false") {
+        //     localStorage.setItem("isRedirected", "true");
+        //     location.reload();
+        // }
+
+         //En esta funcion se vuelve a inicializar las variables para elimar el reload
+        this.posicionRandom = 0;
+        this.rep = 0;
+        this.cargando = "Cargando";
+        this.isIOS = false;
+        this.idPersona = null;
+        this.Filtros = new FiltrosModel();
+        this.Filtros.idEstado = 29;
+        this.listaCategorias = [];
+        this.blnBtnMapa = true;
+        this.blnBtnMap = true;
+        this.idGiro = null;
+        this.mostrarDetalle = false;
+        this.isIOS = this.platform.is('ios');
+        this.existeSesion = this.utils.existe_sesion();
+        this.selectionAP = false;
+        this.plazaAfiliacionNombre = "";
+        this.ngOnInit();
     }
 
     public recargar(event: any) {
