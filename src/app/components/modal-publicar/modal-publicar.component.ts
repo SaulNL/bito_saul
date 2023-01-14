@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NumericValueAccessor } from '@ionic/angular';
 import { PublicacionesModel } from '../../Modelos/PublicacionesModel';
 import { NegocioModel } from '../../Modelos/NegocioModel';
 import { NegocioService } from '../../api/negocio.service';
@@ -10,6 +10,8 @@ import { SolicitudesService } from './../../api/solicitudes.service';
 import { PromocionesModel } from '../../Modelos/PromocionesModel';
 import { PromocionesService } from '../../api/promociones.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { GeneralServicesService } from "src/app/api/general-services.service";
+
 
 
 @Component({
@@ -21,8 +23,8 @@ export class ModalPublicarComponent implements OnInit {
 
   @Input() public publicacion: PublicacionesModel;
   @Input() public mensajePublicacion: PublicacionesModel;
-  @Input() public publicacionesPermitidas: number;
-
+  //@Input() public publicacionesPermitidas: number;
+ 
   public lstNegocios: Array<NegocioModel>;
   public loaderNegocios = false;
   public usuario: any;
@@ -30,8 +32,8 @@ export class ModalPublicarComponent implements OnInit {
   public descripcionString: string;
   public minDate: any;
   public maxDate: any;
-  public fechaini: any;
-  public fechafin: any;
+  public fechaini: Date;
+  public fechafin: Date;
   public diasPermitidos: number;
   public blnSelectFecha = false;
   public mensajeValidacion = false;
@@ -41,7 +43,8 @@ export class ModalPublicarComponent implements OnInit {
   public id_persona: any;
   public publicacionesHechas: number;
   public seleccionTO: PromocionesModel;
-
+  public caracteristicasNegocios: { id_caracteristica: number; cantidad: string; }[];
+  public publicacionesPermitidas: any;
 
   constructor( public modalController: ModalController,
                private _negocio_service: NegocioService,
@@ -49,13 +52,13 @@ export class ModalPublicarComponent implements OnInit {
                private solicitudesService: SolicitudesService,
                private _promociones_service: PromocionesService,
                private router: Router,
+               private generalService: GeneralServicesService 
               ) {
                 const currentYear = new Date().getFullYear();
                 this.minDate = new Date();
                 this.maxDate = new Date(currentYear - -30, 0, 0);
                 this.minDate = moment.parseZone(this.minDate).format("YYYY-MM-DD");
                 this.maxDate = moment.parseZone(this.maxDate).format("YYYY-MM-DD");
-
               }
 
   ngOnInit() {
@@ -137,10 +140,11 @@ export class ModalPublicarComponent implements OnInit {
 
 
   guardarPublicacion(form: NgForm) {
-    let fechaInicio = Date.parse(this.fechaini);
-    this.fechaini = new Date(fechaInicio);
-    let fechaFinal = Date.parse(this.fechafin);
-    this.fechafin = new Date(fechaFinal);
+    // let fechaInicio = Date.parse(this.fechaini);
+    // this.fechaini = new Date(fechaInicio);
+    // let fechaFinal = Date.parse(this.fechafin);
+    // this.fechafin = new Date(fechaFinal);7
+
     if(form.valid && this.blnSelectFecha === false ) {
       this.mensajeValidacion = false;
       if (this.verificacionPublicaciones()) {
@@ -172,6 +176,20 @@ export class ModalPublicarComponent implements OnInit {
     }
   }
 
+  obtenerNumeroPublicacionesPromocion() {
+    console.log(this.publicacion.id_negocio);
+    this._promociones_service
+        .obtenerNumeroPublicacionesPorNegocio(this.publicacion.id_negocio)
+        .subscribe(
+            (response) => {
+                this.publicacionesHechas = response.data.numPublicacionesPromo;
+            },
+            (error) => {
+                this._notificacionService.error(error);
+            }
+        );
+  }
+
   verificacionPublicaciones(){
     if(this.publicacionesHechas >= this.publicacionesPermitidas){
       return false;
@@ -179,5 +197,29 @@ export class ModalPublicarComponent implements OnInit {
       return true;
     }
   }
+
+  obtenerCaracteristicasNegocio(idNegocio) {
+
+     this.generalService.features(idNegocio)
+       .subscribe(
+         (response) => {
+           this.caracteristicasNegocios = response.data;
+
+           let featureAnunciosPermitidos = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 5 )
+           
+           if(featureAnunciosPermitidos!= undefined){
+            this.publicacionesPermitidas = featureAnunciosPermitidos.cantidad;
+           }else{
+            //cuando un negocio no tenga un perfil registrado cuantos anuncios puede realizar
+            this.publicacionesPermitidas = 4;
+           }
+           
+           //this.obtenerNumeroPublicacionesPromocion();
+         },
+         (error) => {
+           this._notificacionService.error(error);
+         }
+       );
+  } 
 
 }

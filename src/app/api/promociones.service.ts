@@ -120,8 +120,20 @@ export class PromocionesService {
     }));
   }
 
-  obtenerNumeroPublicacionesPromocion(idProveedor): Observable<any>{
-    const body = JSON.stringify({id_proveedor: idProveedor});
+  obtenerNumeroPublicacionesPorNegocio(idNegocio): Observable<any>{ //idProveedor
+    const body = JSON.stringify({id_negocio: idNegocio}); //{id_proveedor: idProveedor}
+    this. http.setDataSerializer('utf8');
+    return from(this.http.post(this.url + 'api/promocion/obtener/numero_publicaciones', body, AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
+    })); 
+  }
+
+  obtenerNumeroPublicacionesTotal(idProveedor): Observable<any>{ //idProveedor
+    const body = JSON.stringify({id_proveedor: idProveedor}); //{id_proveedor: idProveedor}
     this. http.setDataSerializer('utf8');
     return from(this.http.post(this.url + 'api/promocion/obtener/numero_publicaciones', body, AppSettings.getHeadersToken())
     .then((data) => {

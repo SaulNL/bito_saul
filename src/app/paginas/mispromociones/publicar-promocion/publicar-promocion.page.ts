@@ -51,20 +51,20 @@ export class PublicarPromocionPage implements OnInit {
     this.fechas = '';
     this.fi = null;
     this.ff = null;
-    this. obtenerNumeroPublicacionesPromocion();
+    //this. obtenerNumeroPublicacionesPromocion();
   }
 
-  obtenerNumeroPublicacionesPromocion(){
-    this._promociones_service.obtenerNumeroPublicacionesPromocion(this.id_proveedor).subscribe(
-      response => {
-        this.publicacionesHechas = response.data.numPublicacionesPromo;
-        this.publicacionesPermitidas = response.data.numPubliPromoPermitidas;
-      },
-      error => {
-        this._notificacionService.error(error);
-      }
-    );
-  }
+  // obtenerNumeroPublicacionesPromocion(){
+  //   this._promociones_service.obtenerNumeroPublicacionesPromocion(this.id_proveedor).subscribe(
+  //     response => {
+  //       this.publicacionesHechas = response.data.numPublicacionesPromo;
+  //       this.publicacionesPermitidas = response.data.numPubliPromoPermitidas;
+  //     },
+  //     error => {
+  //       this._notificacionService.error(error);
+  //     }
+  //   );
+  // }
 
   public abrirModal(Promocion: PromocionesModel) {
 

@@ -281,6 +281,7 @@
     </ion-card>
   </div>
 
+  
   <div *ngIf="mostrarListaProductos">
     <ion-card>
       <ion-card-content>
@@ -451,7 +452,17 @@
     </ion-card>
   </div>
 
-  <div *ngIf="agregarProducto">
+  <div *ngIf="mensajeMaximoProductos && !mostrarListaProductos">
+    <div>
+      <div>
+        <p>
+          Lo sentimos!!! Su cuenta gratuita solo permite guardar {{maximoProductos}} {{ isServices(iden) }}...
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="agregarProducto && !mensajeMaximoProductos">
     <ion-card>
       <ion-card-content>
         <form

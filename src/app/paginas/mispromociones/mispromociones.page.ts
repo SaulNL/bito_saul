@@ -11,7 +11,7 @@ import {ModalInfoPromoComponent} from "../../components/modal-info-promo/modal-i
 import {Router, ActivatedRoute} from "@angular/router";
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { PromocionesSolicitadasModel } from '../../Modelos/PromocionesSolicitadasModel'
-
+import { GeneralServicesService } from "src/app/api/general-services.service";
 @Component({
     selector: "app-mispromociones",
     templateUrl: "./mispromociones.page.html",
@@ -34,6 +34,7 @@ export class MispromocionesPage implements OnInit {
     public listaPromociones: Array<PromocionesModel> = [];
     public mostrarNegocios: any = 5;
     public publicacionesHechas: number;
+    public publicacionesHechasTotal: number;
     public publicacionesPermitidas: number;
     public lstPromocionesPublicadasBK: Array<PromocionesModel>;
     public lstAnunciosBK: Array<PromocionesModel>;
@@ -69,6 +70,7 @@ export class MispromocionesPage implements OnInit {
     isIOS = false;
     public loaderModal: boolean=true;
     public idPromo: number;
+    public caracteristicasNegocios: { id_caracteristica: number; cantidad: number; }[];
 
     constructor(
         private _promociones_service: PromocionesService,
@@ -78,7 +80,9 @@ export class MispromocionesPage implements OnInit {
         private _router: Router,
         private active: ActivatedRoute,
         private barcodeScanner: BarcodeScanner,
-        private platform: Platform
+        private platform: Platform,
+        private generalService: GeneralServicesService 
+
     ) {
         this.blnActivaPromocion = true;
     }
@@ -89,6 +93,7 @@ export class MispromocionesPage implements OnInit {
         this.id_persona = this.usuario.id_persona
         this.id_proveedor = this.usuario.proveedor.id_proveedor;
         this.publicacionesHechas = 0;
+        this.publicacionesHechasTotal = 0
         this.publicacionesPermitidas = 0;
         this.lstPromocionesPublicadas = new Array<PromocionesModel>();
         this.lstQuienVioPublicacion = new Array<QuienVioModel>();
@@ -186,11 +191,11 @@ export class MispromocionesPage implements OnInit {
 
     obtenerNumeroPublicacionesPromocion() {
         this._promociones_service
-            .obtenerNumeroPublicacionesPromocion(this.id_proveedor)
+            .obtenerNumeroPublicacionesTotal(this.id_proveedor)
             .subscribe(
                 (response) => {
-                    this.publicacionesHechas = response.data.numPublicacionesPromo;
-                    this.publicacionesPermitidas = response.data.numPubliPromoPermitidas;
+                    //publicaciones hechas por PROVEEDOR
+                    this.publicacionesHechasTotal = response.data.numPublicacionesPromo;
                 },
                 (error) => {
                     this._notificacionService.error(error);
