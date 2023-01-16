@@ -30,8 +30,8 @@
         <ion-list *ngFor="let lstTipoPromo of lstTipoPromo">
           <ion-radio-group name="id_tipo_promocion" [(ngModel)]="seleccionTo.id_tipo_promocion" (ionChange)="cambiarTipo($event)" [value]="seleccionTo.id_tipo_promocion">
                     
-            <ion-item>
-              <ion-label >{{lstTipoPromo.nombre}}</ion-label>
+            <ion-item [disabled] = "editAnuncioPromocion">
+              <ion-label>{{lstTipoPromo.nombre}}</ion-label>
               <ion-radio slot="end" [(value)]="lstTipoPromo.id_tipo_promocion" ></ion-radio>
             </ion-item>
 
@@ -93,12 +93,13 @@
           </div>
         </div>
 
+        <!-- Aqui cuando seleccione el nombre mandar el id del negocio al nuevo servicio -->
         <ion-item *ngIf="!loaderNegocios">
           <ion-label position="stacked"> Relacione su negocio:<span>*</span> </ion-label>
           <ion-select
             name="negocio"
             [(ngModel)]="seleccionTo.id_negocio"
-            (ionChange)="obtenerVip()"
+            (ionChange)="obtenerCaracteristicasPromocion(seleccionTo.id_negocio)"
             required
           >
             <div *ngFor="let row of lstNegocios">
@@ -108,7 +109,7 @@
             </div>
           </ion-select>
         </ion-item>
-       
+
         <div *ngIf="seleccionTo.id_tipo_promocion===2">
           <ion-item *ngIf="!loaderNegocios">
             <ion-label position="stacked"> Promoción aplicable a :<span>*</span> </ion-label>
@@ -127,7 +128,6 @@
              
             </ion-select>
           </ion-item>
-
           <ion-item *ngIf="seleccionTo.id_alcance_promocion===2 ">
             <ion-label position="stacked"> Producto<span>*</span> </ion-label>
             <ion-select
@@ -164,8 +164,8 @@
               </div>
             </ion-select>
           </ion-item>
-  
-          <ion-item >
+
+          <ion-item  [disabled]="banderaPromocionCompleta">
             <ion-label position="stacked">Plaza</ion-label>
             <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idPlaza" [value]=""
             name="plazas"
@@ -177,7 +177,8 @@
               </ion-select-option>
             </ion-select>
           </ion-item>
-          <ion-item >
+
+          <ion-item [disabled]="banderaPromocionCompleta">
             <ion-label position="stacked">Afiliación </ion-label>
             <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idAfl" [value]=""
             name="organizaciones"
@@ -191,7 +192,7 @@
             </ion-select>
           </ion-item>
 
-          <ion-item >
+          <ion-item [disabled]="banderaPromocionCompleta">
             <ion-label position="stacked">Convenio </ion-label>
             <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idCvn" [value]=""
             name="convenios"
@@ -203,57 +204,54 @@
             </ion-select>
           </ion-item>
 
-          <ion-item >
+          <ion-item [disabled]="banderaPromocionCompleta">
             <ion-label position="stacked"
               >Número mínimo aplicado, 0 indica ilimitado:<span>*</span></ion-label
             >
             <ion-input
               #terminos="ngModel"
-              required
               type="number"
               name="minimo"
               [(ngModel)]="seleccionTo.minimo"
             ></ion-input>
           </ion-item>
 
-          <ion-item >
+          <ion-item [disabled]="banderaPromocionCompleta">
             <ion-label position="stacked"
               >Número máximo aplicado, 0 indica ilimitado:<span>*</span></ion-label
             >
             <ion-input
               #terminos="ngModel"
-              required
               type="number"
               name="maximo_red"
               [(ngModel)]="seleccionTo.maximo_red"
             ></ion-input>
           </ion-item>
 
-          <ion-item >
+          <ion-item [disabled]="banderaPromocionCompleta" >
             <ion-label position="stacked"
-              >Porcentaje de descuento :<span>*</span></ion-label
+              >Porcentaje de descuento :</ion-label
             >
             <ion-input
               #terminos="ngModel"
               type="number"
               name="porcentaje"
               [(ngModel)]="seleccionTo.porcentaje"
-              required
             ></ion-input>
           </ion-item>
 
-          <ion-label>Horiario de promoción <span style="color: red">*</span></ion-label>
-          <ion-item>
+          <ion-label>Horario de promoción</ion-label>
+          <ion-item [disabled]="banderaPromocionCompleta">
             <ion-label stacked> Horario Inicial </ion-label>
             <ion-datetime display-format="H:mm" picker-format="H:mm" name="feInicio" #feInicio="ngModel"
               [(ngModel)]="horarioini" (ionChange)="validarHoraInicio($event)"></ion-datetime>
           </ion-item>
-          <ion-item>
+          <ion-item [disabled]="banderaPromocionCompleta">
             <ion-label stacked> Horario Final </ion-label>
             <ion-datetime [disabled]="blnActivaHoraF" display-format="H:mm" picker-format="H:mm" name="fechaFinal"
               #fechaFinal="ngModel" [(ngModel)]="horariofin" (ionChange)="validarHoraFinal($event)"></ion-datetime>
           </ion-item>
-          <ion-item>
+          <ion-item [disabled]="banderaPromocionCompleta">
             <ion-label position="stacked">Dias de la Semana</ion-label>
             <ion-select [disabled]="blnActivaDias" ok-text="Ok" cancel-text="Cancelar" multiple #dias="ngModel"
               name="dias" (ionChange)="diasSeleccionado($event)" [(ngModel)]="nuevoHorario.dias">
@@ -525,10 +523,10 @@
         </div>
      <!-- ----- AQUI COMIENZA PARTE DE MOSTRAR EL VIDEO --- -->
 
-     <div *ngIf="mostrarVideo">
+     <div>
         <div *ngIf="seleccionTo.id_tipo_promocion===1" class="btn btn-info btn-raised">
           <br>
-          <ion-card>
+          <ion-card [disabled]="mostrarVideo">
             <div class="ion-text-center">Subir Video</div>
           </ion-card>
           <div *ngIf="seleccionTo.url_video != ''">
@@ -551,7 +549,7 @@
           </div>
           <div>
             <h6>El video es opcional.</h6>
-            <ion-button expand="full" class="bg-rosa">
+            <ion-button  [disabled]="mostrarVideo" expand="full" class="bg-rosa">
               <input type="file" name="video1" hidden accept="video/mp4" id="video" (change)="seleccionarVideo($event)"/>
               <label for="video" [ngClass]="isIos ? 'upload' : 'uploadAndroid'">
                 Seleccionar video

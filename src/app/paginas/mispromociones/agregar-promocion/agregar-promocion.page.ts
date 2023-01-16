@@ -19,7 +19,7 @@ import { AlertController } from '@ionic/angular';
 import * as moment from 'moment';
 import { HorarioNegocioModel } from '../../../Modelos/HorarioNegocioModel';
 import { HorarioPromocionModel } from '../../../Modelos/HorarioPromocionModel';
-import { element } from "protractor";
+import { GeneralServicesService } from './../../../api/general-services.service';
 
 @Component({
   selector: "app-agregar-promocion",
@@ -73,13 +73,14 @@ export class AgregarPromocionPage implements OnInit {
   public nuevoRegistro = false;
   loaderVideo = false;
   nombre_video: any;
-  mostrarVideo: any;
+  public mostrarVideo: boolean;
   base64Video = null;
   negocioVip: any;
   vip : any;
-
   public arreglo: any;
-
+  public caracteristicasNegocios: { id_caracteristica: number; cantidad: number; }[];
+  public banderaPromocionCompleta: boolean;
+  public editAnuncioPromocion: boolean;
 
   public diasArray = [
     { id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null },
@@ -131,6 +132,7 @@ export class AgregarPromocionPage implements OnInit {
     private _promociones_service: PromocionesService,
     public loadingController: LoadingController,
     private platform: Platform,
+    private generalService: GeneralServicesService 
   ) {
     this.isIos = this.platform.is("ios");
     this.seleccionTo = new PromocionesModel();
@@ -140,6 +142,9 @@ export class AgregarPromocionPage implements OnInit {
     this.blnActivaDias = true;
     this.blnActivaHorario = true;
     this.nuevoHorario = new HorarioPromocionModel();
+    this.banderaPromocionCompleta = true;
+    this.mostrarVideo = true;
+    this.editAnuncioPromocion = false;
   }
 
   ngOnInit() {
@@ -226,7 +231,9 @@ export class AgregarPromocionPage implements OnInit {
     if(this.seleccionTo.id_tipo_promocion===''){
       this.seleccionTo.id_tipo_promocion =1;
     }else{
+      //cuando se edita la promocion
       this.seleccionTo.id_tipo_promocion = this.seleccionTo.id_tipo_promocion;
+      this.editAnuncioPromocion = true;
     }
     this.base64Video = null;
     this.seleccionTo.video = null;
@@ -239,21 +246,22 @@ export class AgregarPromocionPage implements OnInit {
   pushLog(msg) {
     this.logs.unshift(msg);
   }
-  obtenerVip() {
-    for (const negocio of this.lstNegocios) { 
-      if (negocio.id_negocio == this.seleccionTo.id_negocio) { 
-        if (negocio.vip == 1) { 
-          this.mostrarVideo = true; 
-          break; 
-        } else { 
-          this.mostrarVideo = false;
-          this.base64Video = null
-          this.seleccionTo.video = null;
-          break; 
-        } 
-      } 
-    }
-  }
+  
+  // obtenerVip() {
+  //   for (const negocio of this.lstNegocios) { 
+  //     if (negocio.id_negocio == this.seleccionTo.id_negocio) { 
+  //       if (negocio.vip == 1) { 
+  //         this.mostrarVideo = true; 
+  //         break; 
+  //       } else { 
+  //         this.mostrarVideo = false;
+  //         this.base64Video = null
+  //         this.seleccionTo.video = null;
+  //         break; 
+  //       } 
+  //     } 
+  //   }
+  //}
 
   buscarNegocios() {
     this.loaderNegocios = true;
@@ -263,17 +271,17 @@ export class AgregarPromocionPage implements OnInit {
         (response) => {
           this.lstNegocios = response.data;
           this.loaderNegocios = false;
-          for (const negocio of this.lstNegocios) { 
-            if (negocio.id_negocio == this.seleccionTo.id_negocio) { 
-              if (negocio.vip == 1) { 
-                this.mostrarVideo = true; 
-                break; 
-              } else { 
-                this.mostrarVideo = false; 
-                break; 
-              } 
-            } 
-          }
+          // for (const negocio of this.lstNegocios) { 
+          //   if (negocio.id_negocio == this.seleccionTo.id_negocio) { 
+          //     if (negocio.vip == 1) { 
+          //       this.mostrarVideo = true; 
+          //       break; 
+          //     } else { 
+          //       this.mostrarVideo = false; 
+          //       break; 
+          //     } 
+          //   } 
+          // }
           window.scrollTo({ top: 0, behavior: "smooth" });
         },
         (error) => {
@@ -877,6 +885,35 @@ export class AgregarPromocionPage implements OnInit {
 
   eliminarHorario(i) {
     this.seleccionTo.dias.splice(i,1);
+  }
+
+  obtenerCaracteristicasPromocion(idNegocio) {
+
+    this.generalService.features(idNegocio)
+      .subscribe(
+        (response) => {
+          this.caracteristicasNegocios = response.data;
+          
+          let featurePromocionCompleta = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 3 )
+          let featureVideo = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 6 )
+          
+          if(featurePromocionCompleta != undefined){
+            this.banderaPromocionCompleta = false; 
+          }else{
+            this.banderaPromocionCompleta = true;
+          }
+
+          if(featureVideo != undefined){
+            this.mostrarVideo = false; 
+          }else{
+            this.mostrarVideo = true;
+          }
+
+        },
+        (error) => {
+          this._notificacionService.error(error);
+        }
+      );
   }
 
 

@@ -67,6 +67,9 @@ export class MisProductosServiciosPage implements OnInit {
   public tamano: any;
   public segtamano: any;
   public static: any;
+  public caracteristicasNegocios: { id_caracteristica: number; cantidad: number; }[];
+  public mensajeMaximoProductos: boolean;
+  public totalProductosServicios: number;
 
   constructor(
     private router: Router,
@@ -90,6 +93,7 @@ export class MisProductosServiciosPage implements OnInit {
     this.productoE = new DtosMogoModel();
     this.listaCategorias = [];
     this.productoNuevo = new DtosMogoModel();
+    this.mensajeMaximoProductos = false;
   }
 
   ngOnInit() {
@@ -115,17 +119,20 @@ export class MisProductosServiciosPage implements OnInit {
         };
         this.buscarDatos();
         this.buscarCategoriasProductos();
-        this.sercicioNegocio
-          .obtenerNumMaxProductos(this.negocioTO.id_negocio)
-          .subscribe(
-            (respuesta) => {
-              this.maximoProductos = respuesta.data;
-            },
-            (error) => {
-              this.notificacionService.error(error);
-              this.maximoProductos = 0;
-            }
-          );
+        //Este servicio se usaba en general de cuantos productos/servicios permitia
+        // this.sercicioNegocio
+        //   .obtenerNumMaxProductos(this.negocioTO.id_negocio)
+        //   .subscribe(
+        //     (respuesta) => {
+        //       this.maximoProductos = respuesta.data;
+        //       console.log(this.maximoProductos);
+        //     },
+        //     (error) => {
+        //       this.notificacionService.error(error);
+        //       this.maximoProductos = 0;
+        //     }
+        //   );
+        this.obtenerCaracteristicasNegocio();
       }
     });
   }
@@ -377,17 +384,18 @@ export class MisProductosServiciosPage implements OnInit {
     const { data } = await modal.onDidDismiss();
     if (data != null) {
       this.buscarDatos();
-      this.sercicioNegocio
-        .obtenerNumMaxProductos(this.negocioTO.id_negocio)
-        .subscribe(
-          (respuesta) => {
-            this.maximoProductos = respuesta.data;
-          },
-          (error) => {
-            this.notificacionService.error(error);
-            this.maximoProductos = 0;
-          }
-        );
+      // Creo que este servicio aqui estaba de mas 
+      // this.sercicioNegocio
+      //   .obtenerNumMaxProductos(this.negocioTO.id_negocio)
+      //   .subscribe(
+      //     (respuesta) => {
+      //       this.maximoProductos = respuesta.data;
+      //     },
+      //     (error) => {
+      //       this.notificacionService.error(error);
+      //       this.maximoProductos = 0;
+      //     }
+      //   );
     }
   }
 
@@ -511,8 +519,17 @@ export class MisProductosServiciosPage implements OnInit {
     this.listaProductos = item;
     this.mostrarListaProductos = !this.mostrarListaProductos;
   }
-
+  
+  verificacionProductosServicios(){
+    if(this.totalProductosServicios >= this.maximoProductos){
+      this.mensajeMaximoProductos = true;
+    }else{
+      this.mensajeMaximoProductos = false;      
+    }
+  }
+  
   public agregarProductos() {
+    this.verificacionProductosServicios();
     this.mostrarListaProductos = !this.mostrarListaProductos;
     this.agregarProducto = true;
     this.categoriaSeleccionada = this.listaVista;
@@ -526,6 +543,7 @@ export class MisProductosServiciosPage implements OnInit {
   public regresarLista() {
     this.mostrarListaProductos = true;
     this.agregarProducto = false;
+    this.mensajeMaximoProductos = false;
   }
 
   public subir_imagen_cuadrada(imgen: any) {
@@ -952,6 +970,7 @@ export class MisProductosServiciosPage implements OnInit {
   }
 
   private obtenerTotal(lista: Array<DtosMogoModel>) {
+    this.totalProductosServicios = lista.length;
     return lista.length;
   }
 
@@ -1014,4 +1033,35 @@ export class MisProductosServiciosPage implements OnInit {
 
     await alert.present();
   }
+
+  obtenerCaracteristicasNegocio() {
+     this.generalServicio.features(this.negocioTO.id_negocio)
+     .subscribe(
+         (response) => {
+           this.caracteristicasNegocios = response.data;
+           if(this.iden === 1){ //productos
+              let featureProductosPermitidos = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 7 )
+              if(featureProductosPermitidos!= undefined)
+              {
+                this.maximoProductos = featureProductosPermitidos.cantidad;
+              }else{
+                //cuando un negocio no tenga un perfil registrado cuantos productos puede realizar
+                this.maximoProductos = 150;
+              }
+           }else if(this.iden === 2){ //servicios
+              let featureServiciosPermitidos = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 8 )
+              if(featureServiciosPermitidos!= undefined)
+              {
+                this.maximoProductos = featureServiciosPermitidos.cantidad;
+              }else{
+                //cuando un negocio no tenga un perfil registrado cuantos servicios puede realizar
+                this.maximoProductos = 150;
+              }
+           }
+         },
+         (error) => {
+           this.notificacionService.error(error);
+         }
+      );
+  } 
 }
