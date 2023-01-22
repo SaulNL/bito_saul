@@ -23,7 +23,7 @@
             </ion-select-option>
         </ion-select>
     </ion-item>
-    <ion-card>
+    <ion-card *ngIf="features16">
         <ion-card-content>
             <ion-grid>
                 <ion-row>
@@ -94,7 +94,7 @@
             </ion-grid>
         </ion-card-content>
     </ion-card>
-    <ion-card>
+    <ion-card *ngIf="features16">
         <ion-card-header>
             <ion-card-subtitle>Calificaciones</ion-card-subtitle>
         </ion-card-header>
@@ -141,7 +141,7 @@
             </ion-grid>
         </ion-card-content>
     </ion-card>
-    <ion-card *ngIf="totalRequest">
+    <ion-card *ngIf="totalRequest && features16">
         <ion-card-header>
             <ion-card-subtitle>Vistas de requerimientos de compra</ion-card-subtitle>
         </ion-card-header>
@@ -154,7 +154,7 @@
             </ion-list>
         </ion-card-content>
     </ion-card>
-    <ion-card *ngIf="totalProduct">
+    <ion-card *ngIf="totalProduct && features16">
         <ion-card-header>
             <ion-card-subtitle>Likes de productos</ion-card-subtitle>
         </ion-card-header>
