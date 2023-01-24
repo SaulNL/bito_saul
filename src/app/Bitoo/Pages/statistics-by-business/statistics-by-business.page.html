@@ -1,170 +1,195 @@
 <app-header message="Estadísticas" [backButton]="false" [closeButton]="true" (closeResponse)="closeStatistic()">
 </app-header>
 <app-loader [loader]="loading" message="Cargando estadísticas del negocio"></app-loader>
-<ion-content fullscreen *ngIf="!loading">
-    <ion-item>
-        <ion-label>Fecha: </ion-label>
-        <ion-select value="{{ selected }}" ok-text="Ok" cancel-text="Cancelar" (ionChange)="activetedFilter($event.detail.value)">
-            <ion-select-option value="day">
-                <ion-icon name="calendar-outline"></ion-icon>
-                Hoy
-            </ion-select-option>
-            <ion-select-option value="week">
-                <ion-icon name="calendar-outline"></ion-icon>
-                Últimos 7 días
-            </ion-select-option>
-            <ion-select-option value="month">
-                <ion-icon name="calendar-outline"></ion-icon>
-                Últimos 30 días
-            </ion-select-option>
-            <ion-select-option value="all">
-                <ion-icon name="sparkles-outline"></ion-icon>
-                Todo
-            </ion-select-option>
-        </ion-select>
-    </ion-item>
-    <ion-card *ngIf="features16">
-        <ion-card-content>
-            <ion-grid>
-                <ion-row>
-                    <ion-col>
-                        <ion-card>
-                            <ion-card-content class="background-deeppink">
-                                <ion-grid class="ion-text-center">
-                                    <h2 class="text-white">
-                                        Visitas <ion-icon name="information-circle-outline" (click)="visists(null)">
-                                        </ion-icon>
-                                    </h2>
-                                    <h1 class="text-white">
-                                        <strong>
-                                            {{totalVisitsQrAndUrl}}
-                                        </strong>
-                                    </h1>
-                                </ion-grid>
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
-                    <ion-col>
-                        <ion-card>
-                            <ion-card-content class="background-deeppink">
-                                <ion-grid class="ion-text-center">
-                                    <h2 class="text-white">
-                                        Likes negocio
-                                    </h2>
-                                    <h1 class="text-white">
-                                        <strong>
-                                            {{ this.statistics.totalLikesBusiness }}
-                                        </strong>
-                                    </h1>
-                                </ion-grid>
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
-                    <ion-col>
-                        <ion-card>
-                            <ion-card-content class="background-blueviolet">
-                                <ion-grid class="ion-text-center">
-                                    <h2 class="text-white">
-                                        Requerimientos de compra
-                                    </h2>
-                                    <h1 class="text-white">
-                                        <strong>
-                                            {{ statistics.totalRequests }}
-                                        </strong>
-                                    </h1>
-                                </ion-grid>
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
-                    <ion-col>
-                        <ion-card>
-                            <ion-card-content class="background-blueviolet">
-                                <ion-grid class="ion-text-center">
-                                    <h2 class="text-white">
-                                        Promociones
-                                    </h2>
-                                    <h1 class="text-white">
-                                        {{ statistics.totalPromotions }}
-                                    </h1>
-                                </ion-grid>
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-        </ion-card-content>
-    </ion-card>
-    <ion-card *ngIf="features16">
-        <ion-card-header>
-            <ion-card-subtitle>Calificaciones</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-            <ion-grid>
-                <ion-row>
-                    <ion-col>
-                        <ion-grid class="ion-text-center">
-                            <h1>
-                                <strong>
-                                    {{statistics.goodGrade}}
-                                </strong>
-                            </h1>
-                            <ion-text color="success">
-                                <h1>Buena</h1>
-                            </ion-text>
-                        </ion-grid>
-                    </ion-col>
-                    <ion-col>
-                        <ion-grid class="ion-text-center">
-                            <h1>
-                                <strong>
-                                    {{statistics.averageRating}}
-                                </strong>
-                            </h1>
-                            <ion-text color="warning">
-                                <h1>Media</h1>
-                            </ion-text>
-                        </ion-grid>
-                    </ion-col>
-                    <ion-col>
-                        <ion-grid class="ion-text-center">
-                            <h1>
-                                <strong>
-                                    {{statistics.lowRating}}
-                                </strong>
-                            </h1>
-                            <ion-text color="danger">
-                                <h1>Baja</h1>
-                            </ion-text>
-                        </ion-grid>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-        </ion-card-content>
-    </ion-card>
-    <ion-card *ngIf="totalRequest && features16">
-        <ion-card-header>
-            <ion-card-subtitle>Vistas de requerimientos de compra</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-            <ion-list>
-                <ion-item *ngFor="let request of statistics.requests">
-                    <ion-label>{{ request.solicitud }}</ion-label>
-                    <ion-badge color="light" slot="end">{{request.cuantos_vieron}}</ion-badge>
-                </ion-item>
-            </ion-list>
-        </ion-card-content>
-    </ion-card>
-    <ion-card *ngIf="totalProduct && features16">
-        <ion-card-header>
-            <ion-card-subtitle>Likes de productos</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-            <ion-list>
-                <ion-item *ngFor="let product of statistics.products">
-                    <ion-label> {{product.producto}} </ion-label>
-                    <ion-badge color="light" slot="end">{{product.numero_likes}}</ion-badge>
-                </ion-item>
-            </ion-list>
-        </ion-card-content>
-    </ion-card>
+<ion-content fullscreen *ngIf="!loading"> 
+    <div *ngIf="features16; else noSuscription">
+        <ion-item>
+            <ion-label>Fecha: </ion-label>
+            <ion-select value="{{ selected }}" ok-text="Ok" cancel-text="Cancelar" (ionChange)="activetedFilter($event.detail.value)">
+                <ion-select-option value="day">
+                    <ion-icon name="calendar-outline"></ion-icon>
+                    Hoy
+                </ion-select-option>
+                <ion-select-option value="week">
+                    <ion-icon name="calendar-outline"></ion-icon>
+                    Últimos 7 días
+                </ion-select-option>
+                <ion-select-option value="month">
+                    <ion-icon name="calendar-outline"></ion-icon>
+                    Últimos 30 días
+                </ion-select-option>
+                <ion-select-option value="all">
+                    <ion-icon name="sparkles-outline"></ion-icon>
+                    Todo
+                </ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-card>
+            <ion-card-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <ion-card>
+                                <ion-card-content class="background-deeppink">
+                                    <ion-grid class="ion-text-center">
+                                        <h2 class="text-white">
+                                            Visitas <ion-icon name="information-circle-outline" (click)="visists(null)">
+                                            </ion-icon>
+                                        </h2>
+                                        <h1 class="text-white">
+                                            <strong>
+                                                {{totalVisitsQrAndUrl}}
+                                            </strong>
+                                        </h1>
+                                    </ion-grid>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>
+                        <ion-col>
+                            <ion-card>
+                                <ion-card-content class="background-deeppink">
+                                    <ion-grid class="ion-text-center">
+                                        <h2 class="text-white">
+                                            Likes negocio
+                                        </h2>
+                                        <h1 class="text-white">
+                                            <strong>
+                                                {{ this.statistics.totalLikesBusiness }}
+                                            </strong>
+                                        </h1>
+                                    </ion-grid>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>
+                        <ion-col>
+                            <ion-card>
+                                <ion-card-content class="background-blueviolet">
+                                    <ion-grid class="ion-text-center">
+                                        <h2 class="text-white">
+                                            Requerimientos de compra
+                                        </h2>
+                                        <h1 class="text-white">
+                                            <strong>
+                                                {{ statistics.totalRequests }}
+                                            </strong>
+                                        </h1>
+                                    </ion-grid>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>
+                        <ion-col>
+                            <ion-card>
+                                <ion-card-content class="background-blueviolet">
+                                    <ion-grid class="ion-text-center">
+                                        <h2 class="text-white">
+                                            Promociones
+                                        </h2>
+                                        <h1 class="text-white">
+                                            {{ statistics.totalPromotions }}
+                                        </h1>
+                                    </ion-grid>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card-content>
+        </ion-card>
+        <ion-card>
+            <ion-card-header>
+                <ion-card-subtitle>Calificaciones</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <ion-grid class="ion-text-center">
+                                <h1>
+                                    <strong>
+                                        {{statistics.goodGrade}}
+                                    </strong>
+                                </h1>
+                                <ion-text color="success">
+                                    <h1>Buena</h1>
+                                </ion-text>
+                            </ion-grid>
+                        </ion-col>
+                        <ion-col>
+                            <ion-grid class="ion-text-center">
+                                <h1>
+                                    <strong>
+                                        {{statistics.averageRating}}
+                                    </strong>
+                                </h1>
+                                <ion-text color="warning">
+                                    <h1>Media</h1>
+                                </ion-text>
+                            </ion-grid>
+                        </ion-col>
+                        <ion-col>
+                            <ion-grid class="ion-text-center">
+                                <h1>
+                                    <strong>
+                                        {{statistics.lowRating}}
+                                    </strong>
+                                </h1>
+                                <ion-text color="danger">
+                                    <h1>Baja</h1>
+                                </ion-text>
+                            </ion-grid>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="totalRequest">
+            <ion-card-header>
+                <ion-card-subtitle>Vistas de requerimientos de compra</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-list>
+                    <ion-item *ngFor="let request of statistics.requests">
+                        <ion-label>{{ request.solicitud }}</ion-label>
+                        <ion-badge color="light" slot="end">{{request.cuantos_vieron}}</ion-badge>
+                    </ion-item>
+                </ion-list>
+            </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="totalProduct">
+            <ion-card-header>
+                <ion-card-subtitle>Likes de productos</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-list>
+                    <ion-item *ngFor="let product of statistics.products">
+                        <ion-label> {{product.producto}} </ion-label>
+                        <ion-badge color="light" slot="end">{{product.numero_likes}}</ion-badge>
+                    </ion-item>
+                </ion-list>
+            </ion-card-content>
+        </ion-card>
+    </div>
+    <ng-template #noSuscription>
+        <ion-card>
+            <ion-card-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <ion-card>
+                                <ion-card-content class="background-deeppink">
+                                    <ion-grid class="ion-text-center">
+                                        <h2 class="text-white">
+                                            No cuentas con la suscripción necesaria para ver las estadísticas 
+                                            <!--ion-icon name="information-circle-outline" (click)="noSuscriptionMSG()">
+                                            </ion-icon-->
+                                        </h2>
+                                    </ion-grid>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>                        
+                    </ion-row>
+                </ion-grid>
+            </ion-card-content>
+        </ion-card>
+    </ng-template>    
 </ion-content>

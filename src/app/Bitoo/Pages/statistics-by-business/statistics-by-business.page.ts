@@ -323,6 +323,9 @@ export class StatisticsByBusinessPage implements OnInit {
     return (this.statistics.totalLikesProducts !== 0);
   }
 
+  noSuscriptionMSG(){
+    
+  }
   async obtenerFeatures(id_negocio: number){
     await this._general_service.features(id_negocio).subscribe(
         response => {
