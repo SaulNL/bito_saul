@@ -41,3 +41,63 @@ ion-card {
   width: 187px;
   height: 140px;
 }
+
+.custom-file-input {
+	display: block;
+	position: relative;
+	color: #fa4f72;
+}
+.custom-file-input input {
+	visibility: hidden;
+	width: 100px
+}
+.custom-file-input:before {
+	content: 'Subir Imagen';
+	display: block;
+	background: -webkit-linear-gradient(90deg,#fa4f72,#a74eef);
+	background: -o-linear-gradient(90deg,#fa4f72,#a74eef);
+	background: -moz-linear-gradient(90deg,#fa4f72,#a74eef);
+	background: linear-gradient(90deg,#fa4f72,#a74eef);
+	border-radius: 2px;
+	padding: 5px 0px;
+	outline: none;
+	white-space: nowrap;
+	cursor: pointer;
+	color:white;
+	font-weight: bold;
+	text-align: center;
+	font-size: 10pt;
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+.custom-file-input:hover:before {
+	border-color: #a74eef;
+}
+.custom-file-input:active:before {
+	background: #a74eef;
+}
+.borrar-botom {
+	display: block;
+    background: -webkit-linear-gradient(
+90deg
+,#fa4f72,#a74eef);
+    background: -o-linear-gradient(90deg,#fa4f72,#a74eef);
+    background: -moz-linear-gradient(90deg,#fa4f72,#a74eef);
+    background: linear-gradient(
+90deg
+,#fa4f72,#a74eef);
+    border-radius: 4px;
+    padding: 5px 0px;
+    outline: none;
+    white-space: nowrap;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    font-size: 10pt;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-top: -30px;
+}

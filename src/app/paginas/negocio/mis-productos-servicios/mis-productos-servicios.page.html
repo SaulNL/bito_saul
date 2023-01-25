@@ -462,6 +462,7 @@
     </div>
   </div>
 
+  <!-- Agregar producto/servicio nuevo -->
   <div *ngIf="agregarProducto && !mensajeMaximoProductos">
     <ion-card>
       <ion-card-content>
@@ -470,7 +471,8 @@
           (ngSubmit)="crearProducto(formProductoAgregar)"
         >
           <ion-grid>
-            <ion-row>
+            <!-- Slider estatico -->
+            <!-- <ion-row>
               <ion-col size="12">
                 <app-cargar-imagenes-slide
                   [productoImagen]="productoNuevo"
@@ -479,7 +481,54 @@
                 >
                 </app-cargar-imagenes-slide>
               </ion-col>
-            </ion-row>
+            </ion-row> -->
+            <div>
+              <ion-item  class="slider">
+                <ion-slides [options]="slidesOptions" style="width: 500px;">                            
+                  <ion-slide *ngFor="let foto of productoNuevo.imagen; let i = index" >               
+                      <ion-card>
+                        <div *ngIf="editar">
+                          <!-- Ya trae la data -->
+                          <div *ngIf="!foto.archivo_64">
+                            <img src={{foto}}/> 
+                          </div>
+                          <!-- Las nuevas que se agregan -->
+                          <div *ngIf="foto.archivo_64">
+                            <img  src="{{foto.archivo_64}}">    
+                          </div>                                    
+                        </div>
+                        <div *ngIf="!editar">
+                          <img src="{{foto.archivo_64}}">    
+                        </div>
+                        <ion-label (click)="updateBorrado(i)" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>                      
+                      </ion-card>
+                  </ion-slide>  
+                  <ion-slide style="height:100%; margin-bottom: 5px;" *ngIf="agregarImagen != true">
+                    <ion-card>                 
+                        <ion-icon                      
+                          name="image"
+                          role="img"
+                          class="md hydrated size-icon"
+                          aria-label="image" 
+                        ></ion-icon>                  
+                        <label class="custom-file-input">
+                          <input
+                            type="file"
+                            #fileInput
+                            id="imagen-producto-uno"
+                            accept="image/*"                     
+                            (click)="fileInput.value = null"
+                            (change)="subir_imagen_cuadrada($event)"
+                          />
+                          <ng-template>
+                            <input/>
+                          </ng-template>
+                        </label>
+                    </ion-card>
+                  </ion-slide>            
+                </ion-slides>
+              </ion-item> 
+            </div>       
 
             <ion-row>
               <ion-col size="12">

@@ -70,7 +70,19 @@ export class MisProductosServiciosPage implements OnInit {
   public caracteristicasNegocios: { id_caracteristica: number; cantidad: number; }[];
   public mensajeMaximoProductos: boolean;
   public totalProductosServicios: number;
+  public fotosPermitidas: number;
+  public numeroFotos: number;
+  public agregarImagen:boolean;
+  public editar:boolean;
+  public arrayFotos: any;
 
+  slidesOptions = {
+    slidesPerView: 1.5,
+    centeredSlides: true,
+    loop: false,
+    spaceBetween: 10,
+  };
+  
   constructor(
     private router: Router,
     private active: ActivatedRoute,
@@ -93,10 +105,15 @@ export class MisProductosServiciosPage implements OnInit {
     this.productoE = new DtosMogoModel();
     this.listaCategorias = [];
     this.productoNuevo = new DtosMogoModel();
+    this.productoNuevo.imagen = [];
     this.mensajeMaximoProductos = false;
+    this.editar = false;
+    this.agregarImagen = false;
+    this.numeroFotos = 0;
   }
 
   ngOnInit() {
+    this.agregarImagen = false;
     this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.ocultar = false;
@@ -133,6 +150,10 @@ export class MisProductosServiciosPage implements OnInit {
         //     }
         //   );
         this.obtenerCaracteristicasNegocio();
+        //Cuando este el cronJon ya no sera necesaria y se tiene que eliminar 
+        setTimeout(()=>{
+          this.deshabilitarExistenciaPS();
+        }, 5000);
       }
     });
   }
@@ -534,10 +555,13 @@ export class MisProductosServiciosPage implements OnInit {
     this.agregarProducto = true;
     this.categoriaSeleccionada = this.listaVista;
     this.productoNuevo = new DtosMogoModel();
+    this.productoNuevo.imagen = [];
     this.blnformMobile = true;
     this.isEdicion = false;
     this.opcion = 1;
     this.productoNuevo = JSON.parse(JSON.stringify(this.productoNuevo));
+    this.agregarImagen = false;
+    this.editar = false;
   }
 
   public regresarLista() {
@@ -546,9 +570,7 @@ export class MisProductosServiciosPage implements OnInit {
     this.mensajeMaximoProductos = false;
   }
 
-  public subir_imagen_cuadrada(imgen: any) {
-    const event = imgen.event;
-    const position = imgen.posicion;
+  public subir_imagen_cuadrada(event) {
     if (event.target.files && event.target.files.length) {
       let height;
       let width;
@@ -576,7 +598,17 @@ export class MisProductosServiciosPage implements OnInit {
                       this.utilscls.convertir_nombre(file_name) + ".jpg";
                     imagen.archivo_64 = file_64;
                   }
-                  this.productoNuevo.imagen[position] = imagen;
+                  
+                  if (!Array.isArray(this.productoNuevo.imagen)) {
+                    this.productoNuevo.imagen = [imagen];
+                    this.numeroFotos = 1;
+                  }else{
+                    this.productoNuevo.imagen.push(imagen)
+                    this.numeroFotos++
+                  }
+                  if(this.numeroFotos >= this.fotosPermitidas){
+                    this.agregarImagen=true
+                  }  
                   this.procesando_img = false;
                   this.blnImgCuadrada = false;
                 });
@@ -584,22 +616,31 @@ export class MisProductosServiciosPage implements OnInit {
                 this.notificacionService.alerta("archivo pesado");
               }
             } else {
-              this.maintainAspectRatio = true;
+              // this.maintainAspectRatio = true;
               this.resizeToWidth = 400;
               this.resizeToHeight = 400;
-              this.tipoImagen = 1;
-              this.fileChangeEvent(event);
               const fName = archivo.name + ".jpg";
-              const newImagen = {
-                i: img.src,
-                p: position,
-                fn: fName,
-              };
-              this.abrirModalImagen(
-                newImagen,
-                this.resizeToWidth,
-                this.resizeToHeight
-              );
+            
+              this.abrirModalImagen(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
+                if (r !== undefined) {
+                  const imagen = new ArchivoComunModel();
+                  imagen.nombre_archivo = this.utilscls.convertir_nombre(fName),
+                  imagen.archivo_64 = r.data;
+                  if (!Array.isArray(this.productoNuevo.imagen)) {
+                      this.productoNuevo.imagen = [imagen];
+                      this.numeroFotos = 1;
+                  }else{
+                    this.productoNuevo.imagen.push(imagen)
+                    this.numeroFotos++
+                  }
+        
+                  this.numeroFotos = this.productoNuevo.imagen.length;
+          
+                  if(this.numeroFotos >= this.fotosPermitidas){
+                    this.agregarImagen=true
+                  }               
+                }
+              });
             }
           };
         };
@@ -611,10 +652,10 @@ export class MisProductosServiciosPage implements OnInit {
     this.imageChangedEvent = event;
   }
 
-  async abrirModalImagen(img, width, heigh) {
-    const evento = img.i;
-    const position = img.p;
-    const fileName = img.fn;
+  async abrirModalImagen(evento, width, heigh) {
+    //const evento = img.i;
+    //const position = img.p;
+    const fileName = evento.fn;
     const modal = await this.modalController.create({
       component: RecorteImagenComponent,
       cssClass: "my-custom-class",
@@ -632,18 +673,23 @@ export class MisProductosServiciosPage implements OnInit {
       },
     });
     await modal.present();
-    const { data } = await modal.onDidDismiss();
-
-    if (data != null) {
-      const imagen = new ArchivoComunModel();
-      imagen.nombre_archivo = this.utilscls.convertir_nombre(fileName);
-      imagen.archivo_64 = data.data;
-
-      if (this.tipoImagen === 1) {
-        this.productoNuevo.imagen[position] = imagen;
-        this.blnImgCuadrada = false;
-      }
+    const { data } = await modal.onDidDismiss().then(r => {
+      return r;
     }
+    );
+    return data;
+    // const { data } = await modal.onDidDismiss();
+
+    // if (data != null) {
+    //   const imagen = new ArchivoComunModel();
+    //   imagen.nombre_archivo = this.utilscls.convertir_nombre(fileName);
+    //   imagen.archivo_64 = data.data;
+
+    //   if (this.tipoImagen === 1) {
+    //     this.productoNuevo.imagen[0] = imagen;
+    //     this.blnImgCuadrada = false;
+    //   }
+    // }
   }
 
   public crearProducto(form: NgForm) {
@@ -852,17 +898,34 @@ export class MisProductosServiciosPage implements OnInit {
       );
   }
 
-  editarRegistro(produc: any) {
-    this.mostrarListaProductos = !this.mostrarListaProductos;
-    this.agregarProducto = true;
-    this.almacenarRegistro = JSON.parse(JSON.stringify(produc));
-    produc.editar = true;
-    this.productoNuevo = produc;
-    if (!Array.isArray(this.productoNuevo.imagen)) {
-      const imagens = this.productoNuevo.imagen;
-      this.productoNuevo.imagen = [imagens];
-    }
-    this.opcion = 2;
+  async editarRegistro(produc: any) {
+    if((this.totalProductosServicios === this.maximoProductos) &&  !produc.existencia)
+    {      
+      const alert = await this.alertController.create({
+        header: 'Bitoo!',
+        message: "No puede poner en existencia otro producto al menos que desactive uno o cambie de plan",
+      });
+
+      await alert.present();
+    }else{
+      this.agregarImagen = false;
+      this.editar = true;
+      this.mostrarListaProductos = !this.mostrarListaProductos;
+      this.agregarProducto = true;
+      this.almacenarRegistro = JSON.parse(JSON.stringify(produc));
+      produc.editar = true;
+      this.productoNuevo = produc;
+      if (!Array.isArray(this.productoNuevo.imagen)) {
+        const imagens = this.productoNuevo.imagen;
+        this.productoNuevo.imagen = [imagens];
+        //this.numeroFotos = this.productoNuevo.imagen.lenght;
+      }
+      this.numeroFotos = Object.values(this.productoNuevo.imagen).length;
+      if(this.numeroFotos >= this.fotosPermitidas){
+        this.agregarImagen=true
+      }  
+      this.opcion = 2;
+    }    
   }
 
   actualizar(produc) {
@@ -884,7 +947,7 @@ export class MisProductosServiciosPage implements OnInit {
 
     this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
       (repsuesta) => {
-        
+
         this.buscarCategoriasProductos();
         // this.modalReference.close();
         this.datosNegocio = repsuesta.data;
@@ -926,9 +989,16 @@ export class MisProductosServiciosPage implements OnInit {
   }
   public updateBorrado(event: any) {
     let id = event.po
-    let idStr=id.toString()
-    //this.productoNuevo.imagen.splice(event.po, 1); No es un array, es un objeto
-    delete this.productoNuevo.imagen[idStr]
+    //let idStr=id.toString()
+    this.productoNuevo.imagen.splice(event.po, 1); //No es un array, es un objeto
+    //delete this.productoNuevo.imagen[idStr]
+
+    this.numeroFotos = Object.values(this.productoNuevo.imagen).length;
+    if(this.numeroFotos <= this.fotosPermitidas)
+    {
+      this.agregarImagen=false
+    }  
+    
   }
 
   public isService(type: number) {
@@ -971,6 +1041,7 @@ export class MisProductosServiciosPage implements OnInit {
 
   private obtenerTotal(lista: Array<DtosMogoModel>) {
     this.totalProductosServicios = lista.length;
+    //this.deshabilitarExistenciaPS();
     return lista.length;
   }
 
@@ -1039,24 +1110,46 @@ export class MisProductosServiciosPage implements OnInit {
      .subscribe(
          (response) => {
            this.caracteristicasNegocios = response.data;
-           if(this.iden === 1){ //productos
+            if(this.iden === 1){//productos
               let featureProductosPermitidos = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 7 )
+              let featureFotosPermitidas = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 9 )
+
               if(featureProductosPermitidos!= undefined)
               {
                 this.maximoProductos = featureProductosPermitidos.cantidad;
               }else{
-                //cuando un negocio no tenga un perfil registrado cuantos productos puede realizar
+                //cuando un negocio no tenga un perfil registrado en productos se pone la cantidad del perfil gratuito
                 this.maximoProductos = 150;
               }
+
+              if(featureFotosPermitidas!= undefined)
+              {
+                this.fotosPermitidas = featureFotosPermitidas.cantidad;
+              }else{
+                //cuando un negocio no tenga un perfil registrado en productos se pone la cantidad del perfil gratuito
+                this.fotosPermitidas = 4;
+              }
+
            }else if(this.iden === 2){ //servicios
               let featureServiciosPermitidos = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 8 )
+              let featureFotosPermitidas = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 9 )
+
               if(featureServiciosPermitidos!= undefined)
               {
                 this.maximoProductos = featureServiciosPermitidos.cantidad;
               }else{
-                //cuando un negocio no tenga un perfil registrado cuantos servicios puede realizar
+                //cuando un negocio no tenga un perfil registrado en servicios se pone la cantidad de fotos gratuito
                 this.maximoProductos = 150;
               }
+
+              if(featureFotosPermitidas!= undefined)
+              {
+                this.fotosPermitidas = featureFotosPermitidas.cantidad;
+              }else{
+                //cuando un negocio no tenga un perfil registrado en productos se pone la cantidad de fotos gratuito
+                this.fotosPermitidas = 4;
+              }
+
            }
          },
          (error) => {
@@ -1064,4 +1157,41 @@ export class MisProductosServiciosPage implements OnInit {
          }
       );
   } 
+
+  //Esta funcion se usa para deshabilitar los últimos productos si cambia de perfil (Bug:Se tiene que salir a productos para ver los deshabilitados, solo pasa la primera vez que se deshabilitar)
+  //Cuando este el cronJon ya no sera necesaria y se tiene que eliminar 
+  deshabilitarExistenciaPS(){
+    
+    if(this.totalProductosServicios > this.maximoProductos){
+      if(this.iden === 1){
+        this.datosNegocio.productos.forEach((object,index)=>{
+            if(index >= this.maximoProductos){
+                object.existencia = false;
+            };
+        });
+      }else if(this.iden === 2){
+        this.datosNegocio.servicios.forEach((object,index)=>{
+            if(index >= this.maximoProductos){
+                object.existencia = false;
+            };
+        });
+      }
+
+      this.sercicioNegocio.guardarProductoServio(this.datosNegocio).subscribe(
+        (repsuesta) => {
+          //this.buscarCategoriasProductos();
+          // this.modalReference.close();
+          this.datosNegocio = repsuesta.data;
+          this.listaProductos = this.datosNegocio;
+          // if (repsuesta.code === 200) {
+          //   console.log("entro a 200")
+          //   // this.listaProductos = this.datosNegocio;
+          //   //this.buscarCategoriasProductos();
+            
+          this.regresarLista();
+          // }
+      });
+      
+    }
+  }
 }

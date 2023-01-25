@@ -43,7 +43,7 @@ export class ModalPublicarComponent implements OnInit {
   public id_persona: any;
   public publicacionesHechas: number;
   public seleccionTO: PromocionesModel;
-  public caracteristicasNegocios: { id_caracteristica: number; cantidad: string; }[];
+  public caracteristicasNegocios: { id_caracteristica: number; cantidad: number; }[];
   public publicacionesPermitidas: any;
 
   constructor( public modalController: ModalController,
@@ -140,10 +140,11 @@ export class ModalPublicarComponent implements OnInit {
 
 
   guardarPublicacion(form: NgForm) {
+    // De la 143 a la 147 las comente por que no me dejaba publicar una promoción/Anuncio
     // let fechaInicio = Date.parse(this.fechaini);
     // this.fechaini = new Date(fechaInicio);
     // let fechaFinal = Date.parse(this.fechafin);
-    // this.fechafin = new Date(fechaFinal);7
+    // this.fechafin = new Date(fechaFinal);
 
     if(form.valid && this.blnSelectFecha === false ) {
       this.mensajeValidacion = false;
@@ -177,7 +178,7 @@ export class ModalPublicarComponent implements OnInit {
   }
 
   obtenerNumeroPublicacionesPromocion() {
-    console.log(this.publicacion.id_negocio);
+    //console.log(this.publicacion.id_negocio);
     this._promociones_service
         .obtenerNumeroPublicacionesPorNegocio(this.publicacion.id_negocio)
         .subscribe(
