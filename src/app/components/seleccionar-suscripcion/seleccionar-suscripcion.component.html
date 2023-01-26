@@ -1,0 +1,16 @@
+<ion-header translucent>
+    <ion-toolbar class="tolbar">
+        <ion-title>Seleccione su plan</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+    <div class="container" style="display: flex; flex-direction: column;">    
+        <ion-slides [options]="slideOpts" style="width: 500px;">
+            <ion-slide *ngFor="let suscripcion of this.planes">               
+                <ion-card>
+                    <p>{{suscripcion.nombre}}</p>                  
+                  </ion-card>
+            </ion-slide>
+        </ion-slides>            
+    </div>
+</ion-content>

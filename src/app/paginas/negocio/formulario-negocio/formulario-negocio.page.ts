@@ -24,6 +24,7 @@ import { GeneralServicesService } from './../../../api/general-services.service'
 import { LoadingController } from '@ionic/angular';
 import { UbicacionMapa } from '../../../api/ubicacion-mapa.service';
 import { CatDistintivosModel } from 'src/app/Modelos/CatDistintivosModel';
+import { SeleccionarSucripcionComponent } from 'src/app/components/seleccionar-suscripcion/seleccionar-suscripcion.component';
 
 @Component({
   selector: 'app-formulario-negocio',
@@ -195,6 +196,7 @@ export class FormularioNegocioPage implements OnInit {
 
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.special) {
+        //this.negocioTO = new NegocioModel();
         const datos = JSON.parse(params.special);
         this.negocioTO = datos.info;  
         this.obtenerFeatures(this.negocioTO.id_negocio);
@@ -1026,10 +1028,12 @@ export class FormularioNegocioPage implements OnInit {
         this.negocioServico.guardar(this.negocioGuardar).subscribe(
           response => {
             if (response.code === 200) {
-              this.notificaciones.exito('Tu negocio se guardo exitosamente');               
+              this.notificaciones.exito('Tu negocio se guardo exitosamente'); 
+              console.log("xxxxxx"+JSON.stringify(this.negocioGuardar))              
               this.loader = false;
               this.router.navigate(['/tabs/home/negocio']);
             } else {
+              console.log("sssss"+JSON.stringify(this.negocioGuardar))
               this.loader = false;
               this.notificaciones.alerta(response.message);
             }
@@ -1072,7 +1076,8 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.organizaciones = this.negocioTO.organizaciones;
     this.negocioGuardar.plazas = this.negocioTO.plazas;
     this.negocioGuardar.distintivos = this.negocioTO.distintivos;
-  
+    this.negocioGuardar.perfiles_caracteristicas = [this.negocioTO.perfiles_caracteristicas]
+    console.log("perfiles_caracteristicas"+this.negocioGuardar.perfiles_caracteristicas)
     if (this.cnvn_date === undefined){
       this.dateObject = this.convenio_date;
     } else{
@@ -1300,5 +1305,35 @@ async obtenerFeatures(id_negocio: number){
           console.log("error"+error)
       }
   );
+}
+seleccionarSucripcion(){
+  this._general_service.suscripciones().subscribe(
+    async response => {
+      if (this._utils_cls.is_success_response(response.code)) {
+        //console.log(JSON.stringify(response.data))
+        this.modalSuscripciones(await response.data)
+      }
+    },
+    error => {
+      this.notificaciones.error(error);
+    },
+    () => {
+    }
+  );
+}
+async modalSuscripciones(planes:any[]) {
+  const modal = await this.modalController.create({
+    component: SeleccionarSucripcionComponent,
+    cssClass: 'my-custom-class',
+    componentProps: {
+      suscripciones: planes
+    }
+  });
+  await modal.present();
+  const { data } = await modal.onDidDismiss().then(r => {
+    return r;
+  }
+  );
+  return data;
 }
 }

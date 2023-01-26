@@ -220,4 +220,16 @@ export class GeneralServicesService {
       return error;
     }));
   }
+
+  suscripciones():Observable<any>{
+    const body = JSON.stringify({});
+    this.http.setDataSerializer('utf8');
+    return from(this.http.post(`${this.url}api/admin/catalogos/obtener/perfilesCaracteristicasActivos`, body, AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
+    }));
+  }
 }

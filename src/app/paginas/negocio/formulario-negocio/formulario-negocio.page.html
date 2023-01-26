@@ -176,6 +176,18 @@
             <div>Seleccione sus distintivos</div>
           </div>
 
+          <ion-item>
+            <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+              <ion-button mode="ios" size="small" class="bg-rosa" shape="round" (click)="seleccionarSucripcion()">            
+                Seleccione su plan de suscrpción
+              </ion-button>
+            </div>             
+          </ion-item>     
+          <ion-item>
+            <ion-label position="stacked">Plan suscripción</ion-label>
+            <ion-input id="planSuscripcionTXT" name="planSuscripcionTXT" readonly
+            [(ngModel)]="negocioTO.perfiles_caracteristicas"></ion-input>
+          </ion-item>
 
           <ion-item>
             <ion-label position="stacked">Afiliado a</ion-label>
