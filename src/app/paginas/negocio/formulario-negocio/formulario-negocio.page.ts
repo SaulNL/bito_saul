@@ -135,6 +135,7 @@ export class FormularioNegocioPage implements OnInit {
   features12: boolean = false;
   disabled: boolean;
   disabledPhoto: boolean;
+  suscripciones: any;
   constructor(
     private alertController: AlertController,
     private router: Router,
@@ -232,7 +233,7 @@ export class FormularioNegocioPage implements OnInit {
     this.setarPago();
     // this.cagarMapa();
     this.load_cat_estados();
-
+    this.obtenerSuscripciones();
   }
 
   setearDireccion() {
@@ -552,14 +553,14 @@ export class FormularioNegocioPage implements OnInit {
                       this.galeriaFull=true
                     }                    
                 }
-              }
+              }  
               );
             }
           };
         };
       }
     }
-  }
+  }  
   public borrarFoto(posicion:number){    
     this.fotografiasArray.splice(posicion, 1);
     this.numeroFotos--
@@ -1306,20 +1307,31 @@ async obtenerFeatures(id_negocio: number){
       }
   );
 }
-seleccionarSucripcion(){
-  this._general_service.suscripciones().subscribe(
-    async response => {
-      if (this._utils_cls.is_success_response(response.code)) {
-        //console.log(JSON.stringify(response.data))
-        this.modalSuscripciones(await response.data)
+async obtenerSuscripciones(){
+  await this._general_service.suscripciones().subscribe(
+    response => {
+      if (this._utils_cls.is_success_response(response.code)) {       
+        this.suscripciones = response.data        
       }
     },
     error => {
-      this.notificaciones.error(error);
+      //this.notificaciones.error(error);
     },
     () => {
     }
   );
+}
+seleccionarSucripcion(){   
+   this.modalSuscripciones(this.suscripciones).then(r => {
+    if (r.data !== undefined) {
+      console.log("AQUI EL VALOOOOOR. "+r.data.data+" : "+JSON.stringify(r))
+      this.negocioTO.perfiles_caracteristicas = r.data.data             
+    }else{
+
+    }
+  }  
+  );
+
 }
 async modalSuscripciones(planes:any[]) {
   const modal = await this.modalController.create({
@@ -1330,8 +1342,12 @@ async modalSuscripciones(planes:any[]) {
     }
   });
   await modal.present();
-  const { data } = await modal.onDidDismiss().then(r => {
-    return r;
+  const data = await modal.onDidDismiss().then(r => {
+    if (r !== undefined) {
+      return r;      
+    }else{
+      return null;
+    }    
   }
   );
   return data;

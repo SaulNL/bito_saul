@@ -17,11 +17,17 @@ export class SeleccionarSucripcionComponent implements OnInit {
   planes:any[]
   public planSeleccionado: any;
   slideOpts = {
-    slidesPerView: 3,
+    /*slidesPerView: 1,
     centeredSlides: true,
     loop: false,
+    spaceBetween: 10,*/
+    autoHeight: false,
+    slidesPerView: 1,
+    centeredSlides: true,
+    loop: true,
     spaceBetween: 10,
   }
+  public idSuscripcion: any = '';
 
   constructor(
     public modalController: ModalController,
@@ -38,12 +44,11 @@ export class SeleccionarSucripcionComponent implements OnInit {
     this.modalController.dismiss();
   }
 
-  imageCropped(image: any) {
-  }
-
-  guardarImagenRecortada() {
+  seleccionarSucripcion(idSuscripcion:any){
+    console.log(idSuscripcion)
+    this.idSuscripcion=idSuscripcion
     this.modalController.dismiss({
-      'data': this.planSeleccionado
+      'data': this.idSuscripcion
     });
   }
 }

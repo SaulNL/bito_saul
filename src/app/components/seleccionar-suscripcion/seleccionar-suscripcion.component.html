@@ -3,14 +3,43 @@
         <ion-title>Seleccione su plan</ion-title>
     </ion-toolbar>
 </ion-header>
-<ion-content fullscreen>
+<ion-content [fullscreen]="false">
+    <ng-container>
+        <ion-slides [options]="slideOpts" style="width: 90%; background-color:aqua">
+            <ion-slide *ngFor="let suscripcion of this.planes" style="background-color:orange">                        
+                <ion-card class="plan_suscripcion">
+                    <p>{{suscripcion.nombre}}</p>
+                    <div *ngFor="let caracteristica of suscripcion.caracteristicas" style="width:100%; display:flex; justify-content: center; margin-bottom:3em">
+                        <ion-icon name="create-outline" style="background-color:blueviolet; color:white"></ion-icon>
+                        <p style="margin-top: 0px; margin-bottom:0px; margin-left: 10px; width:fit-content">{{caracteristica.nombre}}</p>                                  
+                    </div>
+                    <ion-item>
+                        <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+                          <ion-button mode="ios" size="small" class="bg-rosa" shape="round" (click)="seleccionarSucripcion(suscripcion.id_perfil_caracteristica)">            
+                            Seleccione su plan de suscrpción 
+                          </ion-button>
+                        </div>             
+                      </ion-item>
+                  </ion-card>
+            </ion-slide>
+        </ion-slides>
+    </ng-container>         
+</ion-content>           
+<!--div style="height:100%">
+</div-->        
+<!--ion-header translucent>
+    <ion-toolbar class="tolbar">
+        <ion-title>Seleccione su plan</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content fullscreen="false">
     <div class="container" style="display: flex; flex-direction: column;">    
         <ion-slides [options]="slideOpts" style="width: 500px;">
             <ion-slide *ngFor="let suscripcion of this.planes">               
-                <ion-card>
+                <ion-card style="width:100%; height: 80%;">
                     <p>{{suscripcion.nombre}}</p>                  
                   </ion-card>
             </ion-slide>
         </ion-slides>            
     </div>
-</ion-content>
+</ion-content-->
