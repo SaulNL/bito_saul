@@ -17,17 +17,15 @@ export class SeleccionarSucripcionComponent implements OnInit {
   planes:any[]
   public planSeleccionado: any;
   slideOpts = {
-    /*slidesPerView: 1,
-    centeredSlides: true,
-    loop: false,
-    spaceBetween: 10,*/
+    
     autoHeight: false,
     slidesPerView: 1,
     centeredSlides: true,
     loop: true,
     spaceBetween: 10,
   }
-  public idSuscripcion: any = '';
+  //public idSuscripcion: any = '';
+  public infoSuscripcion:any[]=[];
 
   constructor(
     public modalController: ModalController,
@@ -37,18 +35,21 @@ export class SeleccionarSucripcionComponent implements OnInit {
 
   ngOnInit() { 
     this.planes=this.suscripciones
-    console.log("LA DATA DE LOS PLANES"+JSON.stringify(this.suscripciones))
+    //console.log("LA DATA DE LOS PLANES"+JSON.stringify(this.suscripciones))
   }
 
   cerrar() {
     this.modalController.dismiss();
   }
 
-  seleccionarSucripcion(idSuscripcion:any){
-    console.log(idSuscripcion)
-    this.idSuscripcion=idSuscripcion
+  seleccionarSucripcion(idSuscripcion:number, nombre:string){
+    //console.log(idSuscripcion)
+    //this.idSuscripcion=idSuscripcion
+    this.infoSuscripcion=[]
+    this.infoSuscripcion.push(idSuscripcion)
+    this.infoSuscripcion.push(nombre)
     this.modalController.dismiss({
-      'data': this.idSuscripcion
+      'data': this.infoSuscripcion
     });
   }
 }

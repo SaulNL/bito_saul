@@ -136,6 +136,7 @@ export class FormularioNegocioPage implements OnInit {
   disabled: boolean;
   disabledPhoto: boolean;
   suscripciones: any;
+  dsSuscrip: string;
   constructor(
     private alertController: AlertController,
     private router: Router,
@@ -1311,7 +1312,12 @@ async obtenerSuscripciones(){
   await this._general_service.suscripciones().subscribe(
     response => {
       if (this._utils_cls.is_success_response(response.code)) {       
-        this.suscripciones = response.data        
+        this.suscripciones = response.data 
+        this.suscripciones.forEach(suscripcion => {
+          //[(ngModel)]="negocioTO.perfiles_caracteristicas"
+          if(this.negocioTO.perfiles_caracteristicas == suscripcion.id_perfil_caracteristica)
+            this.dsSuscrip = suscripcion.nombre;
+        });       
       }
     },
     error => {
@@ -1322,12 +1328,15 @@ async obtenerSuscripciones(){
   );
 }
 seleccionarSucripcion(){   
+  //this.dsSuscrip=""
    this.modalSuscripciones(this.suscripciones).then(r => {
     if (r.data !== undefined) {
-      console.log("AQUI EL VALOOOOOR. "+r.data.data+" : "+JSON.stringify(r))
-      this.negocioTO.perfiles_caracteristicas = r.data.data             
+      this.dsSuscrip=""
+      //console.log("AQUI EL VALOOOOOR. "+r.data.data+" : "+JSON.stringify(r))
+      this.dsSuscrip = r.data.data[1]  
+      this.negocioTO.perfiles_caracteristicas = r.data.data[0]            
     }else{
-
+      console.log("no selecciono nada se conserva el plan: "+this.dsSuscrip)
     }
   }  
   );
