@@ -24,6 +24,7 @@ import { GeneralServicesService } from './../../../api/general-services.service'
 import { LoadingController } from '@ionic/angular';
 import { UbicacionMapa } from '../../../api/ubicacion-mapa.service';
 import { CatDistintivosModel } from 'src/app/Modelos/CatDistintivosModel';
+import { SeleccionarSucripcionComponent } from 'src/app/components/seleccionar-suscripcion/seleccionar-suscripcion.component';
 
 @Component({
   selector: 'app-formulario-negocio',
@@ -134,6 +135,8 @@ export class FormularioNegocioPage implements OnInit {
   features12: boolean = false;
   disabled: boolean;
   disabledPhoto: boolean;
+  suscripciones: any;
+  dsSuscrip: string;
   constructor(
     private alertController: AlertController,
     private router: Router,
@@ -195,6 +198,7 @@ export class FormularioNegocioPage implements OnInit {
 
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.special) {
+        //this.negocioTO = new NegocioModel();
         const datos = JSON.parse(params.special);
         this.negocioTO = datos.info;  
         this.obtenerFeatures(this.negocioTO.id_negocio);
@@ -230,7 +234,7 @@ export class FormularioNegocioPage implements OnInit {
     this.setarPago();
     // this.cagarMapa();
     this.load_cat_estados();
-
+    this.obtenerSuscripciones();
   }
 
   setearDireccion() {
@@ -550,14 +554,14 @@ export class FormularioNegocioPage implements OnInit {
                       this.galeriaFull=true
                     }                    
                 }
-              }
+              }  
               );
             }
           };
         };
       }
     }
-  }
+  }  
   public borrarFoto(posicion:number){    
     this.fotografiasArray.splice(posicion, 1);
     this.numeroFotos--
@@ -1026,10 +1030,12 @@ export class FormularioNegocioPage implements OnInit {
         this.negocioServico.guardar(this.negocioGuardar).subscribe(
           response => {
             if (response.code === 200) {
-              this.notificaciones.exito('Tu negocio se guardo exitosamente');               
+              this.notificaciones.exito('Tu negocio se guardo exitosamente'); 
+              console.log("xxxxxx"+JSON.stringify(this.negocioGuardar))              
               this.loader = false;
               this.router.navigate(['/tabs/home/negocio']);
             } else {
+              console.log("sssss"+JSON.stringify(this.negocioGuardar))
               this.loader = false;
               this.notificaciones.alerta(response.message);
             }
@@ -1072,7 +1078,8 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.organizaciones = this.negocioTO.organizaciones;
     this.negocioGuardar.plazas = this.negocioTO.plazas;
     this.negocioGuardar.distintivos = this.negocioTO.distintivos;
-  
+    this.negocioGuardar.perfiles_caracteristicas = [this.negocioTO.perfiles_caracteristicas]
+    console.log("perfiles_caracteristicas"+this.negocioGuardar.perfiles_caracteristicas)
     if (this.cnvn_date === undefined){
       this.dateObject = this.convenio_date;
     } else{
@@ -1300,5 +1307,58 @@ async obtenerFeatures(id_negocio: number){
           console.log("error"+error)
       }
   );
+}
+async obtenerSuscripciones(){
+  await this._general_service.suscripciones().subscribe(
+    response => {
+      if (this._utils_cls.is_success_response(response.code)) {       
+        this.suscripciones = response.data 
+        this.suscripciones.forEach(suscripcion => {
+          //[(ngModel)]="negocioTO.perfiles_caracteristicas"
+          if(this.negocioTO.perfiles_caracteristicas == suscripcion.id_perfil_caracteristica)
+            this.dsSuscrip = suscripcion.nombre;
+        });       
+      }
+    },
+    error => {
+      //this.notificaciones.error(error);
+    },
+    () => {
+    }
+  );
+}
+seleccionarSucripcion(){   
+  //this.dsSuscrip=""
+   this.modalSuscripciones(this.suscripciones).then(r => {
+    if (r.data !== undefined) {
+      this.dsSuscrip=""
+      //console.log("AQUI EL VALOOOOOR. "+r.data.data+" : "+JSON.stringify(r))
+      this.dsSuscrip = r.data.data[1]  
+      this.negocioTO.perfiles_caracteristicas = r.data.data[0]            
+    }else{
+      console.log("no selecciono nada se conserva el plan: "+this.dsSuscrip)
+    }
+  }  
+  );
+
+}
+async modalSuscripciones(planes:any[]) {
+  const modal = await this.modalController.create({
+    component: SeleccionarSucripcionComponent,
+    cssClass: 'my-custom-class',
+    componentProps: {
+      suscripciones: planes
+    }
+  });
+  await modal.present();
+  const data = await modal.onDidDismiss().then(r => {
+    if (r !== undefined) {
+      return r;      
+    }else{
+      return null;
+    }    
+  }
+  );
+  return data;
 }
 }

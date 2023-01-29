@@ -27,12 +27,12 @@ import { SignInWithApple } from '@ionic-native/sign-in-with-apple/ngx';
 import { LocalNotifications} from '@ionic-native/local-notifications/ngx';
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
-
-
+import { CommonModule } from '@angular/common';
+import { SeleccionarSucripcionComponent } from './components/seleccionar-suscripcion/seleccionar-suscripcion.component';
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,SeleccionarSucripcionComponent],
   entryComponents: [],
-  imports: [BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule],
+  imports: [CommonModule, BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule],
   providers: [
     LocalNotifications,
     StatusBar,

@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import Moment from 'moment';
 import { ToadNotificacionService } from './../../../api/toad-notificacion.service';
+import { GeneralServicesService } from 'src/app/api/general-services.service';
 
 @Component({
   selector: 'app-statistics-by-business',
@@ -23,7 +24,9 @@ export class StatisticsByBusinessPage implements OnInit {
   public filters: StatisticsFilterInterface;
   public statistics: BusinessStatisticsInterface;
   public selected: string;
+  features16: boolean;
   constructor(
+    private _general_service: GeneralServicesService,
     private activated: ActivatedRoute,
     private business: NegocioService,
     private create: CreateObjects,
@@ -42,6 +45,7 @@ export class StatisticsByBusinessPage implements OnInit {
           this.initConstructor();
           const contentStatisticsByBusiness: StatisticsByBusinessInterface = JSON.parse(params.business);
           this.init(contentStatisticsByBusiness.idBusiness);
+          this.obtenerFeatures(contentStatisticsByBusiness.idBusiness)
         } else {
 
         }
@@ -317,6 +321,32 @@ export class StatisticsByBusinessPage implements OnInit {
    */
   get totalProduct() {
     return (this.statistics.totalLikesProducts !== 0);
+  }
+
+  noSuscriptionMSG(){
+    
+  }
+  async obtenerFeatures(id_negocio: number){
+    await this._general_service.features(id_negocio).subscribe(
+        response => {
+            console.log("FEATURES del id_negocio: "+id_negocio+",\n"+JSON.stringify(response))
+            this.features16 = false;
+            if (response.data.lenght != 0){                    
+                response.data.forEach(feature => {
+                    if(feature.id_caracteristica == 16){   
+                      this.features16=true                    
+                      console.log("\nEl negocio tiene el features 16? "+this.features16)
+                    }          
+                });
+            }else{
+              console.log("Features Vacío")  
+              
+            }
+        },
+        error => {
+            console.log("error"+error)
+        }
+    );
   }
   /**
    * @author Juan Antonio Guevara Flores
