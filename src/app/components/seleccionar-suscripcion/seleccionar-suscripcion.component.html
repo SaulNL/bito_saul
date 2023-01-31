@@ -9,7 +9,7 @@
     </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="false">
-    <ng-container>
+    <ion-item style="width: 100%;">
         <ion-slides [options]="slideOpts" style="width: 90%;">
             <ion-slide *ngFor="let suscripcion of this.planes">                        
                 <ion-card class="plan_suscripcion">
@@ -35,7 +35,7 @@
                   </ion-card>
             </ion-slide>
         </ion-slides>
-    </ng-container>         
+    </ion-item>         
 </ion-content>           
 <!--div style="height:100%">
 </div-->        
