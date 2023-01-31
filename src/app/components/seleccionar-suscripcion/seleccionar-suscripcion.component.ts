@@ -19,6 +19,7 @@ export class SeleccionarSucripcionComponent implements OnInit {
   slideOpts = {
     
     autoHeight: false,
+    autoWidht:false,
     slidesPerView: 1,
     centeredSlides: true,
     loop: true,
@@ -43,11 +44,12 @@ export class SeleccionarSucripcionComponent implements OnInit {
   }
 
   seleccionarSucripcion(idSuscripcion:number, nombre:string){
-    //console.log(idSuscripcion)
+    
     //this.idSuscripcion=idSuscripcion
     this.infoSuscripcion=[]
     this.infoSuscripcion.push(idSuscripcion)
     this.infoSuscripcion.push(nombre)
+    console.log("Usted seleccionó esto: "+this.infoSuscripcion)
     this.modalController.dismiss({
       'data': this.infoSuscripcion
     });
