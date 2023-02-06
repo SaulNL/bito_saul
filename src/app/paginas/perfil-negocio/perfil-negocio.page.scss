@@ -420,3 +420,13 @@ p {
   transition:  bottom 0.6s;
   z-index:800;  
 }
+.limiteTexto{
+  display: -webkit-box;
+  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
