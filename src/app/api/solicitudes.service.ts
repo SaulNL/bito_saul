@@ -164,6 +164,17 @@ export class SolicitudesService {
         return error;
       }));
   }
+  obtenerQuienVioMiSolicitud(solicitud: SolicitudesModel): Observable<any> {
+    const body = JSON.stringify(solicitud);
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + '/api/solicitudes/obtener/quienvio', body, AppSettings.getHeadersToken())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+  }
   /**
    * Funcion para obtener el numero de publicaciones permitidas
    * @param publicacion
