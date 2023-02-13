@@ -267,9 +267,9 @@ export class NegocioService {
             }));
     }
 
-    obtenerCategoriasProdServ(id: any, negocio_id:number): Observable<any> {
-        const body = JSON.stringify({ id_giro: id , id_tipo_negocio: negocio_id });
-        console.log("body serv",body)
+    obtenerCategoriasProdServ(id: any, negocio_id: number): Observable<any> {
+        const body = JSON.stringify({ id_giro: id, id_tipo_negocio: negocio_id });
+        console.log("body serv", body)
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'buscar/giro/categorias',
@@ -282,8 +282,8 @@ export class NegocioService {
             }));
     }
 
-  
-    
+
+
 
     /**
      * Funcion para obtener el catalogo de organizaciones
@@ -344,7 +344,7 @@ export class NegocioService {
             .catch((error) => {
                 return error;
             }));
-      }
+    }
 
     /**
      * Servicio para validar disponivilidad de url del negocio
@@ -374,7 +374,7 @@ export class NegocioService {
             .then((data) => {
                 console.log("HOLA--------SERVICIO" + JSON.stringify(data.data));
                 return JSON.parse(data.data);
-              
+
             })
             .catch((error) => {
                 console.log("HOLA--------ERROR-" + JSON.stringify(error));
@@ -384,16 +384,16 @@ export class NegocioService {
 
 
     calcularCostoDeEnvio(minutos: number, kilometros: number): Observable<any> {
-        const body = JSON.stringify( { minutos: minutos, kilometros: kilometros} );
-        return from(this._http.post( this.url + 'api/pedidos/calcularEnvio',body, AppSettings.getHeadersToken())
-            .then( data => {
-              return JSON.parse(data.data);
+        const body = JSON.stringify({ minutos: minutos, kilometros: kilometros });
+        return from(this._http.post(this.url + 'api/pedidos/calcularEnvio', body, AppSettings.getHeadersToken())
+            .then(data => {
+                return JSON.parse(data.data);
             })
             .catch((error) => {
-              return error;
+                return error;
             })).pipe(map(data => {
-          return data;
-        }));
+                return data;
+            }));
     }
 
     activarDesactivar(id_negocio: number, cambio: boolean): Observable<any> {
@@ -656,15 +656,30 @@ export class NegocioService {
                 return error;
             }));
     }
-    obtenerTiposDePagosPorNegocio(idNegocio: string | number): Observable<any>{
-        const body = JSON.stringify({idNegocio: idNegocio});
-        return from(this._http.post(this.url+'/api/catalogo/tipopago/list', body, AppSettings.getHeadersToken())
+    obtenerTiposDePagosPorNegocio(idNegocio: string | number): Observable<any> {
+        const body = JSON.stringify({ idNegocio: idNegocio });
+        return from(this._http.post(this.url + '/api/catalogo/tipopago/list', body, AppSettings.getHeadersToken())
             .then(
-            (respuesta) => { 
-                return JSON.parse(respuesta.data);
-            })
+                (respuesta) => {
+                    return JSON.parse(respuesta.data);
+                })
             .catch((error) => {
                 return error;
-            }));        
+            }));
+    }
+    clickRedSocial(idNegocio, Rsocial, idpersona): Observable<any> {
+        const body = JSON.stringify({
+            id_negocio: idNegocio,
+            opcion: Rsocial,
+            id_persona: idpersona
+        });
+        return from(this._http.post(this.url + '/api/negocio/guardar/interactuaste_mi_negocio', body, AppSettings.getHeadersToken())
+            .then(
+                (respuesta) => {
+                    return JSON.parse(respuesta.data);
+                })
+            .catch((error) => {
+                return error;
+            }));
     }
 }
