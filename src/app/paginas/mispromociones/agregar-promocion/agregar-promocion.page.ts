@@ -132,7 +132,7 @@ export class AgregarPromocionPage implements OnInit {
     private _promociones_service: PromocionesService,
     public loadingController: LoadingController,
     private platform: Platform,
-    private generalService: GeneralServicesService 
+    private generalService: GeneralServicesService
   ) {
     this.isIos = this.platform.is("ios");
     this.seleccionTo = new PromocionesModel();
@@ -915,6 +915,5 @@ export class AgregarPromocionPage implements OnInit {
         }
       );
   }
-
 
 }

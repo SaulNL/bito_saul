@@ -272,3 +272,24 @@ ion-fab {
   width: 70%;
   border-radius: 5px;
 }
+
+/* estilos para estrellas de features */
+
+.star {
+  color: rgb(209, 179, 98);
+  font-size: 12px;
+}
+
+.star-campos {
+  position: absolute;
+  top: 8px;
+  left: 1px;
+  color: rgb(175, 139, 38);
+}
+
+.star-video {
+  background-color: white;
+  border-radius: 50px;
+  color: rgb(147, 112, 17);
+  margin-left: 5px;
+}

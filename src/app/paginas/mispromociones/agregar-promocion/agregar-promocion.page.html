@@ -13,24 +13,13 @@
 </ion-header>
 <app-spinner [loader]="loader" [message]="msj"></app-spinner>
 <ion-content *ngIf="!loader" >
-  <!-- <ion-list *ngFor="let lstTipoPromo of lstTipoPromo" >
-    <ion-radio-group [(ngModel)]="tipoPromo" (ionChange)="cambiarTipo($event)" [value]="tipoPromo">
-       
-      <ion-item >
-        <ion-label>{{lstTipoPromo.nombre}}{{lstTipoPromo.id_tipo_promocion}}</ion-label>
-        <ion-radio slot="end" [(value)]=lstTipoPromo.id_tipo_promocion ></ion-radio>
-      </ion-item>
-  
-  
-    </ion-radio-group>
-  </ion-list> -->
   <form #formVariable="ngForm" (ngSubmit)="guardar(formVariable)">
     <ion-card>
       <ion-card-content>
         <ion-list *ngFor="let lstTipoPromo of lstTipoPromo">
           <ion-radio-group name="id_tipo_promocion" [(ngModel)]="seleccionTo.id_tipo_promocion" (ionChange)="cambiarTipo($event)" [value]="seleccionTo.id_tipo_promocion">
                     
-            <ion-item [disabled] = "editAnuncioPromocion">
+            <ion-item [disabled]="editAnuncioPromocion">
               <ion-label>{{lstTipoPromo.nombre}}</ion-label>
               <ion-radio slot="end" [(value)]="lstTipoPromo.id_tipo_promocion" ></ion-radio>
             </ion-item>
@@ -166,48 +155,44 @@
           </ion-item>
 
           <ion-item  [disabled]="banderaPromocionCompleta">
-            <ion-label position="stacked">Plaza</ion-label>
+            <ion-icon name="star" class="star star-campos" *ngIf="banderaPromocionCompleta"></ion-icon>
+            <ion-label position="stacked" [ngClass]="{'padding-campo': banderaPromocionCompleta}">Plaza</ion-label>
             <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idPlaza" [value]=""
             name="plazas"
             [(ngModel)]="seleccionTo.plazas"
-            
-            
-             >
+            >
               <ion-select-option *ngFor="let plz of this.lstPlazas" [value]="plz.id_organizacion">{{plz.nombre}} 
               </ion-select-option>
             </ion-select>
           </ion-item>
 
           <ion-item [disabled]="banderaPromocionCompleta">
-            <ion-label position="stacked">Afiliación </ion-label>
+            <ion-icon name="star" class="star star-campos" *ngIf="banderaPromocionCompleta"></ion-icon>
+            <ion-label position="stacked" [ngClass]="{'padding-campo': banderaPromocionCompleta}">Afiliación </ion-label>
             <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idAfl" [value]=""
             name="organizaciones"
             [(ngModel)]="seleccionTo.organizaciones"
-            
-            
-            
-             >
+            >
               <ion-select-option *ngFor="let plz of this.lstAfl" [value]="plz.id_organizacion"> {{plz.nombre}} 
               </ion-select-option>
             </ion-select>
           </ion-item>
 
           <ion-item [disabled]="banderaPromocionCompleta">
-            <ion-label position="stacked">Convenio </ion-label>
+            <ion-icon name="star" class="star star-campos" *ngIf="banderaPromocionCompleta"></ion-icon>
+            <ion-label position="stacked" [ngClass]="{'padding-campo': banderaPromocionCompleta}">Convenio </ion-label>
             <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idCvn" [value]=""
             name="convenios"
-            [(ngModel)]="seleccionTo.convenios"
-                     
-             >
+            [(ngModel)]="seleccionTo.convenios"       
+            >
               <ion-select-option *ngFor="let cvn of lstConvenio" [value]="cvn.id_organizacion"> {{cvn.nombre}} 
               </ion-select-option>
             </ion-select>
           </ion-item>
 
           <ion-item [disabled]="banderaPromocionCompleta">
-            <ion-label position="stacked"
-              >Número mínimo aplicado, 0 indica ilimitado:<span>*</span></ion-label
-            >
+            <ion-icon name="star" class="star star-campos" *ngIf="banderaPromocionCompleta"></ion-icon>
+            <ion-label position="stacked" [ngClass]="{'padding-campo': banderaPromocionCompleta}">Número mínimo aplicado, 0 indica ilimitado:<span>*</span></ion-label>
             <ion-input
               #terminos="ngModel"
               type="number"
@@ -217,9 +202,10 @@
           </ion-item>
 
           <ion-item [disabled]="banderaPromocionCompleta">
-            <ion-label position="stacked"
-              >Número máximo aplicado, 0 indica ilimitado:<span>*</span></ion-label
-            >
+            <ion-icon name="star" class="star star-campos" *ngIf="banderaPromocionCompleta"></ion-icon>
+            <ion-label position="stacked" [ngClass]="{'padding-campo': banderaPromocionCompleta}">
+              Número máximo aplicado, 0 indica ilimitado:<span>*</span>
+            </ion-label>
             <ion-input
               #terminos="ngModel"
               type="number"
@@ -228,10 +214,9 @@
             ></ion-input>
           </ion-item>
 
-          <ion-item [disabled]="banderaPromocionCompleta" >
-            <ion-label position="stacked"
-              >Porcentaje de descuento :</ion-label
-            >
+          <ion-item [disabled]="banderaPromocionCompleta">
+            <ion-icon name="star" class="star star-campos" *ngIf="banderaPromocionCompleta"></ion-icon>
+            <ion-label position="stacked" [ngClass]="{'padding-campo': banderaPromocionCompleta}">Porcentaje de descuento :</ion-label>
             <ion-input
               #terminos="ngModel"
               type="number"
@@ -240,7 +225,8 @@
             ></ion-input>
           </ion-item>
 
-          <ion-label>Horario de promoción</ion-label>
+          <ion-label>Horario de promoción </ion-label>
+          <ion-icon name="star" class="star" *ngIf="banderaPromocionCompleta"></ion-icon>
           <ion-item [disabled]="banderaPromocionCompleta">
             <ion-label stacked> Horario Inicial </ion-label>
             <ion-datetime display-format="H:mm" picker-format="H:mm" name="feInicio" #feInicio="ngModel"
@@ -343,7 +329,7 @@
               >
                 <div>
                   <label for="cuadrado">
-                    <ion-icon name="image-outline"></ion-icon>
+                    <ion-icon name="image-outline" style="font-size: 15px;"></ion-icon>
                   </label>
                 </div>
               </div>
@@ -456,7 +442,7 @@
               >
                 <div>
                   <label for="rectangulo">
-                    <ion-icon name="image-outline"></ion-icon>
+                    <ion-icon name="image-outline" style="font-size: 15px;"></ion-icon>
                   </label>
                 </div>
               </div>
@@ -554,7 +540,8 @@
               <label for="video" [ngClass]="isIos ? 'upload' : 'uploadAndroid'">
                 Seleccionar video
               </label>
-              <ion-icon name="videocam-outline" style="margin-left: 5px"></ion-icon>
+              <ion-icon name="videocam-outline" style="margin-left: 5px" *ngIf="!mostrarVideo"></ion-icon>
+              <ion-icon name="star" class="star star-video" *ngIf="mostrarVideo"></ion-icon>
             </ion-button>
           </div>
           
