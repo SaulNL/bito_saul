@@ -985,20 +985,23 @@ export class InicioPage implements OnInit, AfterViewInit {
           (response) => {
             if (response.code === 200) {
               this.listaCategorias = response.data;
+              //console.log("Lista de categorias inicial: \n"+JSON.stringify(this.listaCategorias))
               let uno = this.listaCategorias[0].negocios.slice(0,10);
               let dos = this.listaCategorias[1].negocios.slice(0,10);
               let tres =this.listaCategorias[2].negocios.slice(0,10);
               this.obtenerNegociosFav(); 
               this.banderaVerMas = true;
               this.listaVerMas = [{'nombre': 'Con convenio','negocios' : uno},{'nombre': 'Con promociones','negocios': dos},{'nombre': 'Más Vistos','negocios':tres}];
-              if(this.listaVerMas[0].negocios.length <= 10){
-                this.verMasNegociosCon = false;
+              if(this.listaCategorias[0].negocios.length > 10){
+                this.verMasNegociosCon = true;
               } 
-              if(this.listaVerMas[1].negocios.length <= 10){
-                this.verMasNegociosPromo = false;
-              }     
-              if(this.listaVerMas[2].negocios.length <= 10){
-                this.verMasNegociosVistos = false;
+              if(this.listaCategorias[1].negocios.length > 10){                
+                this.verMasNegociosPromo = true;
+              }else{
+                //console.log("Lista de promos: \n"+JSON.stringify(this.listaCategorias[1].negocios))
+              }
+              if(this.listaCategorias[2].negocios.length > 10){
+                this.verMasNegociosVistos = true;
               }
               setTimeout(() => {
                 this.loader = false;
@@ -1043,7 +1046,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     {
 
       if(this.listaVerMas[this.indice].negocios.length > 10) {
-        this.indice == 0 ? this.verMasNegociosCon = true : this.indice == 1 ? this.verMasNegociosPromo = true : this.verMasNegociosVistos = true;
+        this.indice == 0 ? this.verMasNegociosCon = false : this.indice == 1 ? this.verMasNegociosPromo = false : this.verMasNegociosVistos = false;
       }
      
     }
@@ -1055,9 +1058,10 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.listaVerMas[this.indice].negocios.splice(10,this.listaCategorias[this.indice].negocios.length);
     
     if(this.listaVerMas[this.indice].negocios.length <= 10){
-      this.indice == 0 ? this.verMasNegociosCon = false : this.indice == 1 ? this.verMasNegociosPromo = false : this.verMasNegociosVistos = false;
-    } else{
       this.indice == 0 ? this.verMasNegociosCon = true : this.indice == 1 ? this.verMasNegociosPromo = true : this.verMasNegociosVistos = true;
+    } else{
+      this.indice == 0 ? this.verMasNegociosCon = false : this.indice == 1 ? this.verMasNegociosPromo = false : this.verMasNegociosVistos = false;
+    
     }
     if (ancla=="ancla0"){//Se conservan posiciones estaticas de forma provicional 
       this.content.scrollToPoint(0,330,500)
