@@ -1,9 +1,10 @@
 <app-header message="Estadísticas" [backButton]="false" [closeButton]="true" (closeResponse)="closeStatistic()">
 </app-header>
 <app-loader [loader]="loading" message="Cargando estadísticas del negocio"></app-loader>
+
 <ion-content fullscreen *ngIf="!loading"> 
-    <div *ngIf="features16; else noSuscription">
-        <ion-item>
+    <div class="filters">
+        <ion-item style="width: 49%;">
             <ion-label>Fecha: </ion-label>
             <ion-select value="{{ selected }}" ok-text="Ok" cancel-text="Cancelar" (ionChange)="activetedFilter($event.detail.value)">
                 <ion-select-option value="day">
@@ -24,6 +25,29 @@
                 </ion-select-option>
             </ion-select>
         </ion-item>
+        <ion-item style="width: 49%;">
+            <ion-label>Filtrar por: </ion-label>
+            <ion-select value="{{ selectedPlus }}" ok-text="Ok" cancel-text="Cancelar" (ionChange)="filtroPlus($event.detail.value)">
+                <ion-select-option value="edad">
+                    <ion-icon name="calendar-outline"></ion-icon>
+                    Edad
+                </ion-select-option>
+                <ion-select-option value="sexo">
+                    <ion-icon name="calendar-outline"></ion-icon>
+                    Sexo
+                </ion-select-option>
+                <ion-select-option value="localidad">
+                    <ion-icon name="calendar-outline"></ion-icon>
+                    Localidad
+                </ion-select-option>
+                <ion-select-option value="todos">
+                    <ion-icon name="sparkles-outline"></ion-icon>
+                    Todo
+                </ion-select-option>                
+            </ion-select>        
+        </ion-item>
+    </div>
+    <div *ngIf="features16; else noSuscription">        
         <ion-card>
             <ion-card-content>
                 <ion-grid>
@@ -68,11 +92,18 @@
                                         <h2 class="text-white">
                                             Requerimientos de compra
                                         </h2>
-                                        <h1 class="text-white">
-                                            <strong>
-                                                {{ statistics.totalRequests }}
-                                            </strong>
+                                        <h1 class="text-white" *ngIf="requests.length < 1; else elseBlock">
+                                            <strong ><!--{{ requests.length statistics.totalRequests}}-->  
+                                                0                                              
+                                            </strong>                                            
                                         </h1>
+                                        <ng-template #elseBlock>
+                                            <h2>
+                                                <strong>
+                                                    {{ requests.length }}
+                                                </strong>                                                
+                                            </h2>                                               
+                                        </ng-template>
                                     </ion-grid>
                                 </ion-card-content>
                             </ion-card>
@@ -84,13 +115,21 @@
                                         <h2 class="text-white">
                                             Promociones
                                         </h2>
-                                        <h1 class="text-white">
-                                            {{ statistics.totalPromotions }}
+                                        <h1 class="text-white" *ngIf="promotions.length <1; else elseBlock1">
+                                            0<!--{{ statistics.totalPromotions }}-->
                                         </h1>
+                                        <ng-template #elseBlock1>
+                                            <h1 class="text-white">
+                                                {{ promotions.length }}<!--{{ statistics.totalPromotions }}-->
+                                            </h1>
+                                        </ng-template>
                                     </ion-grid>
                                 </ion-card-content>
                             </ion-card>
                         </ion-col>
+                    </ion-row>
+                    <ion-row *ngIf="filter.tipo != null">
+                        <h2>Grafica de estadística por {{filter.tipo}}</h2>
                     </ion-row>
                 </ion-grid>
             </ion-card-content>
@@ -148,7 +187,7 @@
             </ion-card-header>
             <ion-card-content>
                 <ion-list>
-                    <ion-item *ngFor="let request of statistics.requests">
+                    <ion-item *ngFor="let request of requests"><!--statistics.requests-->
                         <ion-label>{{ request.solicitud }}</ion-label>
                         <ion-badge color="light" slot="end">{{request.cuantos_vieron}}</ion-badge>
                     </ion-item>
@@ -161,7 +200,7 @@
             </ion-card-header>
             <ion-card-content>
                 <ion-list>
-                    <ion-item *ngFor="let product of statistics.products">
+                    <ion-item *ngFor="let product of products"><!--statistics.products-->
                         <ion-label> {{product.producto}} </ion-label>
                         <ion-badge color="light" slot="end">{{product.numero_likes}}</ion-badge>
                     </ion-item>

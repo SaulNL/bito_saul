@@ -24,7 +24,13 @@ export class StatisticsByBusinessPage implements OnInit {
   public filters: StatisticsFilterInterface;
   public statistics: BusinessStatisticsInterface;
   public selected: string;
+  public selectedPlus: string;
+  public filter: StatisticsFilterInterface //= new StatisticsFilterModel(this.filters.id_negocio);
   features16: boolean;
+  vistaTipos: any[] = [];
+  requests: any[];
+  promotions: any[];
+  products: any[];
   constructor(
     private _general_service: GeneralServicesService,
     private activated: ActivatedRoute,
@@ -46,6 +52,7 @@ export class StatisticsByBusinessPage implements OnInit {
           const contentStatisticsByBusiness: StatisticsByBusinessInterface = JSON.parse(params.business);
           this.init(contentStatisticsByBusiness.idBusiness);
           this.obtenerFeatures(contentStatisticsByBusiness.idBusiness)
+          this.filter = new StatisticsFilterModel(contentStatisticsByBusiness.idBusiness);        
         } else {
 
         }
@@ -60,44 +67,79 @@ export class StatisticsByBusinessPage implements OnInit {
   public activetedFilter(value: string) {
     const moment = Moment();
     const day = moment.format(Moment.HTML5_FMT.DATE);
-    const filter: StatisticsFilterInterface = new StatisticsFilterModel(this.filters.id_negocio);
+  
     try {
       switch (value) {
         case 'day':
-          filter.fecha_inicio = day;
-          filter.fecha_final = day;
+          this.filter.fecha_inicio = day;
+          this.filter.fecha_final = day;
           this.selected = 'day';
-          this.activatedFilter(filter);
+          this.activatedFilter(this.filter);
           break;
         case 'week':
           this.selected = 'week';
-          filter.fecha_inicio = Moment().subtract(7, 'd');
-          filter.fecha_final = day;
-          this.activatedFilter(filter);
+          this.filter.fecha_inicio = Moment().subtract(7, 'd');
+          this.filter.fecha_final = day;
+          this.activatedFilter(this.filter);
           break;
         case 'month':
           this.selected = 'month';
-          filter.fecha_inicio = Moment().subtract(30, 'd');
-          filter.fecha_final = day;
-          this.activatedFilter(filter);
+          this.filter.fecha_inicio = Moment().subtract(30, 'd');
+          this.filter.fecha_final = day;
+          this.activatedFilter(this.filter);
           break;
         case 'all':
           this.selected = 'all';
-          filter.fecha_inicio = null;
-          filter.fecha_final = null;
-          this.activatedFilter(filter);
+          this.filter.fecha_inicio = null;
+          this.filter.fecha_final = null;
+          this.activatedFilter(this.filter);
           break;
         default:
           this.selected = 'all';
-          filter.fecha_inicio = null;
-          filter.fecha_final = null;
-          this.activatedFilter(filter);
+          this.filter.fecha_inicio = null;
+          this.filter.fecha_final = null;
+          this.activatedFilter(this.filter);
           break;
       }
     } catch (error) {
-      filter.fecha_inicio = null;
-      filter.fecha_final = null;
-      this.activatedFilter(filter);
+      this.filter.fecha_inicio = null;
+      this.filter.fecha_final = null;
+      this.activatedFilter(this.filter);
+    }
+  }
+  public filtroPlus(value: string) {    
+    try {
+      switch (value) {
+        case 'edad':
+          this.filter.tipo = "edad";
+          this.selectedPlus = "edad"
+          this.activatedFilter(this.filter)
+          break;
+        case 'sexo':
+          this.filter.tipo = "sexo";
+          this.selectedPlus = "sexo"
+          this.activatedFilter(this.filter)
+          break;
+        case 'localidad':
+          this.filter.tipo = "localidad";
+          this.selectedPlus = "localidad"
+          this.activatedFilter(this.filter)
+          break;
+        case 'todos':
+          this.filter.tipo = null;
+          this.selectedPlus = "todos"
+          this.activatedFilter(this.filter)
+          break;
+        default:
+          this.filter.tipo = null;  
+          this.activatedFilter(this.filter)
+          break;
+      }
+    } catch (error) {
+      this.filter.fecha_inicio = null;
+      this.filter.fecha_final = null;
+      this.filter.tipo = null;
+      this.activatedFilter(this.filter)
     }
   }
   /**
@@ -150,6 +192,7 @@ export class StatisticsByBusinessPage implements OnInit {
    * @param filter
    */
   private activatedFilter(filter: StatisticsFilterInterface) {
+    console.log(JSON.stringify(filter))
     this.getVisitsByQr(filter);
     this.getVisitsByUrl(filter);
     this.getLikesBusiness(filter);
@@ -182,12 +225,39 @@ export class StatisticsByBusinessPage implements OnInit {
    * @description Obtiene la visitas por url
    * @param filters
    */
-  private getVisitsByUrl(filters: StatisticsFilterInterface) {
+  async  getVisitsByUrl(filters: StatisticsFilterInterface) {
     this.loader.loadingVisitsByUrl = true;
-    this.business.estadisticaVisitasURL(filters).subscribe(
+    var total=0;
+    var edades = []
+    var localidades =[]
+    var sexo =[]
+    await this.business.estadisticaVisitasURL(filters).subscribe(
       response => {
         this.statistics.totalVisitsByUrl = this.create.anyToNumber(response.data.numero_visto);
         this.loader.loadingVisitsByUrl = false;
+        this.vistaTipos = response.data.datos
+        console.log("La lista de resultados por el tipo --> "+filters.tipo+" es:\n"+JSON.stringify(this.vistaTipos))
+        this.vistaTipos.forEach(tipo => {
+            total = total+tipo.total     
+            if(filters.tipo == "localidad"){
+              localidades.push(tipo.municipio)              
+            }else if(filters.tipo == "edad"){              
+              edades.push(tipo.edad)
+            }else if(filters.tipo == "sexo"){
+              sexo.push(tipo.edad)
+            }            
+        });
+
+        if(filters.tipo == "edad"){
+          console.log("El total de visitas del tipo "+ filters.tipo+" es: "+total+ 
+        " y la lista de "+filters.tipo+" es:"+edades)         
+        }else if(filters.tipo == "localidad"){
+          console.log("El total de visitas del tipo "+ filters.tipo+" es: "+total+ 
+        " y la lista de "+filters.tipo+" es\n"+ localidades) 
+        }else if(filters.tipo == "sexo"){
+          console.log("El total de visitas del tipo "+ filters.tipo+" es: "+total+ 
+        " y la lista de "+filters.tipo+" es\n"+ sexo) 
+        }
       },
       () => {
         this.loader.loadingVisitsByUrl = false;
@@ -244,9 +314,10 @@ export class StatisticsByBusinessPage implements OnInit {
   private getRequests(filters: StatisticsFilterInterface) {
     this.loader.loadingTotalRequests = true;
     this.business.estadisticaSolicitudesNegocio(filters).subscribe(
-      response => {
-        this.statistics.totalRequests = response.data.length;
-        this.statistics.requests = response.data;
+      async response => {
+        this.requests = await response.data.solicitudes;
+        /*this.statistics.totalRequests = response.data.length;
+        this.statistics.requests = response.data;*/
         this.loader.loadingTotalRequests = false;
       },
       () => {
@@ -263,9 +334,10 @@ export class StatisticsByBusinessPage implements OnInit {
   private getPromotions(filters: StatisticsFilterInterface) {
     this.loader.loadingTotalPromotions = true;
     this.business.estadisticaPromocionesNegocio(filters).subscribe(
-      response => {
-        this.statistics.totalPromotions = response.data.length;
-        this.statistics.promotions = response.data;
+      async response => {
+        /*this.statistics.totalPromotions = response.data.length;
+        this.statistics.promotions = response.data;*/
+        this.promotions = await response.data.promociones;
         this.loader.loadingTotalPromotions = false;
       },
       () => {
@@ -283,8 +355,9 @@ export class StatisticsByBusinessPage implements OnInit {
     this.loader.loadingLikesProducts = true;
     this.business.estadisticaVistasProductosNegocio(filters).subscribe(
       response => {
-        this.statistics.totalLikesProducts = response.data.length;
-        this.statistics.products = response.data;
+        /*this.statistics.totalLikesProducts = response.data.length;
+        this.statistics.products = response.data;*/
+        this.products = response.data;
         this.loader.loadingLikesProducts = false;
       },
       () => {
