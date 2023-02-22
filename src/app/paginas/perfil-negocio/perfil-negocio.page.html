@@ -183,7 +183,7 @@
             </ion-grid>
           </ion-row>
         </div>
-        <ion-row class="row_insignias">
+        <ion-row class="row_insignias" *ngIf="insignias.length != 0">
           <ion-slides [options]="slideOptsInsignias" class="row_insignias">                
             <ion-slide *ngFor="let distintivo of insignias">               
                 <img class="img_insignia" src="{{distintivo.icon}}" alt="insignia" (click)="clickDistintivo(distintivo.nombre, distintivo.descripcion)">                                                                                                                                              
@@ -671,7 +671,7 @@
                     alt="Falla al cargar la imagen"
                   />
                   <ion-card-header class="ion-card-cara">
-                    <ion-card-subtitle class="limiteTexto">{{producto.nombre}}</ion-card-subtitle>
+                    <ion-card-subtitle class="limiteTexto">{{formatoNombreProd(producto.nombre)}}</ion-card-subtitle>
                     <ion-badge *ngIf="producto.precio !== null" color="success">
                       $ {{producto.precio}}</ion-badge
                     >

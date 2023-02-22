@@ -198,7 +198,7 @@
               </ion-card>
           </div>
           <div class="container-3">
-            <div *ngIf="listaCategorias[0].negocios.length > 10">
+            <div *ngIf="botonesVerMas.convenio == true">
               <ion-button shape="round" expand="full" size="small" *ngIf="cat.nombre == 'Con convenio' && !filtroActivo && !idTodo && !selectionAP && !buscador" 
               (click)="verMasNegociosCon ? cargarMasNegociosInicio(cat.nombre) : cargarMenosNegociosInicio(cat.nombre,'ancla'+a)" class="boton-ver-mas">
                 <span class="texto-ver-mas" *ngIf="verMasNegociosCon">Ver más negocios </span>
@@ -207,7 +207,7 @@
               </ion-button>
             </div>
             
-            <div *ngIf="listaCategorias[1].negocios.length > 10">
+            <div *ngIf="botonesVerMas.promos == true">
               <ion-button shape="round" expand="full" size="small" *ngIf="cat.nombre == 'Con promociones' && !filtroActivo && !idTodo && !selectionAP && !buscador" 
               (click)="verMasNegociosPromo ? cargarMasNegociosInicio(cat.nombre) : cargarMenosNegociosInicio(cat.nombre,'ancla'+a)" class="boton-ver-mas">
                 <span class="texto-ver-mas" *ngIf="verMasNegociosPromo">Ver más negocios </span>
@@ -216,7 +216,7 @@
               </ion-button>
             </div>
             
-            <div *ngIf="listaCategorias[2].negocios.length > 10">
+            <div *ngIf="botonesVerMas.masVistos == true">
               <ion-button shape="round" expand="full" size="small" *ngIf="cat.nombre == 'Más Vistos' && !filtroActivo && !idTodo && !selectionAP && !buscador" 
               (click)="verMasNegociosVistos ? cargarMasNegociosInicio(cat.nombre) : cargarMenosNegociosInicio(cat.nombre,'ancla'+a)" class="boton-ver-mas">
                 <span class="texto-ver-mas" *ngIf="verMasNegociosVistos">Ver más negocios </span>

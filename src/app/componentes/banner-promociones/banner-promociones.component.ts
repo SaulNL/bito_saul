@@ -37,7 +37,7 @@ export class BannerPromocionesComponent implements OnInit {
   public miUbicacionlongitud: number;
   public ubicacion = new UbicacionModel();
   private plazaAfiliacion: AfiliacionPlazaModel;
-  private modalController: any;
+  
   constructor(
     private servicioPromociones: PromocionesService,
     private navBarServiceService: NavBarServiceService,
@@ -240,7 +240,7 @@ export class BannerPromocionesComponent implements OnInit {
      let promo = promocion.id_promocion;
     this._router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
           queryParams: { route: true , clickBanner: true, promo: promo}});
-    this.modalController.dismiss();
+
   }
 
 }

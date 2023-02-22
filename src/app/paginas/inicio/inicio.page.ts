@@ -26,7 +26,7 @@ import { throwError } from "rxjs";
 import { AlertController } from "@ionic/angular";
 import { Plugins } from '@capacitor/core';
 import { PersonaService } from "src/app/api/persona.service";
-import { TouchSequence } from "selenium-webdriver";
+
 
 const { Geolocation } = Plugins;
 declare var google: any;
@@ -121,6 +121,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   loaderVerMas = false;
   favoritos: any[] = [];
   buttonDisabled: boolean;
+  botonesVerMas: { convenio: boolean; promos: boolean; masVistos:boolean};
 
   constructor(
     public loadingController: LoadingController,
@@ -141,7 +142,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
     this.obtenergiros();
-
+    this.botonesVerMas= { convenio: false, promos: false, masVistos:false};
     if(localStorage.getItem("idGiro") != null){
       this.idGiro=JSON.parse( localStorage.getItem("idGiro"));
     }
@@ -982,16 +983,22 @@ export class InicioPage implements OnInit, AfterViewInit {
     if (nombre === undefined) {
       this.principalSercicio.obtenerPrincipalInicio()
         .subscribe(
-          (response) => {
+          async (response) => {
             if (response.code === 200) {
-              this.listaCategorias = response.data;
+              this.listaCategorias = await response.data;
               //console.log("Lista de categorias inicial: \n"+JSON.stringify(this.listaCategorias))
-              let uno = this.listaCategorias[0].negocios.slice(0,10);
-              let dos = this.listaCategorias[1].negocios.slice(0,10);
-              let tres =this.listaCategorias[2].negocios.slice(0,10);
+              let uno = this.listaCategorias[0].negocios;
+              let dos = this.listaCategorias[1].negocios;
+              let tres =this.listaCategorias[2].negocios;
+              this.botonesVerMas={
+                "convenio":uno.length>10? true : false, 
+                "promos":dos.length>10? true : false, 
+                "masVistos":tres.length>10? true : false
+              }
+              //console.log("botones booleans: "+ JSON.stringify(this.botonesVerMas))
               this.obtenerNegociosFav(); 
               this.banderaVerMas = true;
-              this.listaVerMas = [{'nombre': 'Con convenio','negocios' : uno},{'nombre': 'Con promociones','negocios': dos},{'nombre': 'Más Vistos','negocios':tres}];
+              this.listaVerMas = [{'nombre': 'Con convenio','negocios' : uno.slice(0,10)},{'nombre': 'Con promociones','negocios': dos.slice(0,10)},{'nombre': 'Más Vistos','negocios':tres.slice(0,10)}];
               if(this.listaCategorias[0].negocios.length > 10){
                 this.verMasNegociosCon = true;
               } 
