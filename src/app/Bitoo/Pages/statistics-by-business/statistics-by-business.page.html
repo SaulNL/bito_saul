@@ -109,7 +109,7 @@
                             </ion-card>
                         </ion-col>
                         <ion-col>
-                            <ion-card>
+                            <ion-card (click)="generarGrafico()">
                                 <ion-card-content class="background-blueviolet">
                                     <ion-grid class="ion-text-center">
                                         <h2 class="text-white">
@@ -128,8 +128,11 @@
                             </ion-card>
                         </ion-col>
                     </ion-row>
-                    <ion-row *ngIf="filter.tipo != null">
+                    <ion-row >
                         <h2>Grafica de estadística por {{filter.tipo}}</h2>
+                        <div class="chart-container">
+                            <canvas id="myChart"></canvas>
+                        </div>
                     </ion-row>
                 </ion-grid>
             </ion-card-content>

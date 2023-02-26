@@ -8,11 +8,11 @@ import { StatisticsFilterInterface, StatisticsFilterModel } from './../../models
 import { StatisticsByBusinessInterface, BusinessStatisticsLoaderInterface, BusinessStatisticsLoaderModel, BusinessStatisticsInterface, BusinessStatisticsModel } from './../../models/statistic-model';
 import { Params } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import Moment from 'moment';
 import { ToadNotificacionService } from './../../../api/toad-notificacion.service';
 import { GeneralServicesService } from 'src/app/api/general-services.service';
-
+import * as Chart from 'chart.js'
 @Component({
   selector: 'app-statistics-by-business',
   templateUrl: './statistics-by-business.page.html',
@@ -31,6 +31,8 @@ export class StatisticsByBusinessPage implements OnInit {
   requests: any[];
   promotions: any[];
   products: any[];
+  private grafica :Chart;
+  @ViewChild("myChart") canvas: HTMLCanvasElement;
   constructor(
     private _general_service: GeneralServicesService,
     private activated: ActivatedRoute,
@@ -39,7 +41,8 @@ export class StatisticsByBusinessPage implements OnInit {
     private toadNotificacion: ToadNotificacionService,
     private location: Location,
     private popOver: PopoverController,
-    private validator: ValidatorData
+    private validator: ValidatorData,
+    private ref: ChangeDetectorRef
   ) {
     this.initConstructor();
   }
@@ -58,6 +61,37 @@ export class StatisticsByBusinessPage implements OnInit {
         }
       }
     );
+    this.ref.detectChanges();
+    //this.generarGrafico();
+  }
+  generarGrafico(){
+    const canvas = document.getElementById('myChart');
+    const ctx = (canvas as HTMLCanvasElement).getContext('2d');
+    this.grafica = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1
+      }]
+    }, 
+    backgroundColor:[
+      'rgba:(255,99,132,0.2)',
+      'rgba:(255,99,132,0.2)',
+      'rgba:(255,99,132,0.2)',
+      'rgba:(255,99,132,0.2)',
+      'rgba:(255,99,132,0.2)',
+    ],   
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });  
   }
   /**
    * @author Juan Antonio Guevara Flores
