@@ -1,8 +1,14 @@
 <app-header message="Estadísticas" [backButton]="false" [closeButton]="true" (closeResponse)="closeStatistic()">
 </app-header>
-<app-loader [loader]="loading" message="Cargando estadísticas del negocio"></app-loader>
-
-<ion-content fullscreen *ngIf="!loading"> 
+<!--app-loader [loader]="loading" message="Cargando estadísticas del negocio"></app-loader-->
+<!-- [class.loader-hidden]="!loading"-->
+<div *ngIf="loading" class="loader-overlay">		
+    <ion-spinner class="spinner-color"></ion-spinner>	
+    <ion-label class="message">
+        Cargando estadísticas del negocio
+    </ion-label> 	
+</div> 
+<ion-content fullscreen> 
     <div class="filters">
         <ion-item style="width: 49%;">
             <ion-label>Fecha: </ion-label>
@@ -109,7 +115,7 @@
                             </ion-card>
                         </ion-col>
                         <ion-col>
-                            <ion-card (click)="generarGrafico()">
+                            <ion-card>
                                 <ion-card-content class="background-blueviolet">
                                     <ion-grid class="ion-text-center">
                                         <h2 class="text-white">
@@ -128,10 +134,17 @@
                             </ion-card>
                         </ion-col>
                     </ion-row>
-                    <ion-row >
-                        <h2>Grafica de estadística por {{filter.tipo}}</h2>
+                    <ion-row [ngClass]="filter.tipo != null? 'visible' : 'hidden' ">
+                        <ion-card-header style="display: flex; justify-content: space-between;   width: 100%;">
+                            <ion-card-subtitle>Grafica de estadística por {{filter.tipo}}</ion-card-subtitle>
+                            <p>Vista: <ion-icon (click)="toggleGrafica()"
+                                
+                                [name]="chartType =='pie' ? 'pie-chart-outline' : 'stats-chart-outline'"><!--pie-chart-outline-->
+                                
+                            </ion-icon></p>
+                        </ion-card-header>
                         <div class="chart-container">
-                            <canvas id="myChart"></canvas>
+                            <canvas id="myChart" width="100%" height="auto"></canvas>
                         </div>
                     </ion-row>
                 </ion-grid>

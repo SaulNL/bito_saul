@@ -28,11 +28,17 @@ export class StatisticsByBusinessPage implements OnInit {
   public filter: StatisticsFilterInterface //= new StatisticsFilterModel(this.filters.id_negocio);
   features16: boolean;
   vistaTipos: any[] = [];
-  requests: any[];
-  promotions: any[];
+  requests: any[] = [];
+  promotions: any[] = [];
   products: any[];
   private grafica :Chart;
-  @ViewChild("myChart") canvas: HTMLCanvasElement;
+  //@ViewChild("myChart") canvas: HTMLCanvasElement;
+  canvas : any
+  datosGrafica = {
+    labels:[],
+    data:[]
+  };
+  chartType: string = "bar";
   constructor(
     private _general_service: GeneralServicesService,
     private activated: ActivatedRoute,
@@ -64,34 +70,178 @@ export class StatisticsByBusinessPage implements OnInit {
     this.ref.detectChanges();
     //this.generarGrafico();
   }
-  generarGrafico(){
+  generarGraficoBarras(datos:any){
+    const canvas = document.getElementById('myChart');
+    const ctx = (canvas as HTMLCanvasElement).getContext('2d');
+    var backgrounds = []
+    var borders = []
+    datos.data.forEach(dato => {
+      var color = this.backgroundColorGenerator()
+      backgrounds.push(color+"0.2"+")");
+      borders.push(color+"1"+")")
+    });
+    this.grafica = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: datos.labels,
+          datasets: [{
+              label: 'Número de vistas',
+              data: datos.data,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],//backgrounds,
+              borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],//borders,
+          }]
+      },
+      options: {
+          
+      }
+  });
+  }
+  generarGraficoPastel(datos:any){
+    this.grafica = null;
+    const canvas = document.getElementById('myChart');
+    const ctx = (canvas as HTMLCanvasElement).getContext('2d');
+    var backgrounds = []
+    var borders = []
+    datos.data.forEach(dato => {
+      var color = this.backgroundColorGenerator()
+      backgrounds.push(color+"0.2"+")");
+      borders.push(color+"1"+")")
+    });
+    this.grafica = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: datos.labels,
+        datasets: [{
+            label: 'Número de vistas',
+            data: datos.data,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+          ],//backgrounds,
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+          ],//borders,
+            borderWidth: 1
+        }]
+    },
+      options: {
+      }
+  });
+  }
+  generarGraficoPolar(){
+    this.grafica = null;
     const canvas = document.getElementById('myChart');
     const ctx = (canvas as HTMLCanvasElement).getContext('2d');
     this.grafica = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    }, 
-    backgroundColor:[
-      'rgba:(255,99,132,0.2)',
-      'rgba:(255,99,132,0.2)',
-      'rgba:(255,99,132,0.2)',
-      'rgba:(255,99,132,0.2)',
-      'rgba:(255,99,132,0.2)',
-    ],   
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
+      type: 'polarArea',
+      data: {
+          labels: ['Xalostoc', 'Tlaxcala', 'Apizaco', 'Contla', 'Santa Ana', 'Lázaro Cárdenas'],
+          datasets: [{
+              data: [12, 19, 3, 5, 2, 3],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
       }
+  });
+  }
+  generarGraficoDona(){
+    this.grafica = null;
+    const canvas = document.getElementById('myChart');
+    const ctx = (canvas as HTMLCanvasElement).getContext('2d');
+    this.grafica = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          datasets: [{
+              label: '# of Votes',
+              data: [12, 19, 3, 5, 2, 3],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+      }
+  });
+  }
+  toggleGrafica(){
+    console.log("tooggle grafica")
+    if(this.chartType == "bar"){
+      this.chartType = "pie"
+      this. generarGraficoPastel(this.datosGrafica)
+    }else if(this.chartType == "pie"){
+      this.chartType = "bar"
+     this. generarGraficoBarras(this.datosGrafica)
     }
-  });  
+  }
+  generarNumero(numero){
+    return (Math.random()*numero).toFixed(0);
+  }
+  
+  backgroundColorGenerator(){
+    //var colors = {background: "",border: ""}
+    var coolor = "("+this.generarNumero(255)+"," + this.generarNumero(255) + "," + this.generarNumero(255) ;//+"0.2"+")"
+    //colors.background="("+this.generarNumero(255)+"," + this.generarNumero(255) + "," + this.generarNumero(255) +"0.2"+")";
+    //colors.border = "("+this.generarNumero(255)+"," + this.generarNumero(255) + "," + this.generarNumero(255) +"1"+")";
+    return "rgba" + coolor;
+  }
+  borderColorGenerator(){
+    var coolor = "("+this.generarNumero(255)+"," + this.generarNumero(255) + "," + this.generarNumero(255) +"1"+")";
+    return "rgba" + coolor;
   }
   /**
    * @author Juan Antonio Guevara Flores
@@ -271,26 +421,36 @@ export class StatisticsByBusinessPage implements OnInit {
         this.loader.loadingVisitsByUrl = false;
         this.vistaTipos = response.data.datos
         console.log("La lista de resultados por el tipo --> "+filters.tipo+" es:\n"+JSON.stringify(this.vistaTipos))
+        this.datosGrafica.data= []
+        this.datosGrafica.labels=[]
         this.vistaTipos.forEach(tipo => {
             total = total+tipo.total     
             if(filters.tipo == "localidad"){
-              localidades.push(tipo.municipio)              
+              localidades.push(tipo.municipio)   
+              this.datosGrafica.data.push(tipo.total)
+              this.datosGrafica.labels.push(tipo.municipio+" "+tipo.estado)           
             }else if(filters.tipo == "edad"){              
               edades.push(tipo.edad)
+              this.datosGrafica.data.push(tipo.total)
+              this.datosGrafica.labels.push(tipo.edad)
             }else if(filters.tipo == "sexo"){
               sexo.push(tipo.edad)
-            }            
+              //???
+            } 
         });
 
         if(filters.tipo == "edad"){
           console.log("El total de visitas del tipo "+ filters.tipo+" es: "+total+ 
-        " y la lista de "+filters.tipo+" es:"+edades)         
+        " y la lista de "+filters.tipo+" es:"+edades)   
+        this.generarGraficoBarras(this.datosGrafica )     
         }else if(filters.tipo == "localidad"){
           console.log("El total de visitas del tipo "+ filters.tipo+" es: "+total+ 
         " y la lista de "+filters.tipo+" es\n"+ localidades) 
+        this.generarGraficoBarras(this.datosGrafica ) 
         }else if(filters.tipo == "sexo"){
           console.log("El total de visitas del tipo "+ filters.tipo+" es: "+total+ 
         " y la lista de "+filters.tipo+" es\n"+ sexo) 
+        this.generarGraficoBarras(this.datosGrafica ) 
         }
       },
       () => {
@@ -371,7 +531,7 @@ export class StatisticsByBusinessPage implements OnInit {
       async response => {
         /*this.statistics.totalPromotions = response.data.length;
         this.statistics.promotions = response.data;*/
-        this.promotions = await response.data.promociones;
+        this.promotions = await response.data.lenght != 0? response.data.promociones : []
         this.loader.loadingTotalPromotions = false;
       },
       () => {
