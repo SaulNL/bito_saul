@@ -161,6 +161,9 @@
                             <p *ngIf="showToggle"><span>Vista:</span> <ion-icon (click)="toggleGrafica()" size="large"
                                 [name]="chartType =='pie' ? 'pie-chart-outline' : 'bar-chart-outline'">
                             </ion-icon></p>
+                            <p *ngIf="showToggleRating"><span>Vista:</span> <ion-icon (click)="toggleGrafica()" size="large"
+                                [name]="chartType =='bar' ? 'bar-chart-outline' : 'pulse-outline'">
+                            </ion-icon></p>
                         </ion-card-header>
                         <div class="chart-container">
                             <canvas id="myChart" width="100%" height="auto"></canvas>
@@ -169,7 +172,7 @@
                 </ion-grid>
             </ion-card-content>
         </ion-card>
-        <ion-card (click)="graficaRating()"><!--graficaRating-->
+        <ion-card (click)="graficaRating('rating')"><!--graficaRating-->
             <ion-card-header>
                 <ion-card-subtitle>Calificaciones</ion-card-subtitle>
             </ion-card-header>
