@@ -38,9 +38,9 @@
                     <ion-icon name="calendar-outline"></ion-icon>
                     Edad
                 </ion-select-option>
-                <ion-select-option value="sexo">
+                <ion-select-option value="genero">
                     <ion-icon name="calendar-outline"></ion-icon>
-                    Sexo
+                    Género
                 </ion-select-option>
                 <ion-select-option value="localidad">
                     <ion-icon name="calendar-outline"></ion-icon>
@@ -58,7 +58,7 @@
             <ion-card-content>
                 <ion-grid>
                     <ion-row>
-                        <ion-col>
+                        <ion-col (click)="graficaVisitas('URL')">
                             <ion-card>
                                 <ion-card-content class="background-deeppink">
                                     <ion-grid class="ion-text-center">
@@ -71,11 +71,13 @@
                                                 {{totalVisitsQrAndUrl}}
                                             </strong>
                                         </h1>
+                                        <ion-icon (click)="toggleGrafica()" size="small" name="bar-chart-outline" color="#ffffff">
+                                        </ion-icon>
                                     </ion-grid>
                                 </ion-card-content>
                             </ion-card>
                         </ion-col>
-                        <ion-col>
+                        <ion-col (click)="graficaLikesNegocio('likesNegocio')">
                             <ion-card>
                                 <ion-card-content class="background-deeppink">
                                     <ion-grid class="ion-text-center">
@@ -91,7 +93,7 @@
                                 </ion-card-content>
                             </ion-card>
                         </ion-col>
-                        <ion-col>
+                        <ion-col (click)="graficaRequerimientos('requerimientos')">
                             <ion-card>
                                 <ion-card-content class="background-blueviolet">
                                     <ion-grid class="ion-text-center">
@@ -104,24 +106,24 @@
                                             </strong>                                            
                                         </h1>
                                         <ng-template #elseBlock>
-                                            <h2>
+                                            <h1 class="text-white">
                                                 <strong>
                                                     {{ requests.length }}
                                                 </strong>                                                
-                                            </h2>                                               
+                                            </h1>                                               
                                         </ng-template>
                                     </ion-grid>
                                 </ion-card-content>
                             </ion-card>
                         </ion-col>
-                        <ion-col>
+                        <ion-col (click)="graficaPromos('promociones')">
                             <ion-card>
                                 <ion-card-content class="background-blueviolet">
                                     <ion-grid class="ion-text-center">
                                         <h2 class="text-white">
                                             Promociones
                                         </h2>
-                                        <h1 class="text-white" *ngIf="promotions.length <1; else elseBlock1">
+                                        <h1 class="text-white" *ngIf="promotions == []; else elseBlock1">
                                             0<!--{{ statistics.totalPromotions }}-->
                                         </h1>
                                         <ng-template #elseBlock1>
@@ -133,14 +135,31 @@
                                 </ion-card-content>
                             </ion-card>
                         </ion-col>
+                        <ion-col (click)="graficaLikesProducts('likesProductos')">
+                            <ion-card>
+                                <ion-card-content class="background-blueviolet">
+                                    <ion-grid class="ion-text-center">
+                                        <h2 class="text-white">
+                                            Likes de productos
+                                        </h2>
+                                        <h1 class="text-white" *ngIf="statistics.totalLikesProducts > 0; else elseBlock3">
+                                            {{ statistics.totalLikesProducts }}
+                                        </h1>
+                                        <ng-template #elseBlock3>
+                                            <h1 class="text-white">
+                                                0<!--{{ statistics.totalPromotions }}-->
+                                            </h1>
+                                        </ng-template>
+                                    </ion-grid>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>
                     </ion-row>
-                    <ion-row [ngClass]="filter.tipo != null? 'visible' : 'hidden' ">
-                        <ion-card-header style="display: flex; justify-content: space-between;   width: 100%;">
-                            <ion-card-subtitle>Grafica de estadística por {{filter.tipo}}</ion-card-subtitle>
-                            <p>Vista: <ion-icon (click)="toggleGrafica()"
-                                
-                                [name]="chartType =='pie' ? 'pie-chart-outline' : 'stats-chart-outline'"><!--pie-chart-outline-->
-                                
+                    <ion-row [ngClass]="filter.tipo != null && tipoEstadistica!=null? 'visible' : 'hidden' ">
+                        <ion-card-header style="display: flex; justify-content: space-between; width: 100%; padding: 20px 0px 20px 0px;">
+                            <ion-card-subtitle style="    display: flex; align-items: center;">{{tipoEstadistica}} por {{filter.tipo}}</ion-card-subtitle>
+                            <p *ngIf="showToggle"><span>Vista:</span> <ion-icon (click)="toggleGrafica()" size="large"
+                                [name]="chartType =='pie' ? 'pie-chart-outline' : 'bar-chart-outline'">
                             </ion-icon></p>
                         </ion-card-header>
                         <div class="chart-container">
@@ -150,7 +169,7 @@
                 </ion-grid>
             </ion-card-content>
         </ion-card>
-        <ion-card>
+        <ion-card (click)="graficaRating()"><!--graficaRating-->
             <ion-card-header>
                 <ion-card-subtitle>Calificaciones</ion-card-subtitle>
             </ion-card-header>
@@ -197,32 +216,32 @@
                 </ion-grid>
             </ion-card-content>
         </ion-card>
-        <ion-card *ngIf="totalRequest">
+        <!--ion-card *ngIf="totalRequest">
             <ion-card-header>
                 <ion-card-subtitle>Vistas de requerimientos de compra</ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
                 <ion-list>
-                    <ion-item *ngFor="let request of requests"><!--statistics.requests-->
+                    <ion-item *ngFor="let request of requests">statistics.requests
                         <ion-label>{{ request.solicitud }}</ion-label>
                         <ion-badge color="light" slot="end">{{request.cuantos_vieron}}</ion-badge>
                     </ion-item>
                 </ion-list>
             </ion-card-content>
-        </ion-card>
-        <ion-card *ngIf="totalProduct">
+        </ion-card-->
+        <!--ion-card (click)="graficaLikesProducts()" *ngIf="totalProduct">
             <ion-card-header>
                 <ion-card-subtitle>Likes de productos</ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
                 <ion-list>
-                    <ion-item *ngFor="let product of products"><!--statistics.products-->
+                    <ion-item *ngFor="let product of products"> statistics.products
                         <ion-label> {{product.producto}} </ion-label>
                         <ion-badge color="light" slot="end">{{product.numero_likes}}</ion-badge>
                     </ion-item>
                 </ion-list>
             </ion-card-content>
-        </ion-card>
+        </ion-card-->
     </div>
     <ng-template #noSuscription>
         <ion-card>

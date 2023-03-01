@@ -38,7 +38,64 @@ export class StatisticsByBusinessPage implements OnInit {
     labels:[],
     data:[]
   };
-  chartType: string = "bar";
+  chartType = "pie";
+
+  /*viitasQRData:any
+
+  visitasQr = {
+    data: [],
+    labels:[]
+  }
+  visitasUrl = {
+    data: [],
+    labels: []
+  }
+  likesNegocio = {
+    data: [],
+    labels: []
+  }*/
+
+  dataGraficas={
+    dataVisistasQR:{
+      data:{},
+      tagsTooltip:[]
+    },
+    dataVisitasUrl:{
+      data:{},
+      tagsTooltip:[]
+    },
+    dataLikesNegocio:{
+      data:{},
+      tagsTooltip:[]
+    },
+    dataReqCompra:{
+      data:{},
+      tagsTooltip:[]
+    },
+    dataPromociones:{
+      data:{},
+      tagsTooltip:[]
+    },
+    dataLikesProducts:{
+      data:{},
+      tagsTooltip:[]
+    },
+    dataCalificaciones:{}
+  }
+
+  ratingData:any;
+
+  requestsData:any
+
+  promotionsData:any
+
+  likesProductosData : any
+
+  tipoEstadistica: string =null;
+  showToggle: boolean;
+  dataSet: string;
+  //options: {};
+  
   constructor(
     private _general_service: GeneralServicesService,
     private activated: ActivatedRoute,
@@ -71,6 +128,10 @@ export class StatisticsByBusinessPage implements OnInit {
     //this.generarGrafico();
   }
   generarGraficoBarras(datos:any){
+    if(this.grafica){
+      this.grafica.clear();
+      this.grafica.destroy();
+    }
     const canvas = document.getElementById('myChart');
     const ctx = (canvas as HTMLCanvasElement).getContext('2d');
     var backgrounds = []
@@ -106,11 +167,65 @@ export class StatisticsByBusinessPage implements OnInit {
           }]
       },
       options: {
-          
+        
       }
   });
   }
+  genBarChartDynamic(data:any,tooltipTags?:any[]){
+    console.log("genBarChartDynamic")
+    if(this.grafica){
+      this.grafica.clear();
+      this.grafica.destroy();
+    }
+    const canvas = document.getElementById('myChart');
+    const ctx = (canvas as HTMLCanvasElement).getContext('2d');
+    this.grafica = new Chart(ctx, {
+      type: 'bar',
+      data: data,
+      options:!tooltipTags? { } : 
+      {
+        tooltips: {
+          callbacks: {
+              label: (ctx)=>{
+                //console.log("index: "+(ctx.index!=0?ctx.index:0))
+                var tag = tooltipTags[ctx.index!=0?ctx.index:0]
+                return tag
+              }
+          }
+        }
+      }
+    });
+  }
+  genPieChartDynamic(data:any,tooltipTags?:any[]){
+    console.log("genPieChartDynamic")
+    if(this.grafica){
+      this.grafica.clear();
+      this.grafica.destroy();
+    }
+    const canvas = document.getElementById('myChart');
+    const ctx = (canvas as HTMLCanvasElement).getContext('2d');
+    this.grafica = new Chart(ctx, {
+      type: 'pie',
+      data: data,
+      options:!tooltipTags? { } : 
+      {
+        tooltips: {
+          callbacks: {
+              label: (ctx)=>{
+                //console.log("index: "+(ctx.index!=0?ctx.index:0))
+                var tag = tooltipTags[ctx.index!=0?ctx.index:0]
+                return tag
+              }
+          }
+        }
+      }
+    });
+  }
   generarGraficoPastel(datos:any){
+    if(this.grafica){
+      this.grafica.clear();
+      this.grafica.destroy();
+    }
     this.grafica = null;
     const canvas = document.getElementById('myChart');
     const ctx = (canvas as HTMLCanvasElement).getContext('2d');
@@ -151,81 +266,66 @@ export class StatisticsByBusinessPage implements OnInit {
       }
   });
   }
-  generarGraficoPolar(){
-    this.grafica = null;
-    const canvas = document.getElementById('myChart');
-    const ctx = (canvas as HTMLCanvasElement).getContext('2d');
-    this.grafica = new Chart(ctx, {
-      type: 'polarArea',
-      data: {
-          labels: ['Xalostoc', 'Tlaxcala', 'Apizaco', 'Contla', 'Santa Ana', 'Lázaro Cárdenas'],
-          datasets: [{
-              data: [12, 19, 3, 5, 2, 3],
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
-              ],
-              borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 1
-          }]
-      },
-      options: {
-      }
-  });
-  }
-  generarGraficoDona(){
-    this.grafica = null;
-    const canvas = document.getElementById('myChart');
-    const ctx = (canvas as HTMLCanvasElement).getContext('2d');
-    this.grafica = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-          datasets: [{
-              label: '# of Votes',
-              data: [12, 19, 3, 5, 2, 3],
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
-              ],
-              borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 1
-          }]
-      },
-      options: {
-      }
-  });
-  }
   toggleGrafica(){
-    console.log("tooggle grafica")
-    if(this.chartType == "bar"){
-      this.chartType = "pie"
-      this. generarGraficoPastel(this.datosGrafica)
-    }else if(this.chartType == "pie"){
-      this.chartType = "bar"
-     this. generarGraficoBarras(this.datosGrafica)
+    if(this.dataSet=="URL"){
+      console.log("es URL")
+      if(this.chartType == "bar"){
+        this.chartType = "pie"
+        this.genBarChartDynamic(this.dataGraficas.dataVisitasUrl.data,this.dataGraficas.dataVisitasUrl.tagsTooltip)
+      }else if(this.chartType == "pie"){
+        this.chartType = "bar"
+       this. genPieChartDynamic(this.dataGraficas.dataVisitasUrl.data,this.dataGraficas.dataVisitasUrl.tagsTooltip)
+      }
+    }
+    if(this.dataSet=="QR"){
+      console.log("es URL")
+      if(this.chartType == "bar"){
+        this.chartType = "pie"
+        this.genBarChartDynamic(this.dataGraficas.dataVisistasQR.data,this.dataGraficas.dataVisistasQR.tagsTooltip)
+      }else if(this.chartType == "pie"){
+        this.chartType = "bar"
+       this. genPieChartDynamic(this.dataGraficas.dataVisistasQR.data,this.dataGraficas.dataVisistasQR.tagsTooltip)
+      }
+    }
+    if(this.dataSet=="likesNegocio"){
+      console.log("es likesNegocio")
+      if(this.chartType == "bar"){
+        this.chartType = "pie"
+        this.genBarChartDynamic(this.dataGraficas.dataLikesNegocio.data,this.dataGraficas.dataLikesNegocio.tagsTooltip)
+      }else if(this.chartType == "pie"){
+        this.chartType = "bar"
+       this. genPieChartDynamic(this.dataGraficas.dataLikesNegocio.data,this.dataGraficas.dataLikesNegocio.tagsTooltip)
+      }
+    }
+    if(this.dataSet=="requerimientos"){
+      console.log("es requerimientos")
+      if(this.chartType == "bar"){
+        this.chartType = "pie"
+        this.genBarChartDynamic(this.dataGraficas.dataReqCompra.data,this.dataGraficas.dataReqCompra.tagsTooltip)
+      }else if(this.chartType == "pie"){
+        this.chartType = "bar"
+       this. genPieChartDynamic(this.dataGraficas.dataReqCompra.data,this.dataGraficas.dataReqCompra.tagsTooltip)
+      }
+    }
+    if(this.dataSet=="promociones"){
+      console.log("es dataPromociones")
+      if(this.chartType == "bar"){
+        this.chartType = "pie"
+        this.genBarChartDynamic(this.dataGraficas.dataPromociones.data,this.dataGraficas.dataPromociones.tagsTooltip)
+      }else if(this.chartType == "pie"){
+        this.chartType = "bar"
+       this. genPieChartDynamic(this.dataGraficas.dataPromociones.data,this.dataGraficas.dataPromociones.tagsTooltip)
+      }
+    }
+    if(this.dataSet=="likesProductos"){
+      console.log("es likesProductos")
+      if(this.chartType == "bar"){
+        this.chartType = "pie"
+        this.genBarChartDynamic(this.dataGraficas.dataLikesProducts.data,this.dataGraficas.dataLikesProducts.tagsTooltip)
+      }else if(this.chartType == "pie"){
+        this.chartType = "bar"
+       this. genPieChartDynamic(this.dataGraficas.dataLikesProducts.data,this.dataGraficas.dataLikesProducts.tagsTooltip)
+      }
     }
   }
   generarNumero(numero){
@@ -233,10 +333,9 @@ export class StatisticsByBusinessPage implements OnInit {
   }
   
   backgroundColorGenerator(){
-    //var colors = {background: "",border: ""}
+
     var coolor = "("+this.generarNumero(255)+"," + this.generarNumero(255) + "," + this.generarNumero(255) ;//+"0.2"+")"
-    //colors.background="("+this.generarNumero(255)+"," + this.generarNumero(255) + "," + this.generarNumero(255) +"0.2"+")";
-    //colors.border = "("+this.generarNumero(255)+"," + this.generarNumero(255) + "," + this.generarNumero(255) +"1"+")";
+    
     return "rgba" + coolor;
   }
   borderColorGenerator(){
@@ -299,9 +398,9 @@ export class StatisticsByBusinessPage implements OnInit {
           this.selectedPlus = "edad"
           this.activatedFilter(this.filter)
           break;
-        case 'sexo':
-          this.filter.tipo = "sexo";
-          this.selectedPlus = "sexo"
+        case 'genero':
+          this.filter.tipo = "genero";
+          this.selectedPlus = "genero"
           this.activatedFilter(this.filter)
           break;
         case 'localidad':
@@ -376,9 +475,13 @@ export class StatisticsByBusinessPage implements OnInit {
    * @param filter
    */
   private activatedFilter(filter: StatisticsFilterInterface) {
+    if(this.grafica){
+      this.grafica.clear();
+    }
+    this.tipoEstadistica =null;
     console.log(JSON.stringify(filter))
-    this.getVisitsByQr(filter);
-    this.getVisitsByUrl(filter);
+    this.getVisitsByQr(filter);//OK
+    this.getVisitsByUrl(filter);//OK
     this.getLikesBusiness(filter);
     this.getCompanyRating(filter);
     this.getRequests(filter);
@@ -393,10 +496,86 @@ export class StatisticsByBusinessPage implements OnInit {
    */
   private getVisitsByQr(filters: StatisticsFilterInterface) {
     this.loader.loadingVisitsByQr = true;
+    /*var edades = []
+    var localidades =[]
+    var genero =[]*/
     this.business.estadisticaVisitasQR(filters).subscribe(
       response => {
         this.statistics.totalVisitsByQr = this.create.anyToNumber(response.data.numero_visto);
         this.loader.loadingVisitsByQr = false;
+        //console.log("Estadisticas por visitas QR: "+JSON.stringify(response))
+
+        var vistaTipos = response.data.datos
+        var labels=[]
+        var data = []
+        var tags = []
+        vistaTipos.forEach(tipo => {
+            if(filters.tipo == "localidad"){
+              labels.push(tipo.municipio+" "+tipo.estado)
+              data.push(tipo.total)
+              tags.push(tipo.municipio+" "+tipo.estado+": "+tipo.total+" vistas")
+            }
+            else if(filters.tipo == "edad"){
+              labels.push(tipo.edad + " años")
+              data.push(tipo.total)
+              tags.push(tipo.edad+" "+"años"+": "+tipo.total+" vistas")
+            }
+            else if(filters.tipo == "genero"){
+              labels.push(tipo.genero)
+              data.push(tipo.total)
+              tags.push(tipo.genero+": "+tipo.total+" vistas")
+            }    
+        });
+        this.dataGraficas.dataVisistasQR={
+          data:{
+            labels: labels,
+            datasets: [{
+                label: 'Visitas por QR',
+                data: data,
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 205, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(201, 203, 207, 0.2)'
+                ],
+                borderColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)',
+                  'rgb(201, 203, 207)'
+                ],
+            }]
+          },
+          tagsTooltip : tags,
+      }
+        /*this.vistaTipos = response.data.datos
+        //console.log("La lista de resultados por el tipo --> "+filters.tipo+" es:\n"+JSON.stringify(this.vistaTipos))
+        this.datosGrafica.data= []
+        this.datosGrafica.labels=[]
+        this.visitasQr.data=[]
+        this.visitasQr.labels=[]
+        console.log("filter.tipo= "+filters.tipo)
+        this.vistaTipos.forEach(tipo => {
+            if(filters.tipo == "localidad"){
+              localidades.push(tipo.municipio)   
+              this.visitasQr.data.push(tipo.total)
+              this.visitasQr.labels.push(tipo.municipio+" "+tipo.estado)           
+            }else if(filters.tipo == "edad"){              
+              edades.push(tipo.edad)
+              this.visitasQr.data.push(tipo.total)
+              this.visitasQr.labels.push(tipo.edad + " años")
+            }else if(filters.tipo == "genero"){
+              genero.push(tipo.genero)
+              this.visitasQr.labels.push(tipo.genero)
+              this.visitasQr.data.push(tipo.total)
+            } 
+        });*/
       },
       () => {
         this.loader.loadingVisitsByQr = false;
@@ -411,47 +590,88 @@ export class StatisticsByBusinessPage implements OnInit {
    */
   async  getVisitsByUrl(filters: StatisticsFilterInterface) {
     this.loader.loadingVisitsByUrl = true;
-    var total=0;
+    /*var total=0;
     var edades = []
     var localidades =[]
-    var sexo =[]
+    var genero =[]*/
     await this.business.estadisticaVisitasURL(filters).subscribe(
       response => {
         this.statistics.totalVisitsByUrl = this.create.anyToNumber(response.data.numero_visto);
         this.loader.loadingVisitsByUrl = false;
         this.vistaTipos = response.data.datos
-        console.log("La lista de resultados por el tipo --> "+filters.tipo+" es:\n"+JSON.stringify(this.vistaTipos))
-        this.datosGrafica.data= []
+        //console.log("Estadisticas por visitas URL: "+JSON.stringify(response))
+        var vistaTipos = response.data.datos
+        var labels=[]
+        var data = []
+        var tags = []
+        vistaTipos.forEach(tipo => {
+            if(filters.tipo == "localidad"){
+              labels.push(tipo.municipio+" "+tipo.estado)
+              data.push(tipo.total)
+              tags.push(tipo.municipio+" "+tipo.estado+": "+tipo.total+" vistas")
+            }
+            else if(filters.tipo == "edad"){
+              labels.push(tipo.edad + " años")
+              data.push(tipo.total)
+              tags.push(tipo.edad+" "+"años"+": "+tipo.total+" vistas")
+            }
+            else if(filters.tipo == "genero"){
+              labels.push(tipo.genero)
+              data.push(tipo.total)
+              tags.push(tipo.genero+": "+tipo.total+" vistas")
+            }    
+        });
+        this.dataGraficas.dataVisitasUrl={
+          data:{
+            labels: labels,
+            datasets: [{
+                label: 'Visitas por URL ',
+                data: data,
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 205, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(201, 203, 207, 0.2)'
+                ],
+                borderColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)',
+                  'rgb(201, 203, 207)'
+                ],
+            }]
+          },
+          tagsTooltip : tags,
+      }
+        /*this.datosGrafica.data= []
         this.datosGrafica.labels=[]
+        this.visitasUrl.data=[]
+        this.visitasUrl.labels=[]
         this.vistaTipos.forEach(tipo => {
-            total = total+tipo.total     
+
             if(filters.tipo == "localidad"){
               localidades.push(tipo.municipio)   
-              this.datosGrafica.data.push(tipo.total)
-              this.datosGrafica.labels.push(tipo.municipio+" "+tipo.estado)           
+              this.visitasUrl.data.push(tipo.total)
+              this.visitasUrl.labels.push(tipo.municipio+" "+tipo.estado)           
             }else if(filters.tipo == "edad"){              
               edades.push(tipo.edad)
-              this.datosGrafica.data.push(tipo.total)
-              this.datosGrafica.labels.push(tipo.edad)
-            }else if(filters.tipo == "sexo"){
-              sexo.push(tipo.edad)
+              this.visitasUrl.data.push(tipo.total)
+              this.visitasUrl.labels.push(tipo.edad + " años")
+            }else if(filters.tipo == "genero"){
+              genero.push(tipo.genero)
+              this.visitasUrl.labels.push(tipo.genero)//+" = "+tipo.total)
+              this.visitasUrl.data.push(tipo.total)
               //???
             } 
-        });
+        });*/
 
-        if(filters.tipo == "edad"){
-          console.log("El total de visitas del tipo "+ filters.tipo+" es: "+total+ 
-        " y la lista de "+filters.tipo+" es:"+edades)   
-        this.generarGraficoBarras(this.datosGrafica )     
-        }else if(filters.tipo == "localidad"){
-          console.log("El total de visitas del tipo "+ filters.tipo+" es: "+total+ 
-        " y la lista de "+filters.tipo+" es\n"+ localidades) 
-        this.generarGraficoBarras(this.datosGrafica ) 
-        }else if(filters.tipo == "sexo"){
-          console.log("El total de visitas del tipo "+ filters.tipo+" es: "+total+ 
-        " y la lista de "+filters.tipo+" es\n"+ sexo) 
-        this.generarGraficoBarras(this.datosGrafica ) 
-        }
+
       },
       () => {
         this.loader.loadingVisitsByUrl = false;
@@ -466,10 +686,84 @@ export class StatisticsByBusinessPage implements OnInit {
    */
   private getLikesBusiness(filters: StatisticsFilterInterface) {
     this.loader.loadingLikesBusiness = true;
+    /*var edades = []
+    var localidades =[]
+    var genero =[]*/
     this.business.estadisticaLikesNegocio(filters).subscribe(
       response => {
         this.statistics.totalLikesBusiness = this.create.anyToNumber(response.data.numero_likes);
         this.loader.loadingLikesBusiness = false;
+        //console.log("Estadisticas por likes NEGOCIO: "+JSON.stringify(response))
+        var vistaTipos = response.data.datos
+        var labels=[]
+        var data = []
+        var tags = []
+        vistaTipos.forEach(tipo => {
+            if(filters.tipo == "localidad"){
+              labels.push(tipo.municipio+" "+tipo.estado)
+              data.push(tipo.total)
+              tags.push(tipo.municipio+" "+tipo.estado+": "+tipo.total+" Likes")
+            }
+            else if(filters.tipo == "edad"){
+              labels.push(tipo.edad + " años")
+              data.push(tipo.total)
+              tags.push(tipo.edad+" "+"años"+": "+tipo.total+" Likes")
+            }
+            else if(filters.tipo == "genero"){
+              labels.push(tipo.genero)
+              data.push(tipo.total)
+              tags.push(tipo.genero+": "+tipo.total+" Likes")
+            }    
+        });
+        this.dataGraficas.dataLikesNegocio={
+          data:{
+            labels: labels,
+            datasets: [{
+                label: 'Likes de negocio',
+                data: data,
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 205, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(201, 203, 207, 0.2)'
+                ],
+                borderColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)',
+                  'rgb(201, 203, 207)'
+                ],
+            }]
+          },
+          tagsTooltip : tags,
+      }
+        /*this.vistaTipos = response.data.datos
+        this.datosGrafica.data= []
+        this.datosGrafica.labels=[]
+        this.dataLikesNegocio.data=[]
+        this.likesNegocio.labels=[]
+        this.vistaTipos.forEach(tipo => {
+            if(filters.tipo == "localidad"){
+              localidades.push(tipo.municipio)   
+              this.likesNegocio.data.push(tipo.total)
+              this.likesNegocio.labels.push(tipo.municipio+" "+tipo.estado)           
+            }else if(filters.tipo == "edad"){              
+              edades.push(tipo.edad)
+              this.likesNegocio.data.push(tipo.total)
+              this.likesNegocio.labels.push(tipo.edad + " años")
+            }else if(filters.tipo == "genero"){
+              genero.push(tipo.genero)
+              this.likesNegocio.labels.push(tipo.genero)//+" = "+tipo.total)
+              this.likesNegocio.data.push(tipo.total)
+              //???
+            } 
+        });*/
       },
       () => {
         this.loader.loadingLikesBusiness = false;
@@ -492,6 +786,136 @@ export class StatisticsByBusinessPage implements OnInit {
           this.statistics.lowRating = this.create.anyToNumber(response.data.calificacion_baja);
         }
         this.loader.loadingCompanyRating = false;
+        var vistaTipos = response.data.datos
+        //console.log("Estadisticas por RATING: "+JSON.stringify(response))
+        var buenas=[]
+        var medias=[]
+        var bajas=[]
+        var labels=[]
+        vistaTipos.forEach(tipo => {
+            if(filters.tipo == "localidad"){
+              labels.push(tipo.municipio+" "+tipo.estado)
+
+              if(tipo.calificacion<3){
+                bajas.push(tipo.total)
+              }
+              else{
+                bajas.push(0)
+              }
+              if(tipo.calificacion>=3 && tipo.calificacion< 5){
+                medias.push(tipo.total)
+              }else {
+                medias.push(0)
+              }
+              if(tipo.calificacion > 4){
+                buenas.push(tipo.total)
+              }else{
+                buenas.push(0)
+              }
+            }else if(filters.tipo == "edad"){
+              labels.push(tipo.edad + " años")
+              if(tipo.calificacion<3){
+                bajas.push(tipo.total)
+              }
+              else{
+                bajas.push(0)
+              }
+              if(tipo.calificacion>=3 && tipo.calificacion< 5){
+                medias.push(tipo.total)
+              }else {
+                medias.push(0)
+              }
+              if(tipo.calificacion > 4){
+                buenas.push(tipo.total)
+              }else{
+                buenas.push(0)
+              }
+            }else if(filters.tipo == "genero"){
+              labels.push(tipo.genero)
+              if(tipo.calificacion<3){
+                bajas.push(tipo.total)
+              }
+              else{
+                bajas.push(0)
+              }
+              if(tipo.calificacion>=3 && tipo.calificacion< 5){
+                medias.push(tipo.total)
+              }else {
+                medias.push(0)
+              }
+              if(tipo.calificacion > 4){
+                buenas.push(tipo.total)
+              }else{
+                buenas.push(0)
+              }
+            }    
+            this.ratingData={
+              labels: labels,
+              datasets: [{
+                  label: 'Buena',
+                  data: buenas,
+                  backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                ],
+                  borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                ],
+              },
+              {
+                label: 'Media',
+                data: medias,
+                backgroundColor: [
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                ],
+                borderColor: [
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(255, 206, 86, 1)',
+                ],
+                borderWidth: 1
+            },
+            {
+              label: 'Baja',
+              data: bajas,
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(255, 99, 132, 1)',
+              ],
+              borderWidth: 1
+          }]
+          }
+
+        });
       },
       () => {
         this.loader.loadingCompanyRating = false;
@@ -510,9 +934,109 @@ export class StatisticsByBusinessPage implements OnInit {
     this.business.estadisticaSolicitudesNegocio(filters).subscribe(
       async response => {
         this.requests = await response.data.solicitudes;
+        this.statistics.totalRequests = response.data.length;
         /*this.statistics.totalRequests = response.data.length;
         this.statistics.requests = response.data;*/
         this.loader.loadingTotalRequests = false;
+        //console.log("Estadisticas por REQUERIMIENTOS: "+JSON.stringify(response))
+        var vistaTipos = response.data.datos
+        var labels=[]
+        var data = []
+        var tags = []
+        vistaTipos.forEach(tipo => {
+            if(filters.tipo == "localidad"){
+              labels.push(tipo.solicitud)
+              data.push(tipo.total)
+              tags.push(tipo.municipio+" "+tipo.estado+": "+tipo.total+" vistas")
+            }
+            else if(filters.tipo == "edad"){
+              labels.push(tipo.solicitud)
+              data.push(tipo.total)
+              tags.push(tipo.edad+" "+"años"+": "+tipo.total+" vistas")
+            }
+            else if(filters.tipo == "genero"){
+              labels.push(tipo.genero)
+              data.push(tipo.total)
+              tags.push(tipo.genero+": "+tipo.total+" vistas")
+            }    
+        });
+        this.dataGraficas.dataReqCompra={
+          data:{
+            labels: labels,
+            datasets: [{
+                label: 'Requerimientos de compra',
+                data: data,
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 205, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(201, 203, 207, 0.2)'
+                ],
+                borderColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)',
+                  'rgb(201, 203, 207)'
+                ],
+            }]
+          },
+          tagsTooltip : tags,
+      }
+        /*var vistaTipos = response.data.datos
+        var labels=[]
+        var data = []
+        var tags = []
+        vistaTipos.forEach(tipo => {
+            if(filters.tipo == "localidad"){
+              labels.push(tipo.solicitud)
+              data.push(tipo.total)
+              tags.push(tipo.municipio+" "+tipo.estado+": "+tipo.total+" vistas")
+            }
+            else if(filters.tipo == "edad"){
+              labels.push(tipo.solicitud)
+              data.push(tipo.total)
+              tags.push(tipo.edad+" "+"años"+": "+tipo.total+" vistas")
+            }
+            else if(filters.tipo == "genero"){
+              labels.push(tipo.solicitud)
+              data.push(tipo.total)
+              tags.push(tipo.genero+": "+tipo.total+" vistas")
+            }    
+        });
+        this.requestsData={
+          data:{
+            labels: labels,
+            datasets: [{
+                label: 'Buena',
+                data: data,
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 205, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(201, 203, 207, 0.2)'
+                ],
+                borderColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)',
+                  'rgb(201, 203, 207)'
+                ],
+            }]
+          },
+          tagsTooltip : tags,
+      }*/
       },
       () => {
         this.loader.loadingTotalRequests = true;
@@ -531,8 +1055,111 @@ export class StatisticsByBusinessPage implements OnInit {
       async response => {
         /*this.statistics.totalPromotions = response.data.length;
         this.statistics.promotions = response.data;*/
-        this.promotions = await response.data.lenght != 0? response.data.promociones : []
+        if(response.code == 200){
+          this.promotions = await response.data.lenght != 0? response.data.promociones : []
+        }else{
+          this.promotions = []
+        }
         this.loader.loadingTotalPromotions = false;
+        //console.log("Etsadisticas por PROMOCIONES: "+JSON.stringify(response))
+        var vistaTipos = response.data.datos
+        var labels=[]
+        var data = []
+        var tags = []
+        vistaTipos.forEach(tipo => {
+            if(filters.tipo == "localidad"){
+              labels.push(tipo.promocion)
+              data.push(tipo.total)
+              tags.push(tipo.municipio+" "+tipo.estado+": "+tipo.total+" vistas")
+            }
+            else if(filters.tipo == "edad"){
+              labels.push(tipo.promocion)
+              data.push(tipo.total)
+              tags.push(tipo.edad+" "+"años"+": "+tipo.total+" vistas")
+            }
+            else if(filters.tipo == "genero"){
+              labels.push(tipo.promocion)
+              data.push(tipo.total)
+              tags.push(tipo.genero+": "+tipo.total+" vistas")
+            }    
+        });
+        this.dataGraficas.dataPromociones={
+          data:{
+            labels: labels,
+            datasets: [{
+                label: 'Promociones',
+                data: data,
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 205, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(201, 203, 207, 0.2)'
+                ],
+                borderColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)',
+                  'rgb(201, 203, 207)'
+                ],
+            }]
+          },
+          tagsTooltip : tags,
+      }
+        /*var vistaTipos = response.data.datos
+        var labels=[]
+        var data = []
+        var tags = []
+        vistaTipos.forEach(tipo => {
+            if(filters.tipo == "localidad"){
+              labels.push(tipo.promocion)
+              data.push(tipo.total)
+              tags.push(tipo.municipio+" "+tipo.estado+": "+tipo.total+" vistas")
+            }
+            else if(filters.tipo == "edad"){
+              labels.push(tipo.promocion)
+              data.push(tipo.total)
+              tags.push(tipo.edad+" "+"años"+": "+tipo.total+" vistas")
+            }
+            else if(filters.tipo == "genero"){
+              labels.push(tipo.promocion)
+              data.push(tipo.total)
+              tags.push(tipo.genero+": "+tipo.total+" vistas")
+            }    
+        });
+        this.promotionsData={
+          data:{
+            labels: labels,
+            datasets: [{
+                label: 'Promociones',
+                data: data,
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 205, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(201, 203, 207, 0.2)'
+                ],
+                borderColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)',
+                  'rgb(201, 203, 207)'
+                ],
+            }]
+          },
+          tagsTooltip : tags,
+      }*/
       },
       () => {
         this.notificationError('Promociones');
@@ -549,10 +1176,116 @@ export class StatisticsByBusinessPage implements OnInit {
     this.loader.loadingLikesProducts = true;
     this.business.estadisticaVistasProductosNegocio(filters).subscribe(
       response => {
+        //var totalLikes=0;
+        response.data.productos.forEach(producto => {
+          this.statistics.totalLikesProducts += producto.numero_likes
+        });
+        
+        console.log("Total de likes de productosxxxx: "+this.statistics.totalLikesProducts)
         /*this.statistics.totalLikesProducts = response.data.length;
         this.statistics.products = response.data;*/
         this.products = response.data;
         this.loader.loadingLikesProducts = false;
+        console.log("Estadisticas por likes PRODUCTOS: "+JSON.stringify(response))
+        var vistaTipos = response.data.datos
+        var labels=[]
+        var data = []
+        var tags = []
+        vistaTipos.forEach(tipo => {
+            if(filters.tipo == "localidad"){
+              labels.push(tipo.producto)
+              data.push(tipo.total)
+              tags.push(tipo.municipio+" "+tipo.estado+": "+tipo.total+" Likes")
+            }
+            else if(filters.tipo == "edad"){
+              labels.push(tipo.producto)
+              data.push(tipo.total)
+              tags.push(tipo.edad+" "+"años"+": "+tipo.total+" Likes")
+            }
+            else if(filters.tipo == "genero"){
+              labels.push(tipo.producto)
+              data.push(tipo.total)
+              tags.push(tipo.genero+": "+tipo.total+" Likes")
+            }    
+        });
+        this.dataGraficas.dataLikesProducts={
+          data:{
+            labels: labels,
+            datasets: [{
+                label: 'Likes de productos',
+                data: data,
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 205, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(201, 203, 207, 0.2)'
+                ],
+                borderColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)',
+                  'rgb(201, 203, 207)'
+                ],
+            }]
+          },
+          tagsTooltip : tags,
+      }
+        /*var vistaTipos = response.data.datos
+        var labels=[]
+        var data = []
+        var tags = []
+        vistaTipos.forEach(tipo => {
+          
+            if(filters.tipo == "localidad"){
+              labels.push(tipo.id_producto)
+              data.push(tipo.total)
+              tags.push(tipo.municipio+" "+tipo.estado+": "+tipo.total+" Likes")
+            }
+            else if(filters.tipo == "edad"){
+              labels.push(tipo.id_producto)
+              data.push(tipo.total)
+              tags.push(tipo.edad+" "+"años"+": "+tipo.total+" Likes")
+            }
+            else if(filters.tipo == "genero"){
+              labels.push(tipo.id_producto)
+              data.push(tipo.total)
+              tags.push(tipo.genero+": "+tipo.total+" Likes")
+            }    
+        });
+        this.likesProductosData={
+          data:{
+            labels: labels,
+            datasets: [{
+                label: 'Likes de productos',
+                data: data,
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 205, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(201, 203, 207, 0.2)'
+                ],
+                borderColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)',
+                  'rgb(201, 203, 207)'
+                ],
+            }]
+          },
+          tagsTooltip : tags,
+      }*/
       },
       () => {
         this.notificationError('Likes por producto');
@@ -587,7 +1320,7 @@ export class StatisticsByBusinessPage implements OnInit {
    * @description Valida y retorna si existe total de likes en productos
    */
   get totalProduct() {
-    return (this.statistics.totalLikesProducts !== 0);
+    return (this.statistics.totalLikesProducts );
   }
 
   noSuscriptionMSG(){
@@ -596,17 +1329,17 @@ export class StatisticsByBusinessPage implements OnInit {
   async obtenerFeatures(id_negocio: number){
     await this._general_service.features(id_negocio).subscribe(
         response => {
-            console.log("FEATURES del id_negocio: "+id_negocio+",\n"+JSON.stringify(response))
+            //console.log("FEATURES del id_negocio: "+id_negocio+",\n"+JSON.stringify(response))
             this.features16 = false;
             if (response.data.lenght != 0){                    
                 response.data.forEach(feature => {
                     if(feature.id_caracteristica == 16){   
                       this.features16=true                    
-                      console.log("\nEl negocio tiene el features 16? "+this.features16)
+                      //console.log("\nEl negocio tiene el features 16? "+this.features16)
                     }          
                 });
             }else{
-              console.log("Features Vacío")  
+              //console.log("Features Vacío")  
               
             }
         },
@@ -623,4 +1356,165 @@ export class StatisticsByBusinessPage implements OnInit {
   private notificationError(by: string) {
     this.toadNotificacion.error('No se pudo cargar las estaditicas de ' + by);
   }
+  graficaVisitas(tipo:string){//viitasQRData
+    this.chartType = "pie";
+    this.dataSet=tipo
+    this.showToggle=true
+    this.tipoEstadistica="Visitas a travéz de "+tipo+" "
+    if(this.grafica){
+      this.grafica.clear();
+    }
+    if(this.filter.tipo != null){
+      console.log("Tipo"+this.filter.tipo)
+      if(tipo == "QR"){
+        this.genBarChartDynamic(this.dataGraficas.dataVisistasQR.data,this.dataGraficas.dataVisistasQR.tagsTooltip)
+      }else if(tipo == "URL"){
+        this.genBarChartDynamic(this.dataGraficas.dataVisitasUrl.data,this.dataGraficas.dataVisitasUrl.tagsTooltip)
+      }
+      
+    }else{
+      console.log("No selecciono tipo")
+    }
+    /*this.showToggle=true
+    this.tipoEstadistica="Visitas a travéz de "+tipo+" "
+    this.datosGrafica.data = []
+    this.datosGrafica.labels=[]
+    if(this.filter.tipo != null){
+      if(tipo == "QR"){
+        console.log("ves grafica de vistas por QR\n"+JSON.stringify(this.visitasQr))
+
+        this.datosGrafica.data = this.visitasQr.data
+        this.datosGrafica.labels = this.visitasQr.labels
+        this.generarGraficoPastel(this.datosGrafica)
+      }else if(tipo == "URL"){
+        console.log("ves grafica de vistas por URL")
+        this.datosGrafica.data = this.visitasUrl.data
+        this.datosGrafica.labels = this.visitasUrl.labels
+        this.generarGraficoPastel(this.datosGrafica)
+      }
+    }else{
+      console.log("No selecciono tipo")
+    }*/
+  }
+  graficaLikesNegocio(tipo:string){
+    this.chartType = "pie";
+    this.dataSet=tipo
+    this.showToggle=true
+    this.tipoEstadistica="Likes de negocio "
+    if(this.grafica){
+      this.grafica.clear();
+    }
+    if(this.filter.tipo != null){
+      console.log("Tipo"+this.filter.tipo)
+      this.genBarChartDynamic(this.dataGraficas.dataLikesNegocio.data,this.dataGraficas.dataLikesNegocio.tagsTooltip)
+    }else{
+      console.log("No selecciono tipo")
+    }
+    /*this.dataSet=tipo
+    this.showToggle=true
+    this.tipoEstadistica="Likes de negocio"
+    this.datosGrafica.data = []
+    this.datosGrafica.labels=[]
+    if(this.grafica){
+      this.grafica.clear();
+    }
+    if(this.filter.tipo != null){
+      //console.log("ves grafica de LIKES NEGOCIO\n"+JSON.stringify(this.visitasQr))
+      this.datosGrafica.data = this.likesNegocio.data
+      this.datosGrafica.labels = this.likesNegocio.labels
+      this.generarGraficoPastel(this.datosGrafica)
+    }else{
+      console.log("No selecciono tipo")
+    }*/
+  }
+  graficaRating(){
+    this.showToggle=false
+    this.tipoEstadistica="Calificaciones del negocio"
+    if(this.grafica){
+      this.grafica.clear();
+    }
+    if(this.filter.tipo != null){
+      this.genBarChartDynamic(this.ratingData)
+    }else{
+      console.log("No selecciono tipo")
+    }
+  }
+  graficaRequerimientos(tipo:string){
+    this.chartType = "pie";
+    this.dataSet=tipo
+    this.showToggle=true
+    this.tipoEstadistica="Visitas de requerimientos "
+    if(this.grafica){
+      this.grafica.clear();
+    }
+    if(this.filter.tipo != null){
+      console.log("Tipo"+this.filter.tipo)
+      this.genBarChartDynamic(this.dataGraficas.dataReqCompra.data,this.dataGraficas.dataReqCompra.tagsTooltip)
+    }else{
+      console.log("No selecciono tipo")
+    }
+    /*this.showToggle=false
+    this.tipoEstadistica="Vistas de requerimientos "
+    if(this.grafica){
+      this.grafica.clear();
+    }
+    if(this.filter.tipo != null){
+      this.genBarChartDynamic(this.requestsData.data,this.requestsData.tagsTooltip)
+    }else{
+      console.log("No selecciono tipo")
+    }*/
+  }
+  graficaPromos(tipo:string){
+    this.chartType = "pie";
+    this.dataSet=tipo
+    this.showToggle=true
+    this.tipoEstadistica="Visitas de promociónes "
+    if(this.grafica){
+      this.grafica.clear();
+    }
+    if(this.filter.tipo != null){
+      console.log("Tipo"+this.filter.tipo)
+      this.genBarChartDynamic(this.dataGraficas.dataPromociones.data,this.dataGraficas.dataPromociones.tagsTooltip)
+    }else{
+      console.log("No selecciono tipo")
+    }
+    /*this.showToggle=false
+    this.tipoEstadistica="Vistas de promociónes "
+    if(this.grafica){
+      this.grafica.clear();
+    }
+    if(this.filter.tipo != null){
+      this.genBarChartDynamic(this.promotionsData.data,this.promotionsData.tagsTooltip)
+    }else{
+      console.log("No selecciono tipo")
+    }*/
+  }
+  graficaLikesProducts(tipo:string){
+    this.chartType = "pie";
+    this.dataSet=tipo
+    this.showToggle=true
+    this.tipoEstadistica="Likes de productos "
+    if(this.grafica){
+      this.grafica.clear();
+    }
+    if(this.filter.tipo != null){
+      console.log("Tipo"+this.filter.tipo)
+      this.genBarChartDynamic(this.dataGraficas.dataLikesProducts.data,this.dataGraficas.dataLikesProducts.tagsTooltip)
+    }else{
+      console.log("No selecciono tipo")
+    }
+    /*if(this.statistics.totalLikesProducts>0){
+      this.showToggle=true
+      this.tipoEstadistica="Likes de productos "
+      if(this.grafica){
+        this.grafica.clear();
+      }
+      if(this.filter.tipo != null){
+        this.genBarChartDynamic(this.likesProductosData.data)
+      }else{
+        console.log("No selecciono tipo")
+      }
+    }*/
+  }
+    
 }
