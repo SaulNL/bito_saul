@@ -887,7 +887,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
   private horarios(negocio: any) {
     this.estatus = { tipo: 0, mensaje: "No abre hoy" };
-
+    console.log("horarios: ", this.diasArray)
     const hros = negocio.horarios;
     let hoy: any;
     hoy = new Date();
@@ -906,7 +906,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
               hi: horarioTmp.hora_inicio,
               hf: horarioTmp.hora_fin,
             };
-            dia.horarios.push(dato);
+            if (dia.horarios.length === 0) dia.horarios.push(dato);
           }
         });
       });

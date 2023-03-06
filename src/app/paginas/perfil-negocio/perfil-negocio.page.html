@@ -493,17 +493,18 @@
                 <div class="alado">
                   <div *ngFor="let item of bolsa; let i = index">
                     <div *ngIf="item.idProducto === producto.idProducto">
-                      <ion-icon class="ion-text-center iconAla" name="trash-outline"
+                      <ion-icon class="ion-text-center iconAla" name="trash-outline" style=" height:20px; width:20px;"
                         (click)="eliminar(item)"></ion-icon>
                       <ion-label class="arriba"><strong>Cantidad</strong></ion-label>
                       <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.cantidad, i , 2)"
-                        style="margin: 4px; background: #bbbbbb" name="remove-outline">
+                        style="margin: 4px; background: #bbbbbb; height:20px; width:20px;" name="remove-outline">
                       </ion-icon>
                       <span class="ion-text-center" class="arriba">
                         {{ item.cantidad }}
                       </span>
                       <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.cantidad, i , 1)"
-                        style="margin: 4px; background: #bbbbbb" name="add-outline"></ion-icon>
+                        style="margin: 4px; background: #bbbbbb; height:20px; width:20px;"
+                        name="add-outline"></ion-icon>
                     </div>
                   </div>
                 </div>
