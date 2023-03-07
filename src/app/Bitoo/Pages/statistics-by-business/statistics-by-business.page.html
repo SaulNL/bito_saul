@@ -72,12 +72,12 @@
                                             </strong>
                                         </h1>
                                         <div style="display: flex; width: 100%;margin-left: 2px; margin-right: 2px; justify-content: space-between;">
-                                            <div style="display: block;" *ngIf="filter.tipo != null && statistics.totalVisitsByUrl != 0" >
+                                            <div style="display: block;" *ngIf="statistics.totalVisitsByUrl != 0" >
                                                 <ion-icon class="latir" (click)="graficaVisitas('URL')" size="small" name="bar-chart-outline" style="color: white;">
                                                 </ion-icon>
                                                 <p style="margin: 0px; padding: 0px; color: white;">URL</p>
                                             </div>
-                                            <div style="display: block;" *ngIf="filter.tipo != null && statistics.totalVisitsByQr != 0">
+                                            <div style="display: block;" *ngIf="statistics.totalVisitsByQr != 0">
                                                 <ion-icon class="latir" (click)="graficaVisitas('QR')" size="small" name="bar-chart-outline" style="color: white;">
                                                 </ion-icon>
                                                 <p style="margin: 0px; padding: 0px; color: white;">QR</p>
@@ -99,7 +99,7 @@
                                                 {{ this.statistics.totalLikesBusiness }}
                                             </strong>
                                         </h1>
-                                        <ion-icon class="latir" *ngIf="filter.tipo != null && this.statistics.totalLikesBusiness != 0" (click)="graficaLikesNegocio('likesNegocio')" size="small" name="bar-chart-outline" style="color: white;">
+                                        <ion-icon class="latir" *ngIf="this.statistics.totalLikesBusiness != 0" (click)="graficaLikesNegocio('likesNegocio')" size="small" name="bar-chart-outline" style="color: white;">
                                         </ion-icon>
                                     </ion-grid>
                                 </ion-card-content>
@@ -175,7 +175,7 @@
                     </ion-row>
                     <ion-row [ngClass]="tipoEstadistica!=null? 'visible' : 'hidden' ">
                         <ion-card-header style="display: flex; justify-content: space-between; width: 100%; padding: 20px 0px 20px 0px;">
-                            <ion-card-subtitle style="    display: flex; align-items: center;">{{tipoEstadistica}} por {{filter.tipo}}</ion-card-subtitle>
+                            <ion-card-subtitle style="    display: flex; align-items: center;">{{tipoEstadistica}} {{filter.tipo}}</ion-card-subtitle>
                             <p *ngIf="showToggle"><span>Vista:</span> <ion-icon (click)="toggleGrafica()" size="large"
                                 [name]="chartType =='pie' ? 'pie-chart-outline' : 'bar-chart-outline'">
                             </ion-icon></p>
@@ -193,7 +193,7 @@
         <ion-card><!--graficaRating-->
             <ion-card-header style="display: flex; justify-content: space-between;">
                 <ion-card-subtitle>Calificaciones</ion-card-subtitle>
-                <ion-icon  (click)="graficaRating('rating')" class="latir" *ngIf="((statistics.goodGrade + statistics.averageRating + statistics.lowRating) != 0)" (click)="graficaLikesProducts('likesProductos')" size="small" name="bar-chart-outline" style="color: rgb(66, 66, 66);">
+                <ion-icon  (click)="graficaRating('rating')" class="latir" *ngIf="((statistics.goodGrade + statistics.averageRating + statistics.lowRating) != 0)" size="small" name="bar-chart-outline" style="color: rgb(66, 66, 66);">
                 </ion-icon>
             </ion-card-header>
             <ion-card-content>
