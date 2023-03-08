@@ -516,7 +516,7 @@ export class StatisticsByBusinessPage implements OnInit {
         if(response.code == 200){
           this.statistics.totalVisitsByQr = this.create.anyToNumber(response.data.numero_visto);
           this.loader.loadingVisitsByQr = false;
-          //console.log("Estadisticas por visitas QR: "+JSON.stringify(response))
+          console.log("Estadisticas por visitas QR: "+JSON.stringify(response))
           var labels=[]
           var data = []
           var tags = []
@@ -613,7 +613,7 @@ export class StatisticsByBusinessPage implements OnInit {
         this.statistics.totalVisitsByUrl = this.create.anyToNumber(response.data.numero_visto);
         this.loader.loadingVisitsByUrl = false;
         this.vistaTipos = response.data.datos
-        //console.log("Estadisticas por visitas URL: "+JSON.stringify(response))
+        console.log("Estadisticas por visitas URL: "+JSON.stringify(response))
         var labels=[]
         var data = []
         var tags = []
@@ -712,7 +712,7 @@ export class StatisticsByBusinessPage implements OnInit {
         if(response.code == 200){
           this.statistics.totalLikesBusiness = this.create.anyToNumber(response.data.numero_likes);
           this.loader.loadingLikesBusiness = false;
-          //console.log("Estadisticas por likes NEGOCIO: "+JSON.stringify(response))
+          console.log("Estadisticas por likes NEGOCIO: "+JSON.stringify(response))
           
           var labels=[]
         var data = []
@@ -815,15 +815,15 @@ export class StatisticsByBusinessPage implements OnInit {
             this.statistics.lowRating = this.create.anyToNumber(response.data.calificacion_baja);
           }
           this.loader.loadingCompanyRating = false;
-          //console.log("Estadisticas por CALIFICACIONES: "+JSON.stringify(response))
+          console.log("Estadisticas por CALIFICACIONES: "+JSON.stringify(response))
 
           var totales=[]
           var labels=[]
           var objeto={}
           var data = []
           if(this.filter.tipo != null){
-            var vistaTipos = response.data.datos
-            /*vistaTipos =[
+            var vistaTipos //= response.data.datos
+            vistaTipos =[
               {
                 genero: "Hombre",
                 edad: 35,
@@ -895,14 +895,14 @@ export class StatisticsByBusinessPage implements OnInit {
               calificacion: 5,
               total: 3
             }
-          ]*/
+          ]
           if(this.filter.tipo != "edad" && this.filter.tipo != "localidad"){
             labels.push("Buena")
             labels.push("Media")
             labels.push("Baja")
           }
         
-          console.log(JSON.stringify(vistaTipos))
+          //console.log(JSON.stringify(vistaTipos))
             var tags = []
             var tagsPie =[]
             var colors = []
@@ -922,14 +922,14 @@ export class StatisticsByBusinessPage implements OnInit {
                     tags.push(tipo.total+" Calificaciones bajas")
                   }
                   
-                  if(tipo.calificacion>=3 && tipo.calificacion< 5){
+                  if(tipo.calificacion == 3 /*&& tipo.calificacion< 5*/){
                     labels.push(tipo.municipio+" "+tipo.estado)
                     totales.push(tipo.total)
                     colors.push("rgba(255, 206, 86, 0.2)")
                     tags.push(tipo.total+" Calificaciones medias")
                   }
 
-                  if(tipo.calificacion > 4){
+                  if(tipo.calificacion >= 4){
                     labels.push(tipo.municipio+" "+tipo.estado)
                     totales.push(tipo.total)
                     colors.push("rgba(37, 190, 42, 0.2)")
@@ -956,14 +956,14 @@ export class StatisticsByBusinessPage implements OnInit {
                     tags.push(tipo.total +" calificacion bajas")
                     colors.push("rgba(255, 99, 132, 0.2)")
                   }
-                  if(tipo.calificacion>=3 && tipo.calificacion< 5){
+                  if(tipo.calificacion ==3){
                     labels.push(tipo.edad + " años")
                     data.push(tipo.total)
                     tagsPie.push(tipo.edad + " años: "+tipo.total +" calificaciones medias")
                     tags.push(tipo.total +" calificacion medias")
                     colors.push("rgba(255, 206, 86, 0.2)")
                   }
-                  if(tipo.calificacion > 4){
+                  if(tipo.calificacion >= 4){
                     labels.push(tipo.edad + " años")
                     data.push(tipo.total)
                     tagsPie.push(tipo.edad + " años: "+tipo.total +" calificaciones buenas")
@@ -988,10 +988,10 @@ export class StatisticsByBusinessPage implements OnInit {
                     if(tipo.calificacion<3){
                       bajashombre+=(tipo.total)
                     }
-                    if(tipo.calificacion>=3 && tipo.calificacion< 5){
+                    if(tipo.calificacion ==3){
                       mediasshombre+=(tipo.total)
                     }
-                    if(tipo.calificacion > 4){
+                    if(tipo.calificacion >= 4){
                       console.log("L unica "+tipo.total)
                       buenashombre+=(tipo.total)
                     }
@@ -1001,10 +1001,10 @@ export class StatisticsByBusinessPage implements OnInit {
                     if(tipo.calificacion<3){
                       bajasmujer+=(tipo.total)
                     }
-                    if(tipo.calificacion>=3 && tipo.calificacion< 5){
+                    if(tipo.calificacion ==3){
                       mediasmujer+=(tipo.total)
                     }
-                    if(tipo.calificacion > 4){
+                    if(tipo.calificacion >= 4){
                       buenasmujer+=(tipo.total)
                     }
                   }
@@ -1136,7 +1136,7 @@ export class StatisticsByBusinessPage implements OnInit {
           /*this.statistics.totalRequests = response.data.length;
           this.statistics.requests = response.data;*/
           this.loader.loadingTotalRequests = false;
-          //console.log("Estadisticas por REQUERIMIENTOS: "+JSON.stringify(response))
+          console.log("Estadisticas por REQUERIMIENTOS: "+JSON.stringify(response))
           var labels=[]
           var data = []
           var tags = []
@@ -1240,7 +1240,7 @@ export class StatisticsByBusinessPage implements OnInit {
           if(response.code == 200){
             this.promotions = await response.data.lenght != 0? response.data.promociones : []
             this.loader.loadingTotalPromotions = false;
-            //console.log("Etsadisticas por PROMOCIONES: "+JSON.stringify(response))
+            console.log("Etsadisticas por PROMOCIONES: "+JSON.stringify(response))
             var labels=[]
             var data = []
             var tags = []
@@ -1347,7 +1347,7 @@ export class StatisticsByBusinessPage implements OnInit {
           //this.statistics.products = response.data;
           this.products = response.data;
           this.loader.loadingLikesProducts = false;
-          //console.log("Estadisticas por likes PRODUCTOS: "+JSON.stringify(response))
+          console.log("Estadisticas por likes PRODUCTOS: "+JSON.stringify(response))
           var labels=[]
           var data = []
           var tags = []
