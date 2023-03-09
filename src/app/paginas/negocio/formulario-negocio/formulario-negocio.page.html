@@ -1,8 +1,10 @@
 <ion-header>
   <ion-toolbar class="tolbar">
+
     <ion-title *ngIf="segmentModel === 'informacion'"> Información Negocio </ion-title>
     <ion-title *ngIf="segmentModel === 'domicilio'"> Domicilio </ion-title>
     <ion-title *ngIf="segmentModel === 'contacto'"> Contacto </ion-title>
+    <ion-title *ngIf="segmentModel === 'productos'&& seEstaClonando"> Productos </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cancelar()">
         <ion-icon name="close-outline"></ion-icon>
@@ -27,6 +29,11 @@
       <ion-segment-button value="domicilio">
         <!--<ion-label>Domicilio</ion-label>-->
         <ion-icon [style]="colorDomicilio" name="location-outline"></ion-icon>
+      </ion-segment-button>
+
+      <ion-segment-button value="productos" *ngIf="seEstaClonando">
+        <!--<ion-label>Productos</ion-label>-->
+        <ion-icon [style]="colorProductos" name="pricetags-outline"></ion-icon>
       </ion-segment-button>
 
     </ion-segment>
@@ -125,6 +132,17 @@
           <div *ngIf="tipoNegocio.invalid" class="alert">
             <div>Seleccione un tipo negocio</div>
           </div>
+
+          <ion-item>
+            <ion-label position="stacked">Relacione su Negocio </ion-label>
+            <ion-select name="id_negocio" required
+                        [(ngModel)]="negocioTO.id_negocio_matriz" ok-text="Ok" cancel-text="Cancelar"
+                        (ionChange)="idmatriznegocio($event)">
+              <ng-container *ngFor="let nego of lstNegocios">
+                <ion-select-option [value]="nego.id_negocio" title="{{nego.descripcion}}" *ngIf="negocioTO.nombre_comercial !== nego.nombre_comercial">{{nego.nombre_comercial}}</ion-select-option>
+              </ng-container>
+            </ion-select>
+          </ion-item>
           <ion-item>
             <ion-label position="stacked">Categoría <span style="color: red">*</span></ion-label>
             <ion-select placeholder="{{ tipoGiroAux }}" name="idtipoGiro" required #tipoGiro="ngModel" ok-text="Ok"
@@ -426,10 +444,7 @@
           [disabled]="infoInvalid(formNegocio.invalid, negocioTO.dias)">          
           <span *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</span>      
         </ion-button>        
-        </ion-list>
-        <ion-button (click)="nextTab('contacto')" expand="block" type="submit"
-        class="bg-rosa">Siguiente
-      </ion-button>
+        </ion-list>v
       </form>
     </ion-card-content>
   </ion-card>
@@ -642,3 +657,104 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
+
+
+
+<ion-content *ngIf="segmentModel === 'productos' && !loader && seEstaClonando">
+  <ion-card *ngIf="!mostrarListaProductos">
+    <ion-card-content>
+      <div style="width: 25%; text-align: left">
+      </div>
+      <ion-card *ngFor="let item of listaVista; index as idxCat">
+        <ion-card-content *ngIf="!loader && item " [className]="validarvacio(item) ? 'Verde':'Rojo'">
+          <div   style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              ">
+            <div style="width: 50%" (click)="mostrarProductos(item)">
+              <h3 style="color: black; font-size:1em;">
+                <strong>  {{item.nombre}} </strong>
+              </h3>
+            </div>
+                <br><br>
+                <div style="width: 100%">
+                 Categoria:  {{ validarvacio(item) ? 'Con Productos':'Sin Productos'}}
+                </div>
+            <div style="width: 50%">
+                <br><br><strong>{{item.activo ? 'VISIBLE' : 'OCULTO'}}</strong>
+            </div>
+            <div style="
+                  display: flex;
+                  justify-content: flex-end;
+                  align-items: center;
+                ">
+              <ion-icon name="chevron-down-outline" style="color: black; font-size: 30px" *ngIf="iden===1"
+                        (click)="mostrarProductos(item)" ></ion-icon>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button (click)="mostrarListaProductos = !mostrarListaProductos" class="bg-rosa"   *ngIf="mostrarListaProductos">
+    <ion-icon name="chevron-back-outline"></ion-icon>
+  </ion-button>
+
+  <ion-card *ngIf="mostrarListaProductos">
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <div  *ngIf="!loader" style="  display: flex;justify-content: center;align-items: center;flex-direction: column; margin-top: 20px;">
+            <h2 style="color: black; text-align: center">{{isMayusculaService(iden)}}:
+              {{totalProductosServicios}} de {{maximoProductos}} permitidos.
+            </h2>
+            <small style="text-align: justify" >Los que no cuenten con una imagen no se
+              mostrará en la busqueda de productos y servicios</small >
+          </div>
+          <ion-col size="12">
+            <div  *ngIf="iden===1" style="width: 100%;display: flex; justify-content: center; align-items: center;
+                  flex-direction: column;">
+              <div style="width: 100%; display: flex;justify-content: center;align-items: center;margin: 10px 0;"
+                   *ngFor="let producto of listaProductos.productos; index as i">
+                <ion-card>
+                  <img alt="Silhouette of mountains" src="{{validarvacio(producto, 'imagen')  ? producto.imagen : 'https://ionicframework.com/docs/img/demos/card-media.png'}}" />
+                  <ion-card-header>
+                    <ion-card-title>{{ producto.categoria.nombre }}</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    {{ producto.nombre}}
+                    <br>
+                    En existencia:
+                    <ion-toggle style="width:20%;margin-top: 10px;"  name="existencia" disabled  #existencia="ngModel" [(ngModel)]="producto.existencia" color="danger"
+                    ></ion-toggle>
+                  </ion-card-content>
+                </ion-card>
+                <div style="width: 25%; text-align: center">
+                </div>
+              </div>
+            </div>
+            <div *ngIf="iden===2" style=" width: 100%;display: flex; justify-content: center;align-items: center;flex-direction: column;">
+              <div style="width: 100%; display: flex; justify-content: center; align-items: center;margin: 10px 0;"
+                   *ngFor="let producto of listaProductos.servicios; index as i" >
+                <div style="width: 10%">{{ i + 1 }}</div>
+                <div style="width: 25%">{{ producto.nombre }}</div>
+                <div style="width: 25%; text-align: center">
+                  <ion-toggle style="width: 20" name="existencia" disabled #existencia="ngModel"
+                              [(ngModel)]="producto.existencia" color="danger"></ion-toggle>
+                </div>
+              </div>
+              <div style=" width: 100%; display: flex; justify-content: center; align-items: center;"></div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button *ngIf="!mostrarListaProductos" (click)="nextTab('domicilio')" expand="block" type="submit"
+              class="bg-rosa">Anterior
+  </ion-button>
+</ion-content>
+

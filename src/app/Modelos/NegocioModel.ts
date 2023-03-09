@@ -6,6 +6,7 @@ import {HorarioNegocioModel} from './HorarioNegocioModel';
 export class NegocioModel {
 
   public id_negocio: number;
+  public id_negocio_matriz: number;
   public vip: any;
   public rfc: string;
   public descripcion: string;
@@ -85,10 +86,13 @@ export class NegocioModel {
     tiempo_entrega_kilometro = null,
     costo_entrega = 30,
     otra_categoria = null,
-    otra_subcategoria = null,    
+    otra_subcategoria = null,
+    tags = [],
     fotografias=[],
+    id_negocio_matriz = null,
   ) {
     this.id_negocio = id_negocio;
+    this.tags = tags;
     this.rfc = rfc;
     this.descripcion = descripcion;
     this.nombre_comercial = nombre_comercial;
@@ -115,5 +119,6 @@ export class NegocioModel {
     this.otra_categoria = otra_categoria;
     this.otra_subcategoria = otra_categoria;
     this.fotografias = fotografias;
+    this.id_negocio_matriz = id_negocio_matriz;
   }
 }

@@ -17,7 +17,7 @@ import moment from 'moment';
 import { CatLocalidadModel } from './../../../Modelos/CatLocalidadModel';
 import { CatMunicipioModel } from './../../../Modelos/CatMunicipioModel';
 import { CatEstadoModel } from './../../../Modelos/CatEstadoModel';
-import { Map, tileLayer, marker, Marker,latLng } from 'leaflet';
+import { Map, tileLayer, marker, Marker, latLng } from 'leaflet';
 import { Plugins } from '@capacitor/core';
 const { Geolocation } = Plugins;
 import { GeneralServicesService } from './../../../api/general-services.service';
@@ -32,7 +32,18 @@ import { SeleccionarSucripcionComponent } from 'src/app/components/seleccionar-s
   styleUrls: ['./formulario-negocio.page.scss'],
 })
 export class FormularioNegocioPage implements OnInit {
+
   public segmentModel = 'informacion';
+  public maximoProductos: number;
+  public id_proveedor: number;
+  public lstNegocios: Array<NegocioModel>;
+  public totalProductosServicios: number;
+  public mostrarListaProductos: boolean;
+  public idNegocioMatriz: number;
+  public listaVista: any;
+  public listaProductos: any;
+  public iden: number;
+  public colorProductos: any;
   public negocioTO: any;
   public negtag: boolean;
   public negLugar: boolean;
@@ -109,15 +120,15 @@ export class FormularioNegocioPage implements OnInit {
   public lstConvenio: any;
   public tipoCnvn: any;
   public convenio_date: any;
-  public cnvn_date:any;
+  public cnvn_date: any;
   public dateObject: any;
- public seEstaClonando: boolean = false;
- public nombreAnterior:any;
- public direccionAnterior:any;
- public fotografiasArray: any[]
- public galeriaFull:boolean=false;
- public numeroFotos:number;
- public logo:any;
+ public seEstaClonando = false;
+ public nombreAnterior: any;
+ public direccionAnterior: any;
+ public fotografiasArray: any[];
+ public galeriaFull = false;
+ public numeroFotos: number;
+ public logo: any;
   convenioId: number;
   cnvn_fecha: any;
   dateFormat: any;
@@ -129,10 +140,10 @@ export class FormularioNegocioPage implements OnInit {
     centeredSlides: true,
     loop: false,
     spaceBetween: 10,
-  }
-  features10: boolean = false;
+  };
+  features10 = false;
   numeroFotosPermitidas: number;
-  features12: boolean = false;
+  features12 = false;
   disabled: boolean;
   disabledPhoto: boolean;
   suscripciones: any;
@@ -150,15 +161,21 @@ export class FormularioNegocioPage implements OnInit {
     public getCoordinatesMap: UbicacionMapa,
   ) {
     this.valido = false;
+    this.maximoProductos = 0;
+    this.totalProductosServicios = 0;
+    this.idNegocioMatriz = 0;
+    this.iden = 1;
+    this.listaVista = [];
     this.listCategorias = [];
     this.listTipoNegocio = [];
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
+    this.id_proveedor = this.usuario.proveedor.id_proveedor;
     this.negtag = false;
     this.negLugar = false;
     this.negocioGuardar = new NegocioModel();
     this.nuevoHorario = new HorarioNegocioModel();
     this.convenio = new Array();
-    
+    this.lstNegocios = [];
     this.blnActivaHoraF = true;
     this.blnActivaDias = true;
     this.blnActivaHorario = true;
@@ -168,7 +185,7 @@ export class FormularioNegocioPage implements OnInit {
     this.btnEstado = false;
     this.btnMuncipio = true;
     this.btnLocalidad = true;
-    this.loaderSubCategoria =true;
+    this.loaderSubCategoria = true;
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
     this.list_cat_localidad = new Array<CatLocalidadModel>();
@@ -176,8 +193,11 @@ export class FormularioNegocioPage implements OnInit {
 
 
   ngOnInit() {
-    this.disabled=true
-    this.disabledPhoto=true
+    this.disabled = true;
+    this.listaProductos = [];
+    this.mostrarListaProductos = false;
+    this.disabledPhoto = true;
+    this.negocios();
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.nuevoNegocio) {
         this.negocioTO = new NegocioModel();
@@ -188,26 +208,27 @@ export class FormularioNegocioPage implements OnInit {
         this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
         this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
         // this.setearDireccion();
-        this.fotografiasArray=this.negocioTO.fotografias;
-        this.numeroFotos=this.fotografiasArray.length;
+        this.fotografiasArray = this.negocioTO.fotografias;
+        this.numeroFotos = this.fotografiasArray.length;
       }
-      else if(params && params.clonar){
-        this.seEstaClonando=true;
+      else if (params && params.clonar){
+        this.seEstaClonando = true;
       }
     });
 
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.special) {
-        //this.negocioTO = new NegocioModel();
+        // this.negocioTO = new NegocioModel();
         const datos = JSON.parse(params.special);
-        this.negocioTO = datos.info;  
+        this.negocioTO = datos.info;
         this.obtenerFeatures(this.negocioTO.id_negocio);
-        //this.buscarNegocio(this.negocioTO.id_negocio)
-        this.fotografiasArray=this.negocioTO.fotografias;
-        console.log("fotografiasArray####"+JSON.stringify(this.fotografiasArray))          
-        this.numeroFotos=this.fotografiasArray.length;
-        if(this.numeroFotos >= this.numeroFotosPermitidas){
-          this.galeriaFull=true
+        // this.buscarNegocio(this.negocioTO.id_negocio)
+        this.fotografiasArray = this.negocioTO.fotografias;
+        console.log('fotografiasArray####' + JSON.stringify(this.fotografiasArray));
+        this.buscardatos();
+        this.numeroFotos = this.fotografiasArray.length;
+        if (this.numeroFotos >= this.numeroFotosPermitidas){
+          this.galeriaFull = true;
         }
         this.nombreAnterior = this.negocioTO.nombre_comercial;
         this.direccionAnterior = this.negocioTO.det_domicilio;
@@ -215,7 +236,7 @@ export class FormularioNegocioPage implements OnInit {
         this.blnActivaEntregas = this.negocioTO.entrega_domicilio;
         this.blnActivaNegocioFisico = this.negocioTO.tipo_negocio;
         if (this.negocioTO.lugares_entrega !== null) {
-          this.negocioTO.lugares_entrega = this.negocioTO.lugares_entrega.filter(function (lugar) {
+          this.negocioTO.lugares_entrega = this.negocioTO.lugares_entrega.filter(function(lugar) {
             return lugar !== '';
           });
         } else {
@@ -223,6 +244,7 @@ export class FormularioNegocioPage implements OnInit {
         }
       }
     });
+
 
     this.buscarNegocio(this.negocioTO.id_negocio);
     this.metodosPago = [
@@ -237,6 +259,32 @@ export class FormularioNegocioPage implements OnInit {
     this.obtenerSuscripciones();
   }
 
+    public buscardatos() {
+        this.negocioServico.obtenerDetalleDeNegocio(this.negocioTO.id_negocio, 0, this.usuario.id_persona).subscribe(
+            (repsuesta) => {
+                const datosNegocio = repsuesta.data;
+                let serviciosTags = [];
+                let productoTags = [];
+                if (this.iden === 2) {
+                    serviciosTags = datosNegocio.serviciosTags;
+                    this.negocioTO.tags = JSON.stringify(serviciosTags);
+                }
+                if (this.iden === 1) {
+                    productoTags = datosNegocio.productoTags;
+                    this.negocioTO.tags = JSON.stringify(productoTags);
+                }
+                this.listaVista = repsuesta.data.categorias !== undefined ? repsuesta.agrupados : [];
+                this.listaVista.forEach(data => {
+                    const cantidad = data.productos.length;
+                    console.log("cantidadEnviada" + cantidad);
+                    this.numerodeservicioproductos(cantidad);
+                });
+            },
+            (error) => {
+                this.loader = false;
+            }
+        );
+    }
   setearDireccion() {
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
     if (this.usuario != null) {
@@ -281,7 +329,42 @@ export class FormularioNegocioPage implements OnInit {
     });
     await alert.present();
   }
-  abrirModalCambio() {
+
+    public mostrarProductos(item) {
+        this.listaProductos = item;
+        if (this.validarvacio(item)){
+            this.mostrarListaProductos = !this.mostrarListaProductos;
+        }else {
+           this.presentAlert('Productos-Categorias', 'La categoria seleccionada no cuenta con productos');
+        }
+    }
+
+    public validarvacio(arreglo , imagen?){
+        if (imagen){
+            if (!arreglo.imagen.length){
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        if (!arreglo.productos.length){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    numerodeservicioproductos(cantidad: number){
+      this.totalProductosServicios += cantidad;
+    }
+
+    public isMayusculaService(type: number) {
+        return type === 2 ? 'Servicios' : 'Productos';
+    }
+
+
+    abrirModalCambio() {
     let objetoAux;
     objetoAux = JSON.parse(JSON.stringify(this.negocioTO));
     const navigationExtras = JSON.stringify(objetoAux);
@@ -313,25 +396,25 @@ export class FormularioNegocioPage implements OnInit {
   }
 
   segmentChanged(event: any) {
-    if (event.detail.value === "domicilio") {
+    if (event.detail.value === 'domicilio') {
       this.cagarMapa();
     }
 
 
   }
   public infoNegocio(id: any) {
-    console.log("buscar")
-      this.negocioServico.buscarNegocio(id).subscribe(
+    console.log('buscar');
+    this.negocioServico.buscarNegocio(id).subscribe(
         response => {
-          this.negocioTO = response.data;          
-          this.logo=this.negocioTO.logo.archivo_64
+          this.negocioTO = response.data;
+          this.logo = this.negocioTO.logo.archivo_64;
         },
         error => {
         }
-      );    
+      );
   }
   public buscarNegocio(id: any) {
-    console.log("buscar")
+    console.log('buscar');
     if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
       this.obtenerTipoNegocio();
       this.obtenerCatOrganizaciones();
@@ -343,7 +426,7 @@ export class FormularioNegocioPage implements OnInit {
     } else {
       this.negocioServico.buscarNegocio(id).subscribe(
         response => {
-          console.log("Datos jale: ", JSON.stringify(response.data))
+          console.log('Datos jale: ', JSON.stringify(response.data));
           this.negocioTO = response.data;
           this.obtenerTipoNegocio();
           this.obtenerCatOrganizaciones();
@@ -353,13 +436,13 @@ export class FormularioNegocioPage implements OnInit {
 
           this.negocioTO.afiliacionesTodo.forEach(element => {
 
-            let afiliacion = {
-              "id_organizacion": element.id_organizacion,
-              "fecha_fin": element.fecha_fin,
-              "nombre":element.organizacion.nombre
-             }
-             this.convenio.push(afiliacion);
-           
+            const afiliacion = {
+              id_organizacion: element.id_organizacion,
+              fecha_fin: element.fecha_fin,
+              nombre: element.organizacion.nombre
+             };
+            this.convenio.push(afiliacion);
+
           });
           const archivo = new ArchivoComunModel();
           archivo.archivo_64 = this.negocioTO.url_logo;
@@ -368,7 +451,7 @@ export class FormularioNegocioPage implements OnInit {
           this.negocioTO.local = archivo;
           this.categoriaPrincipal({ value: this.negocioTO.id_tipo_negocio });
           this.subcategorias({ value: this.negocioTO.id_giro });
-          //this.logo=this.negocioTO.logo.archivo_64
+          // this.logo=this.negocioTO.logo.archivo_64
         },
         error => {
         }
@@ -392,6 +475,34 @@ export class FormularioNegocioPage implements OnInit {
       }
     );
   }
+  idmatriznegocio( event){
+      let idE;
+      if (event.type === 'ionChange') {
+          idE = event.detail.value;
+          if (idE > 0){
+              this.negocioTO.idNegocioMatriz = idE;
+          }
+
+      } else {
+          idE = event.value;
+      }
+
+  }
+    async presentAlert(head , messag) {
+        const alert = await this.alertController.create({
+            header: head,
+            message: messag,
+            buttons: [
+                {
+                    text: 'Ok',
+                    role: 'cancel',
+                    handler: () => {},
+                }
+            ],
+        });
+
+        await alert.present();
+    }
   categoriaPrincipal(evento) {
     let idE;
     if (evento.type === 'ionChange') {
@@ -418,19 +529,19 @@ export class FormularioNegocioPage implements OnInit {
     if (evento.type === 'ionChange') {
       this.negocioTO.id_categoria_negocio = [];
       idE = evento.detail.value;
-      if(idE>0){
-        this.loaderSubCategoria=false;
+      if (idE > 0){
+        this.loaderSubCategoria = false;
       }
-      
+
     } else {
       idE = evento.value;
     }
-    
-    this.negocioServico.obtenerCategoriasProdServ(idE,this.negocioTO.id_tipo_negocio).subscribe(
+
+    this.negocioServico.obtenerCategoriasProdServ(idE, this.negocioTO.id_tipo_negocio).subscribe(
       respuesta => {
         this.listaSubCategorias = Array();
         if (respuesta.code === 200) {
-          this.loaderSubCategoria=true;
+          this.loaderSubCategoria = true;
           this.listaSubCategorias = respuesta.data;
           this.listaSubCategorias.forEach(element => {
             if (element.id_categoria == this.negocioTO.id_categoria_negocio) {
@@ -500,9 +611,9 @@ export class FormularioNegocioPage implements OnInit {
     }
   }
   public avisoConvenio(event){
-    this.notificaciones.toastInfo("Registra un convenio para poder habilitar esta característica")
+    this.notificaciones.toastInfo('Registra un convenio para poder habilitar esta característica');
   }
-  public agregarFoto(event) {           
+  public agregarFoto(event) {
     let nombre_archivo;
     if (event.target.files && event.target.files.length) {
       let height;
@@ -530,11 +641,11 @@ export class FormularioNegocioPage implements OnInit {
                       archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
                       archivo.archivo_64 = file_64;
                     }
-                    this.fotografiasArray.push(archivo)
-                    this.numeroFotos++
-                    if(this.numeroFotos >= this.numeroFotosPermitidas){
-                      this.galeriaFull=true
-                    }                    
+                    this.fotografiasArray.push(archivo);
+                    this.numeroFotos++;
+                    if (this.numeroFotos >= this.numeroFotosPermitidas){
+                      this.galeriaFull = true;
+                    }
                   }
                 );
               } else {
@@ -548,25 +659,25 @@ export class FormularioNegocioPage implements OnInit {
                   const archivo = new ArchivoComunModel();
                   archivo.nombre_archivo = nombre_archivo,
                     archivo.archivo_64 = r.data;
-                    this.fotografiasArray.push(archivo)
-                    this.numeroFotos++
-                    if(this.numeroFotos >= this.numeroFotosPermitidas){
-                      this.galeriaFull=true
-                    }                    
+                  this.fotografiasArray.push(archivo);
+                  this.numeroFotos++;
+                  if (this.numeroFotos >= this.numeroFotosPermitidas){
+                      this.galeriaFull = true;
+                    }
                 }
-              }  
+              }
               );
             }
           };
         };
       }
     }
-  }  
-  public borrarFoto(posicion:number){    
+  }
+  public borrarFoto(posicion: number){
     this.fotografiasArray.splice(posicion, 1);
-    this.numeroFotos--
-    if(this.numeroFotos<3){
-      this.galeriaFull=false
+    this.numeroFotos--;
+    if (this.numeroFotos < 3){
+      this.galeriaFull = false;
     }
   }
   async abrirModal(evento, width, heigh) {
@@ -590,6 +701,8 @@ export class FormularioNegocioPage implements OnInit {
   agregarTags(tags: string[]) {
     this.negtag = true;
     this.tags = tags.join();
+    this.negocioTO.tags = this.tags;
+    this.negocioGuardar.tags = this.tags;
   }
   agregarLugaresEntrega(lugaresEntrega: string[]) {
     this.negLugar = true;
@@ -655,23 +768,23 @@ export class FormularioNegocioPage implements OnInit {
       }
     });
   }
-  
+
   /**
      * Funcion para enviar a validar la url del negocio
      * @param evento
      * @author Omar
      */
   confirmarUrlNegocio(evento, entrada = 1) {
-    if(this.negocioTO.id_negocio === null){
+    if (this.negocioTO.id_negocio === null){
       let cadena = '';
-    if (entrada === 2) {
+      if (entrada === 2) {
       cadena = evento.detail.value;
     }
     else {
       cadena = evento;
     }
-    clearTimeout(this.controladorTiempo);
-    this.controladorTiempo = setTimeout(() => {
+      clearTimeout(this.controladorTiempo);
+      this.controladorTiempo = setTimeout(() => {
       const tem = cadena.replace(/[^a-zA-Z0-9 ]/g, '');
       this.negocioServico.verificarUrlNegocio(tem).subscribe(
         repuesta => {
@@ -708,8 +821,8 @@ export class FormularioNegocioPage implements OnInit {
   }
   agregarHorario() {
     if (this.nuevoHorario.id_horario === null || this.nuevoHorario.id_horario === undefined) {
-      this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
-      this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
+      this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format('HH:mm');
+      this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format('HH:mm');
       this.nuevoHorario.activo = true;
       this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
       this.nuevoHorario.id_horario = null;
@@ -723,8 +836,8 @@ export class FormularioNegocioPage implements OnInit {
       this.nuevoHorario = new HorarioNegocioModel;
       this.posicionHorario = -1;
     } else {
-      this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format("HH:mm");
-      this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format("HH:mm");
+      this.nuevoHorario.hora_inicio = moment.parseZone(this.horarioini).format('HH:mm');
+      this.nuevoHorario.hora_fin = moment.parseZone(this.horariofin).format('HH:mm');
       this.nuevoHorario.dia = this.nuevoHorario.dias.toString();
       this.nuevoHorario.dias = this.nuevoHorario.dias;
       this.nuevoHorario.activo = true;
@@ -740,10 +853,10 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioTO.dias.splice(i);
   }
   editarHorario(horario, i) {
-    let objFecha = new Date();
+    const objFecha = new Date();
     this.posicionHorario = i;
-    this.horarioini = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_inicio + ":ssZ");
-    this.horariofin = moment.parseZone(objFecha).format("YYYY-MM-DDT" + horario.hora_fin + ":ssZ");
+    this.horarioini = moment.parseZone(objFecha).format('YYYY-MM-DDT' + horario.hora_inicio + ':ssZ');
+    this.horariofin = moment.parseZone(objFecha).format('YYYY-MM-DDT' + horario.hora_fin + ':ssZ');
     this.nuevoHorario.dias = horario.dias;
     this.nuevoHorario.id_horario = horario.id_horario;
   }
@@ -767,7 +880,7 @@ export class FormularioNegocioPage implements OnInit {
     this.nuevoHorario = new HorarioNegocioModel;
   }
   cambiarPago(event) {
-    let lista = event.detail.value;
+    const lista = event.detail.value;
     let credito = 0, debito = 0, efectivo = 0, transferencia = 0;
     lista.forEach(element => {
       if (element.id === 1) {
@@ -815,10 +928,10 @@ export class FormularioNegocioPage implements OnInit {
   public cagarMapa() {
     setTimeout(it => {
       // this.map = new Map("mapId").setView([this.latitud, this.longitud], 16);
-      this.map = new Map("mapId").setView([this.latitud, this.longitud], 12);
+      this.map = new Map('mapId').setView([this.latitud, this.longitud], 12);
       this.map.on('click', respuesta => {
         this.getLatLong(respuesta);
-      })
+      });
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
       this.marker = marker([this.latitud, this.longitud], {
         draggable:
@@ -830,9 +943,9 @@ export class FormularioNegocioPage implements OnInit {
     }, 1000);
   }
   getLatLong(e) {
-    let latitude = e.latlng.lat;
+    const latitude = e.latlng.lat;
     this.negocioTO.det_domicilio.latitud = latitude;
-    let longitude = e.latlng.lng;
+    const longitude = e.latlng.lng;
     this.negocioTO.det_domicilio.longitud = longitude;
     this.map.panTo([latitude, longitude]);
     this.marker.setLatLng([latitude, longitude]);
@@ -856,7 +969,7 @@ export class FormularioNegocioPage implements OnInit {
   async localizacionTiempo() {
     let latitude;
     let longitude;
-    let gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
+    const gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
     const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
       this.negocioTO.det_domicilio.latitud = res.coords.latitude;
       latitude = res.coords.latitude;
@@ -884,7 +997,7 @@ export class FormularioNegocioPage implements OnInit {
 
             }
           });
-          //this.loader = false;
+          // this.loader = false;
           if (this.negocioTO.det_domicilio.id_estado > 0) {
             this.get_list_cat_municipio({ value: this.negocioTO.det_domicilio.id_estado });
           }
@@ -987,65 +1100,68 @@ export class FormularioNegocioPage implements OnInit {
       this.negocioTO.logo.archivo_64 === undefined) {
       this.notificaciones.alerta('Agregue la foto de su negocio');
       this.loader = false;
-     
+
     } else {
       this.datos();
-      if(this.seEstaClonando == true){
-        this.negocioGuardar.id_negocio=null;
-        let dirActual=this.negocioGuardar.det_domicilio;
-        let dirAnterior=this.direccionAnterior.calle;
-        if(this.negocioGuardar.nombre_comercial == this.nombreAnterior){
-          this.nextTab("informacion")      
+      if (this.seEstaClonando === true){
+        this.negocioGuardar.id_negocio = null;
+        const dirActual = this.negocioGuardar.det_domicilio;
+        const dirAnterior = this.direccionAnterior.calle;
+        this.negocioGuardar.id_negocio_matriz = this.negocioTO.id_negocio_matriz;
+
+        if (this.negocioGuardar.nombre_comercial === this.nombreAnterior){
+          this.nextTab('informacion');
           this.notificaciones.error('El nombre del negocio debe ser direfente');
-          this.loader = false;      
-        }else if(dirActual.calle == dirAnterior){
-          this.nextTab("domicilio")   
-          this.notificaciones.error('El domicilio debe ser direfente');
-          this.loader = false;    
-        }else if((this.negocioGuardar.nombre_comercial != this.nombreAnterior) && (dirActual.calle != dirAnterior)){
-          console.log(this.negocioGuardar.nombre_comercial +" Y "+ this.nombreAnterior) 
-          console.log(dirActual.calle+" Y "+dirAnterior)
-          //console.log("NegocioGuardar#####",JSON.stringify(this.negocioGuardar))
+          this.loader = false;
+        }else if (dirActual.calle === dirAnterior) {
+            this.nextTab('domicilio');
+            this.notificaciones.error('El domicilio debe ser direfente');
+            this.loader = false;
+        }else if ((this.negocioGuardar.nombre_comercial !== this.nombreAnterior) && (dirActual.calle !== dirAnterior)){
+          console.log(this.negocioGuardar.nombre_comercial + ' Y ' + this.nombreAnterior);
+          console.log(dirActual.calle + ' Y ' + dirAnterior);
+          this.negocioGuardar.productos = this.listaProductos;
+          console.log("NegocioGuardar#####" + JSON.stringify(this.negocioGuardar))
           this.negocioServico.guardar(this.negocioGuardar).subscribe(
             response => {
               if (response.code === 200) {
-                this.notificaciones.exito('Tu negocio se guardo exitosamente');                                          
+                this.notificaciones.exito('Tu negocio se guardo exitosamente');
                 this.loader = false;
                 this.router.navigate(['/tabs/home/negocio']);
               } else {
                 this.loader = false;
-                this.notificaciones.alerta(response.message);
-                alert(response);
-                console.log("HOLA---------" + JSON.stringify(response));
+                this.notificaciones.alerta(JSON.stringify(response.message));
+                alert(JSON.stringify(response));
+                console.log('HOLA---------' + JSON.stringify(response));
               }
             },
             error => {
-              this.notificaciones.error(error);                                                                                 
+              this.notificaciones.error(error);
               this.loader = false;
-              console.log("ERROR:--------" + JSON.stringify(error));
+              console.log('ERROR:--------' + JSON.stringify(error));
             }
           );
-        }        
+        }
       }else{
         this.negocioServico.guardar(this.negocioGuardar).subscribe(
           response => {
             if (response.code === 200) {
-              this.notificaciones.exito('Tu negocio se guardo exitosamente'); 
-              console.log("xxxxxx"+JSON.stringify(this.negocioGuardar))              
+              this.notificaciones.exito('Tu negocio se guardo exitosamente');
+              console.log('xxxxxx' + JSON.stringify(this.negocioGuardar));
               this.loader = false;
               this.router.navigate(['/tabs/home/negocio']);
             } else {
-              console.log("sssss"+JSON.stringify(this.negocioGuardar))
+              console.log('sssss' + JSON.stringify(this.negocioGuardar));
               this.loader = false;
               this.notificaciones.alerta(response.message);
             }
           },
           error => {
-            this.notificaciones.error(error);             
+            this.notificaciones.error(error);
             this.loader = false;
           }
         );
-      }            
+      }
     }
   }
 
@@ -1065,9 +1181,9 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.id_tipo_negocio = this.negocioTO.id_tipo_negocio;
     this.negocioGuardar.id_giro = this.negocioTO.id_giro;
     this.negocioGuardar.otra_categoria = this.negocioTO.otra_categoria;
-    let tem = this.negocioTO.url_negocio;
-    let ten = tem.replace(/\s+/g, '');
-    this.negocioGuardar.url_negocio = ten.replace(/[^a-zA-Z0-9 ]/g, "");
+    const tem = this.negocioTO.url_negocio;
+    const ten = tem.replace(/\s+/g, '');
+    this.negocioGuardar.url_negocio = ten.replace(/[^a-zA-Z0-9 ]/g, '');
 
     if (this.negocioGuardar.id_giro === 12) {
       this.negocioGuardar.id_categoria_negocio = 100;
@@ -1078,31 +1194,31 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.organizaciones = this.negocioTO.organizaciones;
     this.negocioGuardar.plazas = this.negocioTO.plazas;
     this.negocioGuardar.distintivos = this.negocioTO.distintivos;
-    this.negocioGuardar.perfiles_caracteristicas = [this.negocioTO.perfiles_caracteristicas]
-    console.log("perfiles_caracteristicas"+this.negocioGuardar.perfiles_caracteristicas)
+    this.negocioGuardar.perfiles_caracteristicas = [this.negocioTO.perfiles_caracteristicas];
+    console.log('perfiles_caracteristicas' + this.negocioGuardar.perfiles_caracteristicas);
     if (this.cnvn_date === undefined){
       this.dateObject = this.convenio_date;
     } else{
-      this.dateObject =this.cnvn_date.substr(0,this.cnvn_date.indexOf( "T" )); 
+      this.dateObject = this.cnvn_date.substr(0, this.cnvn_date.indexOf( 'T' ));
     }
-    this.negocioTO.afiliaciones=[]
-    
+    this.negocioTO.afiliaciones = [];
+
     this.convenio.forEach(element => {
 
-      let afiliacion = {
-        "id": element.id_organizacion,
-        "fecha_fin": element.fecha_fin,
-       }
-       this.negocioTO.afiliaciones.push(afiliacion);
-  
-    })
+      const afiliacion = {
+        id: element.id_organizacion,
+        fecha_fin: element.fecha_fin,
+       };
+      this.negocioTO.afiliaciones.push(afiliacion);
+
+    });
     this.negocioGuardar.afiliaciones =  this.negocioTO.afiliaciones;
-    
+
     if (this.negocioGuardar.organizaciones !== undefined && this.negocioGuardar.organizaciones.length > 0) {
-      this.negocioGuardar.nombre_organizacion = this.negocioTO.nombre_organizacion
+      this.negocioGuardar.nombre_organizacion = this.negocioTO.nombre_organizacion;
     }
     if (this.negocioGuardar.distintivos !== undefined && this.negocioGuardar.distintivos.length > 0) {
-      this.negocioGuardar.nombre_distintivos = this.negocioTO.nombre_distintivos
+      this.negocioGuardar.nombre_distintivos = this.negocioTO.nombre_distintivos;
     }
 
     if (this.negtag == true) {
@@ -1147,7 +1263,7 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.tipo_pago_tarjeta_debito = this.negocioTO.tipo_pago_tarjeta_debito;
     this.negocioGuardar.tipo_pago_efectivo = this.negocioTO.tipo_pago_efectivo;
 
-    this.negocioGuardar.fotografias = this.fotografiasArray
+    this.negocioGuardar.fotografias = this.fotografiasArray;
     if (this.negocioTO.det_domicilio.id_domicilio != null) {
       this.negocioGuardar.det_domicilio.id_domicilio = this.negocioTO.det_domicilio.id_domicilio;
     }
@@ -1194,37 +1310,37 @@ export class FormularioNegocioPage implements OnInit {
   }
 
   public getAddress(){
-    let estado = this.list_cat_estado.filter(estado => estado.id_estado == this.negocioTO.det_domicilio.id_estado)[0].nombre;
-    let municipio = this.list_cat_municipio.filter(municipio => municipio.id_municipio == this.negocioTO.det_domicilio.id_municipio)[0].nombre;
-    let address = this.negocioTO.det_domicilio.calle+" "+this.negocioTO.det_domicilio.numero_ext+" "+this.negocioTO.det_domicilio.colonia+" "+this.negocioTO.det_domicilio.codigo_postal+" "+municipio+" "+estado;
+    const estado = this.list_cat_estado.filter(estado => estado.id_estado == this.negocioTO.det_domicilio.id_estado)[0].nombre;
+    const municipio = this.list_cat_municipio.filter(municipio => municipio.id_municipio == this.negocioTO.det_domicilio.id_municipio)[0].nombre;
+    const address = this.negocioTO.det_domicilio.calle + ' ' + this.negocioTO.det_domicilio.numero_ext + ' ' + this.negocioTO.det_domicilio.colonia + ' ' + this.negocioTO.det_domicilio.codigo_postal + ' ' + municipio + ' ' + estado;
     this.getCoordinates(address);
   }
 
   async getCoordinates(address){
     this.getCoordinatesMap.getPosts(address)
     .then(async data => {
-      const arrayPosts:any = data;
-      let latitud = arrayPosts.results[0].geometry.location.lat;
-      let longitud = arrayPosts.results[0].geometry.location.lng;
-      let gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
+      const arrayPosts: any = data;
+      const latitud = arrayPosts.results[0].geometry.location.lat;
+      const longitud = arrayPosts.results[0].geometry.location.lng;
+      const gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
       const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
         this.negocioTO.det_domicilio.latitud = res.coords.latitude;
         this.negocioTO.det_domicilio.longitud = res.coords.longitude;
         this.map.panTo([latitud, longitud]);
         this.marker.setLatLng([latitud, longitud]);
-      })
+      });
 
-    })
+    });
   }
 
   async nextTab(tab){
     this.segmentModel = tab;
   }
   editarConvenio(convenio, i) {
-    this.convenioId = convenio.id_organizacion
+    this.convenioId = convenio.id_organizacion;
 
-    this.cnvn_fecha = convenio.fecha_fin
-    this.convenio.splice(i,1);
+    this.cnvn_fecha = convenio.fecha_fin;
+    this.convenio.splice(i, 1);
   }
   cancelarConvenio() {
     this.convenioId = null;
@@ -1232,20 +1348,20 @@ export class FormularioNegocioPage implements OnInit {
   }
  agregarConvenio(){
 
-  
 
-        this.dateFormat =this.cnvn_fecha.substr(0,this.cnvn_fecha.indexOf( "T" ));
-       
-        let filteredArr = this.lstConvenio.find(data => data.id_organizacion === this.convenioId);
-        this.nameConvenio= filteredArr.nombre;
 
-        let afiliacion = {
-          "id_organizacion": this.convenioId,
-          "fecha_fin": this.dateFormat,
-          "nombre":this.nameConvenio
-         }
-         this.convenio.push(afiliacion);
-         this.convenioId = null;
+        this.dateFormat = this.cnvn_fecha.substr(0, this.cnvn_fecha.indexOf( 'T' ));
+
+        const filteredArr = this.lstConvenio.find(data => data.id_organizacion === this.convenioId);
+        this.nameConvenio = filteredArr.nombre;
+
+        const afiliacion = {
+          id_organizacion: this.convenioId,
+          fecha_fin: this.dateFormat,
+          nombre: this.nameConvenio
+         };
+        this.convenio.push(afiliacion);
+        this.convenioId = null;
         this.cnvn_fecha = null;
 
  }
@@ -1276,73 +1392,88 @@ export class FormularioNegocioPage implements OnInit {
 }
 
 eliminarConvenio(i) {
-  this.convenio.splice(i,1);
+  this.convenio.splice(i, 1);
 }
 
 async obtenerFeatures(id_negocio: number){
   await this._general_service.features(id_negocio).subscribe(
       response => {
-          console.log("FEATURES del id_negocio en formulario"+id_negocio+",\n"+JSON.stringify(response))
+          console.log('FEATURES del id_negocio en formulario' + id_negocio + ',\n' + JSON.stringify(response));
           this.features10 = false;
-          if (response.data.lenght != 0){                    
+          if (response.data.lenght !== 0){
               response.data.forEach(feature => {
-                  if(feature.id_caracteristica == 10){                      
-                    this.numeroFotosPermitidas = feature.cantidad
-                    this.disabledPhoto=false
-                    this.features10 = true;                    
-                    console.log("\nfeatures 10 ok con un limite de fotos de: "+this.numeroFotosPermitidas)
+                  if (feature.id_caracteristica === 7){
+                      this.maximoProductos = feature.cantidad;
                   }
-                  if(feature.id_caracteristica == 12){
-                    console.log("\nfeatures 12 ok")   
-                    this.disabled=false                 
+                  if (feature.id_caracteristica === 10){
+                    this.numeroFotosPermitidas = feature.cantidad;
+                    this.disabledPhoto = false;
+                    this.features10 = true;
+                    console.log('\nfeatures 10 ok con un limite de fotos de: ' + this.numeroFotosPermitidas);
+                  }
+                  if (feature.id_caracteristica === 12){
+                    console.log('\nfeatures 12 ok');
+                    this.disabled = false;
                     this.features12 = true;
-                  }              
+                  }
               });
           }else{
-            console.log("Features Vacío")  
-            
+            console.log('Features Vacío');
+
           }
       },
       error => {
-          console.log("error"+error)
+          console.log('error' + error);
       }
   );
 }
 async obtenerSuscripciones(){
   await this._general_service.suscripciones().subscribe(
     response => {
-      if (this._utils_cls.is_success_response(response.code)) {       
-        this.suscripciones = response.data 
+      if (this._utils_cls.is_success_response(response.code)) {
+        this.suscripciones = response.data;
         this.suscripciones.forEach(suscripcion => {
-          //[(ngModel)]="negocioTO.perfiles_caracteristicas"
-          if(this.negocioTO.perfiles_caracteristicas == suscripcion.id_perfil_caracteristica)
+          // [(ngModel)]="negocioTO.perfiles_caracteristicas"
+          if (this.negocioTO.perfiles_caracteristicas == suscripcion.id_perfil_caracteristica) {
             this.dsSuscrip = suscripcion.nombre;
-        });       
+          }
+        });
       }
     },
     error => {
-      //this.notificaciones.error(error);
+      // this.notificaciones.error(error);
     },
     () => {
     }
   );
 }
-seleccionarSucripcion(){   
-  //this.dsSuscrip=""
+seleccionarSucripcion(){
+  // this.dsSuscrip=""
    this.modalSuscripciones(this.suscripciones).then(r => {
     if (r.data !== undefined) {
-      this.dsSuscrip=""
-      //console.log("AQUI EL VALOOOOOR. "+r.data.data+" : "+JSON.stringify(r))
-      this.dsSuscrip = r.data.data[1]  
-      this.negocioTO.perfiles_caracteristicas = r.data.data[0]            
+      this.dsSuscrip = '';
+      // console.log("AQUI EL VALOOOOOR. "+r.data.data+" : "+JSON.stringify(r))
+      this.dsSuscrip = r.data.data[1];
+      this.negocioTO.perfiles_caracteristicas = r.data.data[0];
     }else{
-      console.log("no selecciono nada se conserva el plan: "+this.dsSuscrip)
+      console.log('no selecciono nada se conserva el plan: ' + this.dsSuscrip);
     }
-  }  
+  }
   );
 
 }
-async modalSuscripciones(planes:any[]) {
+negocios(){
+        this.negocioServico.misNegocios(this.id_proveedor).subscribe(
+            response => {
+                this.lstNegocios = response.data;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
+            error => {
+            }
+        );
+    }
+
+async modalSuscripciones(planes: any[]) {
   const modal = await this.modalController.create({
     component: SeleccionarSucripcionComponent,
     cssClass: 'my-custom-class',
@@ -1353,10 +1484,10 @@ async modalSuscripciones(planes:any[]) {
   await modal.present();
   const data = await modal.onDidDismiss().then(r => {
     if (r !== undefined) {
-      return r;      
+      return r;
     }else{
       return null;
-    }    
+    }
   }
   );
   return data;
