@@ -10,6 +10,8 @@ import { FormularioNegocioPageRoutingModule } from './formulario-negocio-routing
 
 import { FormularioNegocioPage } from './formulario-negocio.page';
 import {TabsPageModule} from '../../tabs/tabs.module';
+import {MisProductosServiciosPageModule} from '../mis-productos-servicios/mis-productos-servicios.module';
+
 
 @NgModule({
     imports: [
@@ -18,7 +20,8 @@ import {TabsPageModule} from '../../tabs/tabs.module';
         IonicModule,
         FormularioNegocioPageRoutingModule,
         TabsPageModule,
-        SpinnerModule
+        SpinnerModule,
+        MisProductosServiciosPageModule
     ],
   declarations: [FormularioNegocioPage, SolicitarCambioUrlComponent]
 })

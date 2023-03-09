@@ -39,6 +39,14 @@
           </ion-button>          
         </ion-item> 
         <ion-item>
+          <ion-label>
+            <div class="tag-matriz" *ngIf="item.id_negocio_matriz === null">
+              <p style="color: White; font-size: 12px;">Matriz</p>
+            </div>
+            <div class="tag-sucursal" *ngIf="item.id_negocio_matriz !== null">
+              <p style="color: White; font-size: 12px;">Sucursal</p>
+            </div>
+          </ion-label>
           <ion-button slot="end" size="small" (click)="agregarSucursal(item)">
             <ion-icon name="add-outline"></ion-icon>
             <!--p>Crear sucursal</p-->
