@@ -204,7 +204,7 @@
               </ion-fab-button>
               <ion-fab-button size="small" color="light"
                 *ngIf="informacionNegocio.twitter !== null && informacionNegocio.twitter !== ''"
-                (click)="irRedSocial(informacionNegocio.twitter,'twitter')" target="_blank">
+                (click)="irRedSocial(informacionNegocio.twitter,'Twitter')" target="_blank">
                 <img src="../../../assets/images/tw.png" />
               </ion-fab-button>
               <ion-fab-button size="small" color="light"
@@ -339,7 +339,7 @@
             <ion-col *ngIf="informacionNegocio.tipo_negocio >=1" size="6" style="margin-top: 0%; align-items: center">
               <!--center-->
               <a href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
-                style="font-size: 15px; font-weight: bolder">CÓMO LLEGAR</a>
+                style="font-size: 15px; font-weight: bolder" (click)="clickRedSocial('Mapa')">CÓMO LLEGAR</a>
               <!--/center-->
             </ion-col>
           </ion-row>
