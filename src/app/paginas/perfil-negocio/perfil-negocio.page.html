@@ -154,12 +154,11 @@
             </ion-grid>
           </ion-row>
         </div>
-        <ion-row class="row_insignias">
-          <ion-slides [options]="slideOptsInsignias" class="row_insignias">
-            <ion-slide *ngFor="let distintivo of insignias">
-              <img class="img_insignia" src="{{distintivo.icon}}" alt="insignia"
-                (click)="clickDistintivo(distintivo.nombre, distintivo.descripcion)">
-            </ion-slide>
+        <ion-row class="row_insignias" *ngIf="insignias.length != 0">
+          <ion-slides [options]="slideOptsInsignias" class="row_insignias">                
+            <ion-slide *ngFor="let distintivo of insignias">               
+                <img class="img_insignia" src="{{distintivo.icon}}" alt="insignia" (click)="clickDistintivo(distintivo.nombre, distintivo.descripcion)">                                                                                                                                              
+            </ion-slide>                          
           </ion-slides>
         </ion-row>
         <ion-row>
@@ -467,7 +466,7 @@
                     src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
                     [srcset]="productoImagen(producto.imagen)" alt="Falla al cargar la imagen" />
                   <ion-card-header class="ion-card-cara">
-                    <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
+                    <ion-card-subtitle class="limiteTexto">{{formatoNombreProd(producto.nombre)}}</ion-card-subtitle>
                     <ion-badge *ngIf="producto.precio !== null" color="success">
                       $ {{producto.precio}}</ion-badge>
                   </ion-card-header>

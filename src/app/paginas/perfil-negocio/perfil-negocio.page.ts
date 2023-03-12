@@ -142,7 +142,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     loop: false,
     spaceBetween: 0,
   }
-  insignias: any;
+  insignias: any[]=[];
   showPopUp: boolean;
   insigniaTitle: string;
   insigniaDescrip: string;
@@ -314,9 +314,9 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   ngAfterViewInit(): void { }
 
   async loadMap() {
+    const lat = this.latitudNeg;
+    const lng = this.longitudNeg;
     setTimeout((it) => {
-      const lat = this.latitudNeg;
-      const lng = this.longitudNeg;
       this.map = new Map("mapIdPedido").setView([lat, lng], 14);
       tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "",
@@ -336,7 +336,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
       /* this.marker.on("dragend", () => {
         this.getLatLong({ latlng: this.marker.getLatLng() });
       }); */
-    }, 500);
+    }, 2000);
+    //console.log("Esta es la info que carga el mapa:\n"+"lat: "+lat+" long: "+lng)
   }
   getLatLong(e) {
     this.miLat = e.latlng.lat;
@@ -367,9 +368,9 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.negocioService
       .obteneretalleNegocio(this.negocio, this.user.id_persona)
       .subscribe(
-        (response) => {
+        async (response) => {
           if (response.data !== null) {
-            this.informacionNegocio = response.data;
+            this.informacionNegocio = await response.data;
             this.logo = this.informacionNegocio.url_logo
             console.log("Informacion del negocio: ", this.informacionNegocio)
             this.Filtros.idNegocio = this.informacionNegocio.id_negocio
@@ -652,7 +653,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
               .catch((error) => this.notificaciones.error(error));
           })
           .catch((error) => this.notificaciones.error(error))
-          .finally(() => this.loadMap());
+          //.finally(() => this.loadMap());
         this.loader = false;
       }, 700);
 
@@ -676,7 +677,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         this.loader = false;
         this.notificaciones.error(error)
       })
-        .finally(() => this.loadMap());
+      //.finally(() => this.loadMap());
     }
   }
 
@@ -892,6 +893,15 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     let hoy: any;
     hoy = new Date();
     this.hoy = hoy.getDay() !== 0 ? hoy.getDay() : 7;
+    this.diasArray = [
+      { id: 1, dia: "Lunes", horarios: [], hi: null, hf: null },
+      { id: 2, dia: "Martes", horarios: [], hi: null, hf: null },
+      { id: 3, dia: "Miércoles", horarios: [], hi: null, hf: null },
+      { id: 4, dia: "Jueves", horarios: [], hi: null, hf: null },
+      { id: 5, dia: "Viernes", horarios: [], hi: null, hf: null },
+      { id: 6, dia: "Sábado", horarios: [], hi: null, hf: null },
+      { id: 7, dia: "Domingo", horarios: [], hi: null, hf: null },
+    ];
     const diasArray = JSON.parse(JSON.stringify(this.diasArray));
     if (hros !== undefined) {
       hros.forEach((horarioTmp) => {
@@ -1531,11 +1541,16 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
   clickDistintivo(tag: string, object: any) {
 
-    this.showPopUp = true;
-    this.insigniaTitle = tag
-    this.insigniaDescrip = object
-  }
-  closePopUp() {
+  this.showPopUp=true;
+  this.insigniaTitle=tag
+  this.insigniaDescrip=object
+}
+formatoNombreProd(nombreProd:string){
+  var letra1 = nombreProd.slice(0, 1).toUpperCase()
+  var letra2 = nombreProd.slice(1, nombreProd.length).toLowerCase();
+  return letra1+letra2
+}
+closePopUp(){
 
     this.showPopUp = false;
   }
