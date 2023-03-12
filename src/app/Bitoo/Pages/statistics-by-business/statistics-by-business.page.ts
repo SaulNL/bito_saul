@@ -428,7 +428,7 @@ export class StatisticsByBusinessPage implements OnInit {
         if(response.code == 200){
           this.statistics.totalVisitsByQr = this.create.anyToNumber(response.data.numero_visto);
           this.loader.loadingVisitsByQr = false;
-          console.log("Estadisticas por visitas QR: "+JSON.stringify(response))
+          //console.log("Estadisticas por visitas QR: "+JSON.stringify(response))
           var labels=[]
           var data = []
           var tags = []
@@ -525,7 +525,7 @@ export class StatisticsByBusinessPage implements OnInit {
         this.statistics.totalVisitsByUrl = this.create.anyToNumber(response.data.numero_visto);
         this.loader.loadingVisitsByUrl = false;
         this.vistaTipos = response.data.datos
-        console.log("Estadisticas por visitas URL: "+JSON.stringify(response))
+       //console.log("Estadisticas por visitas URL: "+JSON.stringify(response))
         var labels=[]
         var data = []
         var tags = []
@@ -624,7 +624,7 @@ export class StatisticsByBusinessPage implements OnInit {
         if(response.code == 200){
           this.statistics.totalLikesBusiness = this.create.anyToNumber(response.data.numero_likes);
           this.loader.loadingLikesBusiness = false;
-          console.log("Estadisticas por likes NEGOCIO: "+JSON.stringify(response))
+          //console.log("Estadisticas por likes NEGOCIO: "+JSON.stringify(response))
           
           var labels=[]
         var data = []
@@ -736,83 +736,60 @@ export class StatisticsByBusinessPage implements OnInit {
           if(this.filter.tipo != null){
             var vistaTipos = response.data.datos
             /*vistaTipos =[
-              {
-                genero: "Hombre",
-                edad: 35,
-                municipio: "Cárdenas",
-                estado: "Tlaxcala",
-                calificacion: 1,
-                total: 3
-              },
-            {
-              genero: "Mujer",
-              edad: 31,
-              municipio: "Apizaco",
-              estado: "Tlaxcala",
-              calificacion: 5,
-              total: 3
-            },
-            {
-              genero: "Hombre",
-              edad: 23,
-              municipio: "Lázaro Cárdenas",
-              estado: "Tlaxcala",
-              calificacion: 5,
-              total: 3
-            },
-            {
-              genero: "Hombre",
-              edad: 50,
-              municipio: "Xalostoc",
-              estado: "Tlaxcala",
-              calificacion: 3,
-              total: 3
-            },
-            {
-              genero: "Mujer",
-              edad: 25,
-              municipio: "Huamantla",
-              estado: "Tlaxcala",
-              calificacion: 4,
-              total: 3
-            },
-            {
-              genero: "Hombre",
-              edad: 25,
-              municipio: "Zapata",
-              estado: "Tlaxcala",
-              calificacion: 2,
-              total: 2
-            },
-            {
-              genero: "Mujer",
-              edad: 35,
-              municipio: "Cárdenas",
-              estado: "Tlaxcala",
-              calificacion: 1,
-              total: 3
-            },{
-              genero: "Mujer",
-              edad: 33,
-              municipio: "Cárdenas",
-              estado: "Tlaxcala",
-              calificacion: 5,
-              total: 2
-            },
-            {
-              genero: "Hombre",
-              edad: 30,
-              municipio: "Cárdenas",
-              estado: "Tlaxcala",
-              calificacion: 5,
-              total: 3
-            }
-          ]*/
-          if(this.filter.tipo != "edad" && this.filter.tipo != "localidad"){
+                {
+                  "estado": "Tlaxcala",
+                  "municipio": "Xaloztoc",
+                  "edad": "18 - 22 Años",
+                  "genero": "Hombre",
+                  "calificacion": "Buena",
+                  "total": 1
+                },
+                {
+                  "estado": "Tlaxcala",
+                  "municipio": "Apizaco",
+                  "edad": "23 - 26 Años",
+                  "genero": "Hombre",
+                  "calificacion": "Media",
+                  "total": 1
+                },
+                {
+                  "estado": "Tlaxcala",
+                  "municipio": "San cosme",
+                  "edad": "27 - 30 Años",
+                  "genero": "Hombre",
+                  "calificacion": "Baja",
+                  "total": 1
+                },
+                {
+                  "estado": "Tlaxcala",
+                  "municipio": "Nativitas",
+                  "edad": "31 - 34 Años",
+                  "genero": "Mujer",
+                  "calificacion": "Buena",
+                  "total": 1
+                },
+                {
+                  "estado": "Tlaxcala",
+                  "municipio": "Sanctorum",
+                  "edad": "39 Años o más",
+                  "genero": "Mujer",
+                  "calificacion": "Media",
+                  "total": 1
+                },
+                {
+                  "estado": "Tlaxcala",
+                  "municipio": "Tlaxcala",
+                  "edad": "18 - 22 Años",
+                  "genero": "Mujer",
+                  "calificacion": "Baja",
+                  "total": 1
+                }
+            ]*/
+            if(this.filter.tipo != "edad" && this.filter.tipo != "localidad"){
             labels.push("Buena")
             labels.push("Media")
             labels.push("Baja")
-          }
+            }  
         
           //console.log(JSON.stringify(vistaTipos))
             var tags = []
@@ -827,25 +804,28 @@ export class StatisticsByBusinessPage implements OnInit {
             vistaTipos.forEach(tipo => {
                 if(filters.tipo == "localidad"){
                   console.log("eleigio localidad")
-                  if(tipo.calificacion<3){
-                    labels.push(tipo.municipio+" "+tipo.estado)
+                  if(tipo.calificacion=="Baja"){
+                    labels.push(tipo.municipio+" - Baja")
                     totales.push(tipo.total)
                     colors.push("rgba(255, 99, 132, 0.2)")
                     tags.push(tipo.total+" Calificaciones bajas")
+                    tagsPie.push(tipo.municipio+"("+tipo.estado+"): "+tipo.total+" Calificaciones bajas")
                   }
                   
-                  if(tipo.calificacion == 3 /*&& tipo.calificacion< 5*/){
-                    labels.push(tipo.municipio+" "+tipo.estado)
+                  if(tipo.calificacion=="Media"){
+                    labels.push(tipo.municipio+" - Media")
                     totales.push(tipo.total)
                     colors.push("rgba(255, 206, 86, 0.2)")
                     tags.push(tipo.total+" Calificaciones medias")
+                    tagsPie.push(tipo.municipio+"("+tipo.estado+"): "+tipo.total+" Calificaciones medias")
                   }
 
-                  if(tipo.calificacion >= 4){
-                    labels.push(tipo.municipio+" "+tipo.estado)
+                  if(tipo.calificacion=="Buena"){
+                    labels.push(tipo.municipio+" - Buena")
                     totales.push(tipo.total)
                     colors.push("rgba(37, 190, 42, 0.2)")
                     tags.push(tipo.total+" Calificaciones buenas")
+                    tagsPie.push(tipo.municipio+"("+tipo.estado+"): "+tipo.total+" Calificaciones buenas")
                   }
 
                   objeto={
@@ -861,24 +841,24 @@ export class StatisticsByBusinessPage implements OnInit {
                   }
 
                 }else if(filters.tipo == "edad"){                  
-                  if(tipo.calificacion<3){
-                    labels.push(tipo.edad + " años")
+                  if(tipo.calificacion=="Baja"){
+                    labels.push(tipo.edad+" - Calificacion baja")
                     data.push(tipo.total)
-                    tagsPie.push(tipo.edad + " años: "+tipo.total +" calificacion bajas")
+                    tagsPie.push(tipo.edad + ": "+tipo.total +" calificacion bajas")
                     tags.push(tipo.total +" calificacion bajas")
                     colors.push("rgba(255, 99, 132, 0.2)")
                   }
-                  if(tipo.calificacion ==3){
-                    labels.push(tipo.edad + " años")
+                  if(tipo.calificacion=="Media"){
+                    labels.push(tipo.edad+" - Calificacion media")
                     data.push(tipo.total)
-                    tagsPie.push(tipo.edad + " años: "+tipo.total +" calificaciones medias")
+                    tagsPie.push(tipo.edad + ": "+tipo.total +" calificaciones medias")
                     tags.push(tipo.total +" calificacion medias")
                     colors.push("rgba(255, 206, 86, 0.2)")
                   }
-                  if(tipo.calificacion >= 4){
-                    labels.push(tipo.edad + " años")
+                  if(tipo.calificacion=="Buena"){
+                    labels.push(tipo.edad+" - Calificacion buena")
                     data.push(tipo.total)
-                    tagsPie.push(tipo.edad + " años: "+tipo.total +" calificaciones buenas")
+                    tagsPie.push(tipo.edad + ": "+tipo.total +" calificaciones buenas")
                     tags.push(tipo.total +" calificacion buenas")
                     colors.push("rgba(37, 190, 42, 0.2)")
                   }
@@ -897,27 +877,27 @@ export class StatisticsByBusinessPage implements OnInit {
                   console.log("eleigio "+filters.tipo)
 
                   if(tipo.genero == "Hombre"){
-                    if(tipo.calificacion<3){
-                      bajashombre+=(tipo.total)
+                    if(tipo.calificacion=="Baja"){
+                      bajashombre=(tipo.total)
                     }
-                    if(tipo.calificacion ==3){
-                      mediasshombre+=(tipo.total)
+                    if(tipo.calificacion=="Media"){
+                      mediasshombre=(tipo.total)
                     }
-                    if(tipo.calificacion >= 4){
+                    if(tipo.calificacion=="Buena"){
                       console.log("L unica "+tipo.total)
-                      buenashombre+=(tipo.total)
+                      buenashombre=(tipo.total)
                     }
                   }
                   console.log("Hombre: "+buenashombre+", "+mediasshombre+", "+bajashombre)
                   if(tipo.genero == "Mujer"){
-                    if(tipo.calificacion<3){
-                      bajasmujer+=(tipo.total)
+                    if(tipo.calificacion=="Baja"){
+                      bajasmujer=(tipo.total)
                     }
-                    if(tipo.calificacion ==3){
-                      mediasmujer+=(tipo.total)
+                    if(tipo.calificacion=="Media"){
+                      mediasmujer=(tipo.total)
                     }
-                    if(tipo.calificacion >= 4){
-                      buenasmujer+=(tipo.total)
+                    if(tipo.calificacion=="Buena"){
+                      buenasmujer=(tipo.total)
                     }
                   }
                   console.log("Mujer: "+bajasmujer+", "+mediasmujer+", "+buenasmujer)
@@ -1048,7 +1028,7 @@ export class StatisticsByBusinessPage implements OnInit {
           /*this.statistics.totalRequests = response.data.length;
           this.statistics.requests = response.data;*/
           this.loader.loadingTotalRequests = false;
-          console.log("Estadisticas por REQUERIMIENTOS: "+JSON.stringify(response))
+          //console.log("Estadisticas por REQUERIMIENTOS: "+JSON.stringify(response))
           var labels=[]
           var data = []
           var tags = []
@@ -1152,7 +1132,7 @@ export class StatisticsByBusinessPage implements OnInit {
           if(response.code == 200){
             this.promotions = await response.data.lenght != 0? response.data.promociones : []
             this.loader.loadingTotalPromotions = false;
-            console.log("Etsadisticas por PROMOCIONES: "+JSON.stringify(response))
+            //console.log("Etsadisticas por PROMOCIONES: "+JSON.stringify(response))
             var labels=[]
             var data = []
             var tags = []
@@ -1164,7 +1144,7 @@ export class StatisticsByBusinessPage implements OnInit {
                   labels.push(this.limitarcaracteres(tipo.promocion))
                   data.push(tipo.total)
                   tags.push(tipo.municipio+" "+tipo.estado+": "+tipo.total+" visitas")
-                  tagsPie.push(tipo.edad+" "+"años"+": "+tipo.total+" visitas")
+                  tagsPie.push(tipo.promocion+": "+tipo.total+" visitas")
                 }
                 else if(filters.tipo == "edad"){
                   labels.push(this.limitarcaracteres(tipo.promocion))
@@ -1259,7 +1239,7 @@ export class StatisticsByBusinessPage implements OnInit {
           //this.statistics.products = response.data;
           this.products = response.data;
           this.loader.loadingLikesProducts = false;
-          console.log("Estadisticas por likes PRODUCTOS: "+JSON.stringify(response))
+          //console.log("Estadisticas por likes PRODUCTOS: "+JSON.stringify(response))
           var labels=[]
           var data = []
           var tags = []
@@ -1387,7 +1367,7 @@ export class StatisticsByBusinessPage implements OnInit {
     await this._general_service.features(id_negocio).subscribe(
         response => {
             console.log("FEATURES del id_negocio: "+id_negocio+",\n"+JSON.stringify(response))
-            this.features16 = true;
+            this.features16 = false;
             if (response.data.lenght != 0){                    
                 response.data.forEach(feature => {
                     if(feature.id_caracteristica == 16){   
