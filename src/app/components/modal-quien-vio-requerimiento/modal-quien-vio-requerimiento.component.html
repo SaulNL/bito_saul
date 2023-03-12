@@ -1,0 +1,64 @@
+<ion-header translucent>
+  <ion-toolbar class="tolbar">
+      <ion-title>Vistas del requerimiento</ion-title>
+      <ion-buttons slot="end" (click)="cerrar()">
+          <ion-button class="blanco">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" *ngIf="loader; else elseBlock" fullscreen>
+  <ion-label class="message">
+    {{ msj }}
+  </ion-label>
+  <div class="spinner" >
+    <ion-spinner class="spinner-color"></ion-spinner>
+  </div>
+</ion-content>
+
+<ng-template #elseBlock>
+  <ion-content *ngIf="!loader">
+    <ion-item style="width: 100%;">
+      <ion-card style="width: 100%;">
+        <ion-list *ngFor="let quienVio of quienVioList; index as index">
+          <ion-item  (click)="infoVisitante(quienVio.id_quien)">
+            <ion-label [class]="!verInfoPersona &&  nombreActivo === quienVio.id_quien ? 'tooggle' : 'tooggle-none'" >
+              {{quienVio.nombre}}</ion-label>
+            <ion-buttons slot="end">
+              <ion-icon [class]="!verInfoPersona &&  nombreActivo === quienVio.id_quien ? 'icon-color-select' : ''" 
+              [name]="!verInfoPersona &&  nombreActivo === quienVio.id_quien ? 'caret-down-outline' : 'caret-forward-outline'">
+            </ion-icon>
+            </ion-buttons>
+          </ion-item>
+          <ion-item *ngIf="!verInfoPersona &&  nombreActivo === quienVio.id_quien">
+            <div class="infoVisitante">
+              <ion-card class="ion-text-center" style="width: 100%;">
+                <ion-card-header>
+                  <ion-label><strong>Nombre: </strong>{{quienVio.nombre}}</ion-label>
+                  <br>
+                  <br>
+                  <ion-label><strong>Telefono: </strong>{{quienVio.telefono}}</ion-label>
+                  <br>
+                  <br>
+                  <ion-label><strong>Correo: </strong>{{quienVio.correo}}</ion-label>
+                  <br>
+                  <br>
+                  <ion-label><strong>Fecha de visita: </strong>
+                    {{quienVio.fecha_vista}}
+                  </ion-label>
+                  <br>
+                  <br>
+                </ion-card-header>
+              </ion-card>
+            </div>
+          </ion-item>
+        </ion-list> 
+      </ion-card>
+    </ion-item>         
+  </ion-content>  
+</ng-template>  
+  
+
+
