@@ -8,6 +8,7 @@ import { DatosNegocios } from '../Modelos/DatosNegocios';
 import { NegocioModel } from '../Modelos/NegocioModel';
 import { HTTP } from '@ionic-native/http/ngx';
 import { FiltroEstadisticaModel } from '../Modelos/FiltroEstadisticaModel';
+import { StatisticsFilterInterface } from '../Bitoo/models/filters-model';
 
 @Injectable({
     providedIn: 'root'
@@ -674,6 +675,39 @@ export class NegocioService {
             id_persona: idpersona
         });
         return from(this._http.post(this.url + '/api/negocio/guardar/interactuaste_mi_negocio', body, AppSettings.getHeadersToken())
+            .then(
+                (respuesta) => {
+                    return JSON.parse(respuesta.data);
+                })
+            .catch((error) => {
+                return error;
+            }));
+    }
+    numero_interacciones(filters: StatisticsFilterInterface): Observable<any> {
+        const body = JSON.stringify(filters);
+        return from(this._http.post(this.url + '/api/negocio/numero_interacciones', body, AppSettings.getHeadersToken())
+            .then(
+                (respuesta) => {
+                    return JSON.parse(respuesta.data);
+                })
+            .catch((error) => {
+                return error;
+            }));
+    }
+    numero_compras(filters: StatisticsFilterInterface): Observable<any> {
+        const body = JSON.stringify(filters);
+        return from(this._http.post(this.url + '/api/negocio/numero_compras', body, AppSettings.getHeadersToken())
+            .then(
+                (respuesta) => {
+                    return JSON.parse(respuesta.data);
+                })
+            .catch((error) => {
+                return error;
+            }));
+    }
+    numero_interacciones_mapa(filters: StatisticsFilterInterface): Observable<any> {
+        const body = JSON.stringify(filters);
+        return from(this._http.post(this.url + '/api/negocio/numero_interacciones_mapa', body, AppSettings.getHeadersToken())
             .then(
                 (respuesta) => {
                     return JSON.parse(respuesta.data);

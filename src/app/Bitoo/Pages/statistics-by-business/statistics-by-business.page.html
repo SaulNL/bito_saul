@@ -172,6 +172,77 @@
                                 </ion-card-content>
                             </ion-card>
                         </ion-col>
+                        <ion-col>
+                            <ion-card>
+                                <ion-card-content class="background-deeppink">
+                                    <ion-grid class="ion-text-center">
+                                        <h2 class="text-white">
+                                            Número de compras
+                                        </h2>
+                                        <h1 class="text-white" *ngIf="numeroCompras < 1; else elseBlockCompras">
+                                            <strong > 
+                                                0                                              
+                                            </strong>                                            
+                                        </h1>
+                                        <ng-template #elseBlockCompras>
+                                            <h1 class="text-white">
+                                                <strong>
+                                                    {{ numeroCompras }}
+                                                </strong>                                                
+                                            </h1>   
+                                            <ion-icon class="latir" *ngIf="numeroCompras != 0" (click)="set_grafica('compras')" size="small" name="bar-chart-outline" style="color: white;">
+                                            </ion-icon>                                            
+                                        </ng-template>
+                                    </ion-grid>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>
+                        <ion-col>
+                            <ion-card>
+                                <ion-card-content class="background-deeppink">
+                                    <ion-grid class="ion-text-center">
+                                        <h2 class="text-white">
+                                            Interacciónes en redes
+                                        </h2>
+                                        <h1 class="text-white">
+                                            <strong>
+                                                {{interaccionesRedes}}
+                                            </strong>                                                                                        
+                                        </h1>                                         
+                                        <ion-icon class="latir" 
+                                                *ngIf="interaccionesRedes != 0" 
+                                                (click)="set_grafica('redes')" 
+                                                size="small" 
+                                                name="bar-chart-outline" 
+                                                style="color: white;">
+                                            </ion-icon>
+                                    </ion-grid>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>
+                        <ion-col>
+                            <ion-card>
+                                <ion-card-content class="background-deeppink">
+                                    <ion-grid class="ion-text-center">
+                                        <h2 class="text-white">
+                                            Interacciónes en el mapa
+                                        </h2>
+                                        <h1 class="text-white">
+                                            <strong>
+                                                {{interaccionesRedes}}
+                                            </strong>                                                                                        
+                                        </h1>                                         
+                                        <ion-icon class="latir" 
+                                                *ngIf="interaccionesRedes != 0" 
+                                                (click)="set_grafica('interactionsMapa')" 
+                                                size="small" 
+                                                name="bar-chart-outline" 
+                                                style="color: white;">
+                                            </ion-icon>
+                                    </ion-grid>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>
                     </ion-row>
                     <ion-row [ngClass]="tipoEstadistica!=null? 'visible' : 'hidden' ">
                         <ion-card-header style="display: flex; justify-content: space-between; width: 100%; padding: 20px 0px 20px 0px;">
