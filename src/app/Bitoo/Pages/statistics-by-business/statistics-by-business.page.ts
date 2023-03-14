@@ -269,7 +269,7 @@ export class StatisticsByBusinessPage implements OnInit {
         this.filter.tipo != null? this.genBarChartDynamic(this.ratingData.data,this.ratingData.tagsTooltip) : this.genBarChartDynamic(this.ratingData.data)
       }else if(this.chartType == "pie"){
         this.chartType = "bar"
-        this.filter.tipo != null? this.genPieChartDynamic(this.ratingData.data,this.ratingData.tagsToolTipPie) : this.genPieChartDynamic(this.ratingData.data)
+        this.filter.tipo != null? this.genDoughnutChartDynamic(this.ratingData.data,this.ratingData.tagsToolTipPie) : this.genDoughnutChartDynamic(this.ratingData.data)
       }
     }
     if(this.dataSet=="redes"){
@@ -1514,7 +1514,7 @@ export class StatisticsByBusinessPage implements OnInit {
       },
       () => {
         this.loader.loadingVisitsByUrl = false;
-        this.notificationError('Visitas por URL');
+        this.notificationError('Likes productos');
       }
     );
   }
@@ -1622,7 +1622,7 @@ export class StatisticsByBusinessPage implements OnInit {
       },
       () => {
         this.loader.loadingVisitsByUrl = false;
-        this.notificationError('Visitas por URL');
+        this.notificationError('Numero compras');
       }
     );
   }
@@ -1695,7 +1695,7 @@ export class StatisticsByBusinessPage implements OnInit {
             data:{
               labels: labels,
               datasets: [{
-                  label: 'Visitas por URL',
+                  label: 'Interacciones del mapa',
                   data: data,
                   backgroundColor: backgrounds,
                   borderColor: borders,
@@ -1868,8 +1868,8 @@ export class StatisticsByBusinessPage implements OnInit {
     }
   }
   graficaRating(tipo:string){
-    this.showToggle = true
-    this.showToggleRating = false
+    this.showToggle = false
+    this.showToggleRating = true
     this.chartType = "pie";
     this.dataSet=tipo
     const scales = {
