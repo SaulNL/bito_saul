@@ -1,0 +1,38 @@
+<ion-header translucent>
+  <ion-toolbar class="tolbar">
+      <ion-title>Mis preferencias</ion-title>
+      <ion-buttons slot="end" (click)="cerrar()">
+          <ion-button class="blanco">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content [fullscreen]="false" *ngIf="!loader" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+
+  <ion-card>
+    <ion-card-header class="ion-text-center">
+      <ion-card-title>
+        <h4 style="margin-top: -10px;">
+          Selecciona tus 5 subcategorías favoritas          
+        </h4>
+      </ion-card-title>
+      <ion-label>(Puedes legir hasta 5 subcategorías)</ion-label>
+    </ion-card-header>
+
+    <ion-grid>
+      <ion-row >        
+          <ion-col *ngFor="let subCat of listaSubCategoties" (click)="selectSubcategory(subCat.id_categoria)">
+            <ion-item color="none" lines="none">
+              <ion-avatar class="image-center"> <img class="img-gris" 
+                  src="{{subCat.url_imagen}}"> 
+              </ion-avatar>  
+            </ion-item>
+            <p style="text-align: center;">{{subCat.nombre}}</p>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-card>    
+</ion-content> 

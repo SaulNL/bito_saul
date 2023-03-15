@@ -130,6 +130,20 @@
             </ion-card>
           </ion-col>
 
+          <ion-col *ngIf="estadisticas">
+            <ion-card>
+              <ion-card-content>
+                <div
+                  class="ion-text-center"
+                  [routerLink]="['/tabs/home/preferencias']"
+                >
+                  <ion-icon name="bookmarks-outline"></ion-icon>
+                  <h2>Mis preferencias</h2>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+
           <ion-col >
             <ion-card>
               <ion-card-content>

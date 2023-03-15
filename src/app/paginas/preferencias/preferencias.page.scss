@@ -1,0 +1,18 @@
+.image-center{ 
+    margin:0 auto; 
+}
+
+.img-gris{
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+  }
+
+.giro-color{
+    color:  #a74eef;
+    font-size: 10px;
+}
+
+.gridGiros{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
