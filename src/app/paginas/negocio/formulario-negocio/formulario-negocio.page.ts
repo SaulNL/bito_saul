@@ -614,64 +614,68 @@ export class FormularioNegocioPage implements OnInit {
     this.notificaciones.toastInfo('Registra un convenio para poder habilitar esta característica');
   }
   public agregarFoto(event) {
-    let nombre_archivo;
-    if (event.target.files && event.target.files.length) {
-      let height;
-      let width;
-      for (const archivo of event.target.files) {
-        const reader = this._utils_cls.getFileReader();
-        reader.readAsDataURL(archivo);
-        reader.onload = () => {
-          nombre_archivo = archivo.name;
-          const img = new Image();
-          img.src = reader.result as string;
-          img.onload = () => {
-            height = img.naturalHeight;
-            width = img.naturalWidth;
-            if (width === 400 && height === 400) {
-              const file_name = archivo.name;
-              const file = archivo;
-              if (file.size < 3145728) {
-                let file_64: any;
-                const utl = new UtilsCls();
-                utl.getBase64(file).then(
-                  data => {
-                    const archivo = new ArchivoComunModel();
-                    if (file_name != null) {
-                      archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
-                      archivo.archivo_64 = file_64;
+    if(!this.features10){
+      this.notificaciones.alerta("No cuenta con el nivel de subscipción para usar esta característica")
+    }else{
+      let nombre_archivo;
+      if (event.target.files && event.target.files.length) {
+        let height;
+        let width;
+        for (const archivo of event.target.files) {
+          const reader = this._utils_cls.getFileReader();
+          reader.readAsDataURL(archivo);
+          reader.onload = () => {
+            nombre_archivo = archivo.name;
+            const img = new Image();
+            img.src = reader.result as string;
+            img.onload = () => {
+              height = img.naturalHeight;
+              width = img.naturalWidth;
+              if (width === 400 && height === 400) {
+                const file_name = archivo.name;
+                const file = archivo;
+                if (file.size < 3145728) {
+                  let file_64: any;
+                  const utl = new UtilsCls();
+                  utl.getBase64(file).then(
+                    data => {
+                      const archivo = new ArchivoComunModel();
+                      if (file_name != null) {
+                        archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
+                        archivo.archivo_64 = file_64;
+                      }
+                      this.fotografiasArray.push(archivo);
+                      this.numeroFotos++;
+                      if (this.numeroFotos >= this.numeroFotosPermitidas){
+                        this.galeriaFull = true;
+                      }
                     }
+                  );
+                } else {
+                  this.notificaciones.alerta('El tama\u00F1o m\u00E1ximo de archivo es de 3 Mb, por favor intente con otro archivo');
+                }
+              } else {
+                this.resizeToWidth = 400;
+                this.resizeToHeight = 400;
+                this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
+                  if (r !== undefined) {
+                    const archivo = new ArchivoComunModel();
+                    archivo.nombre_archivo = nombre_archivo,
+                      archivo.archivo_64 = r.data;
                     this.fotografiasArray.push(archivo);
                     this.numeroFotos++;
                     if (this.numeroFotos >= this.numeroFotosPermitidas){
-                      this.galeriaFull = true;
-                    }
+                        this.galeriaFull = true;
+                      }
                   }
-                );
-              } else {
-                this.notificaciones.alerta('El tama\u00F1o m\u00E1ximo de archivo es de 3 Mb, por favor intente con otro archivo');
-              }
-            } else {
-              this.resizeToWidth = 400;
-              this.resizeToHeight = 400;
-              this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
-                if (r !== undefined) {
-                  const archivo = new ArchivoComunModel();
-                  archivo.nombre_archivo = nombre_archivo,
-                    archivo.archivo_64 = r.data;
-                  this.fotografiasArray.push(archivo);
-                  this.numeroFotos++;
-                  if (this.numeroFotos >= this.numeroFotosPermitidas){
-                      this.galeriaFull = true;
-                    }
                 }
+                );
               }
-              );
-            }
+            };
           };
-        };
+        }
       }
-    }
+    }        
   }
   public borrarFoto(posicion: number){
     this.fotografiasArray.splice(posicion, 1);

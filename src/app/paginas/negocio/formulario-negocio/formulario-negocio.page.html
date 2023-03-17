@@ -93,7 +93,7 @@
                         (change)="agregarFoto($event)"
                       />
                       <ng-template #elseBlock>
-                        <input/>
+                        <input (click)="agregarFoto($event)"/>
                       </ng-template>
                     </label>
                 </ion-card>
