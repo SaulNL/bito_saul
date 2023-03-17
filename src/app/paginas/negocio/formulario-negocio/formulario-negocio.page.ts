@@ -224,7 +224,7 @@ export class FormularioNegocioPage implements OnInit {
         this.obtenerFeatures(this.negocioTO.id_negocio);
         // this.buscarNegocio(this.negocioTO.id_negocio)
         this.fotografiasArray = this.negocioTO.fotografias;
-        console.log('fotografiasArray####' + JSON.stringify(this.fotografiasArray));
+        
         this.buscardatos();
         this.numeroFotos = this.fotografiasArray.length;
         if (this.numeroFotos >= this.numeroFotosPermitidas) {
@@ -1113,7 +1113,7 @@ export class FormularioNegocioPage implements OnInit {
         const dirActual = this.negocioGuardar.det_domicilio;
         const dirAnterior = this.direccionAnterior.calle;
         this.negocioGuardar.id_negocio_matriz = this.negocioTO.id_negocio_matriz;
-
+        this.negocioGuardar.nombre_corto = this.negocioTO.nombre_corto;
         if (this.negocioGuardar.nombre_comercial === this.nombreAnterior) {
           this.nextTab('informacion');
           this.notificaciones.error('El nombre del negocio debe ser direfente');
@@ -1183,6 +1183,7 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.logo = this.negocioTO.logo;
     this.negocioGuardar.local = this.negocioTO.local;
     this.negocioGuardar.nombre_comercial = this.negocioTO.nombre_comercial;
+    this.negocioGuardar.nombre_corto = this.negocioTO.nombre_corto;
     this.negocioGuardar.id_tipo_negocio = this.negocioTO.id_tipo_negocio;
     this.negocioGuardar.id_giro = this.negocioTO.id_giro;
     this.negocioGuardar.otra_categoria = this.negocioTO.otra_categoria;
