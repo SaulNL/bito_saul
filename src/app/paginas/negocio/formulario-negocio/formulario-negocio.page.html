@@ -110,6 +110,17 @@
             </div>
           </div>
           <ion-item>
+            <ion-label position="stacked">Nombre corto del negocio: <span style="color: red">*</span></ion-label>
+            <ion-input id="idNegocioNombreCorto" name="idNegocioNombreCorto" #nombreNegocioCorto="ngModel"
+              [(ngModel)]="negocioTO.nombre_corto" required>
+            </ion-input>
+          </ion-item>
+          <div *ngIf="nombreNegocioCorto.touched  && nombreNegocioCorto.invalid" class="alert">
+            <div *ngIf="nombreNegocioCorto.errors.required">
+              El nombre corto es requerido
+            </div>
+          </div>
+          <ion-item>
             <ion-label position="stacked">Tipo de Negocio <span style="color: red">*</span></ion-label>
             <ion-select placeholder="{{ tipoNegoAux }}" name="idtipoNegocio" required #tipoNegocio="ngModel"
               [(ngModel)]="negocioTO.id_tipo_negocio" ok-text="Ok" cancel-text="Cancelar"
