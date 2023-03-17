@@ -677,6 +677,7 @@ export class FormularioNegocioPage implements OnInit {
     }
     }    
   }
+
   public borrarFoto(posicion: number) {
     this.fotografiasArray.splice(posicion, 1);
     this.numeroFotos--;

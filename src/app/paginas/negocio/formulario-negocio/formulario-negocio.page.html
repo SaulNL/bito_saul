@@ -66,29 +66,29 @@
           <ion-label> www.bitoo.com.mx/{{negocioTO.url_negocio}}</ion-label>
         </div>
         <div>
-          <ion-item class="slider">
-            <ion-slides [options]="slideOpts" style="width: 500px;">
-              <ion-slide *ngFor="let foto of fotografiasArray; let i = index">
-                <ion-card>
-                  <img src={{foto.url_imagen}} />
-                  <img *ngIf="(foto.archivo_64 != null || foto.archivo_64 != '')" src="{{foto.archivo_64}}">
-                  <ion-label (click)="borrarFoto(i)" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>
-                </ion-card>
-              </ion-slide>
-              <ion-slide style="height:100%; margin-bottom: 5px;" *ngIf="galeriaFull != true">
-                <ion-card>
-                  <ion-icon name="image" role="img" class="md hydrated size-icon" aria-label="image"></ion-icon>
-                  <label [ngClass]="features10? 'custom-file-input' : 'custom-file-input-disabled' ">
-                    <input *ngIf="features10; else elseBlock" type="file" #fileInput id="imagen-producto-uno"
-                      accept="image/*" (click)="fileInput.value = null" (change)="agregarFoto($event)" />
-                    <ng-template #elseBlock>
-                      <input (click)="agregarFoto($event)"/>
-                    </ng-template>
-                  </label>
-                </ion-card>
-              </ion-slide>
-            </ion-slides>
-          </ion-item>
+        <ion-item class="slider">
+          <ion-slides [options]="slideOpts" style="width: 500px;">
+            <ion-slide *ngFor="let foto of fotografiasArray; let i = index">
+              <ion-card>
+                <img src={{foto.url_imagen}} />
+                <img *ngIf="(foto.archivo_64 != null || foto.archivo_64 != '')" src="{{foto.archivo_64}}">
+                <ion-label (click)="borrarFoto(i)" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>
+              </ion-card>
+            </ion-slide>
+            <ion-slide style="height:100%; margin-bottom: 5px;" *ngIf="galeriaFull != true">
+              <ion-card>
+                <ion-icon name="image" role="img" class="md hydrated size-icon" aria-label="image"></ion-icon>
+                <label [ngClass]="features10? 'custom-file-input' : 'custom-file-input-disabled' ">
+                  <input *ngIf="features10; else elseBlock" type="file" #fileInput id="imagen-producto-uno"
+                    accept="image/*" (click)="fileInput.value = null" (change)="agregarFoto($event)" />
+                  <ng-template #elseBlock>
+                    <input (click)="agregarFoto($event)"/>
+                  </ng-template>
+                </label>
+              </ion-card>
+            </ion-slide>
+          </ion-slides>
+        </ion-item>
         </div>
         <div style="display: flex; justify-content: center; align-items: center"
           *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null && seEstaClonando == false)">
