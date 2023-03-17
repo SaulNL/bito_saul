@@ -82,7 +82,7 @@
                     <input *ngIf="features10; else elseBlock" type="file" #fileInput id="imagen-producto-uno"
                       accept="image/*" (click)="fileInput.value = null" (change)="agregarFoto($event)" />
                     <ng-template #elseBlock>
-                      <input />
+                      <input (click)="agregarFoto($event)"/>
                     </ng-template>
                   </label>
                 </ion-card>

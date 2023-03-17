@@ -614,7 +614,10 @@ export class FormularioNegocioPage implements OnInit {
     this.notificaciones.toastInfo('Registra un convenio para poder habilitar esta característica');
   }
   public agregarFoto(event) {
-    let nombre_archivo;
+    if(!this.features10){
+      this.notificaciones.alerta("No cuenta con el nivel de subscipción para usar esta característica")
+    }else{
+      let nombre_archivo;
     if (event.target.files && event.target.files.length) {
       let height;
       let width;
@@ -672,6 +675,7 @@ export class FormularioNegocioPage implements OnInit {
         };
       }
     }
+    }    
   }
   public borrarFoto(posicion: number) {
     this.fotografiasArray.splice(posicion, 1);
