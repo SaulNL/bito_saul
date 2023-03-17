@@ -142,7 +142,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     loop: false,
     spaceBetween: 0,
   }
-  insignias: any[]=[];
+  insignias: any[] = [];
   showPopUp: boolean;
   insigniaTitle: string;
   insigniaDescrip: string;
@@ -336,7 +336,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
       /* this.marker.on("dragend", () => {
         this.getLatLong({ latlng: this.marker.getLatLng() });
       }); */
-    }, 2000);
+    }, 500);
     //console.log("Esta es la info que carga el mapa:\n"+"lat: "+lat+" long: "+lng)
   }
   getLatLong(e) {
@@ -653,7 +653,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
               .catch((error) => this.notificaciones.error(error));
           })
           .catch((error) => this.notificaciones.error(error))
-          //.finally(() => this.loadMap());
+        //.finally(() => this.loadMap());
         this.loader = false;
       }, 700);
 
@@ -1541,16 +1541,16 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
   clickDistintivo(tag: string, object: any) {
 
-  this.showPopUp=true;
-  this.insigniaTitle=tag
-  this.insigniaDescrip=object
-}
-formatoNombreProd(nombreProd:string){
-  var letra1 = nombreProd.slice(0, 1).toUpperCase()
-  var letra2 = nombreProd.slice(1, nombreProd.length).toLowerCase();
-  return letra1+letra2
-}
-closePopUp(){
+    this.showPopUp = true;
+    this.insigniaTitle = tag
+    this.insigniaDescrip = object
+  }
+  formatoNombreProd(nombreProd: string) {
+    var letra1 = nombreProd.slice(0, 1).toUpperCase()
+    var letra2 = nombreProd.slice(1, nombreProd.length).toLowerCase();
+    return letra1 + letra2
+  }
+  closePopUp() {
 
     this.showPopUp = false;
   }

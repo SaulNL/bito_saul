@@ -1,15 +1,15 @@
 <ion-header translucent>
     <ion-toolbar class="tolbar">
-        <ion-buttons slot="start">
-            <ion-button (click)="buscar()">
-                <ion-icon name="chevron-back-outline"></ion-icon>
-                Buscar
+        <ion-buttons slot="end">
+            <ion-button (click)="cerrarModal()">
+                <ion-icon name="close-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
         <ion-title>Filtros de busqueda</ion-title>
-        <ion-buttons slot="end">
-            <ion-button (click)="cerrarModal()">
-                <ion-icon name="close"></ion-icon>
+        <ion-buttons slot="start">
+            <ion-button id="btnRegresar" (click)="cerrarModal()">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+                Regresar
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
@@ -17,17 +17,11 @@
 <ion-content fullscreen>
     <ion-toolbar>
         <ion-segment [value]="ubicacion" [(ngModel)]="ubicacion" (ionChange)="setTipo(ubicacion)">
-            <ion-segment-button  value="localidad">Localidad</ion-segment-button>
-            <ion-segment-button  [disabled]="!blnUbicacion" value="ubicacion">Ubicación</ion-segment-button>
-            
+            <ion-segment-button value="localidad">Localidad</ion-segment-button>
+            <ion-segment-button [disabled]="!blnUbicacion" value="ubicacion">Ubicación</ion-segment-button>
+
         </ion-segment>
     </ion-toolbar>
-    <ion-list>
-        <ion-chip (click)="borrarFiltros()" color="danger">
-            <ion-icon name="trash-outline" color="danger"></ion-icon>
-            <ion-label>Borrar Filtros</ion-label>
-        </ion-chip>
-    </ion-list>
     <div *ngIf="ubicacion === 'localidad'">
         <ion-item>
             <ion-label>Estados</ion-label>
@@ -43,17 +37,17 @@
         <ion-item>
             <ion-label>Municipios</ion-label>
             <ion-select placeholder="Seleccionar" [disabled]="listCatMunicipio.length === 0"
-                        (ionChange)="selectMunicipio()" [(ngModel)]="municipio">
+                (ionChange)="selectMunicipio()" [(ngModel)]="municipio">
                 <ion-select-option *ngFor="let estado of listCatMunicipio"
-                                   [value]="estado.id_municipio">{{estado.nombre}}</ion-select-option>
+                    [value]="estado.id_municipio">{{estado.nombre}}</ion-select-option>
             </ion-select>
         </ion-item>
         <ion-item>
             <ion-label>Localidad</ion-label>
             <ion-select placeholder="Seleccionar" [disabled]="listCaLocalidad.length === 0"
-                        (ionChange)="selectLocalidad()" [(ngModel)]="localidad">
+                (ionChange)="selectLocalidad()" [(ngModel)]="localidad">
                 <ion-select-option *ngFor="let estado of listCaLocalidad"
-                                   [value]="estado.id_localidad">{{estado.nombre}}</ion-select-option>
+                    [value]="estado.id_localidad">{{estado.nombre}}</ion-select-option>
             </ion-select>
         </ion-item>
     </div>
@@ -65,7 +59,7 @@
                 <h5>Radio de busqueda:</h5>
                 <h5>Kilometros a la redonda: <ion-badge color="medium">{{kilometrosSlider}} Km</ion-badge></h5>
                 <ion-range [value]="kilometrosSlider" (ionChange)="obtenerKilometrosRango($event)" min="1" max="10"
-                step="1" snaps="true" color="danger" pin="true"></ion-range>
+                    step="1" snaps="true" color="danger" pin="true"></ion-range>
             </div>
         </ion-item>
     </div>
@@ -78,8 +72,8 @@
     <div *ngFor="let tipo of lstCatTipoNegocio">
         <ion-item>
             <ion-label>{{tipo.nombre}}</ion-label>
-            <ion-checkbox value="{{tipo.id_tipo_negocio}}"  color="primary"
-                    (ionChange)="selectTipoNegocio($event)"  slot="start"></ion-checkbox>
+            <ion-checkbox value="{{tipo.id_tipo_negocio}}" color="primary" (ionChange)="selectTipoNegocio($event)"
+                slot="start"></ion-checkbox>
         </ion-item>
     </div>
     <ion-item-divider *ngIf="!isProductPage">
@@ -102,7 +96,8 @@
     </ion-item-divider>
     <ion-item>
         <ion-label>SubCategoria</ion-label>
-        <ion-select placeholder="{{subCategoriaAux}}" multiple [(ngModel)]="subCategoria" (ionChange)="selectSubCategoria()">
+        <ion-select placeholder="{{subCategoriaAux}}" multiple [(ngModel)]="subCategoria"
+            (ionChange)="selectSubCategoria()">
             <ng-container *ngFor="let sub of listaCategorias;">
                 <ion-select-option [value]="sub.id_categoria">{{sub.nombre}}</ion-select-option>
             </ng-container>
@@ -115,11 +110,13 @@
         <ion-radio-group [value]="filtros.blnEntrega+''">
             <ion-item>
                 <ion-label>Si</ion-label>
-                <ion-radio value="true" color="danger" slot="start" (click)="setIonradiogroupEntregaDomicilio(1)" ></ion-radio>
+                <ion-radio value="true" color="danger" slot="start"
+                    (click)="setIonradiogroupEntregaDomicilio(1)"></ion-radio>
             </ion-item>
             <ion-item>
                 <ion-label>No</ion-label>
-                <ion-radio value="false" color="danger" slot="start" (click)="setIonradiogroupEntregaDomicilio(0)"></ion-radio>
+                <ion-radio value="false" color="danger" slot="start"
+                    (click)="setIonradiogroupEntregaDomicilio(0)"></ion-radio>
             </ion-item>
         </ion-radio-group>
     </ion-list>
@@ -130,13 +127,26 @@
         <ion-radio-group [value]="filtros.abierto+''">
             <ion-item>
                 <ion-label>Si</ion-label>
-                <ion-radio value="true" color="danger" slot="start" (click)="setIonradiogroupAbiertoCerrado(1)" ></ion-radio>
+                <ion-radio value="true" color="danger" slot="start"
+                    (click)="setIonradiogroupAbiertoCerrado(1)"></ion-radio>
             </ion-item>
             <ion-item>
                 <ion-label>No</ion-label>
-                <ion-radio value="false" color="danger" slot="start" (click)="setIonradiogroupAbiertoCerrado(0)"></ion-radio>
+                <ion-radio value="false" color="danger" slot="start"
+                    (click)="setIonradiogroupAbiertoCerrado(0)"></ion-radio>
             </ion-item>
         </ion-radio-group>
+    </ion-list>
+    <ion-list style="display: flex;">
+        <ion-chip (click)="buscar()" color="success">
+            <ion-icon name="search-outline"></ion-icon>
+            <ion-label>Buscar</ion-label>
+        </ion-chip>
+        <br>
+        <ion-chip (click)="borrarFiltros()" color="danger">
+            <ion-icon name="trash-outline" color="danger"></ion-icon>
+            <ion-label>Limpiar Filtros</ion-label>
+        </ion-chip>
     </ion-list>
 
 
