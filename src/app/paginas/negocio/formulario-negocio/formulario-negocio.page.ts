@@ -276,7 +276,7 @@ export class FormularioNegocioPage implements OnInit {
         this.listaVista = repsuesta.data.categorias !== undefined ? repsuesta.agrupados : [];
         this.listaVista.forEach(data => {
           const cantidad = data.productos.length;
-          console.log("cantidadEnviada" + cantidad);
+          //console.log("cantidadEnviada" + cantidad);
           this.numerodeservicioproductos(cantidad);
         });
       },
@@ -403,7 +403,7 @@ export class FormularioNegocioPage implements OnInit {
 
   }
   public infoNegocio(id: any) {
-    console.log('buscar');
+    //console.log('buscar');
     this.negocioServico.buscarNegocio(id).subscribe(
       response => {
         this.negocioTO = response.data;
@@ -414,7 +414,7 @@ export class FormularioNegocioPage implements OnInit {
     );
   }
   public buscarNegocio(id: any) {
-    console.log('buscar');
+    //console.log('buscar');
     if (this.negocioTO.id_negocio === null || this.negocioTO.id_negocio === undefined) {
       this.obtenerTipoNegocio();
       this.obtenerCatOrganizaciones();
@@ -426,7 +426,7 @@ export class FormularioNegocioPage implements OnInit {
     } else {
       this.negocioServico.buscarNegocio(id).subscribe(
         response => {
-          console.log('Datos jale: ', JSON.stringify(response.data));
+          //console.log('Datos jale: ', JSON.stringify(response.data));
           this.negocioTO = response.data;
           this.obtenerTipoNegocio();
           this.obtenerCatOrganizaciones();
@@ -1123,10 +1123,10 @@ export class FormularioNegocioPage implements OnInit {
           this.notificaciones.error('El domicilio debe ser direfente');
           this.loader = false;
         } else if ((this.negocioGuardar.nombre_comercial !== this.nombreAnterior) && (dirActual.calle !== dirAnterior)) {
-          console.log(this.negocioGuardar.nombre_comercial + ' Y ' + this.nombreAnterior);
-          console.log(dirActual.calle + ' Y ' + dirAnterior);
+          //console.log(this.negocioGuardar.nombre_comercial + ' Y ' + this.nombreAnterior);
+          //console.log(dirActual.calle + ' Y ' + dirAnterior);
           this.negocioGuardar.productos = this.listaProductos;
-          console.log("NegocioGuardar#####" + JSON.stringify(this.negocioGuardar))
+          //console.log("NegocioGuardar#####" + JSON.stringify(this.negocioGuardar))
           this.negocioServico.guardar(this.negocioGuardar).subscribe(
             response => {
               if (response.code === 200) {
@@ -1137,13 +1137,13 @@ export class FormularioNegocioPage implements OnInit {
                 this.loader = false;
                 this.notificaciones.alerta(JSON.stringify(response.message));
                 alert(JSON.stringify(response));
-                console.log('HOLA---------' + JSON.stringify(response));
+                //console.log('HOLA---------' + JSON.stringify(response));
               }
             },
             error => {
               this.notificaciones.error(error);
               this.loader = false;
-              console.log('ERROR:--------' + JSON.stringify(error));
+              //console.log('ERROR:--------' + JSON.stringify(error));
             }
           );
         }
@@ -1152,11 +1152,11 @@ export class FormularioNegocioPage implements OnInit {
           response => {
             if (response.code === 200) {
               this.notificaciones.exito('Tu negocio se guardo exitosamente');
-              console.log('xxxxxx' + JSON.stringify(this.negocioGuardar));
+              //console.log('xxxxxx' + JSON.stringify(this.negocioGuardar));
               this.loader = false;
               this.router.navigate(['/tabs/home/negocio']);
             } else {
-              console.log('sssss' + JSON.stringify(this.negocioGuardar));
+              //console.log('sssss' + JSON.stringify(this.negocioGuardar));
               this.loader = false;
               this.notificaciones.alerta(response.message);
             }
@@ -1201,7 +1201,7 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.plazas = this.negocioTO.plazas;
     this.negocioGuardar.distintivos = this.negocioTO.distintivos;
     this.negocioGuardar.perfiles_caracteristicas = [this.negocioTO.perfiles_caracteristicas];
-    console.log('perfiles_caracteristicas' + this.negocioGuardar.perfiles_caracteristicas);
+    //console.log('perfiles_caracteristicas' + this.negocioGuardar.perfiles_caracteristicas);
     if (this.cnvn_date === undefined) {
       this.dateObject = this.convenio_date;
     } else {
@@ -1404,7 +1404,7 @@ export class FormularioNegocioPage implements OnInit {
   async obtenerFeatures(id_negocio: number) {
     await this._general_service.features(id_negocio).subscribe(
       response => {
-        console.log('FEATURES del id_negocio en formulario' + id_negocio + ',\n' + JSON.stringify(response));
+        //console.log('FEATURES del id_negocio en formulario' + id_negocio + ',\n' + JSON.stringify(response));
         this.features10 = false;
         if (response.data.lenght !== 0) {
           response.data.forEach(feature => {
@@ -1415,16 +1415,16 @@ export class FormularioNegocioPage implements OnInit {
               this.numeroFotosPermitidas = feature.cantidad;
               this.disabledPhoto = false;
               this.features10 = true;
-              console.log('\nfeatures 10 ok con un limite de fotos de: ' + this.numeroFotosPermitidas);
+              //console.log('\nfeatures 10 ok con un limite de fotos de: ' + this.numeroFotosPermitidas);
             }
             if (feature.id_caracteristica === 12) {
-              console.log('\nfeatures 12 ok');
+              //console.log('\nfeatures 12 ok');
               this.disabled = false;
               this.features12 = true;
             }
           });
         } else {
-          console.log('Features Vacío');
+          //console.log('Features Vacío');
 
         }
       },
@@ -1462,7 +1462,7 @@ export class FormularioNegocioPage implements OnInit {
         this.dsSuscrip = r.data.data[1];
         this.negocioTO.perfiles_caracteristicas = r.data.data[0];
       } else {
-        console.log('no selecciono nada se conserva el plan: ' + this.dsSuscrip);
+        //console.log('no selecciono nada se conserva el plan: ' + this.dsSuscrip);
       }
     }
     );
