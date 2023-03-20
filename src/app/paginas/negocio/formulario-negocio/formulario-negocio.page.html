@@ -4,7 +4,7 @@
     <ion-title *ngIf="segmentModel === 'informacion'"> Información Negocio </ion-title>
     <ion-title *ngIf="segmentModel === 'domicilio'"> Domicilio </ion-title>
     <ion-title *ngIf="segmentModel === 'contacto'"> Contacto </ion-title>
-    <ion-title *ngIf="segmentModel === 'productos'&& seEstaClonando"> Productos </ion-title>
+    <ion-title *ngIf="segmentModel === 'productos'&& seEstaClonando "> Productos </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cancelar()">
         <ion-icon name="close-outline"></ion-icon>
@@ -31,7 +31,7 @@
         <ion-icon [style]="colorDomicilio" name="location-outline"></ion-icon>
       </ion-segment-button>
 
-      <ion-segment-button value="productos" *ngIf="seEstaClonando">
+      <ion-segment-button value="productos" *ngIf="seEstaClonando && listaVista.length !== 0">
         <!--<ion-label>Productos</ion-label>-->
         <ion-icon [style]="colorProductos" name="pricetags-outline"></ion-icon>
       </ion-segment-button>
@@ -135,7 +135,7 @@
 
           <ion-item>
             <ion-label position="stacked">Relacione su Negocio </ion-label>
-            <ion-select name="id_negocio" required
+            <ion-select name="id_negocio"  [placeholder]=" nombreNegocioMatriz "
                         [(ngModel)]="negocioTO.id_negocio_matriz" ok-text="Ok" cancel-text="Cancelar"
                         (ionChange)="idmatriznegocio($event)">
               <ng-container *ngFor="let nego of lstNegocios">
@@ -444,7 +444,7 @@
           [disabled]="infoInvalid(formNegocio.invalid, negocioTO.dias)">          
           <span *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</span>      
         </ion-button>        
-        </ion-list>v
+        </ion-list>
       </form>
     </ion-card-content>
   </ion-card>
@@ -660,7 +660,7 @@
 
 
 
-<ion-content *ngIf="segmentModel === 'productos' && !loader && seEstaClonando">
+<ion-content *ngIf="segmentModel === 'productos' && !loader && seEstaClonando && listaVista. length !== 0">
   <ion-card *ngIf="!mostrarListaProductos">
     <ion-card-content>
       <div style="width: 25%; text-align: left">

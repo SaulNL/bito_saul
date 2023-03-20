@@ -81,6 +81,7 @@ export class FormularioNegocioPage implements OnInit {
     { id: 4, metodo: 'Efectivo', value: null }
   ];
   public copyPago = [];
+  public nombreNegocioMatriz: any;
   public loader: boolean;
   public negocioGuardar: any;
   public horarioini: string;
@@ -161,6 +162,8 @@ export class FormularioNegocioPage implements OnInit {
     public getCoordinatesMap: UbicacionMapa,
   ) {
     this.valido = false;
+
+    this.nombreNegocioMatriz = '';
     this.maximoProductos = 0;
     this.totalProductosServicios = 0;
     this.idNegocioMatriz = 0;
@@ -257,8 +260,16 @@ export class FormularioNegocioPage implements OnInit {
     // this.cagarMapa();
     this.load_cat_estados();
     this.obtenerSuscripciones();
+    this.obtenernombreNegocioMatriz();
   }
 
+    public obtenernombreNegocioMatriz(){
+      this.negocioServico.obtenerNegocio(this.negocioTO.id_negocio_matriz).subscribe(
+          (respuesta) => {
+              this.nombreNegocioMatriz = respuesta.data.nombre_comercial;
+          }
+      );
+    }
     public buscardatos() {
         this.negocioServico.obtenerDetalleDeNegocio(this.negocioTO.id_negocio, 0, this.usuario.id_persona).subscribe(
             (repsuesta) => {
@@ -274,9 +285,13 @@ export class FormularioNegocioPage implements OnInit {
                     this.negocioTO.tags = JSON.stringify(productoTags);
                 }
                 this.listaVista = repsuesta.data.categorias !== undefined ? repsuesta.agrupados : [];
+
+                console.log('Dataproductos' + this.listaVista);
+                if (this.listaVista.length === 0 && this.seEstaClonando){
+                    this.presentAlert('Sin Contenido', 'Este establecimiento no cuenta con Categorias o Productos para clonar' );
+                }
                 this.listaVista.forEach(data => {
                     const cantidad = data.productos.length;
-                    console.log("cantidadEnviada" + cantidad);
                     this.numerodeservicioproductos(cantidad);
                 });
             },
@@ -480,7 +495,7 @@ export class FormularioNegocioPage implements OnInit {
       if (event.type === 'ionChange') {
           idE = event.detail.value;
           if (idE > 0){
-              this.negocioTO.idNegocioMatriz = idE;
+              this.negocioTO.id_negocio_matriz = idE;
           }
 
       } else {
@@ -977,7 +992,7 @@ export class FormularioNegocioPage implements OnInit {
       longitude = res.coords.longitude;
       this.map.panTo([latitude, longitude]);
       this.marker.setLatLng([latitude, longitude]);
-
+      this.presentAlert('Longitud', latitude + '- -' + longitude);
     }).catch(error => {
       this.notificaciones.error(error);
     }
@@ -1107,8 +1122,6 @@ export class FormularioNegocioPage implements OnInit {
         this.negocioGuardar.id_negocio = null;
         const dirActual = this.negocioGuardar.det_domicilio;
         const dirAnterior = this.direccionAnterior.calle;
-        this.negocioGuardar.id_negocio_matriz = this.negocioTO.id_negocio_matriz;
-
         if (this.negocioGuardar.nombre_comercial === this.nombreAnterior){
           this.nextTab('informacion');
           this.notificaciones.error('El nombre del negocio debe ser direfente');
@@ -1127,7 +1140,7 @@ export class FormularioNegocioPage implements OnInit {
               if (response.code === 200) {
                 this.notificaciones.exito('Tu negocio se guardo exitosamente');
                 this.loader = false;
-                this.router.navigate(['/tabs/home/negocio']);
+                this.router.navigate(['/tabs/home/negocio'],{ queryParams: { special: true } });
               } else {
                 this.loader = false;
                 this.notificaciones.alerta(JSON.stringify(response.message));
@@ -1149,7 +1162,7 @@ export class FormularioNegocioPage implements OnInit {
               this.notificaciones.exito('Tu negocio se guardo exitosamente');
               console.log('xxxxxx' + JSON.stringify(this.negocioGuardar));
               this.loader = false;
-              this.router.navigate(['/tabs/home/negocio']);
+              this.router.navigate(['/tabs/home/negocio'], { queryParams: { special: true } });
             } else {
               console.log('sssss' + JSON.stringify(this.negocioGuardar));
               this.loader = false;
@@ -1190,6 +1203,7 @@ export class FormularioNegocioPage implements OnInit {
     } else {
       this.negocioGuardar.id_categoria_negocio = this.negocioTO.id_categoria_negocio;
     }
+    this.negocioGuardar.id_negocio_matriz = this.negocioTO.id_negocio_matriz;
     this.negocioGuardar.otra_subcategoria = '';
     this.negocioGuardar.organizaciones = this.negocioTO.organizaciones;
     this.negocioGuardar.plazas = this.negocioTO.plazas;
@@ -1258,6 +1272,7 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.det_domicilio.id_municipio = this.negocioTO.det_domicilio.id_municipio;
     this.negocioGuardar.det_domicilio.id_localidad = this.negocioTO.det_domicilio.id_localidad;
     this.negocioGuardar.det_domicilio.colonia = this.negocioTO.det_domicilio.colonia;
+    this.negocioGuardar.det_domicilio.codigo_postal = this.negocioTO.det_domicilio.codigo_postal;
     this.negocioGuardar.tipo_pago_transferencia = this.negocioTO.tipo_pago_transferencia;
     this.negocioGuardar.tipo_pago_tarjeta_credito = this.negocioTO.tipo_pago_tarjeta_credito;
     this.negocioGuardar.tipo_pago_tarjeta_debito = this.negocioTO.tipo_pago_tarjeta_debito;
@@ -1309,11 +1324,11 @@ export class FormularioNegocioPage implements OnInit {
     await modal.present();
   }
 
-  public getAddress(){
-    const estado = this.list_cat_estado.filter(estado => estado.id_estado == this.negocioTO.det_domicilio.id_estado)[0].nombre;
-    const municipio = this.list_cat_municipio.filter(municipio => municipio.id_municipio == this.negocioTO.det_domicilio.id_municipio)[0].nombre;
-    const address = this.negocioTO.det_domicilio.calle + ' ' + this.negocioTO.det_domicilio.numero_ext + ' ' + this.negocioTO.det_domicilio.colonia + ' ' + this.negocioTO.det_domicilio.codigo_postal + ' ' + municipio + ' ' + estado;
-    this.getCoordinates(address);
+  public getAddress() {
+      const estado = this.list_cat_estado.filter(estad => estad.id_estado === this.negocioTO.det_domicilio.id_estado)[0].nombre;
+      const municipio = this.list_cat_municipio.filter(municip => municip.id_municipio === this.negocioTO.det_domicilio.id_municipio)[0].nombre;
+      const address = this.negocioTO.det_domicilio.calle + ' ' + this.negocioTO.det_domicilio.numero_ext + ',' + this.negocioTO.det_domicilio.colonia + ',' + this.negocioTO.det_domicilio.codigo_postal + ' ' + municipio + ',' + estado;
+      this.getCoordinates(address);
   }
 
   async getCoordinates(address){
@@ -1323,11 +1338,11 @@ export class FormularioNegocioPage implements OnInit {
       const latitud = arrayPosts.results[0].geometry.location.lat;
       const longitud = arrayPosts.results[0].geometry.location.lng;
       const gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
-      const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
+      this.map.panTo([latitud, longitud]);
+      this.marker.setLatLng([latitud, longitud]);
+      await Geolocation.getCurrentPosition(gpsOptions).then(res => {
         this.negocioTO.det_domicilio.latitud = res.coords.latitude;
         this.negocioTO.det_domicilio.longitud = res.coords.longitude;
-        this.map.panTo([latitud, longitud]);
-        this.marker.setLatLng([latitud, longitud]);
       });
 
     });
