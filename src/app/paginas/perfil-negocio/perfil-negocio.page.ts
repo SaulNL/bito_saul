@@ -67,6 +67,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   public listaComentarios: [];
   public mostrarComentarios: boolean;
   public seccion: any;
+  public nombreSucursal:string;
   private map: Map;
   @ViewChild('mapContainer') mapContainer: Map;
   public negocio: string;
@@ -178,7 +179,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.Filtros = new FiltrosModel();
     this.toProductDetail = false;
     this.motrarContacto = true;
-    this.seccion = "productos";
+    this.seccion = 'productos';
+    this.nombreSucursal = '';
     this.lstSucursales = [];
     // this.segmentModel = 'productos';
     this.loader = false;
@@ -1543,7 +1545,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     slide.getActiveIndex().then((index: number) => {
       this.currentIndex = index;
       this.currentIndexsucursal = index;
-
+      this.nombreSucursal = this.lstSucursales[index].nombre_comercial;
       if (this.currentIndex == 0) {
 
       }
@@ -1572,9 +1574,10 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
     this.serviceProveedores.obtenerSucursales(id).subscribe(
         response => {
-          console.log('Sucursales###' + response.data);
+          const negocio = response.data;
+          this.nombreSucursal = negocio[0].nombre_comercial;
           this.lstSucursales = response.data;
-          this.seccion = "Sucursales";
+          this.seccion = 'Sucursales';
         }
     );
   }

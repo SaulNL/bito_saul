@@ -443,7 +443,6 @@
             <span *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</span>
           </ion-button>
         </ion-list>
-        </ion-list>
       </form>
       <ion-button (click)="nextTab('contacto')" expand="block" type="submit" class="bg-rosa">Siguiente
       </ion-button>
@@ -746,7 +745,7 @@
                 <div style="width: 10%">{{ i + 1 }}</div>
                 <div style="width: 25%">{{ producto.nombre }}</div>
                 <div style="width: 25%; text-align: center">
-                  <ion-toggle style="width: 20" name="existencia" disabled #existencia="ngModel"
+                  <ion-toggle style="width: 20%" name="existencia" disabled #existencia="ngModel"
                     [(ngModel)]="producto.existencia" color="danger"></ion-toggle>
                 </div>
               </div>

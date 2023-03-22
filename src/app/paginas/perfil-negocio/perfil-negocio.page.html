@@ -667,8 +667,7 @@
       <ion-grid *ngIf="seccion === 'Sucursales'">
         <ion-row >
           <ion-col size="12">
-            <h2>Sucursales</h2>
-
+            <h2 class="text-center">{{nombreSucursal}}</h2>
             <ng-container>
               <ion-item class="slider">
                 <div (click)="backsuc()" [class]="currentIndexsucursal !== 0 ? 'arrows' : 'arrowsDeactivated'"
