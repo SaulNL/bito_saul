@@ -421,6 +421,7 @@
         <ion-row style="background: white">
           <ion-segment (ionChange)="segmentChanged($event)" value="{{seccion}}" color="tertiary" [scrollable]="true"
             mode="md">
+            <ion-segment-button value="Sucursales" *ngIf="lstSucursales.length >0">Sucursales</ion-segment-button>
             <ion-segment-button value="productos" *ngIf="informacionNegocio.catProductos?.length > 0">
               Productos
             </ion-segment-button>
@@ -661,6 +662,35 @@
                         </ion-button>
                         <div id="mapId" style="height:200px"></div>
                     </ion-col>-->
+        </ion-row>
+      </ion-grid>
+      <ion-grid *ngIf="seccion === 'Sucursales'">
+        <ion-row >
+          <ion-col size="12">
+            <h2 class="text-center">{{nombreSucursal}}</h2>
+            <ng-container>
+              <ion-item class="slider">
+                <div (click)="backsuc()" [class]="currentIndexsucursal !== 0 ? 'arrows' : 'arrowsDeactivated'"
+                     *ngIf="lstSucursales?.length >= 1">
+                  <ion-icon name="chevron-back-outline" size="large"></ion-icon>
+                </div>
+                <ion-slides [options]="slideOpts" #sucursalo (ionSlideDidChange)="SlideChanges(sucursalo)">
+                  <ion-slide *ngFor="let sucursal of lstSucursales">
+                    <ion-card class="foto-preview" (click)="negocioRuta(sucursal.url_negocio)">
+                      <img *ngIf="sucursal.url_logo!=null || sucursal.url_logo!=''" [src]="sucursal.url_logo" />
+                      <ion-card-header>
+                        <h2>{{sucursal.nombre_comercial}}</h2>
+                      </ion-card-header>
+                    </ion-card>
+                  </ion-slide>
+                </ion-slides>
+                <div (click)="nextsuc()" [class]="currentIndexsucursal < lstSucursales.length ? 'arrows' : 'arrowsDeactivated'"
+                     *ngIf="lstSucursales?.length >= 1">
+                  <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
+                </div>
+              </ion-item>
+            </ng-container>
+          </ion-col>
         </ion-row>
       </ion-grid>
     </ion-card>

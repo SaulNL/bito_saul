@@ -67,6 +67,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   public listaComentarios: [];
   public mostrarComentarios: boolean;
   public seccion: any;
+  public nombreSucursal:string;
   private map: Map;
   @ViewChild('mapContainer') mapContainer: Map;
   public negocio: string;
@@ -77,6 +78,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   public permisoUbicacionCancelado: boolean;
   public distanciaNegocio: string;
   public existeSesion: boolean;
+  public lstSucursales: any;
   url = `${AppSettings.URL_FRONT}`;
   public url_negocio: string;
   private marker: Marker<any>;
@@ -127,7 +129,9 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   public promocionDefault: string;
   public logo: any;
   currentIndex: Number = 0;
+  currentIndexsucursal: Number = 0;
   @ViewChild('carrusel') slides: IonSlides;
+  @ViewChild('sucursalo') slides1: IonSlides;
   slideOpts = {
     autoHeight: true,
     slidesPerView: 1,
@@ -169,12 +173,15 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     private blockk: AuthGuardService,
     private navBarServiceService: NavBarServiceService,
     private servicioProductos: ProductosService,
+    private rutasucursal: Router,
     private createObject: CreateObjects /* private document: DocumentViewer, */ /* private transfer: FileTransfer, */ /* private webview: WebView */
   ) {
     this.Filtros = new FiltrosModel();
     this.toProductDetail = false;
     this.motrarContacto = true;
-    this.seccion = "productos";
+    this.seccion = 'productos';
+    this.nombreSucursal = '';
+    this.lstSucursales = [];
     // this.segmentModel = 'productos';
     this.loader = false;
     this.typeLogin = new OptionBackLogin();
@@ -411,6 +418,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
               this.comentariosNegocio(this.informacionNegocio.id_negocio);
               this.horarios(this.informacionNegocio);
               this.calcularDistancia();
+              this.obtenerSucursaleslst(this.informacionNegocio.id_negocio);
             }
           } else {
             this.presentError();
@@ -1527,10 +1535,17 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   next() {
     this.slides.slideNext();
   }
+  backsuc() {
+    this.slides1.slidePrev();
+  }
+  nextsuc() {
+    this.slides1.slideNext();
+  }
   SlideChanges(slide: IonSlides) {
     slide.getActiveIndex().then((index: number) => {
       this.currentIndex = index;
-
+      this.currentIndexsucursal = index;
+      this.nombreSucursal = this.lstSucursales[index].nombre_comercial;
       if (this.currentIndex == 0) {
 
       }
@@ -1553,5 +1568,33 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   closePopUp() {
 
     this.showPopUp = false;
+  }
+
+  public obtenerSucursaleslst(id){
+
+    this.serviceProveedores.obtenerSucursales(id).subscribe(
+        response => {
+          const negocio = response.data;
+          this.nombreSucursal = negocio[0].nombre_comercial;
+          this.lstSucursales = response.data;
+          this.seccion = 'Sucursales';
+        }
+    );
+  }
+  negocioRuta(negocioURL) {
+
+    setTimeout(() => {
+      if (negocioURL == "") {
+        this.notificaciones.error(
+            "Este negocio aún no cumple los requisitos mínimos"
+        );
+      } else {
+          localStorage.setItem("isRedirected", "true");
+          this.rutasucursal.navigate(["/tabs/negocio/" + negocioURL]);
+
+
+      }
+    }, 1000);
+
   }
 }

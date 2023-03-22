@@ -12,7 +12,8 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import Moment from 'moment';
 import { ToadNotificacionService } from './../../../api/toad-notificacion.service';
 import { GeneralServicesService } from 'src/app/api/general-services.service';
-import * as Chart from 'chart.js'
+// @ts-ignore
+import * as Chart from 'chart.js';
 @Component({
   selector: 'app-statistics-by-business',
   templateUrl: './statistics-by-business.page.html',

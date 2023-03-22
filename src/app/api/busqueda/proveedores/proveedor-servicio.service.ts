@@ -53,6 +53,20 @@ export class ProveedorServicioService {
       }));
   }
 
+    obtenerSucursales(id): Observable<any> {
+    const body = JSON.stringify({id_negocio: id});
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      `${this.url}api/buscar/sucursales`,
+      body, AppSettings.getHeadersToken())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+  }
+
   public darLike(proveedor: MsNegocioModel, usuario: UsuarioSistemaModel):Observable<any>{
     const body = JSON.stringify({proveedor: proveedor, usuario: usuario});
     return from(this._http.post(

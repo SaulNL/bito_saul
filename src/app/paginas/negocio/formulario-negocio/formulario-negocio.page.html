@@ -4,7 +4,7 @@
     <ion-title *ngIf="segmentModel === 'informacion'"> Información Negocio </ion-title>
     <ion-title *ngIf="segmentModel === 'domicilio'"> Domicilio </ion-title>
     <ion-title *ngIf="segmentModel === 'contacto'"> Contacto </ion-title>
-    <ion-title *ngIf="segmentModel === 'productos'&& seEstaClonando"> Productos </ion-title>
+    <ion-title *ngIf="segmentModel === 'productos'&& seEstaClonando "> Productos </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cancelar()">
         <ion-icon name="close-outline"></ion-icon>
@@ -31,7 +31,7 @@
         <ion-icon [style]="colorDomicilio" name="location-outline"></ion-icon>
       </ion-segment-button>
 
-      <ion-segment-button value="productos" *ngIf="seEstaClonando">
+      <ion-segment-button value="productos" *ngIf="seEstaClonando && listaVista.length !== 0">
         <!--<ion-label>Productos</ion-label>-->
         <ion-icon [style]="colorProductos" name="pricetags-outline"></ion-icon>
       </ion-segment-button>
@@ -92,8 +92,7 @@
         </div>
         <div style="display: flex; justify-content: center; align-items: center"
           *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null && seEstaClonando == false)">
-          <ion-button size="small" *ngIf=" negocioTO.url_negocio !== null" (click)="solicitarCambioUrl()"
-            color="primary">
+          <ion-button size="small" *ngIf=" negocioTO.url_negocio !== null" (click)="solicitarCambioUrl()" color="primary">
             solicitar cambio de url
           </ion-button>
         </div>
@@ -136,8 +135,9 @@
 
           <ion-item>
             <ion-label position="stacked">Relacione su Negocio </ion-label>
-            <ion-select name="id_negocio" required [(ngModel)]="negocioTO.id_negocio_matriz" ok-text="Ok"
-              cancel-text="Cancelar" (ionChange)="idmatriznegocio($event)">
+            <ion-select name="id_negocio"  placeholder=" {{ nombreNegocioMatriz }} "
+                        [(ngModel)]="negocioTO.id_negocio_matriz" ok-text="Ok" cancel-text="Cancelar"
+                        (ionChange)="idmatriznegocio($event)">
               <ng-container *ngFor="let nego of lstNegocios">
                 <ion-select-option [value]="nego.id_negocio" title="{{nego.descripcion}}"
                   *ngIf="negocioTO.nombre_comercial !== nego.nombre_comercial">{{nego.nombre_comercial}}</ion-select-option>
@@ -661,7 +661,7 @@
 
 
 
-<ion-content *ngIf="segmentModel === 'productos' && !loader && seEstaClonando">
+<ion-content *ngIf="segmentModel === 'productos' && !loader && seEstaClonando && listaVista. length !== 0">
   <ion-card *ngIf="!mostrarListaProductos">
     <ion-card-content>
       <div style="width: 25%; text-align: left">
@@ -745,7 +745,7 @@
                 <div style="width: 10%">{{ i + 1 }}</div>
                 <div style="width: 25%">{{ producto.nombre }}</div>
                 <div style="width: 25%; text-align: center">
-                  <ion-toggle style="width: 20" name="existencia" disabled #existencia="ngModel"
+                  <ion-toggle style="width: 20%" name="existencia" disabled #existencia="ngModel"
                     [(ngModel)]="producto.existencia" color="danger"></ion-toggle>
                 </div>
               </div>
