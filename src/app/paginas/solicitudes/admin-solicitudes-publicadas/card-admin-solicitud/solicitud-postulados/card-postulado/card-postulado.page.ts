@@ -67,7 +67,8 @@ export class CardPostuladoPage implements OnInit {
   }
   cerrar() {
     this.loader = false;
-    this.router.navigate(["/tabs/home/solicitudes"]);
+    let navigationExtras = JSON.stringify(this.solicitudPostulado);
+    this.router.navigate(["/tabs/home/solicitudes/admin-solicitudes-publicadas/card-admin-solicitud/solicitud-postulados"], { queryParams: { special: navigationExtras } });
   }
   descargarAndroid() {
     // this.extensionArchivo();

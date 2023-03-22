@@ -1,3 +1,4 @@
+import { ReactiveFormsModule } from '@angular/forms';
 import { PedidoNegocioModel } from '../../Modelos/PedidoNegocioModel';
 import { Component, Input, OnInit } from '@angular/core';
 import { UtilsCls } from "../../utils/UtilsCls";
@@ -19,6 +20,7 @@ import { CatMunicipioModel } from 'src/app/Modelos/CatMunicipioModel';
 import { MsPersonaModel } from 'src/app/Modelos/MsPersonaModel';
 import { CatLocalidadModel } from 'src/app/Modelos/CatLocalidadModel';
 import { PersonaService } from '../../api/persona.service';
+import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 
 
 const { Geolocation } = Plugins;
@@ -40,13 +42,15 @@ export class PedidoNegocioComponent implements OnInit {
     @Input() public latNegocio: number;
     @Input() public logNegocio: number;
     @Input() public convenio: number;
-    features:boolean = false;
+    compraForm: FormGroup;
+    features: boolean = false;
     public static readonly TIPO_DE_PAGO_INVALIDO = -1; // Puede ser cualquier numero menor a 0;
     tipoEnvio: any;
     private map: Map;
     public lat: any;
     public lng: any;
     proveedorTO: MsPersonaModel;
+    public pagoSeleccion = true;
     public blnUbicacion: boolean;
     public estasUbicacion: any;
     private marker: Marker<any>;
@@ -82,9 +86,9 @@ export class PedidoNegocioComponent implements OnInit {
     public IdLocalidad: any;
     primeraVez: boolean;
     public select_municipio: boolean;
-    public list_cat_localidad: Array <CatLocalidadModel> ;
-    public list_cat_estado: Array <CatEstadoModel> ;
-    public list_cat_municipio: Array <CatMunicipioModel> ;
+    public list_cat_localidad: Array<CatLocalidadModel>;
+    public list_cat_estado: Array<CatEstadoModel>;
+    public list_cat_municipio: Array<CatMunicipioModel>;
     public muniAux: any;
     public blnBuscadoLocalidades: boolean;
     public direccionUser: any;
@@ -112,6 +116,7 @@ export class PedidoNegocioComponent implements OnInit {
         /* private geolocation: Geolocation, */
         private _utils_cls: UtilsCls,
         public getCoordinatesMap: UbicacionMapa,
+        public formBuilder: FormBuilder,
     ) {
         this.lat = 19.31905;
         this.numeroMesa = 0;
@@ -145,39 +150,39 @@ export class PedidoNegocioComponent implements OnInit {
         this.cargarTipoDePagos();
         this.obtenerFeatures();
     }
-    async obtenerFeatures(){
+    async obtenerFeatures() {
         await this._general_service.features(this.idNegocio).subscribe(
             response => {
-                console.log("FEATURES del id_negocio "+this.idNegocio+", "+JSON.stringify(response))
-                if (response.data.lenght != 0){                    
+                console.log("FEATURES del id_negocio " + this.idNegocio + ", " + JSON.stringify(response))
+                if (response.data.lenght != 0) {
                     response.data.forEach(feature => {
-                        if(feature.id_caracteristica == 2){
+                        if (feature.id_caracteristica == 2) {
                             this.features = true;
                         }
                     });
-                }else{
+                } else {
                     this.features = false;
                 }
             },
             error => {
-                console.log("error"+error)
+                console.log("error" + error)
             }
         );
     }
-    cargarTipoDePagos(){
+    cargarTipoDePagos() {
         this.negocioService.obtenerTiposDePagosPorNegocio(this.idNegocio)
-        .subscribe((respuesta) =>{
-            if(respuesta.code === HttpStatusCode.OK as number){
-                this.pagos = respuesta.data.list_cat_tipo_pago as Array<IPago>;
-            }else{
+            .subscribe((respuesta) => {
+                if (respuesta.code === HttpStatusCode.OK as number) {
+                    this.pagos = respuesta.data.list_cat_tipo_pago as Array<IPago>;
+                } else {
+                    this.pagos = new Array<IPago>();
+                }
+            }, error => {
                 this.pagos = new Array<IPago>();
-            }
-        }, error=>{
-            this.pagos = new Array<IPago>();
-        });
+            });
         this.load_cat_estados();
     }
-    contienTipoDePagos(){
+    contienTipoDePagos() {
         return this.pagos.length > 0;
     }
 
@@ -237,11 +242,11 @@ export class PedidoNegocioComponent implements OnInit {
                 this.load_cat_estados();
             },
             error => {
-                
+
             }
         );
     }
-    
+
     private load_cat_estados() {
         this._general_service.getEstadosWS().subscribe(
             response => {
@@ -409,8 +414,8 @@ export class PedidoNegocioComponent implements OnInit {
             if (status === 'OK') {
                 if (results[0]) {
                     this.estasUbicacion = results[0].formatted_address;
-                } else {}
-            } else {}
+                } else { }
+            } else { }
         });
     }
     private enviarSms(telephone: number, idNegocio: number) {
@@ -464,12 +469,12 @@ export class PedidoNegocioComponent implements OnInit {
                     this.pedido.latitud = this.lat;
                     this.pedido.longitud = this.lng;
                     this.pedido.direccion = this.address;
-                   
-                    if(this.convenio===1){
-                        this.pedido.costo_envio=this.costoEntrega;
+
+                    if (this.convenio === 1) {
+                        this.pedido.costo_envio = this.costoEntrega;
                         this.pedido.kilometros = parseFloat(this.distancia);
-                        this.pedido.minutos= parseFloat(this.tiempo);
-                        
+                        this.pedido.minutos = parseFloat(this.tiempo);
+
                     }
                     this.registrarPedido(this.pedido);
                     break;
@@ -502,7 +507,7 @@ export class PedidoNegocioComponent implements OnInit {
 
     cambiarTipo(evento) {
         this.tipoEnvio = parseInt(evento.detail.value);
-        
+
         this.sumarLista();
         if (this.tipoEnvio === 2) {
             setTimeout(it => {
@@ -583,9 +588,9 @@ export class PedidoNegocioComponent implements OnInit {
     }
 
     validarCosto() {
-        if(this.convenio!=0){
-           
-        }else{
+        if (this.convenio != 0) {
+
+        } else {
             if (parseInt(this._costoEntrega) >= 0) {
                 this.costoEntrega = parseInt(this._costoEntrega);
                 this.blnCosto = true;
@@ -596,7 +601,7 @@ export class PedidoNegocioComponent implements OnInit {
             }
 
         }
-        
+
     }
 
     async presentAlertCancelar() {
@@ -649,9 +654,9 @@ export class PedidoNegocioComponent implements OnInit {
     public rTantidad(cantidad: number) {
         return cantidad === 0;
     }
-    public seleccionarTipoPago(event: any){
+    public seleccionarTipoPago(event: any) {
         this.idTipoDePago = event.target.value;
-        
+        this.pagoSeleccion = false;
     }
 
     async getCoordinates() {
@@ -690,7 +695,7 @@ export class PedidoNegocioComponent implements OnInit {
                 this.geocodeLatLng2();
             }).catch((error) => {
                 this.mesajes.error("Ocurrió un error al consultar la dirección, intente de nuevo más tarde ");
-        })
+            })
     }
 
     async activar() {
@@ -726,12 +731,12 @@ export class PedidoNegocioComponent implements OnInit {
 
                 this.lat = latitud;
                 this.lng = longitud;
-                
-               this.geocodeLatLng2();
+
+                this.geocodeLatLng2();
             }).catch((error) => {
                 this.mesajes.error("Ocurrió un error al consultar la dirección, intente de nuevo más tarde ");
-        })
-      
+            })
+
         this.destino = this.lat + ',' + this.lng;
         var responseDistKm = await this.getCoordinatesMap.getDistanciaKmTiempo(this.origen, this.destino).toPromise();
 
@@ -747,15 +752,20 @@ export class PedidoNegocioComponent implements OnInit {
 
             var response = await this.negocioService.calcularCostoDeEnvio(this.tmp, this.dstn).toPromise();
             this.costoDeEnvio = response.data.total;
-             this.costoEntrega=this.costoDeEnvio;
-             this.sumarLista();
-            
+            this.costoEntrega = this.costoDeEnvio;
+            this.sumarLista();
+
 
         } else {
             this.distancia = "";
             this.tiempo = "";
         }
 
+    }
+    compraValidacion() {
+        this.compraForm = new FormGroup({
+
+        })
     }
 
 }

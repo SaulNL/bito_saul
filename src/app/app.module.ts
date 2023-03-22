@@ -29,8 +29,10 @@ import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { CommonModule } from '@angular/common';
 import { SeleccionarSucripcionComponent } from './components/seleccionar-suscripcion/seleccionar-suscripcion.component';
+import { ModalQuienVioRequerimientoComponent } from './components/modal-quien-vio-requerimiento/modal-quien-vio-requerimiento.component';
+import { PopOverVisitsComponent } from './Bitoo/components/pop-over-visits/pop-over-visits.component';
 @NgModule({
-  declarations: [AppComponent,SeleccionarSucripcionComponent],
+declarations: [AppComponent,SeleccionarSucripcionComponent,ModalQuienVioRequerimientoComponent,PopOverVisitsComponent],
   entryComponents: [],
   imports: [CommonModule, BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule],
   providers: [

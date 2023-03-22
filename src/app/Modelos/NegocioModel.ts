@@ -11,6 +11,7 @@ export class NegocioModel {
   public rfc: string;
   public descripcion: string;
   public nombre_comercial: string;
+  public nombre_corto: string;
   public perfiles_caracteristicas: any [];
   public url_logo: string;
   public id_tipo_negocio: number;
@@ -70,6 +71,7 @@ export class NegocioModel {
     rfc = null,
     descripcion = null,
     nombre_comercial = null,
+    nombre_corto = null,
     perfiles_caracteristicas=null,
     url_logo = null,
     id_tipo_negocio = null,
@@ -96,6 +98,7 @@ export class NegocioModel {
     this.rfc = rfc;
     this.descripcion = descripcion;
     this.nombre_comercial = nombre_comercial;
+    this.nombre_corto = nombre_corto;
     this.perfiles_caracteristicas = perfiles_caracteristicas;
     this.url_logo = url_logo;
     this.url_logo = null;

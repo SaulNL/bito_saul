@@ -77,6 +77,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   public permisoUbicacionCancelado: boolean;
   public distanciaNegocio: string;
   public existeSesion: boolean;
+  public lstSucursales: any;
   url = `${AppSettings.URL_FRONT}`;
   public url_negocio: string;
   private marker: Marker<any>;
@@ -127,7 +128,9 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   public promocionDefault: string;
   public logo: any;
   currentIndex: Number = 0;
+  currentIndexsucursal: Number = 0;
   @ViewChild('carrusel') slides: IonSlides;
+  @ViewChild('sucursalo') slides1: IonSlides;
   slideOpts = {
     autoHeight: true,
     slidesPerView: 1,
@@ -142,7 +145,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     loop: false,
     spaceBetween: 0,
   }
-  insignias: any;
+  insignias: any[] = [];
   showPopUp: boolean;
   insigniaTitle: string;
   insigniaDescrip: string;
@@ -169,12 +172,14 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     private blockk: AuthGuardService,
     private navBarServiceService: NavBarServiceService,
     private servicioProductos: ProductosService,
+    private rutasucursal: Router,
     private createObject: CreateObjects /* private document: DocumentViewer, */ /* private transfer: FileTransfer, */ /* private webview: WebView */
   ) {
     this.Filtros = new FiltrosModel();
     this.toProductDetail = false;
     this.motrarContacto = true;
     this.seccion = "productos";
+    this.lstSucursales = [];
     // this.segmentModel = 'productos';
     this.loader = false;
     this.typeLogin = new OptionBackLogin();
@@ -314,9 +319,9 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   ngAfterViewInit(): void { }
 
   async loadMap() {
+    const lat = this.latitudNeg;
+    const lng = this.longitudNeg;
     setTimeout((it) => {
-      const lat = this.latitudNeg;
-      const lng = this.longitudNeg;
       this.map = new Map("mapIdPedido").setView([lat, lng], 14);
       tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "",
@@ -337,6 +342,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         this.getLatLong({ latlng: this.marker.getLatLng() });
       }); */
     }, 500);
+    //console.log("Esta es la info que carga el mapa:\n"+"lat: "+lat+" long: "+lng)
   }
   getLatLong(e) {
     this.miLat = e.latlng.lat;
@@ -367,9 +373,9 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.negocioService
       .obteneretalleNegocio(this.negocio, this.user.id_persona)
       .subscribe(
-        (response) => {
+        async (response) => {
           if (response.data !== null) {
-            this.informacionNegocio = response.data;
+            this.informacionNegocio = await response.data;
             this.logo = this.informacionNegocio.url_logo
             console.log("Informacion del negocio: ", this.informacionNegocio)
             this.Filtros.idNegocio = this.informacionNegocio.id_negocio
@@ -410,6 +416,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
               this.comentariosNegocio(this.informacionNegocio.id_negocio);
               this.horarios(this.informacionNegocio);
               this.calcularDistancia();
+              this.obtenerSucursaleslst(this.informacionNegocio.id_negocio);
             }
           } else {
             this.presentError();
@@ -652,7 +659,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
               .catch((error) => this.notificaciones.error(error));
           })
           .catch((error) => this.notificaciones.error(error))
-          .finally(() => this.loadMap());
+        //.finally(() => this.loadMap());
         this.loader = false;
       }, 700);
 
@@ -676,7 +683,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         this.loader = false;
         this.notificaciones.error(error)
       })
-        .finally(() => this.loadMap());
+      //.finally(() => this.loadMap());
     }
   }
 
@@ -892,6 +899,15 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     let hoy: any;
     hoy = new Date();
     this.hoy = hoy.getDay() !== 0 ? hoy.getDay() : 7;
+    this.diasArray = [
+      { id: 1, dia: "Lunes", horarios: [], hi: null, hf: null },
+      { id: 2, dia: "Martes", horarios: [], hi: null, hf: null },
+      { id: 3, dia: "Miércoles", horarios: [], hi: null, hf: null },
+      { id: 4, dia: "Jueves", horarios: [], hi: null, hf: null },
+      { id: 5, dia: "Viernes", horarios: [], hi: null, hf: null },
+      { id: 6, dia: "Sábado", horarios: [], hi: null, hf: null },
+      { id: 7, dia: "Domingo", horarios: [], hi: null, hf: null },
+    ];
     const diasArray = JSON.parse(JSON.stringify(this.diasArray));
     if (hros !== undefined) {
       hros.forEach((horarioTmp) => {
@@ -1517,9 +1533,16 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   next() {
     this.slides.slideNext();
   }
+  backsuc() {
+    this.slides1.slidePrev();
+  }
+  nextsuc() {
+    this.slides1.slideNext();
+  }
   SlideChanges(slide: IonSlides) {
     slide.getActiveIndex().then((index: number) => {
       this.currentIndex = index;
+      this.currentIndexsucursal = index;
 
       if (this.currentIndex == 0) {
 
@@ -1535,8 +1558,40 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.insigniaTitle = tag
     this.insigniaDescrip = object
   }
+  formatoNombreProd(nombreProd: string) {
+    var letra1 = nombreProd.slice(0, 1).toUpperCase()
+    var letra2 = nombreProd.slice(1, nombreProd.length).toLowerCase();
+    return letra1 + letra2
+  }
   closePopUp() {
 
     this.showPopUp = false;
+  }
+
+  public obtenerSucursaleslst(id){
+
+    this.serviceProveedores.obtenerSucursales(id).subscribe(
+        response => {
+          console.log('Sucursales###' + response.data);
+          this.lstSucursales = response.data;
+          this.seccion = "Sucursales";
+        }
+    );
+  }
+  negocioRuta(negocioURL) {
+
+    setTimeout(() => {
+      if (negocioURL == "") {
+        this.notificaciones.error(
+            "Este negocio aún no cumple los requisitos mínimos"
+        );
+      } else {
+          localStorage.setItem("isRedirected", "true");
+          this.rutasucursal.navigate(["/tabs/negocio/" + negocioURL]);
+
+
+      }
+    }, 1000);
+
   }
 }
