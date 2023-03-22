@@ -53,7 +53,7 @@
             </ion-select>        
         </ion-item>
     </div>
-    <div *ngIf="features16; else noSuscription">        
+    <div *ngIf="features16 || features17; else noSuscription">        
         <ion-card>
             <ion-card-content>
                 <ion-grid>
@@ -172,7 +172,7 @@
                                 </ion-card-content>
                             </ion-card>
                         </ion-col>
-                        <ion-col>
+                        <ion-col *ngIf="features17">
                             <ion-card>
                                 <ion-card-content class="background-deeppink">
                                     <ion-grid class="ion-text-center">
@@ -197,7 +197,7 @@
                                 </ion-card-content>
                             </ion-card>
                         </ion-col>
-                        <ion-col>
+                        <ion-col *ngIf="features17">
                             <ion-card>
                                 <ion-card-content class="background-deeppink">
                                     <ion-grid class="ion-text-center">
@@ -220,7 +220,7 @@
                                 </ion-card-content>
                             </ion-card>
                         </ion-col>
-                        <ion-col>
+                        <ion-col *ngIf="features17">
                             <ion-card>
                                 <ion-card-content class="background-deeppink">
                                     <ion-grid class="ion-text-center">
