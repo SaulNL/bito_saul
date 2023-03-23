@@ -8,8 +8,8 @@
 </ion-header>
 
 <app-spinner [loader]="loader" [message]="msj"></app-spinner>
-<ion-content *ngIf="!loader" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
-  <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
+<ion-content><!--*ngIf="!loader" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop"-->
+  <!--app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top-->
 
   <ion-card>
     <ion-card-header class="ion-text-center">
@@ -24,16 +24,24 @@
 
     <ion-grid>
       <ion-row >        
-          <ion-col *ngFor="let giro of listaGiros" (click)="modalPrefByGiro(giro.id_giro)">
+          <ion-col *ngFor="let giro of listaGirosColor index as i" (click)="modalPrefByGiro(giro.id_giro,giro.active,i)">
             <ion-item color="none" lines="none">
-              <ion-avatar class="image-center"> <img class="img-gris" 
-                  src="{{giro.url_icon}}"> 
+              <ion-avatar class="image-center">
+                <img [ngClass]="giro.active==='true'? 'giro-color' : 'img-gris' " src="{{giro.url_icon}}" alt="">
               </ion-avatar>  
             </ion-item>
             <p style="text-align: center;">{{giro.nombre}}</p>
           </ion-col>
       </ion-row>
     </ion-grid>
+
+    <ion-item>
+      <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+        <ion-button mode="ios" size="small" class="bg-rosa" shape="round" (click)="guardarPreferencias()">
+          Guardar preferencias
+        </ion-button>
+      </div>
+    </ion-item>
 
   </ion-card>
 
