@@ -27,6 +27,8 @@ import { AlertController } from "@ionic/angular";
 import { Plugins } from '@capacitor/core';
 import { PersonaService } from "src/app/api/persona.service";
 import { TouchSequence } from "selenium-webdriver";
+import { FiltrosService } from "src/app/api/filtros.service";
+import Swal from "sweetalert2";
 
 const { Geolocation } = Plugins;
 declare var google: any;
@@ -139,7 +141,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     private auth0Service: Auth0Service,
     private validarPermiso: ValidarPermisoService,
     private platform: Platform,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private filtrosService:FiltrosService,
   ) {
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
@@ -301,7 +304,61 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
   ngAfterViewInit() {
     this.banderaVerMas = false;
+    setTimeout(() => {
+      this.obtenerPreferencias(this.user.id_persona)
+    }, (4000));    
+  }
 
+  async obtenerPreferencias(id_persona:number){
+    this.filtrosService.obtenerPreferencias(id_persona).subscribe(
+      async response => {
+          if(response.code==200){
+            var listaPreferencias = response.data.preferencias;    
+            if(listaPreferencias.length<1){
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'center'
+              })
+              Toast.fire({
+                title: "Queremos conocer más sobre tus gustos en Bitoo.",
+                text: "Registra tus preferencias",
+                icon: 'info',
+                showDenyButton: false,
+                showCancelButton: true,
+                showConfirmButton: true,  
+                confirmButtonText:'¡Claro!',
+                cancelButtonText:'Después',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+              }).then((result) => {
+                if (result.isConfirmed) {          
+                  console.log("claro!!")
+                  this.ruta.navigate(["/tabs/home/preferencias"]);
+                }else if(result.isDismissed || result.isDenied){
+                  console.log("despues")
+                }
+              }) 
+              /*Swal.fire({
+                title: 'Queremos conocer más sobre tus gustos en Bitoo.',
+                text: "Registra tus preferencias",
+                icon: 'info',
+                showCancelButton: true,
+                cancelButtonText:'Después',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '¡Claro!'
+              }).then((result) => {
+                if (result.isConfirmed) {
+
+                }
+              })*/
+            }  
+          }                           
+        },
+      error => {
+      }
+    );
+    
   }
 
   private load() {
