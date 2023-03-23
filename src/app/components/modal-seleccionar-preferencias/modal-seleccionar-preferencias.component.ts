@@ -44,8 +44,8 @@ export class ModalSeleccionarPreferenciasComponent implements OnInit {
 
   ngOnInit() { 
     this.subcategorias=this.listaPreferencias
-    console.log("id_giro modal: "+this.id_giro)
-    console.log("Lista de prefs inicial: "+JSON.stringify(this.listaPreferencias))
+    //console.log("id_giro modal: "+this.id_giro)
+    //console.log("Lista de prefs inicial: "+JSON.stringify(this.listaPreferencias))
     this.listaPreferencias.forEach(giro => {
       if(giro.id_giro==this.id_giro){
         this.categoriasActuales.push(giro)
@@ -69,7 +69,7 @@ export class ModalSeleccionarPreferenciasComponent implements OnInit {
       }
 
     }
-    console.log('total cats selec', this.totalCategoriasSeleccionadas);
+    console.log('Subcategorias elegidas en el giro '+this.id_giro+' = ', this.totalCategoriasSeleccionadas);
   }
 
   obtenerCategorias(id_giro:number){
@@ -129,8 +129,8 @@ export class ModalSeleccionarPreferenciasComponent implements OnInit {
       
          
     }else{
-      console.log(this.totalCategoriasSeleccionadas)
-      this.toadNotificacionService.alerta("Solo puedes agregar 5 categorias");
+      //console.log(this.totalCategoriasSeleccionadas)
+      this.toadNotificacionService.alerta("Solo puedes agregar 5 Subcategorias");
     }
   }
 
@@ -143,15 +143,16 @@ export class ModalSeleccionarPreferenciasComponent implements OnInit {
     });
     return indice
   }
-  limpiarCategoria(){     ///FALTA LIMPIAR CATEGORÍA
+  limpiarCategoria(){
     this.listaSubCategoriesColor.forEach((cat, index) => {
       if(cat.active != undefined){
         cat.active="false"
-      }
-      let indiceBorrar = this.buscarIndex(this.subcategorias,cat.id_categoria)
+
+        let indiceBorrar = this.buscarIndex(this.subcategorias,cat.id_categoria)
         this.subcategorias.splice(indiceBorrar, 1);
+      }      
     });    
-    //this.subcategorias=this.listaSubCategoriesColor
+
   }
 
   guardarPreferencias(){

@@ -86,7 +86,6 @@ export class FiltrosService {
 
     obtenerPreferencias(idPersona:any): Observable<any> {
         const body = JSON.stringify({id_persona : idPersona});
-        console.log("El bodysss: "+body)
         this.http.setDataSerializer("utf8");
         let datos = from(this.http.post(this.url+'/api/preferencias/persona/obtener',body,
         AppSettings.getHeadersToken())
@@ -102,7 +101,6 @@ export class FiltrosService {
     }
     guardarMisPreferencias(preferencias: any): Observable<any> {
         const body = JSON.stringify(preferencias);
-        console.log("El body preferencias: "+body)
         this.http.setDataSerializer("utf8");
         let datos = from(this.http.post(this.url+'/api/preferencias/persona/guardar',body,
         AppSettings.getHeadersToken())

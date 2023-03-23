@@ -7,10 +7,10 @@
   </ion-toolbar>
 </ion-header>
 
-<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+
 <ion-content><!--*ngIf="!loader" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop"-->
   <!--app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top-->
-
+  <app-spinner [loader]="loader" [message]="msj"></app-spinner>
   <ion-card>
     <ion-card-header class="ion-text-center">
       <ion-card-title>

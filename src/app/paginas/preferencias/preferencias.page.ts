@@ -28,7 +28,7 @@ export class PreferenciasPage implements OnInit {
     private toadNotificacionService: ToadNotificacionService,) { this.user = this.util.getUserData();}
 
   ngOnInit() {
-    
+    this.loader = true;
     this.obtenerPreferencias(this.user.id_persona);
   }
 
@@ -36,18 +36,14 @@ export class PreferenciasPage implements OnInit {
     this.filtrosService.obtenerPreferencias(id_persona).subscribe(
       async response => {
           this.listaPreferencias = response.data.preferencias;
-          console.log("listaPreferencias:  \n"+JSON.stringify(await this.listaPreferencias))
+          //console.log("listaPreferencias:  \n"+JSON.stringify(await this.listaPreferencias))
           this.obtenerGiros()   
            
         },
       error => {
       }
     );
-    this.loader = true;
-    setTimeout(() => {
-      this.loader = false;
-      this.contarGiros()
-    }, (2000));
+    
   }
 
   contarGiros(){
@@ -63,22 +59,26 @@ export class PreferenciasPage implements OnInit {
       }
 
     }
-    console.log('total final 1', this.totalGirosSeleccionados);
+    console.log('Giros seleccionados: ', this.totalGirosSeleccionados);
   }
   
-  obtenerGiros(){
+  obtenerGiros(){    
     this.filtrosService.obtenerGiros().subscribe(
       response => {
-        this.listaGiros= response.data;
+        if(response.code==200){
+          this.listaGiros= response.data;
+          setTimeout(() => {
+            this.pintarGiro();
+            this.contarGiros()
+          }, (500));
+        }else{
+          this.toadNotificacionService.error("Algo sucedió, intentalo mas tarde");
+        }        
       },
       error => {
       }
     );
-    this.loader = true;
-    setTimeout(() => {
-      this.loader = false;
-      this.pintarGiro();
-    }, (2000));
+
   }
 
   pintarGiro(){
@@ -91,21 +91,23 @@ export class PreferenciasPage implements OnInit {
       });
       this.listaGirosColor.push(giro)
     });
+    this.loader = false;
   }
   async modalPrefByGiro(giro:number, activo:string, index:number) { 
-    if(this.totalGirosSeleccionados<5 || activo === "true"){               
+    if(this.totalGirosSeleccionados<5 || activo === "true"){   
+      console.log("giro: "+giro+" activo: "+activo)            
       if(activo == "false"){
         this.totalGirosSeleccionados++
         this.listaGirosColor[index].active="true"
-        console.log("giro: "+giro+" activo: "+activo+" totalGirosSeleccionados ="+this.totalGirosSeleccionados)
+
       }
       if(activo == "true"){
-        console.log("giro: "+giro+" activo: "+activo+" totalGirosSeleccionados ="+this.totalGirosSeleccionados)
+        //console.log("giro: "+giro+" activo: "+activo)
         //this.totalGirosSeleccionados=this.totalGirosSeleccionados-1
       }
       
       this.subCatSelect= await this.modalSeleccionarSubcategorias(giro,this.user.id_persona,this.listaPreferencias)
-      console.log("subcats elegdas= \n"+JSON.stringify(this.subCatSelect.data.data))
+      //console.log("subcats elegdas= \n"+JSON.stringify(this.subCatSelect.data.data))
       var agregoAlguno=false
       this.subCatSelect.data.data.forEach(subcat => {
         if(subcat.id_giro==giro){
@@ -153,7 +155,7 @@ export class PreferenciasPage implements OnInit {
       id_persona: this.user.id_persona,
       preferencias: this.listaPreferencias
     }
-    console.log("guardar preferencias payload:\n"+JSON.stringify(payload))
+    //console.log("guardar preferencias payload:\n"+JSON.stringify(payload))
     this.loader = true;
     this.filtrosService.guardarMisPreferencias(payload).subscribe(
       async response => {   
@@ -166,7 +168,7 @@ export class PreferenciasPage implements OnInit {
         }else{
           this.toadNotificacionService.error(response.message);
         }    
-          console.log("response guardar preferencias:  \n"+JSON.stringify(await response))
+          //console.log("response guardar preferencias:  \n"+JSON.stringify(await response))
           this.loader = false;           
         },
       error => {
