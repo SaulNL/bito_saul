@@ -84,6 +84,36 @@ export class FiltrosService {
         }));
     }
 
+    obtenerPreferencias(idPersona:any): Observable<any> {
+        const body = JSON.stringify({id_persona : idPersona});
+        this.http.setDataSerializer("utf8");
+        let datos = from(this.http.post(this.url+'/api/preferencias/persona/obtener',body,
+        AppSettings.getHeadersToken())
+        .then( data => {
+            return JSON.parse(data.data);
+        })
+        .catch((error) => {
+            return error;
+        }));
+        return datos.pipe(map(data => {
+            return data;
+        }));
+    }
+    guardarMisPreferencias(preferencias: any): Observable<any> {
+        const body = JSON.stringify(preferencias);
+        this.http.setDataSerializer("utf8");
+        let datos = from(this.http.post(this.url+'/api/preferencias/persona/guardar',body,
+        AppSettings.getHeadersToken())
+        .then( data => {
+            return JSON.parse(data.data);
+        })
+        .catch((error) => {
+            return error;
+        }));
+        return datos.pipe(map(data => {
+            return data;
+        }));
+      }
     obtenerGiros(): Observable<any> {
         const body = JSON.stringify({});
         this.http.setDataSerializer("utf8");

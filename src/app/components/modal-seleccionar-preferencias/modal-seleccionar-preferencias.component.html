@@ -23,16 +23,35 @@
 
     <ion-grid>
       <ion-row >        
-          <ion-col *ngFor="let subCat of listaSubCategoties" (click)="selectSubcategory(subCat.id_categoria)">
+          <ion-col *ngFor="let subCat of listaSubCategoriesColor index as i" (click)="selectSubcategory(subCat.id_categoria,subCat.active,i)">
             <ion-item color="none" lines="none">
-              <ion-avatar class="image-center"> <img class="img-gris" 
+              <ion-avatar class="image-center"> <img 
                   src="{{subCat.url_imagen}}"> 
               </ion-avatar>  
             </ion-item>
-            <p style="text-align: center;">{{subCat.nombre}}</p>
+            <div style="width: 100%; display: flex; justify-content: center; position: relative; z-index: 800;">
+              <ion-icon [name]="subCat.active==='true'?'heart':'heart-outline'" role="img" [ngClass]="subCat.active==='true'? 'heartLike' : 'heartNotLike' " size="small" aria-label="Me gusta"></ion-icon>
+            </div>            
+            <p style="text-align: center; margin: 0px">{{subCat.nombre}}</p>
           </ion-col>
       </ion-row>
     </ion-grid>
 
+    <div [style]="totalCategoriasSeleccionadas>0?'display: flex; justify-content: space-between;':'display: block' ">
+      <ion-item *ngIf="totalCategoriasSeleccionadas>0">
+        <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+          <ion-button style="width: fit-content;" mode="ios" size="small" class="bg-rosa" shape="round" (click)="limpiarCategoria()">
+            Limpiar categoría
+          </ion-button>
+        </div>
+      </ion-item>
+      <ion-item>
+        <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+          <ion-button style="width: fit-content;" mode="ios" size="small" class="bg-rosa" shape="round" (click)="guardarPreferencias()">
+            Aceptar
+          </ion-button>
+        </div>
+      </ion-item>
+    </div>
   </ion-card>    
 </ion-content> 
