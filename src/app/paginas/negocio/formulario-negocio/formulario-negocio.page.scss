@@ -1,98 +1,106 @@
 .avatar-upload {
-    text-align: center;
-    position: relative;
-    max-width: 170px;
-    margin: 0px auto;
-  }
-  .avatar-edit {
-    position: absolute;
-    right: 4px;
-    top: 10px;
-    z-index: 1;
-  }
-  .avatar-upload > .avatar-edit > input {
-    display: none;
-  }
+  text-align: center;
+  position: relative;
+  max-width: 170px;
+  margin: 0px auto;
+}
 
-  .avatar-upload > .avatar-edit > label {
-    display: inline-block;
-    width: 34px;
-    height: 34px;
-    margin-bottom: 0;
-    border-radius: 100%;
-    background: #FFFFFF;
-    border: 1px solid transparent;
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
-    cursor: pointer;
-    font-weight: normal;
-    transition: all .2s ease-in-out;
-  }
+.avatar-edit {
+  position: absolute;
+  right: 4px;
+  top: 10px;
+  z-index: 1;
+}
 
-  .avatar-upload > .avatar-edit > label:hover {
-    background: #f1f1f1;
-    border-color: #d6d6d6;
-  }
+.avatar-upload>.avatar-edit>input {
+  display: none;
+}
 
-  .avatar-upload > .avatar-edit > label:after {
-    //content: "\f030";
-    font-family: 'FontAwesome';
-    color: #757575;
-    position: absolute;
-    top: 10px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    margin: auto;
-  }
-  .avatar-preview {
-    width: 150px;
-    height: 150px;
-   // position: relative;
-    border-radius: 100%;
-    border: 3px solid #a1a1a1;
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
-   // right: -12vh;
-    background-image: url(https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg);
-    background-repeat: no-repeat !important;
-    background-position: center;
-    background-size: contain;
-  }
-  .avatar-preview > div {
-    width: 100% !important;
-    height: 100% !important;
-    border-radius: 100% !important;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50%;
-  }
+.avatar-upload>.avatar-edit>label {
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 0;
+  border-radius: 100%;
+  background: #FFFFFF;
+  border: 1px solid transparent;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  font-weight: normal;
+  transition: all .2s ease-in-out;
+}
 
-  .label-stacked.sc-ion-label-md-h, .label-floating.sc-ion-label-md-h {
+.avatar-upload>.avatar-edit>label:hover {
+  background: #f1f1f1;
+  border-color: #d6d6d6;
+}
 
-    color: gray;
-  }
-  .cent{
-    text-align: center;
-  }
+.avatar-upload>.avatar-edit>label:after {
+  //content: "\f030";
+  font-family: 'FontAwesome';
+  color: #757575;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  margin: auto;
+}
 
-.texto-info-domicilio{
+.avatar-preview {
+  width: 150px;
+  height: 150px;
+  // position: relative;
+  border-radius: 100%;
+  border: 3px solid #a1a1a1;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+  // right: -12vh;
+  background-image: url(https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg);
+  background-repeat: no-repeat !important;
+  background-position: center;
+  background-size: contain;
+}
+
+.avatar-preview>div {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 100% !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+.label-stacked.sc-ion-label-md-h,
+.label-floating.sc-ion-label-md-h {
+
+  color: gray;
+}
+
+.cent {
+  text-align: center;
+}
+
+.texto-info-domicilio {
   font-size: 10px;
 }
-.slider{
+
+.slider {
   width: 100%;
   height: 30%;
 }
+
 .foto-card {
   width: 100%;
   height: 160px;
   box-shadow: none;
   border-radius: 12px;
-  
+
   img {
-      object-fit: cover;
-      width: 98%;
-      transform: scale(1.1, 1.1) rotate(1deg);
-      transition: 600ms all ease-in-out;
-      line-height:0;
+    object-fit: cover;
+    width: 98%;
+    transform: scale(1.1, 1.1) rotate(1deg);
+    transition: 600ms all ease-in-out;
+    line-height: 0;
   }
 }
 
@@ -100,116 +108,124 @@
   transform: scale(1.05, 1.05);
 
   .foto-card {
-      img {
-          transform: scale(1, 1);
-      }
+    img {
+      transform: scale(1, 1);
+    }
   }
 }
 
 .swiper-slide {
   transition: 400ms all ease-in-out;
 }
-.boton{
-  position:absolute; 
-  top:-1%; 
-  right:-1%;
+
+.boton {
+  position: absolute;
+  top: -1%;
+  right: -1%;
   border-radius: 25px;
   color: rebeccapurple;
-  --ion-item-background:rgba(255, 255, 255, 0.527);
+  --ion-item-background: rgba(255, 255, 255, 0.527);
 }
+
 .size-icon {
   width: 200px;
   height: 180px;
 }
+
 .custom-file-input-disabled {
-	display: block;
-	position: relative;
+  display: block;
+  position: relative;
 }
+
 .custom-file-input-disabled input {
-	visibility: hidden;
-	width: 100px
+  visibility: hidden;
+  width: 100px
 }
+
 .custom-file-input-disabled:before {
-	content: 'Subir Imagen';
-	display: block;
-	background: #8b8b8b;
-	border-radius: 2px;
-	padding: 5px 0px;
-	outline: none;
-	white-space: nowrap;
-	color:white;
-	font-weight: bold;
-	text-align: center;
-	font-size: 10pt;
-	position: absolute;
-	left: 0;
-	right: 0;
+  content: 'Subir Imagen';
+  display: block;
+  background: #8b8b8b;
+  border-radius: 2px;
+  padding: 5px 0px;
+  outline: none;
+  white-space: nowrap;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  font-size: 10pt;
+  position: absolute;
+  left: 0;
+  right: 0;
 }
+
 .custom-file-input-disabled:hover:before {
-	border-color: #a74eef;
+  border-color: #a74eef;
 }
+
 .custom-file-input-disabled:active:before {
-	background: #a74eef;
+  background: #a74eef;
 }
 
 .custom-file-input {
-	display: block;
-	position: relative;
-	color: #fa4f72;
+  display: block;
+  position: relative;
+  color: #fa4f72;
 }
+
 .custom-file-input input {
-	visibility: hidden;
-	width: 100px
+  visibility: hidden;
+  width: 100px
 }
+
 .custom-file-input:before {
-	content: 'Subir Imagen';
-	display: block;
-	background: -webkit-linear-gradient(90deg,#fa4f72,#a74eef);
-	background: -o-linear-gradient(90deg,#fa4f72,#a74eef);
-	background: -moz-linear-gradient(90deg,#fa4f72,#a74eef);
-	background: linear-gradient(90deg,#fa4f72,#a74eef);
-	border-radius: 2px;
-	padding: 5px 0px;
-	outline: none;
-	white-space: nowrap;
-	cursor: pointer;
-	color:white;
-	font-weight: bold;
-	text-align: center;
-	font-size: 10pt;
-	position: absolute;
-	left: 0;
-	right: 0;
+  content: 'Subir Imagen';
+  display: block;
+  background: -webkit-linear-gradient(90deg, #fa4f72, #a74eef);
+  background: -o-linear-gradient(90deg, #fa4f72, #a74eef);
+  background: -moz-linear-gradient(90deg, #fa4f72, #a74eef);
+  background: linear-gradient(90deg, #fa4f72, #a74eef);
+  border-radius: 2px;
+  padding: 5px 0px;
+  outline: none;
+  white-space: nowrap;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  font-size: 10pt;
+  position: absolute;
+  left: 0;
+  right: 0;
 }
+
 .custom-file-input:hover:before {
-	border-color: #a74eef;
+  border-color: #a74eef;
 }
+
 .custom-file-input:active:before {
-	background: #a74eef;
+  background: #a74eef;
 }
+
 .borrar-botom {
-	display: block;
-    background: -webkit-linear-gradient(
-90deg
-,#fa4f72,#a74eef);
-    background: -o-linear-gradient(90deg,#fa4f72,#a74eef);
-    background: -moz-linear-gradient(90deg,#fa4f72,#a74eef);
-    background: linear-gradient(
-90deg
-,#fa4f72,#a74eef);
-    border-radius: 4px;
-    padding: 5px 0px;
-    outline: none;
-    white-space: nowrap;
-    cursor: pointer;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    font-size: 10pt;
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin-top: -30px;
+  display: block;
+  background: -webkit-linear-gradient(90deg, #fa4f72, #a74eef);
+  background: -o-linear-gradient(90deg, #fa4f72, #a74eef);
+  background: -moz-linear-gradient(90deg, #fa4f72, #a74eef);
+  background: linear-gradient(90deg, #fa4f72, #a74eef);
+  border-radius: 4px;
+  padding: 5px 0px;
+  outline: none;
+  white-space: nowrap;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  font-size: 10pt;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-top: -30px;
 }
 
 .avatar-card {
@@ -218,23 +234,41 @@
   height: 200px;
   width: 200px;
   box-shadow: none;
-  border-radius: 50%;        
+  border-radius: 50%;
 }
-.avatar-card img{
+
+.avatar-card img {
   object-fit: cover;
   width: 100%;
   transform: scale(1.1, 1.1) rotate(1deg);
   transition: 600ms all ease-in-out;
-  line-height:0;
+  line-height: 0;
 }
 
 .blanco {
   --color: white;
 }
 
-.Verde{
+.Verde {
   background: #acefac;
 }
-.Rojo{
+
+.Rojo {
   background: rgba(236, 212, 212, 0.89);
+}
+
+.card-aplica {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-aplica h4 {
+  padding: 20px;
+}
+
+.aplica-button {
+  background-color: #e84c70;
+  color: #fff;
+  height: 36px;
+  border-radius: 5px;
 }

@@ -741,18 +741,25 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.modal.dismiss({
         dismissed: true,
       });
+      let filtroactivo
+      if (res == false) filtroactivo = false;
       this.filtroActivo = true;
       this.Filtros = res;
       let d1 = JSON.stringify(res);
       localStorage.setItem("filtroactual", d1);
       localStorage.setItem("todo", "todo");
-      this.buscarNegocios(true);
+      if (res == false) {
+        this.borrarFiltrosP()
+      } else {
+        this.buscarNegocios(true);
+      }
     });
 
     this.modal = await this.modalController.create({
       component: FiltrosBusquedaComponent,
       componentProps: {
         buscarPorFiltros: eventEmitter,
+        eliminarPorFiltros: eventEmitter,
         filtros: this.Filtros,
         isProductPage: false,
       },

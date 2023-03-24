@@ -130,6 +130,7 @@ export class FormularioNegocioPage implements OnInit {
   public galeriaFull = false;
   public numeroFotos: number;
   public logo: any;
+  public negocioAplica = false;
   convenioId: number;
   cnvn_fecha: any;
   dateFormat: any;
@@ -263,43 +264,43 @@ export class FormularioNegocioPage implements OnInit {
     this.obtenernombreNegocioMatriz();
   }
 
-    public obtenernombreNegocioMatriz(){
-      this.negocioServico.obtenerNegocio(this.negocioTO.id_negocio_matriz).subscribe(
-          (respuesta) => {
-              this.nombreNegocioMatriz = respuesta.data.nombre_comercial;
-          }
-      );
-    }
-    public buscardatos() {
-        this.negocioServico.obtenerDetalleDeNegocio(this.negocioTO.id_negocio, 0, this.usuario.id_persona).subscribe(
-            (repsuesta) => {
-                const datosNegocio = repsuesta.data;
-                let serviciosTags = [];
-                let productoTags = [];
-                if (this.iden === 2) {
-                    serviciosTags = datosNegocio.serviciosTags;
-                    this.negocioTO.tags = JSON.stringify(serviciosTags);
-                }
-                if (this.iden === 1) {
-                    productoTags = datosNegocio.productoTags;
-                    this.negocioTO.tags = JSON.stringify(productoTags);
-                }
-                this.listaVista = repsuesta.data.categorias !== undefined ? repsuesta.agrupados : [];
+  public obtenernombreNegocioMatriz() {
+    this.negocioServico.obtenerNegocio(this.negocioTO.id_negocio_matriz).subscribe(
+      (respuesta) => {
+        this.nombreNegocioMatriz = respuesta.data.nombre_comercial;
+      }
+    );
+  }
+  public buscardatos() {
+    this.negocioServico.obtenerDetalleDeNegocio(this.negocioTO.id_negocio, 0, this.usuario.id_persona).subscribe(
+      (repsuesta) => {
+        const datosNegocio = repsuesta.data;
+        let serviciosTags = [];
+        let productoTags = [];
+        if (this.iden === 2) {
+          serviciosTags = datosNegocio.serviciosTags;
+          this.negocioTO.tags = JSON.stringify(serviciosTags);
+        }
+        if (this.iden === 1) {
+          productoTags = datosNegocio.productoTags;
+          this.negocioTO.tags = JSON.stringify(productoTags);
+        }
+        this.listaVista = repsuesta.data.categorias !== undefined ? repsuesta.agrupados : [];
 
-                console.log('Dataproductos' + this.listaVista);
-                if (this.listaVista.length === 0 && this.seEstaClonando){
-                    this.presentAlert('Sin Contenido', 'Este establecimiento no cuenta con Categorias o Productos para clonar' );
-                }
-                this.listaVista.forEach(data => {
-                    const cantidad = data.productos.length;
-                    this.numerodeservicioproductos(cantidad);
-                });
-            },
-            (error) => {
-                this.loader = false;
-            }
-        );
-    }
+        console.log('Dataproductos' + this.listaVista);
+        if (this.listaVista.length === 0 && this.seEstaClonando) {
+          this.presentAlert('Sin Contenido', 'Este establecimiento no cuenta con Categorias o Productos para clonar');
+        }
+        this.listaVista.forEach(data => {
+          const cantidad = data.productos.length;
+          this.numerodeservicioproductos(cantidad);
+        });
+      },
+      (error) => {
+        this.loader = false;
+      }
+    );
+  }
 
   setearDireccion() {
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
@@ -442,14 +443,14 @@ export class FormularioNegocioPage implements OnInit {
     } else {
       this.negocioServico.buscarNegocio(id).subscribe(
         response => {
-          //console.log('Datos jale: ', JSON.stringify(response.data));
+          console.log('Datos jale: ', JSON.parse(JSON.stringify(response.data)));
           this.negocioTO = response.data;
           this.obtenerTipoNegocio();
           this.obtenerCatOrganizaciones();
           this.obtenerCaPlazas();
           this.obtenerConvenio();
           this.obtenerCatDistintivos();
-
+          this.validacionAplicaDatos(response.data);
           this.negocioTO.afiliacionesTodo.forEach(element => {
 
             const afiliacion = {
@@ -491,13 +492,13 @@ export class FormularioNegocioPage implements OnInit {
       }
     );
   }
-  idmatriznegocio( event){
-      let idE;
-      if (event.type === 'ionChange') {
-          idE = event.detail.value;
-          if (idE > 0){
-              this.negocioTO.id_negocio_matriz = idE;
-          }
+  idmatriznegocio(event) {
+    let idE;
+    if (event.type === 'ionChange') {
+      idE = event.detail.value;
+      if (idE > 0) {
+        this.negocioTO.id_negocio_matriz = idE;
+      }
 
     } else {
       idE = event.value;
@@ -630,67 +631,67 @@ export class FormularioNegocioPage implements OnInit {
     this.notificaciones.toastInfo('Registra un convenio para poder habilitar esta característica');
   }
   public agregarFoto(event) {
-    if(!this.features10){
+    if (!this.features10) {
       this.notificaciones.alerta("No cuenta con el nivel de subscipción para usar esta característica")
-    }else{
+    } else {
       let nombre_archivo;
-    if (event.target.files && event.target.files.length) {
-      let height;
-      let width;
-      for (const archivo of event.target.files) {
-        const reader = this._utils_cls.getFileReader();
-        reader.readAsDataURL(archivo);
-        reader.onload = () => {
-          nombre_archivo = archivo.name;
-          const img = new Image();
-          img.src = reader.result as string;
-          img.onload = () => {
-            height = img.naturalHeight;
-            width = img.naturalWidth;
-            if (width === 400 && height === 400) {
-              const file_name = archivo.name;
-              const file = archivo;
-              if (file.size < 3145728) {
-                let file_64: any;
-                const utl = new UtilsCls();
-                utl.getBase64(file).then(
-                  data => {
-                    const archivo = new ArchivoComunModel();
-                    if (file_name != null) {
-                      archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
-                      archivo.archivo_64 = file_64;
+      if (event.target.files && event.target.files.length) {
+        let height;
+        let width;
+        for (const archivo of event.target.files) {
+          const reader = this._utils_cls.getFileReader();
+          reader.readAsDataURL(archivo);
+          reader.onload = () => {
+            nombre_archivo = archivo.name;
+            const img = new Image();
+            img.src = reader.result as string;
+            img.onload = () => {
+              height = img.naturalHeight;
+              width = img.naturalWidth;
+              if (width === 400 && height === 400) {
+                const file_name = archivo.name;
+                const file = archivo;
+                if (file.size < 3145728) {
+                  let file_64: any;
+                  const utl = new UtilsCls();
+                  utl.getBase64(file).then(
+                    data => {
+                      const archivo = new ArchivoComunModel();
+                      if (file_name != null) {
+                        archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
+                        archivo.archivo_64 = file_64;
+                      }
+                      this.fotografiasArray.push(archivo);
+                      this.numeroFotos++;
+                      if (this.numeroFotos >= this.numeroFotosPermitidas) {
+                        this.galeriaFull = true;
+                      }
                     }
+                  );
+                } else {
+                  this.notificaciones.alerta('El tama\u00F1o m\u00E1ximo de archivo es de 3 Mb, por favor intente con otro archivo');
+                }
+              } else {
+                this.resizeToWidth = 400;
+                this.resizeToHeight = 400;
+                this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
+                  if (r !== undefined) {
+                    const archivo = new ArchivoComunModel();
+                    archivo.nombre_archivo = nombre_archivo,
+                      archivo.archivo_64 = r.data;
                     this.fotografiasArray.push(archivo);
                     this.numeroFotos++;
                     if (this.numeroFotos >= this.numeroFotosPermitidas) {
                       this.galeriaFull = true;
                     }
                   }
-                );
-              } else {
-                this.notificaciones.alerta('El tama\u00F1o m\u00E1ximo de archivo es de 3 Mb, por favor intente con otro archivo');
-              }
-            } else {
-              this.resizeToWidth = 400;
-              this.resizeToHeight = 400;
-              this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
-                if (r !== undefined) {
-                  const archivo = new ArchivoComunModel();
-                  archivo.nombre_archivo = nombre_archivo,
-                    archivo.archivo_64 = r.data;
-                  this.fotografiasArray.push(archivo);
-                  this.numeroFotos++;
-                  if (this.numeroFotos >= this.numeroFotosPermitidas) {
-                    this.galeriaFull = true;
-                  }
                 }
+                );
               }
-              );
-            }
+            };
           };
-        };
+        }
       }
-    }
     }
   }
 
@@ -1148,7 +1149,7 @@ export class FormularioNegocioPage implements OnInit {
               if (response.code === 200) {
                 this.notificaciones.exito('Tu negocio se guardo exitosamente');
                 this.loader = false;
-                this.router.navigate(['/tabs/home/negocio'],{ queryParams: { special: true } });
+                this.router.navigate(['/tabs/home/negocio'], { queryParams: { special: true } });
               } else {
                 this.loader = false;
                 this.notificaciones.alerta(JSON.stringify(response.message));
@@ -1334,25 +1335,25 @@ export class FormularioNegocioPage implements OnInit {
   }
 
   public getAddress() {
-      const estado = this.list_cat_estado.filter(estad => estad.id_estado === this.negocioTO.det_domicilio.id_estado)[0].nombre;
-      const municipio = this.list_cat_municipio.filter(municip => municip.id_municipio === this.negocioTO.det_domicilio.id_municipio)[0].nombre;
-      const address = this.negocioTO.det_domicilio.calle + ' ' + this.negocioTO.det_domicilio.numero_ext + ',' + this.negocioTO.det_domicilio.colonia + ',' + this.negocioTO.det_domicilio.codigo_postal + ' ' + municipio + ',' + estado;
-      this.getCoordinates(address);
+    const estado = this.list_cat_estado.filter(estad => estad.id_estado === this.negocioTO.det_domicilio.id_estado)[0].nombre;
+    const municipio = this.list_cat_municipio.filter(municip => municip.id_municipio === this.negocioTO.det_domicilio.id_municipio)[0].nombre;
+    const address = this.negocioTO.det_domicilio.calle + ' ' + this.negocioTO.det_domicilio.numero_ext + ',' + this.negocioTO.det_domicilio.colonia + ',' + this.negocioTO.det_domicilio.codigo_postal + ' ' + municipio + ',' + estado;
+    this.getCoordinates(address);
   }
 
   async getCoordinates(address) {
     this.getCoordinatesMap.getPosts(address)
-    .then(async data => {
-      const arrayPosts: any = data;
-      const latitud = arrayPosts.results[0].geometry.location.lat;
-      const longitud = arrayPosts.results[0].geometry.location.lng;
-      const gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
-      this.map.panTo([latitud, longitud]);
-      this.marker.setLatLng([latitud, longitud]);
-      await Geolocation.getCurrentPosition(gpsOptions).then(res => {
-        this.negocioTO.det_domicilio.latitud = res.coords.latitude;
-        this.negocioTO.det_domicilio.longitud = res.coords.longitude;
-      });
+      .then(async data => {
+        const arrayPosts: any = data;
+        const latitud = arrayPosts.results[0].geometry.location.lat;
+        const longitud = arrayPosts.results[0].geometry.location.lng;
+        const gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
+        this.map.panTo([latitud, longitud]);
+        this.marker.setLatLng([latitud, longitud]);
+        await Geolocation.getCurrentPosition(gpsOptions).then(res => {
+          this.negocioTO.det_domicilio.latitud = res.coords.latitude;
+          this.negocioTO.det_domicilio.longitud = res.coords.longitude;
+        });
 
       });
   }
@@ -1515,5 +1516,27 @@ export class FormularioNegocioPage implements OnInit {
     }
     );
     return data;
+  }
+  validacionAplicaDatos(datos) {
+    if (datos.negocio_fisico == false) this.negocioAplica = false;
+    else this.negocioAplica = true;
+  }
+  activarAplica(aplica) {
+    if (aplica) {
+      this.negocioAplica = true;
+      this.limpiarAplica();
+    } else {
+      this.negocioAplica = false;
+      this.limpiarAplica();
+    }
+  }
+  limpiarAplica() {
+    this.negocioTO.negocio_fisico = false;
+    this.negocioTO.consumo_sitio = false;
+    this.negocioTO.entrega_sitio = false;
+    this.negocioTO.entrega_domicilio = false;
+    this.negocioTO.alcance_entrega = "";
+    this.negocioTO.tiempo_entrega_kilometro = "";
+    this.negocioTO.costo_entrega = "";
   }
 }

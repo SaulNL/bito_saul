@@ -15,6 +15,7 @@ declare var google: any;
 })
 export class FiltrosBusquedaComponent implements OnInit {
     @Output() private buscarPorFiltros = new EventEmitter();
+    @Output() private eliminarPorFiltros = new EventEmitter();
     @Input() public isProductPage: boolean;
     private currentModal: any;
     @Input() filtros: FiltrosModel;
@@ -158,9 +159,9 @@ export class FiltrosBusquedaComponent implements OnInit {
     public obtenerCatalogos() {
         this.filtroServicio.tipoNegocios().subscribe(
             response => {
-                let categorias=response.data.catTipoNegocio
+                let categorias = response.data.catTipoNegocio
                 categorias.forEach(cat => {
-                    if (cat.id_tipo_negocio!="3" || cat.id_tipo_negocio!=3){
+                    if (cat.id_tipo_negocio != "3" || cat.id_tipo_negocio != 3) {
                         this.lstCatTipoNegocio.push(cat);
                     }
                 });
@@ -311,9 +312,9 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
     setIonradiogroupAbiertoCerrado(opcion: number) {
         if (opcion === 1) {
-            this.filtros.abierto = opcion+'';
+            this.filtros.abierto = opcion + '';
         } else if (opcion === 0) {
-            this.filtros.abierto = opcion+'';
+            this.filtros.abierto = opcion + '';
         }
     }
     obtenerKilometrosRango(event) {
@@ -331,6 +332,7 @@ export class FiltrosBusquedaComponent implements OnInit {
         this.filtros = new FiltrosModel();
         this.listaTipoNegocio = [];
         this.buscar();
+        this.eliminarPorFiltros.emit(false);
     }
     validarCheckbox() {
         setTimeout(it => {
