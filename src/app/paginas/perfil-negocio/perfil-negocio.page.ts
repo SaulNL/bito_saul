@@ -150,6 +150,9 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   showPopUp: boolean;
   insigniaTitle: string;
   insigniaDescrip: string;
+  vieneDeModal: boolean = false
+  activedPage: string;
+  palabraBuqueda: any;
   constructor(
     private nativeHTTP: HTTP,
     private file: File,
@@ -206,6 +209,10 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
           }
         });
       });
+      if (params.desdeModal) {
+        this.vieneDeModal=true;
+        this.palabraBuqueda = params.palabraBuqueda
+      }
     });
     this.banderaS = null;
     this.banderaP = null;
@@ -1053,6 +1060,12 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   salir() {
+    console.log("salir y buscar la palabra: "+ this.palabraBuqueda)
+    if(this.vieneDeModal){
+      this.router.navigate(["/tabs/productos"], {
+        queryParams: { palabraBusqueda: this.palabraBuqueda },
+      });
+    }else{
     this.msj = "Cargando";
     localStorage.setItem("loaderNegocio", "true");
     if (this.bolsa.length > 0) {
@@ -1079,6 +1092,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         }
       });
     }
+    } 
 
   }
 
@@ -1479,12 +1493,17 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   private goBackTo() {
-    if (this.toProductDetail) {
-      this.sendToProduct();
-    } else {
-      this.location.back();
+    if(this.vieneDeModal){
+      this.navctrl.navigateForward('/tabs/promociones');
+    }else{
+      if (this.toProductDetail) {
+        this.sendToProduct();
+      } else {
+        this.location.back();
+      }
+      this.toProductDetail = false;
     }
-    this.toProductDetail = false;
+    
   }
   private sendToProduct() {
     const content: ReturnToProductInterface = new ReturnToProductModel(

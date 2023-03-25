@@ -72,6 +72,7 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.promocionTO.dias.dias=[]
     this.horarios(this.promocionTO.horarios);
     this.promocionTO.estatus=this.estatus
     this.promocionTO.diasArray= this.diasArray
@@ -235,8 +236,29 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
       });
       this.diasArray = diasArray;
     }
+    this.promocionTO.dias.forEach(dia => {
+      let str = dia.dias    
+      let arr = str.split("");
+      let cadenaHoario=""
+      let aux=""
+      arr.forEach((caracter,index) => {
+        aux=caracter
+        if(aux==","){
+          if(aux != arr[index+1]){
+            cadenaHoario+=aux
+          }
+        }else{
+          cadenaHoario+=aux
+        }      
+      });
+      dia.dias = cadenaHoario
+    });    
   }
-
+  formatoDias(diasCadena: string) {
+    diasCadena = diasCadena.substring(0, diasCadena.length-1);      
+      diasCadena = diasCadena
+    return diasCadena
+  }
   public calcularDistancia(promocion: any) {
     navigator.geolocation.getCurrentPosition(async posicion => {
             this.miLat = await posicion.coords.latitude;
