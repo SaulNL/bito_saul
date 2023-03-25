@@ -478,13 +478,13 @@ export class InicioPage implements OnInit, AfterViewInit {
         this.listaCategorias.push(...respuesta.data.lst_cat_negocios.data);
         this.negociosIdMapa();
         this.banderaVerMas == false;
-        if (
+        /*if (
           this.listaCategorias[this.lengthLista - 1].nombre ==
           this.listaCategorias[this.lengthLista].nombre ||
           this.listaCategorias[this.lengthLista - 1].nombre == ""
         ) {
           this.listaCategorias[this.lengthLista].nombre = "";
-        }
+        }*/
       } else {
         console.log("sin ordenar +++++++++++++++++++")
         //console.log(JSON.stringify(respuesta.data.lst_cat_negocios.data))
@@ -884,14 +884,13 @@ export class InicioPage implements OnInit, AfterViewInit {
     //console.log("Consulta termiinada en map? "+this.consultaTerminada)
     if (this.paginaPrevia <= 1 || this.paginaPrevia == undefined) {
       this.loaderTop = false
-      //console.log("loadertop <=1 pagprev= "+this.paginaPrevia)
     } else {
       this.listaVerMas = [];
       this.banderaVerMas == false;
       this.consultaTerminada = true;
-      console.log("Consulta termiinada en map? " + this.consultaTerminada)
+      //console.log("Consulta termiinada en map? " + this.consultaTerminada)
       this.loaderTop = true
-      //console.log("loadertop > 1 pagprev= "+this.paginaPrevia)
+      //console.log("loadertop > 1 pagprev= "+this.paginaPrevia+" LoaderTop: "+this.loaderTop+" filtroActivo: "+this.filtroActivo)
     }
     this.buttonDisabled = false;
 

@@ -143,9 +143,9 @@
       </h2>
     </ion-text>
   </ion-grid>
-  <ion-grid *ngIf="lstProductos.length === 0 && selectionAP === false">
+  <ion-grid class="no-results" *ngIf="lstProductos.length < 1 && selectionAP === false">
     <ion-text color="primary">
-      <h2>No se encontraron productos relacionados</h2>
+      <h2>No se encontraron productos relacionados con su búsqueda</h2>
     </ion-text>
   </ion-grid>
   <app-infinito-scroll

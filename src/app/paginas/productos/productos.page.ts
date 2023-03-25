@@ -102,6 +102,7 @@ export class ProductosPage {
 
   ngOnInit(): void {
     this.active.queryParams.subscribe((params: Params) => {
+      //console.log("UPdate")
       if (params.byCloseProduct) {
         const product: ProductInterface = JSON.parse(params.byCloseProduct);
         this.updateProduct(product, this.lstProductos);
@@ -229,7 +230,7 @@ export class ProductosPage {
 
           this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
             response2 => {
-            
+              //console.log("Listado de productos con el filtro: "+JSON.stringify(this.anyFiltros)+"\nLista prod: "+JSON.stringify(response.data.lstProductos))
               if (response2.data.lstProductos.length > 0) {
                 this.blnBtnMapa=true;
                 const tempLstProduct = response2.data.lstProductos;
@@ -301,12 +302,12 @@ export class ProductosPage {
     let bandera = true;
     let filtro = new FiltroABCModel();
     const tamanio = this.filtroABC.length;
+    //console.log("Lista de letras + "+this.filtroABC )
     while (bandera) {
       incremento++;
       const pos = Math.round(Math.random() * (tamanio - 0) + 0);
-      filtro = this.filtroABC[pos];
-      
-      if (filtro.activo === 1 && filtro.letra != "Todos") {
+      filtro = this.filtroABC[pos];      
+      if (filtro.letra != "Todos") {//filtro.letra != "Todos"
         bandera = false;
         setTimeout(() => {
           this.obtenerProductoPorLetra(filtro);
@@ -333,6 +334,7 @@ export class ProductosPage {
     localStorage.removeItem('lstProductosOriginal');
     this.loader = true;
     let letra = filtro.letra;
+    //console.log("letraxxxxx "+letra)
     if (filtro.id === this.filtroCheckend) {
       this.filtroCheckend = null;
       filtro.letra = "";
@@ -350,7 +352,8 @@ export class ProductosPage {
           (response) => {
             this.lstProductosOriginal = response.data.lstProductos; 
             localStorage.setItem('lstProductosOriginal', JSON.stringify(this.lstProductosOriginal));           
-          
+            //console.log("Listado de productos con el filtro con letra: "+JSON.stringify(this.anyFiltros)+"\nLista prod: "+JSON.stringify(response.data.lstProductos))
+            //this.obtenerProductoPorLetra(filtro)
             this.obtenerProductosFav();
             this.lstProductos = this.lstProductosOriginal.slice(0, 6);
             this.loader = false;

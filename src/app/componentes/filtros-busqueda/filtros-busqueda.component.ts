@@ -185,6 +185,7 @@ export class FiltrosBusquedaComponent implements OnInit {
             this.filtros.idMunicipio = null;
             this.filtros.idLocalidad = null;
         }
+        //console.log("Los filtros de busqueda son: "+JSON.stringify(this.filtros))
         this.buscarPorFiltros.emit(this.filtros);
     }
 
