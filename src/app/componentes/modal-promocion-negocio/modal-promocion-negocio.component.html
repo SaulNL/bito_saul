@@ -81,8 +81,10 @@
 
       <ion-row>
         <ion-col class="ion-text-center" *ngFor="let dia of promocionTO.dias">
-          <h2 class="promocion">Quedan <span style="color: #fa4f72;">{{ promocionTO.restanDias }} días</span>, Aplica:
-            <span style="color: #fa4f72;"> {{ dia.dias}} de {{ dia.hora_inicio}} a {{dia.hora_fin}} </span>
+          <h2 class="promocion">Quedan <span style="color: #fa4f72;">{{ promocionTO.restanDias }} días</span>
+          </h2>
+          <h2 class="promocion">Aplica:
+            <span style="color: #fa4f72;"> {{formatoDias(dia.dias)}} de {{dia.hora_inicio}} a {{dia.hora_fin}} </span>
           </h2>
         </ion-col>
       </ion-row>

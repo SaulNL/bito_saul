@@ -31,10 +31,18 @@ import { CommonModule } from '@angular/common';
 import { SeleccionarSucripcionComponent } from './components/seleccionar-suscripcion/seleccionar-suscripcion.component';
 import { ModalQuienVioRequerimientoComponent } from './components/modal-quien-vio-requerimiento/modal-quien-vio-requerimiento.component';
 import { PopOverVisitsComponent } from './Bitoo/components/pop-over-visits/pop-over-visits.component';
+import { ModalDetalleProductoComponent } from './components/modal-detalle-producto/modal-detalle-producto.component';
+
+import { SpinnerModule } from 'src/app/componentes/spinner/spinner.module';
+import { LikeProductModule } from 'src/app/Bitoo/components/like-product/like-product.module';
+import { SliderImagesModule } from 'src/app/Bitoo/module/slider-images.module';
+
 @NgModule({
-declarations: [AppComponent,SeleccionarSucripcionComponent,ModalQuienVioRequerimientoComponent,PopOverVisitsComponent],
+declarations: [AppComponent,SeleccionarSucripcionComponent,ModalQuienVioRequerimientoComponent,PopOverVisitsComponent,ModalDetalleProductoComponent],
   entryComponents: [],
-  imports: [CommonModule, BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule],
+  imports: [SpinnerModule,
+    SliderImagesModule,
+    LikeProductModule,CommonModule, BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule],
   providers: [
     LocalNotifications,
     StatusBar,

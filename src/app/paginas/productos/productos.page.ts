@@ -26,7 +26,7 @@ import { PlazasAfiliacionesComponent } from "src/app/componentes/plazas-afiliaci
 import { PermisoModel } from "../../Modelos/PermisoModel";
 import { IPaginacion } from "../../interfaces/IPaginacion";
 import { PersonaService } from "src/app/api/persona.service";
-
+import { ModalDetalleProductoComponent } from "src/app/components/modal-detalle-producto/modal-detalle-producto.component";
 @Component({
   selector: "app-tab1",
   templateUrl: "productos.page.html",
@@ -74,6 +74,7 @@ export class ProductosPage {
     siguientePagina: 1,
     mensaje: "",
   };
+  palabraBuqueda: any;
 
   constructor(
     public loadingController: LoadingController,
@@ -101,6 +102,7 @@ export class ProductosPage {
 
   ngOnInit(): void {
     this.active.queryParams.subscribe((params: Params) => {
+      //console.log("UPdate")
       if (params.byCloseProduct) {
         const product: ProductInterface = JSON.parse(params.byCloseProduct);
         this.updateProduct(product, this.lstProductos);
@@ -153,6 +155,11 @@ export class ProductosPage {
     localStorage.setItem('productos',('active'));
     localStorage.removeItem("negocios");
 
+    this.active.queryParams.subscribe((params: Params) => {
+      if (params.palabraBusqueda) {
+        this.buscarToolbar(params.palabraBusqueda)
+      }
+    });
   }
 
   ionViewWillEnter()
@@ -223,7 +230,7 @@ export class ProductosPage {
 
           this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
             response2 => {
-            
+              //console.log("Listado de productos con el filtro: "+JSON.stringify(this.anyFiltros)+"\nLista prod: "+JSON.stringify(response.data.lstProductos))
               if (response2.data.lstProductos.length > 0) {
                 this.blnBtnMapa=true;
                 const tempLstProduct = response2.data.lstProductos;
@@ -295,12 +302,12 @@ export class ProductosPage {
     let bandera = true;
     let filtro = new FiltroABCModel();
     const tamanio = this.filtroABC.length;
+    //console.log("Lista de letras + "+this.filtroABC )
     while (bandera) {
       incremento++;
       const pos = Math.round(Math.random() * (tamanio - 0) + 0);
-      filtro = this.filtroABC[pos];
-      
-      if (filtro.activo === 1 && filtro.letra != "Todos") {
+      filtro = this.filtroABC[pos];      
+      if (filtro.letra != "Todos") {//filtro.letra != "Todos"
         bandera = false;
         setTimeout(() => {
           this.obtenerProductoPorLetra(filtro);
@@ -327,6 +334,7 @@ export class ProductosPage {
     localStorage.removeItem('lstProductosOriginal');
     this.loader = true;
     let letra = filtro.letra;
+    //console.log("letraxxxxx "+letra)
     if (filtro.id === this.filtroCheckend) {
       this.filtroCheckend = null;
       filtro.letra = "";
@@ -344,7 +352,8 @@ export class ProductosPage {
           (response) => {
             this.lstProductosOriginal = response.data.lstProductos; 
             localStorage.setItem('lstProductosOriginal', JSON.stringify(this.lstProductosOriginal));           
-          
+            //console.log("Listado de productos con el filtro con letra: "+JSON.stringify(this.anyFiltros)+"\nLista prod: "+JSON.stringify(response.data.lstProductos))
+            //this.obtenerProductoPorLetra(filtro)
             this.obtenerProductosFav();
             this.lstProductos = this.lstProductosOriginal.slice(0, 6);
             this.loader = false;
@@ -383,6 +392,24 @@ export class ProductosPage {
     });
   }
 
+  async modalDetalleProducto(producto: ProductoModel) {
+    var product: ProductInterface = this.createObject.createProduct(producto);
+    //console.log("palabraBuqueda MOdal: "+this.palabraBuqueda)
+    if(this.palabraBuqueda == "" || this.palabraBuqueda == undefined){
+      this.palabraBuqueda = ""
+    }
+    const modal = await this.modalController.create({      
+      component: ModalDetalleProductoComponent,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        productObject: product,
+        producto: producto.idProducto,
+        palabraBuqueda: this.palabraBuqueda
+      }
+    });
+    await modal.present(); 
+  }
+
   async presentModal() {
     const modal = await this.modalController.create({
       component: ModalProductosComponent,
@@ -401,6 +428,7 @@ export class ProductosPage {
    * @param event
    */
   buscarToolbar(event) {
+    this.palabraBuqueda=event
     this.anyFiltros = new FiltrosModel();
     this.anyFiltros.idEstado = 29;
     this.anyFiltros.idTipoNegocio=null;

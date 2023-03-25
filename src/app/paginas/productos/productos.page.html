@@ -107,12 +107,12 @@
       *ngFor="let producto of lstProductos"
       class="item in-list ion-focusable hydrated item-label"
     >
-      <ion-avatar #datos (click)="abrirProducto(producto)" slot="start"
+      <ion-avatar #datos (click)="modalDetalleProducto(producto)" slot="start"
         ><img
           src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
           [srcset]="productoImagen(producto.imagen)"
       /></ion-avatar>
-      <ion-label class="hydrated" #datos (click)="abrirProducto(producto)">
+      <ion-label class="hydrated" #datos (click)="modalDetalleProducto(producto)">
         <h3>{{producto.nombre}}</h3>
         <p>
           {{producto.nombre_categoria1 != null ?producto.nombre_categoria1:'Sincategoría'}}
@@ -143,9 +143,9 @@
       </h2>
     </ion-text>
   </ion-grid>
-  <ion-grid *ngIf="lstProductos.length === 0 && selectionAP === false">
+  <ion-grid class="no-results" *ngIf="lstProductos.length < 1 && selectionAP === false">
     <ion-text color="primary">
-      <h2>No se encontraron productos relacionados</h2>
+      <h2>No se encontraron productos relacionados con su búsqueda</h2>
     </ion-text>
   </ion-grid>
   <app-infinito-scroll

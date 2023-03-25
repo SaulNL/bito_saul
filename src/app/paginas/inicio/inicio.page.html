@@ -68,16 +68,16 @@
       <ion-slide>
 
         <li class="nav-item">
-          <a class="todas" id="pills-home-todos" role="tab" (click)="activar()" aria-selected="true">
-            <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img class="img-gris"
+          <a class="todas" id="pills-home-todos" role="tab" aria-selected="true">
+            <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img   (click)="activar()" class="img-gris"
                 src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png">
             </ion-avatar>
-            <ion-avatar *ngIf="idTodo ===true" style="margin-bottom: 1.2rem;" class="image-center"> <img
+            <ion-avatar *ngIf="idTodo ===true" style="margin-bottom: 1.2rem;" class="image-center"> <img  (click)="borrarFiltrosP()"
                 src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png">
             </ion-avatar>
 
 
-            <p *ngIf="idTodo ===true" class="giro-color" style="font-size: 10.5px;">Todos los negocios </p>
+            <p *ngIf="idTodo ===true" class="giro-color" style="font-size: 10.5px;">Regresar al inicio </p>
             <p *ngIf="idTodo !=true" style="font-size: 10.5px;">Todos los negocios </p>
           </a>
         </li>
@@ -111,7 +111,7 @@
       <ion-spinner #cargaArriba id="cargaArriba" name="bubbles"></ion-spinner>
       <p>Cargando negocios</p>
     </ion-row-->
-    <ion-row *ngIf="loaderTop && filtroActivo" [ngClass]="loaderTop? 'loaderArribaShow' : 'loaderArribaHide'">
+    <ion-row *ngIf="loaderTop" [ngClass]="loaderTop? 'loaderArribaShow' : 'loaderArribaHide'">
       <ion-col size="12">
         <div class="ver-mas">
           <ion-button (click)="cargarMasPaginasArriba()" expand="block" fill="outline" color="medium" size="small"
