@@ -267,7 +267,10 @@ export class FormularioNegocioPage implements OnInit {
   public obtenernombreNegocioMatriz() {
     this.negocioServico.obtenerNegocio(this.negocioTO.id_negocio_matriz).subscribe(
       (respuesta) => {
-        this.nombreNegocioMatriz = respuesta.data.nombre_comercial;
+        console.log("Del name comercial: "+JSON.stringify(respuesta))
+        if(respuesta.data!=null){
+          this.nombreNegocioMatriz = respuesta.data.nombre_comercial;
+        }       
       }
     );
   }
@@ -287,7 +290,7 @@ export class FormularioNegocioPage implements OnInit {
         }
         this.listaVista = repsuesta.data.categorias !== undefined ? repsuesta.agrupados : [];
 
-        console.log('Dataproductos' + this.listaVista);
+        //console.log('Dataproductos' + JSON.stringify(this.listaVista));
         if (this.listaVista.length === 0 && this.seEstaClonando) {
           this.presentAlert('Sin Contenido', 'Este establecimiento no cuenta con Categorias o Productos para clonar');
         }
@@ -443,7 +446,7 @@ export class FormularioNegocioPage implements OnInit {
     } else {
       this.negocioServico.buscarNegocio(id).subscribe(
         response => {
-          console.log('Datos jale: ', JSON.parse(JSON.stringify(response.data)));
+          //console.log('Datos del negocio: ', JSON.stringify(response.data));
           this.negocioTO = response.data;
           this.obtenerTipoNegocio();
           this.obtenerCatOrganizaciones();

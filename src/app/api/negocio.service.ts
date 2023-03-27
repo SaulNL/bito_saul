@@ -270,7 +270,6 @@ export class NegocioService {
 
     obtenerCategoriasProdServ(id: any, negocio_id: number): Observable<any> {
         const body = JSON.stringify({ id_giro: id, id_tipo_negocio: negocio_id });
-        console.log("body serv", body)
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'buscar/giro/categorias',
@@ -535,11 +534,11 @@ export class NegocioService {
 
 
     solicitarValidacionNegocio(idNegocio: any): Observable<any> {
-        const body = JSON.stringify({ id_negocio: idNegocio });
+        console.log("Body: "+idNegocio)
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/validar/validacionNegocio',
-            body, AppSettings.getHeadersToken())
+            idNegocio, AppSettings.getHeadersToken())
             .then((data) => {
                 return JSON.parse(data.data);
             })
