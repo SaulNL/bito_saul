@@ -64,6 +64,15 @@ export class BusquedaService {
      return respuesta;
     });
   }
+  public obtenerNumeroPaginas(filtro, pagina: number): Promise<any>{
+    const body = JSON.stringify({filtros: filtro, page: pagina});
+     this.http.setDataSerializer("utf8");
+    return this.http.post(`${this.url}api/negocios/obtenerNumeroPaginas`,body, AppSettings.getHeaders())
+    .then( data => {
+      let respuesta: any =  JSON.parse(data.data);     
+     return respuesta;
+    });
+  }
   
   public obtenerCategorias(pagina: number):Observable<any>{
     const url = this.url + '/buscar/datos/inicio/allfiltro?page='+pagina;

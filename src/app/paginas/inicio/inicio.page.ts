@@ -1201,9 +1201,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     let d1 = JSON.stringify(this.Filtros);
     localStorage.setItem("filtroactual", d1);
 
-    var pagRandom = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, this.siguienteGiro);
-    this.totalDeNegocios = pagRandom.data.lst_cat_negocios.total
-    var rand = await this.random(1, Math.ceil((pagRandom.data.lst_cat_negocios.total / 20)))
+    var noPaginas = await this.principalSercicio.obtenerNumeroPaginas(this.Filtros, 1);
+    var rand = this.random(1, JSON.stringify(noPaginas.data.last_page))
     console.log("Pagina random : " + rand)
     this.totalPaginas = Math.ceil((this.totalDeNegocios / 20));
     this.primeraPagRandom = rand;
@@ -1245,9 +1244,8 @@ export class InicioPage implements OnInit, AfterViewInit {
         this.objectSelectAfiliacionPlaza.id_organizacion)
       : "";
     localStorage.setItem("todo", "todo");
-    var pagRandom = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, this.siguienteGiro);
-    var rand = await this.random(1, Math.ceil((pagRandom.data.lst_cat_negocios.total / 20)))
-    console.log("Pagina random : " + rand)
+    var noPaginas = await this.principalSercicio.obtenerNumeroPaginas(this.Filtros, 1);
+    var rand = this.random(1, JSON.stringify(noPaginas.data.last_page))
     this.primeraPagRandom = rand;
     this.paginaPivote = rand;
     this.paginaPrevia = this.paginaPivote
