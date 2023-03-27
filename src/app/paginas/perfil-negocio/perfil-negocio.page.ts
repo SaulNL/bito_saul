@@ -1060,29 +1060,30 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   salir() {
-    console.log("salir y buscar la palabra: "+ this.palabraBuqueda)
-    if(this.vieneDeModal){
-      this.router.navigate(["/tabs/productos"], {
-        queryParams: { palabraBusqueda: this.palabraBuqueda },
-      });
-    }else{
     this.msj = "Cargando";
     localStorage.setItem("loaderNegocio", "true");
     if (this.bolsa.length > 0) {
       this.mensajeBolsa();
     } else {
-      this.blockk.tf = true;
-      if (this.navegacion) {
-        this.goBackTo();
-        this.navegacion = false;
+      if(this.vieneDeModal){
+        console.log("salir y bucar la palabra :"+this.palabraBuqueda)
+        this.router.navigate(["/tabs/productos"], {
+          queryParams: { palabraBusqueda: this.palabraBuqueda },
+        });
+      }else{
+        this.blockk.tf = true;
+        if (this.navegacion) {
+          this.goBackTo();
+          this.navegacion = false;
 
-      } else {
-        // this.router.navigate(['/tabs/inicio']);
+        } else {
+          // this.router.navigate(['/tabs/inicio']);
 
-        this.router.navigateByUrl("/tabs/inicio");
-        //this.router.navigate(['/tabs/inicio'], { queryParams: { special: true } });
-        this.contador = 0;
-      }
+          this.router.navigateByUrl("/tabs/inicio");
+          //this.router.navigate(['/tabs/inicio'], { queryParams: { special: true } });
+          this.contador = 0;
+        }
+      }      
     }
     if (!this.isIOS) {
       this.platform.backButton.subscribeWithPriority(10, () => {
@@ -1092,7 +1093,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         }
       });
     }
-    } 
 
   }
 
@@ -1164,11 +1164,18 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
           handler: () => {
             this.bolsa = [];
             this.blockk.tf = true;
-            if (this.navegacion) {
-              this.goBackTo();
-            } else {
-              this.router.navigate(["/tabs/inicio"]);
-            }
+            if(this.vieneDeModal){
+              console.log("salir y bucar la palabra :"+this.palabraBuqueda)
+              this.router.navigate(["/tabs/productos"], {
+                queryParams: { palabraBusqueda: this.palabraBuqueda },
+              });
+            }else{
+              if (this.navegacion) {
+                this.goBackTo();
+              } else {
+                this.router.navigate(["/tabs/inicio"]);
+              }
+            }            
 
             // this.subscribe.unsubscribe();
             // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
