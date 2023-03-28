@@ -427,6 +427,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
               this.calcularDistancia();
               this.obtenerSucursaleslst(this.informacionNegocio.id_negocio);
             }
+            console.log("infoNego: "+JSON.stringify(this.informacionNegocio))
           } else {
             this.presentError();
           }

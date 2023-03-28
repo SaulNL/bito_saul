@@ -41,6 +41,7 @@ export class FiltrosBusquedaComponent implements OnInit {
     kilometrosSlider: number;
     tipoNegocio: number;
     listaTipoNegocio: any;
+    abierto: string = 'abiertos/cerrados';
 
 
 
@@ -314,7 +315,9 @@ export class FiltrosBusquedaComponent implements OnInit {
     setIonradiogroupAbiertoCerrado(opcion: number) {
         if (opcion === 1) {
             this.filtros.abierto = opcion + '';
+            this.abierto='abiertos'
         } else if (opcion === 0) {
+            this.abierto='cerrados'
             this.filtros.abierto = opcion + '';
         }
     }

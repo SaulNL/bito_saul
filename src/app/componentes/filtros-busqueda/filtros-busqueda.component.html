@@ -122,16 +122,16 @@
     </ion-list>
     <ion-list>
         <ion-list-header>
-            <ion-label>Abierto/Cerrado</ion-label>
+            <ion-label>Negocio(s) {{abierto}}</ion-label>
         </ion-list-header>
         <ion-radio-group [value]="filtros.abierto+''">
             <ion-item>
-                <ion-label>Si</ion-label>
+                <ion-label>Abiertos</ion-label>
                 <ion-radio value="true" color="danger" slot="start"
                     (click)="setIonradiogroupAbiertoCerrado(1)"></ion-radio>
             </ion-item>
             <ion-item>
-                <ion-label>No</ion-label>
+                <ion-label>Cerrados</ion-label>
                 <ion-radio value="false" color="danger" slot="start"
                     (click)="setIonradiogroupAbiertoCerrado(0)"></ion-radio>
             </ion-item>
