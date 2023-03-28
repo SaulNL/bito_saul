@@ -7,6 +7,7 @@ import { ModalController } from "@ionic/angular";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { DetDomicilioModel } from './../../Modelos/busqueda/DetDomicilioModel';
 import { FormularioNegocioGuard } from './../../api/formulario-negocio-guard.service';
+import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 @Component({
   selector: "app-negocio",
   templateUrl: "./negocio.page.html",
@@ -31,6 +32,7 @@ export class NegocioPage implements OnInit {
   public negocioGuardar: any;
   public btload: boolean;
   public negocioTO: NegocioModel;
+  public clonando: boolean = false;
 
   constructor(
     private servicioNegocios: NegocioService,
@@ -138,6 +140,7 @@ export class NegocioPage implements OnInit {
     this.selectTO = JSON.parse(JSON.stringify(nego));
     let extras = JSON.stringify(this.selectTO);
     let aux = JSON.parse(extras);
+    this.clonando=true;
     this.buscarNeg(aux.id_negocio)        
   }
   public buscarNeg(id_nego:any) {
@@ -150,8 +153,13 @@ export class NegocioPage implements OnInit {
         //const negocio = JSON.parse(this.negocioTO);    
         this.guard.activeForm = true;
 
-        console.log("card Negocio crearSucursal---------"+JSON.stringify(this.negocioTO))
         this.negocioTO = JSON.parse(JSON.stringify(this.negocioTO));
+        if(this.clonando){
+          this.negocioTO.url_negocio=""
+          this.negocioTO.nombre_comercial=""
+          this.negocioTO.nombre_corto=""
+          this.negocioTO.perfiles_caracteristicas[0]=[]
+        }
         this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
         let all = {
           info: this.negocioTO,
@@ -160,7 +168,7 @@ export class NegocioPage implements OnInit {
         let navigationExtras = JSON.stringify(all);
         console.log("card Negocio all---------"+navigationExtras)
         let clonar = "true"
-        console.log("card Negocio navigationExtras crearSucursal---------"+navigationExtras)
+
         this.router.navigate(['/tabs/home/negocio/card-negocio/formulario-negocio'], {
           queryParams: { special: navigationExtras, clonar: clonar }
         });
