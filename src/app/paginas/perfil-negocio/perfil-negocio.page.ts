@@ -252,6 +252,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         const addProduct: AddToProductInterface = JSON.parse(params.addProduct);
         setTimeout(() => {
           this.addProduct(addProduct.product);
+          this.modalController.dismiss()
         }, 2000);
       }
 
@@ -385,8 +386,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         async (response) => {
           if (response.data !== null) {
             this.informacionNegocio = await response.data;
-            this.logo = this.informacionNegocio.url_logo
-            console.log("Informacion del negocio: ", this.informacionNegocio)
+            this.logo = this.informacionNegocio.url_logo;
             this.Filtros.idNegocio = this.informacionNegocio.id_negocio
             this.Filtros.kilometros = 10
             this.Filtros.limpiarF = false;
@@ -427,7 +427,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
               this.calcularDistancia();
               this.obtenerSucursaleslst(this.informacionNegocio.id_negocio);
             }
-            console.log("infoNego: "+JSON.stringify(this.informacionNegocio))
+            //console.log("infoNego: "+JSON.stringify(this.informacionNegocio))
           } else {
             this.presentError();
           }
@@ -904,7 +904,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
   private horarios(negocio: any) {
     this.estatus = { tipo: 0, mensaje: "No abre hoy" };
-    console.log("horarios: ", this.diasArray)
+    //console.log("horarios: ", this.diasArray)
     const hros = negocio.horarios;
     let hoy: any;
     hoy = new Date();
@@ -1228,6 +1228,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
       });
       if (!existe) {
         this.bolsa.push(producto);
+        this.notificacionService.success("Producto agregado a la bolsa")
       }
       this.blockk.tf = false;
       this.blockk.url = this.negocio;

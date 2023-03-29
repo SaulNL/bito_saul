@@ -306,12 +306,16 @@ export class ProductosPage {
     while (bandera) {
       incremento++;
       const pos = Math.round(Math.random() * (tamanio - 0) + 0);
-      filtro = this.filtroABC[pos];      
-      if (filtro.letra != "Todos") {//filtro.letra != "Todos"
+      filtro = this.filtroABC[pos];     
+      console.log("filtro:" + JSON.stringify(filtro)/*"letra: "+ filtro.letra+" activo: "+filtro.activo*/) 
+      let letra = filtro.letra
+      let activo = filtro.activo
+      if (letra != "Todos" && activo==1) {
         bandera = false;
-        setTimeout(() => {
+        this.obtenerProductoPorLetra(filtro);
+        /*setTimeout(() => {
           this.obtenerProductoPorLetra(filtro);
-        }, 500);
+        }, 500);*/
       } else {
         bandera = true;
       }
@@ -330,7 +334,8 @@ export class ProductosPage {
    * @param filtro
    * @author Paola Coba
    */
-  public obtenerProductoPorLetra(filtro: FiltroABCModel) {
+  public async obtenerProductoPorLetra(filtro: FiltroABCModel) {
+    console.log("filtro por letra buscar: "+JSON.stringify(filtro))
     localStorage.removeItem('lstProductosOriginal');
     this.loader = true;
     let letra = filtro.letra;
@@ -341,7 +346,7 @@ export class ProductosPage {
     } else {
       this.filtroCheckend = filtro.id;
     }
-    this.lstProductos = this.lstProductosBK;
+    //this.lstProductos = this.lstProductosBK;
     this.scroll = true;
     if (letra === "Todos") {
       this.filtrarTodos();
@@ -355,7 +360,12 @@ export class ProductosPage {
             //console.log("Listado de productos con el filtro con letra: "+JSON.stringify(this.anyFiltros)+"\nLista prod: "+JSON.stringify(response.data.lstProductos))
             //this.obtenerProductoPorLetra(filtro)
             this.obtenerProductosFav();
-            this.lstProductos = this.lstProductosOriginal.slice(0, 6);
+            if(this.lstProductosOriginal.length>6){
+              this.lstProductos = this.lstProductosOriginal.slice(0, 6);
+
+            }else if(this.lstProductosOriginal.length<=6 && this.lstProductosOriginal.length>0){
+              this.lstProductos = this.lstProductosOriginal;
+            }           
             this.loader = false;
           },
           (error) => {

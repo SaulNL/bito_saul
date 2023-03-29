@@ -1208,10 +1208,10 @@ export class FormularioNegocioPage implements OnInit {
           this.loader = false;
           valido=false
         }
-        console.log("Verdeeee: "+JSON.stringify(this.negocioTO.perfiles_caracteristicas))
+        //console.log("Verdeeee: "+JSON.stringify(this.negocioGuardar.perfiles_caracteristicas))
         if(this.negocioTO.perfiles_caracteristicas<1){
           this.nextTab('informacion');
-          this.notificaciones.error('Debe agregar un plan se suscripción');
+          this.notificaciones.error('Debe agregar un plan de suscripción');
           this.loader = false;
           valido=false
         }
@@ -1272,7 +1272,7 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.organizaciones = this.negocioTO.organizaciones;
     this.negocioGuardar.plazas = this.negocioTO.plazas;
     this.negocioGuardar.distintivos = this.negocioTO.distintivos;
-    this.negocioGuardar.perfiles_caracteristicas = [this.negocioTO.perfiles_caracteristicas];
+    this.negocioGuardar.perfiles_caracteristicas = this.negocioTO.perfiles_caracteristicas;
     //console.log('perfiles_caracteristicas' + this.negocioGuardar.perfiles_caracteristicas);
     if (this.cnvn_date === undefined) {
       this.dateObject = this.convenio_date;
@@ -1533,7 +1533,7 @@ export class FormularioNegocioPage implements OnInit {
     this.modalSuscripciones(this.suscripciones).then(r => {
       if (r.data !== undefined) {
 
-        // console.log("AQUI EL VALOOOOOR. "+r.data.data+" : "+JSON.stringify(r))
+        //console.log("AQUI EL VALOOOOOR. "+r.data.data+" : "+JSON.stringify(r))
         if(this.nuevoNegocio == false){
           if(this.negocioTO.perfiles_caracteristicas.lenght!=0){
             this.negocioTO.perfiles_caracteristicas.pop()

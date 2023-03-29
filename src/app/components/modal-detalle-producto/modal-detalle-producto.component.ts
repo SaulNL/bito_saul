@@ -189,9 +189,10 @@ export class ModalDetalleProductoComponent implements OnInit {
     });
     this.product.images = arr;
     const content: AddToProductInterface = new AddToProductModel(this.product);
+    this.modalController.dismiss()
     this.route.navigate(["/tabs/negocio/" + this.business.url], {
       queryParams: {
-        addProduct: JSON.stringify(content)
+        addProduct: JSON.stringify(content),palabraBuqueda: this.palabraBuqueda
       },
     });
   }
