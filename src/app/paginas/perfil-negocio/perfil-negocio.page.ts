@@ -252,7 +252,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         const addProduct: AddToProductInterface = JSON.parse(params.addProduct);
         setTimeout(() => {
           this.addProduct(addProduct.product);
-          this.modalController.dismiss()
+          //this.modalController.dismiss()
         }, 2000);
       }
 
@@ -1524,9 +1524,16 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     const queryParams: BackToProductDetailModel = new BackToProductDetailModel(
       JSON.stringify(content)
     );
-    this.router.navigate(["/tabs/productos/product-detail"], {
-      queryParams: queryParams,
-    });
+    if(this.vieneDeModal){
+      console.log("salir y bucar la palabra :"+this.palabraBuqueda)
+      this.router.navigate(["/tabs/productos"], {
+        queryParams: { palabraBusqueda: this.palabraBuqueda },
+      });
+    }else{
+      this.router.navigate(["/tabs/productos/product-detail"], {
+        queryParams: queryParams,
+      });
+    }    
   }
   private updateProductToProductDetail(idProduct: string) {
     const products: Array<any> = this.informacionNegocio.catProductos;
@@ -1603,7 +1610,9 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.serviceProveedores.obtenerSucursales(id).subscribe(
         response => {
           const negocio = response.data;
-          this.nombreSucursal = negocio[0].nombre_comercial;
+          if(negocio[0].nombre_comercial!=undefined){
+            this.nombreSucursal = negocio[0].nombre_comercial;
+          }          
           this.lstSucursales = response.data;
           this.seccion = 'Sucursales';
         }

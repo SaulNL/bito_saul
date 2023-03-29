@@ -183,16 +183,16 @@ export class ModalDetalleProductoComponent implements OnInit {
    * @description Agrega el producto y redireciona al perfil del negocio
    */
   public addProduct() {
+    this.cerrar()
     let arr = [];
     this.product.images.forEach((element) => {
       arr.push(element.image);
     });
     this.product.images = arr;
-    const content: AddToProductInterface = new AddToProductModel(this.product);
-    this.modalController.dismiss()
+    const content: AddToProductInterface = new AddToProductModel(this.product)
     this.route.navigate(["/tabs/negocio/" + this.business.url], {
       queryParams: {
-        addProduct: JSON.stringify(content),palabraBuqueda: this.palabraBuqueda
+        addProduct: JSON.stringify(content), desdeModal: "true", palabraBuqueda: this.palabraBuqueda
       },
     });
   }

@@ -1210,7 +1210,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.paginaPrevia = this.paginaPivote
     var respuesta = await this.principalSercicio
       .obtenerNegocioPorCategoria(this.Filtros, rand)// rand this.siguienteGiro);
-    console.log("\nNegocios totales: " + respuesta.data.lst_cat_negocios.total + "\n" + "Negocios obtenidos: " + respuesta.data.lst_cat_negocios.to + "\n" + "Pagina aleatoria que se muestra: " + respuesta.data.lst_cat_negocios.current_page + " de: " + this.totalPaginas)
+    console.log("\nNegocios totales: " + respuesta.data.lst_cat_negocios.total + "\n" + "Negocios obtenidos: " + respuesta.data.lst_cat_negocios.to + "\n" + "Pagina aleatoria que se muestra: " + respuesta.data.lst_cat_negocios.current_page + " de: " + noPaginas.data.last_page)
     this.listaCategorias = [];
     if (respuesta.data.lst_cat_negocios.total > 0) {
       this.validarResultadosDeCategoriaSeleccionada(respuesta.data, false);//this.validarResultadosDeCategoriaSeleccionada(respuesta.data) this.validarResultadosDeCategorias(respuesta);

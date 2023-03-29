@@ -157,6 +157,7 @@ export class PreferenciasPage implements OnInit {
     }
     //console.log("guardar preferencias payload:\n"+JSON.stringify(payload))
     this.loader = true;
+    this.msj="Guardando sus preferencias, espere un momento"
     this.filtrosService.guardarMisPreferencias(payload).subscribe(
       async response => {   
         if(response.code==200){

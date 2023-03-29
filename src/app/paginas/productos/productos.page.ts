@@ -403,6 +403,7 @@ export class ProductosPage {
   }
 
   async modalDetalleProducto(producto: ProductoModel) {
+    this.loader=true
     var product: ProductInterface = this.createObject.createProduct(producto);
     //console.log("palabraBuqueda MOdal: "+this.palabraBuqueda)
     if(this.palabraBuqueda == "" || this.palabraBuqueda == undefined){
@@ -418,6 +419,14 @@ export class ProductosPage {
       }
     });
     await modal.present(); 
+    await modal.onDidDismiss().then(r => {
+      if (r == undefined) {
+        this.loader=false
+      }else{
+        this.loader=false
+      }
+    }
+    );
   }
 
   async presentModal() {
