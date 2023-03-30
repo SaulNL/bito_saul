@@ -1472,6 +1472,12 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     }
     return imagen;
   }
+  public sucursalImagen(imagen: any) {
+    if (Array.isArray(imagen)) {
+      return imagen[0];
+    }
+    return imagen;
+  }
 
   public loading(pc: any, pr: any) {
     return pc === true || pr === false;
@@ -1569,12 +1575,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
   next() {
     this.slides.slideNext();
-  }
-  backsuc() {
-    this.slides1.slidePrev();
-  }
-  nextsuc() {
-    this.slides1.slideNext();
   }
   SlideChanges(slide: IonSlides) {
     slide.getActiveIndex().then((index: number) => {
