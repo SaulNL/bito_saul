@@ -645,7 +645,7 @@ export class FormularioNegocioPage implements OnInit {
   }
   public agregarFoto(event) {
     if (!this.features10) {
-      this.notificaciones.alerta("No cuenta con el nivel de subscipción para usar esta característica")
+      this.notificaciones.alerta("No cuenta con la subscripción requerida para usar esta característica")
     } else {
       let nombre_archivo;
       if (event.target.files && event.target.files.length) {
