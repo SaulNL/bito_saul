@@ -67,7 +67,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   public listaComentarios: [];
   public mostrarComentarios: boolean;
   public seccion: any;
-  public nombreSucursal:string;
   private map: Map;
   @ViewChild('mapContainer') mapContainer: Map;
   public negocio: string;
@@ -129,7 +128,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   public promocionDefault: string;
   public logo: any;
   currentIndex: Number = 0;
-  currentIndexsucursal: Number = 0;
   @ViewChild('carrusel') slides: IonSlides;
   @ViewChild('sucursalo') slides1: IonSlides;
   slideOpts = {
@@ -183,7 +181,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.toProductDetail = false;
     this.motrarContacto = true;
     this.seccion = 'productos';
-    this.nombreSucursal = '';
     this.lstSucursales = [];
     // this.segmentModel = 'productos';
     this.loader = false;
@@ -1579,8 +1576,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   SlideChanges(slide: IonSlides) {
     slide.getActiveIndex().then((index: number) => {
       this.currentIndex = index;
-      this.currentIndexsucursal = index;
-      this.nombreSucursal = this.lstSucursales[index].nombre_comercial;
       if (this.currentIndex == 0) {
 
       }
@@ -1610,11 +1605,13 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.serviceProveedores.obtenerSucursales(id).subscribe(
         response => {
           const negocio = response.data;
-          if(negocio[0].nombre_comercial!=undefined){
-            this.nombreSucursal = negocio[0].nombre_comercial;
-          }          
           this.lstSucursales = response.data;
-          this.seccion = 'Sucursales';
+          if (this.lstSucursales.length > 0){
+            this.seccion = 'Sucursales';
+          }
+          else{
+            this.lstSucursales = [];
+          }
         }
     );
   }
