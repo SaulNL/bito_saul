@@ -67,7 +67,7 @@ export class ProductosPage {
   private plazaAfiliacion: AfiliacionPlazaModel | null;
   public isIOS: boolean = false;
   public abc: boolean;
-  public plazaAfiliacionNombre : any;
+  public plazaAfiliacionNombre: any;
   public permisos: Array<PermisoModel> | null;
   public paginacion: IPaginacion = {
     actualPagina: 1,
@@ -117,8 +117,8 @@ export class ProductosPage {
 
     const selected = localStorage.getItem("org");
     if (selected != null) {
-       this.plazaAfiliacionNombre = JSON.parse(
-            String(localStorage.getItem("org")));
+      this.plazaAfiliacionNombre = JSON.parse(
+        String(localStorage.getItem("org")));
       this.selectionAP = true;
     }
     this.mensaje = "Cargando más productos...";
@@ -152,7 +152,7 @@ export class ProductosPage {
       }
     });
     this.existeSesion = this.util.existe_sesion();
-    localStorage.setItem('productos',('active'));
+    localStorage.setItem('productos', ('active'));
     localStorage.removeItem("negocios");
 
     this.active.queryParams.subscribe((params: Params) => {
@@ -162,8 +162,7 @@ export class ProductosPage {
     });
   }
 
-  ionViewWillEnter()
-  {
+  ionViewWillEnter() {
     // if (localStorage.getItem("isRedirected") === "false") {
     //   localStorage.setItem("isRedirected", "true");
     //   location.reload();
@@ -193,7 +192,7 @@ export class ProductosPage {
    * @author Omar
    */
   scrollToTop() {
-    this.content.scrollToTop(500).then((r) => {});
+    this.content.scrollToTop(500).then((r) => { });
   }
 
   /**
@@ -211,19 +210,19 @@ export class ProductosPage {
     this.servicioProductos.obtenerIniciales(this.anyFiltros).subscribe(
       (response) => {
         this.lstProductos = response.data.lstProductos;
-        
+
         if (this.lstProductos.length > 0) {
           this.blnBtnMapa = true;
           this.listaNegocioMap = this.lstProductos;
-          
+
         } else {
-          
+
           this.blnBtnMapa = false;
-          this.loader=false;
+          this.loader = false;
         }
         this.lstProductosBK = response.data.lstProductos;
         if (!this.abc) {
-          
+
           this.armarFiltroABC();
         } else {
           localStorage.removeItem('lstProductosOriginal');
@@ -232,19 +231,19 @@ export class ProductosPage {
             response2 => {
               //console.log("Listado de productos con el filtro: "+JSON.stringify(this.anyFiltros)+"\nLista prod: "+JSON.stringify(response.data.lstProductos))
               if (response2.data.lstProductos.length > 0) {
-                this.blnBtnMapa=true;
+                this.blnBtnMapa = true;
                 const tempLstProduct = response2.data.lstProductos;
-                this.lstProductosOriginal =tempLstProduct;
+                this.lstProductosOriginal = tempLstProduct;
                 this.obtenerProductosFav();
-                localStorage.setItem('lstProductosOriginal', JSON.stringify(this.lstProductosOriginal));           
-                this.lstProductos =tempLstProduct.slice(0, 6);
+                localStorage.setItem('lstProductosOriginal', JSON.stringify(this.lstProductosOriginal));
+                this.lstProductos = tempLstProduct.slice(0, 6);
                 this.loader = false;
-              }else{
+              } else {
                 this.blnBtnMapa = false;
-                this.loader=false;
-              
+                this.loader = false;
+
               }
-            },  error => {
+            }, error => {
               this.loader = false;
               this.notificaciones.error(
                 "Ocurrió un error al obtener productos, inténtelo más tarde"
@@ -289,7 +288,7 @@ export class ProductosPage {
         item.activo = 1;
       }
     });
-    
+
     this.filtrarABCRandom();
   }
 
@@ -306,11 +305,11 @@ export class ProductosPage {
     while (bandera) {
       incremento++;
       const pos = Math.round(Math.random() * (tamanio - 0) + 0);
-      filtro = this.filtroABC[pos];     
-      console.log("filtro:" + JSON.stringify(filtro)/*"letra: "+ filtro.letra+" activo: "+filtro.activo*/) 
+      filtro = this.filtroABC[pos];
+      console.log("filtro:" + JSON.stringify(filtro)/*"letra: "+ filtro.letra+" activo: "+filtro.activo*/)
       let letra = filtro.letra
       let activo = filtro.activo
-      if (letra != "Todos" && activo==1) {
+      if (letra != "Todos" && activo == 1) {
         bandera = false;
         this.obtenerProductoPorLetra(filtro);
         /*setTimeout(() => {
@@ -335,7 +334,7 @@ export class ProductosPage {
    * @author Paola Coba
    */
   public async obtenerProductoPorLetra(filtro: FiltroABCModel) {
-    console.log("filtro por letra buscar: "+JSON.stringify(filtro))
+    console.log("filtro por letra buscar: " + JSON.stringify(filtro))
     localStorage.removeItem('lstProductosOriginal');
     this.loader = true;
     let letra = filtro.letra;
@@ -355,17 +354,17 @@ export class ProductosPage {
         this.anyFiltros.letraInicial = filtro.letra;
         this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
           (response) => {
-            this.lstProductosOriginal = response.data.lstProductos; 
-            localStorage.setItem('lstProductosOriginal', JSON.stringify(this.lstProductosOriginal));           
+            this.lstProductosOriginal = response.data.lstProductos;
+            localStorage.setItem('lstProductosOriginal', JSON.stringify(this.lstProductosOriginal));
             //console.log("Listado de productos con el filtro con letra: "+JSON.stringify(this.anyFiltros)+"\nLista prod: "+JSON.stringify(response.data.lstProductos))
             //this.obtenerProductoPorLetra(filtro)
             this.obtenerProductosFav();
-            if(this.lstProductosOriginal.length>6){
+            if (this.lstProductosOriginal.length > 6) {
               this.lstProductos = this.lstProductosOriginal.slice(0, 6);
 
-            }else if(this.lstProductosOriginal.length<=6 && this.lstProductosOriginal.length>0){
+            } else if (this.lstProductosOriginal.length <= 6 && this.lstProductosOriginal.length > 0) {
               this.lstProductos = this.lstProductosOriginal;
-            }           
+            }
             this.loader = false;
           },
           (error) => {
@@ -398,18 +397,18 @@ export class ProductosPage {
   public abrirProducto(producto: ProductoModel) {
     const product: ProductInterface = this.createObject.createProduct(producto);
     this._router.navigate(["/tabs/productos/product-detail"], {
-      queryParams: { product: JSON.stringify(product),producto:producto.idProducto },
+      queryParams: { product: JSON.stringify(product), producto: producto.idProducto },
     });
   }
 
   async modalDetalleProducto(producto: ProductoModel) {
-    this.loader=true
+    this.loader = true
     var product: ProductInterface = this.createObject.createProduct(producto);
     //console.log("palabraBuqueda MOdal: "+this.palabraBuqueda)
-    if(this.palabraBuqueda == "" || this.palabraBuqueda == undefined){
+    if (this.palabraBuqueda == "" || this.palabraBuqueda == undefined) {
       this.palabraBuqueda = ""
     }
-    const modal = await this.modalController.create({      
+    const modal = await this.modalController.create({
       component: ModalDetalleProductoComponent,
       cssClass: 'my-custom-class',
       componentProps: {
@@ -418,12 +417,12 @@ export class ProductosPage {
         palabraBuqueda: this.palabraBuqueda
       }
     });
-    await modal.present(); 
+    await modal.present();
     await modal.onDidDismiss().then(r => {
       if (r == undefined) {
-        this.loader=false
-      }else{
-        this.loader=false
+        this.loader = false
+      } else {
+        this.loader = false
       }
     }
     );
@@ -447,19 +446,19 @@ export class ProductosPage {
    * @param event
    */
   buscarToolbar(event) {
-    this.palabraBuqueda=event
+    this.palabraBuqueda = event
     this.anyFiltros = new FiltrosModel();
     this.anyFiltros.idEstado = 29;
-    this.anyFiltros.idTipoNegocio=null;
+    this.anyFiltros.idTipoNegocio = null;
     this.anyFiltros.kilometros = 1;
-    this.anyFiltros.letraInicial="Todos";
+    this.anyFiltros.letraInicial = "Todos";
     this.anyFiltros.strBuscar = event;
     this.abc = this.anyFiltros.strBuscar != null;
     this.anyFiltros.blnEntrega = null;
-    if(event===''){
+    if (event === '') {
       this.borrarFiltros();
       this.obtenerProductos();
-    }else{
+    } else {
       this.obtenerProductos();
     }
   }
@@ -474,14 +473,20 @@ export class ProductosPage {
       this.modal.dismiss({
         dismissed: true,
       });
+      console.log("que tiene esto?", res)
       this.filtroActivo = true;
       this.anyFiltros = res;
-      this.obtenerProductos();
+      if (res == false) {
+        this.borrarFiltros();
+      } else {
+        this.obtenerProductos();
+      }
     });
     this.modal = await this.modalController.create({
       component: FiltrosBusquedaComponent,
       componentProps: {
         buscarPorFiltros: eventEmitter,
+        eliminarPorFiltros: eventEmitter,
         filtros: this.anyFiltros,
         isProductPage: true,
       },
@@ -550,7 +555,7 @@ export class ProductosPage {
         permisos: permisos,
       },
     });
-    sessionStorage.setItem('productos',('active'));
+    sessionStorage.setItem('productos', ('active'));
     return await this.modal.present();
   }
   /**
@@ -578,7 +583,7 @@ export class ProductosPage {
               let favoritos = response.data.data;
               for (const pro of this.lstProductosOriginal) {
                 for (const fav of favoritos) {
-                  if (pro.idProducto === fav.idProducto) {  
+                  if (pro.idProducto === fav.idProducto) {
                     pro.usuario_dio_like = 1;
                   }
                 }
