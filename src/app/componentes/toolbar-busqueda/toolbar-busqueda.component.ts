@@ -16,7 +16,7 @@ export class ToolbarBusquedaComponent implements OnInit {
     @Input() public placeHolder: string = 'Buscar'
     @Input() public titulo: string;
     @Output() public buscarEmit = new EventEmitter()
-    strBuscar: String;
+    public strBuscar: String;
     public user: any;
     public permisos: Array<string>;
     public totalNoVistos: number;
@@ -99,7 +99,7 @@ export class ToolbarBusquedaComponent implements OnInit {
     }
 
     buscarParch(event: any) {
-     
+
         if (this.isAndroid) {
             if ((event !== '' || event !== undefined) && event.length > 3) {
                 this.strBuscar = event;
@@ -115,7 +115,7 @@ export class ToolbarBusquedaComponent implements OnInit {
             }
         }
 
-        if (this.isIos){
+        if (this.isIos) {
             if ((event !== '' || event !== undefined) && event.length > 3) {
                 this.strBuscar = event;
                 this.showS();
@@ -129,7 +129,7 @@ export class ToolbarBusquedaComponent implements OnInit {
                 this.limpiar();
             }
         }
-        
+
     }
 
     private permisosList() {

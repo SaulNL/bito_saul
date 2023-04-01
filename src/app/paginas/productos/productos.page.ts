@@ -27,6 +27,7 @@ import { PermisoModel } from "../../Modelos/PermisoModel";
 import { IPaginacion } from "../../interfaces/IPaginacion";
 import { PersonaService } from "src/app/api/persona.service";
 import { ModalDetalleProductoComponent } from "src/app/components/modal-detalle-producto/modal-detalle-producto.component";
+import { ToolbarBusquedaComponent } from "src/app/componentes/toolbar-busqueda/toolbar-busqueda.component";
 @Component({
   selector: "app-tab1",
   templateUrl: "productos.page.html",
@@ -35,6 +36,7 @@ import { ModalDetalleProductoComponent } from "src/app/components/modal-detalle-
 })
 export class ProductosPage {
   @ViewChild(IonContent) content: IonContent;
+  @ViewChild(ToolbarBusquedaComponent) toolbar: ToolbarBusquedaComponent;
   public cordenada: number;
   public anyFiltros: FiltrosModel;
   public lstProductos: Array<ProductoModel>;
@@ -200,15 +202,20 @@ export class ProductosPage {
    * @author Omar
    */
   public obtenerProductos() {
+    let lstFiltro = JSON.parse(localStorage.getItem('lstFiltro'));
     this.loader = true;
-
-    this.anyFiltros.user = this.user;
+    if (lstFiltro != null) {
+      this.anyFiltros = lstFiltro;
+    } else {
+      this.anyFiltros.user = this.user;
+    }
     this.plazaAfiliacion = JSON.parse(localStorage.getItem("org"));
     if (this.plazaAfiliacion != null) {
       this.anyFiltros.organizacion = this.plazaAfiliacion.id_organizacion;
     }
     this.servicioProductos.obtenerIniciales(this.anyFiltros).subscribe(
       (response) => {
+        console.log(response)
         this.lstProductos = response.data.lstProductos;
 
         if (this.lstProductos.length > 0) {
@@ -230,6 +237,8 @@ export class ProductosPage {
           this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
             response2 => {
               //console.log("Listado de productos con el filtro: "+JSON.stringify(this.anyFiltros)+"\nLista prod: "+JSON.stringify(response.data.lstProductos))
+              console.log('respuesta2', response2)
+              console.log('posible error', this.anyFiltros)
               if (response2.data.lstProductos.length > 0) {
                 this.blnBtnMapa = true;
                 const tempLstProduct = response2.data.lstProductos;
@@ -445,8 +454,10 @@ export class ProductosPage {
    * Funcion para obtener
    * @param event
    */
-  buscarToolbar(event) {
+  async buscarToolbar(event) {
+    await this.borrarFiltros();
     this.palabraBuqueda = event
+    console.log("palabra", event)
     this.anyFiltros = new FiltrosModel();
     this.anyFiltros.idEstado = 29;
     this.anyFiltros.idTipoNegocio = null;
@@ -459,6 +470,7 @@ export class ProductosPage {
       this.borrarFiltros();
       this.obtenerProductos();
     } else {
+      console.log("anyfiltros", this.anyFiltros)
       this.obtenerProductos();
     }
   }
@@ -468,17 +480,21 @@ export class ProductosPage {
   }
 
   async presentModalFiltro() {
+    // await this.buscarToolbar(null);
+    this.toolbar.limpiar();
     let eventEmitter = new EventEmitter();
     eventEmitter.subscribe((res) => {
       this.modal.dismiss({
         dismissed: true,
       });
       console.log("que tiene esto?", res)
+      localStorage.setItem('lstFiltro', JSON.stringify(res))
       this.filtroActivo = true;
       this.anyFiltros = res;
       if (res == false) {
         this.borrarFiltros();
       } else {
+        this.abc = false;
         this.obtenerProductos();
       }
     });
@@ -496,6 +512,7 @@ export class ProductosPage {
 
   public borrarFiltros() {
     localStorage.removeItem("byCategorias");
+    localStorage.removeItem("lstFiltro");
     this.anyFiltros = new FiltrosModel();
     this.anyFiltros.idEstado = 29;
     this.filtroActivo = false;
