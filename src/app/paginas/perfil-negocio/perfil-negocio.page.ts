@@ -1,29 +1,16 @@
-import {
-  ReturnToProductInterface,
-  ReturnToProductModel,
-} from "./../../Bitoo/models/return-to-model";
-import { ProductBusinessInterface } from "./../../Bitoo/models/product-business-model";
+import { ReturnToProductInterface, ReturnToProductModel } from "./../../Bitoo/models/return-to-model";
 import { byProductModel } from "./../../Bitoo/models/add-To-Product-model";
 import { CreateObjects } from "./../../Bitoo/helper/create-object";
-import {
-  BackToProductDetailModel,
-  ByProductDetailModel,
-} from "./../../Bitoo/models/query-params-model";
+import { BackToProductDetailModel } from "./../../Bitoo/models/query-params-model";
 import { AddToProductInterface } from "../../Bitoo/models/add-To-Product-model";
 import { ProductInterface } from "../../Bitoo/models/product-model";
 import { AppSettings } from "./../../AppSettings";
-import { AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import {
-  AlertController,
-  IonSlides,
-  NavController,
-  Platform,
-  ToastController,
-} from "@ionic/angular";
+import { AlertController, IonSlides, NavController, Platform, ToastController } from "@ionic/angular";
 import { NegocioService } from "../../api/negocio.service";
 import { BusquedaService } from "src/app/api/busqueda.service";
-import { Geolocation, Capacitor } from "@capacitor/core";
+import { Geolocation } from "@capacitor/core";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import { Location } from "@angular/common";
 import { UtilsCls } from "../../utils/UtilsCls";
@@ -39,22 +26,18 @@ import { PedidoNegocioComponent } from "../../componentes/pedido-negocio/pedido-
 import { AuthGuardService } from "../../api/auth-guard.service";
 import { NavBarServiceService } from "src/app/api/busqueda/nav-bar-service.service";
 import { PromocionesModel } from "src/app/Modelos/PromocionesModel";
-import { File } from "@ionic-native/File/ngx";
+import { File } from "@ionic-native/file/ngx";
 import { HTTP } from "@ionic-native/http/ngx";
 import { icon, Map, Marker, marker, tileLayer } from "leaflet";
 import { Downloader, DownloadRequest, NotificationVisibility } from "@ionic-native/downloader/ngx";
-/* import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer/ngx'; */
-/* import { FileTransfer, FileUploadOptions, FileTransferObject } from '@awesome-cordova-plugins/file-transfer/ngx'; */
-
-const { Share } = Plugins;
-const haversineCalculator = require("haversine-calculator");
 import { ModalPromocionNegocioComponent } from "src/app/componentes/modal-promocion-negocio/modal-promocion-negocio.component";
 import { ProductoModel } from "../../Modelos/ProductoModel";
 import { ProductosService } from "../../api/productos.service";
 import { ComentariosNegocioComponent } from "../../componentes/comentarios-negocio/comentarios-negocio.component";
 import { OptionBackLogin } from "src/app/Modelos/OptionBackLoginModel";
 import { FiltrosModel } from "src/app/Modelos/FiltrosModel";
-/* import { WebView } from '@awesome-cordova-plugins/ionic-webview/ngx'; */
+const { Share } = Plugins;
+const haversineCalculator = require("haversine-calculator");
 
 @Component({
   selector: "app-perfil-negocio",
@@ -125,7 +108,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   private longitudNeg: any;
   private convenio_entrega: any;
   public fotografiasArray: any[];
-  public promocionDefault: string;
+  public promocionDefault: any;
   public logo: any;
   currentIndex: Number = 0;
   @ViewChild('carrusel') slides: IonSlides;
@@ -1606,7 +1589,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         response => {
           const negocio = response.data;
           this.lstSucursales = response.data;
-          if (this.lstSucursales.length > 0){
+          if (this.lstSucursales?.length > 0){
             this.seccion = 'Sucursales';
           }
           else{

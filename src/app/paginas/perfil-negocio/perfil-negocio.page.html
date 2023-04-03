@@ -421,7 +421,7 @@
         <ion-row style="background: white">
           <ion-segment (ionChange)="segmentChanged($event)" value="{{seccion}}" color="tertiary" [scrollable]="true"
             mode="md">
-            <ion-segment-button value="Sucursales" *ngIf="lstSucursales.length > 0">Sucursales</ion-segment-button>
+            <ion-segment-button value="Sucursales" *ngIf="lstSucursales?.length > 0">Sucursales</ion-segment-button>
             <ion-segment-button value="productos" *ngIf="informacionNegocio.catProductos?.length > 0">
               Productos
             </ion-segment-button>

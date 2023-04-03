@@ -166,7 +166,6 @@ export class PromocionesPage implements OnInit {
                 
                 setTimeout(() => {
                     this.content.scrollToPoint(0,posicion.top)
-                    console.log("Mostrando elemento random.."+this.posicionRandom +" pos ="+posicion.top+" conteo ="+ this.rep)
                   }, 1000);                                
             }                                                                                                                                                        
         }                               
@@ -199,8 +198,7 @@ export class PromocionesPage implements OnInit {
                         this.lstPromociones = response.data;                        
                         //console.log("lista promos de promos page"+JSON.stringify(this.lstPromociones));
                         this.loader = false;
-                        this.posicionRandom= this.aleatorio(0,this.lstPromociones.length-1) 
-                        console.log("posicionRandom = "+this.posicionRandom);                                               
+                        this.posicionRandom= this.aleatorio(0,this.lstPromociones.length-1)                                                
                         // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}                                   
                     } else {
                         this.lstPromociones = [];  
