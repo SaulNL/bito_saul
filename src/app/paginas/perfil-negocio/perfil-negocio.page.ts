@@ -190,7 +190,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         });
       });
       if (params.desdeModal) {
-        this.vieneDeModal=true;
+        this.vieneDeModal = true;
         this.palabraBuqueda = params.palabraBuqueda
       }
     });
@@ -1046,12 +1046,11 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     if (this.bolsa.length > 0) {
       this.mensajeBolsa();
     } else {
-      if(this.vieneDeModal){
-        console.log("salir y bucar la palabra :"+this.palabraBuqueda)
+      if (this.vieneDeModal) {
         this.router.navigate(["/tabs/productos"], {
           queryParams: { palabraBusqueda: this.palabraBuqueda },
         });
-      }else{
+      } else {
         this.blockk.tf = true;
         if (this.navegacion) {
           this.goBackTo();
@@ -1064,7 +1063,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
           //this.router.navigate(['/tabs/inicio'], { queryParams: { special: true } });
           this.contador = 0;
         }
-      }      
+      }
     }
     if (!this.isIOS) {
       this.platform.backButton.subscribeWithPriority(10, () => {
@@ -1145,18 +1144,17 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
           handler: () => {
             this.bolsa = [];
             this.blockk.tf = true;
-            if(this.vieneDeModal){
-              console.log("salir y bucar la palabra :"+this.palabraBuqueda)
+            if (this.vieneDeModal) {
               this.router.navigate(["/tabs/productos"], {
                 queryParams: { palabraBusqueda: this.palabraBuqueda },
               });
-            }else{
+            } else {
               if (this.navegacion) {
                 this.goBackTo();
               } else {
                 this.router.navigate(["/tabs/inicio"]);
               }
-            }            
+            }
 
             // this.subscribe.unsubscribe();
             // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
@@ -1263,7 +1261,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
   clickRedSocial(redSocial) {
     this.negocioService.clickRedSocial(this.informacionNegocio.id_negocio, redSocial, this.util.getIdPersona()).subscribe((response) => {
-      console.log(response)
     },
       (error) => {
         confirm("Error al o¿btener los productos");
@@ -1488,9 +1485,9 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   private goBackTo() {
-    if(this.vieneDeModal){
+    if (this.vieneDeModal) {
       this.navctrl.navigateForward('/tabs/promociones');
-    }else{
+    } else {
       if (this.toProductDetail) {
         this.sendToProduct();
       } else {
@@ -1498,7 +1495,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
       }
       this.toProductDetail = false;
     }
-    
+
   }
   private sendToProduct() {
     const content: ReturnToProductInterface = new ReturnToProductModel(
@@ -1510,16 +1507,15 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     const queryParams: BackToProductDetailModel = new BackToProductDetailModel(
       JSON.stringify(content)
     );
-    if(this.vieneDeModal){
-      console.log("salir y bucar la palabra :"+this.palabraBuqueda)
+    if (this.vieneDeModal) {
       this.router.navigate(["/tabs/productos"], {
         queryParams: { palabraBusqueda: this.palabraBuqueda },
       });
-    }else{
+    } else {
       this.router.navigate(["/tabs/productos/product-detail"], {
         queryParams: queryParams,
       });
-    }    
+    }
   }
   private updateProductToProductDetail(idProduct: string) {
     const products: Array<any> = this.informacionNegocio.catProductos;
@@ -1583,19 +1579,19 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.showPopUp = false;
   }
 
-  public obtenerSucursaleslst(id){
+  public obtenerSucursaleslst(id) {
 
     this.serviceProveedores.obtenerSucursales(id).subscribe(
-        response => {
-          const negocio = response.data;
-          this.lstSucursales = response.data;
-          if (this.lstSucursales?.length > 0){
-            this.seccion = 'Sucursales';
-          }
-          else{
-            this.lstSucursales = [];
-          }
+      response => {
+        const negocio = response.data;
+        this.lstSucursales = response.data;
+        if (this.lstSucursales?.length > 0) {
+          this.seccion = 'Sucursales';
         }
+        else {
+          this.lstSucursales = [];
+        }
+      }
     );
   }
   negocioRuta(negocioURL) {
@@ -1603,11 +1599,11 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     setTimeout(() => {
       if (negocioURL == "") {
         this.notificaciones.error(
-            "Este negocio aún no cumple los requisitos mínimos"
+          "Este negocio aún no cumple los requisitos mínimos"
         );
       } else {
-          localStorage.setItem("isRedirected", "true");
-          this.rutasucursal.navigate(["/tabs/negocio/" + negocioURL]);
+        localStorage.setItem("isRedirected", "true");
+        this.rutasucursal.navigate(["/tabs/negocio/" + negocioURL]);
 
 
       }

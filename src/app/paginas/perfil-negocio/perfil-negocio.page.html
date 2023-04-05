@@ -155,10 +155,11 @@
           </ion-row>
         </div>
         <ion-row class="row_insignias" *ngIf="insignias.length != 0">
-          <ion-slides [options]="slideOptsInsignias" class="row_insignias">                
-            <ion-slide *ngFor="let distintivo of insignias">               
-                <img class="img_insignia" src="{{distintivo.icon}}" alt="insignia" (click)="clickDistintivo(distintivo.nombre, distintivo.descripcion)">                                                                                                                                              
-            </ion-slide>                          
+          <ion-slides [options]="slideOptsInsignias" class="row_insignias">
+            <ion-slide *ngFor="let distintivo of insignias">
+              <img class="img_insignia" src="{{distintivo.icon}}" alt="insignia"
+                (click)="clickDistintivo(distintivo.nombre, distintivo.descripcion)">
+            </ion-slide>
           </ion-slides>
         </ion-row>
         <ion-row>
@@ -227,7 +228,9 @@
             </div>
           </ion-col>
         </ion-row>
-        <ion-row *ngIf="(informacionNegocio.negocio_fisico || informacionNegocio.entrega_domicilio || informacionNegocio.consumo_sitio || informacionNegocio.entrega_sitio)" style="margin-top: 5%">
+        <ion-row
+          *ngIf="(informacionNegocio.negocio_fisico || informacionNegocio.entrega_domicilio || informacionNegocio.consumo_sitio || informacionNegocio.entrega_sitio)"
+          style="margin-top: 5%">
           <!-- div -->
           <ion-col [size]="6" class="ion-align-items-center ion-text-center ion-justify-content-center" style="
               padding-bottom: 2%;
@@ -665,14 +668,13 @@
         </ion-row>
       </ion-grid>
       <ion-grid *ngIf="seccion === 'Sucursales'">
-
         <ion-row>
           <ng-container>
             <ion-col size="6" *ngFor="let sucursal of lstSucursales">
-              <ion-card class="cardsps fixed"  (click)="negocioRuta(sucursal.url_negocio)">
+              <ion-card class="cardsps fixed" (click)="negocioRuta(sucursal.url_negocio)">
                 <img class="img-card-w"
-                     src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/no_imagen.png"
-                     [srcset]="sucursalImagen(sucursal.url_logo)" alt="Falla al cargar la imagen" />
+                  src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/no_imagen.png"
+                  [srcset]="sucursalImagen(sucursal.url_logo)" alt="Falla al cargar la imagen" />
                 <ion-card-header>
                   <ion-card-title class="nomCard text-center">{{sucursal.nombre_comercial}}</ion-card-title>
                 </ion-card-header>
