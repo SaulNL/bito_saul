@@ -292,7 +292,7 @@ body {
 
 p {
   padding: 2%;
-  text-align: center;
+  // text-align: center;
 }
 
 .tooggle-none {
@@ -340,10 +340,12 @@ p {
 
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
 }
-.cards{
+
+.cards {
   width: 45%;
-  margin:5px;
+  margin: 5px;
 }
+
 .avatar-preview>img {
   width: 100% !important;
   height: 100% !important;
@@ -455,11 +457,12 @@ p {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   display: flex;
-  justify-content:center;
-  transition:  bottom 0.6s;
-  z-index:800;  
+  justify-content: center;
+  transition: bottom 0.6s;
+  z-index: 800;
 }
-.limiteTexto{
+
+.limiteTexto {
   display: -webkit-box;
   overflow: hidden;
   overflow-x: hidden;
