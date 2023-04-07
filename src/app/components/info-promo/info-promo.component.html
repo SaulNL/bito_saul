@@ -77,9 +77,9 @@
     </div>
     <div *ngIf="promocion.id_tipo_promocion===2">
       <ion-row>
-        <ion-col class="ion-text-center" *ngFor="let dia of promocion.dias">
+        <ion-col class="ion-text-center" *ngFor="let item of listaDias">
           <h2 class="promocion">Quedan <span style="color: #fa4f72;">{{ promocion.restanDias }} días</span>, Aplica: 
-            <span style="color: #fa4f72;"> {{ dia.dias}} de {{ dia.hora_inicio}} a {{dia.hora_fin}} </span></h2>
+            <span style="color: #fa4f72;"> <span *ngFor="let dia of item.dias">{{dia}}</span> de {{ item.hora_inicio}} a {{item.hora_fin}} </span></h2>
         </ion-col>
       </ion-row>
     </div>

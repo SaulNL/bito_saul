@@ -22,6 +22,7 @@ export class InfoPromoComponent implements OnInit {
 
   @Input() promocion: any;
   @Input() idPersona: number | null;
+  @Input() listaDias: any[];
   public motrarContacto = true;
   public blnPermisoUbicacion: any;
   public miLat: any;
@@ -36,8 +37,7 @@ export class InfoPromoComponent implements OnInit {
               private _promociones: PromocionesService,
               private notificaciones: ToadNotificacionService,
               private socialSharing: SocialSharing
-              ) { 
-  }
+              ) { }
 
   ngOnInit() {
     this.calcularDistancia(this.promocion);

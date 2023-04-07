@@ -23,6 +23,7 @@ export class ModalPromocionComponent implements OnInit {
 
     @Input() promocion: any;
     @Input() idPersona: number | null;
+    @Input() listaDias: any[];
     public motrarContacto = true;
     public distanciaNegocio: string;
     public blnPermisoUbicacion: any;

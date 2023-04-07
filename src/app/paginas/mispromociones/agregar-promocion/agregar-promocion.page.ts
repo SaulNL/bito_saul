@@ -158,6 +158,8 @@ export class AgregarPromocionPage implements OnInit {
     });
     if (this.seleccionTo.id_promocion === 0) {
       this.seleccionTo.id_promocion = null;
+    } else {
+      this.obtenerCaracteristicasPromocion(this.seleccionTo.id_negocio);
     }
 
     if(this.seleccionTo.id_alcance_promocion !=null || this.seleccionTo.id_alcance_promocion !=undefined){
