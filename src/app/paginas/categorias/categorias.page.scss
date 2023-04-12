@@ -3,7 +3,37 @@
         width: calc(100% + 32px);
     }
 }
+.image-center{ margin:0 auto; }
+small{
+    --color: #fa4f72;
+}
 
+.img-gris{
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+
+}
+
+.todas{
+    text-decoration: none;
+    color: rgb(48, 47, 47);
+    font-size: 12px;
+}
+
+.giro-color{
+    color:  #a74eef;
+    font-size: 10px;
+}
+ion-slide{
+    width: 4em !important; height: 7em;
+}
+
+.loaderArribaShow{
+    visibility: visible;
+}
+.loaderArribaHide{
+    visibility: hidden;
+}
 .position-num{
     position: absolute;
     top: 1rem;
