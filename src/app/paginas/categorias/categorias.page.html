@@ -7,22 +7,53 @@
 <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
     <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
     <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
+
+    <ion-slides [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }" scrollbar="md">
+        <ion-slide>
+            <li class="nav-item">
+                <a class="todas" id="pills-home-todos" role="tab" aria-selected="true">
+                    <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img   (click)="activar()" src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png">
+                    </ion-avatar>
+                    <ion-avatar *ngIf="idTodo ===true" style="margin-bottom: 1.2rem;" class="image-center"> <img   (click)="activar()"  class="img-gris"  src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png">
+                    </ion-avatar>
+                    <p *ngIf="idTodo ===true" class="giro-color" style="font-size: 10.5px;">Recargar Negocios </p>
+                    <p *ngIf="idTodo !=true" style="font-size: 10.5px;">Todos los negocios </p>
+                </a>
+            </li>
+        </ion-slide>
+        <ion-slide *ngFor="let giro of this.lstCatTipoGiro">
+            <a href="tabs/categorias#{{giro.nombre}}" style="text-decoration: none;">
+            <ion-row class="ion-text-center"  (click)="buscarByGiro(giro.nombre, giro.id_giro)">
+                <ion-col>
+                    <ion-item color="none" lines="none">
+                        <ion-avatar *ngIf="idGiro != giro.id_giro" class="image-center"> <img class="img-gris"
+                                                                                              src="{{giro.url_icon}}"> </ion-avatar>
+                        <ion-avatar *ngIf="idGiro==giro.id_giro" class="image-center"> <img src="{{giro.url_icon}}"> </ion-avatar>
+                    </ion-item>
+                    <ion-item class="ion-text-center" color="none" lines="none">
+                        <small *ngIf="idGiro != giro.id_giro" style="font-size: 10px;">{{giro.nombre}}</small>
+                        <small *ngIf="idGiro==giro.id_giro" class="giro-color">{{giro.nombre}}</small>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            </a>
+        </ion-slide>
+    </ion-slides>
     <ion-grid>
-        <ion-row *ngFor="let nomCategoria of listaCategorias">
-            <img *ngIf="nomCategoria.url_imagen_movil !== null && imgMobil==true" [src]="nomCategoria.url_imagen_movil"
-                 alt="Falla al cargar la imagen">
-            <img *ngIf="nomCategoria.url_imagen !== null && imgMobil==false" [src]="nomCategoria.url_imagen"
-                 alt="Falla al cargar la imagen">
-            <ion-col sizeLg="3" sizeXs="6" sizeSm="4" sizeMd="4" *ngFor="let subCategoria of nomCategoria.categorias"
-                     (click)="seleccionarCategoria(subCategoria)">
-                <ion-badge class="md hydrated position-num">{{subCategoria.cantidad_negocios}}</ion-badge>
-                <img class="img-card-w" *ngIf="subCategoria.url_imagen !== null"
-                     src="https://ecoevents.blob.core.windows.net/comprandoando/Categor%C3%ADas/Im%C3%A1genes%20Sub%20Categor%C3%ADas/Alimentos%20y%20Bebidas/Fondas%20y%20Cocinas%20Econ%C3%B3micas.png"
-                     [srcset]="subCategoria.url_imagen" alt="Falla al cargar la imagen">
-                <p style="text-align: center;">{{subCategoria.nombre}}</p>
-            </ion-col>
-        </ion-row>
+            <ion-row *ngFor="let nomCategoria of listaCategorias" >
+                <img id="{{nomCategoria.nombre}}"   *ngIf="nomCategoria.url_imagen_movil !== null && imgMobil==true" [src]="nomCategoria.url_imagen_movil"
+                     alt="Falla al cargar la imagen">
+                <img id="{{nomCategoria.nombre}}" *ngIf="nomCategoria.url_imagen !== null && imgMobil==false" [src]="nomCategoria.url_imagen"
+                     alt="Falla al cargar la imagen">
+                <ion-col sizeLg="3" sizeXs="6" sizeSm="4" sizeMd="4" *ngFor="let subCategoria of nomCategoria.categorias"
+                         (click)="seleccionarCategoria(subCategoria)">
+                    <ion-badge class="md hydrated position-num">{{subCategoria.cantidad_negocios}}</ion-badge>
+                    <img class="img-card-w" *ngIf="subCategoria.url_imagen !== null"
+                         src="https://ecoevents.blob.core.windows.net/comprandoando/Categor%C3%ADas/Im%C3%A1genes%20Sub%20Categor%C3%ADas/Alimentos%20y%20Bebidas/Fondas%20y%20Cocinas%20Econ%C3%B3micas.png"
+                         [srcset]="subCategoria.url_imagen" alt="Falla al cargar la imagen">
+                    <p style="text-align: center;">{{subCategoria.nombre}}</p>
+                </ion-col>
+            </ion-row>
     </ion-grid>
     <app-infinito-scroll *ngIf="true" (respuesta)="cargarMasPaginas($event)" [activado]="true" [msj]="paginacion.mensaje"></app-infinito-scroll>
-
 </ion-content>
