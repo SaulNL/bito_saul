@@ -56,7 +56,7 @@ export class CategoriasPage implements OnInit {
   public  idGiro: number = null;
   public lstCatTipoGiro: any;
   public listaCategorias: Array<any>;
-  private Filtros: FiltrosModel;
+  public Filtros: FiltrosModel;
   public imgMobil: boolean;
   public isIOS: boolean = false;
   public filtros: boolean;
