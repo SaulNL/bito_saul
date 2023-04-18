@@ -56,6 +56,7 @@ export class CategoriasPage implements OnInit {
   public  idGiro: number = null;
   public lstCatTipoGiro: any;
   public listaCategorias: Array<any>;
+  public listaCategoriasMostrar: Array<any>;
   public Filtros: FiltrosModel;
   public imgMobil: boolean;
   public isIOS: boolean = false;
@@ -75,6 +76,7 @@ export class CategoriasPage implements OnInit {
     this.Filtros.idEstado = 29;
     this.isIOS = this.platform.is('ios');
     this.listaCategorias = new Array<any>();
+    this.listaCategoriasMostrar = new Array<any>();
     this.filtroActivo = true;
     this.user = this.util.getUserData();
     this.filtros = false;
@@ -116,6 +118,7 @@ export class CategoriasPage implements OnInit {
       .subscribe(
         (response) => {
           this.listaCategorias.push(...response.data.data);
+          this.listaCategoriasMostrar.push(...response.data.data);
           this.paginacion = PaginacionUtils.establecerDatosDePaginacion(
             response.data
           );
@@ -174,11 +177,11 @@ export class CategoriasPage implements OnInit {
     this.nombreseleccion = event;
     this.idTodo = true;
     this.idGiro = giro;
-    this.obtenerCategorias();
   }
 
   async activar() {
   this.filtros = false;
+  this.nombreseleccion = '';
   this.idGiro = 0;
   this.idTodo = false;
   }
