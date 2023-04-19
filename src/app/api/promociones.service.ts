@@ -383,4 +383,16 @@ export class PromocionesService {
     }));
   }
 
+  obtenerNumeroAnunciosYPromoPorNegocio(id_negocio: number): Observable<any>{
+    const body = JSON.stringify({id_negocio});
+    this.http.setDataSerializer('utf8');
+    return from(this.http.post(`${this.url}api/promocion/obtener/numero_registradas`, body, AppSettings.getHeadersToken())
+    .then((data) => {
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
+    }));
+  }
+
 }

@@ -120,6 +120,7 @@ export class AgregarPromocionPage implements OnInit {
   v: any;
   logs: string[] = [];
   currentFood = undefined;
+  permitirGuardarAnuncioPromo: boolean;
   
   constructor(
     private alertController: AlertController,
@@ -248,22 +249,6 @@ export class AgregarPromocionPage implements OnInit {
   pushLog(msg) {
     this.logs.unshift(msg);
   }
-  
-  // obtenerVip() {
-  //   for (const negocio of this.lstNegocios) { 
-  //     if (negocio.id_negocio == this.seleccionTo.id_negocio) { 
-  //       if (negocio.vip == 1) { 
-  //         this.mostrarVideo = true; 
-  //         break; 
-  //       } else { 
-  //         this.mostrarVideo = false;
-  //         this.base64Video = null
-  //         this.seleccionTo.video = null;
-  //         break; 
-  //       } 
-  //     } 
-  //   }
-  //}
 
   buscarNegocios() {
     this.loaderNegocios = true;
@@ -273,17 +258,6 @@ export class AgregarPromocionPage implements OnInit {
         (response) => {
           this.lstNegocios = response.data;
           this.loaderNegocios = false;
-          // for (const negocio of this.lstNegocios) { 
-          //   if (negocio.id_negocio == this.seleccionTo.id_negocio) { 
-          //     if (negocio.vip == 1) { 
-          //       this.mostrarVideo = true; 
-          //       break; 
-          //     } else { 
-          //       this.mostrarVideo = false; 
-          //       break; 
-          //     } 
-          //   } 
-          // }
           window.scrollTo({ top: 0, behavior: "smooth" });
         },
         (error) => {
@@ -298,7 +272,7 @@ export class AgregarPromocionPage implements OnInit {
     this._promociones_service.obtenerTipoPromocion()
       .subscribe(
         (response) => {
-          this.lstTipoPromo = response.data.list_cat_tipo_promocion;
+          this.lstTipoPromo = response.data?.list_cat_tipo_promocion;
         },
         (error) => {
           this._notificacionService.error(error);
@@ -311,7 +285,7 @@ export class AgregarPromocionPage implements OnInit {
     this._promociones_service.obtenerAlcancePromocion()
       .subscribe(
         (response) => {
-          this.lstAlcance = response.data.list_cat_alcance_promocion;
+          this.lstAlcance = response.data?.list_cat_alcance_promocion;
 
           if (this.seleccionTo.id_alcance_promocion !=null) {
             this.lstAlcance.forEach((element) => {
@@ -555,7 +529,8 @@ export class AgregarPromocionPage implements OnInit {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    if (form.valid) {
+
+    if (form.valid && this.seleccionTo.id_negocio > 0) {
       this.seleccionTo.id_proveedor = this.usuario.proveedor.id_proveedor;
       this.seleccionTo.tags = this.tags;
       if (this.seleccionTo.tags.length === 0) {
@@ -889,33 +864,50 @@ export class AgregarPromocionPage implements OnInit {
     this.seleccionTo.dias.splice(i,1);
   }
 
-  obtenerCaracteristicasPromocion(idNegocio) {
+  obtenerCaracteristicasPromocion(idNegocio: number) {
+    this.mostrarVideo = true; 
+    this.banderaPromocionCompleta = true; 
+    this.permitirGuardarAnuncioPromo = true;
+
+    this.obtenerPromoYanunciosCreados(idNegocio);
 
     this.generalService.features(idNegocio)
       .subscribe(
         (response) => {
           this.caracteristicasNegocios = response.data;
-          
-          let featurePromocionCompleta = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 3 )
-          let featureVideo = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 6 )
-          
-          if(featurePromocionCompleta != undefined){
-            this.banderaPromocionCompleta = false; 
-          }else{
-            this.banderaPromocionCompleta = true;
-          }
 
-          if(featureVideo != undefined){
-            this.mostrarVideo = false; 
-          }else{
-            this.mostrarVideo = true;
-          }
+          for (const feature of this.caracteristicasNegocios) {
 
+            if(feature.id_caracteristica === 3) this.banderaPromocionCompleta = false;
+
+            if(feature.id_caracteristica === 6) this.mostrarVideo = false;
+            
+          }
         },
         (error) => {
           this._notificacionService.error(error);
         }
       );
+  }
+
+  obtenerPromoYanunciosCreados(idNegocio: number) {
+    this._promociones_service
+        .obtenerNumeroAnunciosYPromoPorNegocio(idNegocio)
+        .subscribe(
+            (response) => {
+                let data = response.data;
+                if(data.numPromocionesRegistradas < data.numPromocionesPermitidas) {
+                  this.permitirGuardarAnuncioPromo = false;
+                } else {
+                 
+                  this._notificacionService.toastInfo(
+                    `El negocio llego al limite de anuncios y/o promociones registrados (${data.numPromocionesRegistradas} / ${data.numPromocionesPermitidas}), actualiza tu plan de suscripción`);
+                }
+            },
+            (error) => {
+                this._notificacionService.error(error);
+            }
+        );
   }
 
 }
