@@ -11,21 +11,20 @@ import { UtilsCls } from './../../../utils/UtilsCls';
 import { ToadNotificacionService } from '../../../api/toad-notificacion.service';
 import { ModalController } from '@ionic/angular';
 import { RecorteImagenComponent } from '../../../components/recorte-imagen/recorte-imagen.component';
-import { ActionSheetController } from '@ionic/angular';
 import { HorarioNegocioModel } from '../../../Modelos/HorarioNegocioModel';
 import moment from 'moment';
 import { CatLocalidadModel } from './../../../Modelos/CatLocalidadModel';
 import { CatMunicipioModel } from './../../../Modelos/CatMunicipioModel';
 import { CatEstadoModel } from './../../../Modelos/CatEstadoModel';
-import { Map, tileLayer, marker, Marker, latLng } from 'leaflet';
+import { Map, tileLayer, marker, Marker} from 'leaflet';
 import { Plugins } from '@capacitor/core';
 const { Geolocation } = Plugins;
 import { GeneralServicesService } from './../../../api/general-services.service';
-import { LoadingController } from '@ionic/angular';
 import { UbicacionMapa } from '../../../api/ubicacion-mapa.service';
 import { CatDistintivosModel } from 'src/app/Modelos/CatDistintivosModel';
 import { SeleccionarSucripcionComponent } from 'src/app/components/seleccionar-suscripcion/seleccionar-suscripcion.component';
 import { DetDomicilioModel } from 'src/app/Modelos/DetDomicilioModel';
+import { VigenciaPdfDistintivosComponent } from 'src/app/components/vigencia-pdf-distintivos/vigencia-pdf-distintivos.component';
 
 @Component({
   selector: 'app-formulario-negocio',
@@ -152,17 +151,18 @@ export class FormularioNegocioPage implements OnInit {
   suscripciones: any;
   dsSuscrip: string;
   nuevoNegocio: boolean = false;
+  distintivosSeleccionados: any[] = [];
+
   constructor(
     private alertController: AlertController,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private negocioServico: NegocioService,
-    private actionSheetController: ActionSheetController,
     private _utils_cls: UtilsCls,
     private notificaciones: ToadNotificacionService,
     public modalController: ModalController,
     private _general_service: GeneralServicesService,
-    public getCoordinatesMap: UbicacionMapa,
+    public getCoordinatesMap: UbicacionMapa
   ) {
     this.valido = false;
 
@@ -270,7 +270,6 @@ export class FormularioNegocioPage implements OnInit {
   public obtenernombreNegocioMatriz() {
     this.negocioServico.obtenerNegocio(this.negocioTO.id_negocio_matriz).subscribe(
       (respuesta) => {
-        console.log("Del name comercial: " + JSON.stringify(respuesta))
         if (respuesta.data != null) {
           this.nombreNegocioMatriz = respuesta.data.nombre_comercial;
         }
@@ -733,6 +732,19 @@ export class FormularioNegocioPage implements OnInit {
     );
     return data;
   }
+
+  async abrirModalPdfVigencia(distintivo) {
+    const modal = await this.modalController.create({
+      component: VigenciaPdfDistintivosComponent,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        distintivo: distintivo
+      }
+    });
+    await modal.present();
+   
+  }
+
   agregarTags(tags: string[]) {
     this.negtag = true;
     this.tags = tags.join();
@@ -761,19 +773,12 @@ export class FormularioNegocioPage implements OnInit {
   public obtenerCatDistintivos() {
     this.negocioServico.obtenerCatDistintivos().subscribe((response) => {
       this.lstDistintivos = Object.values(response.data);
-      if (this.negocioTO.id_negocio != null) {
-        this.lstDistintivos.forEach((element) => {
-          this.negocioTO.distintivos.forEach((elements) => {
-            if (element.id_distintivo == elements) {
-              this.tipoDistAux = element.nombre;
-            }
-          });
-        });
-      }
+      if (this.negocioTO.id_negocio != null) this.listarDistintivosSeleccionados();
+
     });
   }
 
-  public obtenerCaPlazas() {
+  obtenerCaPlazas() {
     this.negocioServico.obtenerPlazas().subscribe((response) => {
       this.lstPlazas = Object.values(response.data);
       if (this.negocioTO.id_negocio != null) {
@@ -789,7 +794,7 @@ export class FormularioNegocioPage implements OnInit {
     });
   }
 
-  public obtenerConvenio() {
+  obtenerConvenio() {
     this.negocioServico.obtenerConvenio().subscribe((response) => {
       this.lstConvenio = Object.values(response.data);
       if (this.negocioTO.id_negocio != null) {
@@ -802,6 +807,66 @@ export class FormularioNegocioPage implements OnInit {
         });
       }
     });
+  }
+
+  listarDistintivosSeleccionados() {
+    this.lstDistintivos.forEach((element) => {
+      this.negocioTO.distintivos.forEach((id) => {
+        if (element.id_distintivo == id) {
+          this.tipoDistAux = element.nombre;
+
+          let elemento = this.negocioTO.distintivosTodo.find(dist => dist.id_distintivo === id);
+
+          elemento.distintivo.fc_vencimiento = elemento.fc_vencimiento;
+          elemento.distintivo.url_comprobante_vigencia = elemento.url_comprobante_vigencia;
+          
+          this.distintivosSeleccionados.push(elemento.distintivo);
+        }
+      });
+    });
+  }
+
+  selectDistintivos(event: any) {
+    let idDistintivos = event.detail.value;
+
+    if (this.distintivosSeleccionados.length > 0) {
+      for (const id of idDistintivos) {
+
+        let distintivo = this.distintivosSeleccionados.find(dist => dist.id_distintivo === id);
+
+        if (this.distintivosSeleccionados.includes(distintivo)) {
+          //alert("si inculye " + id)
+
+          this.distintivosSeleccionados.forEach((dist, index) => {
+            if (!idDistintivos.includes(dist.id_distintivo)) {
+
+              this.distintivosSeleccionados.splice(index, 1);
+              //alert("no oncluyee elemn " + dist.id_distintivo)
+            }
+          });
+
+        } else {
+
+          //alert("noo inculye " + id)
+
+          let distintivoTodo = this.negocioTO.distintivosTodo.find(dist => dist.id_distintivo === id);
+
+          //7alert("disitintoooooo " + JSON.stringify(distintivoTodo))
+
+          if (distintivoTodo != undefined) {
+            this.distintivosSeleccionados.push(distintivoTodo.distintivo)
+
+          } else {
+            //alert("distintivoListt " + id)
+            let distintivoLista = this.lstDistintivos.find(dist => dist.id_distintivo == id);
+  
+            this.distintivosSeleccionados.push(distintivoLista)
+          }
+        }
+      }
+    }
+
+    //alert(JSON.stringify("seleccionados " + JSON.stringify(this.distintivosSeleccionados)));
   }
 
   /**
@@ -1127,6 +1192,11 @@ export class FormularioNegocioPage implements OnInit {
     }
   }
 
+  guardar2() {
+    //alert(JSON.stringify(this.negocioTO))
+    console.log(JSON.stringify(this.negocioTO))
+  }
+
   guardar(formulario) {
     const formularioInfo = document.getElementById('formNegocio');
     //this.loader = true;
@@ -1176,7 +1246,8 @@ export class FormularioNegocioPage implements OnInit {
           //console.log(dirActual.calle + ' Y ' + dirAnterior);
           this.negocioGuardar.productos = this.listaProductos;
           // console.log("Guardar Negocio Clonado" + JSON.stringify(this.negocioGuardar))
-          this.negocioServico.guardar(this.negocioGuardar).subscribe(
+          console.log(JSON.stringify(this.negocioGuardar));
+          /* this.negocioServico.guardar(this.negocioGuardar).subscribe(
             response => {
               if (response.code === 200) {
                 this.notificaciones.exito('Tu negocio se guardo exitosamente');
@@ -1194,7 +1265,7 @@ export class FormularioNegocioPage implements OnInit {
               this.loader = false;
               //console.log('ERROR:--------' + JSON.stringify(error));
             }
-          );
+          ); */
         }
       } else {
         valido = true
@@ -1431,8 +1502,6 @@ export class FormularioNegocioPage implements OnInit {
   }
   agregarConvenio() {
 
-
-
     this.dateFormat = this.cnvn_fecha.substr(0, this.cnvn_fecha.indexOf('T'));
 
     const filteredArr = this.lstConvenio.find(data => data.id_organizacion === this.convenioId);
@@ -1448,7 +1517,6 @@ export class FormularioNegocioPage implements OnInit {
     this.cnvn_fecha = null;
 
   }
-
 
   async presentAlertEliminarConvenio(i) {
     const alert = await this.alertController.create({
