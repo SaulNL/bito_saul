@@ -1,0 +1,57 @@
+<ion-header translucent>
+  <ion-toolbar class="tolbar">
+      <ion-title>Mis preferencias</ion-title>
+      <ion-buttons slot="end" (click)="cerrar()">
+          <ion-button class="blanco">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content [fullscreen]="false" *ngIf="!loader" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+
+  <ion-card>
+    <ion-card-header class="ion-text-center">
+      <ion-card-title>
+        <h4 style="margin-top: -10px;">
+          Selecciona tus 5 subcategorías favoritas          
+        </h4>
+      </ion-card-title>
+      <ion-label>(Puedes legir hasta 5 subcategorías)</ion-label>
+    </ion-card-header>
+
+    <ion-grid>
+      <ion-row >        
+          <ion-col *ngFor="let subCat of listaSubCategoriesColor index as i" (click)="selectSubcategory(subCat.id_categoria,subCat.active,i)">
+            <ion-item color="none" lines="none">
+              <ion-avatar class="image-center"> <img 
+                  src="{{subCat.url_imagen}}"> 
+              </ion-avatar>  
+            </ion-item>
+            <div style="width: 100%; display: flex; justify-content: center; position: relative; z-index: 800;">
+              <ion-icon [name]="subCat.active==='true'?'heart':'heart-outline'" role="img" [ngClass]="subCat.active==='true'? 'heartLike' : 'heartNotLike' " size="small" aria-label="Me gusta"></ion-icon>
+            </div>            
+            <p style="text-align: center; margin: 0px">{{subCat.nombre}}</p>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div [style]="totalCategoriasSeleccionadas>0?'display: flex; justify-content: space-between;':'display: block' ">
+      <ion-item *ngIf="totalCategoriasSeleccionadas>0">
+        <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+          <ion-button style="width: fit-content;" mode="ios" size="small" class="bg-rosa" shape="round" (click)="limpiarCategoria()">
+            Limpiar categoría
+          </ion-button>
+        </div>
+      </ion-item>
+      <ion-item>
+        <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+          <ion-button style="width: fit-content;" mode="ios" size="small" class="bg-rosa" shape="round" (click)="guardarPreferencias()">
+            Aceptar
+          </ion-button>
+        </div>
+      </ion-item>
+    </div>
+  </ion-card>    
+</ion-content> 

@@ -1,3 +1,4 @@
+import { ModalPublicarComponent } from './../../../components/modal-publicar/modal-publicar.component';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PromocionesModel } from '../../../Modelos/PromocionesModel';
@@ -5,7 +6,6 @@ import { PromocionesService } from '../../../api/promociones.service';
 import { ToadNotificacionService } from '../../../api/toad-notificacion.service';
 import { PublicacionesModel } from '../../../Modelos/PublicacionesModel';
 import { ModalController } from '@ionic/angular';
-import { ModalPublicarComponent } from 'src/app/components/modal-publicar/modal-publicar.component';
 import { AlertController } from '@ionic/angular';
 
 
@@ -34,7 +34,7 @@ export class PublicarPromocionPage implements OnInit {
                public modalController: ModalController,
                public alertController: AlertController,
                public router: Router
-              ) { 
+              ) {
     this.seleccionTo = new PromocionesModel();
   }
 
@@ -51,20 +51,20 @@ export class PublicarPromocionPage implements OnInit {
     this.fechas = '';
     this.fi = null;
     this.ff = null;
-    this. obtenerNumeroPublicacionesPromocion();
+    //this. obtenerNumeroPublicacionesPromocion();
   }
 
-  obtenerNumeroPublicacionesPromocion(){
-    this._promociones_service.obtenerNumeroPublicacionesPromocion(this.id_proveedor).subscribe(
-      response => {
-        this.publicacionesHechas = response.data.numPublicacionesPromo;
-        this.publicacionesPermitidas = response.data.numPubliPromoPermitidas;
-      },
-      error => {
-        this._notificacionService.error(error);
-      }
-    );
-  }
+  // obtenerNumeroPublicacionesPromocion(){
+  //   this._promociones_service.obtenerNumeroPublicacionesPromocion(this.id_proveedor).subscribe(
+  //     response => {
+  //       this.publicacionesHechas = response.data.numPublicacionesPromo;
+  //       this.publicacionesPermitidas = response.data.numPubliPromoPermitidas;
+  //     },
+  //     error => {
+  //       this._notificacionService.error(error);
+  //     }
+  //   );
+  // }
 
   public abrirModal(Promocion: PromocionesModel) {
 
@@ -121,7 +121,7 @@ export class PublicarPromocionPage implements OnInit {
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
-            console.log('cancelar');
+            
           }
         },
         {

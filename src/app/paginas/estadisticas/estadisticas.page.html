@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-buttons slot="start" >
+      <ion-menu-button class="blanco"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Estadísticas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+
+<ion-content *ngIf="!loader" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+  <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
+  <ion-list>
+    <ion-list-header>
+      Negocios
+    </ion-list-header>
+
+    <div>
+      <ion-item *ngFor="let negocio of listaNegocios" (click)="showStatisticByBusiness(negocio.id_negocio)">
+        <ion-avatar slot="start">
+          <img *ngIf="negocio.url_logo !== '' && negocio.url_logo !== null "  src="{{ negocio.url_logo }}" alt="{{ negocio.nombre_comercial }}">
+          <img *ngIf="negocio.url_logo === '' || negocio.url_logo === null  " src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{negocio.nombre_comercial}}</h2>
+        </ion-label>
+      </ion-item>
+    </div>
+  </ion-list>
+
+  <app-infinito-scroll *ngIf="rol ===1" (respuesta)="cargarMasNegocios($event)" [activado]="scroll" [msj]="mensaje"></app-infinito-scroll>
+</ion-content>

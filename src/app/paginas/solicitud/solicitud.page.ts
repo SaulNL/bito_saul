@@ -1,28 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { FiltrosModel } from '../../Modelos/FiltrosModel';
-import { FiltrosService } from '../../api/filtros.service';
-import { ToadNotificacionService } from '../../api/toad-notificacion.service';
-import { ProveedorServicioService } from '../../api/proveedor-servicio.service';
-import { SolicitudesService } from '../../api/solicitudes.service';
-import { SolicitudesModel } from '../../Modelos/SolicitudesModel';
-import { AppSettings } from '../../AppSettings';
-import { UtilsCls } from '../../utils/UtilsCls';
-import { ModalInfoSolicitudComponent } from '../../componentes/modal-info-solicitud/modal-info-solicitud.component';
-import { ModalController } from '@ionic/angular';
+import { AfiliacionPlazaModel } from "./../../Modelos/AfiliacionPlazaModel";
+import { Component, OnInit, Output, ViewChild } from "@angular/core";
+import { FiltrosModel } from "../../Modelos/FiltrosModel";
+import { FiltrosService } from "../../api/filtros.service";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { ProveedorServicioService } from "../../api/proveedor-servicio.service";
+import { SolicitudesService } from "../../api/solicitudes.service";
+import { SolicitudesModel } from "../../Modelos/SolicitudesModel";
+import { AppSettings } from "../../AppSettings";
+import { UtilsCls } from "../../utils/UtilsCls";
+import { ModalInfoSolicitudComponent } from "../../componentes/modal-info-solicitud/modal-info-solicitud.component";
+import { AlertController, ModalController, Platform } from "@ionic/angular";
 import { Router } from "@angular/router";
-import { UbicacionModel } from '../../Modelos/UbicacionModel';
-import { UbicacionActualModel   } from '../../Modelos/UbicacionActualModel';
+import { UbicacionModel } from "../../Modelos/UbicacionModel";
+import { UbicacionActualModel } from "../../Modelos/UbicacionActualModel";
+import { ModalLoguearseComponent } from 'src/app/componentes/modal-loguearse/modal-loguearse.component';
+import { OptionBackLogin } from "src/app/Modelos/OptionBackLoginModel";
 
 @Component({
-  selector: 'app-solicitud',
-  templateUrl: './solicitud.page.html',
-  styleUrls: ['./solicitud.page.scss'],
-  providers: [
-    UtilsCls
-  ]
+  selector: "app-solicitud",
+  templateUrl: "./solicitud.page.html",
+  styleUrls: ["./solicitud.page.scss"],
+  providers: [UtilsCls],
 })
 export class SolicitudPage implements OnInit {
-
   public idGiro: any;
   public anyFiltros: FiltrosModel;
   public kilometrosView: number;
@@ -42,7 +42,16 @@ export class SolicitudPage implements OnInit {
   public miUbicacionlatitud: number;
   public strUbicacionActual: Array<UbicacionActualModel>;
   public numeroVistas: number;
-
+  public cargando = "Cargando";
+  public plazaAfiliacion: AfiliacionPlazaModel;
+  public isIos: boolean;
+  public fuenteExclusiva:String;
+  private modal: any;
+  public existeSesion: boolean;
+  public typeLogin: OptionBackLogin;
+  obj: any;
+  loaderSolicitud: boolean=true;
+  idSolicitud: any;
   constructor(
     private filtrosService: FiltrosService,
     private serviceProveedores: ProveedorServicioService,
@@ -50,8 +59,20 @@ export class SolicitudPage implements OnInit {
     private servicioSolicitudes: SolicitudesService,
     private _utils_cls: UtilsCls,
     public modalController: ModalController,
-    private _router: Router
-  ) { }
+    private _router: Router,
+    private platform: Platform,
+    public alertController: AlertController
+  ) {
+    this.user = JSON.parse(localStorage.getItem("u_data"));
+    this.isIos = this.platform.is("ios");
+    this.existeSesion = _utils_cls.existe_sesion();
+    this.typeLogin = new OptionBackLogin();
+    
+    this.platform.backButton.subscribeWithPriority(85288880, () => {
+    this.dismiss();
+    
+  });
+  }
 
   ngOnInit() {
     this.idGiro = null;
@@ -66,8 +87,8 @@ export class SolicitudPage implements OnInit {
     this.listaCategorias = [];
     this.miUbicacionlongitud = 0;
     this.miUbicacionlatitud = 0;
-    this.mensaje = 'Todas las solicitudes';
-    this.banner = '';
+    this.mensaje = "Todas las solicitudes";
+    this.banner = "";
     this.lstSolicitudes = new Array<SolicitudesModel>();
     this.strUbicacionActual = new Array<UbicacionActualModel>();
     this.loader = true;
@@ -75,6 +96,12 @@ export class SolicitudPage implements OnInit {
     this.productoDefault = AppSettings.IMG_ERROR_PRODUCTO;
     this.obtenerSolicitudes();
     this.mostrarSolicitud = this._utils_cls.existe_sesion();
+    this.mostrarLoguearse();
+    if (localStorage.getItem("isRedirected") === "false" ) {
+      localStorage.setItem("isRedirected", "true");
+      //location.reload();
+      localStorage.removeItem("activedPage");
+    }
   }
 
   buscarToolbar(respuesta) {
@@ -83,7 +110,7 @@ export class SolicitudPage implements OnInit {
     this.mostrarDetalle = false;
     this.reiniciarFiltro();
     this.obtenerCatagorias(null);
-    this.mensaje = 'Todas las solicitudes';
+    this.mensaje = "Todos los requerimientos de compra";
     this.anyFiltros.strBuscar = JSON.parse(JSON.stringify(respuesta));
     this.banner = respuesta;
     this.obtenerSolicitudes();
@@ -93,7 +120,7 @@ export class SolicitudPage implements OnInit {
     this.anyFiltros.tipoBusqueda = 0;
     this.anyFiltros.idEstado = 29;
     this.anyFiltros.kilometros = 1;
-    this.lstCatTipoNegocio.map(item => {
+    this.lstCatTipoNegocio.map((item) => {
       item.estaSeleccionado = false;
     });
     this.anyFiltros.blnEntrega = null;
@@ -101,16 +128,16 @@ export class SolicitudPage implements OnInit {
   }
 
   public obtenerCatagorias(buscar) {
-    this.listaCategorias=[];
+    this.listaCategorias = [];
     this.serviceProveedores.obtenerCategoriasGiro(buscar).subscribe(
-      response => {
+      (response) => {
         this.listaCategorias = response.data;
-        this.listaCategorias.map(i => {
+        this.listaCategorias.map((i) => {
           i.estaSeleccionado = false;
           i.id_tipo_producto = i.id_categoria;
         });
       },
-      error => {
+      (error) => {
         this._notificacionService.error(error);
       }
     );
@@ -118,17 +145,20 @@ export class SolicitudPage implements OnInit {
 
   public obtenerSolicitudes() {
     if (navigator.geolocation && this.anyFiltros.tipoBusqueda === 1) {
-      navigator.geolocation.getCurrentPosition(posicion => {
+      navigator.geolocation.getCurrentPosition(
+        (posicion) => {
           this.anyFiltros.latitud = posicion.coords.latitude;
           this.anyFiltros.longitud = posicion.coords.longitude;
           this.obtenerSolicitudesServicio();
         },
-        error => {
-          this._notificacionService.error('error bisqueda');
+        (error) => {
+          this._notificacionService.error("error bisqueda");
           this.lstSolicitudes = [];
-          window.scrollTo({top: 0, behavior: 'smooth'});
+          window.scrollTo({ top: 0, behavior: "smooth" });
           this.loader = false;
-        }, {enableHighAccuracy : true, maximumAge : 60000, timeout : 10000 });
+        },
+        { enableHighAccuracy: true, maximumAge: 60000, timeout: 10000 }
+      );
     } else {
       this.anyFiltros.tipoBusqueda = 0;
       this.obtenerSolicitudesServicio();
@@ -138,47 +168,79 @@ export class SolicitudPage implements OnInit {
   public obtenerSolicitudesServicio() {
     this.loader = true;
     this.mostrarDetalle = false;
-    this.servicioSolicitudes.obtenerSolicitudesPublicadas(this.anyFiltros).subscribe(
-      response => {
-        if (response.data !== null) {
-          this.lstSolicitudes = response.data;
-        } else {
+    this.plazaAfiliacion = JSON.parse(localStorage.getItem("org"));
+    if (this.plazaAfiliacion != null) {
+      this.anyFiltros.organizacion = this.plazaAfiliacion.id_organizacion;
+    }
+    if(this.user != null || this.user != undefined){
+      this.anyFiltros.id_persona=this.user.id_persona;
+    }
+    this.servicioSolicitudes    
+      .obtenerSolicitudesPublicadas(this.anyFiltros)          
+      .subscribe(
+        (response) => {
+          if (response.data !== null) {
+            this.lstSolicitudes = response.data;
+          } else {
+            this.lstSolicitudes = [];
+          }
+        },
+        (error) => {
+          this._notificacionService.error(error);
           this.lstSolicitudes = [];
+        },
+        () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          this.loader = false;
         }
-      },
-      error => {
-        this._notificacionService.error(error);
-        console.error(error);
-        this.lstSolicitudes = [];
-      },
-      () => {
-        window.scrollTo({top: 0, behavior: 'smooth'});
-        this.loader = false;
-      }
-    );
+      );
   }
 
-  masInformacion( solicitud: any) {
+  masInformacion(solicitud: any) {
     this.mostrarSolicitud = this._utils_cls.existe_sesion();
-    if(this.mostrarSolicitud){
+    if (this.mostrarSolicitud) {
+      this.loaderSolicitud = false;
+      this.idSolicitud = solicitud.id_solicitud;
+      setTimeout(()=>{      
       this.accionSolicitud(solicitud);
-      this.modalDetalleSolicitud(solicitud);
-    }else {
-      this._router.navigate(['/tabs/login']);
+      this.modalDetalleSolicitud(solicitud);                      
+      }, 1000);
+    } else {
+      this.typeLogin.type = "requerimiento";
+      this.typeLogin.url = "";
+      localStorage.setItem("isRedirected", "false");
+      localStorage.setItem("Page", "Requerimiento");
+      const body = JSON.stringify(this.typeLogin);
+      this._router.navigate(["/tabs/login"], {
+        queryParams: { perfil: body },
+      });
     }
   }
 
   async modalDetalleSolicitud(solicitud: any) {
     const modal = await this.modalController.create({
-      component:  ModalInfoSolicitudComponent ,
-      cssClass: 'my-custom-class',
+      component: ModalInfoSolicitudComponent,
+      cssClass: "my-custom-class",
       componentProps: {
-        solicitud: solicitud
-      }
+        solicitud: solicitud,
+      },
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        const user = data['data'];
+        this.loaderSolicitud=true;
+        
     });
     return await modal.present();
   }
 
+  dismiss() {
+    this.modalController.dismiss({
+      'dismissed': true,
+    });
+  }
+  
   accionSolicitud(solicitud) {
     this.solicitud = solicitud;
     this.visteMiSolicitud(solicitud);
@@ -188,48 +250,99 @@ export class SolicitudPage implements OnInit {
   visteMiSolicitud(solicitud: SolicitudesModel) {
     this.ubicacion.latitud = this.miUbicacionlatitud;
     this.ubicacion.longitud = this.miUbicacionlongitud;
-    this.servicioSolicitudes.guardarQuienVioSolicitud(solicitud, this.ubicacion).subscribe(
-      response => {
-        if (response.code === 200) {
-        }
-      },
-      error => {
-      }
-    );
+    this.servicioSolicitudes
+      .guardarQuienVioSolicitud(solicitud, this.ubicacion)
+      .subscribe(
+        (response) => {
+          if (response.code === 200) {
+          }
+        },
+        (error) => {}
+      );
   }
 
   public obtenerGeolocalizacion() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(posicion => {
+      navigator.geolocation.getCurrentPosition(
+        (posicion) => {
           this.miUbicacionlatitud = posicion.coords.latitude;
           this.miUbicacionlongitud = posicion.coords.longitude;
           this.obtenerMiUbicacion();
         },
-        error => {
-          console.log(error);
-        }, {enableHighAccuracy : true, maximumAge : 60000, timeout : 10000 });
+        (error) => {},
+        { enableHighAccuracy: true, maximumAge: 60000, timeout: 10000 }
+      );
     }
   }
 
   public obtenerMiUbicacion() {
-    this.serviceProveedores.obtenerMiUbicacion(this.miUbicacionlatitud, this.miUbicacionlongitud).subscribe(
-      response => {
-        this.strUbicacionActual = response.data.miUbicacion;
-      },
-      error => {
-        this._notificacionService.error(error);
-      }
-    );
+    this.serviceProveedores
+      .obtenerMiUbicacion(this.miUbicacionlatitud, this.miUbicacionlongitud)
+      .subscribe(
+        (response) => {
+          this.strUbicacionActual = response.data.miUbicacion;
+        },
+        (error) => {
+          this._notificacionService.error(error);
+        }
+      );
   }
 
   quienNumeroVioPublicacion(id_solicitud) {
-    this.servicioSolicitudes.obtenerNumeroQuienVioPublicacion(id_solicitud).subscribe(
-      response => {
-        this.numeroVistas = response.data;
-      },
-      error => {
-      }
-    );
+    this.servicioSolicitudes
+      .obtenerNumeroQuienVioPublicacion(id_solicitud)
+      .subscribe(
+        (response) => {
+          this.numeroVistas = response.data;
+        },
+        (error) => {}
+      );
   }
 
+  public mostrarLoguearse(){
+    if (this.existeSesion) {
+    }else{
+        if(this.plazaAfiliacion != null){
+            
+        }else{
+          setTimeout(() =>{
+            this. mensajeRegistro();
+          },100)
+        }
+    }
+  }
+
+  async mensajeRegistro() {
+    const alert = await this.alertController.create({
+      header: 'Bitoo!',
+      message: "¿Ya tienes una cuenta?",
+        buttons: [
+            {
+                text: "Iniciar sesión",
+                cssClass: 'text-grey',
+                handler: () => {
+                  this._router.navigate(['/tabs/login']);
+                }
+            },
+            {
+                text: "Registrate",
+                cssClass: 'text-rosa',
+                handler: () => {
+                    this._router.navigate(["/tabs/login/sign-up"]);
+                },
+            },
+        ],
+    });
+    await alert.present();
+  }
+  ngAfterViewInit(){
+    this.nombrePlazas();
+  }
+  public nombrePlazas(){
+    const organ=localStorage.getItem('org');
+    if(organ?.length>0){
+       this.obj = JSON.parse(organ);
+    }
+    this.fuenteExclusiva=this.obj?.nombre;
+  }
 }

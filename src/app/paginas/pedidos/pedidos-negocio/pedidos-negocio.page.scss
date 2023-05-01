@@ -1,0 +1,22 @@
+.spinner-color {
+  --color: #FA4F72;
+}
+
+.text-small {
+  font-size: 12px;
+  
+}
+.border{
+  border: 1px solid red;
+  border-radius: 5px
+}
+
+.rosa {
+  border-color: rgb(249, 79, 115);
+  color: rgb(249, 79, 115);
+}
+
+.rosa:hover {
+  background-color: rgb(249, 79, 115);
+  color: white;
+}

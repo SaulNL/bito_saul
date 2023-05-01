@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-buttons slot="start" >
+      <ion-menu-button class="blanco"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Mis preferencias</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<div *ngIf="loader" class="loader-overlay">		
+  <ion-spinner class="spinner-color"></ion-spinner>	
+  <ion-label style="margin-top: 5px;" class="message">
+      {{msj}}
+  </ion-label> 	
+</div> 
+<ion-content><!--*ngIf="!loader" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop"-->
+  <!--app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top-->
+  <!--app-spinner [loader]="loader" [message]="msj"></app-spinner-->
+  <ion-card>
+    <ion-card-header class="ion-text-center">
+      <ion-card-title>
+        <h4 style="margin-top: -10px;">
+          Queremos conocer mas sobre tus gustos en Bitoo.          
+        </h4>
+        <h5>Selecciona las categorías segun tus interéses</h5>
+      </ion-card-title>
+      <ion-label>(Puedes legir hasta 5 categorías)</ion-label>
+    </ion-card-header>
+
+    <ion-grid>
+      <ion-row >        
+          <ion-col *ngFor="let giro of listaGirosColor index as i" (click)="modalPrefByGiro(giro.id_giro,giro.active,i)">
+            <ion-item color="none" lines="none">
+              <ion-avatar class="image-center">
+                <img [ngClass]="giro.active==='true'? 'giro-color' : 'img-gris' " src="{{giro.url_icon}}" alt="">
+              </ion-avatar>  
+            </ion-item>
+            <p style="text-align: center;">{{giro.nombre}}</p>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-item>
+      <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+        <ion-button mode="ios" size="small" class="bg-rosa" shape="round" (click)="guardarPreferencias()">
+          Guardar preferencias
+        </ion-button>
+      </div>
+    </ion-item>
+
+  </ion-card>
+
+</ion-content>

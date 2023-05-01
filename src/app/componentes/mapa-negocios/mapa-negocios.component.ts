@@ -4,6 +4,7 @@ import { Map, tileLayer, marker, Marker, icon } from 'leaflet';
 import { AppSettings } from 'src/app/AppSettings';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
 import { ModalController } from '@ionic/angular';
+import * as L from 'leaflet';
 
 @Component({
   selector: 'app-mapa-negocios',
@@ -13,32 +14,50 @@ import { ModalController } from '@ionic/angular';
 export class MapaNegociosComponent implements OnInit {
   map: Map;
   public marker: Marker<any>;
-  public latitud: any;
-  public longitud: any;
+  // public latitud: any;
+  // public longitud: any;
   @Input() public listaIds: Array<any>;
+  @Input() public banderaInicio: boolean;
+  @Input() public latitud: any;
+  @Input() public longitud: any;
+  //@Input() public funcionNegocios: any;
+
   public lstNegocios: Array<any>;
-  url = `${AppSettings.URL_MOVIL}`;
+  url = `${AppSettings.URL}`;
   public iconoMarker: string;
   public urlNegocio: string;
+  public zoom: number;
+
   constructor(
     private _generalService: GeneralServicesService,
     private notificaciones: ToadNotificacionService,
     public modalController: ModalController
   ) {
-    this.latitud = 19.31905;
-    this.longitud = -98.19982;
+    //this.latitud = 19.31905;
+    //this.longitud = -98.19982;
   }
 
   ngOnInit() {
+    
+    if(this.banderaInicio !== true){
+      this.latitud = 19.31905;
+      this.longitud = -98.19982;
+    } 
+    
+    if(this.latitud === 19.31905 && this.longitud === -98.19982 ){
+       this.zoom = 10;
+    }else{
+      this.zoom = 14;
+    }
+    
     this.cagarMapa();
-    // this.getListaNegocios();
   }
   /**
    * Funcion para cargar el mapa
    */
   public cagarMapa() {
     setTimeout(it => {
-      this.map = new Map("mapaId").setView([this.latitud, this.longitud], 10);
+      this.map = new Map("mapaId").setView([this.latitud, this.longitud],this.zoom );
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: ''}).addTo(this.map);
       this.getListaNegocios();
     }, 500);
@@ -75,13 +94,13 @@ export class MapaNegociosComponent implements OnInit {
           iconUrl:  this.iconoMarker,
           shadowUrl: 'assets/leaflet/marker-shadow.png'
         })
-      }).addTo(this.map)
-        .bindPopup("<strong>" + this.lstNegocios[i].nombre_comercial + "</strong>" + "<br>"
+      }).addTo(this.map).bindPopup("<strong>" + this.lstNegocios[i].nombre_comercial + "</strong>" + "<br>"
           + "<a href=" + this.urlNegocio + ">" + "Ver más</a>" + "<br>"
           + "<img src=" + this.lstNegocios[i].url_logo + " width='100' height='80'>");
     }
   }
  cerrarModal(){
   this.modalController.dismiss();
+  //this.funcionNegocios;
  }
 }

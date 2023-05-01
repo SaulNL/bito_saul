@@ -14,24 +14,84 @@
     </ion-row>
     <ion-row>
       <ion-col class="ion-text-center">
-        <h2 class="sinMargin">{{ promocion.descripcion }}</h2>
+        <h2 class="sinMargin">{{ promocion.descripcion }} </h2>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <h2 class="sinMargin promocion">{{ promocion.promocion }}</h2>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <h2 class="promocion" style="color: grey;">{{ promocion.terminos }}</h2>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <h2 class="promocion">Quedan <span style="color: #fa4f72;">{{ promocion.restanDias }} días</span> de esta promoción</h2>
-      </ion-col>
-    </ion-row>
+    <hr>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <div *ngIf="promocion.id_tipo_promocion===1">
+            <h2 class="sinMargin">Anuncio</h2>
+          </div>
+          <div *ngIf="promocion.id_tipo_promocion===2">
+            <h2 class="sinMargin">Promoción</h2>
+            <br>
+            <h2 class="sinMargin promocion">{{promocion.promocion}}</h2>
+          </div>
+        </ion-col>
+      </ion-row>
+    <div *ngIf="promocion.id_tipo_promocion===2">
+      <ion-grid>
+        <ion-row class="ion-text-center">
+          <ion-col size="6" >
+            <label *ngIf="promocion.porcentaje !== null" >{{ promocion.porcentaje}} %</label>
+            <span *ngIf="promocion.porcentaje !== null" class="promocion"> de descuento</span></ion-col>
+          <ion-col *ngIf="idPersona!=null" size="6"><ion-button (click)="crearModal()" class="bg-rosa" size="small" mode="ios" expand="full">
+            Solicitar Cupón
+          </ion-button></ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-row>
+        <ion-col size="12" style="text-align: center;">
+          <ion-button (click)="compartir(promocion)" shape="round" fill="outline" size="small" color="danger">
+            <ion-icon name="share-social-outline" slot="start"></ion-icon>
+            Compartir
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <h2 class="promocion" style="color: grey;">{{ promocion.terminos }}</h2>
+        </ion-col>
+      </ion-row>
+     
+      <ion-row >
+     
+        <ion-col class="ion-text-center">
+          <h2 class="sinMargin rosa" *ngFor="let org of promocion.organizaciones ">{{org.nombre}}</h2>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div *ngIf="promocion.id_tipo_promocion===1">
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <h2 class="sinMargin promocion">{{ promocion.promocion }}</h2>
+        </ion-col>
+      </ion-row>
+    
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <h2 class="promocion" style="color: grey;">{{ promocion.terminos }}</h2>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div *ngIf="promocion.id_tipo_promocion===2">
+      <ion-row>
+        <ion-col class="ion-text-center" *ngFor="let item of listaDias">
+          <h2 class="promocion">Quedan <span style="color: #fa4f72;">{{ promocion.restanDias }} días</span>, Aplica: 
+            <span style="color: #fa4f72;"> <span *ngFor="let dia of item.dias">{{dia}}</span> de {{ item.hora_inicio}} a {{item.hora_fin}} </span></h2>
+        </ion-col>
+      </ion-row>
+    </div>
+
+     <!-- ----- VISUALIZACION Y REPRODUCCION DE VIDEO EN ANUNCIO DE NEGOCIO VIP --- -->
+    <div *ngIf="promocion.url_video !== null && promocion.id_tipo_promocion===1 && promocion.vip === 1">
+      <video controls autoplay *ngIf="promocion.url_video != ''" width="100%" height="300">
+        <source type="video/mp4" src="{{promocion.url_video}}">
+      </video>
+    </div>
+    <!-- ----- ------------- --- -->
+
     <ion-row>
       <ion-col size="12">
             <ion-grid>

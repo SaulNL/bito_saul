@@ -22,6 +22,7 @@ export class CambioContraseniaPage implements OnInit {
   blnIgualesPassOriginalNuevo: boolean;
   public formGroup1: FormGroup;
   public loader: any;
+  public msj = 'Cambiando Contraseña';
 
 
   constructor(
@@ -30,14 +31,15 @@ export class CambioContraseniaPage implements OnInit {
     public loadingController: LoadingController,
     private notificaciones: ToadNotificacionService,
     private router: Router
-  ) { 
+  ) {
     this.user = JSON.parse(localStorage.getItem('u_sistema'));;
     this.blnIguales =  false;
+    this.loader = false;
   }
-  
+
 
   ngOnInit() {
-  this. iniciarForm();
+  this.iniciarForm();
   }
   iniciarForm(){
     this.formGroup1 = this._formBuilder.group({
@@ -45,13 +47,6 @@ export class CambioContraseniaPage implements OnInit {
       contraseniaN: ['', Validators.required],
       contraseniaR: ['', Validators.required],
     });
-  }
-  async presentLoading() {
-    this.loader = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'por favor espera...'
-    });
-   return this.loader.present();
   }
   contraseniasIguales(){
     if (this.contraseniaRepit !== undefined) {
@@ -64,24 +59,24 @@ export class CambioContraseniaPage implements OnInit {
   }
   cambiarContrasenia() {
     if (this.formGroup1.valid){
-      this.presentLoading();
+      this.loader = true;
       const contra = {contaseniaAtual: this.contraseniaAct, newContrasenia: this.contrasenia};
       this.servicioPersona.cambiarContrasenia(this.user.id_usuario_sistema, contra).subscribe(
         respuesta =>{
           if (respuesta.code === 200){
-            this.loader.dismiss();
+            this.loader = false;
             this.notificaciones.exito('se guardo con éxito');
             this.iniciarForm();
             this.router.navigate(['/tabs/home/perfil']);
           }
           if (respuesta.code === 402){
-            this.loader.dismiss();
+            this.loader = false;
             this.notificaciones.alerta(respuesta.message);
           }
-          this.loader.dismiss();
+          this.loader = false;
         }
       );
     }
   }
- 
+
 }

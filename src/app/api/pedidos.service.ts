@@ -3,13 +3,16 @@ import {AppSettings} from '../AppSettings';
 import {from, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import { HTTP } from '@ionic-native/http/ngx';
+import { IPedidosNegocios } from '../interfaces/pedidos/IPedidosNegocio';
+import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
 export class PedidosService {
 
   constructor(
-    private _http: HTTP
+    private _http: HTTP,
+    private http: HttpClient
   ) { }
 
   url = `${AppSettings.API_ENDPOINT}`;
@@ -17,6 +20,20 @@ export class PedidosService {
   pedidosNegocios(idPersona: number, idProveedor: number, listAst: any): Observable<any> {
     const body = JSON.stringify({id_proveedor: idProveedor, id_persona: idPersona, estatus: listAst});
     this._http.setDataSerializer("utf8");
+    return from(this._http.post( this.url + 'api/pedios/proveedor/obtener',body,
+    AppSettings.getHeadersToken())
+    .then( data => {
+        return JSON.parse(data.data);
+    })
+    .catch((error) => {
+        return error;
+    })).pipe(map(data => {
+        return data;
+    }));
+  }
+
+  pedidosNegocios2(iPedidosNegocios: IPedidosNegocios): Observable<any> {
+    const body = JSON.stringify(iPedidosNegocios);
     return from(this._http.post( this.url + 'api/pedios/proveedor/obtener',body,
     AppSettings.getHeadersToken())
     .then( data => {

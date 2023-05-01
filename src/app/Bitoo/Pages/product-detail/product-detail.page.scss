@@ -1,0 +1,51 @@
+.alert-images-message {
+    font-size: 10px;
+}
+.price {
+    font-size: 16px;
+    font-weight: bolder;
+}
+.exist {
+    color: #464343;
+    font-size: large;
+}
+.border-solid {
+    border: solid;
+    color: #fa4f72 !important;
+}
+.controlesGrid{         
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 5px;
+    margin-bottom: 20px;
+    width: 80%;
+    margin-top: 20px;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: fit-content;
+    }
+.back{
+    display:flex;
+    width: fit-content;
+    justify-self: start;
+    grid-column: 1;
+    grid-row: 1;
+
+    border-radius: 50PX;
+    color: rgb(0, 0, 0);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  }
+  .next{
+    display:flex;
+    width: fit-content;
+    justify-self: end;
+    grid-column: 2;
+    grid-row: 1;
+
+    border-radius: 50PX;
+    color: rgb(0, 0, 0);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  }
+  .arrowsDeactivated{
+    color: rgb(172, 169, 169);
+  }

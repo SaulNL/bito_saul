@@ -47,6 +47,7 @@ export class PromocionesModel {
   public abierto:any;
   public giro_negocio: any;
 
+  
   constructor(id_promocion: number = 0, promocion: string = '', tags: Array<string> = [], terminos: string = '', imagen: any = '', imagenBanner: any = '', imagenPoster: any = '', url_imagen: string = '', url_imagen_banner: string = '', url_imagen_poster: string = '', activo: boolean = null, fecha_inicio: Date = null, fecha_fin: Date = null, proveedor: string = '', nombre_comercial: string = '', select = 0) {
     this.id_promocion = id_promocion;
     this.promocion = promocion;

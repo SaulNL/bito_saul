@@ -1,0 +1,104 @@
+<ion-header translucent>
+    <ion-toolbar class="tolbar">
+        <ion-title>Destacados</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="cerrarModal()">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+    <ion-card *ngIf="plaza">
+        <ion-card-header>
+            <ion-item *ngIf="!loaderPlz">
+                <ion-label slot="start">
+                    <p>Plazas</p>
+                </ion-label>
+                <ion-spinner slot="end" class="spinner-color"></ion-spinner>
+            </ion-item>
+            <ion-item *ngIf="loaderPlz" lines="none" (click)="shPlaza(showHidenPlaza)" class="fondo-buttom-border">
+                <ion-label>
+                    <p>Plazas</p>
+                </ion-label>
+                <ion-icon *ngIf="!showHidenPlaza;else iconNoEyePlaza" slot="end" name="eye-outline"></ion-icon>
+                <ng-template #iconNoEyePlaza>
+                    <ion-icon slot="end" name="eye-off-outline"></ion-icon>
+                </ng-template>
+            </ion-item>
+        </ion-card-header>
+        <ion-card-content *ngIf="showHidenPlaza">
+            <ion-list *ngIf="loaderPlz">
+                <ion-item *ngFor="let plz of listPlazas" (click)="selectOption(plz)">
+                    <ion-avatar slot="start">
+                        <img src="{{plz.icon}}">
+                    </ion-avatar>
+                    <ion-label>{{ plz.nombre}}</ion-label>
+                    <ion-icon *ngIf="!selectAflPlz || selectIdAflPlz !=plz.id_organizacion"  slot="end" name="enter-outline"></ion-icon>
+                    <ion-icon *ngIf="selectAflPlz && selectIdAflPlz===plz.id_organizacion" class="icon" slot="end" name="enter-outline"></ion-icon>
+                </ion-item>
+            </ion-list>
+            <div class="ion-padding" *ngIf="!loaderPlz">
+                <div class="spinner">
+                    <ion-spinner class="spinner-color"></ion-spinner>
+                </div>
+            </div>
+        </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="afiliacion && (idUsuario !=null || idUsuario !=undefined)">
+        <ion-card-header>
+            <ion-item *ngIf="!loaderOrg">
+                <ion-label>
+                    <p>Afiliaciones y Convenios</p>
+                </ion-label>
+                <ion-spinner *ngIf="!loaderOrg" class="spinner-color"></ion-spinner>
+            </ion-item>
+            <ion-item *ngIf="loaderOrg" lines="none" (click)="shAfiliacion(showHidenAfiliacion)"
+                class="fondo-buttom-border">
+                <ion-label>
+                    <p>Afiliaciones y Convenios</p>
+                </ion-label>
+                <ion-icon *ngIf="!showHidenAfiliacion; else iconNoEyeAfiliacion" slot="end" name="eye-outline">
+                </ion-icon>
+                <ng-template #iconNoEyeAfiliacion>
+                    <ion-icon slot="end" name="eye-off-outline"></ion-icon>
+                </ng-template>
+            </ion-item>
+        </ion-card-header>
+        <ion-card-content *ngIf="showHidenAfiliacion">
+            <ion-list *ngIf="loaderOrg">
+                <ion-item *ngFor="let org of listAfiliacines" (click)="selectOption(org)">
+                    <ion-avatar slot="start">
+                        <img src="{{org.icon}}">
+                    </ion-avatar>
+                    <ion-label>{{ org.nombre}}</ion-label>
+                    <ion-icon *ngIf="!selectAflPlz || selectIdAflPlz !=org.id_organizacion"  slot="end" name="enter-outline"></ion-icon>
+                    <ion-icon *ngIf="selectAflPlz && selectIdAflPlz===org.id_organizacion" class="icon" slot="end" name="enter-outline"></ion-icon>
+                </ion-item>
+            </ion-list>
+            <div class="ion-padding" *ngIf="!loaderOrg">
+                <div class="spinner">
+                    <ion-spinner class="spinner-color"></ion-spinner>
+                </div>
+            </div>
+        </ion-card-content>
+    </ion-card>
+    
+    <ion-card *ngIf="vip">
+        <ion-card-content *ngIf="vip">
+            <ion-list *ngIf="loaderVip">
+                <ion-item *ngFor="let negocios of listNegociosVip" (click)="selectOptionVip(negocios)">
+                    <ion-avatar slot="end">
+                        <img src="{{negocios.url_logo}}">
+                    </ion-avatar>
+                    <ion-label>{{ negocios.nombre_comercial}}</ion-label>
+                </ion-item>
+            </ion-list>
+            <div class="ion-padding" *ngIf="!loaderVip">
+                <div class="spinner">
+                    <ion-spinner class="spinner-color"></ion-spinner>
+                </div>
+            </div>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

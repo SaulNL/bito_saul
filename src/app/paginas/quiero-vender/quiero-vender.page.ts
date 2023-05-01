@@ -29,7 +29,7 @@ export class QuieroVenderPage implements OnInit {
 
   public firstFormGroup: FormGroup;
   public secondFormGroup: FormGroup;
-
+  public loader: boolean;
   public actualTO: any;
   public procesando_img: boolean;
   public proveedorTO: MsPersonaModel;
@@ -44,7 +44,7 @@ export class QuieroVenderPage implements OnInit {
   public select_municipio: boolean;
   public list_cat_municipio: Array<CatMunicipioModel>;
   public list_cat_localidad: Array<CatLocalidadModel>;
-
+  public msj = 'Guardando';
   public sexos = [
     { id: 1, sexo: 'Hombre' },
     { id: 2, sexo: 'Mujer' }
@@ -60,6 +60,10 @@ export class QuieroVenderPage implements OnInit {
   public formulario2: boolean;
   public finalizar: boolean;
   public loadion: any;
+  public direccionUser: any;
+  primeraVez: any;
+  btnEstado: boolean;
+
   constructor(
     private _formBuilder: FormBuilder,
     private _utils_cls: UtilsCls,
@@ -69,7 +73,7 @@ export class QuieroVenderPage implements OnInit {
     private servicioPersona: PersonaService,
     private _router: Router,
     private sesionUtl: SessionUtil,
-    private loadingController : LoadingController
+    private loadingController: LoadingController
   ) {
 
     this.proveedorTO = new MsPersonaModel();
@@ -88,12 +92,15 @@ export class QuieroVenderPage implements OnInit {
     this.select_municipio = false;
     this.list_cat_municipio = [];
     this.list_cat_localidad = [];
+    this.loader = false;
+    this.hIneAtras = true;
+    this.hIneFrente = true;
   }
 
   ngOnInit() {
-
+    this.ObtenerDireccionPersonal();
     if (this.proveedorTO.det_domicilio.id_estado !== null && this.proveedorTO.det_domicilio.id_estado !== undefined) {
-      this.get_list_cat_municipio({ id_estado: this.proveedorTO.det_domicilio.id_estado });
+      this.get_list_cat_municipio({ id_estado: this.proveedorTO.det_domicilio.id_estado});
     }
     if (this.proveedorTO.det_domicilio.id_municipio !== null && this.proveedorTO.det_domicilio.id_municipio !== undefined) {
       this.get_list_cat_localidad({ id_municipio: this.proveedorTO.det_domicilio.id_municipio });
@@ -134,7 +141,7 @@ export class QuieroVenderPage implements OnInit {
     this.formulario1 = true;
     this.formulario2 = false;
     this.finalizar = false;
-    console.log(this.proveedorTO);
+
   }
 
   public subir_imagen_cuadrada(event) {
@@ -245,37 +252,57 @@ export class QuieroVenderPage implements OnInit {
   }
 
   guardar() {
-      if (this.proveedorTO.selfie === null || this.proveedorTO.selfie === undefined) {
-        this._notificacionService.alerta('Ingrese foto de perfil');
-      } else {
-        if (this.proveedorTO.ine1 === null || this.proveedorTO.ine1 === undefined) {
-          this._notificacionService.alerta('Ingrese imagen delantera de su INE');
-        } else {
-          if (this.proveedorTO.ine2 === null || this.proveedorTO.ine2 === undefined) {
-            this._notificacionService.alerta('Ingrese imagen trasera de su INE');
-          } else {
-            this.formulario1 = false;
-            this.formulario2 = true;
-            this.finalizar = false;
-          }
-        }
-      }
+    this.loader = true;
+    if (this.proveedorTO.selfie === null || this.proveedorTO.selfie === undefined) {
+      this._notificacionService.alerta('Ingrese foto de perfil');
+      this.loader = false;
+    } else {
+      this.formulario1 = false;
+      this.formulario2 = true;
+      this.finalizar = false;
+      this.loader = false;
+    }
   }
+
+  ObtenerDireccionPersonal() {
+    const id = this._utils_cls.getIdPersona();
+    this.servicioPersona.datosUsuario(id).subscribe(
+        respuesta => {
+            var dato = respuesta.data.persona.domicilio;
+            this.direccionUser = respuesta.data.persona.domicilio;
+            this.proveedorTO.det_domicilio.calle = dato.calle;
+            this.proveedorTO.det_domicilio.numero_int = dato.numero_int == null ? "" : dato.numero_int;
+            this.proveedorTO.det_domicilio.numero_ext = dato.numero_ext == null ? "" : dato.numero_ext;
+            this.proveedorTO.det_domicilio.colonia= dato.colonia;
+            this.proveedorTO.det_domicilio.codigo_postal = dato.codigo_postal;
+            this.load_cat_estados();
+        },
+        error => {
+            console.log(error);
+        }
+    );
+}
 
   public get_list_cat_municipio(evento) {
     let idE;
-    if (evento.type === 'ionChange') {
+    if (evento.type == 'ionChange') {
       idE = evento.detail.value;
     } else {
       idE = evento.value;
     }
     if (idE > 0) {
       // this.loaderMunicipio = true;
-      this._general_service.getMunicipios(idE).subscribe(
+      this._general_service.getMunicipiosAll(idE).subscribe(
         response => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_municipio = response.data.list_cat_municipio;
             this.select_estado = true;
+            this.list_cat_municipio.forEach(element2 => {
+              if (element2.id_municipio === this.direccionUser.id_municipio) {
+                  this.proveedorTO.det_domicilio.id_municipio = element2.id_municipio;
+                  this.get_list_cat_localidad(element2);
+              }
+          });
             if (this.proveedorTO.det_domicilio.id_municipio > 0) {
               this.select_estado = true;
               this.get_list_cat_localidad({ value: this.proveedorTO.det_domicilio.id_municipio });
@@ -293,12 +320,49 @@ export class QuieroVenderPage implements OnInit {
       this.list_cat_municipio = [];
     }
   }
+  public get_list_cat_municipio2(evento) {
+      // this.loaderMunicipio = true;
+      this._general_service.getMunicipiosAll(evento).subscribe(
+        response => {
+          if (this._utils_cls.is_success_response(response.code)) {
+            this.list_cat_municipio = response.data.list_cat_municipio;
+            this.select_estado = true;
+            this.list_cat_municipio.forEach(element2 => {
+              if (element2.id_municipio === this.direccionUser.id_municipio) {
+                  this.proveedorTO.det_domicilio.id_municipio = element2.id_municipio;
+                  this.get_list_cat_localidad(element2);
+                 
+              }
+          });
+            if (this.proveedorTO.det_domicilio.id_municipio > 0) {
+              this.select_estado = true;
+              this.get_list_cat_localidad({ value: this.proveedorTO.det_domicilio.id_municipio });
+            }
+          }
+        },
+        error => {
+          this._notificacionService.error(error);
+        },
+        () => {
+          //  this.loaderMunicipio = false;
+        }
+      );
+
+  }
 
   private load_cat_estados() {
     this._general_service.getEstadosWS().subscribe(
       response => {
         if (this._utils_cls.is_success_response(response.code)) {
           this.list_cat_estado = response.data.list_cat_estado;
+          this.list_cat_estado.forEach(element => {
+            if (element.id_estado === this.direccionUser.id_estado) {
+                this.proveedorTO.det_domicilio.id_estado = element.id_estado;
+                
+                this.get_list_cat_municipio2(element.id_estado);
+            }
+        });
+        this.btnEstado = true;
         }
       },
       error => {
@@ -318,11 +382,15 @@ export class QuieroVenderPage implements OnInit {
     if (idE > 0) {
       // this.loaderLocalidad = true;
       this.select_municipio = true;
-      this._general_service.getLocalidad(idE).subscribe(
-        response => {
+      this._general_service.getLocalidadAll(idE).subscribe( response => {
           if (this._utils_cls.is_success_response(response.code)) {
             this.select_municipio = true;
             this.list_cat_localidad = response.data.list_cat_localidad;
+            this.list_cat_localidad.forEach(element => {
+              if (element.id_localidad === this.direccionUser.id_localidad) {
+                  this.proveedorTO.det_domicilio.id_localidad = element.id_localidad;
+              }
+          });
           }
         },
         error => {
@@ -347,18 +415,22 @@ export class QuieroVenderPage implements OnInit {
   }
 
   guardar2() {
+    this.loader = true;
     if (this.secondFormGroup.invalid) {
       return Object.values(this.secondFormGroup.controls).forEach(control => {
         if (control instanceof FormGroup) {
           Object.values(control.controls).forEach(con => con.markAsTouched());
+          this.loader = false;
         } else {
           control.markAsTouched();
+          this.loader = false;
         }
       });
     } else {
       this.formulario1 = false;
       this.formulario2 = false;
       this.finalizar = true;
+      this.loader = false;
     }
   }
 
@@ -369,7 +441,7 @@ export class QuieroVenderPage implements OnInit {
   }
 
   public guardarProveedor() {
-    this.presentLoading();
+    this.loader = true;
     this.proveedorTO.convertir_proveedor = true;
     const miPrimeraPromise = new Promise((resolve, reject) => {
       this.servicioPersona.guardar(this.proveedorTO).subscribe(
@@ -377,11 +449,11 @@ export class QuieroVenderPage implements OnInit {
           this.mostrarMensaje(data);
           const resultado = this.sesionUtl.actualizarSesion();
           resolve(resultado);
-          this.loadion.dismiss();
+          this.loader = false;
         },
         error => {
           this._notificacionService.error(error);
-          this.loadion.dismiss();
+          this.loader = false;
         }
       );
     });
@@ -418,13 +490,5 @@ export class QuieroVenderPage implements OnInit {
     let ms = Date.parse(fecha);
     fecha = new Date(ms);
     this.proveedorTO.fecha_nacimiento = fecha;
-  }
-  async presentLoading() {
-    this.loadion = await this.loadingController.create({
-      spinner: "crescent",
-      cssClass: "my-custom-class",
-      message: "Guardando...",
-    });
-    await this.loadion.present();  
   }
 }

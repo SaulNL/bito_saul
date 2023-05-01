@@ -6,8 +6,8 @@
     <ion-title>Postulados</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loader">
   <ion-card class="ion-text-center">
     <div *ngIf="lstPostulados.length === 0 ">
       <ion-chip color="warning">

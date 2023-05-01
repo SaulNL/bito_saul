@@ -1,19 +1,24 @@
-
 img {
-    height: 130px;
-    border-radius: 50%;
-    bottom: calc(-1*(14px + 4px));
-    border: 3px solid #a1a1a1;
-    background-color: #fff;
+  height: 130px;
+  border-radius: 50%;
+  bottom: calc(-1 * (14px + 4px));
+  border: 3px solid #a1a1a1;
+  background-color: #fff;
 }
 
-.imagen{
-    width: 130px;
-    background: url(https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg);
-    background-size: 130px 130px;
+.imagen {
+  width: 130px;
+  background: url(https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg);
+  background-size: 130px 130px;
 }
 
+ion-card-content div ion-icon {
+  font-size: 21px;
+}
 
-ion-card-content div ion-icon{
-    font-size: 21px;
+.total-vistos {
+  width: 25%;
+  position: relative;
+  top: 10px;
+  left: 15px;
 }

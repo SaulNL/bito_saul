@@ -10,7 +10,8 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loader">
   <ion-card>
     <ion-card-content>
         <form #formBasicos="ngForm" (ngSubmit)="actualizarDatos(formBasicos)">
@@ -28,7 +29,7 @@
           <ion-item>
             <ion-label position="stacked">Télefono Oficina</ion-label>
             <ion-input #telefono="ngModel" name="idCompTelefono" [(ngModel)]="proveedorTO.telefono"></ion-input>
-          </ion-item>  
+          </ion-item>
           <ion-item>
             <ion-label position="stacked">Estado</ion-label>
             <ion-select placeholder="{{ estaAux }}" ok-text="Ok" cancel-text="Cancelar" #estado="ngModel" required (ionChange)="get_list_cat_municipio($event,true)" name="estado" [(ngModel)]="proveedorTO.det_domicilio.id_estado">
@@ -36,11 +37,11 @@
                 <ion-select-option [value]="e.id_estado">{{e.nombre}}</ion-select-option>
               </ng-container>
             </ion-select>
-          </ion-item>   
+          </ion-item>
           <div *ngIf="estado.touched  && estado.invalid" class="alert alert-danger">
             <div *ngIf="estado.errors.required">El estado es requerido
             </div>
-        </div> 
+        </div>
           <ion-item>
             <ion-label position="stacked">Municipio</ion-label>
             <ion-select placeholder="{{ muniAux }}" ok-text="Ok" cancel-text="Cancelar"  #municipio="ngModel" required (ionChange)="get_list_cat_localidad($event,true)" name="municipio" [(ngModel)]="proveedorTO.det_domicilio.id_municipio" [disabled]="!select_estado">
@@ -48,7 +49,7 @@
                 <ion-select-option [value]="e.id_municipio">{{e.nombre}}</ion-select-option>
               </ng-container>
             </ion-select>
-          </ion-item>  
+          </ion-item>
           <div *ngIf="municipio.touched  && municipio.invalid" class="alert alert-danger">
             <div *ngIf="municipio.errors.required">El municipio es requerido
             </div>
@@ -60,7 +61,7 @@
                 <ion-select-option [value]="e.id_localidad"> {{e.nombre}}</ion-select-option>
               </ng-container>
             </ion-select>
-          </ion-item> 
+          </ion-item>
           <div *ngIf="localidad.touched  && localidad.invalid" class="alert alert-danger">
             <div *ngIf="localidad.errors.required">La localidad es requerida
             </div>
@@ -68,11 +69,11 @@
           <ion-item>
             <ion-label position="stacked">Colonia</ion-label>
             <ion-input #colonia="ngModel" required matInput name="colonia" [(ngModel)]="proveedorTO.det_domicilio.colonia"></ion-input>
-          </ion-item> 
+          </ion-item>
           <div *ngIf="colonia.touched  && colonia.invalid" class="alert alert-danger">
             <div *ngIf="colonia.errors.required">La colonia es requerida
             </div>
-        </div> 
+        </div>
           <ion-item>
             <ion-label position="stacked">Calle</ion-label>
             <ion-input #calle="ngModel" required name="calle" [(ngModel)]="proveedorTO.det_domicilio.calle"></ion-input>
@@ -80,15 +81,15 @@
           <div *ngIf="calle.touched  && calle.invalid" class="alert alert-danger">
             <div *ngIf="calle.errors.required">La calle es requerida
             </div>
-        </div> 
+        </div>
           <ion-item>
             <ion-label position="stacked">Número Interior</ion-label>
             <ion-input  #numeroInt="ngModel" name="numero_int" [(ngModel)]="proveedorTO.det_domicilio.numero_int"></ion-input>
-          </ion-item>  
+          </ion-item>
           <ion-item>
             <ion-label position="stacked">Número Exterior</ion-label>
             <ion-input  #numeroExt="ngModel" required  name="numero_ext" [(ngModel)]="proveedorTO.det_domicilio.numero_ext"></ion-input>
-          </ion-item>   
+          </ion-item>
           <div *ngIf="numeroExt.touched  && numeroExt.invalid" class="alert alert-danger">
             <div *ngIf="numeroExt.errors.required">El número exterior es requerido
             </div>
@@ -96,50 +97,6 @@
           <ion-item>
             <ion-label position="stacked">Código Postal</ion-label>
             <ion-input   #cp="ngModel" name="codigo_postal" mask="00000" [(ngModel)]="proveedorTO.det_domicilio.codigo_postal"></ion-input>
-          </ion-item>
-          <ion-item>
-            <div class="avatar-uploadIne">
-              <div class="avatar-editIne">
-                  <input type='file' hidden id="imageUpload"  accept="image/*"  (change)="subirArchivo($event,1)"/>
-                  <label for="imageUpload">
-                    <ion-icon name="camera-outline" style="
-                    position: relative;
-                    top: 10px;
-                "></ion-icon>
-                  </label>
-              </div>
-              <div class="avatar-previewIne">
-                  <div *ngIf="proveedorTO.ine1 === null || proveedorTO.ine1 === undefined " id="imagePreview" [ngStyle]="{
-         'background-image': 'url('+proveedorTO.ineFrente+')'}">
-                  </div>
-                  <div *ngIf="proveedorTO.ine1 !== null && proveedorTO.ine1 !== undefined" [ngStyle]="{
-         'background-image': 'url('+proveedorTO.ine1.archivo_64+')'}">
-                  </div>
-              </div>
-              <label for="imageUpload" class="col-form-label ">INE (Frente)</label>
-          </div>
-          </ion-item> 
-          <ion-item>
-            <div class="avatar-uploadIne">
-              <div class="avatar-editIne">
-                  <input type='file' hidden id="imageUploadLocal"  accept="image/*" (change)="subirArchivo($event,2)"/>
-                  <label for="imageUploadLocal">
-                    <ion-icon name="camera-outline" style="
-                    position: relative;
-                    top: 10px;
-                "></ion-icon>
-                  </label>
-              </div>
-              <div class="avatar-previewIne">
-                  <div *ngIf="proveedorTO.ine2 === null || proveedorTO.ine2 === undefined" id="imagePreviewLocal" [ngStyle]="{
-         'background-image': 'url('+proveedorTO.ineAtras+')'}">
-                  </div>
-                  <div *ngIf="proveedorTO.ine2 !== null && proveedorTO.ine2 !== undefined" [ngStyle]="{
-         'background-image': 'url('+proveedorTO.ine2.archivo_64+')'}">
-                  </div>
-              </div>
-              <label for="imageUploadLocal" class="col-form-label ">INE (Atras)</label>
-          </div>
           </ion-item>
         </ion-list>
         <ion-button type="submit" class="bg-rosa" [disabled]="formBasicos.invalid" expand="block">Actualizar</ion-button>

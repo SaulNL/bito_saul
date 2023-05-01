@@ -35,4 +35,10 @@ export class CardSolicitudPage implements OnInit {
     this.router.navigate(['/tabs/home/solicitudes/form-solicitud'], { queryParams: {special: navigationExtras}  });
   }
 
+  public isActive(active: any) {
+    return (active === 1);
+  }
+  public messageIsActive(active: any) {
+    return (this.isActive(active)) ? 'Publicado' : 'Sin Publicar';
+  }
 }

@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AlertController, ModalController, Platform} from "@ionic/angular";
-import {ToadNotificacionService} from 'src/app/api/toad-notificacion.service';
-import {UtilsCls} from "../../utils/UtilsCls";
-import {ProductoModel} from "../../Modelos/ProductoModel";
+import { OptionBackLogin } from './../../Modelos/OptionBackLoginModel';
+import { ToadNotificacionService } from './../../api/toad-notificacion.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController, ModalController, Platform } from "@ionic/angular";
+import { UtilsCls } from "../../utils/UtilsCls";
+import { ProductoModel } from "../../Modelos/ProductoModel";
 import { ProductosService } from "../../api/productos.service";
 
 @Component({
@@ -24,11 +25,13 @@ export class DetalleProductoComponent implements OnInit {
     @Output() llenarLista: EventEmitter<any> = new EventEmitter();
     @Input() bolsa: any;
     @Input() user: any;
+    @Input() url: string;
     public subscribe;
     public modal;
     public existeSesion: boolean;
-    public cantidad : number;
-
+    public cantidad: number;
+    public activeSelectedProduct: boolean;
+    public typeLogin: OptionBackLogin;
     constructor(
         private utilsCls: UtilsCls,
         private modalController: ModalController,
@@ -39,50 +42,63 @@ export class DetalleProductoComponent implements OnInit {
         private servicioProductos: ProductosService,
         public alertController: AlertController
     ) {
+        this.typeLogin = new OptionBackLogin();
         this.existeSesion = utilsCls.existe_sesion();
         this.subscribe = this.platform.backButton.subscribe(() => {
             this.cerrarModal();
         });
         this.cantidad = 1;
+        this.activeSelectedProduct = false;
     }
 
     ngOnInit() {
+
         if (this.bolsa.length > 0) {
             this.bolsa.forEach(element => {
                 if (element.idProducto === this.datos.idProducto) {
-                    this.cantidad= element.cantidad;
+                    this.cantidad = element.cantidad;
+                    this.activeSelectedProduct = true;
                 }
             });
         }
-        if (this.existeSesion){
+        if (this.existeSesion) {
             this.loVio(this.datos);
         }
     }
 
     cerrarModal() {
-        this.modalController.dismiss({
+        if(this.activeSelectedProduct){
+            this.agragarproducto();
+        } else {
+            this.modalController.dismiss({
             'data': null,
         });
+        }
+
     }
 
     ionViewDidLeave() {
         this.subscribe.unsubscribe();
     }
 
-    get mostrarComponente() {
-        return (this._entregaDomicilio === 1 || this._entregaSitio === 1 || this._consumoSitio === 1) && this.utilsCls.existe_sesion() && parseInt(this.datos.precio) > 0 && this._abierto === 'ABIERTO';
+    get opciones() {
+        return (this.option() && this.existeSesion);
     }
-
-    aumentar(){
-        this.cantidad = this.cantidad+1;
+    get estaAbierto() {
+        return this._abierto === 'ABIERTO';
     }
-    disminuir(){
-        if( this.cantidad > 1){
-            this.cantidad = this.cantidad-1;
+    private option() {
+        return ((this._entregaDomicilio === 1 || this._entregaSitio === 1 || this._consumoSitio === 1) && parseInt(this.datos.precio) > 0);
+    }
+    aumentar() {
+        this.cantidad = this.cantidad + 1;
+    }
+    disminuir() {
+        if (this.cantidad > 1) {
+            this.cantidad = this.cantidad - 1;
         }
     }
     agragarproducto() {
-        //console.log(this.cantidad);
         if (this.existeSesion) {
             const producto = {
                 idProducto: this.datos.idProducto,
@@ -94,44 +110,56 @@ export class DetalleProductoComponent implements OnInit {
                 descripcion: this.datos.descripcion
             };
             this.modalController.dismiss({
-                'data': producto,
+                'data': producto
             });
         } else {
-            this.router.navigate(['/tabs/login'])
+            this.typeLogin.type = 'perfil';
+            this.typeLogin.url = this.url;
+            this.modalController.dismiss({
+                'goLogin': this.typeLogin
+            });
         }
     }
     public darLike(producto: ProductoModel) {
         this.servicioProductos.darLike(producto, this.user).subscribe(
-          (response) => {
-            if (response.code === 200) {
-              producto.likes = response.data;
-              this.notificacionService.exito(response.message);
-            } else{
-              this.notificacionService.alerta(response.message);
+            (response) => {
+                if (response.code === 200) {
+                    producto.likes = response.data;
+                    this.notificacionService.exito(response.message);
+                } else {
+                    this.notificacionService.alerta(response.message);
+                }
+            },
+            (error) => {
+                this.notificacionService.error("Error, intentelo más tarde");
             }
-          },
-          (error) => {
-            this.notificacionService.error("Error, intentelo más tarde");
-          }
         );
         //}
-      }
+    }
 
-      public loVio(producto) {
+    public loVio(producto) {
         let objectoVio = {
-         "id_persona": this.user.id_persona, //usuario
-         "id_producto": producto.idProducto //idProducto
-       };
-       this.servicioProductos.quienVioProdu(objectoVio).subscribe(
-       response => { if (response.code === 200) { console.log(response.code); }},error => {});
-     }
+            "id_persona": this.user.id_persona, //usuario
+            "id_producto": producto.idProducto //idProducto
+        };
+        this.servicioProductos.quienVioProdu(objectoVio).subscribe(
+            response => { if (response.code === 200) { } }, error => { });
+    }
+
     async avisoNegocioCerrado() {
         const alert = await this.alertController.create({
-          header: 'Aviso',
-          message: 'Este negocio está cerrado, revisa sus horarios para hacer un pedido cuando se encuentre abierto',
-          buttons: ['OK']
+            header: 'Aviso',
+            message: 'Este negocio está cerrado, revisa sus horarios para hacer un pedido cuando se encuentre abierto',
+            buttons: ['OK']
         });
 
         await alert.present();
-      }
+    }
+    public login() {
+        this.typeLogin.type = 'perfil';
+        this.typeLogin.url = this.url;
+        this.modalController.dismiss({
+            'goLogin': this.typeLogin
+        });
+    }
 }

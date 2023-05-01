@@ -8,6 +8,7 @@ import { CategoriasPageRoutingModule } from './categorias-routing.module';
 
 import { CategoriasPage } from './categorias.page';
 import { TabsPageModule } from '../tabs/tabs.module';
+import {InfinitoScrollModule} from '../../componentes/infinito-scroll/infinito-scroll.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { TabsPageModule } from '../tabs/tabs.module';
     FormsModule,
     IonicModule,
     CategoriasPageRoutingModule,
-    TabsPageModule
+    TabsPageModule,
+    InfinitoScrollModule
   ],
   declarations: [CategoriasPage]
 })

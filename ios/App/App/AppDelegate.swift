@@ -1,25 +1,32 @@
 import UIKit
 import Capacitor
-import FBSDKCoreKit
-import Firebase
-
+import FirebaseCore
+import FirebaseInstanceID // Add this line after import FirebaseCore
+import FirebaseMessaging
 
 @UIApplicationMain
-
-
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDelegate {
 
   var window: UIWindow?
 
-   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-    let handled = FBSDKCoreKit.ApplicationDelegate.shared.application(app, open: url, options: options)
-    return handled
-}
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
-    FirebaseApp.configure()
+    
+    //Para conectar con Firebase cuando se inicia la aplicacion
+    FirebaseApp.configure();
     return true
+  }
+    
+  func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken
+        InstanceID.instanceID().instanceID { (result, error) in
+        if let error = error {
+            NotificationCenter.default.post(name: Notification.Name(CAPNotifications.DidFailToRegisterForRemoteNotificationsWithError.name()), object: error)
+            } else if let result = result {
+                    NotificationCenter.default.post(name: Notification.Name(CAPNotifications.DidRegisterForRemoteNotificationsWithDeviceToken.name()), object: result.token)
+            }
+        }
   }
 
   func applicationWillResignActive(_ application: UIApplication) {
@@ -44,6 +51,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
   }
 
+  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    // Called when the app was launched with a url. Feel free to add additional processing here,
+    // but if you want the App API to support tracking app url opens, make sure to keep this call
+    return CAPBridge.handleOpenUrl(url, options)
+  }
   
   func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
     // Called when the app was launched with an activity, including Universal Links.
@@ -51,7 +63,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // tracking app url opens, make sure to keep this call
     return CAPBridge.handleContinueActivity(userActivity, restorationHandler)
   }
-  
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     super.touchesBegan(touches, with: event)
@@ -63,7 +74,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       NotificationCenter.default.post(CAPBridge.statusBarTappedNotification)
     }
   }
-  #if USE_PUSH
+
+  /*#if USE_PUSH
 
   func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     NotificationCenter.default.post(name: Notification.Name(CAPNotifications.DidRegisterForRemoteNotificationsWithDeviceToken.name()), object: deviceToken)
@@ -73,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     NotificationCenter.default.post(name: Notification.Name(CAPNotifications.DidFailToRegisterForRemoteNotificationsWithError.name()), object: error)
   }
 
-#endif
+   #endif*/
 
 }
 

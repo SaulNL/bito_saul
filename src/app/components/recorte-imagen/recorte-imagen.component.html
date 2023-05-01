@@ -1,11 +1,11 @@
 <ion-header translucent>
     <ion-toolbar class="tolbar">
         <ion-title>Recortar Imagen</ion-title>
-        <ion-buttons slot="end" (click)="cerrar()">
+        <!-- <ion-buttons slot="end" (click)="cerrar()">
             <ion-button>
                 <ion-icon name="close-outline"></ion-icon>
             </ion-button>
-        </ion-buttons>
+        </ion-buttons> -->
     </ion-toolbar>
 </ion-header>
 <ion-content fullscreen>
@@ -15,7 +15,10 @@
                 <p style="text-align: center;">Mueva el rectangulo para seleccionar el área deseada a recortar</p>
             </div>
         </div>
-        <div style="display: flex; justify-content: center; align-items: center;">
+        <div>
+            <ion-button expand="block" (click)="guardarImagenRecortada()">Guardar</ion-button>
+        </div>
+        <div style="justify-content: center; align-items: center;">
             <div>
                 <image-cropper
                         [imageBase64]="imageChangedEvent"
@@ -31,9 +34,7 @@
                 </image-cropper>
             </div>
         </div>
-        <div>
-            <ion-button expand="block" (click)="guardarImagenRecortada()">Guardar</ion-button>
-        </div>
+        
     </div>
 
 </ion-content>

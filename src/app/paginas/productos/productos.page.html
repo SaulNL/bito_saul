@@ -1,114 +1,114 @@
-<!--<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Productos
-    </ion-title>
-  </ion-toolbar>
-</ion-header>-->
+<!-- <ion-toolbar class="tolbar">
+  <div style="display: flex">
+    <ion-buttons slot="start">
+      <ion-button class="blanco" (click)="verSolicitudes()">
+        <ion-icon name="list-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Productos</ion-title>
+    <app-toolbar-busqueda
+      [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar productos en ' + plazaAfiliacionNombre.nombre : 'Buscar productos' "
+      (buscarEmit)="buscarToolbar($event)"
+    ></app-toolbar-busqueda>
+  </div>
+</ion-toolbar> -->
 
-<ion-content [fullscreen]="true" [scrollEvents]="true"  (ionScroll)="cordenada = $event.detail.scrollTop">
+<app-toolbar-busqueda
+  [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar productos en ' + plazaAfiliacionNombre.nombre : 'Buscar productos' "
+  (buscarEmit)="buscarToolbar($event)" titulo="Productos"></app-toolbar-busqueda>
 
-  <app-boton-top [content]="content" [cordenada]="cordenada" ></app-boton-top>
-  <ion-header collapse="condense">
-    
-  </ion-header>
+<app-spinner [loader]="loader" [message]="cargando"></app-spinner>
+<ion-content *ngIf="!loader" [fullscreen]="true" [scrollEvents]="true"
+  (ionScroll)="cordenada = $event.detail.scrollTop">
+  <app-recargar (respuesta)="recargar($event)"></app-recargar>
+  <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="btn-float" (click)="scrollToTop()">
+    <ion-fab-button class="bg-rosa" *ngIf="cordenada >=100">
+      <ion-icon name="chevron-up-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-header collapse="condense"> </ion-header>
 
-
-
-
-
-  <!--<ion-searchbar></ion-searchbar>-->
-  <app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
   <ion-item>
-    <ion-buttons  *ngIf=" filtroActivo" slot="start">
+    <ion-buttons *ngIf=" filtroActivo" slot="end">
       <ion-chip (click)="borrarFiltros()" color="danger">
         <ion-icon name="trash-outline" color="danger"></ion-icon>
         <ion-label>Borrar Filtros</ion-label>
       </ion-chip>
     </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button (click)="abrirFiltros()">Filtrar
+    <ion-buttons *ngIf="!selectionAP">
+      <ion-button (click)="openPlazasAfiliacionesModal()">
+        Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span>
+        <ion-icon name="caret-down-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons *ngIf="selectionAP">
+      <ion-chip (click)="regresarBitoo()" color="danger">
+        <ion-icon name="log-out-outline"></ion-icon>
+        <ion-label>Volver a bitoo</ion-label>
+      </ion-chip>
+    </ion-buttons>
+    <ion-buttons slot="end" *ngIf="!filtroActivo">
+      <ion-button (click)="abrirFiltros()">Filtros
         <ion-icon name="filter-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-item>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <div id="abcedario" class="scrolling-wrapper-flexbox">
-          <div class="item" *ngFor="let filtro of filtroABC">
-            <ion-button size="small" color="danger" (click)="filtrarABC(filtro)" [ngClass]="{active:filtro.id === filtroCheckend}" [disabled]="!filtro.activo">{{filtro.letra}}</ion-button>
-          </div>
-        </div>
-        <p><br></p>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <!--<ion-col>
-        <ion-card *ngFor="let producto of lstProductos">
-          <ion-img class="img-card-w"*ngIf="producto.imagen !== null" [src]="producto.imagen" (click)="abrirModal(producto)"></ion-img>
-          <ion-card-header>
-            <ion-card-title>{{producto.nombre}}</ion-card-title>
-            <ion-card-subtitle>{{(producto.nombre_categoria1 != null)?producto.nombre_categoria1:'Sin categoría'}}</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <div>
-              <ion-badge color="primary">{{producto.tipo}}</ion-badge>
-            </div>
-            <div>
-              <ion-text>{{(producto.descripcion != null)?producto.descripcion:'Sin descripción'}}</ion-text>
-            </div>
-            <div>
-              <ion-text color="success">${{(producto.precio != '')?((producto.precio != null)?producto.precio:'Sin precio'):'Sin precio'}}</ion-text>
-            </div>
-            <div>
-              <ion-badge color="medium">{{(producto.ubicacion != null)?producto.ubicacion.nombre_localidad:'Sin ubicación'}}</ion-badge>
-            </div>
-            <div align="right" *ngIf="motrarContacto">
-              <ion-button size="small" color="danger" (click)="darLike(producto)">
-                <ion-icon name="heart-outline"></ion-icon>{{producto.likes}}
-                <ion-spinner *ngIf="loaderLike"></ion-spinner>
-              </ion-button>
-            </div>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>-->
-      <ion-col>
-        <ion-list>
-          <ion-item-sliding *ngFor="let producto of lstProductos">
-          <ion-item lines="none" #datos (click)="abrirProducto(producto)">
-            <ion-thumbnail slot="start">
-              <img src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
-              [srcset]="producto.imagen">
-            </ion-thumbnail>
-            <ion-label>
-              <h2>{{producto.nombre}}</h2>
-              <h3>{{(producto.nombre_categoria1 != null)?producto.nombre_categoria1:'Sin categoría'}}</h3>
-              <div class="ui-search-item__title">
-                <ion-text>{{(producto.descripcion != null)?producto.descripcion:'Sin descripción'}}</ion-text>
-              </div>
-              <div>
-                <ion-text color="success">${{(producto.precio != '')?((producto.precio != null)?producto.precio:'Sin precio'):'Sin precio'}}</ion-text>
-              </div>
-              <div>
-                <ion-badge color="primary">{{producto.tipo}}</ion-badge>
-                <ion-badge color="medium">{{(producto.ubicacion != null)?producto.ubicacion.nombre_localidad:'Sin ubicación'}}</ion-badge>
-              </div>
-            </ion-label>
-          </ion-item>
-          <ion-item-options side="end" *ngIf="motrarContacto">
-            <ion-item-option *ngIf="producto.likes>0;else templateName" color="danger" (click)="darLike(producto)">
-              <ion-icon name="heart-outline"></ion-icon>{{producto.likes}}
-            </ion-item-option>
-            <ng-template #templateName>
-              <ion-item-option *ngIf="producto.likes === 0" class="grus" (click)="darLike(producto)">
-                <ion-icon name="heart-outline"></ion-icon>{{producto.likes}}
-              </ion-item-option>
-            </ng-template>
-          </ion-item-options>
-          </ion-item-sliding>
-        </ion-list>
-      </ion-col>
-    </ion-row>
+
+  <div *ngIf="!this.abc" id="abcedario" class="scrolling-wrapper-flexbox">
+    <div class="item" *ngFor="let filtro of filtroABC">
+      <ion-button size="small" color="danger" (click)="obtenerProductoPorLetra(filtro)"
+        [ngClass]="{active:filtro.id === filtroCheckend}" *ngIf="filtro.activo">
+        {{filtro.letra}}
+      </ion-button>
+    </div>
+  </div>
+  <div *ngIf="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined"
+    style="background-color: #3c3c3c; color: white; font-size: small" class="ion-text-center">
+    <p style="padding-inline: 5%">
+      ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA
+      <img style="width: 25px; margin-top: 2%" src="{{plazaAfiliacionNombre.icon}}" />
+      {{plazaAfiliacionNombre.nombre}}
+    </p>
+  </div>
+
+  <ion-list>
+    <ion-item *ngFor="let producto of lstProductos" class="item in-list ion-focusable hydrated item-label">
+      <ion-avatar #datos (click)="modalDetalleProducto(producto)" slot="start"><img
+          src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+          [srcset]="productoImagen(producto.imagen)" /></ion-avatar>
+      <ion-label class="hydrated" #datos (click)="modalDetalleProducto(producto)">
+        <h3>{{producto.nombre}}</h3>
+        <p>
+          {{producto.nombre_categoria1 != null ?producto.nombre_categoria1:'Sincategoría'}}
+        </p>
+        <p color="success">
+          ${{producto.precio != '' ? producto.precio: producto.precio !=null ? producto.precio:'Sin precio'}}
+        </p>
+        <p>
+          {{producto.descripcion != null ? producto.descripcion:'Sin descripción'}}
+        </p>
+        <ion-badge color="primary">{{producto.tipo}}</ion-badge>
+        <ion-badge color="medium">{{producto.ubicacion !=null ? producto.ubicacion.nombre_localidad:'Sin ubicación'}}
+        </ion-badge>
+      </ion-label>
+      <app-dar-like-producto [producto]="producto" [usuario]="user"
+        [mostrarLike]="existeSesion"></app-dar-like-producto>
+    </ion-item>
+  </ion-list>
+  <ion-grid *ngIf="lstProductos.length === 0 && selectionAP === true">
+    <ion-text color="primary">
+      <h2>
+        No se encontraron productos relacionados en
+        {{plazaAfiliacionNombre.nombre}}
+      </h2>
+    </ion-text>
   </ion-grid>
+  <ion-grid class="no-results" *ngIf="lstProductos.length < 1">
+    <ion-text color="primary">
+      <h2>No se encontraron productos relacionados con su búsqueda</h2>
+    </ion-text>
+  </ion-grid>
+  <app-infinito-scroll (respuesta)="cargarMasProductos($event)" [activado]="scroll" [msj]="mensaje">
+  </app-infinito-scroll>
 </ion-content>

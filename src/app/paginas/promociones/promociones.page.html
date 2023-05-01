@@ -1,23 +1,62 @@
-<app-toolbar-busqueda placeHolder="Buscar promociones sobre productos, servicios y más..." (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
-<ion-content [fullscreen]="true">
+<app-toolbar-busqueda
+  [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar promociones en ' + plazaAfiliacionNombre.nombre : 'Buscar promociones sobre productos, servicios y más...' "
+  (buscarEmit)="buscarToolbar($event)" titulo="Promociones"
+></app-toolbar-busqueda>
+<ion-content [fullscreen]="true" 
+  [scrollEvents]="true">
   <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
-  <div *ngIf="lstPromociones.length == 0 && !loader">
+  <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
+  <div
+    *ngIf="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined"
+    style="background-color: #3c3c3c; color: white; font-size: small"
+    class="ion-text-center"
+  >
+    <p style="padding-inline: 5%">
+      ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA
+      <img
+        style="width: 25px; margin-top: 2%"
+        src="{{plazaAfiliacionNombre.icon}}"
+      />
+      {{plazaAfiliacionNombre.nombre}}
+    </p>
+  </div>
+  <div *ngIf="lstPromociones.length == 0 && !loader && !selectionAP">
     <ion-grid>
-      <ion-row style="margin: 10px;">
-        <ion-col size="12" style="color: white; background: red; border-radius: 20px; padding: 10px; text-align: center;">
-          <strong>Lo sentimos!</strong> No se encontraron promociones con la busqueda.
+      <ion-row style="margin: 10px">
+        <ion-col size="12" color="primary">
+          <h2 style="color: #4d78e7">
+            No se encontraron promociones relacionadas a la búsqueda
+          </h2>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
+
+  <ion-grid *ngIf="lstPromociones.length === 0 && selectionAP === true">
+    <ion-text color="primary">
+      <h2>
+        No se encontraron promociones relacionadas en
+        {{plazaAfiliacionNombre.nombre}}
+      </h2>
+    </ion-text>
+  </ion-grid>
+
   <div *ngIf="!loader">
-    <ion-grid *ngFor="let categorias of lstPromociones" class=".categoria" >
+    <app-recargar (respuesta)="recargar($event)"></app-recargar>
+    <ion-grid *ngFor="let categorias of lstPromociones; index as i" class="categoria">
       <ion-row class="categoria">
-        <h2>{{ categorias.nombre }}</h2>
+        <h2 *ngIf="i == posicionRandom" id="imagenCarta">{{ categorias.nombre }}</h2>
+        <h2  *ngIf="i != posicionRandom">{{ categorias.nombre }}</h2>
+        <!--h2  *ngIf="(i+1 == lstPromociones.length)">{{this.scroll()}}</-->
       </ion-row>
-      <ion-row *ngFor="let promocion of categorias.promociones">
+      <ion-row *ngFor="let promocion of categorias.promociones; index as k">
         <ion-col size="12">
-          <app-promocion [promocion]="promocion"></app-promocion>
+          <app-promocion
+            [promocion]="promocion"
+            [idPersona]="idPersona"
+          ></app-promocion>
+        </ion-col>
+        <ion-col *ngIf="(i+1 == lstPromociones.length && k+1 == categorias.promociones.length)">{{this.scroll()}}                   
         </ion-col>
       </ion-row>
     </ion-grid>

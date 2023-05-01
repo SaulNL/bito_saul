@@ -1,0 +1,40 @@
+<ion-header>
+    <ion-toolbar class="tolbar">
+        <ion-title>Comentarios del negocio</ion-title>
+        <ion-buttons slot="end" (click)="cerrarModal()">
+            <ion-button>
+                <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-list>
+
+
+        <ion-item text-wrap class="item-text-wrap" *ngFor="let comentario of listaComentarios; let i = index">
+            <ion-avatar slot="start">
+                <!--<img src="https://ecoevents.blob.core.windows.net/comprandoando/logos/logo%201.0.png" [srcset]="comentario.imagen">-->
+                <img src="https://ecoevents.blob.core.windows.net/comprandoando/logos/logo%201.0.png">
+            </ion-avatar>
+            <ion-label>
+                <div class="clasificacion" style="display: flex; justify-content: flex-end; align-items: center;">
+                    <input disabled id="radio1" type="radio" name="estrellas{{i}}" value="5">
+                    <label for="radio1">★</label>
+                    <input disabled id="radio2" type="radio" name="estrellas{{i}}" value="4">
+                    <label for="radio2">★</label>
+                    <input disabled id="radio3" type="radio" name="estrellas{{i}}" value="3">
+                    <label for="radio3">★</label>
+                    <input disabled id="radio4" type="radio" name="estrellas{{i}}" value="2">
+                    <label for="radio4">★</label>
+                    <input disabled id="radio5" type="radio" name="estrellas{{i}}" value="1">
+                    <label for="radio5">★</label>
+                </div>
+                <h3 class="text-rosa"><strong>{{comentario.nombre}}&nbsp;{{comentario.paterno}}&nbsp;{{comentario.materno}}</strong></h3>
+                <p>{{comentario.fecha_calificacion| date: 'dd/MM/yyyy'}}</p>
+                <p class="ion-text-wrap ion-padding-top comentario">{{comentario.comentario}}</p>
+            </ion-label>
+        </ion-item>
+
+    </ion-list>
+</ion-content>

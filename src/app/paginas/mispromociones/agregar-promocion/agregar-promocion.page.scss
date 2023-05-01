@@ -137,3 +137,20 @@ input[type="file"] {
 span{
   color: red;
 }
+
+.upload{
+  padding: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.uploadAndroid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.padding-campo {
+  padding-left: 17px;
+}

@@ -18,12 +18,14 @@ export class Auth0Service {
 
 
     }
-  getUserPermisos() {
-    if (localStorage.getItem('u_data')) {
-      return JSON.parse(localStorage.getItem('u_permisos'));
+
+    getUserPermisos() {
+        if (localStorage.getItem('u_data')) {
+            return JSON.parse(localStorage.getItem('u_permisos'));
+        }
+        return null;
     }
-    return null;
-  }
+
     getUserData() {
         if (localStorage.getItem('u_data')) {
             return JSON.parse(localStorage.getItem('u_data'));
@@ -31,6 +33,7 @@ export class Auth0Service {
         }
         return new Object({});
     }
+
     getPrivilegio() {
         if (localStorage.getItem('u_sistema')) {
             return JSON.parse(localStorage.getItem('u_sistema'));
@@ -46,6 +49,7 @@ export class Auth0Service {
         }
         return 0;
     }
+
     getIdPersona(): number {
         const data = this.getUserData();
         if (this.isAuthenticated() && data) {
@@ -54,5 +58,34 @@ export class Auth0Service {
         return 0;
     }
 
+    getExistIdPersona(): number | null {
+        const data = this.getUserData();
+        if (this.existSession()) {
+            return data.id_persona;
+        }
+        return null;
+    }
 
+    existSession() {
+        try {
+            const tk_str = localStorage.getItem("tk_str");
+            if (tk_str != null && tk_str != "") {
+                return true;
+            }
+            return false;
+        } catch (e) {
+            return false;
+        }
+    }
+    getUserSystem() {
+        try {
+            if (this.existSession()) {
+                const usuarioSistema = JSON.parse(localStorage.getItem("u_sistema"));
+                return usuarioSistema.id_usuario_sistema;
+            }
+            return 0;
+        } catch (e) {
+            return 0;
+        }
+    }
 }

@@ -2,6 +2,11 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { HaversineService, GeoCoord } from "ng2-haversine";
+import { ViewQrPromocionComponent } from '../viewqr-promocion/viewqr-promocion.component';
+import { PromocionesService } from 'src/app/api/promociones.service';
+import { ToadNotificacionService } from 'src/app/api/toad-notificacion.service';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { AppSettings } from 'src/app/AppSettings';
 
 /*
 declare var require: any;
@@ -16,14 +21,23 @@ const haversineCalculator = require('haversine-calculator');*/
 export class InfoPromoComponent implements OnInit {
 
   @Input() promocion: any;
+  @Input() idPersona: number | null;
+  @Input() listaDias: any[];
   public motrarContacto = true;
   public blnPermisoUbicacion: any;
   public miLat: any;
   public miLng: any;
   public hoy: any;
+  id_cupon_promocion: number;
 
-  constructor( public modalController: ModalController, private router: Router, private _haversineService: HaversineService) { 
-  }
+  constructor( 
+              public modalController: ModalController, 
+              private router: Router, 
+              private _haversineService: HaversineService,
+              private _promociones: PromocionesService,
+              private notificaciones: ToadNotificacionService,
+              private socialSharing: SocialSharing
+              ) { }
 
   ngOnInit() {
     this.calcularDistancia(this.promocion);
@@ -58,5 +72,37 @@ export class InfoPromoComponent implements OnInit {
       });
   }
 
+  async crearModal() {
+    await  this.guardarCupon();
+      const modal = await this.modalController.create({
+        component: ViewQrPromocionComponent,
+        componentProps: {
+          'promocion': this.promocion,
+          'idPersona': this.idPersona,
+          'id_cupon_promocion': this.id_cupon_promocion
+        }
+      });
+  
+      return await modal.present();
+  
+    }
+  
+    async guardarCupon() {
 
+      var respuesta = await this._promociones.solicitarCupon(this.promocion.id_promocion, this.idPersona).toPromise();
+      if (respuesta.code === 200) {
+        
+        this.id_cupon_promocion = respuesta.data.id_cupon_promocion
+      }
+      if (respuesta.code === 402) {
+        
+        this.notificaciones.alerta(respuesta.message);
+      }
+  
+    }
+
+  compartir(promocion){
+    let url = AppSettings.URL_FRONT + 'promocion/' + promocion.id_promocion;
+    this.socialSharing.share('😃¡Te recomiendo esta promoción!😉', 'Promoción', promocion.url_imagen, url );
+  }
 }

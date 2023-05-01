@@ -1,0 +1,59 @@
+<ion-header translucent>
+  <ion-toolbar class="bg-rosa">
+    <ion-title> Cupón de descuento</ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="blanco" (click)="dismissModal()">
+        <ion-icon class="blanco" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content #main id="main" >
+  <app-spinner [loader]="loader" [message]="msj"></app-spinner>
+  <div class="ion-text-center">
+    <ion-button expand="block" (click)="descargar()">
+      <ion-spinner *ngIf="loaderCupon" name="bubbles"></ion-spinner>
+      <span>{{loaderCupon ? 'Generando cupón..' : 'Descargar'}}</span>
+    </ion-button>
+  </div>
+  <div id="contenido" class="bg-promo">
+    <div id="imagenesFondo" class="ion-text-center font-color content-margin">
+      <h1>Cupón de descuento</h1>
+      
+      <ion-img id="contenido"  src="https://ecoevents.blob.core.windows.net/comprandoando/BitooLogo.png"></ion-img>
+      <h4>{{promocion.nombre_comercial}}</h4>
+
+      <h2  class="font-color-e3dd2a">{{promocion.promocion}}</h2>
+
+      <h5 *ngFor="let dia of promocion.dias">Valido hasta las:
+        {{dia.hora_fin}}
+      </h5>
+
+      <p>
+        <ion-icon name="pin"></ion-icon>
+        {{ promocion.calle }} {{ promocion.numero_ext }} {{ promocion.colonia }}, {{ promocion.nombre_municipio
+        }}, {{promocion.nombre_estado }}
+      </p>
+
+      <ion-chip>
+        <ion-label>{{usuario.nombre}} {{usuario.paterno}} {{usuario.materno}}</ion-label>
+      </ion-chip>
+      
+      <p *ngIf="registro1"> <span class="font-color-e3dd2a">• Cupón valido para cualquier usuario.</span></p>
+        
+      <p *ngIf="registro2"> <span class="font-color-e3dd2a">•</span>{{org_usu.nombre}}</p>
+      
+      <p *ngIf="registro3"> <span class="font-color-e3dd2a">• Usted debe registrar una afiliacion para validar el cupón.</span></p>
+
+      <div #qrcode id="qrcode" class="d-none d-sm-none d-md-block d-lg-block d-xl-block"></div>
+      
+      <p class="bitoo-www">www.bitoo.com.mx</p>
+    </div>
+
+  </div>
+  
+</ion-content>
+
+
+

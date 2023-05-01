@@ -49,4 +49,110 @@ export class PersonaService {
         return error;
       }));
   }
+
+
+  obtenerProductosFavoritos(idPersona: number): Observable<any> {
+    const body = JSON.stringify({id_persona : idPersona});
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+        `${this.url}api/favoritos/productos`, body,
+        AppSettings.getHeadersToken())
+        .then((data) => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        }));
+  }
+
+  obtenerNegociosFavoritos(idPersona: number): Observable<any> {
+    const body = JSON.stringify({id_persona : idPersona});
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+        `${this.url}api/usuario/favoritos/negocios`, body,
+        AppSettings.getHeadersToken())
+        .then((data) => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        }));
+  }
+
+  datosBasicos(idPersona: number) {
+    const body = JSON.stringify({id_persona : idPersona});
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      `${this.url}api/api/personas/obtener/datosBasicos`, body,
+        AppSettings.getHeadersToken()
+    ).then(
+      (data) => {
+        return JSON.parse(data.data);
+      }
+    ).catch((error) => {
+      return error;
+    }));
+  }
+
+  datosComplementarios(idPersona: number) {
+    const body = JSON.stringify({id_persona : idPersona});
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      `${this.url}api/api/personas/obtener/datosComplementarios`, body,
+        AppSettings.getHeadersToken()
+    ).then(
+      (data) => {
+        return JSON.parse(data.data);
+      }
+    ).catch((error) => {
+      return error;
+    }));
+  }
+
+
+  obtenerAfiliaciones(): Observable<any> {
+    const body = JSON.stringify({});
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(
+        this.url + 'api/catalogo/afiliaciones/obtenerTodasActivas',
+        body, AppSettings.getHeadersToken())
+        .then((data) => {
+            return JSON.parse(data.data);
+        })
+        .catch((error) => {
+            return error;
+        }));
+  }
+
+
+  obtenerOrganizaciones(): Observable<any> {
+    const body = JSON.stringify({});
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(
+        this.url + 'api/catalogo/organizaciones/obtenerTodasActivas',
+        body, AppSettings.getHeadersToken())
+        .then((data) => {
+            return JSON.parse(data.data);
+        })
+        .catch((error) => {
+            return error;
+        }));
+  }
+
+  obtenerOrgAfilUsuario(idUsuario: number): Observable<any> {
+    const body = JSON.stringify({id_usuario_sistema : idUsuario});
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(
+        this.url + 'api/catalogos/adminUser/obtenerOrgAfilUsuario',
+        body, AppSettings.getHeadersToken())
+        .then((data) => {
+            return JSON.parse(data.data);
+        })
+        .catch((error) => {
+            return error;
+        }));
+  }
+
+
+  
 }

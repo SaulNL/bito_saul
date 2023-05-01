@@ -1,0 +1,30 @@
+input[type="radio"] {
+  display: none;
+}
+
+label {
+  color: grey;
+  font-size: 35px;
+
+}
+
+.clasificacion {
+  direction: rtl;
+  unicode-bidi: bidi-override;
+}
+
+input[type="radio"]:checked ~ label {
+  color: orange;
+}
+
+.text-rosa {
+  color: #FA4F72 !important;
+}
+
+
+.comentario {
+  font-size: 15px;
+  font-style: italic;
+  text-align: justify;
+}
+

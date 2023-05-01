@@ -1,0 +1,5 @@
+<ion-row *ngIf="validation.touched && validation.invalid">
+  <ion-label *ngIf="validation.errors.required">
+    <p>{{message}}</p>
+  </ion-label>
+</ion-row>

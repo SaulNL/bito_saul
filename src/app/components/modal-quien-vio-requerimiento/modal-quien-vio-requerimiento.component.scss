@@ -1,0 +1,29 @@
+.spinner-color {
+    --color: #FA4F72;
+  }
+  .spinner {
+    position: fixed;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.message {
+    position: fixed;
+    top: 53%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fa4f72;
+}
+.infoVisitante{
+  width: 90%; 
+}
+.tooggle-none{
+  font-size: 18px;
+}
+.tooggle{
+  color: #fa4f72;
+  font-size: 18px;
+}
+.icon-color-select{
+  color: #fa4f72;
+}

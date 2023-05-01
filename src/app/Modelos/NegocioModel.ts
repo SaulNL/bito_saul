@@ -6,9 +6,13 @@ import {HorarioNegocioModel} from './HorarioNegocioModel';
 export class NegocioModel {
 
   public id_negocio: number;
+  public id_negocio_matriz: number;
+  public vip: any;
   public rfc: string;
   public descripcion: string;
   public nombre_comercial: string;
+  public nombre_corto: string;
+  public perfiles_caracteristicas: any [];
   public url_logo: string;
   public id_tipo_negocio: number;
   public id_domicilio: number;
@@ -45,7 +49,10 @@ export class NegocioModel {
 
   organizaciones: string;
   nombre_organizacion: string;
+  distintivos: string;
+  nombre_distintivos: string;
   tags: any;
+  lugares_entrega: any;
 
   public horarios: Array<HorarioNegocioModel>;
   suspendido: boolean;
@@ -53,13 +60,19 @@ export class NegocioModel {
   public tipo_pago_transferencia:number;
   public tipo_pago_tarjeta_credito:number;
   public tipo_pago_tarjeta_debito:number;
-  public tipo_pago_efectivo:boolean;
-
+  public tipo_pago_efectivo:number;
+  public verificado: Boolean;
+  plazasTodo: any;
+  public plazas: any;
+  public afiliaciones: any;
+  public fotografias: any;
   constructor(
     id_negocio = null,
     rfc = null,
     descripcion = null,
     nombre_comercial = null,
+    nombre_corto = null,
+    perfiles_caracteristicas=null,
     url_logo = null,
     id_tipo_negocio = null,
     id_domicilio = null,
@@ -75,12 +88,18 @@ export class NegocioModel {
     tiempo_entrega_kilometro = null,
     costo_entrega = 30,
     otra_categoria = null,
-    otra_subcategoria = null
+    otra_subcategoria = null,
+    tags = [],
+    fotografias=[],
+    id_negocio_matriz = null,
   ) {
     this.id_negocio = id_negocio;
+    this.tags = tags;
     this.rfc = rfc;
     this.descripcion = descripcion;
     this.nombre_comercial = nombre_comercial;
+    this.nombre_corto = nombre_corto;
+    this.perfiles_caracteristicas = perfiles_caracteristicas;
     this.url_logo = url_logo;
     this.url_logo = null;
     this.id_tipo_negocio = id_tipo_negocio;
@@ -102,5 +121,7 @@ export class NegocioModel {
     this.dias= new Array<HorarioNegocioModel>() ;
     this.otra_categoria = otra_categoria;
     this.otra_subcategoria = otra_categoria;
+    this.fotografias = fotografias;
+    this.id_negocio_matriz = id_negocio_matriz;
   }
 }

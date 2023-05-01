@@ -18,7 +18,7 @@ export class ModalProductosComponent implements OnInit {
   constructor(public modalCtrl: ModalController) {}
 
   ngOnInit() {
-    console.log(this.seleccionadoDetalleArray);
+    
   }
 
   dismiss() {

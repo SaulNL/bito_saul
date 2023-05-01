@@ -1,4 +1,4 @@
- <!--lista Cabezera-->
+<!--lista Cabezera-->
 <ion-header>
   <ion-toolbar  class="tolbar">
     <ion-buttons slot="start">
@@ -6,7 +6,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-button>
     </ion-buttons>
-    <ion-title>Mis Solicitudes</ion-title>
+    <ion-title>Mis requerimientos de compra</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="agregar()">
         <ion-icon name="add-outline"></ion-icon>
@@ -14,15 +14,19 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
- <!--lista Solicitudes-->
- <ion-content>
+ <app-spinner [loader]="loading(loaderSc, loaderSp)" [message]="cargando"></app-spinner>
+ <ion-content *ngIf="!loaderSc && !loaderSp" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+   <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
+   <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-card>
     <div class="ion-text-center ion-margin-top">
-      <strong>Solicitudes Creadas</strong>
+      <strong>Requerimientos de compra creados</strong>
     </div>
     <div *ngIf="numeroSolicitudes == 0">
       <ion-chip color="warning">
-        <ion-label><strong>Lo sentimos!</strong> Aún no tiene ninguna solicitud creada.</ion-label>
+        <ion-label><strong>Lo sentimos!</strong> Aún no tiene ningun requerimiento de compra creado.</ion-label>
       </ion-chip>
     </div>
     <ion-card-header *ngIf="numeroSolicitudes > 0">
@@ -39,15 +43,15 @@
   </ion-card>
   <ion-card>
     <div class="ion-text-center ion-margin-top">
-      <strong>Solicitudes Publicadas </strong>
+      <strong>Requerimientos de compra publicados </strong>
     </div>
     <div *ngIf="numeroPublicadas == 0">
       <ion-chip color="warning">
-        <ion-label><strong>Lo sentimos!</strong> Aún no tiene ninguna solicitud publicada.</ion-label>
+        <ion-label><strong>Lo sentimos!</strong> Aún no tiene ningun requerimiento de compra publicado.</ion-label>
       </ion-chip>
     </div>
     <ion-card-header *ngIf="numeroPublicadas > 0">
-    <ion-searchbar (ionInput)="btnBuscar($event)" [(ngModel)]="filtro" type="text"></ion-searchbar>
+    <ion-searchbar [placeholder]="textoDeBusqueda" (ionInput)="btnBuscar($event)" [(ngModel)]="filtro" type="text"></ion-searchbar>
     <br>
     <ion-list *ngFor="let soliPubli of lstSolicitudesPublicadas; index as is">
       <ion-item (click)="selecAdminPublicada(soliPubli)">
@@ -57,7 +61,7 @@
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </ion-buttons>
     </ion-item>
-    </ion-list>  
+    </ion-list>
   </ion-card-header>
   </ion-card>
 </ion-content>

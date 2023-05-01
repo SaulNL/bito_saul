@@ -22,9 +22,16 @@ export class InputTagsComponent implements OnInit {
     this.input.addEventListener('ionInput', (e) => {
       if (e.detail.data === ',') {
         if (this.input.value.length !== 0) {
-         let numero = this.input.value.indexOf(",");
-           let  tag = this.input.value.slice(0, numero);
-          this.tags.push(tag);
+          console.log(typeof this.tags)
+          let numero = this.input.value.indexOf(",");
+          let tag = this.input.value.slice(0, numero);
+          if (typeof this.tags == 'string') {
+            this.tags = this.tags.split(",");
+            this.tags.push(tag);
+            console.log("soy JSON", this.tags)
+          } else {
+            this.tags.push(tag);
+          }
           this.agregarTags();
           this._enviarTags.emit(this.tags);
           this.input.value = '';
@@ -81,15 +88,17 @@ export class InputTagsComponent implements OnInit {
   }
 
   agregarTags() {
-    const borrar = document.querySelectorAll('.tag');
-    borrar.forEach(tag => {
-      tag.parentElement.removeChild(tag);
-    });
-    this.tags.slice().reverse().forEach(etiqueta => {
-      const tag = this.crearTag(etiqueta);
-      this.tagContainer.prepend(tag);
-    });
+    if (this.tags[0] === "" && this.tags.length === 1) {
+      this.tags = [];
+    } else {
+      const borrar = document.querySelectorAll('.tag');
+      borrar.forEach(tag => {
+        tag.parentElement.removeChild(tag);
+      });
+      this.tags.slice().reverse().forEach(etiqueta => {
+        const tag = this.crearTag(etiqueta);
+        this.tagContainer.prepend(tag);
+      });
+    }
   }
-
-
 }

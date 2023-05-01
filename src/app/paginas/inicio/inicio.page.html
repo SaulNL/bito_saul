@@ -1,90 +1,284 @@
-<!--<ion-header [translucent]="true" >-->
-<!--    <ion-toolbar>-->
-<!--        <ion-title>-->
-<!--            Inicio*-->
-<!--        </ion-title>-->
-<!--    </ion-toolbar>-->
-<!--</ion-header>-->
-<app-toolbar-busqueda placeHolder="Buscar negocios" (buscarEmit)="buscarToolbar($event)"></app-toolbar-busqueda>
-<ion-content [fullscreen]="true" [scrollEvents]="true"  (ionScroll)="cordenada = $event.detail.scrollTop">
-    <app-boton-top [content]="content" [cordenada]="cordenada" ></app-boton-top>
-    <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
-    <ion-content class="ion-padding" *ngIf="loader" fullscreen>
-        <div class="spin" >
-            <ion-spinner></ion-spinner>
-        </div>
-    </ion-content >
-    <div *ngIf="!loader">
-        <ion-item>
-            <ion-buttons  *ngIf=" filtroActivo" slot="start">
-                <ion-chip (click)="borrarFiltros()" color="danger">
-                    <ion-icon name="trash-outline" color="danger"></ion-icon>
-                    <ion-label>Borrar Filtros</ion-label>
-                </ion-chip>
-            </ion-buttons>
-            <ion-buttons slot="end">
-                <ion-button (click)="abrirFiltros()">Filtrar
-                    <ion-icon name="filter-outline"></ion-icon>
-                </ion-button>
-            </ion-buttons>
-        </ion-item>
-        <ion-grid>
-            <ion-row class="ion-align-items-center">
-                <ion-col size="12" class="ion-text-center">
-                    <ion-button size="small" class="bg-rosa" type="button" (click)="abrirModalMapa()">
-                        <ion-icon name="map-outline"></ion-icon>
-                        Mapa
-                      </ion-button>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-        <ion-grid *ngIf="listaCategorias.length !== 0">
-            <ion-row *ngFor="let cat of listaCategorias">
-                <ion-text class="w-100">
-                    <h2>{{cat.nombre}}</h2>
-                </ion-text>
-                <ion-col sizeLg="3" sizeXs="6" sizeSm="4" sizeMd="4" *ngFor="let proveedor of cat.negocios">
-                    <ion-card class="m-0 fixed">
-                        <div (click)="negocioRuta(proveedor.url_negocio)">
-                            <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
-                            [srcset]="proveedor.url_logo"
-                             alt="Falla al cargar la imagen">
-                        <ion-card-header>
-                            <ion-card-subtitle>{{proveedor.nombre_comercial}}</ion-card-subtitle>
-                            <ion-badge *ngIf="proveedor.abierto == 'ABIERTO'" color="success">Abierto</ion-badge>
-                            <ion-badge *ngIf="proveedor.abierto !== 'ABIERTO'" color="danger">Cerrado</ion-badge>
-                        </ion-card-header>
-                        <ion-card-content >
-                            <div class="ui-search-item__title">
-                                {{proveedor.descripcion}}
-                            </div>
-                        </ion-card-content>
-                        </div>
-                        <div *ngIf="existeSesion">
-                            <ion-fab class="bolsi agregarBolda" (click)="darLike(proveedor)">
-                                <ion-fab-button *ngIf="proveedor.likes>0;else templateName" class="bosar">
-                                    <ion-icon name="heart-circle-outline"></ion-icon>{{proveedor.likes}}
-                                </ion-fab-button>
-                                <ng-template #templateName>
-                                    <ion-fab-button *ngIf="proveedor.likes === 0" class="bosa bosar">
-                                        <ion-icon name="heart-circle-outline"></ion-icon>{{proveedor.likes}}
-                                    </ion-fab-button>
-                                </ng-template>
-                              </ion-fab>
-                        </div>
-                    </ion-card>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-        <ion-grid *ngIf="listaCategorias.length === 0">
-            <ion-text color="primary">
-                <ion-button (click)="irpago()">pedido realizado</ion-button>
-                <h2>No se encontraron negocios relacionados</h2>
-            </ion-text>
-        </ion-grid>
-    </div>
+<ion-toolbar class="tolbar">
 
+  <app-toolbar-busqueda
+    [placeHolder]=" objectSelectAfiliacionPlaza !== null && objectSelectAfiliacionPlaza !== undefined ? 'Buscar negocios en ' + objectSelectAfiliacionPlaza.nombre : 'Buscar negocios' "
+    (buscarEmit)="buscarToolbar($event)" titulo="Inicio"></app-toolbar-busqueda>
+
+</ion-toolbar>
+
+<ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+  <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
+  <app-boton-top [content]="content" [cordenada]="cordenada" [platform]="isIOS" *ngIf="!isIOS"></app-boton-top>
+  <ion-fab *ngIf="isIOS" horizontal="end" vertical="bottom" slot="fixed" class="btn-flotante" (click)="scrollToTop()">
+    <ion-fab-button class="bg-rosa" *ngIf="cordenada >= 100">
+      <ion-icon name="chevron-up-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <app-banner-promociones [anyFiltros]="Filtros" [tieneFiltro]="tFiltro"></app-banner-promociones>
+  <app-spinner [loader]="loader" [message]="msj"></app-spinner>
+  <app-spinner [loader]="loaderNegocios" [message]="msj"></app-spinner>
+  <app-spinner *ngIf="mostrarloaderInicio" [loader]="loaderInicio" [message]="msj"></app-spinner>
+  <div *ngIf="!loader">
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-col" size-md="12">
+          <ion-chip *ngIf="!selectionAP" color="dark" (click)="openPlazasAfiliacionesModal()">
+            <small class="text">Destacados</small>
+            <ion-icon class="icono" name="caret-down-outline"></ion-icon>
+          </ion-chip>
+
+          <ion-chip *ngIf="selectionAP" (click)="regresarBitoo()" color="danger">
+            <ion-icon class="icono" name="log-out-outline"></ion-icon>
+            <ion-label><span class="text">Volver a Bitoo</span></ion-label>
+          </ion-chip>
+        </ion-col>
+        <ion-col class="ion-col-2" size-md="6">
+          <ion-button mode="ios" size="small" class="mapa" shape="round" [disabled]="listaCategorias.length === 0"
+            (click)="abrirModalMapa()">
+            <ion-icon class="icono" name="map-outline"></ion-icon>
+            <small >Mapa</small>
+          </ion-button>
+        </ion-col>
+        <ion-col size-md="6">
+          <ion-chip *ngIf="filtroActivo" (click)="borrarFiltrosP()" color="danger">
+            <ion-icon class="icono" name="trash-outline" color="danger"></ion-icon>
+            <ion-label><span class="text">Borrar Filtros</span></ion-label>
+          </ion-chip>
+
+          <ion-chip *ngIf="!filtroActivo" class="text2" color="dark" (click)="abrirFiltros()"><span>Filtros</span>
+            <ion-icon class="icono" name="filter-outline"></ion-icon>
+          </ion-chip>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid>
+      <ion-row class="ion-align-items-center">
+        <div *ngIf="objectSelectAfiliacionPlaza !== null && objectSelectAfiliacionPlaza !== undefined"
+          style="background-color: #3c3c3c; color: white; font-size: small" class="ion-text-center">
+          <p style="padding-inline: 5%">
+            ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA
+            <img style="width: 25px; margin-top: 2%" src="{{objectSelectAfiliacionPlaza.icon}}" />
+            {{objectSelectAfiliacionPlaza.nombre}}
+          </p>
+        </div>
+      </ion-row>
+    </ion-grid>
+    <ion-slides [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }" scrollbar="md">
+      <ion-slide>
+
+        <li class="nav-item">
+          <a class="todas" id="pills-home-todos" role="tab" aria-selected="true">
+            <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img   (click)="activar()" class="img-gris"
+                src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png">
+            </ion-avatar>
+            <ion-avatar *ngIf="idTodo ===true" style="margin-bottom: 1.2rem;" class="image-center"> <img  (click)="borrarFiltrosP()"
+                src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png">
+            </ion-avatar>
+
+
+            <p *ngIf="idTodo ===true" class="giro-color" style="font-size: 10.5px;">Regresar al inicio </p>
+            <p *ngIf="idTodo !=true" style="font-size: 10.5px;">Todos los negocios </p>
+          </a>
+        </li>
+      </ion-slide>
+      <ion-slide *ngFor="let giro of this.lstCatTipoGiro">
+
+
+        <ion-row class="ion-text-center" (click)="buscarByGiro(giro.id_giro)">
+          <ion-col>
+            <ion-item color="none" lines="none">
+              <ion-avatar *ngIf="idGiro != giro.id_giro" class="image-center"> <img class="img-gris"
+                  src="{{giro.url_icon}}"> </ion-avatar>
+              <ion-avatar *ngIf="idGiro==giro.id_giro" class="image-center"> <img src="{{giro.url_icon}}"> </ion-avatar>
+
+            </ion-item>
+            <ion-item class="ion-text-center" color="none" lines="none">
+
+              <small *ngIf="idGiro != giro.id_giro" style="font-size: 10px;">{{giro.nombre}}</small>
+              <small *ngIf="idGiro==giro.id_giro" class="giro-color">{{giro.nombre}}</small>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-slide>
+    </ion-slides>
+
+    <ion-refresher *ngIf="!isIOS" slot="fixed" (ionRefresh)="recargar($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <!--ion-row *ngIf="paginaPrevia>0" style="justify-content: center;" (click)="cargarMasPaginasArriba($event)"
+    [ngClass]="isLoading==true? 'loaderArribaShow' : 'loaderArribaHide'">
+      <ion-spinner #cargaArriba id="cargaArriba" name="bubbles"></ion-spinner>
+      <p>Cargando negocios</p>
+    </ion-row-->
+    <ion-row *ngIf="loaderTop" [ngClass]="loaderTop? 'loaderArribaShow' : 'loaderArribaHide'">
+      <ion-col size="12">
+        <div class="ver-mas">
+          <ion-button (click)="cargarMasPaginasArriba()" expand="block" fill="outline" color="medium" size="small"
+            shape="round" disabled={{buttonDisabled}}>
+            <span *ngIf="!isLoading">Ver mas negocios</span>
+            <div *ngIf="isLoading" class="spinner">
+              <ion-spinner color="medium" name="lines-small"></ion-spinner>
+              <span>Cargando</span>
+            </div>
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+    <div *ngIf="!loaderNegocios">
+      <div *ngIf="listaCategorias.length !== 0">
+        <div *ngFor="let cat of !banderaVerMas || listaVerMas.length === 0 ? listaCategorias : listaVerMas; index as a">
+          <div class="container-1">
+            <h2 id="ancla{{a}}">{{cat.nombre}}</h2>
+            <br>
+          </div>
+          <div class="container-2">
+            <ion-card *ngFor="let proveedor of cat.negocios">
+              <div>
+                <img *ngIf="proveedor.tienepromociones == 1"
+                  (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)"
+                  style="position: absolute; width: 170px; cursor: pointer;"
+                  src="../../../assets/images/promo/etiqueta_promo.png">
+                <div class="logo-negocio">
+                  <img (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)" loading="lazy"
+                    [src]="proveedor.url_logo !== null ? proveedor.url_logo : 'https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg'"
+                    alt="Falla al cargar la imagen">
+                </div>
+                <div *ngIf="idNegocio===proveedor.id_negocio" class="ion-justify-content-center dots">
+                  <ion-spinner name="dots" style="margin: -10px 0px 0px 0px;" class="spinner-color"></ion-spinner>
+                </div>
+              </div>
+              <div class="header-card" *ngIf="proveedor.giro !== null">
+                <div class="tag-giro">{{proveedor.giro }}</div>
+              </div>
+
+              <div class="body-card">
+                <div>
+                  <span
+                    [ngClass]="proveedor.abierto == 'ABIERTO' ? 'tag tag-green': 'tag tag-red'">{{proveedor.abierto}}</span>
+
+                  <app-dar-like-negocio [negocio]="proveedor" [usuario]="user" [mostrarLike]="existeSesion">
+                  </app-dar-like-negocio>
+                </div>
+                <div>
+                  <ion-card-title> {{proveedor.nombre_corto != "" ? proveedor.nombre_corto :
+                    proveedor.nombre_comercial}}</ion-card-title>
+                </div>
+                <div class="distintivos">
+                  <img *ngIf="proveedor.verificado === 1" class="distintivoIcon" src="assets/icon/certificado_icon.svg"
+                    matTooltip="Este negocio está verificado por Bitoo">
+                  <div class="distintivo"
+                    *ngFor="let distintivo of proveedor.distintivos.slice(0, proveedor.verificado === 1 ? 3 : 4); index as i">
+                    <img class="distintivoIcon" (click)="clickDistintivo(distintivo.nombre, distintivo.descripcion)"
+                      [src]="distintivo.icon">
+                  </div>
+                </div>
+              </div>
+            </ion-card>
+          </div>
+          <div class="container-3">
+            <ion-button shape="round" expand="full" size="small"
+              *ngIf="cat.nombre == 'Con convenio' && !filtroActivo && !idTodo && !selectionAP && !buscador && verMasNegociosConBtn"
+              (click)="verMasNegociosCon ? cargarMenosNegociosInicio(cat.nombre,'ancla'+a) : cargarMasNegociosInicio(cat.nombre)"
+              class="boton-ver-mas">
+              <span class="texto-ver-mas" *ngIf="!verMasNegociosCon">Ver más negocios </span>
+              <span class="texto-ver-mas" *ngIf="verMasNegociosCon">Ver menos negocios</span>
+              <ion-icon class="icono-ver-mas" name="chevron-forward-outline"></ion-icon>
+            </ion-button>
+
+            <ion-button shape="round" expand="full" size="small"
+              *ngIf="cat.nombre == 'Con promociones' && !filtroActivo && !idTodo && !selectionAP && !buscador && verMasNegociosPromoBtn"
+              (click)="verMasNegociosPromo ? cargarMenosNegociosInicio(cat.nombre,'ancla'+a) : cargarMasNegociosInicio(cat.nombre)"
+              class="boton-ver-mas">
+              <span class="texto-ver-mas" *ngIf="!verMasNegociosPromo">Ver más negocios </span>
+              <span class="texto-ver-mas" *ngIf="verMasNegociosPromo">Ver menos negocios</span>
+              <ion-icon class="icono-ver-mas" name="chevron-forward-outline"></ion-icon>
+            </ion-button>
+            <ion-button shape="round" expand="full" size="small"
+              *ngIf="cat.nombre == 'Más Vistos' && !filtroActivo && !idTodo && !selectionAP && !buscador && verMasNegociosVistosBtn"
+              (click)="verMasNegociosVistos ? cargarMenosNegociosInicio(cat.nombre,'ancla'+a) : cargarMasNegociosInicio(cat.nombre)"
+              class="boton-ver-mas">
+              <span class="texto-ver-mas" *ngIf="!verMasNegociosVistos">Ver más negocios </span>
+              <span class="texto-ver-mas" *ngIf="verMasNegociosVistos">Ver menos negocios</span>
+              <ion-icon class="icono-ver-mas" name="chevron-forward-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </div>
+
+      <div [ngClass]="showPopUp? 'bottom_info_distintivo_up' : 'bottom_info_distintivo'">
+        <div class="contenedor_popup">
+          <div class="icon_close">
+            <ion-icon name="close" (click)="closePopUp()"></ion-icon>
+          </div>
+          <div class="popup_content">
+            <h4>{{insigniaTitle}}</h4>
+            <div>
+              <p>{{insigniaDescrip}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ion-grid *ngIf="listaCategorias.length === 0 && selectionAP === false">
+      <ion-button expand="block" fill="outline" color="medium" size="small" shape="round" disabled={{buttonDisabled}}>
+        <div class="spinner">
+          <ion-spinner color="medium" name="lines-small"></ion-spinner>
+          <span>Cargando negocios</span>
+        </div>
+      </ion-button>
+      <br>
+      <ion-text color="primary">
+        <!--<h2>No se encontraron negocios relacionados</h2>-->
+      </ion-text>
+    </ion-grid>
+    <ion-grid *ngIf="listaCategorias.length === 0  && selectionAP === true">
+      <ion-text color="primary">
+        <h2>
+          No se encontraron negocios relacionados en
+          {{objectSelectAfiliacionPlaza.nombre}}
+        </h2>
+      </ion-text>
+    </ion-grid>
+    <ion-grid *ngIf="!loader && filtroActivo || idTodo || selectionAP || buscador">
+      <!-- <span>actual page = {{actualPagina}}</span>
+      <span>total Paginas = {{totalPaginas}}</span>
+      <span>total negocios = {{totalDeNegocios}}</span> -->
+      <ion-row *ngIf="(actualPagina < totalPaginas) && totalDeNegocios>20" class="ion-padding">
+
+        <ion-col size="12">
+          <div class="ver-mas">
+            <ion-button (click)="cargarMasPaginas()" expand="block" fill="outline" color="medium" size="small"
+              shape="round">
+              <span *ngIf="!loaderVerMas">Ver mas negocios</span>
+              <div *ngIf="loaderVerMas" class="spinner">
+                <ion-spinner color="medium" name="lines-small"></ion-spinner>
+                <span>Cargando</span>
+              </div>
+            </ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <!-- <div *ngIf="!banderaVerMas">
+      <app-infinito-scroll
+        *ngIf="true"
+        (respuesta)="cargarMasPaginas($event)"
+        [activado]="true"
+        [msj]="mensaje"
+      ></app-infinito-scroll>
+    </div> -->
+
+    <!-- Se ocupaba cuando redirigia a ver mas negociosX -->
+    <!-- <div *ngIf="banderaVerMas">
+      <ion-infinite-scroll threshold="50px" (ionInfinite)="cargarMasNegocios($event)">
+        <ion-infinite-scroll-content
+          loadingSpinner="bubbles"
+          [loadingText]="mensaje">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </div> -->
+  </div>
+  <app-banner-anuncios></app-banner-anuncios>
 
 </ion-content>
-
-

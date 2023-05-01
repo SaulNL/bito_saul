@@ -3,6 +3,8 @@ import {AppSettings} from "../AppSettings";
 import {Observable, from} from "rxjs";
 import {map} from "rxjs/operators";
 import { HTTP } from '@ionic-native/http/ngx';
+import { IMsNegocio } from '../interfaces/IMsNegocioModel';
+import { CategoriaNegocioUtil } from '../utils/servicios/categoria-negocio/categoria-negocio-util';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,73 +16,67 @@ export class BusquedaService {
   }
 
   url = `${AppSettings.API_ENDPOINT}`;
-
-  public obtenerDatos(filtro): Observable<any> {
-    const body = JSON.stringify({filtros: filtro});
+  public obtenerDatos(filtro, pagina: number): Observable<any> {
+    const body = JSON.stringify({filtros: filtro, page: pagina});
     this.http.setDataSerializer("utf8");
+
     let datos = from(this.http.post(`${this.url}api/negocios/obtener`,body, AppSettings.getHeaders())
     .then( data => {
+
       return JSON.parse(data.data);
-    }));    
+    }));
 
     return datos.pipe(map(data => {
-      // return data;
-      let jsOrigen: any;
-      jsOrigen = data;
-
-      const jsCategoria = new Array();
-      let categoria = {
-        id_categoria_negocio: undefined,
-        nombre: undefined,
-        id_giro: undefined,
-        negocios: []
-      };
-      let negocio = {
-        short: undefined
-      };
-      if (jsOrigen.data.lst_cat_negocios !== undefined && jsOrigen.data.lst_cat_negocios !== null && jsOrigen.data.lst_cat_negocios.length > 0) {
-
-        let idCategoriaActual: number;
-        const totalDatos = jsOrigen.data.lst_cat_negocios.length;
-        let iterador = 0;
-        jsOrigen.data.lst_cat_negocios.forEach(it => {
-
-          if (idCategoriaActual !== Number(it.id_categoria_negocio)) {
-
-            if (iterador > 0) {
-              jsCategoria.push(categoria);
-            }
-
-            idCategoriaActual = Number(it.id_categoria_negocio);
-
-            categoria = {
-              id_categoria_negocio: it.id_categoria_negocio,
-              nombre: it.categoria_negocio,
-              id_giro: it.id_giro,
-              negocios: []
-            };
-
-          }
-
-          negocio = it;
-          negocio.short = it.descripcion.substr(0, 25),
-
-              categoria.negocios.push(negocio);
-
-          if (iterador + 1 >= totalDatos) {
-            jsCategoria.push(categoria);
-          }
-
-          iterador++;
-        });
-      }
-      jsOrigen.data = jsCategoria;         
-      return jsOrigen;
+      let respuesta: any = data;
+      let msNegocios = respuesta.data.lst_cat_negocios.data as Array<IMsNegocio>;
+      respuesta.data.lst_cat_negocios.data = CategoriaNegocioUtil.filtrarNegociosPorCategorias(msNegocios);
+      return respuesta;
     }));
   }
-  public obtenerCategorias():Observable<any>{
-    const body = JSON.stringify({});
-    let datos = from(this.http.get(this.url + '/buscar/datos/inicio/allfiltro',{},
+  
+  public obtenerNegocioPorCategoria(filtro, pagina: number): Promise<any>{
+    const body = JSON.stringify({filtros: filtro, page: pagina});
+     this.http.setDataSerializer("utf8");
+    return this.http.post(`${this.url}api/negocios/obtener`,body, AppSettings.getHeaders())
+    .then( data => {
+      let respuesta: any =  JSON.parse(data.data);
+     
+      /* Se valida que tenga la propiedad "data", debido el backend no lo manda en el páginado
+      * --> Refactorizar, esto lo debe hacer el backend, no el frontend,
+      * el backend debe ser encargado de otorgar la estructura correcta al front
+      */
+     let msNegocios: Array<IMsNegocio>;
+     if(respuesta.data.lst_cat_negocios.hasOwnProperty("data")){
+       msNegocios = respuesta.data.lst_cat_negocios.data as Array<IMsNegocio>;
+     }else{
+       /**
+        * son las propiedades que se usan para el páginado
+        * así evitar que tengan nulo y mande error,
+        * se establecen así que el backend no manda páginado, validar, no es lo correcto
+        */
+       msNegocios = respuesta.data.lst_cat_negocios as Array<IMsNegocio>;
+       respuesta.data.lst_cat_negocios.current_page = 1;
+       respuesta.data.lst_cat_negocios.total = 1;
+       respuesta.data.lst_cat_negocios.per_page = 1;
+       respuesta.data.lst_cat_negocios.to = 1;
+     }
+     respuesta.data.lst_cat_negocios.data = CategoriaNegocioUtil.filtrarNegociosPorCategorias(msNegocios);
+     return respuesta;
+    });
+  }
+  public obtenerNumeroPaginas(filtro, pagina: number): Promise<any>{
+    const body = JSON.stringify({filtros: filtro, page: pagina});
+     this.http.setDataSerializer("utf8");
+    return this.http.post(`${this.url}api/negocios/obtenerNumeroPaginas`,body, AppSettings.getHeaders())
+    .then( data => {
+      let respuesta: any =  JSON.parse(data.data);     
+     return respuesta;
+    });
+  }
+  
+  public obtenerCategorias(pagina: number):Observable<any>{
+    const url = this.url + '/buscar/datos/inicio/allfiltro?page='+pagina;
+    let datos = from(this.http.get(url,{},
     {'Content-Type':'application/json'})
     .then( data => {
         return JSON.parse(data.data);
@@ -93,4 +89,91 @@ export class BusquedaService {
         return data;
     }));
   }
+
+  obtenerBannerAvisos(): Observable<any> {
+    const body = JSON.stringify({});
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/catalogos/obtener/avisosInferior', body,
+      AppSettings.getHeaders())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+  }
+
+  obtenerGiros(): Observable<any> {
+    const body = JSON.stringify({});
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'buscar/giros', body,
+      AppSettings.getHeaders())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+  }
+
+  obtenerPrincipalInicio(): Observable<any> {
+    const body = JSON.stringify({});
+    this.http.setDataSerializer('utf8');
+    return from(this.http.post(
+        this.url + 'api/negocios/obtenerPrincipalInicio',
+        body,  AppSettings.getHeaders())
+        .then((data) => {
+            return JSON.parse(data.data);
+        })
+        .catch((error) => {
+            return error;
+        }));
+  }
+
+  // ESTE SERVICIO ERA PARA TRAER LA LISTA DE SOLO LOS PRIMEROS DIEZ(CONVENIO, PROMOCIÓN Y MAS VISTOS )
+  // obtenerPrincipalInicioTodos(data: any): Observable<any> {
+  //   const body = JSON.stringify(data);
+  //   this.http.setDataSerializer('utf8');
+  //   return from(this.http.post(
+  //       this.url + 'api/negocios/obtenerPrincipalInicioTodos',
+  //       body,  AppSettings.getHeaders())
+  //       .then((data) => {
+  //           return JSON.parse(data.data);
+  //       })
+  //       .catch((error) => {
+  //           return error;
+  //       }));
+  // }
+
+  public obtenerNegociosTodosMapa(): Promise<any>{
+    const body = JSON.stringify({});
+     this.http.setDataSerializer("utf8");
+    return this.http.post(`${this.url}api/negocios/obtenerTodosMapa`,body, AppSettings.getHeaders())
+    .then( data => {
+      let respuesta: any =  JSON.parse(data.data);
+      return respuesta;
+    });
+  }
+
+  public obtenerNegociosTodosFiltroMapa(filtro): Promise<any>{
+    const body = JSON.stringify({filtros: filtro});
+     this.http.setDataSerializer("utf8");
+    return this.http.post(`${this.url}api/negocios/obtenerTodosMapa`,body, AppSettings.getHeaders())
+    .then( data => {
+      let respuesta: any =  JSON.parse(data.data);
+      return respuesta;
+    });
+  }
+
+  
+  public getDatosNegocioSinMapearCategoría(filtro, pagina: number): Observable<any> {
+    const body = JSON.stringify({filtros: filtro, page: pagina});
+    this.http.setDataSerializer("utf8");
+    let datos = from(this.http.post(`${this.url}api/negocios/obtener`,body, AppSettings.getHeaders())
+    .then( data => {      
+      return JSON.parse(data.data);
+    }));   
+    return datos;
+  }
+  
 }

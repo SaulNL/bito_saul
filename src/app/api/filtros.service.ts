@@ -19,7 +19,7 @@ export class FiltrosService {
     }
 
     public obtenerEstados(): Observable<any> {
-        const body = JSON.stringify({});
+        const body = JSON.stringify({conNegocios:1});
         this.http.setDataSerializer("utf8");
         let datos = from(this.http.post(this.url + 'api/proveedor/obtener/lista_estados',body,
         AppSettings.getHeaders())
@@ -36,7 +36,7 @@ export class FiltrosService {
     }
 
     public obtenerMunicipios(idEstado): Observable<any> {
-        const body = JSON.stringify({id_estado: idEstado});
+        const body = JSON.stringify({id_estado: idEstado, conNegocios:1});
         this.http.setDataSerializer("utf8");
         let datos = from(this.http.post(`${this.url}api/catalogo/municipio/list`,body,
         AppSettings.getHeaders())
@@ -52,7 +52,7 @@ export class FiltrosService {
     }
 
     public getLocalidad(id_municipio: number): Observable<any> {
-        const body = JSON.stringify({id_municipio: id_municipio});
+        const body = JSON.stringify({id_municipio: id_municipio, conNegocios:1});
         this.http.setDataSerializer("utf8");
         let datos = from(this.http.post(this.url + 'api/catalogo/localidad/list',body,
         AppSettings.getHeaders())
@@ -84,6 +84,36 @@ export class FiltrosService {
         }));
     }
 
+    obtenerPreferencias(idPersona:any): Observable<any> {
+        const body = JSON.stringify({id_persona : idPersona});
+        this.http.setDataSerializer("utf8");
+        let datos = from(this.http.post(this.url+'/api/preferencias/persona/obtener',body,
+        AppSettings.getHeadersToken())
+        .then( data => {
+            return JSON.parse(data.data);
+        })
+        .catch((error) => {
+            return error;
+        }));
+        return datos.pipe(map(data => {
+            return data;
+        }));
+    }
+    guardarMisPreferencias(preferencias: any): Observable<any> {
+        const body = JSON.stringify(preferencias);
+        this.http.setDataSerializer("utf8");
+        let datos = from(this.http.post(this.url+'/api/preferencias/persona/guardar',body,
+        AppSettings.getHeadersToken())
+        .then( data => {
+            return JSON.parse(data.data);
+        })
+        .catch((error) => {
+            return error;
+        }));
+        return datos.pipe(map(data => {
+            return data;
+        }));
+      }
     obtenerGiros(): Observable<any> {
         const body = JSON.stringify({});
         this.http.setDataSerializer("utf8");

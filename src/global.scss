@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -25,101 +25,124 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-
-
 /*Custom css*/
-.d-block{
+.d-block {
   display: block;
 }
 
-.w-100{
+.w-100 {
   width: 100%;
 }
 
-.h-100{
+.h-100 {
   width: 100%;
 }
 
-ion-back-button{
+ion-back-button {
   --color: white;
 }
 
-.tolbar{
-  --background: linear-gradient(90deg,#fa4f72,#a74eef) !important;
+.tolbar {
+  --background: linear-gradient(90deg, #fa4f72, #a74eef) !important;
   --color: white !important;
 }
 
-ion-menu-button{
- color: white;
+.tol-bar {
+  --background: linear-gradient(90deg, #fa4f72, #a74eef) !important;
+  --color: white !important;
 }
 
-.tolbar ion-button{
+.busqueda {
+  --background: linear-gradient(90deg, #d64fa9, #a74eef) !important;
+}
+
+ion-menu-button {
+  color: white;
+}
+
+.tolbar ion-button {
   --color: white;
 }
 
-ion-content{
---background: #f2f2f2;
-}
-.bg-gris{
-  --background: #f2f2f2;
-}
-.bgs-gris{
-  background: #f2f2f2;
-}
-.backgroundgris{
+ion-content {
   --background: #f2f2f2;
 }
 
-.searchbar-left-aligned.sc-ion-searchbar-ios-h .searchbar-input.sc-ion-searchbar-ios{
+.bg-gris {
+  --background: #f2f2f2;
+}
+
+.bgs-gris {
+  background: #f2f2f2;
+}
+
+.backgroundgris {
+  --background: #f2f2f2;
+}
+
+.searchbar-left-aligned.sc-ion-searchbar-ios-h
+  .searchbar-input.sc-ion-searchbar-ios {
   background: white;
 }
-.blanco{
-  --color:white;
+
+.blanco {
+  --color: white;
 }
-.bg-rosa{
-  --background: linear-gradient(90deg,#fa4f72,#a74eef);
+
+.texto-blanco {
   color: white;
 }
-.searchbar-input-container.sc-ion-searchbar-md{
-  --border-radius: 9em ;
-    color: #fa4f72;
+
+.bg-rosa {
+  --background: linear-gradient(90deg, #fa4f72, #a74eef);
+  color: white;
 }
-.searchbar-input-container.sc-ion-searchbar-ios{
+
+.searchbar-input-container.sc-ion-searchbar-md {
+  --border-radius: 9em;
+  color: #fa4f72;
+}
+
+.searchbar-input-container.sc-ion-searchbar-ios {
   height: 36px;
   position: relative;
   bottom: -8px;
   --border-radius: 9em;
-    color: #fa4f72;
-}
-.searchbar-search-icon.sc-ion-searchbar-md, .searchbar-cancel-button.sc-ion-searchbar-md{
-  color: #fa4f72;
-}
-.searchbar-search-icon.sc-ion-searchbar-ios, .searchbar-cancel-button.sc-ion-searchbar-ios{
   color: #fa4f72;
 }
 
-.searchbar-clear-icon.sc-ion-searchbar-md{
+.searchbar-search-icon.sc-ion-searchbar-md,
+.searchbar-cancel-button.sc-ion-searchbar-md {
+  color: #fa4f72;
+}
+
+.searchbar-search-icon.sc-ion-searchbar-ios,
+.searchbar-cancel-button.sc-ion-searchbar-ios {
+  color: #fa4f72;
+}
+
+.searchbar-clear-icon.sc-ion-searchbar-md {
   color: #a74eef;
 }
 
-.searchbar-clear-icon.sc-ion-searchbar-ios{
+.searchbar-clear-icon.sc-ion-searchbar-ios {
   color: #a74eef;
 }
 
-ion-avatar.md.hydrated{
+ion-avatar.md.hydrated {
   --border-radius: 50%;
   width: 52px;
   height: 52px;
   position: relative;
 }
 
-
-.spin{
+.spin {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 ion-spinner {
   width: 28px;
   height: 28px;
@@ -127,18 +150,17 @@ ion-spinner {
   fill: #222;
 }
 
-.m-0{
+.m-0 {
   margin: 0px 0px 10px 0px;
 }
 
-.fixed{
+.fixed {
   height: 350px;
 }
 
-.img-card-w{
+.img-card-w {
   width: 100%;
 }
-
 
 ion-fab {
   z-index: 99999;
@@ -147,13 +169,127 @@ ion-fab {
 .ui-search-item__title {
   display: -webkit-box;
   overflow: hidden;
-    overflow-x: hidden;
-    overflow-y: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   word-break: break-word;
 }
-.grus{
+
+.grus {
   --background: grey !important;
+}
+.c-gris {
+  color: grey !important;
+}
+
+.heartNotLike {
+  color: grey !important;
+}
+
+.heartLike {
+  color: red !important;
+}
+
+.textolikeNego {
+  font-size: 1rem;
+}
+
+.likegegi {
+  bottom: 8rem;
+  position: absolute;
+}
+
+.text-rosa {
+  color: #fa4f72 !important;
+}
+
+.text-pink {
+  color: #fa4f72 !important;
+}
+
+.text-grey {
+  color: grey !important;
+}
+
+.background-bitoo {
+  --background: linear-gradient(90deg, #fa4f72, #a74eef);
+  color: white;
+}
+
+.custom-modal-plazas-afiliaciones .modal-wrapper {
+  height: 50%;
+}
+
+.btn-flotante {
+  animation-name: slidein;
+  animation-duration: 0.3s;
+}
+
+@keyframes slidein {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.alert-required {
+  color: red;
+}
+
+.facebook-color-button {
+  --background: #274da1;
+}
+.apple-color-button {
+  --background: #a2aaad;
+}
+
+.text-initial:first-letter {
+  text-transform: uppercase;
+}
+.text-capitalize {
+  text-transform: capitalize;
+}
+.text-white {
+  color: white;
+}
+.background-blueviolet {
+  background-color: #ac4ee6;
+}
+.background-deeppink {
+  background-color: #fa4f72;
+}
+.text-center {
+  text-align: center;
+}
+
+.custom-modal-loguearse .modal-wrapper {
+  height: 20%;
+  width: 70%;
+  border-radius: 5px;
+}
+
+/* estilos para estrellas de features */
+
+.star {
+  color: rgb(209, 179, 98);
+  font-size: 12px;
+}
+
+.star-campos {
+  position: absolute;
+  top: 8px;
+  left: 1px;
+  color: rgb(175, 139, 38);
+}
+
+.star-video {
+  background-color: white;
+  border-radius: 50px;
+  color: rgb(147, 112, 17);
+  margin-left: 5px;
 }

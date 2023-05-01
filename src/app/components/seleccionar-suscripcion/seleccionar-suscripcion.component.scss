@@ -1,0 +1,37 @@
+.plan_suscripcion{
+    width:90%; 
+    height: fit-content;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 3px;
+    border-color:rgb(0, 162, 255);
+    max-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.precio{
+    background: linear-gradient(45deg,#8a2be2,#40e0d0);
+  background-clip: border-box;
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+.currency{
+    position: static;
+}
+.costo{
+    font-size: 50px;
+    font-family: sans-serif;
+}
+.icon{
+    width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  margin-right: 10px;
+  background-color: white;
+  cursor: pointer;
+  padding: 5px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}

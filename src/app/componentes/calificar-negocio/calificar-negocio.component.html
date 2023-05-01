@@ -8,7 +8,8 @@
       </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loader">
   <ion-card>
     <div class="ion-text-center">
       <h3>¿QUIERES CALIFICAR ESTE NEGOCIO?</h3>
@@ -21,7 +22,7 @@
           <input id="radi2" type="radio" name="estrella" value="4">
           <label for="radi2">★</label>
           <input id="radi3" type="radio" name="estrella" value="3" >
-          <label for="radi3">★</label>  
+          <label for="radi3">★</label>
           <input id="radi4" type="radio" name="estrella" value="2">
           <label for="radi4">★</label>
           <input id="radi5" type="radio" name="estrella" value="1">

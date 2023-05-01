@@ -6,6 +6,19 @@
     <param name="android-package" value="com.silkimen.cordovahttp.CordovaHttpPlugin"/>
   </feature>
 
+  <feature name="Badge">
+    <param name="android-package" value="de.appplant.cordova.plugin.badge.Badge"/>
+  </feature>
+
+  <feature name="Device">
+    <param name="android-package" value="org.apache.cordova.device.Device"/>
+  </feature>
+
+  <feature name="FacebookConnectPlugin">
+    <param name="android-package" value="org.apache.cordova.facebook.ConnectPlugin"/>
+    <param name="onload" value="true"/>
+  </feature>
+
   <feature name="FacebookConnectPlugin">
     <param name="android-package" value="org.apache.cordova.facebook.ConnectPlugin"/>
     <param name="onload" value="true"/>
@@ -25,6 +38,14 @@
     <param name="onload" value="true"/>
   </feature>
 
+  <feature name="LocalNotification">
+    <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification"/>
+  </feature>
+
+  <feature name="SocialSharing">
+    <param name="android-package" value="nl.xservices.plugins.SocialSharing"/>
+  </feature>
+
   <feature name="Downloader">
     <param name="android-package" value="hr.integrator.cordova.plugins.downloader.Downloader"/>
   </feature>
@@ -32,6 +53,10 @@
   <feature name="IonicDeeplinkPlugin">
     <param name="android-package" value="io.ionic.links.IonicDeeplink"/>
     <param name="onload" value="true"/>
+  </feature>
+
+  <feature name="BarcodeScanner">
+    <param name="android-package" value="com.phonegap.plugins.barcodescanner.BarcodeScanner"/>
   </feature>
 
   

@@ -7,11 +7,12 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loader">
   <ion-card>
     <div *ngIf="numeroPublicadas == 0">
       <ion-chip color="warning">
-        <ion-label><strong>Lo sentimos!</strong> Aún no tienes ninguna solicitud publicada.</ion-label>
+        <ion-label><strong>Lo sentimos!</strong> Aún no tienes ningun requerimiento de compra publicado.</ion-label>
       </ion-chip>
     </div>
     <ion-card-header *ngIf="numeroPublicadas > 0">
@@ -25,7 +26,7 @@
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </ion-buttons>
     </ion-item>
-    </ion-list>  
-  </ion-card-header> 
+    </ion-list>
+  </ion-card-header>
   </ion-card>
 </ion-content>

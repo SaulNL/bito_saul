@@ -5,10 +5,17 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
+<ion-content class="ion-padding" *ngIf="loader" fullscreen>
+  <ion-label class="message">
+    {{ msj }}
+  </ion-label>
+  <div class="spinner">
+    <ion-spinner class="spinner-color"></ion-spinner>
+  </div>
+</ion-content>
+<ion-content *ngIf="!loader">
   <ion-card style="background-color: #f64f7a; color: white;">
-    <ion-card-content  class="ion-text-center">
+    <ion-card-content class="ion-text-center">
       <h1>¡Hola!</h1>
       <h3>Antes que nada necesitamos conocerte un poco más</h3>
     </ion-card-content>
@@ -16,22 +23,23 @@
   <form #formBasicos="ngForm" (ngSubmit)="guardar()" *ngIf="formulario1">
     <ion-card>
       <ion-card-content>
-        <ion-card-content  class="ion-text-center">
+        <ion-card-content class="ion-text-center">
           <h2>Información General</h2>
         </ion-card-content>
-        <ion-grid>        
-         <ion-row>
+        <ion-grid>
+          <ion-row>
             <ion-col size='12'>
               <div class="contenedor">
-                <div class="foto" *ngIf="proveedorTO.selfie === null || proveedorTO.selfie === undefined" id="perfil" [ngStyle]="{'border': '2px solid grey', '
+                <div class="foto" *ngIf="proveedorTO.selfie === null || proveedorTO.selfie === undefined" id="perfil"
+                  [ngStyle]="{'border': '2px solid grey', '
                   background-position': 'center', 'background-size': 'cover'}">
                   <label for="selfie" title="cargar imagen" class="cargar">
                     <em>
                       <ion-icon name="image-outline" style="font-size: 30px; color: black;"></ion-icon>
                     </em>
                   </label>
-               </div>
-               <div class="foto" *ngIf="proveedorTO.selfie !== null && proveedorTO.selfie !== undefined" [ngStyle]="{
+                </div>
+                <div class="foto" *ngIf="proveedorTO.selfie !== null && proveedorTO.selfie !== undefined" [ngStyle]="{
                   'background-image': 'url('+proveedorTO.selfie.archivo_64+')', 'border': '2px solid green', '
                   background-position': 'center', 'background-size': 'cover'}">
                   <label for="selfie" title="cargar imagen" class="cargar">
@@ -39,127 +47,89 @@
                       <ion-icon name="image-outline" style="font-size: 30px; color: black;"></ion-icon>
                     </em>
                   </label>
-               </div>
+                </div>
                 <label for="selfie" style="margin-top: 10px; color: black;">Foto de perfil</label>
-                <small *ngIf="!hImagen"  style="color: red;">La foto es requerida</small>
+                <small *ngIf="!hImagen" style="color: red;">La foto es requerida</small>
               </div>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col size='12'>
-              <input style="display: none;" #selfie id="selfie" type="file" (change)="subir_imagen_cuadrada($event)"  accept="image/*" name="selfie" required>
+              <input style="display: none;" #selfie id="selfie" type="file" (change)="subir_imagen_cuadrada($event)"
+                accept="image/*" name="selfie" required>
             </ion-col>
           </ion-row>
-        <ion-list>
-          <ion-item>
-            <ion-label position="stacked">Nombre:</ion-label>
-            <ion-input placeholder="Nombre" #nombre="ngModel" required  name="nombre" [(ngModel)]="proveedorTO.nombre"></ion-input>
-          </ion-item>
-          <div
-          *ngIf="nombre.touched  && nombre.invalid"
-          class="alert alert-danger">
-          <div
-            *ngIf="nombre.errors.required">el nombre es requerido
-          </div>
-        </div>
-          <ion-item>
-            <ion-label position="stacked">Apellido paterno:</ion-label>
-            <ion-input placeholder="Apellido Paterno"  #ap="ngModel" required  name="ap" [(ngModel)]="proveedorTO.paterno"></ion-input>
-          </ion-item>
-          <div *ngIf="ap.touched  && ap.invalid" class="alert alert-danger">
-          <div *ngIf="ap.errors.required">el apellido paterno es requerido</div>
-        </div>
-          <ion-item>
-            <ion-label position="stacked">Apellido materno:</ion-label>
-            <ion-input placeholder="Apellido Materno" #am="ngModel" required  name="am" [(ngModel)]="proveedorTO.materno"></ion-input>
-          </ion-item>
-          <div *ngIf="am.touched  && am.invalid" class="alert alert-danger">
-            <div *ngIf="am.errors.required">el apellido materno es requerido</div>
-          </div>
-          <ion-item>
-            <ion-label position="stacked">Correo:</ion-label>
-            <ion-input id="correo" type="email" email name="correo" #correo="ngModel" placeholder="Correo" [(ngModel)]="proveedorTO.correo" required></ion-input>
-          </ion-item>
-          <div *ngIf="correo.touched  && correo.invalid" class="alert alert-danger">
-            <div *ngIf="correo.errors.required">el correo materno es requerido</div>
-          </div>
-          <ion-item>
-            <ion-label position="stacked">Sexo</ion-label>
-            <ion-select ok-text="Ok" cancel-text="Cancelar"  #sexo="ngModel" name="sexo" [(ngModel)]="proveedorTO.genero" required>
-              <ion-select-option *ngFor="let s of sexos" [value]="s.id">{{s.sexo}}</ion-select-option>
-            </ion-select>
-          </ion-item>
-          <div *ngIf="sexo.touched  && sexo.invalid">
-            <div *ngIf="sexo.errors.required">el sexo es requerido
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">Nombre:</ion-label>
+              <ion-input placeholder="Nombre" #nombre="ngModel" required name="nombre" [(ngModel)]="proveedorTO.nombre">
+              </ion-input>
+            </ion-item>
+            <div *ngIf="nombre.touched  && nombre.invalid" class="alert alert-danger">
+              <div *ngIf="nombre.errors.required">el nombre es requerido
+              </div>
             </div>
-        </div>
-          <ion-item>
-            <ion-label position="stacked">Número de oficina:</ion-label>
-            <ion-input  placeholder="Telefono"  type="number"  #telefono="ngModel"   name="telefono" [(ngModel)]="proveedorTO.telefono"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Celular / Whatsapp:</ion-label>
-            <ion-input placeholder="Celular"  type="number"  #celular="ngModel" required  name="celular" [(ngModel)]="proveedorTO.celular"></ion-input>
-          </ion-item>
-          <div *ngIf="celular.touched  && celular.invalid" class="alert alert-danger">
-          <div *ngIf="celular.errors.required">el celular es requerido
-          </div>
-        </div>
-          <ion-item>
-            <ion-label position="stacked">Fecha de nacimiento</ion-label>
-            <ion-datetime  displayFormat="D/MM/YYYY"   value="{{proveedorTO.fecha_nacimiento }}" (ionChange)="convercionFechaNac($event)"  required></ion-datetime>
-          </ion-item>
-          <ion-item style="margin-top: 10px;">
-            <div class="avatar-uploadIne">
-              <div class="avatar-editIne">
-                  <input type='file' hidden id="imageUpload"  accept="image/*"  (change)="subirArchivo($event,1)"/>
-                  <label for="imageUpload">
-                    <ion-icon name="camera-outline" style="
-                    position: relative;
-                    top: 10px;
-                "></ion-icon>
-                  </label>
+            <ion-item>
+              <ion-label position="stacked">Apellido paterno:</ion-label>
+              <ion-input placeholder="Apellido Paterno" #ap="ngModel" required name="ap"
+                [(ngModel)]="proveedorTO.paterno"></ion-input>
+            </ion-item>
+            <div *ngIf="ap.touched  && ap.invalid" class="alert alert-danger">
+              <div *ngIf="ap.errors.required">el apellido paterno es requerido</div>
+            </div>
+            <ion-item>
+              <ion-label position="stacked">Apellido materno:</ion-label>
+              <ion-input placeholder="Apellido Materno" #am="ngModel" required name="am"
+                [(ngModel)]="proveedorTO.materno"></ion-input>
+            </ion-item>
+            <div *ngIf="am.touched  && am.invalid" class="alert alert-danger">
+              <div *ngIf="am.errors.required">el apellido materno es requerido</div>
+            </div>
+            <ion-item>
+              <ion-label position="stacked">Correo:</ion-label>
+              <ion-input id="correo" type="email" email name="correo" #correo="ngModel" placeholder="Correo"
+                [(ngModel)]="proveedorTO.correo" required></ion-input>
+            </ion-item>
+            <div *ngIf="correo.touched  && correo.invalid" class="alert alert-danger">
+              <div *ngIf="correo.errors.required">el correo materno es requerido</div>
+            </div>
+            <ion-item>
+              <ion-label position="stacked">Sexo</ion-label>
+              <ion-select ok-text="Ok" cancel-text="Cancelar" #sexo="ngModel" name="sexo"
+                [(ngModel)]="proveedorTO.genero" required>
+                <ion-select-option *ngFor="let s of sexos" [value]="s.id">{{s.sexo}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <div *ngIf="sexo.touched  && sexo.invalid">
+              <div *ngIf="sexo.errors.required">el sexo es requerido
               </div>
-              <div class="avatar-previewIne">
-                  <div *ngIf="proveedorTO.ine1 === null || proveedorTO.ine1 === undefined " id="imagePreview" [ngStyle]="{
-         'background-image': 'url('+proveedorTO.ineFrente+')'}">
-                  </div>
-                  <div *ngIf="proveedorTO.ine1 !== null && proveedorTO.ine1 !== undefined" [ngStyle]="{
-         'background-image': 'url('+proveedorTO.ine1.archivo_64+')'}">
-                  </div>
+            </div>
+            <ion-item>
+              <ion-label position="stacked">Número de oficina:</ion-label>
+              <ion-input placeholder="Telefono" type="number" #telefono="ngModel" name="telefono"
+                [(ngModel)]="proveedorTO.telefono"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Celular / Whatsapp:</ion-label>
+              <ion-input placeholder="Celular" type="number" #celular="ngModel" required name="celular"
+                [(ngModel)]="proveedorTO.celular"></ion-input>
+            </ion-item>
+            <div *ngIf="celular.touched  && celular.invalid" class="alert alert-danger">
+              <div *ngIf="celular.errors.required">el celular es requerido
               </div>
-              <label for="imageUpload" class="col-form-label ">INE (Frente)</label>
-          </div>
-          </ion-item> 
-          <ion-item>
-            <div class="avatar-uploadIne">
-              <div class="avatar-editIne">
-                  <input type='file' hidden id="imageUploadLocal"  accept="image/*" (change)="subirArchivo($event,2)"/>
-                  <label for="imageUploadLocal">
-                    <ion-icon name="camera-outline" style="
-                    position: relative;
-                    top: 10px;
-                "></ion-icon>
-                  </label>
-              </div>
-              <div class="avatar-previewIne">
-                  <div *ngIf="proveedorTO.ine2 === null || proveedorTO.ine2 === undefined" id="imagePreviewLocal" [ngStyle]="{
-         'background-image': 'url('+proveedorTO.ineAtras+')'}">
-                  </div>
-                  <div *ngIf="proveedorTO.ine2 !== null && proveedorTO.ine2 !== undefined" [ngStyle]="{
-         'background-image': 'url('+proveedorTO.ine2.archivo_64+')'}">
-                  </div>
-              </div>
-              <label for="imageUploadLocal" class="col-form-label ">INE (Atras)</label>
-          </div>
-          </ion-item>
-        </ion-list>
+            </div>
+            <ion-item>
+              <ion-label position="stacked">Fecha de nacimiento</ion-label>
+              <ion-datetime displayFormat="D/MM/YYYY" value="{{proveedorTO.fecha_nacimiento }}"
+                (ionChange)="convercionFechaNac($event)" required></ion-datetime>
+            </ion-item>
+          </ion-list>
           <ion-row>
             <ion-col size="12">
-              <ion-button expand="full" type="submit" class="bg-rosa" [disabled]="formBasicos.invalid">Siguente</ion-button>
+              <ion-button expand="full" type="submit" class="bg-rosa" [disabled]="formBasicos.invalid">Siguente
+              </ion-button>
             </ion-col>
           </ion-row>
-
         </ion-grid>
       </ion-card-content>
     </ion-card>
@@ -181,7 +151,7 @@
               <ion-item>
                 <ion-label>Estado</ion-label>
                 <ion-select name="estado" formControlName="estado" required
-                [(ngModel)]="proveedorTO.det_domicilio.id_estado" (ionChange)="get_list_cat_municipio($event)">
+                  [(ngModel)]="proveedorTO.det_domicilio.id_estado" (ionChange)="get_list_cat_municipio($event)">
                   <ion-select-option *ngFor="let e of list_cat_estado" [value]="e.id_estado">
                     {{ e.nombre }}
                   </ion-select-option>
@@ -195,7 +165,8 @@
               <ion-item>
                 <ion-label>Municipio</ion-label>
                 <ion-select name="municipio" formControlName="municipio" required
-                [(ngModel)]="proveedorTO.det_domicilio.id_municipio" [disabled]="!select_estado" (ionChange)="get_list_cat_localidad($event)">
+                  [(ngModel)]="proveedorTO.det_domicilio.id_municipio" [disabled]="!select_estado"
+                  (ionChange)="get_list_cat_localidad($event)">
                   <ion-select-option *ngFor="let e of list_cat_municipio" [value]="e.id_municipio">
                     {{e.nombre}}
                   </ion-select-option>
@@ -208,8 +179,8 @@
             <ion-col size="12">
               <ion-item>
                 <ion-label>Localidad</ion-label>
-                <ion-select  name="localidad" [(ngModel)]="proveedorTO.det_domicilio.id_localidad" formControlName="localidad" required
-                [disabled]="!select_municipio">
+                <ion-select name="localidad" [(ngModel)]="proveedorTO.det_domicilio.id_localidad"
+                  formControlName="localidad" required [disabled]="!select_municipio">
                   <ion-select-option *ngFor="let e of list_cat_localidad" [value]="e.id_localidad">
                     {{e.nombre}}
                   </ion-select-option>
@@ -222,7 +193,8 @@
             <ion-col size="12">
               <ion-item>
                 <ion-label position="floating">Colonia</ion-label>
-                <ion-input name="colonia" required formControlName="colonia" [(ngModel)]="proveedorTO.det_domicilio.colonia"></ion-input>
+                <ion-input name="colonia" required formControlName="colonia"
+                  [(ngModel)]="proveedorTO.det_domicilio.colonia"></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -231,7 +203,8 @@
             <ion-col size="12">
               <ion-item>
                 <ion-label position="floating">Calle</ion-label>
-                <ion-input name="calle"  required formControlName="calle" [(ngModel)]="proveedorTO.det_domicilio.calle"></ion-input>
+                <ion-input name="calle" required formControlName="calle" [(ngModel)]="proveedorTO.det_domicilio.calle">
+                </ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -240,7 +213,8 @@
             <ion-col size="12">
               <ion-item>
                 <ion-label position="floating">Número exterior</ion-label>
-                <ion-input name="numero_ext" required formControlName="numeroExt" [(ngModel)]="proveedorTO.det_domicilio.numero_ext"></ion-input>
+                <ion-input name="numero_ext" required formControlName="numeroExt"
+                  [(ngModel)]="proveedorTO.det_domicilio.numero_ext"></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -249,7 +223,8 @@
             <ion-col size="12">
               <ion-item>
                 <ion-label position="floating">Número interior</ion-label>
-                <ion-input name="numero_int" formControlName="numeroInt" [(ngModel)]="proveedorTO.det_domicilio.numero_int" ></ion-input>
+                <ion-input name="numero_int" formControlName="numeroInt"
+                  [(ngModel)]="proveedorTO.det_domicilio.numero_int"></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -257,7 +232,8 @@
             <ion-col size="12">
               <ion-item>
                 <ion-label position="floating">Codigo postal</ion-label>
-                <ion-input formControlName="cp" type="number" name="codigo_postal" [(ngModel)]="proveedorTO.det_domicilio.codigo_postal" ></ion-input>
+                <ion-input formControlName="cp" type="number" name="codigo_postal"
+                  [(ngModel)]="proveedorTO.det_domicilio.codigo_postal"></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -282,7 +258,7 @@
           <ion-row>
             <ion-col size="12">
               <div style="display: flex; justify-content: center; align-items: center;">
-                  <h2>Finalizar</h2>
+                <h2>Finalizar</h2>
               </div>
             </ion-col>
           </ion-row>
@@ -290,15 +266,16 @@
             <ion-col size='12'>
               <div class="ion-text-center">
                 <h1>Casi estas listo</h1>
-                <p>Gracias por completar tu información, a partir de ahora podras agregar tus negocios y promociones.</p>
+                <p>Gracias por completar tu información, a partir de ahora podras agregar tus negocios y promociones.
+                </p>
               </div>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col size="12">
               <div style="display: flex; justify-content: center; align-items: center;">
-                <ion-button class="bg-rosa"   expand="full" (click)="regresar2()">Anterior</ion-button>
-                <ion-button class="bg-rosa"  expand="full" (click)="guardarProveedor()">Finalizar</ion-button>
+                <ion-button class="bg-rosa" expand="full" (click)="regresar2()">Anterior</ion-button>
+                <ion-button class="bg-rosa" expand="full" (click)="guardarProveedor()">Finalizar</ion-button>
               </div>
             </ion-col>
           </ion-row>

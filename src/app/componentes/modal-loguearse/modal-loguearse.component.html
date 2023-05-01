@@ -1,0 +1,22 @@
+<ion-header translucent>
+  <ion-toolbar class="tolbar">
+      <ion-img src="https://ecoevents.blob.core.windows.net/comprandoando/BitooLogo.png"></ion-img>
+      <ion-buttons slot="end">
+          <ion-button (click)="cerrarModal()">
+              <ion-icon name="close"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="ion-padding-horizontal">  
+  <ion-text class="ion-text-center">
+    <h6>¿Ya tienes una cuenta?</h6>
+  </ion-text>
+  <ion-button (click)="login()" fill="clear" class="text-grey" mode="ios">
+    Iniciar sesión
+  </ion-button>
+  <ion-button (click)="toSignUp()" fill="clear" class="text-rosa" mode="ios">
+    Registrate
+  </ion-button>
+
+</ion-content>

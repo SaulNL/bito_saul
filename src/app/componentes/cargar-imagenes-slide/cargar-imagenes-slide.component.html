@@ -1,0 +1,122 @@
+<ion-slides [options]="slidesOptions" class="ion-margin-top">
+  <ion-slide>
+    <ion-card>
+      <img
+        *ngIf="productoImagen.imagen[0] !== undefined"
+        [srcset]="setImagen(productoImagen.imagen[0])"
+      />
+      <label>
+        <ion-icon
+          *ngIf="productoImagen.imagen[0] === undefined"
+          name="image"
+          role="img"
+          class="md hydrated size-icon"
+          aria-label="image"
+        ></ion-icon>
+      </label>
+      <label class="custom-file-input" *ngIf="productoImagen.imagen[0] === undefined ;else borrarImagenUno">
+        <input
+          type="file"
+          #fileInput
+          id="imagen-producto-uno"
+          accept="image/*"
+          (change)="subirImagenUno($event)"
+          (click)="fileInput.value = null"
+        />
+      </label>
+      <ng-template #borrarImagenUno>
+        <ion-label (click)="removeOno()" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>
+      </ng-template>
+    </ion-card>
+  </ion-slide>
+  <ion-slide>
+    <ion-card>
+      <img
+        *ngIf="productoImagen.imagen[1] !== undefined"
+        [srcset]="setImagen(productoImagen.imagen[1])"
+      />
+      <label>
+        <ion-icon
+          *ngIf="productoImagen.imagen[1] === undefined"
+          name="image"
+          role="img"
+          class="md hydrated size-icon"
+          aria-label="image"
+        ></ion-icon>
+      </label>
+      <label class="custom-file-input" *ngIf="productoImagen.imagen[1] === undefined ;else borrarImagenDos">
+        <input
+          type="file"
+          id="imagen-producto-dos"
+          accept="image/*"
+          (change)="subirImagenDos($event)"
+          #fileInputDos
+          (click)="fileInputDos.value = null"
+        />
+      </label>
+      <ng-template #borrarImagenDos>
+        <ion-label (click)="removeDos()" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>
+      </ng-template>
+    </ion-card>
+  </ion-slide>
+  <ion-slide>
+    <ion-card>
+      <img
+        *ngIf="productoImagen.imagen[2] !== undefined"
+        [srcset]="setImagen(productoImagen.imagen[2])"
+      />
+      <label>
+        <ion-icon
+          *ngIf="productoImagen.imagen[2] === undefined"
+          name="image"
+          role="img"
+          class="md hydrated size-icon"
+          aria-label="image"
+        ></ion-icon>
+      </label>
+      <label class="custom-file-input" *ngIf="productoImagen.imagen[2] === undefined ;else borrarImagenTres">
+        <input
+          type="file"
+          id="imagen-producto-tres"
+          accept="image/*"
+          (change)="subirImagenTres($event)"
+          #fileInputTres
+          (click)="fileInputTres.value = null"
+        />
+      </label>
+      <ng-template #borrarImagenTres>
+        <ion-label (click)="removeTres()" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>
+      </ng-template>
+    </ion-card>
+  </ion-slide>
+  <ion-slide>
+    <ion-card>
+      <img
+        *ngIf="productoImagen.imagen[3] !== undefined"
+        [srcset]="setImagen(productoImagen.imagen[3])"
+      />
+      <label>
+        <ion-icon
+          *ngIf="productoImagen.imagen[3] === undefined"
+          name="image"
+          role="img"
+          class="md hydrated size-icon"
+          aria-label="image"
+        ></ion-icon>
+      </label>
+      <label class="custom-file-input" *ngIf="productoImagen.imagen[3] === undefined ;else borrarImagenCuatro">
+        <input
+          type="file"
+          id="imagen-producto-cuatro"
+          accept="image/*"
+          (change)="subirImagenCuatro($event)"
+          #fileInputCuatro
+          (click)="fileInputCuatro.value = null"
+        />
+      </label>
+      <ng-template #borrarImagenCuatro>
+        <ion-label (click)="removeCuatro()" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>
+      </ng-template>
+    </ion-card>
+  </ion-slide>
+</ion-slides>

@@ -1,0 +1,121 @@
+<app-header
+  message="Inicio de Sesión"
+  [backButton]="false"
+  [closeButton]="false"
+>
+</app-header>
+<app-loader [loader]="loader" message="Iniciando sesión"></app-loader>
+<ion-content class="ion-padding" *ngIf="!loader">
+  <ion-grid
+    class="ion-justify-content-center ion-text-center ion-align-items-center"
+  >
+    <img
+      alt="Logo Bitoo"
+      width="150"
+      height="150"
+      src="https://ecoevents.blob.core.windows.net/comprandoando/logos%2Flogo%201.0.png"
+    />
+  </ion-grid>
+  <form (ngSubmit)="signInForm(formLogin)" #formLogin="ngForm">
+    <ion-item>
+      
+      <ion-input
+        id="user"
+        name="user"
+        type="username"
+        placeholder="Usuario"
+        [(ngModel)]="user.usuario"
+        required
+      ></ion-input>
+    </ion-item>
+    
+      
+     <!--  <ion-item class="password-style">
+        
+        <ion-input
+        id="password"
+        class="input-password"
+        name="password"
+        [type]="passwordType"
+        placeholder="Contraseña"
+        [(ngModel)]="user.password"
+        required
+      >
+    </ion-input>
+    <a class="type-toggle" (click)="showHidePassword()">
+      <ion-icon class="show-option" [hidden]="showPassword" name="eye-off-outline"></ion-icon>
+      <ion-icon item-right class="hide-option" [hidden]="!showPassword" name="eye-outline"></ion-icon>
+   </a>
+      </ion-item> -->
+
+      <ion-item class="password-style">
+        <ion-input
+          id="password"
+          class="input-password"
+          name="password"
+          [type]="showPassword ? 'text' : 'password'"
+          placeholder="Contraseña"
+          [(ngModel)]="user.password"
+          required
+        >
+        </ion-input>
+        <ion-icon
+          item-right
+          [name]="showPassword ? 'eye-off' : 'eye'"
+          (click)="showHidePassword()"
+          class="iconsLogin"
+        ></ion-icon>
+      </ion-item>
+     
+    
+    <ion-button
+      class="ion-margin-top bg-rosa text-format"
+      expand="block"
+      type="submit"
+      mode="ios"
+    >
+      Iniciar sesión
+    </ion-button>
+  </form>
+  <app-sign-in-or-up-social-networks
+    [ios]="isIos"
+    [signIn]="true"
+    (responder)="response($event)"
+    [loaderFacebook]="loadFacebook"
+    [loaderGoogle]="loadGoogle"
+    [loaderApple]="loadApple"
+    #socialNetworks
+  >
+  </app-sign-in-or-up-social-networks>
+  <ion-grid>
+    <ion-row class="ion-align-items-center">
+      <ion-col size="12" class="ion-text-center">
+        <a (click)="recoverPassword()">Olvidé mi contraseña</a>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-item class="bg-gris" lines="none">
+    <ion-label
+      >¿No estás registrado?
+      <a (click)="toSignUp()">Registrate aquí</a></ion-label
+    >
+  </ion-item>
+  <br>
+  <ion-grid class="c-gris">
+    <ion-row class="ion-align-items-center">
+      <ion-col size="12" class="ion-text-center">
+        <small>Versión {{versionActualSistema}}</small>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-align-items-center">
+      <ion-col size="12" class="ion-text-center">
+        <small class="bg-gris">Release date: {{releaseDate}}</small>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-align-items-center">
+      <ion-col size="12" class="ion-text-center">
+        <small class="bg-gris">Copyright © Bitoo (Softura Solutions) 2020.</small>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

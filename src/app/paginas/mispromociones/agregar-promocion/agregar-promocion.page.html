@@ -1,146 +1,571 @@
 <ion-header>
   <ion-toolbar class="tolbar">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/home/promociones" icon="arrow-back-outline" text="">
+      <ion-back-button
+        defaultHref="/tabs/home/promociones"
+        icon="arrow-back-outline"
+        text=""
+      >
       </ion-back-button>
     </ion-buttons>
-    <ion-title>Agregar promoción</ion-title>
+    <ion-title>Agregar anuncio o promoción</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loader" >
   <form #formVariable="ngForm" (ngSubmit)="guardar(formVariable)">
     <ion-card>
       <ion-card-content>
+        <ion-list *ngFor="let lstTipoPromo of lstTipoPromo">
+          <ion-radio-group name="id_tipo_promocion" [(ngModel)]="seleccionTo.id_tipo_promocion" (ionChange)="cambiarTipo($event)" [value]="seleccionTo.id_tipo_promocion">
+                    
+            <ion-item [disabled]="editAnuncioPromocion">
+              <ion-label>{{lstTipoPromo.nombre}}</ion-label>
+              <ion-radio slot="end" [(value)]="lstTipoPromo.id_tipo_promocion" ></ion-radio>
+            </ion-item>
 
+          </ion-radio-group>
+        </ion-list>
         <ion-item>
-          <ion-label>Promoción:<span>*</span></ion-label>
-          <ion-input #promocion="ngModel" required type="text" name="promocion" [(ngModel)]="seleccionTo.promocion"></ion-input>
+          <ion-label position="stacked" *ngIf="seleccionTo.id_tipo_promocion===2">Promoción: <span>*</span></ion-label>
+          <ion-label position="stacked" *ngIf="seleccionTo.id_tipo_promocion===1">Titulo: <span>*</span></ion-label>
+          <ion-input
+            #promocion="ngModel"
+            required
+            type="text"
+            name="promocion"
+            [(ngModel)]="seleccionTo.promocion"
+          ></ion-input>
         </ion-item>
-        <div *ngIf="promocion.touched && promocion.invalid" style="color: red; display: flex; justify-content: center; align-items: center;">
+        <div
+          *ngIf="promocion.touched && promocion.invalid"
+          style="
+            color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          "
+        >
           El nombre de la promoción es requerido
         </div>
 
         <div>
-          <app-input-tags [tags]="this.seleccionTo.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
+          <app-input-tags
+            [tags]="this.seleccionTo.tags"
+            (_enviarTags)="agregarTags($event)"
+          ></app-input-tags>
         </div>
 
-        <ion-item>
-          <ion-label position="floating">Términos y condiciones:<span>*</span></ion-label>
-          <ion-input #terminos = "ngModel" required type="text" name="terminos" [(ngModel)]="seleccionTo.terminos"></ion-input>
-        </ion-item>
-        <div *ngIf="terminos.touched && terminos.invalid" style="color: red; display: flex; justify-content: center; align-items: center;">
-          los términos son necesarios
+        <div *ngIf="seleccionTo.id_tipo_promocion===2">
+          <ion-item >
+            <ion-label position="stacked"
+              >Términos y condiciones:<span>*</span></ion-label
+            >
+            <ion-input
+              #terminos="ngModel"
+              required
+              type="text"
+              name="terminos"
+              [(ngModel)]="seleccionTo.terminos"
+            ></ion-input>
+          </ion-item>
+          <div
+            *ngIf="terminos.touched && terminos.invalid"
+            style="
+              color: red;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            los términos son necesarios
+          </div>
         </div>
 
-        <ion-item *ngIf="false">
-          <ion-label>
-            Relacione su negocio:<span>*</span>
-          </ion-label>
-          <ion-select [value]="seleccionTo.id_negocio" name="negocio" [(ngModel)]="seleccionTo.id_negocio">
-            <div *ngFor="let row of lstNegocios" (change)="decripcionSelect()">
-              <ion-select-option [value]="row.id_negocio">{{row.nombre_comercial}}</ion-select-option>
+        <!-- Aqui cuando seleccione el nombre mandar el id del negocio al nuevo servicio -->
+        <ion-item *ngIf="!loaderNegocios">
+          <ion-label position="stacked"> Relacione su negocio:<span>*</span> </ion-label>
+          <ion-select
+            name="negocio"
+            [(ngModel)]="seleccionTo.id_negocio"
+            (ionChange)="obtenerCaracteristicasPromocion(seleccionTo.id_negocio)"
+            required
+          >
+            <div *ngFor="let row of lstNegocios">
+              <ion-select-option *ngIf="row.activo !=0 && row.activo != '0'" [value]="row.id_negocio"
+                >{{row.nombre_comercial}}</ion-select-option
+              >
             </div>
           </ion-select>
         </ion-item>
 
-        <!--? input de la imagen -->
-        <div  style="margin-top: 10px;">
-          <div style="display: flex; justify-content: center;">
-            <label>Imagen para la tarjeta de promoción:<span>*</span></label>
-          </div>
-        </div>
-        <div *ngIf="btnCambiarImagen">
-          <div>
-            <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
-              <p style="color: gray; text-align: justify;">Puedes subir tu imagen de tu promoción o crearla con nuestro editor. Recuerda que las medidas son 200 x 200 pixeles.</p>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div>
-            <label *ngIf="blnImgCuadrada" style="display: flex; justify-content: center; align-items: center;">
-              <div class="punteado" style="display: flex; justify-content: center; align-items: center;">
-                <div>
-                  <label for="cuadrado">
-                    <ion-icon name="image-outline"></ion-icon>
-                  </label>
-                </div>
+        <div *ngIf="seleccionTo.id_tipo_promocion===2">
+          <ion-item *ngIf="!loaderNegocios">
+            <ion-label position="stacked"> Promoción aplicable a :<span>*</span> </ion-label>
+            <ion-select  (ionChange)="promoAplicable($event)"
+            [value]="seleccionTo.id_alcance_promocion"
+            name="aplicable"
+            id="aplicable"
+            [(ngModel)]="seleccionTo.id_alcance_promocion"
+            placeholder="{{ tipoPromocion }}"
+            required
+            >
+              
+                <ion-select-option *ngFor="let row of lstAlcance" [value]="row.id_alcance_promocion" 
+                  >{{row.nombre}}</ion-select-option
+                >
+             
+            </ion-select>
+          </ion-item>
+          <ion-item *ngIf="seleccionTo.id_alcance_promocion===2 ">
+            <ion-label position="stacked"> Producto<span>*</span> </ion-label>
+            <ion-select
+              [value]="seleccionTo.productos"
+              name="productos"
+              [(ngModel)]="seleccionTo.productos"
+              multiple
+              #productos="ngModel"
+              placeholder="{{tipoProd}}"
+              required
+            >
+              <div *ngFor="let row of prod" >
+                <ion-select-option [value]="row.idProducto"
+                  >{{row.nombre}}</ion-select-option
+                >
               </div>
-            </label>
-            <div *ngIf="!blnImgCuadrada">
-              <div style="display: flex; justify-content: center; align-items: center;">
-                <div class="contenido">
-                  <img style="width: 200px;" class="image" *ngIf="seleccionTo.imagen !== '' && seleccionTo.imagen !== undefined" src="{{seleccionTo.imagen.archivo_64}}" alt="Falla al cargar imagen" width="200" height="200">
-                            <img style="width: 200px;" class="image" *ngIf="seleccionTo.url_imagen !== '' && seleccionTo.imagen === undefined" src="{{seleccionTo.url_imagen}}" alt="Falla al cargar imagen" width="200" height="200">
-                </div>
+            </ion-select>
+          </ion-item>
+          <ion-item *ngIf="seleccionTo.id_alcance_promocion===3">
+            <ion-label position="stacked">Categoría:<span>*</span> </ion-label>
+            <ion-select
+              [value]="seleccionTo.categorias"
+              name="categorias"
+              [(ngModel)]="seleccionTo.categorias"
+              multiple
+              #categorias="ngModel"
+              placeholder="{{tipoCate}}"
+              required
+            >
+              <div *ngFor="let row of prod" >
+                <ion-select-option [value]="row.id_categoria"
+                  >{{row.nombre}}</ion-select-option
+                >
               </div>
-            </div>
-          </div>
-          <input #inputTarjeta id="cuadrado" type="file" (change)="subir_imagen_cuadrada($event)"  accept="image/*" name="img_promo" required>
-        </div>
-        <div *ngIf="!blnImgCuadrada">
-          <div style="display: flex; justify-content: center; align-items: center;">
-            <ion-button color="warning" for="rectangulo">
-              <label for="cuadrado" style="display: flex; justify-content: center; align-items: center;"> Cambiar imagen<ion-icon name="image-outline" style="margin-left: 10px;"></ion-icon></label>
-            </ion-button>
-          </div>
-        </div>
-        <!--? input de la imagen -->
+            </ion-select>
+          </ion-item>
 
-        <!--? Input banner -->
-        <div style="margin-top: 10px;">
-          <div style="display: flex; justify-content: center;">
-            <label>
-              Imagen banner de la promoción<span>*</span>
-            </label>
+          <ion-item  [disabled]="banderaPromocionCompleta">
+            <ion-icon name="star" class="star star-campos" *ngIf="banderaPromocionCompleta"></ion-icon>
+            <ion-label position="stacked" [ngClass]="{'padding-campo': banderaPromocionCompleta}">Plaza</ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idPlaza" [value]=""
+            name="plazas"
+            [(ngModel)]="seleccionTo.plazas"
+            >
+              <ion-select-option *ngFor="let plz of this.lstPlazas" [value]="plz.id_organizacion">{{plz.nombre}} 
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item [disabled]="banderaPromocionCompleta">
+            <ion-icon name="star" class="star star-campos" *ngIf="banderaPromocionCompleta"></ion-icon>
+            <ion-label position="stacked" [ngClass]="{'padding-campo': banderaPromocionCompleta}">Afiliación </ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idAfl" [value]=""
+            name="organizaciones"
+            [(ngModel)]="seleccionTo.organizaciones"
+            >
+              <ion-select-option *ngFor="let plz of this.lstAfl" [value]="plz.id_organizacion"> {{plz.nombre}} 
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item [disabled]="banderaPromocionCompleta">
+            <ion-icon name="star" class="star star-campos" *ngIf="banderaPromocionCompleta"></ion-icon>
+            <ion-label position="stacked" [ngClass]="{'padding-campo': banderaPromocionCompleta}">Convenio </ion-label>
+            <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idCvn" [value]=""
+            name="convenios"
+            [(ngModel)]="seleccionTo.convenios"       
+            >
+              <ion-select-option *ngFor="let cvn of lstConvenio" [value]="cvn.id_organizacion"> {{cvn.nombre}} 
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item [disabled]="banderaPromocionCompleta">
+            <ion-icon name="star" class="star star-campos" *ngIf="banderaPromocionCompleta"></ion-icon>
+            <ion-label position="stacked" [ngClass]="{'padding-campo': banderaPromocionCompleta}">Número mínimo aplicado, 0 indica ilimitado:<span>*</span></ion-label>
+            <ion-input
+              #terminos="ngModel"
+              type="number"
+              name="minimo"
+              [(ngModel)]="seleccionTo.minimo"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item [disabled]="banderaPromocionCompleta">
+            <ion-icon name="star" class="star star-campos" *ngIf="banderaPromocionCompleta"></ion-icon>
+            <ion-label position="stacked" [ngClass]="{'padding-campo': banderaPromocionCompleta}">
+              Número máximo aplicado, 0 indica ilimitado:<span>*</span>
+            </ion-label>
+            <ion-input
+              #terminos="ngModel"
+              type="number"
+              name="maximo_red"
+              [(ngModel)]="seleccionTo.maximo_red"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item [disabled]="banderaPromocionCompleta">
+            <ion-icon name="star" class="star star-campos" *ngIf="banderaPromocionCompleta"></ion-icon>
+            <ion-label position="stacked" [ngClass]="{'padding-campo': banderaPromocionCompleta}">Porcentaje de descuento :</ion-label>
+            <ion-input
+              #terminos="ngModel"
+              type="number"
+              name="porcentaje"
+              [(ngModel)]="seleccionTo.porcentaje"
+            ></ion-input>
+          </ion-item>
+
+          <ion-label>Horario de promoción </ion-label>
+          <ion-icon name="star" class="star" *ngIf="banderaPromocionCompleta"></ion-icon>
+          <ion-item [disabled]="banderaPromocionCompleta">
+            <ion-label stacked> Horario Inicial </ion-label>
+            <ion-datetime display-format="H:mm" picker-format="H:mm" name="feInicio" #feInicio="ngModel"
+              [(ngModel)]="horarioini" (ionChange)="validarHoraInicio($event)"></ion-datetime>
+          </ion-item>
+          <ion-item [disabled]="banderaPromocionCompleta">
+            <ion-label stacked> Horario Final </ion-label>
+            <ion-datetime [disabled]="blnActivaHoraF" display-format="H:mm" picker-format="H:mm" name="fechaFinal"
+              #fechaFinal="ngModel" [(ngModel)]="horariofin" (ionChange)="validarHoraFinal($event)"></ion-datetime>
+          </ion-item>
+          <ion-item [disabled]="banderaPromocionCompleta">
+            <ion-label position="stacked">Dias de la Semana</ion-label>
+            <ion-select [disabled]="blnActivaDias" ok-text="Ok" cancel-text="Cancelar" multiple #dias="ngModel"
+              name="dias" (ionChange)="diasSeleccionado($event)" [(ngModel)]="nuevoHorario.dias">
+              <ion-select-option *ngFor="let dia of diasArray" [value]="dia.dia">{{dia.dia}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-grid>
+            <ion-row class="ion-align-items-center">
+              <ion-col size="12" class="ion-text-center">
+                <ion-button [disabled]="blnActivaHorario" size="small" class="bg-rosa" type="button"
+                  (click)="agregarHorario()">
+                  Guardar Horario
+                </ion-button>
+                <ion-button size="small" color="medium" type="button" (click)="cancelarHorario()">
+                  Limpiar
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-card>
+            <div class="ion-text-center">
+              <h5>Horarios <span style="color: red">*</span></h5>
+            </div>
+            <ion-list *ngFor="let dia of seleccionTo.dias; index as i">
+              <span style="margin: 10px">Días</span>
+              <ion-item>
+                <ion-label>{{dia.dias}}</ion-label>
+              </ion-item>
+              <span style="margin: 10px">Horario</span>
+              <ion-item class="ion-align-items-center">
+                <ion-chip color="tertiary" class="ion-text-center">
+                  <ion-label>{{dia.hora_inicio}}</ion-label>
+                </ion-chip>
+                <ion-chip color="tertiary" class="ion-text-center">
+                  <ion-label>{{dia.hora_fin}}</ion-label>
+                </ion-chip>
+                <ion-button (click)="editarHorario(dia,i)" color="success" size="small" class="ion-text-center">
+                  <ion-icon name="create-outline"></ion-icon>
+                </ion-button>
+                <ion-button (click)="presentAlertEliminar(i)" color="medium" size="small" class="ion-text-center">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-list>
+          </ion-card>
+  
+        </div>
+
+        <!--? input de la imagen -->
+        <div style="margin-top: 10px">
+          <div style="display: flex; justify-content: center">
+            <label>Imagen para la tarjeta de promoción:</label>
           </div>
         </div>
         <div *ngIf="btnCambiarImagen">
           <div>
-            <div>
-              <p style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
-                Aquí tu imagen más grande de tu promoción, si quieres puedes crearla con nuestro editor. Recuerda que las medidas son 1500 x 300 pixeles.
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 10px;
+              "
+            >
+              <p style="color: gray; text-align: justify">
+                Puedes subir tu imagen de tu promoción o crearla con nuestro
+                editor. Recuerda que las medidas son 500 x 500 pixeles.
               </p>
             </div>
           </div>
         </div>
         <div>
           <div>
-            <label *ngIf="blnImgRectangulo" style="display: flex; justify-content: center;align-items: center;">
-              <div class="punteado2" style="display: flex; justify-content: center;align-items: center; width: 100%;">
+            <label
+              *ngIf="blnImgCuadrada"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <div
+                class="punteado"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <div>
+                  <label for="cuadrado">
+                    <ion-icon name="image-outline" style="font-size: 15px;"></ion-icon>
+                  </label>
+                </div>
+              </div>
+            </label>
+            <div *ngIf="!blnImgCuadrada">
+              <div
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <div class="contenido">
+                  <img
+                    style="width: 200px"
+                    class="image"
+                    *ngIf="seleccionTo.imagen !== '' && seleccionTo.imagen !== undefined"
+                    src="{{seleccionTo.imagen.archivo_64}}"
+                    alt="Falla al cargar imagen"
+                    width="500"
+                    height="500"
+                  />
+                  <img
+                    style="width: 200px"
+                    class="image"
+                    *ngIf="seleccionTo.url_imagen !== '' && seleccionTo.imagen === undefined"
+                    src="{{seleccionTo.url_imagen}}"
+                    alt="Falla al cargar imagen"
+                    width="500"
+                    height="500"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <input
+            #inputTarjeta
+            id="cuadrado"
+            type="file"
+            (change)="subir_imagen_cuadrada($event)"
+            accept="image/*"
+            name="img_promo"
+          />
+        </div>
+        <div *ngIf="!blnImgCuadrada">
+          <div
+            style="display: flex; justify-content: center; align-items: center"
+          >
+            <ion-button color="warning" for="rectangulo">
+              <label
+                for="cuadrado"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                Cambiar imagen<ion-icon
+                  name="image-outline"
+                  style="margin-left: 10px"
+                ></ion-icon
+              ></label>
+            </ion-button>
+          </div>
+        </div>
+        <!--? input de la imagen -->
+
+        <!--? Input banner -->
+        <div style="margin-top: 10px">
+          <div style="display: flex; justify-content: center">
+            <label> Imagen banner de la promoción </label>
+          </div>
+        </div>
+        <div *ngIf="btnCambiarImagen">
+          <div>
+            <div>
+              <p
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  margin-top: 10px;
+                "
+              >
+                Aquí tu imagen más grande de tu promoción, si quieres puedes
+                crearla con nuestro editor. Recuerda que las medidas son 1500 x
+                300 pixeles.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div>
+            <label
+              *ngIf="blnImgRectangulo"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <div
+                class="punteado2"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 100%;
+                "
+              >
                 <div>
                   <label for="rectangulo">
-                    <ion-icon name="image-outline"></ion-icon>
+                    <ion-icon name="image-outline" style="font-size: 15px;"></ion-icon>
                   </label>
                 </div>
               </div>
             </label>
             <div *ngIf="!blnImgRectangulo">
               <div>
-                <div class="contenido"  style="display: flex; justify-content: center;align-items: center;">
-                   <img class="image" *ngIf="seleccionTo.imagenBanner !== '' && seleccionTo.imagenBanner !== undefined" src="{{seleccionTo.imagenBanner.archivo_64}}" alt="Falla al cargar imagen" width="200">
-                           <img class="image" *ngIf="seleccionTo.url_imagen_banner !== '' && seleccionTo.imagenBanner === undefined" src="{{seleccionTo.url_imagen_banner}}" alt="Falla al cargar imagen" width="200">
+                <div
+                  class="contenido"
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  <img
+                    class="image"
+                    *ngIf="seleccionTo.imagenBanner !== '' && seleccionTo.imagenBanner !== undefined"
+                    src="{{seleccionTo.imagenBanner.archivo_64}}"
+                    alt="Falla al cargar imagen"
+                    width="200"
+                  />
+                  <img
+                    class="image"
+                    *ngIf="seleccionTo.url_imagen_banner !== '' && seleccionTo.imagenBanner === undefined"
+                    src="{{seleccionTo.url_imagen_banner}}"
+                    alt="Falla al cargar imagen"
+                    width="200"
+                  />
                 </div>
               </div>
             </div>
-            <input #inputBanner id="rectangulo" type="file" type="file" (change)="subir_imagen_rectangulo($event)" accept="image/*" name="img_promo" required>
+            <input
+              #inputBanner
+              id="rectangulo"
+              type="file"
+              type="file"
+              (change)="subir_imagen_rectangulo($event)"
+              accept="image/*"
+              name="img_promo"
+            />
           </div>
         </div>
-        <div *ngIf="!blnImgRectangulo"  style="display: flex; justify-content: center;align-items: center;">
+        <div
+          *ngIf="!blnImgRectangulo"
+          style="display: flex; justify-content: center; align-items: center"
+        >
           <div>
             <ion-button color="warning" for="rectangulo">
-              <label for="rectangulo" style="display: flex; justify-content: center; align-items: center;"> Cambiar imagen<ion-icon name="image-outline" style="margin-left: 10px;"></ion-icon></label>
+              <label
+                for="rectangulo"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                Cambiar imagen<ion-icon
+                  name="image-outline"
+                  style="margin-left: 10px"
+                ></ion-icon
+              ></label>
             </ion-button>
           </div>
         </div>
-        <!--? Input banner -->
-        <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
-          <div style="width: 50%;">
-            <ion-button class="bg-rosa" type="submit" expand="full">Guardar</ion-button>
+     <!-- ----- AQUI COMIENZA PARTE DE MOSTRAR EL VIDEO --- -->
+
+     <div>
+        <div *ngIf="seleccionTo.id_tipo_promocion===1" class="btn btn-info btn-raised">
+          <br>
+          <ion-card [disabled]="mostrarVideo">
+            <div class="ion-text-center">Subir Video</div>
+          </ion-card>
+          <div *ngIf="seleccionTo.url_video != ''">
+            <video controls style="width: 100%; height: 350;" class="image" alt="Falla al cargar video" *ngIf="!nuevoRegistro && base64Video == null">
+                <source [src]="seleccionTo.url_video + '#t=0.5'" type="video/mp4">
+            </video>
+          </div>          
+
+          <div class="row" style="margin-left: 0px;">
+            <div class="ion-text-center">
+              <div class="contenido">
+                <ion-list>
+                  <ion-item *ngIf="base64Video != null">
+                    <ion-chip color="success">Tienes un video para guardar</ion-chip>
+                    <ion-badge color="success">1</ion-badge>
+                  </ion-item>
+                </ion-list>
+              </div>
+            </div>
           </div>
-          <div style="width: 50%;">
-            <ion-button color="medium" expand="full" (click)="cancelarEdicion()">Cancelar</ion-button>
+          <div>
+            <h6>El video es opcional.</h6>
+            <ion-button  [disabled]="mostrarVideo" expand="full" class="bg-rosa">
+              <input type="file" name="video1" hidden accept="video/mp4" id="video" (change)="seleccionarVideo($event)"/>
+              <label for="video" [ngClass]="isIos ? 'upload' : 'uploadAndroid'">
+                Seleccionar video
+              </label>
+              <ion-icon name="videocam-outline" style="margin-left: 5px" *ngIf="!mostrarVideo"></ion-icon>
+              <ion-icon name="star" class="star star-video" *ngIf="mostrarVideo"></ion-icon>
+            </ion-button>
+          </div>
+          
+        </div>
+      </div>
+            
+        <!--? Input banner -->
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+          "
+        >
+          <div style="width: 50%">
+            <ion-button class="bg-rosa" type="submit" expand="full" [disabled]="formVariable.invalid || permitirGuardarAnuncioPromo">
+              Guardar
+            </ion-button>
+          </div>
+          <div style="width: 50%">
+            <ion-button color="medium" expand="full" (click)="cancelarEdicion()"
+              >Cancelar</ion-button
+            >
           </div>
         </div>
       </ion-card-content>

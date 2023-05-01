@@ -1,22 +1,31 @@
 <ion-header translucent>
   <ion-toolbar class="tolbar">
-    <ion-title>Detalle solicitud</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">Cerrar</ion-button>
+    <ion-title>Detalle de requerimiento de compra</ion-title>
+    <ion-buttons slot="end" (click)="dismiss()">
+      <ion-button>
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-card *ngIf="!btnPostular">
-    <img src="{{solicitud.url_imagen}}" style="width: 100%;">
+    <img src="{{solicitud.url_imagen}}" style="width: 100%;" alt="Requerimiento">
     <ion-card-content>
       <ion-list>
 
         <ion-item>
           <ion-label class="ion-text-wrap">
-            <h2 style="font-weight: bolder; text-align: center">Solicitan:</h2>
+            <h2 style="font-weight: bolder; text-align: center">Requerimiento de compra:</h2>
             <h3 style="text-align: center;">{{ solicitud.solicitud }}</h3>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="solicitud.datosnegocio != '' ">
+          <ion-label class="ion-text-wrap">
+            <h2 style="font-weight: bolder; text-align: center">Empresa/Negocio:</h2>
+            <h3 style="text-align: center;">{{ solicitud.datosnegocio }}</h3>
           </ion-label>
         </ion-item>
 
@@ -30,12 +39,21 @@
         <ion-item>
           <ion-label class="ion-text-wrap">
             <h2 style="font-weight: bolder; text-align: center">Inicia:</h2>
-            <h3 style="text-align: center;">{{solicitud.fecha_inicio_public | date:'dd-MM-yyyy' }} - Termina: {{solicitud.fecha_fin_public | date:'dd-MM-yyyy'}}</h3>
+            <h3 style="text-align: center;" *ngIf="isIos; else androidView">
+              {{solicitud.fecha_inicio_public }}
+              <br> Termina: {{solicitud.fecha_fin_public }}
+            </h3>
+            <ng-template #androidView>
+              <h3 style="text-align: center;">
+                {{solicitud.fecha_inicio_public | date:'dd-MM-yyyy' }}
+                <br> Termina: {{solicitud.fecha_fin_public | date:'dd-MM-yyyy' }}
+              </h3>
+            </ng-template>
           </ion-label>
         </ion-item>
 
         <ion-item>
-          <ion-label class="ion-text-wrap" >
+          <ion-label class="ion-text-wrap">
             <div style="display: flex; justify-content: center; align-items: center;">
               <ion-badge>{{ numeroVistas }}</ion-badge>
               <p style="margin-left: 5px;">veces</p>
@@ -47,29 +65,44 @@
       <ion-button expand="full" (click)="postularme()">Postularme</ion-button>
     </ion-card-content>
   </ion-card>
-
-  <ion-card *ngIf="btnPostular">
+  <ion-card *ngIf="loaderPostular">
+    <ion-label class="message">
+      Postulando...
+    </ion-label>
+    <div class="spinner">
+      <ion-spinner class="spinner-color"></ion-spinner>
+    </div>
+  </ion-card>
+  <ion-card *ngIf="btnPostular && !loaderPostular">
     <ion-card-content>
       <form #formSolicitud="ngForm" (ngSubmit)="guardar(formSolicitud)">
         <ion-item>
           <ion-label position="floating">Describe lo que ofreces:</ion-label>
-          <ion-textarea name="describe" #describe="ngModel" [(ngModel)]="postulacionModel.descripcion" required></ion-textarea>
+          <ion-textarea name="describe" #describe="ngModel" [(ngModel)]="postulacionModel.descripcion" required>
+          </ion-textarea>
         </ion-item>
 
-        <label for="archivo" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-          <small *ngIf="!pesado && nombreArchivo !== ''" style="margin-top: 10px; color: blue;">{{ nombreArchivo }}</small>
-          <small *ngIf="pesado && nombreArchivo === ''" style="margin-top: 10px; color: red;">Archivo pesado</small>
-          <div style="display: flex; justify-content: center; align-items: center; background-color: greenyellow; border-radius: 20px; padding: 10px; margin-top: 20px; width: 50%;">
+        <label for="archivo"
+          style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+          <small *ngIf="!pesado && nombreArchivo !== ''" style="margin-top: 10px; color: blue;">{{ nombreArchivo
+            }}</small>
+          <small *ngIf="pesado && nombreArchivo === ''" style="margin-top: 10px; color: red;"> <strong>Archivo
+              pesado</strong></small>
+          <div
+            style="display: flex; justify-content: center; align-items: center; background-color: greenyellow; border-radius: 20px; padding: 10px; margin-top: 20px; width: 50%;">
             Subir Archivo <ion-icon name="folder-outline" style="margin-left: 10px;"></ion-icon>
           </div>
-        </label>
+          <small *ngIf="!pesado" style="margin-top: 10px; color: blue;"><strong>Tu archivo no debe pesar mas de 2
+              Mb y debe ser imagen(JPG) o documento(pdf)</strong> </small>
         
+        </label>
+
         <input type="file" id="archivo" name="archivo" (change)="subir_archivo($event)" maxsize=10 hidden>
 
         <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
           <div style="width: 50%;">
             <ion-button expand="full" color="primary" type="submit">
-              Enviar  <ion-spinner name="dots" style="margin-left: 10px;" *ngIf="loaderPostular"></ion-spinner>
+              Enviar
             </ion-button>
           </div>
           <div style="width: 50%;">

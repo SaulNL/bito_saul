@@ -1,4 +1,4 @@
-import {MsPersonaModel} from "./MsPersonaModel";
+import { MsPersonaModel } from "./MsPersonaModel";
 
 export class UsuarioSistemaModel {
 
@@ -17,9 +17,11 @@ export class UsuarioSistemaModel {
 
     public old_password: string;
     public repeat_password: string;
-
-    public codigo:string;
-    public idCode:number;
+    public typeMessage: string;
+    public option: string;
+    public codigo: string;
+    public idCode: number;
+    public medio: number | null;
 
     constructor(
         id_usuario_sistema: number = 0,

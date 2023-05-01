@@ -10,7 +10,8 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loader">
   <ion-card>
     <ion-card-content>
         <form [formGroup]="formGroup1" (ngSubmit)="cambiarContrasenia()" >
@@ -20,14 +21,14 @@
                 <ion-input name="contraseniaActual" type="password" formControlName="contraseniaActual" [(ngModel)]="contraseniaAct" required  ></ion-input>
               </ion-item>
               <span *ngIf="formGroup1.controls.contraseniaActual.invalid && formGroup1.controls.contraseniaActual.touched" class="mat-requerido">
-                la contraseña actual es requerido 
+                la contraseña actual es requerido
               </span>
               <ion-item>
                 <ion-label position="stacked">Nueva Contraseña</ion-label>
                 <ion-input type="password" name="contraseniaN" (ionChange)="contraseniasIguales()" formControlName="contraseniaN" type="password" [(ngModel)]="contrasenia"></ion-input>
               </ion-item>
               <span *ngIf="formGroup1.controls.contraseniaN.invalid && formGroup1.controls.contraseniaN.touched" class="mat-requerido">
-               la contraseña nueva campo es requerido 
+               la contraseña nueva campo es requerido
               </span>
               <span *ngIf="blnIgualesPassOriginalNuevo">
                 La contraseña debe ser diferente a la contraseña original
@@ -36,10 +37,10 @@
                 <ion-label position="stacked">Repetir Contraseña</ion-label>
                 <ion-input name="contraseniaR" (ionChange)="contraseniasIguales()" formControlName="contraseniaR" type="password" [(ngModel)]="contraseniaRepit"
                 required></ion-input>
-              </ion-item> 
+              </ion-item>
               <span *ngIf="blnIguales">
                 Las contraseñas no coinciden
-              </span>     
+              </span>
         </ion-list>
         <ion-button type="submit" class="bg-rosa" [disabled]="formGroup1.invalid || blnIguales" expand="block">Actualizar</ion-button>
         </form>

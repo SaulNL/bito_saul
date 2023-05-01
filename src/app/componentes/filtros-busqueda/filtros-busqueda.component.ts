@@ -15,16 +15,18 @@ declare var google: any;
 })
 export class FiltrosBusquedaComponent implements OnInit {
     @Output() private buscarPorFiltros = new EventEmitter();
+    @Output() private eliminarPorFiltros = new EventEmitter();
+    @Input() public isProductPage: boolean;
     private currentModal: any;
     @Input() filtros: FiltrosModel;
-    private lstCatTipoNegocio: any;
+    public lstCatTipoNegocio: any;
     ubicacion: any;
-    private lstCatEstados: any;
+    public lstCatEstados: any;
     estado: any;
-    private listCaLocalidad: any;
-    private listCatMunicipio: any;
+    public listCaLocalidad: any;
+    public listCatMunicipio: any;
     categoriaAux: any;
-    estadoAux:any;
+    estadoAux: any;
     subCategoriaAux: any;
     municipio: any;
     localidad: any;
@@ -39,6 +41,7 @@ export class FiltrosBusquedaComponent implements OnInit {
     kilometrosSlider: number;
     tipoNegocio: number;
     listaTipoNegocio: any;
+    abierto: string = 'abiertos/cerrados';
 
 
 
@@ -61,9 +64,9 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     async getCurrentPosition() {
-        let gpsOptions = {maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true};
+        const gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
         const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
-            //console.log(res);
+
             this.blnUbicacion = true;
             this.miUbicacionlatitud = res.coords.latitude;
             this.miUbicacionlongitud = res.coords.longitude;
@@ -74,10 +77,10 @@ export class FiltrosBusquedaComponent implements OnInit {
                 this.filtros.tipoBusqueda = 1;
                 this.geocodeLatLng();
             } catch (e) {
-                console.error(e);
+
             }
         }).catch(error => {
-            console.log(error, 'asdasdsad');
+
             this.blnUbicacion = false;
             this.ubicacion = 'localidad';
             this.filtros.tipoBusqueda = 0;
@@ -109,12 +112,15 @@ export class FiltrosBusquedaComponent implements OnInit {
             this.categoria = this.filtros.idGiro;
             this.subCategorias();
         }
-        if(this.filtros.idCategoriaNegocio !== null){
+        if (this.filtros.idCategoriaNegocio !== null) {
             this.subCategoria = this.filtros.idCategoriaNegocio;
         }
-        if(this.filtros.kilometros <=10 ){
-            this.kilometrosSlider = this.filtros.kilometros;            
-        }     
+        if (this.filtros.kilometros <= 10) {
+            this.kilometrosSlider = this.filtros.kilometros;
+        }
+        if (this.isProductPage) {
+            this.subCategorias();
+        }
     }
 
     public obtenergiros() {
@@ -122,11 +128,11 @@ export class FiltrosBusquedaComponent implements OnInit {
             response => {
                 this.lstCatTipoProducto = response.data;
                 this.lstCatTipoProducto.forEach(element => {
-                    if (element.id_giro==this.categoria) {
-                      this.categoriaAux = element.nombre;
-                      
+                    if (element.id_giro == this.categoria) {
+                        this.categoriaAux = element.nombre;
+
                     }
-                  });
+                });
             },
             error => {
             }
@@ -140,12 +146,12 @@ export class FiltrosBusquedaComponent implements OnInit {
                 this.validarCheckbox();
                 this.lstCatEstados.forEach(element => {
                     if (element.id_estado == this.estado) {
-                      this.estadoAux = element.nombre;
+                        this.estadoAux = element.nombre;
                     }
                 });
             },
-            error => {
-                console.error(error);
+            () => {
+
             }
         );
     }
@@ -154,7 +160,12 @@ export class FiltrosBusquedaComponent implements OnInit {
     public obtenerCatalogos() {
         this.filtroServicio.tipoNegocios().subscribe(
             response => {
-                this.lstCatTipoNegocio = response.data.catTipoNegocio;
+                let categorias = response.data.catTipoNegocio
+                categorias.forEach(cat => {
+                    if (cat.id_tipo_negocio != "3" || cat.id_tipo_negocio != 3) {
+                        this.lstCatTipoNegocio.push(cat);
+                    }
+                });
             },
             error => {
             }
@@ -168,19 +179,19 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     buscar() {
-        this.filtros.strBuscar=null;
+        this.filtros.strBuscar = null;
         this.filtros.idTipoNegocio = this.listaTipoNegocio;
         if (this.filtros.tipoBusqueda === 1) {
             this.filtros.idEstado = null;
             this.filtros.idMunicipio = null;
             this.filtros.idLocalidad = null;
         }
-        this.buscarPorFiltros.emit(this.filtros)
+        //console.log("Los filtros de busqueda son: "+JSON.stringify(this.filtros))
+        this.buscarPorFiltros.emit(this.filtros);
     }
 
     selectEstado(event) {
-        //console.log(event.detail.value);
-        //this.estado=parseInt(event.detail.value);
+
         this.filtros.idEstado = this.estado;
         this.obtenerCatMunicipio();
     }
@@ -190,8 +201,7 @@ export class FiltrosBusquedaComponent implements OnInit {
             response => {
                 this.listCatMunicipio = response.data.list_cat_municipio;
             },
-            error => {
-                console.error(error);
+            () => {
             }
         );
     }
@@ -201,8 +211,8 @@ export class FiltrosBusquedaComponent implements OnInit {
             response => {
                 this.listCaLocalidad = response.data.list_cat_localidad;
             },
-            error => {
-                console.error(error);
+            () => {
+
             }
         );
     }
@@ -224,10 +234,10 @@ export class FiltrosBusquedaComponent implements OnInit {
                     this.estasUbicacion = results[0].formatted_address;
                     this.filtros.strMunicipio = results[0].address_components[posicion].long_name;
                 } else {
-                    //console.log('No results found');
+
                 }
             } else {
-                //console.log('Geocoder failed due to: ' + status);
+
                 //this.loader = false;
             }
         });
@@ -244,11 +254,14 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     selectCategoria() {
-        this.filtros.idGiro = [this.categoria];        
+        this.filtros.idGiro = [this.categoria];
         this.subCategorias();
     }
 
     subCategorias() {
+        // if (this.isProductPage) {
+        //     this.categoria = null;
+        // }
         this.filtroServicio.obtenerCategoriasGiro(this.categoria).subscribe(
             response => {
                 this.listaCategorias = response.data;
@@ -257,7 +270,7 @@ export class FiltrosBusquedaComponent implements OnInit {
                 });
 
                 this.listaCategorias.forEach(element => {
-                    if(this.filtros.idCategoriaNegocio !== null){
+                    if (this.filtros.idCategoriaNegocio !== null) {
                         this.filtros.idCategoriaNegocio.forEach(elementCategoria => {
                             if (elementCategoria == element.id_categoria) {
                                 this.subCategoriaAux = element.nombre;
@@ -273,15 +286,15 @@ export class FiltrosBusquedaComponent implements OnInit {
         );
     }
 
-    selectSubCategoria() {        
+    selectSubCategoria() {
         this.filtros.idCategoriaNegocio = this.subCategoria;
     }
 
     public selectTipoNegocio(evento) {
         if (evento.detail.checked === true) {
             this.listaTipoNegocio.push(parseInt(evento.detail.value));
-        }else if(evento.detail.checked === false){
-            let index=this.listaTipoNegocio.indexOf(parseInt(evento.detail.value));
+        } else if (evento.detail.checked === false) {
+            const index = this.listaTipoNegocio.indexOf(parseInt(evento.detail.value));
             this.listaTipoNegocio.splice(index, 1);
         }
         if (parseInt(evento.detail.value) === 3 && evento.detail.checked === true) {
@@ -301,9 +314,11 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
     setIonradiogroupAbiertoCerrado(opcion: number) {
         if (opcion === 1) {
-            this.filtros.abierto = true;
+            this.filtros.abierto = opcion + '';
+            this.abierto='abiertos'
         } else if (opcion === 0) {
-            this.filtros.abierto = false;
+            this.abierto='cerrados'
+            this.filtros.abierto = opcion + '';
         }
     }
     obtenerKilometrosRango(event) {
@@ -321,6 +336,7 @@ export class FiltrosBusquedaComponent implements OnInit {
         this.filtros = new FiltrosModel();
         this.listaTipoNegocio = [];
         this.buscar();
+        this.eliminarPorFiltros.emit(false);
     }
     validarCheckbox() {
         setTimeout(it => {

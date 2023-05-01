@@ -1,0 +1,50 @@
+.text-format {
+     text-transform: initial;
+   }
+   
+   .type-toggle {
+     margin-left: -20px;
+   }
+   
+   .password-style {
+   }
+   
+   .contentLogin {
+     /*   align-content: center;
+        display: flex;
+        flex-flow: wrap; */
+   }
+   .inputPass {
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     align-items: center;
+     width: 132%;
+     text-align: left;
+     color: rgb(44, 44, 44);
+   }
+   .inputsLogin {
+     padding-right: 5px;
+     padding-left: 5px;
+     /*   margin-top: 15px; */
+     background-color: transparent;
+     border-color: rgba(255, 255, 255, 0);
+     align-items: center;
+     text-align: left;
+     /*   text-align: left;
+        color: gray;
+        
+        border: solid 1px #c2c2c2;
+        border-radius: 5px; */
+     width: 100%;
+   }
+   .iconEye {
+     align-items: center;
+     /*   margin-top: 10px; */
+     /* margin-right: 10px; */
+   }
+   .iconsLogin {
+     margin-top: 5px;
+     font-size: 25px;
+     color: #b4b4b4;
+   }

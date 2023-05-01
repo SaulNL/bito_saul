@@ -20,6 +20,17 @@
     position: relative;
 }
 
+.swiper-slide img{
+    height: 15vh !important;
+}
+.swiper-zoom-container>img, .swiper-zoom-container>svg, .swiper-zoom-container>canvas{
+    object-fit: unset;
+}
+
+ion-slides {
+    --bullet-background-active: #f8307c;
+ }
+
 .alexis {
     background-image: url(https://ecoevents.blob.core.windows.net/comprandoando/conocenos/Alexis.png);
     background-repeat: no-repeat;
@@ -158,7 +169,7 @@ samp {
         margin-left: 13vw !important;
     }
     h2 {
-        font-size: 7.5vw !important;
+        font-size: 5vw !important;
     }
     h3 {
         font-size: 5.5vw !important;
@@ -167,18 +178,19 @@ samp {
         font-size: 4vw !important;
     }
     h1 {
-        font-size: 14.5vw !important;
-        margin-top: -1vw !important;
+        font-size: 7vw !important;
+        margin-top: -5vw !important;
         margin-bottom: 2vw !important;
     }
     .s4 {
-        margin-top: -2vw;
+        margin-top: -8vw;
     }
     .portada-fondo img {
-        width: 4rem !important;
+        //width: 4rem !important;
         padding-bottom: 4vw;
     }
     .portada-fondo {
+        background-size: 100% 100%;
         padding-top: 3vw;
     }
     .linea {
@@ -195,6 +207,10 @@ samp {
     }
     #iconos img {
         width: 30vw !important;
+    }
+    .seccion_software img{
+        max-width: 15vw;
+        height: 20vw;
     }
 }
 

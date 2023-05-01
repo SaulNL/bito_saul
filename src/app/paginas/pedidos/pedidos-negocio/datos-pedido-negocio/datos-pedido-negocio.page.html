@@ -4,7 +4,7 @@
       <ion-button (click)="regresar()">
         <ion-icon name="arrow-back-outline"></ion-icon>
       </ion-button>
-      </ion-buttons>
+    </ion-buttons>
     <ion-title>Datos Pedido</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -21,7 +21,8 @@
           <div *ngIf="pedido.id_estatus_pedido === 4">
             <ion-badge [style]="{'background': pedido.color}">
               <ion-icon name="checkmark-circle-outline"></ion-icon>
-              Pedido entregado</ion-badge>
+              Pedido entregado
+            </ion-badge>
           </div>
         </ion-col>
         <ion-col></ion-col>
@@ -31,7 +32,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-item >
+    <ion-item>
       <ion-grid>
         <ion-row>
           <ion-col size="3">
@@ -43,24 +44,41 @@
             <div>
               <p style=" margin: 0 0 0px !important;">{{pedido.persona.nombre}}</p>
               <div *ngIf="pedido.id_estatus_pedido < 5">
-                <small class="d-block">Telefono: {{pedido.persona.telefono}}</small>
+                <small class="d-block">Teléfono: {{pedido.persona.telefono}}</small>
                 <small class="d-block">Celular: {{pedido.persona.celular}}</small>
                 <small class="d-block">Correo: {{pedido.persona.correo}}</small>
+                <small *ngIf="pedido.id_tipo_pedido === 1" class="d-block">Numero de mesa: {{pedido.mesa}}</small>
+                <small *ngIf="pedido.id_tipo_pedido === 2" class="d-block">Dirección:
+                  {{pedido.direccion.direccion}}</small>
               </div>
+              
+              <ion-button expand="full" (click)="shareSocial()" color="primary" *ngIf="pedido.id_tipo_pedido === 2">
+                <ion-icon name="share-social-outline"></ion-icon> Compartir dirección
+              </ion-button>
+              <ion-button expand="full" (click)="shareCliente()" color="primary" *ngIf="pedido.id_tipo_pedido === 2">
+                <ion-icon name="share-social-outline"></ion-icon> Compartir datos del cliente
+              </ion-button>
             </div>
           </ion-col>
         </ion-row>
       </ion-grid>
+      <div>
+        <!-- <p>aqui va el boton</p> -->
+        
+        <app-compartir-redes-sociales [socialTO]="pedido"></app-compartir-redes-sociales> 
+      </div>
     </ion-item>
-    <div id="mapId" style="height:200px"></div>
+    <div id="mapId" style="height:200px" [ngStyle]="{display: mapView}"></div>
     <ion-grid>
       <ion-row>
-        <ion-col  class="ion-align-self-center"><h3>Artículos:</h3></ion-col>
+        <ion-col class="ion-align-self-center">
+          <h3>Artículos:</h3>
+        </ion-col>
       </ion-row>
     </ion-grid>
     <ion-item *ngFor="let producto of pedido.productos">
       <ion-grid>
-        <ion-row >
+        <ion-row>
           <ion-col>
             <ion-avatar>
               <ion-img [src]="producto.logo_producto"></ion-img>
@@ -68,40 +86,46 @@
           </ion-col>
           <ion-col>
             <p>{{producto.nombre_producto}}</p>
-            <small>Cantidad: {{producto.cantidad}}</small>
-            <strong><span class="d-block">$ {{producto.costo}}</span></strong>
+            <small class="d-block">Cantidad: {{producto.cantidad}}</small>
+            <small class="d-block">Precio unitario: $ {{
+              precioUnitarioParche(producto.cantidad,producto.costo)}}</small>
+            <small class="d-block">Precio Total: </small> <strong><span> $ {{producto.costo}}</span></strong>
           </ion-col>
           <ion-col>
             <div class="ion-text-center">
-              <small *ngIf="producto.observaciones === null || producto.observaciones === ''">
+              <small *ngIf="pedido.detalle === null">
                 Sin observaciones
               </small>
-              <small
-                *ngIf="producto.observaciones !== null && producto.observaciones !== ''">{{producto.observaciones}}</small>
+              <small *ngIf="pedido.detalle !== null">{{pedido.detalle}}</small>
             </div>
           </ion-col>
         </ion-row>
       </ion-grid>
     </ion-item>
-
+    <div class="ion-padding">
+      <small class="d-block">Método de pago: <strong>{{pedido.tipo_pago}}</strong></small>
+    </div>
+    <ion-item lines="none">
+      <ion-label>Total : ${{total}}  <span *ngIf="domicilioEnvio">{{domicilioEnvioMessage}}</span></ion-label>
+    </ion-item>
     <div *ngIf="!blnCancelar">
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2 && pedido.id_tipo_pedido === 2" href="https://api.whatsapp.com/send?phone=+52{{numeroSolicitud}}" target="_blank"
-              
-              color="primary">
-        <ion-icon name="logo-whatsapp"></ion-icon> Solicitar repartidor
-      </ion-button>
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="cancelar()" [disabled]="loaderBtn" color="light">Cancelar</ion-button>
-      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 1" (click)="perpararPedido(pedido)" color="danger" [disabled]="loaderBtn">
+      <!--      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2 && pedido.id_tipo_pedido === 2"-->
+      <!--        href="https://api.whatsapp.com/send?phone=+52{{numeroSolicitud}}" target="_blank" color="primary">-->
+      <!--        <ion-icon name="logo-whatsapp"></ion-icon> Solicitar repartidor-->
+      <!--      </ion-button>-->
+      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="cancelar()" [disabled]="loaderBtn"
+        color="light">Cancelar</ion-button>
+      <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 1" (click)="perpararPedido(pedido)" color="danger"
+        [disabled]="loaderBtn">
         Preparar
       </ion-button>
-      
+
       <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 2" (click)="enviarPedido(pedido)"
-              [disabled]="loaderBtn"
-              color="danger"> Enviar
+        [disabled]="loaderBtn" color="danger"> {{ typeSendMessage(pedido.id_tipo_pedido) }}
       </ion-button>
+
       <ion-button expand="full" *ngIf="pedido.id_estatus_pedido === 3" (click)="entregarPedido(pedido)"
-              [disabled]="loaderBtn"
-              color="danger"> Entregado
+        [disabled]="loaderBtn" color="danger"> Cerrar Pedido
       </ion-button>
       <!-- <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 4">
         <ion-icon name="checkmark-circle-outline" [style]="{'color': pedido.color}"></ion-icon><span> Pedido entregado</span>
@@ -111,16 +135,18 @@
         <small class="d-block">{{pedido.motivo}}</small>
       </div>
     </div>
-    <div *ngIf="blnCancelar">
+    <div *ngIf="blnCancelar && pedido.id_estatus_pedido < 4">
       <ion-item>
         <ion-label position="floating">Motivo de la cancelación</ion-label>
         <ion-textarea type="text" [(ngModel)]="motivo"></ion-textarea>
         <ion-icon *ngIf="motivo" (click)="motivo=''" name="close-outline"></ion-icon>
       </ion-item>
       <div align="end">
-        <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="setBlnCancelar(false)" color="light">Regresar
+        <ion-button expand="full" *ngIf="pedido.id_estatus_pedido < 4" (click)="setBlnCancelar(false)" color="light">
+          Regresar
         </ion-button>
-        <ion-button expand="full" [disabled]="!motivo || loaderBtn" (click)="cancelarPedido(pedido)" color="danger"> Cancelar pedido
+        <ion-button expand="full" [disabled]="!motivo || loaderBtn" (click)="cancelarPedido(pedido)" color="danger">
+          Cancelar pedido
         </ion-button>
       </div>
     </div>

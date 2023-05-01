@@ -1,0 +1,35 @@
+
+.content {
+  --background: linear-gradient(90deg, #fa4f72, #a74eef) !important;
+}
+a {
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+ion-button{
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    position: fixed;
+    top: 53%;
+    left: 47%;
+    transform: translate(-50%, -50%);
+}
+
+ion-img {
+    color: white;
+    position: fixed;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.background-button {
+    --background: white;
+  }

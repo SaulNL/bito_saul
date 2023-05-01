@@ -1,25 +1,23 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    <ion-buttons slot="start" >
+    <ion-buttons slot="start">
       <ion-back-button defaultHref="tabs/home/solicitudes" text=""></ion-back-button>
     </ion-buttons>
-    <ion-title>Solicitud</ion-title>
+    <ion-title>Requerimientos de compra</ion-title>
   </ion-toolbar>
 </ion-header>
 <!--Solictud Card-->
 <ion-content>
-  <ion-card style="margin-bottom: 3%;" >
+  <ion-card style="margin-bottom: 3%;">
     <ion-card-header>
       <ion-grid>
-            <div class="ion-text-end">
-              <label *ngIf="solicitud.activo_public !== 1">Sin Publicar</label>
-              <label *ngIf="solicitud.activo_public === 1"
-                     [ngClass]="{'colorMun': solicitud.activo_public === 1}">Publicado</label>
-                     <ion-icon name="globe-outline" [ngClass]="{'colorMun': solicitud.activo_public === 1}"></ion-icon>
-            </div>
-            <h2 class="ion-text-center" id="soli{{solicitud.id_solicitud}}">{{solicitud.solicitud}}</h2>
+        <div class="ion-text-end">
+          <label [ngClass]="{colorMun: isActive(solicitud.activo_public)}"> {{ messageIsActive(solicitud.activo_public) }} </label>
+          <ion-icon name="globe-outline" [ngClass]="{colorMun: isActive(solicitud.activo_public)}" ></ion-icon>
+        </div>
+        <h2 class="ion-text-center" id="soli{{solicitud.id_solicitud}}">{{solicitud.solicitud}}</h2>
         <ion-row class="ion-text-center">
-          <ion-col size="12" >
+          <ion-col size="12">
             <div>
               <img src="{{solicitud.url_imagen}}" alt="Falla al cargar imagen" height="250">
             </div>
@@ -29,8 +27,8 @@
           <ion-col size="12" class="ion-text-center">
             <ion-label class="ion-text-center">{{solicitud.descripcion}}</ion-label>
             <ion-row class="ion-margin-top">
-              <ion-badge style="margin:1px;" color="primary"  *ngFor="let item of solicitud.tags; let i = index">
-                <span  style="display: flex" *ngIf="item !== undefined && item !== null && item !== ''" >
+              <ion-badge style="margin:1px;" color="primary" *ngFor="let item of solicitud.tags; let i = index">
+                <span style="display: flex" *ngIf="item !== undefined && item !== null && item !== ''">
                   {{item}}
                 </span>
               </ion-badge>
@@ -38,27 +36,26 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-    <ion-grid>
-      <ion-row class="ion-text-center">
-        <ion-col size="6">
-          <ion-button (click)="abrirModal()" color="success" expand="block">Publicar
-            <ion-icon name="globe-outline"></ion-icon>
-          </ion-button>
-        </ion-col>
-        <ion-col size="6">
-          <ion-button (click)="modificar()" color="warning" expand="block">Editar 
-            <ion-icon name="create-outline"></ion-icon>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-     <!--<ion-button (click)="abrirModal()" type="submit" class="bg-rosa" expand="block">Publicar
+      <ion-grid>
+        <ion-row class="ion-text-center">
+          <ion-col size="6">
+            <ion-button (click)="abrirModal()" color="success" expand="block">Publicar
+              <ion-icon name="globe-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <ion-col size="6">
+            <ion-button (click)="modificar()" color="warning" expand="block">Editar
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <!--<ion-button (click)="abrirModal()" type="submit" class="bg-rosa" expand="block">Publicar
         <ion-icon name="globe-outline"></ion-icon>
       </ion-button>
-      <ion-button (click)="modificar()" type="button" class="bg-rosa" expand="block">Editar 
+      <ion-button (click)="modificar()" type="button" class="bg-rosa" expand="block">Editar
         <ion-icon name="create-outline"></ion-icon>
       </ion-button>-->
     </ion-card-header>
   </ion-card>
 </ion-content>
-

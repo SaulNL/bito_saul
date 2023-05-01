@@ -8,12 +8,17 @@ import { DatosPedidoNegocioPageRoutingModule } from './datos-pedido-negocio-rout
 
 import { DatosPedidoNegocioPage } from './datos-pedido-negocio.page';
 
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     DatosPedidoNegocioPageRoutingModule
+  ],
+  providers: [
+    SocialSharing,
   ],
   declarations: [DatosPedidoNegocioPage]
 })

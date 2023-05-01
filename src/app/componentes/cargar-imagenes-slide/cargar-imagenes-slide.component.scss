@@ -1,0 +1,113 @@
+ion-card {
+  width: 100%;
+  box-shadow: none;
+  border-radius: 12px;
+  height: 255px;
+
+  img {
+    object-fit: cover;
+    width: 100%;
+    transform: scale(1.1, 1.1) rotate(1deg);
+    transition: 600ms all ease-in-out;
+  }
+}
+
+.swiper-slide-active {
+  transition: scale(1.05, 1.5);
+  ion-card {
+    img {
+      transform: scale(1, 1);
+      height: auto;
+    }
+  }
+}
+
+.swiper-slide {
+  transition: 400ms all ease-in-out;
+}
+
+.size-icon {
+  width: 187px;
+  height: 140px;
+}
+
+.custom-file-input {
+	display: inline-block;
+	position: relative;
+	color: #fa4f72;
+}
+.custom-file-input input {
+	visibility: hidden;
+	width: 100px
+}
+.custom-file-input:before {
+	content: 'Subir Imagen';
+	display: block;
+	background: -webkit-linear-gradient(90deg,#fa4f72,#a74eef);
+	background: -o-linear-gradient(90deg,#fa4f72,#a74eef);
+	background: -moz-linear-gradient(90deg,#fa4f72,#a74eef);
+	background: linear-gradient(90deg,#fa4f72,#a74eef);
+	border-radius: 2px;
+	padding: 5px 0px;
+	outline: none;
+	white-space: nowrap;
+	cursor: pointer;
+	color:white;
+	font-weight: bold;
+	text-align: center;
+	font-size: 10pt;
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+.custom-file-input:hover:before {
+	border-color: #a74eef;
+}
+.custom-file-input:active:before {
+	background: #a74eef;
+}
+.file-blue:before {
+	content: 'Subir Imagen';
+	background: -webkit-linear-gradient( -180deg, #99dff5, #02b0e6);
+	background: -o-linear-gradient( -180deg, #99dff5, #02b0e6);
+	background: -moz-linear-gradient( -180deg, #99dff5, #02b0e6);
+	background: linear-gradient( -180deg, #99dff5, #02b0e6);
+	border-color: #57cff4;
+	color: #FFF;
+	text-shadow: 1px 1px rgba(000,000,000,0.5);
+}
+.file-blue:hover:before {
+	border-color: #02b0e6;
+}
+.file-blue:active:before {
+	background: #02b0e6;
+}
+.icons-stype{
+	position: relative;
+    top: 5pt;
+    color: #fa4f72;
+}
+
+.borrar-botom {
+	display: block;
+    background: -webkit-linear-gradient(
+90deg
+,#fa4f72,#a74eef);
+    background: -o-linear-gradient(90deg,#fa4f72,#a74eef);
+    background: -moz-linear-gradient(90deg,#fa4f72,#a74eef);
+    background: linear-gradient(
+90deg
+,#fa4f72,#a74eef);
+    border-radius: 4px;
+    padding: 5px 0px;
+    outline: none;
+    white-space: nowrap;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    font-size: 10pt;
+    position: absolute;
+    left: 0;
+    right: 0;
+}

@@ -23,9 +23,14 @@ npm-debug.log*
 /.sourcemaps
 /.versions
 /.vscode
+/.vscode
+/.lh
+/.vs
 /coverage
 /dist
 /node_modules
 /platforms
 /plugins
 /www
+.vs/*
+.vs/VSWorkspaceState.json

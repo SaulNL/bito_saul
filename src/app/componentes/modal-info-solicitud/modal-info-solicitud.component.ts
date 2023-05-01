@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
 import { SolicitudesService } from '../../api/solicitudes.service';
 import { NgForm } from '@angular/forms';
 import { PostulacionModel } from '../../Modelos/PostulacionModel';
 import { FormGroup } from '@angular/forms';
 import { UtilsCls } from '../../utils/UtilsCls';
+import { ModalController, Platform } from '@ionic/angular';
 import { ArchivoComunModel } from '../../Modelos/ArchivoComunModel';
 import { Auth0Service } from '../../api/auth0.service';
 import { SolicitudesModel } from '../../Modelos/SolicitudesModel';
@@ -24,6 +24,8 @@ export class ModalInfoSolicitudComponent implements OnInit {
 
   @Input() public solicitud: any;
   public numeroVistas: number;
+  public static readonly PESO_MAXIMO = (1024 * 1024) * 2; //el tamaño se lee en bytes, se pide máximo 2 MB
+  public static readonly EXTENSIONES_ACEPTADAS: Array<string> = ["jpg", "pdf"];
   public btnPostular: boolean = false;
   public postulacionModel = new PostulacionModel();
   public loaderPostular: boolean = false;
@@ -32,6 +34,7 @@ export class ModalInfoSolicitudComponent implements OnInit {
   public seleccionTO: SolicitudesModel;
   public nombreArchivo = '';
   public pesado: boolean = false;
+  public isIos: boolean;
 
   constructor(
     public modalController: ModalController,
@@ -39,10 +42,13 @@ export class ModalInfoSolicitudComponent implements OnInit {
     private _utils_cls: UtilsCls,
     private _auth0: Auth0Service,
     private _notificacionService: ToadNotificacionService,
-  ) { }
+    private platform: Platform
+  ) {
+    this.isIos = this.platform.is('ios');
+  }
 
   ngOnInit() {
-    if(this._utils_cls.existe_sesion()){
+    if (this._utils_cls.existe_sesion()) {
       this.user = this._auth0.getUserData();
     }
     this.numeroVistas = 0;
@@ -66,23 +72,23 @@ export class ModalInfoSolicitudComponent implements OnInit {
     );
   }
 
-  postularme(){
+  postularme() {
     this.btnPostular = !this.btnPostular;
     this.loaderPostular = false;
     this.postulacionModel.descripcion = '';
   }
 
   public guardar(form: NgForm) {
-    if ( form.invalid ) {
-      return Object.values( form.controls ).forEach( control => {
-        if (control instanceof FormGroup ) {
-          Object.values( control.controls ).forEach( con => con.markAsTouched());
+    if (form.invalid) {
+      return Object.values(form.controls).forEach(control => {
+        if (control instanceof FormGroup) {
+          Object.values(control.controls).forEach(con => con.markAsTouched());
         } else {
           control.markAsTouched();
         }
       });
-    }else {
-      if( this.uploadedFiles !== undefined) {
+    } else {
+      if (this.uploadedFiles !== undefined) {
         const fileName = this.uploadedFiles.name;
         const file = this.uploadedFiles;
         let file64: any;
@@ -103,35 +109,47 @@ export class ModalInfoSolicitudComponent implements OnInit {
     }
   }
 
-  public enviar(){
+  public enviar() {
     this.loaderPostular = true;
     this.seleccionTO = this.solicitud;
     this.postulacionModel.idPersona = this.user.id_persona;
     this.postulacionModel.idSolicitud = this.seleccionTO.id_solicitud;
     this.servicioSolicitudes.enviarPostulacion(this.postulacionModel).subscribe(
       response => {
-        this.loaderPostular = false;
         this._notificacionService.exito(response.message);
+        this.loaderP();
         this.dismiss();
       },
       error => {
       },
-      () =>{
+      () => {
         this.loaderPostular = false;
       }
     );
   }
 
-  regresarPostulacion(){
+  private loaderP() {
+    this.loaderPostular = false;
+  }
+  regresarPostulacion() {
     this.btnPostular = false;
     this.loaderPostular = false;
   }
+  esExtensionValida(nombreDelArchivo: string): boolean{
+    const extension = nombreDelArchivo.split(".").pop();
+    return ModalInfoSolicitudComponent.EXTENSIONES_ACEPTADAS.includes(extension);
+  }
+  esValidoElPeso(file: any): boolean{
+    return file.size < ModalInfoSolicitudComponent.PESO_MAXIMO;
+
+  }
 
   subir_archivo($event) {
-    if ( $event.target.files[0].size < 100000) {
-      this.uploadedFiles = $event.target.files[0];
+    const file: any = $event.target.files[0];
+    if (this.esValidoElPeso(file) && this.esExtensionValida(file.name)) {
+      this.uploadedFiles = file;
       this.pesado = false;
-      this.nombreArchivo = $event.target.files[0].name;
+      this.nombreArchivo = file.name;
     } else {
       this.uploadedFiles = undefined;
       this.nombreArchivo = '';

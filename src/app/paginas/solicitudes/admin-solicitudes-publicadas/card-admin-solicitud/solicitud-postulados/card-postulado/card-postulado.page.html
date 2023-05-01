@@ -8,8 +8,8 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
+<app-spinner [loader]="loader" [message]="message"></app-spinner>
+<ion-content *ngIf="!loader">
   <ion-card class="ion-text-center">
     <ion-card-header>
       <ion-label><strong>Nombre: </strong>{{solicitudPostulado.nombre}}</ion-label>
@@ -35,7 +35,7 @@
       <br>
       <br>
       <ion-label><strong>Seleccionar: </strong>
-        <ion-checkbox slot="end" (ionChange)="checkSolicitud(solicitudPostulado)" [(ngModel)]="solicitudPostulado.checkend"></ion-checkbox>
+        <ion-checkbox slot="end" color="primary" (ionChange)="checkSolicitud(solicitudPostulado)" [(ngModel)]="solicitudPostulado.checkend"></ion-checkbox>
       </ion-label>
     </ion-card-header>
   </ion-card>

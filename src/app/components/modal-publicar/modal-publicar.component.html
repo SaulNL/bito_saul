@@ -11,6 +11,7 @@
 <ion-content fullscreen >
   <ion-card>
     <ion-card-header>
+    <!-- Modal para publicar anuncio dependiendo del negocio -->
   <form  #formBasicos="ngForm" (ngSubmit)="guardarPublicacion(formBasicos)">
 
     <div *ngIf="mensajePublicacion2">
@@ -22,7 +23,7 @@
         </div>
       </div>
     </div>
-
+    
     <div *ngIf="!mensajePublicacion2">
       <ion-list>
 
@@ -30,7 +31,7 @@
           <ion-label for="idNegocio">
             Relacione su negocio:
           </ion-label>
-          <ion-select id="idNegocio" name="idNegocio" [(ngModel)]="publicacion.id_negocio" (change)="decripcionSelect()" required>
+          <ion-select id="idNegocio" name="idNegocio" [(ngModel)]="publicacion.id_negocio" (change)="decripcionSelect()" (ionChange)="obtenerCaracteristicasNegocio(publicacion.id_negocio);obtenerNumeroPublicacionesPromocion()" (click)="obtenerCaracteristicasNegocio(publicacion.id_negocio);obtenerNumeroPublicacionesPromocion()"required>
             <ion-select-option  *ngFor="let row of lstNegocios"  [value]="row.id_negocio">
               {{row.nombre_comercial}}
             </ion-select-option>

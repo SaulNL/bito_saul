@@ -9,11 +9,12 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content #main id="main">
   <div class="ion-text-center">
     <h2>{{negocioTO.nombre_comercial}}</h2>
   </div>
-  <qrcode  class="ion-text-center" #qrcode
+  <div #qrcode id="qrcode" class="d-none d-sm-none d-md-block d-lg-block d-xl-block"></div>
+  <!-- <qrcode  class="ion-text-center" #qrcode
   [elementType]="elementType"
   [level]="level"
   [colorDark]="colorDark"
@@ -22,7 +23,7 @@
   [scale]="scale"
   [width]="width"
   
-></qrcode>
+></qrcode> -->
 <div  class="ion-text-center">
   <ion-button expand="block" (click)="descargar()">Descargar</ion-button>
 </div>
