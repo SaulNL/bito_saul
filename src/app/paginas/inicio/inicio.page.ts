@@ -45,7 +45,8 @@ export class InicioPage implements OnInit {
         private eventosServicios: SideBarService,
         private ruta: Router,
         private serviceProveedores: ProveedorServicioService,
-        private util: UtilsCls
+        private util: UtilsCls,
+        private router: Router,
     ) {
         this.Filtros = new FiltrosModel();
         this.Filtros.idEstado = 29;
@@ -138,7 +139,7 @@ export class InicioPage implements OnInit {
     }
 
     abrirFiltros() {
-        this.presentModal();    
+        this.presentModal();
     }
 
     async presentModal() {
@@ -148,9 +149,9 @@ export class InicioPage implements OnInit {
                 'dismissed': true
             });
             this.filtroActivo = true;
-            this.Filtros = res;            
+            this.Filtros = res;
             this.buscarNegocios();
-        });        
+        });
         this.modal = await this.modalController.create({
             component: FiltrosBusquedaComponent,
             componentProps: {
@@ -221,4 +222,8 @@ export class InicioPage implements OnInit {
             });
         }
       }
+
+    irpago() {
+            this.router.navigate(['/tabs/pago_realizado'], {  }).then();
+    }
 }

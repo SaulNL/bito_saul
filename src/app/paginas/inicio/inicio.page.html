@@ -47,7 +47,7 @@
                     <ion-card class="m-0 fixed">
                         <div (click)="negocioRuta(proveedor.url_negocio)">
                             <img class="img-card-w" src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
-                            [srcset]="proveedor.url_logo" 
+                            [srcset]="proveedor.url_logo"
                              alt="Falla al cargar la imagen">
                         <ion-card-header>
                             <ion-card-subtitle>{{proveedor.nombre_comercial}}</ion-card-subtitle>
@@ -78,6 +78,7 @@
         </ion-grid>
         <ion-grid *ngIf="listaCategorias.length === 0">
             <ion-text color="primary">
+                <ion-button (click)="irpago()">pedido realizado</ion-button>
                 <h2>No se encontraron negocios relacionados</h2>
             </ion-text>
         </ion-grid>

@@ -17,6 +17,11 @@ const routes: Routes = [
         loadChildren: () => import('../promociones/promociones.module').then(m => m.Tab2PageModule) ,canActivate: [AuthGuardService]
       },
       {
+        path: 'pago_realizado',
+        loadChildren: () => import('../pasarelas/pago-realizado/pago-realizado.module')
+            .then(m => m.PagoRealizadoPageModule) , canActivate: [AuthGuardService]
+      },
+      {
         path: 'inicio',
         loadChildren: () => import('../inicio/inicio.module').then(m => m.Tab3PageModule) ,canActivate: [AuthGuardService]
       },

@@ -13,9 +13,14 @@ const routes: Routes = [
     loadChildren: () => import('./mis-negocios/mis-negocios.module').then( m => m.MisNegociosPageModule)
   },
   {
+    path: 'brokers',
+    loadChildren: () => import('../pasarelas/brokers/brokers.module').then( m => m.BrokersPageModule)
+  },
+  {
     path: 'view-qr',
     loadChildren: () => import('./view-qr/view-qr.module').then( m => m.ViewQrPageModule)
-  },  {
+  },
+  {
     path: 'card-negocio',
     loadChildren: () => import('./card-negocio/card-negocio.module').then( m => m.CardNegocioPageModule)
   }

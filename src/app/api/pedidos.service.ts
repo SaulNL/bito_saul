@@ -154,5 +154,13 @@ export class PedidosService {
         return data;
     }));
   }
-
+    obetenerDatosPedido(idPedidoNegocio: string) {
+        const body = JSON.stringify({idPedidoNegocio});
+        return from(this._http.post(
+            this.url + 'api/obtener/informacion/pedido', body,
+            AppSettings.getHeadersToken()
+        ).then( r => {
+            return r.data;
+        }));
+    }
 }

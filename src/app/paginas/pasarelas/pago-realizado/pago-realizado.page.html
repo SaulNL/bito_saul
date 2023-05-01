@@ -1,0 +1,64 @@
+<ion-header>
+
+  <ion-toolbar class="tolbar">
+<!--    <ion-buttons slot="start">-->
+<!--      <ion-back-button text=""></ion-back-button>-->
+<!--    </ion-buttons>-->
+    <ion-title>Informacion de pago</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <ion-col size-sm="12" size-md="6" class="card-pago ion-margin">
+      <ion-row>
+        <ion-col size="12" class="ion-text-center text-white" [ngClass]="informacionvista.clase">
+          <h1 class="ion-margin font-weight-bold">{{informacionvista.titulo}}</h1>
+          <h1 style="font-size: 5em;">
+            <ion-icon [ngClass]="informacionvista.claseIcono" [name]="informacionvista.icono"></ion-icon>
+          </h1>
+          <p class="text-white" [innerHtml]="informacionvista.desscripcion"></p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-margin" *ngIf="informacionvista.vistaDetalle">
+        <ion-col size="12">
+          <ion-row class="ion-margin">
+            <ion-col size="6">
+              <img class="logo" loading="lazy" [src]="productoDefault" [srcset]="informacionPedido.logo"  alt="Falla al cargar la imagen">
+            </ion-col>
+            <ion-col size="6">
+              <h1 class="ion-margin">{{informacionPedido.negocio}}</h1>
+              <p>Pedido: {{informacionPedido.idPedidoNegocio}}</p>
+              <p>{{informacionPedido.nombre}} {{informacionPedido.paterno}} {{informacionPedido.materno}}</p>
+              <p>{{informacionPedido.fecha}}</p>
+              <p>{{informacionPedido.pago}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-item-divider></ion-item-divider>
+        <ion-col size="12" class="ion-margin">
+          <ion-list>
+            <ion-item *ngFor="let item of informacionPedido.detalle">
+              <ion-col size="2">
+                <img class="producto" loading="lazy" [src]="productoDefault" [srcset]="item.logo"  alt="Falla al cargar la imagen">
+              </ion-col>
+              <div class="col-6">
+                <h3 matListItemTitle >{{item.nombre}}</h3>
+              </div>
+              <ion-col size="2">
+                <span class="ion-text-sm-center">Cant:  </span>
+                <span>{{item.cantidad}}</span>
+              </ion-col>
+              <ion-col size="2" class="ion-text-right">
+                <span>{{item.costo | currency:'CAD':'symbol-narrow'}}</span>
+              </ion-col>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col size="12" class="ion-margin ion-text-center">
+          <h1>Total: {{totalPedido() | currency:'CAD':'symbol-narrow'}}</h1>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+</ion-content>

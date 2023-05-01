@@ -1,0 +1,72 @@
+.card-pago {
+  background-color: white;
+}
+
+.logo {
+  width: 10em;
+  border-radius: 50%;
+}
+.producto {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  margin: 1em;
+}
+
+@keyframes zoom-icon {
+  0% {transform: scale(1, 1);}
+  50% {transform: scale(1.5, 1.5);}
+  100% {transform: scale(1, 1);}
+}
+
+
+.zoom-active {
+  animation: zoom-icon 1s ease infinite;
+}
+
+@keyframes rotater {
+  0% { transform:rotate(0) scale(1) }
+  50% { transform:rotate(360deg) scale(2) }
+  100% { transform:rotate(720deg) scale(1) }
+}
+
+
+
+
+.giro-zoom {
+  animation-name:rotater;
+  animation-duration:500ms;
+  animation-iteration-count:1;
+  animation-timing-function: ease-out;
+
+  /* opera */
+  -o-transform:rotate(360deg) scale(2);
+  -o-transition-duration:500ms;
+  -o-transition-timing-function: ease-out;
+
+  /* ie */
+  -ms-transform:rotate(360deg) scale(2);
+  -ms-transform-duration:500ms;
+  -ms-transform-timing-function: ease-out;
+}
+
+.fondo-success {
+  background-color: mediumseagreen;
+}
+.fondo-error {
+  background-color: orangered;
+}
+.fondo-error > p {
+  font-size: larger;
+  font-weight: bold;
+}
+.fondo-pendiente {
+  background-color: #9e9e9e;
+}
+.fondo-procesando {
+  background-color: deepskyblue;
+}
+
+.text-white{
+  color: white;
+}

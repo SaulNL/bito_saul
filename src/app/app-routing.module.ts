@@ -9,6 +9,10 @@ const routes: Routes = [
   {
     path: 'categorias',
     loadChildren: () => import('./paginas/categorias/categorias.module').then( m => m.CategoriasPageModule)
+  },
+  {
+    path: 'pago-realizado',
+    loadChildren: () => import('./paginas/pasarelas/pago-realizado/pago-realizado.module').then( m => m.PagoRealizadoPageModule)
   }
 
 ];

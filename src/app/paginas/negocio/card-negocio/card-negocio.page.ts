@@ -56,7 +56,7 @@ export class CardNegocioPage implements OnInit {
       }
     );
   }
-  
+
 
   inforNegocio(negocio: NegocioModel) {
     this.negocioTO = JSON.parse(JSON.stringify(negocio));
@@ -159,5 +159,9 @@ export class CardNegocioPage implements OnInit {
           );
         }
       );
+  }
+
+  irBrokers() {
+    this.router.navigate(['/tabs/home/negocio/brokers'], { queryParams: { idNegocio: this.negocioTO.id_negocio } }).then();
   }
 }
