@@ -26,7 +26,8 @@ export class PagoRealizadoPage implements OnInit {
   ngOnInit() {
     this.route.queryParams
         .subscribe(params => {
-              this.pedido = 'SG5KYVN0WjZ6bFl6K29oaFZsRm9XUT09';
+              // this.pedido = params.pedido;
+              this.pedido = 'MmxkT2NIU1NDbm5Lalh3R0VNNU1adz09p';
               this.obtenerPedido();
             }
         );
@@ -39,7 +40,7 @@ export class PagoRealizadoPage implements OnInit {
     this.loader = true;
     this.pedidoServicio.obetenerDatosPedido(this.pedido).subscribe(
         resp => {
-
+          resp = JSON.parse(resp);
           switch (resp.code) {
             case 200: {
               this.informacionvista = this.success();

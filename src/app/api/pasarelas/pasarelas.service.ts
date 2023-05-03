@@ -44,8 +44,8 @@ export class PasarelasService {
     return from(this.http.post(
         this.url + 'api/brokers/mercadoPago/ordenPago', body,
         AppSettings.getHeadersToken()
-    )).pipe(map(res => {
-      return res;
+    ).then( r => {
+      return r.data;
     }));
   }
 }

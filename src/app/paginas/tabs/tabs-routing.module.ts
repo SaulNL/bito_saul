@@ -59,6 +59,10 @@ const routes: Routes = [
         loadChildren: () => import('../actualizar-version/actualizar-version.module').then(m => m.ActualizarVersionPageModule)
       },
       {
+        path: 'pago-realizado',
+        loadChildren: () => import('../pasarelas/pago-realizado/pago-realizado.module').then( m => m.PagoRealizadoPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/inicio',
         pathMatch: 'full'
