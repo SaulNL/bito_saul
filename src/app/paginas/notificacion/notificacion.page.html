@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+      <ion-buttons slot="start">
+          <ion-menu-button class="blanco"></ion-menu-button>
+      </ion-buttons>
+    <ion-title>Mis Notificaciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="dropdown-menu" style="left: -26em; width: 28em; height: 40em; overflow-y: scroll;" [ngStyle]="lstNotificaciones.length > 10 ? {'height: ': '35em'} : ''">
+      <span class="dropdown-item-text" style="text-align: center;">
+        <div class="spinner-grow text-danger" *ngIf="loader" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </span>
+    <span class="dropdown-item-text">
+          <ul class="list-group">
+            <button *ngFor="let notificacion of lstNotificaciones" type="button" class="list-group-item list-group-item-action" [ngClass]="{'list-group-item-info': notificacion.estatus}" (click)="accionNotificacion(notificacion)">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{notificacion.titulo}}</h5>
+                <small>{{notificacion.fecha | date:'dd-MM-yyyy'}}</small>
+              </div>
+              <div class="mb-1" style="text-align: justify;">{{notificacion.mensaje}}</div>
+            </button>
+          </ul>
+      </span>
+    <span class="dropdown-item-text disabled" aria-disabled="true" *ngIf="lstNotificaciones.length === 0 && loader === false">
+        <div class="alert alert-warning" role="alert">
+          Aún no cuenta con notificaciones!!
+        </div>
+      </span>
+  </div>
+</ion-content>

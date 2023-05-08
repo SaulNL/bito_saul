@@ -1,9 +1,14 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    <ion-title> Perfil </ion-title>
+    <ion-title> Perfil</ion-title>
     <ion-buttons *ngIf="usuario !== null" slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
+
+    <ion-fab *ngIf="(numNotifiSinLeer != 0 && numNotifiSinLeer != undefined)" class="icono-campana" (click)="notificacion()">
+      <ion-icon class="campanita" name="notifications-off-outline"></ion-icon>
+      <p class="notif" #hayNotificaciones>{{numNotifiSinLeer}}</p>
+    </ion-fab>
     <ion-buttons slot="end" (click)="presentActionSheet()">
       <ion-button>
         <ion-icon name="ellipsis-vertical-outline"></ion-icon>

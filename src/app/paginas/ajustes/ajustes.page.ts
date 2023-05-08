@@ -13,6 +13,9 @@ import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Auth0Service } from "src/app/api/auth0.service";
 import { PedidosService } from "../../api/pedidos.service";
 import { PersonaService } from '../../api/persona.service';
+import {NotificacionService} from "../../api/NotificacionService";
+import {NotificacionesModel} from "../../Modelos/NotificacionesModel";
+import {NotificacionesService} from "../../api/usuario/notificaciones.service";
 
 @Component({
   selector: "app-ajustes",
@@ -24,6 +27,7 @@ export class AjustesPage implements OnInit {
   usuario: any;
   public url_user: string;
   public logon: any;
+  public lstNotificaciones: any;
   public misNegocios: boolean;
   public misAPromociones: boolean;
   public solicitudes: boolean;
@@ -31,6 +35,7 @@ export class AjustesPage implements OnInit {
   public misCompras: boolean;
   public generarSolicitud: boolean;
   public estadisticas: boolean;
+  public numNotifiSinLeer: number = + localStorage.getItem('notifSinLeer');
   public totalNoVistos: number;
   public subscribe;
   public siNoVistos: boolean;
@@ -44,6 +49,7 @@ export class AjustesPage implements OnInit {
     private _router: Router,
     private navctrl: NavController,
     private active: ActivatedRoute,
+    private notificacionesServide: NotificacionesService,
     private auth0: Auth0Service,
     private validarPermisos: ValidarPermisoService,
     private pedidos: PedidosService,
@@ -55,6 +61,8 @@ export class AjustesPage implements OnInit {
   ) {
     this.siNoVistos = false;
     this.totalNoVistos = 0;
+    this.numNotifiSinLeer = 0;
+    this.lstNotificaciones = [];
     if (this.util.existSession()) {
       this.usuario = this.auth0.getUserData();
       this.setNewDataBasicUser(this.usuario.id_persona);
@@ -65,12 +73,12 @@ export class AjustesPage implements OnInit {
   }
 
   ngOnInit() {
+    this.lstNotificaciones = new Array<NotificacionesModel>();
     this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.usuario = JSON.parse(localStorage.getItem('u_data'));
         if (localStorage.getItem("isRedirected") === "false") {
           localStorage.setItem("isRedirected", "true");
-          //location.reload();
         }
       }
     });
@@ -85,6 +93,7 @@ export class AjustesPage implements OnInit {
         this.notificacionesVentas();
       }
     });
+    this.numNotifiSinLeer = +localStorage.getItem('notifSinLeer');
 
     this.notificacionesVentas();
     //  this.usuario = this.util.getData();
@@ -218,4 +227,8 @@ export class AjustesPage implements OnInit {
     const content: NotificationInterface = this.create.createNotificationFirebaseWithNotUser();
     this.notification.updateUserWithNotification(content);
   }
+  public notificacion(){
+    this._router.navigateByUrl('tabs/Notificaciones');
+  }
+
 }
