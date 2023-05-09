@@ -139,7 +139,7 @@ ul li {
 
 .bosar {
   --background: white;
-  --color: #fa4f72;
+  --color: #ff1dbd;
 }
 
 ion-fab-button {
@@ -151,7 +151,8 @@ ion-fab-button {
 }
 
 .telefono {
-  color: #a74eef;
+  //color: #a74eef;
+  color: #FF9925;
 }
 
 .arriba {
@@ -300,12 +301,14 @@ p {
 }
 
 .tooggle {
-  color: #fa4f72;
+  //color: #fa4f72;
+  color: #ff1dbd;
   font-size: 18px;
 }
 
 .icon-color-select {
-  color: #fa4f72;
+  color: #ff1dbd;
+  //color: #fa4f72;
 }
 
 .urlNegocio {
@@ -315,7 +318,8 @@ p {
 }
 
 .urlNegocio h6 {
-  color: #fa4f72;
+  //color: #fa4f72;
+  color: #ff1dbd;
   font-size: smaller;
 }
 
@@ -439,7 +443,8 @@ p {
 .bottom_info_distintivo {
   width: 100%;
   height: 30%;
-  background-color: #d85cb6;
+ // background-color: #d85cb6;
+  background: linear-gradient(90deg,  #FF9925 0%,  #FFCE00 100%);
   position: fixed;
   bottom: -30%;
   display: flex;
@@ -451,7 +456,8 @@ p {
 .bottom_info_distintivo_up {
   width: 100%;
   height: 30%;
-  background-color: #d85cb6;
+  //background-color: #d85cb6;
+  background: linear-gradient(90deg,  #FF9925 0%,  #FFCE00 100%);
   position: fixed;
   bottom: 0%;
   border-top-left-radius: 10px;

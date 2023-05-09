@@ -1,6 +1,6 @@
   <div> 
     <div class="contenedor">
-      <img class="image" src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/no_imagen.png" [srcset]="promocion.url_imagen">
+      <img class="image" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/LA%20IMAGEN%20NO%20ESTA%20DISPONIBLE%20700%20X%20700.png" [srcset]="promocion.url_imagen">
       <div class="middle-modal">
         <button class="boton" (click)="masInformacion(promocion)">Más información</button>
       </div>
@@ -36,7 +36,7 @@
           <ion-col size="6" >
             <label *ngIf="promocion.porcentaje !== null" >{{ promocion.porcentaje}} %</label>
             <span *ngIf="promocion.porcentaje !== null" class="promocion"> de descuento</span></ion-col>
-          <ion-col *ngIf="idPersona!=null" size="6"><ion-button (click)="crearModal()" class="bg-rosa" size="small" mode="ios" expand="full">
+          <ion-col *ngIf="idPersona!=null" size="6"><ion-button (click)="crearModal()" class="bg-naranja" size="small" mode="ios" expand="full">
             Solicitar Cupón
           </ion-button></ion-col>
         </ion-row>
@@ -78,8 +78,8 @@
     <div *ngIf="promocion.id_tipo_promocion===2">
       <ion-row>
         <ion-col class="ion-text-center" *ngFor="let item of listaDias">
-          <h2 class="promocion">Quedan <span style="color: #fa4f72;">{{ promocion.restanDias }} días</span>, Aplica: 
-            <span style="color: #fa4f72;"> <span *ngFor="let dia of item.dias">{{dia}}</span> de {{ item.hora_inicio}} a {{item.hora_fin}} </span></h2>
+          <h2 class="promocion">Quedan <span style="color: #ff1dbd;">{{ promocion.restanDias }} días</span>, Aplica:
+            <span style="color: #ff1dbd;"> <span *ngFor="let dia of item.dias">{{dia}}</span> de {{ item.hora_inicio}} a {{item.hora_fin}} </span></h2>
         </ion-col>
       </ion-row>
     </div>
@@ -114,7 +114,7 @@
                     target="_blank">Ir al lugar</a></ion-badge>
                 </ion-col>
                 <ion-col size="12" class="ion-text-center" *ngIf="!blnPermisoUbicacion">
-                  <h2 class="aDefault promocion" matTooltip="Bitoo no puede obtener tu ubicación. Por favor activa los permisos de ubicación del navegador para poder determinar la distancia a la que se encuentra el negocio">
+                  <h2 class="aDefault promocion" matTooltip="TinBitoo no puede obtener tu ubicación. Por favor activa los permisos de ubicación del navegador para poder determinar la distancia a la que se encuentra el negocio">
                       Distancia desconocida
                   </h2>
                </ion-col>

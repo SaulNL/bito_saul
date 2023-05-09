@@ -23,7 +23,7 @@
   <app-recargar (respuesta)="recargar($event)"></app-recargar>
   <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="btn-float" (click)="scrollToTop()">
-    <ion-fab-button class="bg-rosa" *ngIf="cordenada >=100">
+    <ion-fab-button class="bg-naranja" *ngIf="cordenada >=100">
       <ion-icon name="chevron-up-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
@@ -43,9 +43,9 @@
       </ion-button>
     </ion-buttons>
     <ion-buttons *ngIf="selectionAP">
-      <ion-chip (click)="regresarBitoo()" color="danger">
+      <ion-chip (click)="regresarTinBitoo()" color="danger">
         <ion-icon name="log-out-outline"></ion-icon>
-        <ion-label>Volver a bitoo</ion-label>
+        <ion-label>Volver a Tinbitoo</ion-label>
       </ion-chip>
     </ion-buttons>
     <ion-buttons slot="end" *ngIf="!filtroActivo">
@@ -75,7 +75,7 @@
   <ion-list>
     <ion-item *ngFor="let producto of lstProductos" class="item in-list ion-focusable hydrated item-label">
       <ion-avatar #datos (click)="modalDetalleProducto(producto)" slot="start"><img
-          src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+          src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/Proveedor500.png"
           [srcset]="productoImagen(producto.imagen)" /></ion-avatar>
       <ion-label class="hydrated" #datos (click)="modalDetalleProducto(producto)">
         <h3>{{producto.nombre}}</h3>

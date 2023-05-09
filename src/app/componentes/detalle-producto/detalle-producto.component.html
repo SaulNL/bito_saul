@@ -13,7 +13,7 @@
     <ion-grid>
         <ion-row>
             <ion-col class="ion-text-center">
-                <ion-text color="secondary">
+                <ion-text class="texto-titulo">
                     <h1>{{datos.nombre}}</h1>
                 </ion-text>
             </ion-col>
@@ -62,7 +62,7 @@
                 </ion-row>
                 <ion-row>
                     <ion-col *ngIf="!activeSelectedProduct">
-                        <ion-button expand="block" (click)="agragarproducto()">
+                        <ion-button expand="block" (click)="agragarproducto()" class="bg-naranja">
                             <span *ngIf="!activeSelectedProduct">Agregar a la bolsa </span>
                             <ion-icon *ngIf="!activeSelectedProduct" name="bag-add-outline"></ion-icon>
                         </ion-button>
@@ -75,7 +75,7 @@
             <ion-grid>
                 <ion-row>
                     <ion-col (click)="avisoNegocioCerrado()">
-                        <ion-button disabled="true" expand="block">Agregar a la Bolsa
+                        <ion-button disabled="true" expand="block" class="bg-naranja">Agregar a la Bolsa
                             <ion-icon name="bag-add-outline"></ion-icon>
                         </ion-button>
                     </ion-col>
@@ -86,7 +86,7 @@
             <ion-grid>
                 <ion-row>
                     <ion-col (click)="login()">
-                        <ion-button disabled="true" expand="block">Agregar a la Bolsa
+                        <ion-button disabled="true" expand="block" class="bg-naranja">Agregar a la Bolsa
                             <ion-icon name="bag-add-outline"></ion-icon>
                         </ion-button>
                     </ion-col>

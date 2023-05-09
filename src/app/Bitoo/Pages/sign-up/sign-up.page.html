@@ -98,7 +98,7 @@
               type="email"
               id="email"
               name="email"
-              placeholder="usuarioBitoo@dominio.com"
+              placeholder="usuarioTinBitoo@dominio.com"
               (ngModelChange)="mailProccess($event)"
               [(ngModel)]="user.ms_persona.correo"
               #email="ngModel"
@@ -195,14 +195,14 @@
           <ion-item>
             <ion-label class="custom-text-property ion-text-center"
               >Al dar clic en "Siguiente" recibirás un {{toSend}} de
-              Bitoo</ion-label
+              TinBitoo</ion-label
             >
           </ion-item>
         </ion-list>
         <ion-button
           expand="block"
           type="submit"
-          class="bg-rosa"
+          class="bg-naranja"
           [disabled]="disableButtom(formSignUp)"
           mode="ios"
         >

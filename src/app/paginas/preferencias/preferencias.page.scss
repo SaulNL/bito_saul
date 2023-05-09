@@ -8,7 +8,8 @@
   }
 
 .giro-color{
-    color:  #a74eef;
+    //color:  #a74eef;
+    color:  #FF9925;
     font-size: 10px;
 }
 
@@ -28,13 +29,13 @@
     background-color: rgba(231, 231, 231, 0.616);    
   }
 .spinner-color {
-    --color: #fa4f72;
+    --color: #ff1dbd;
   }
   .message {
     position: fixed;
     top: 53%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #fa4f72;
+    color: #ff1dbd;
     text-align: center;
   }
