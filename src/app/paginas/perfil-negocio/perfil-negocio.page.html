@@ -92,7 +92,7 @@
                   {{informacionNegocio.nombre_comercial}}
                 </h2>
                 <div>
-                  <ion-icon *ngIf="informacionNegocio.verificado" src="../../../assets/icon/certificado_icon.svg"
+                  <ion-icon *ngIf="informacionNegocio.verificado" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/VERIFICACIO%CC%81N.svg"
                     size="large">
                   </ion-icon>
                 </div>
@@ -382,7 +382,7 @@
           <ion-row>
             <ion-col>
               <div class="ion-text-center" (click)="abrirModalCalifica()">
-                <ion-button expand="block" size="small" type="submit" class="bg-rosa">
+                <ion-button expand="block" size="small" type="submit" class="bg-naranja">
                   Calificar
                 </ion-button>
               </div>
@@ -392,7 +392,7 @@
           <ion-row *ngIf="mostrarComentarios">
             <ion-col>
               <div *ngIf="mostrarComentarios" class="ion-text-center" (click)="abrirModalComentarios()">
-                <ion-button expand="block" size="small" type="submit" class="bg-rosa">
+                <ion-button expand="block" size="small" type="submit" class="bg-naranja">
                   Ver comentarios
                 </ion-button>
               </div>
@@ -408,12 +408,12 @@
           <ion-col>
             <ion-button shape="round"
               *ngIf="informacionNegocio.cartaProducto !== undefined && informacionNegocio.cartaProducto !== null && informacionNegocio.cartaProducto !== ''"
-              (click)="descargarCarta(informacionNegocio.cartaProducto)" expand="block" class="bg-rosa">
+              (click)="descargarCarta(informacionNegocio.cartaProducto)" expand="block" class="bg-naranja">
               Ver carta de productos
             </ion-button>
             <ion-button shape="round"
               *ngIf="informacionNegocio.cartaServicio !== undefined && informacionNegocio.cartaServicio !== null&& informacionNegocio.cartaServicio !== ''"
-              (click)="descargarCarta(informacionNegocio.cartaServicio)" expand="full" class="bg-rosa">
+              (click)="descargarCarta(informacionNegocio.cartaServicio)" expand="full" class="bg-naranja">
               Ver carta de servicios
             </ion-button>
           </ion-col>
@@ -467,7 +467,7 @@
               <ion-card class="m-0 fixed cardsps">
                 <div (click)="irAlDetalle(producto)">
                   <img class="img-card-w"
-                    src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+                    src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/Proveedor500.png"
                     [srcset]="productoImagen(producto.imagen)" alt="Falla al cargar la imagen" />
                   <ion-card-header class="ion-card-cara">
                     <ion-card-subtitle class="limiteTexto">{{formatoNombreProd(producto.nombre)}}</ion-card-subtitle>
@@ -545,7 +545,7 @@
               <ion-card class="m-0 cardsps fixed">
                 <div (click)="irAlDetalle(producto)">
                   <img class="img-card-w"
-                    src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png"
+                    src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/Proveedor500.png"
                     [srcset]="productoImagen(producto.imagen)" alt="Falla al cargar la imagen" />
                   <ion-card-header class="ion-card-cara">
                     <ion-card-subtitle>{{producto.nombre}}</ion-card-subtitle>
@@ -600,7 +600,7 @@
               <ion-card class="m-0 cardsps fixed">
                 <div (click)="abrirModalPromocion(promo)">
                   <img class="img-card-w"
-                    src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/no_imagen.png"
+                    src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/LA%20IMAGEN%20NO%20ESTA%20DISPONIBLE%20700%20X%20700.png"
                     [srcset]="productoImagen(promo.url_imagen)" alt="Falla al cargar la imagen" />
                   <ion-card-header>
                     <ion-card-title class="nomCard">{{promo.promocion}}</ion-card-title>
@@ -652,8 +652,8 @@
             </ion-col>
             <ion-col size="12" *ngIf="arrayLugaresEntrega !== null">
               <p>Este es un negocio online y hace entregas en:</p>
-              <ion-badge class="bg-rosa" style="margin-right: 10px"
-                *ngFor="let lugar of arrayLugaresEntrega">{{lugar}}</ion-badge>
+              <ion-badge class="bg-naranja" style="margin-right: 10px"
+                         *ngFor="let lugar of arrayLugaresEntrega">{{lugar}}</ion-badge>
             </ion-col>
           </ng-template>
           <!--<ion-col>
@@ -673,7 +673,7 @@
             <ion-col size="6" *ngFor="let sucursal of lstSucursales">
               <ion-card class="cardsps fixed" (click)="negocioRuta(sucursal.url_negocio)">
                 <img class="img-card-w"
-                  src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/no_imagen.png"
+                  src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/LA%20IMAGEN%20NO%20ESTA%20DISPONIBLE%20700%20X%20700.png"
                   [srcset]="sucursalImagen(sucursal.url_logo)" alt="Falla al cargar la imagen" />
                 <ion-card-header>
                   <ion-card-title class="nomCard text-center">{{sucursal.nombre_comercial}}</ion-card-title>

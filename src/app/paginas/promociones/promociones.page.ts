@@ -271,7 +271,7 @@ export class PromocionesPage implements OnInit {
  
     async mensajeRegistro() {
         const alert = await this.alertController.create({
-          header: 'Bitoo!',
+          header: 'TinBitoo!',
           message: "¿Ya tienes una cuenta?",
             buttons: [
                 {

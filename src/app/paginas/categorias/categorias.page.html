@@ -12,12 +12,12 @@
         <ion-slide>
             <li class="nav-item">
                 <a class="todas" id="pills-home-todos" role="tab" aria-selected="true">
-                    <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img   (click)="activar()" src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png">
+                    <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img   (click)="activar()" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/IconosCategorias/todos.png">
                     </ion-avatar>
-                    <ion-avatar *ngIf="idTodo ===true" style="margin-bottom: 1.2rem;" class="image-center"> <img   (click)="activar()"  class="img-gris"  src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png">
+                    <ion-avatar *ngIf="idTodo ===true" style="margin-bottom: 1.2rem;" class="image-center"> <img   (click)="activar()"  class="img-gris"  src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/IconosCategorias/todos.png">
                     </ion-avatar>
-                    <p *ngIf="idTodo ===true" class="giro-color" style="font-size: 10.5px;">Mostrar Todos los Negocios </p>
-                    <p *ngIf="idTodo !=true" style="font-size: 10.5px;">Selecciona una Categoria </p>
+                    <p *ngIf="idTodo ===true" class="text-black" style="font-size: 10.5px;">Mostrar Todos los Negocios </p>
+                    <p *ngIf="idTodo !=true" class="giro-color" style="font-size: 10.5px;">Selecciona una Categoria </p>
                 </a>
             </li>
         </ion-slide>

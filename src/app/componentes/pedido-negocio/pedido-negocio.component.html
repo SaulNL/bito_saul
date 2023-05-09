@@ -169,7 +169,7 @@
     <div *ngIf="tipoEnvio === 2">
       <ion-row class="ion-align-items-center">
         <ion-col class="ion-text-center">
-          <ion-button size="small" class="bg-rosa " type="button" (click)="getCoordinates()">
+          <ion-button size="small" class="bg-naranja " type="button" (click)="getCoordinates()">
             <ion-icon name="navigate-circle-outline"></ion-icon>
             Buscar dirección en el mapa
           </ion-button>
@@ -184,7 +184,7 @@
         <p class="ion-text-center">{{estasUbicacion}}</p>
         <ion-row class="ion-align-items-center">
           <ion-col class="ion-text-center">
-            <ion-button size="small" class="bg-rosa " type="button" (click)="localizacionTiempo()">
+            <ion-button size="small" class="bg-naranja " type="button" (click)="localizacionTiempo()">
               <ion-icon name="navigate-circle-outline"></ion-icon>
               Ubicación Actual
             </ion-button>
@@ -209,7 +209,7 @@
       </p>
       <ion-row class="ion-align-items-center">
         <ion-col class="ion-text-center">
-          <ion-button size="small" class="bg-rosa " type="button" (click)="activar()">
+          <ion-button size="small" class="bg-naranja " type="button" (click)="activar()">
             <ion-icon name="navigate-circle-outline"></ion-icon>
             Confirmar Dirección
           </ion-button>
@@ -278,10 +278,10 @@
     </ion-item>
   </ion-list>
   <div>
-    <ion-button class="bg-rosa " (click)="realizarPedido()" *ngIf="tipoEnvio === 1" [disabled]="rTantidad(numeroMesa)"
-      expand="block">Realizar Pedido</ion-button>
-    <ion-button class="bg-rosa " (click)="realizarPedido()" *ngIf="tipoEnvio !== 1" [disabled]="pagoSeleccion"
-      expand="block">Realizar Pedido</ion-button>
+    <ion-button class="bg-naranja " (click)="realizarPedido()" *ngIf="tipoEnvio === 1" [disabled]="rTantidad(numeroMesa)"
+                expand="block">Realizar Pedido</ion-button>
+    <ion-button class="bg-naranja " (click)="realizarPedido()" *ngIf="tipoEnvio !== 1" [disabled]="pagoSeleccion"
+                expand="block">Realizar Pedido</ion-button>
     <ion-button color="medium" (click)="presentAlertCancelar()" expand="block">Cancelar Pedido</ion-button>
   </div>
 

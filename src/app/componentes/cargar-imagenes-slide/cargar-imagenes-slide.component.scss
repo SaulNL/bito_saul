@@ -43,10 +43,14 @@ ion-card {
 .custom-file-input:before {
 	content: 'Subir Imagen';
 	display: block;
-	background: -webkit-linear-gradient(90deg,#fa4f72,#a74eef);
-	background: -o-linear-gradient(90deg,#fa4f72,#a74eef);
-	background: -moz-linear-gradient(90deg,#fa4f72,#a74eef);
-	background: linear-gradient(90deg,#fa4f72,#a74eef);
+    background: -webkit-linear-gradient(90deg, #ff1dbd 0%, rgb(255, 206, 0) 100%) ;
+	//background: -webkit-linear-gradient(90deg,#fa4f72,#a74eef);
+    background: -o-linear-gradient(90deg, #ff1dbd 0%, rgb(255, 206, 0) 100%) ;
+	//background: -o-linear-gradient(90deg,#fa4f72,#a74eef);
+    background: -moz-linear-gradient(90deg, #ff1dbd 0%, rgb(255, 206, 0) 100%) ;
+	//background: -moz-linear-gradient(90deg,#fa4f72,#a74eef);
+    background: linear-gradient(90deg, #ff1dbd 0%, rgb(255, 206, 0) 100%) ;
+	//background: linear-gradient(90deg,#fa4f72,#a74eef);
 	border-radius: 2px;
 	padding: 5px 0px;
 	outline: none;
@@ -85,19 +89,19 @@ ion-card {
 .icons-stype{
 	position: relative;
     top: 5pt;
-    color: #fa4f72;
+    color: #ff1dbd;
 }
 
 .borrar-botom {
 	display: block;
     background: -webkit-linear-gradient(
 90deg
-,#fa4f72,#a74eef);
-    background: -o-linear-gradient(90deg,#fa4f72,#a74eef);
-    background: -moz-linear-gradient(90deg,#fa4f72,#a74eef);
+,#ff1dbd 0%, rgb(255, 206, 0) );
+    background: -o-linear-gradient(90deg,#ff1dbd 0%, rgb(255, 206, 0) );
+    background: -moz-linear-gradient(90deg,#ff1dbd 0%, rgb(255, 206, 0) );
     background: linear-gradient(
 90deg
-,#fa4f72,#a74eef);
+,#ff1dbd 0%, rgb(255, 206, 0) );
     border-radius: 4px;
     padding: 5px 0px;
     outline: none;

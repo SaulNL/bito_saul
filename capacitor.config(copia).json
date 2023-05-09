@@ -1,6 +1,6 @@
 {
   "appId": "io.ionic.starter",
-  "appName": "Bitoo",
+  "appName": "TinBitoo",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

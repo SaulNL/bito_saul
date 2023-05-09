@@ -15,7 +15,7 @@
 
 ion-item {
   --border-radius: 34px;
-  --background: linear-gradient(90deg, rgba(250, 79, 114, 1) 0%, rgba(167, 78, 239, 1) 100%);
+  --background: linear-gradient(90deg, rgb(255, 29, 189 ) 0%, rgb(255, 206, 0) 100%);
   color: white;
   padding-bottom: 10px;
 }
@@ -27,4 +27,8 @@ ion-item {
 .numeroLike {
   font-size: 1.5rem;
   position: relative;
+}
+
+.texto-titulo{
+  color: #ff1dbd ;
 }
