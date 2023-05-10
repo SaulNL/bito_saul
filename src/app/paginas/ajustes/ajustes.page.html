@@ -5,12 +5,13 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
 
-    <ion-fab *ngIf="(numNotifiSinLeer != 0 && numNotifiSinLeer != undefined)" class="icono-campana" (click)="notificacion()">
-      <ion-icon class="campanita" name="notifications-off-outline"></ion-icon>
-      <p class="notif" #hayNotificaciones>{{numNotifiSinLeer}}</p>
-    </ion-fab>
-    <ion-buttons slot="end" (click)="presentActionSheet()">
-      <ion-button>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="(numNotifiSinLeer != 0 && numNotifiSinLeer != undefined)" class="icono-campana" fill="clear" 
+      (click)="abrirPaginaNotificaciones()">
+        <ion-badge class="badge">{{numNotifiSinLeer}}</ion-badge>
+        <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="presentActionSheet()">
         <ion-icon name="ellipsis-vertical-outline"></ion-icon>
       </ion-button>
     </ion-buttons>

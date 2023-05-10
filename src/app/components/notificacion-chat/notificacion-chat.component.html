@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar class="bg-tinbitoo" mode="ios">
+    <ion-button fill="clear" (click)="cerrarModal()">
+      <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+
+    <ion-title>{{notificacion.nombre_negocio}}</ion-title>
+
+    <ion-button fill="clear" slot="end" (click)="infoNegocio()">
+      <ion-icon name="storefront-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="message-wrap">
+    <div *ngFor="let msg of mensajes" class="message"
+    cls
+      [class.left]="msg.id_negocio_envia == notificacion.id_negocio_envia"
+      [class.right]=" msg.id_persona_envia == notificacion.id_persona_recibe"
+    >
+      <ion-img class="user-img" [src]="msg.logo_negocio" *ngIf="msg.id_negocio_envia == notificacion.id_negocio_envia" alt=""></ion-img>
+      <ion-spinner name="dots" *ngIf="msg.status === 'pending'"></ion-spinner>
+      <div class="msg-detail">
+        <div class="msg-info">
+          <p>{{msg.fecha}}</p>
+        </div>
+        <div class="msg-content">
+          <span class="triangle"></span>
+          <p>{{msg.mensaje}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer [translucent]="true">
+ <ion-toolbar>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-textarea aria-label placeholder="Escribir mensaje..." class="message-input"></ion-textarea>
+      </ion-col>
+      <ion-col size="auto">
+        <ion-button class="send-message">
+          <ion-icon slot="icon-only" name="send"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+ </ion-toolbar>
+</ion-footer>

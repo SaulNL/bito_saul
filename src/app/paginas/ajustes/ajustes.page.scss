@@ -5,27 +5,21 @@ img {
   border: 3px solid #a1a1a1;
   background-color: #fff;
 }
-.campanita{
-  font-weight: bold;
-  font-size: 1.5em;
-  margin-left: 50%;
-}
+
 .icono-campana{
-  margin-left: 67%;
-  margin-top: -6%;
+  position: relative;
 }
-.notif{
-  width: 20px;
-  height: 20px;
-  font-size: 15px;
-  border-radius: 50%;
+
+.badge{
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  font-size: 11px;
+  background: red;
   color: white;
-  background-color: #dc3444;
-  margin-top: -40px;
-  margin-right: -18px;
-  position:fixed;
-  font-weight: bold;
+  border-radius: 50%;
 }
+
 .imagen {
   width: 130px;
   background: url(https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg);

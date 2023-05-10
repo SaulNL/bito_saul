@@ -66,18 +66,10 @@ export class TabsPage implements OnInit {
     const pagina = localStorage.getItem('activedPage');
     const prod = localStorage.getItem('productos');
     const neg = localStorage.getItem('negocios');
-    var id_proveedor: number = +localStorage.getItem('id_proveedor');
-    this.notificacionesServide.obtenerNotificaciones(id_proveedor).subscribe(
-      response => {
-        if (response.code === 200){
-          this.misNotificaciones = response.data;
-          this.notificacionesSinAbrir();
-        }
-      },
-      error => {
-      }
-    );
-    this.actualizarNotificaciones();
+
+    this.obtenerNotificaciones();
+    
+    //this.actualizarNotificaciones();
     this.actualizarEncuestas();
 
     if (neg === 'active' && this.isIos){
@@ -228,25 +220,19 @@ export class TabsPage implements OnInit {
     await alert.present();
   }
 
-  obtenerNotificaciones(){
-    // tslint:disable-next-line:triple-equals
-    if (localStorage.getItem('id_proveedor') !== 'null' && localStorage.getItem('id_proveedor') !== undefined){
-      var id_proveedor: number = + localStorage.getItem('id_proveedor');
-      this.notificacionesServide.obtenerNotificaciones(id_proveedor).subscribe(
-        response => {
-          if (response.code === 200){
+  obtenerNotificaciones() {
+    let {id_proveedor, id_persona} = this.usuario.proveedor;
+
+    this.notificacionesServide.obtenerNotificaciones(id_proveedor, id_persona).subscribe(
+      response => {
         if (response.code === 200){
-          if (response.code === 200){
-            this.misNotificaciones = response.data;
-            this.notificacionesSinAbrir();
-          }
+          this.misNotificaciones = response.data;
+          this.notificacionesSinAbrir();
         }
-          }
-        },
-        error => {
-        }
-      );
-    }else{console.log("NO existe id_proveedor: ")}  
+      },
+      error => {
+      }
+    );
   }
 
   notificacionesSinAbrir(){
@@ -258,7 +244,7 @@ export class TabsPage implements OnInit {
 
   actualizarNotificaciones(){
     setInterval(( ) => {
-        this.obtenerNotificaciones();
+        //this.obtenerNotificaciones();
     }, 30000);
   }
   async actualizarEncuestas(){

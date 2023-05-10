@@ -13,7 +13,6 @@ import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Auth0Service } from "src/app/api/auth0.service";
 import { PedidosService } from "../../api/pedidos.service";
 import { PersonaService } from '../../api/persona.service';
-import {NotificacionService} from "../../api/NotificacionService";
 import {NotificacionesModel} from "../../Modelos/NotificacionesModel";
 import {NotificacionesService} from "../../api/usuario/notificaciones.service";
 
@@ -25,22 +24,22 @@ import {NotificacionesService} from "../../api/usuario/notificaciones.service";
 })
 export class AjustesPage implements OnInit {
   usuario: any;
-  public url_user: string;
-  public logon: any;
-  public lstNotificaciones: any;
-  public misNegocios: boolean;
-  public misAPromociones: boolean;
-  public solicitudes: boolean;
-  public misVentas: boolean;
-  public misCompras: boolean;
-  public generarSolicitud: boolean;
-  public estadisticas: boolean;
-  public numNotifiSinLeer: number = + localStorage.getItem('notifSinLeer');
-  public totalNoVistos: number;
-  public subscribe;
-  public siNoVistos: boolean;
-  public versionActualSistema: number;
-  public releaseDate: string;
+  url_user: string;
+  logon: any;
+  lstNotificaciones: any;
+  misNegocios: boolean;
+  misAPromociones: boolean;
+  solicitudes: boolean;
+  misVentas: boolean;
+  misCompras: boolean;
+  generarSolicitud: boolean;
+  estadisticas: boolean;
+  numNotifiSinLeer: number;
+  totalNoVistos: number;
+  subscribe;
+  siNoVistos: boolean;
+  versionActualSistema: number;
+  releaseDate: string;
 
   constructor(
     private util: UtilsCls,
@@ -93,7 +92,10 @@ export class AjustesPage implements OnInit {
         this.notificacionesVentas();
       }
     });
+
     this.numNotifiSinLeer = +localStorage.getItem('notifSinLeer');
+
+    this.obtenerNotificaciones();
 
     this.notificacionesVentas();
     //  this.usuario = this.util.getData();
@@ -179,6 +181,23 @@ export class AjustesPage implements OnInit {
     this._router.navigateByUrl("tabs/home/solicitudes");
   }
 
+  obtenerNotificaciones() {
+    let {id_proveedor, id_persona} = this.usuario.proveedor;
+
+    this.notificacionesServide.obtenerNotificaciones(id_proveedor, id_persona).subscribe(
+      response => {
+        if (response.code === 200){
+          this.lstNotificaciones = response.data;
+          localStorage.setItem('notificaciones', JSON.stringify(this.lstNotificaciones));
+
+          //this.notificacionesSinAbrir();
+        }
+      },
+      error => {
+      }
+    );
+  }
+
   public notificacionesVentas() {
     const id = this.auth0.getIdProveedor();
     this.pedidos.noVistos(id).subscribe(
@@ -227,8 +246,9 @@ export class AjustesPage implements OnInit {
     const content: NotificationInterface = this.create.createNotificationFirebaseWithNotUser();
     this.notification.updateUserWithNotification(content);
   }
-  public notificacion(){
-    this._router.navigateByUrl('tabs/Notificaciones');
+
+  abrirPaginaNotificaciones() {
+    this._router.navigate(["/tabs/notificaciones"]);
   }
 
 }

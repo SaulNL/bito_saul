@@ -1,55 +1,42 @@
 import { Component, OnInit } from '@angular/core';
-import {NotificacionesModel} from '../../Modelos/NotificacionesModel';
-import {Auth0Service} from '../../api/auth0.service';
-import {UtilsCls} from '../../utils/UtilsCls';
-import {NotificacionService} from '../../api/NotificacionService';
+import { NotificacionesService } from '../../api/usuario/notificaciones.service';
+import { Router } from '@angular/router';
+import { ModalController} from '@ionic/angular';
+import { NotificacionChatComponent } from '../../components/notificacion-chat/notificacion-chat.component';
+import { NotificacionesModel } from 'src/app/Modelos/NotificacionesModel';
 
 @Component({
   selector: 'app-notificacion',
   templateUrl: './notificacion.page.html',
   styleUrls: ['./notificacion.page.scss'],
-  providers: [Auth0Service],
 })
 export class NotificacionPage implements OnInit {
+  notificaciones: Array<NotificacionesModel>;
 
-  public lstNotificaciones: Array<NotificacionesModel>;
-  public noti: NotificacionesModel;
-  public numNotifiSinLeer: number;
-  public user: any;
-  public loader: boolean;
   constructor(
-      private _auth0: Auth0Service,
-      private _utilsCls: UtilsCls,
-      public notificacionService: NotificacionService
-  ) {  }
+      private notificacionService: NotificacionesService, private router: Router, 
+      private modalCtrl: ModalController,
+  ) { 
+   }
 
   ngOnInit() {
-    if (this._utilsCls.existe_sesion()){
-      this.user = this._auth0.getUserData();
-    }
-    this.lstNotificaciones = new Array<NotificacionesModel>();
-    this.noti = new NotificacionesModel();
-    this.numNotifiSinLeer = 0;
-    this.loader = false;
-    this.obtenerNotificaciones();
+    this.notificaciones = JSON.parse(localStorage.getItem('notificaciones'));
+    console.log(JSON.stringify(this.notificaciones));
   }
 
-  public obtenerNotificaciones() {
-    this.loader = true;
-    this.notificacionService.obtenerNotificaciones(this.user.proveedor.id_proveedor).subscribe(
-        response => {
-          if (response.code === 200) {
-            this.lstNotificaciones = response.data;
-            this.obtenerNotiSinLeer();
-          }
-          this.loader = false;
-        });
+  async abrirChat(notificacion) {
+    
+    const modal = await this.modalCtrl.create({
+      component: NotificacionChatComponent,
+      componentProps: {
+        notificacion: notificacion
+      }
+    });
+    modal.present();
   }
 
-  public obtenerNotiSinLeer(){
-    this.numNotifiSinLeer = this.lstNotificaciones.filter(item => {
-      return item.estatus === 1;
-    }).length;
+  cerrar() {
+    this.router.navigate(["/tabs/home/perfil"]);
   }
 
 
