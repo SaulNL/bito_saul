@@ -9,7 +9,9 @@
 }
 
 .giro-color{
-  color:  #a74eef;
+  //color:  #a74eef;
+
+  color: rgba(255, 76, 110, 0.911);
   font-size: 10px;
 }
 
@@ -63,7 +65,7 @@
   height: 17.3em;
 }
 .spinner-color {
-  --color: #fa4f72;
+  --color: #ff1dbd;
 }
 
 @media (min-width: 412px) {
@@ -74,7 +76,7 @@
 
 .image-center{ margin:0 auto; }
 small{
-  --color: #fa4f72;
+  --color: #ff1dbd;
 }
 
 ion-slide{
@@ -122,7 +124,8 @@ ion-slide{
 .bottom_info_distintivo{
   width:100%;
   height:30%;
-  background-color: #d85cb6;
+  //background-color-: #d85cb6;
+  background: linear-gradient(90deg,  #FF9925 0%,  #FFCE00 100%);
   position:fixed;
   bottom: -30%;  
   display: flex;
@@ -133,7 +136,8 @@ ion-slide{
 .bottom_info_distintivo_up{
   width:100%;
   height:30%;
-  background-color: #d85cb6;
+  //background-color: #d85cb6;
+  background: linear-gradient(90deg,  #FF9925 0%,  #FFCE00 100%);
   position:fixed;
   bottom: 0%;
   border-top-left-radius: 10px;
@@ -198,7 +202,7 @@ ion-card {
   text-align: center;
   color: #fff;
   padding: 0 5px;
-  background-color: #8207E0;
+  background: linear-gradient(90deg, rgba(255, 76, 110, 0.911) 0%, rgba(255, 115, 73, 0.911) 100%);
 }
 
 .tag {

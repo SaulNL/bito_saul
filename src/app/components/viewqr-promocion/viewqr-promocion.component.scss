@@ -45,7 +45,7 @@ app-viewqr-promocion > img {
 
 ion-content #imagenesFondo {
   
-  background-image: url(https://ecoevents.blob.core.windows.net/comprandoando/fondos_promociones/cupones/FondoCuponPantalla.png);
+  background-image: url(https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/App/FONDO%20PROMOCIONES.png);
   background-size: 100% 100%;
   background-repeat: no-repeat;
   position: relative;
@@ -57,11 +57,11 @@ ion-content #imagenesFondo {
 .font-color{
   color: #FFF;
 }
-.bitoo-www{
+.tinbitoo-www{
   margin-left: 30vw;
 }
 .bg-promo {
-  background: linear-gradient(90deg, rgba(250, 79, 114, 1) 0%, rgba(167, 78, 239, 1) 100%);
+  --background: linear-gradient(90deg, #ff1dbd 0%, rgb(255, 206, 0) 100%) !important;
 }
 
 ion-chip{
@@ -72,6 +72,7 @@ ion-chip{
 ion-img{
   width: 28vw !important;
   margin-left: 30vw;
+
 }
 
 .content-margin{
@@ -89,4 +90,10 @@ ion-spinner {
 .spinner > span {
  margin-top: 9px;
  margin-left: 5px;
+}
+
+.btn-descarga{
+  --background: #FCAB50;
+  color: white;
+  border: 2px solid #ff7f50;
 }

@@ -63,7 +63,7 @@
           </div>
         </div>
         <div style="display: flex; justify-content: center; align-items: center">
-          <ion-label> www.bitoo.com.mx/{{negocioTO.url_negocio}}</ion-label>
+          <ion-label> www.tinbitoo.com.mx/{{negocioTO.url_negocio}}</ion-label>
         </div>
         <div>
           <ion-item class="slider">
@@ -220,7 +220,7 @@
 
           <ion-item>
             <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
-              <ion-button mode="ios" size="small" class="bg-rosa" shape="round" (click)="seleccionarSucripcion()">
+              <ion-button mode="ios" size="small" class="bg-naranja" shape="round" (click)="seleccionarSucripcion()">
                 Seleccione su plan de suscrpción
               </ion-button>
             </div>
@@ -259,7 +259,7 @@
 
           <ion-row class="ion-align-items-center">
             <ion-col size="12" class="ion-text-center">
-              <ion-button size="small" class="bg-rosa" type="button" (click)="agregarConvenio()">
+              <ion-button size="small" class="bg-naranja" type="button" (click)="agregarConvenio()">
                 Agregar convenio
               </ion-button>
               <ion-button size="small" color="medium" type="button" (click)="cancelarConvenio()">
@@ -329,8 +329,8 @@
           <ion-grid>
             <ion-row class="ion-align-items-center">
               <ion-col size="12" class="ion-text-center">
-                <ion-button [disabled]="blnActivaHorario" size="small" class="bg-rosa" type="button"
-                  (click)="agregarHorario()">
+                <ion-button [disabled]="blnActivaHorario" size="small" class="bg-naranja" type="button"
+                            (click)="agregarHorario()">
                   Guardar Horario
                 </ion-button>
                 <ion-button size="small" color="medium" type="button" (click)="cancelarHorario()">
@@ -472,14 +472,14 @@
             <ion-label>Los campos con <span style="color: red">*</span>son
               obligatorios</ion-label>
           </ion-item>
-          <ion-button expand="block" type="submit" class="bg-rosa"
+          <ion-button expand="block" type="submit" class="bg-naranja"
             *ngIf="(seEstaClonando == false) && (negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)"
             [disabled]="infoInvalid(formNegocio.invalid, negocioTO.dias)">
             <span *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</span>
           </ion-button>
         </ion-list>
       </form>
-      <ion-button (click)="nextTab('contacto')" expand="block" type="submit" class="bg-rosa">Siguiente
+      <ion-button (click)="nextTab('contacto')" expand="block" type="submit" class="bg-naranja">Siguiente
       </ion-button>
     </ion-card-content>
   </ion-card>
@@ -489,7 +489,7 @@
     <ion-card-content>
       <form #formDomicilio="ngForm" (ngSubmit)="guardar(formDomicilio)">
         <ion-item>
-          <ion-button (click)="setearDireccion()" expand="small" class="bg-rosa" slot="end">
+          <ion-button (click)="setearDireccion()" expand="small" class="bg-naranja" slot="end">
             <span> Usar domicilio personal </span>
           </ion-button>
         </ion-item>
@@ -578,7 +578,7 @@
               [(ngModel)]="negocioTO.det_domicilio.codigo_postal" (change)="getAddress()" required></ion-input>
           </ion-item>
           <br />
-          <ion-button *ngIf="blnActivaNegocioFisico" size="small" class="bg-rosa" type="button" (click)="getAddress()">
+          <ion-button *ngIf="blnActivaNegocioFisico" size="small" class="bg-naranja" type="button" (click)="getAddress()">
             <ion-icon name="navigate-circle-outline"></ion-icon>
             Buscar dirección en el mapa
           </ion-button>
@@ -591,7 +591,7 @@
                 <div id="mapId" style="height: 200px"></div>
               </ion-col>
             </ion-row>
-            <ion-button size="small" class="bg-rosa" type="button" (click)="localizationOption()">
+            <ion-button size="small" class="bg-naranja" type="button" (click)="localizationOption()">
               <ion-icon name="navigate-circle-outline"></ion-icon>
               Ubicación Actual
             </ion-button>
@@ -600,13 +600,13 @@
             <ion-label>Los campos con <span style="color: red">*</span> son
               obligatorios</ion-label>
           </ion-item>
-          <ion-button expand="block" type="submit" class="bg-rosa" *ngIf="seEstaClonando == false"
-            [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
+          <ion-button expand="block" type="submit" class="bg-naranja" *ngIf="seEstaClonando == false"
+                      [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
             <span *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined">Guardar</span>
             <span *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined">Actualizar</span>
           </ion-button>
-          <ion-button expand="block" type="submit" class="bg-rosa" *ngIf="seEstaClonando == true"
-            [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
+          <ion-button expand="block" type="submit" class="bg-naranja" *ngIf="seEstaClonando == true"
+                      [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
             <span>Guardar</span>
           </ion-button>
         </ion-list>
@@ -684,11 +684,11 @@
         <ion-button
           *ngIf="(seEstaClonando == false) && (negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)"
           [disabled]="contactoInvalid(formNegoContacto.invalid, negocioTO.dias)" expand="block" type="submit"
-          class="bg-rosa">
+          class="bg-naranja">
           <span *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null)">Actualizar</span>
         </ion-button>
       </form>
-      <ion-button (click)="nextTab('domicilio')" expand="block" type="submit" class="bg-rosa">Siguiente
+      <ion-button (click)="nextTab('domicilio')" expand="block" type="submit" class="bg-naranja">Siguiente
       </ion-button>
     </ion-card-content>
   </ion-card>
@@ -734,7 +734,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-button (click)="mostrarListaProductos = !mostrarListaProductos" class="bg-rosa" *ngIf="mostrarListaProductos">
+  <ion-button (click)="mostrarListaProductos = !mostrarListaProductos" class="bg-naranja" *ngIf="mostrarListaProductos">
     <ion-icon name="chevron-back-outline"></ion-icon>
   </ion-button>
 
@@ -793,6 +793,6 @@
   </ion-card>
 
   <ion-button *ngIf="!mostrarListaProductos" (click)="nextTab('domicilio')" expand="block" type="submit"
-    class="bg-rosa">Anterior
+    class="bg-naranja">Anterior
   </ion-button>
 </ion-content>

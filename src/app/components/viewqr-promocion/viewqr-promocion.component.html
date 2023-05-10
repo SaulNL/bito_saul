@@ -1,5 +1,5 @@
 <ion-header translucent>
-  <ion-toolbar class="bg-rosa">
+  <ion-toolbar class="bg-naranja">
     <ion-title> Cupón de descuento</ion-title>
     <ion-buttons slot="end">
       <ion-button class="blanco" (click)="dismissModal()">
@@ -12,7 +12,7 @@
 <ion-content #main id="main" >
   <app-spinner [loader]="loader" [message]="msj"></app-spinner>
   <div class="ion-text-center">
-    <ion-button expand="block" (click)="descargar()">
+    <ion-button expand="block" (click)="descargar()" class="btn-descarga">
       <ion-spinner *ngIf="loaderCupon" name="bubbles"></ion-spinner>
       <span>{{loaderCupon ? 'Generando cupón..' : 'Descargar'}}</span>
     </ion-button>
@@ -21,7 +21,7 @@
     <div id="imagenesFondo" class="ion-text-center font-color content-margin">
       <h1>Cupón de descuento</h1>
       
-      <ion-img id="contenido"  src="https://ecoevents.blob.core.windows.net/comprandoando/BitooLogo.png"></ion-img>
+      <ion-img id="contenido" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/LOGOTINBITOO.png"></ion-img>
       <h4>{{promocion.nombre_comercial}}</h4>
 
       <h2  class="font-color-e3dd2a">{{promocion.promocion}}</h2>
@@ -48,7 +48,7 @@
 
       <div #qrcode id="qrcode" class="d-none d-sm-none d-md-block d-lg-block d-xl-block"></div>
       
-      <p class="bitoo-www">www.bitoo.com.mx</p>
+      <p class="tinbitoo-www">www.tinbitoo.com.mx</p>
     </div>
 
   </div>
