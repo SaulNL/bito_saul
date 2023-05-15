@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-buttons slot="end">
+      <ion-button (click)="reservacion()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Mis eventos</ion-title>
+    <ion-buttons slot="start">
+      <ion-button id="btnRegresar" (click)="regresar()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+        Regresar
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Estados</ion-label>
+    <ion-select placeholder="{{estadoAux}}" (ionChange)="selectEstado($event)" [(ngModel)]="estado">
+      <ng-container *ngFor="let estado of lstCatEstados">
+        <ion-select-option [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
+      </ng-container>
+    </ion-select>
+  </ion-item>
+
+</ion-content>

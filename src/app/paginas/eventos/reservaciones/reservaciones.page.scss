@@ -1,0 +1,31 @@
+.titulos{
+  width: 41%;
+}
+
+.colorInput{
+  --background: rgb(255, 243, 252);
+  border-radius: 3px;
+}
+
+.noPersonas{
+  background-color: rgb(255, 243, 252);
+  color: #1e1c1c;
+  border-radius: 3px;
+  width: 300px;
+  height: 30px;
+  text-align: center;
+  padding: 5px;
+}
+
+.inputP{
+  justify-content: center;
+  --background: #FFE8F9;
+  border-radius: 3px;
+}
+
+.eventButton{
+  border-radius: 3px;
+  --background: #FFE8F9;
+  color: #1e1c1c;
+  margin-bottom: 50px;
+}

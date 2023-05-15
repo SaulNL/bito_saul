@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title class="ion-text-center">#</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="regresar()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div style="background-color: white; padding: 10px;">
+        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 150px;">
+            <ion-label>DESCRIPCIÓN DEL EVENTO</ion-label>
+        </div>
+
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <ion-label class="titulos">Fecha y hora:</ion-label>
+            <ion-input class="colorInput" readonly></ion-input>
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <ion-label class="titulos">Ubicación:</ion-label>
+            <ion-input class="colorInput" readonly></ion-input>
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <ion-label class="titulos">Número telefonico:</ion-label>
+            <ion-input class="colorInput" readonly></ion-input>
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <ion-label class="titulos">Método de pago:</ion-label>
+            <ion-input class="colorInput" readonly></ion-input>
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 40px;">
+            <ion-label class="titulos">Se repite:</ion-label>
+            <ion-input class="colorInput" readonly></ion-input>
+        </div>
+
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <ion-label class="noPersonas">No. de personas</ion-label>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center; width: 100px; margin-bottom: 40px;">
+            <ion-input class="inputP" type="text"></ion-input>
+        </div>
+
+        <div style="display: flex; justify-content: center; align-items: center">
+            <ion-button class="eventButton">
+                Generar reservación
+            </ion-button>
+        </div>
+
+    </div>
+</ion-content>
