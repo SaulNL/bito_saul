@@ -36,10 +36,17 @@
           <ion-button mode="ios" size="small" class="mapa" shape="round" [disabled]="listaCategorias.length === 0"
             (click)="abrirModalMapa()">
             <ion-icon class="icono" name="map-outline"></ion-icon>
-            <small >Mapa</small>
+            <small>Mapa</small>
           </ion-button>
         </ion-col>
-        <ion-col size-md="6">
+
+        <ion-col class="custom-col" size-md="6">
+          <ion-button mode="ios" size="small" class="mapa" shape="round" (click)="openEventos()">
+            <small>Eventos</small>
+          </ion-button>
+        </ion-col>
+
+        <ion-col class="custom-col" size-md="6">
           <ion-chip *ngIf="filtroActivo" (click)="borrarFiltrosP()" color="danger">
             <ion-icon class="icono" name="trash-outline" color="danger"></ion-icon>
             <ion-label><span class="text">Borrar Filtros</span></ion-label>
