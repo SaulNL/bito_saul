@@ -25,8 +25,12 @@ export class NotificacionesService {
     }));
   }
 
-  obtenerMensajesNotificacion(id_persona_recibe: number, id_negocio_envia: number): Observable<any> {
-    const body = JSON.stringify({id_persona_recibe, id_negocio_envia});
+  obtenerMensajesNotificacion(idRecibe: number, idEnvia: number, tipo: number): Observable<any> {
+    
+    const body = JSON.stringify(
+      tipo === 1 ? { id_negocio_recibe: idRecibe, id_persona_envia: idEnvia } 
+                 : { id_persona_recibe: idRecibe, id_negocio_envia: idEnvia }
+                 );
     this.http.setDataSerializer("utf8");
     
     return from(this.http.post(this.url + 'api/mensajeria/obtener/mensajes', body, 
@@ -37,6 +41,19 @@ export class NotificacionesService {
     .catch((error) => {
       return error;
     }));
+  }
+
+  guardarMensajeNotificacion(json: any){
+    const body = JSON.stringify(json);
+
+    this.http.setDataSerializer("utf8");
+    return from(this.http.post(this.url + 'api/mensajeria/guardar/mensaje', body, AppSettings.getHeadersToken())
+    .then((data) => { 
+      return JSON.parse(data.data);
+    })
+    .catch((error) => {
+      return error;
+    }));    
   }
      
   obtenerEncuestas(id_persona: number): Observable<any> {

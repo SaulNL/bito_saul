@@ -67,7 +67,7 @@ export class TabsPage implements OnInit {
     const prod = localStorage.getItem('productos');
     const neg = localStorage.getItem('negocios');
 
-    this.obtenerNotificaciones();
+    if (this.usuario !== null) this.obtenerNotificaciones();
     
     //this.actualizarNotificaciones();
     this.actualizarEncuestas();
@@ -221,9 +221,16 @@ export class TabsPage implements OnInit {
   }
 
   obtenerNotificaciones() {
-    let {id_proveedor, id_persona} = this.usuario.proveedor;
+    let idProveedor = null;
+    let idPersona = null;
+    if (this.usuario.proveedor) {
+      idProveedor = this.usuario.proveedor.id_proveedor;
+      idPersona = this.usuario.proveedor.id_persona;
+    } else {
+      idPersona = this.usuario.id_persona;
+    }
 
-    this.notificacionesServide.obtenerNotificaciones(id_proveedor, id_persona).subscribe(
+    this.notificacionesServide.obtenerNotificaciones(idProveedor, idPersona).subscribe(
       response => {
         if (response.code === 200){
           this.misNotificaciones = response.data;

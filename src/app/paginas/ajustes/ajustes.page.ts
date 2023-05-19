@@ -14,7 +14,7 @@ import { Auth0Service } from "src/app/api/auth0.service";
 import { PedidosService } from "../../api/pedidos.service";
 import { PersonaService } from '../../api/persona.service';
 import {NotificacionesModel} from "../../Modelos/NotificacionesModel";
-import {NotificacionesService} from "../../api/usuario/notificaciones.service";
+import {NotificacionesService} from "../../api/usuario/notificaciones.service"; 
 
 @Component({
   selector: "app-ajustes",
@@ -95,7 +95,7 @@ export class AjustesPage implements OnInit {
 
     this.numNotifiSinLeer = +localStorage.getItem('notifSinLeer');
 
-    this.obtenerNotificaciones();
+    if (this.usuario !== null) this.obtenerNotificaciones();
 
     this.notificacionesVentas();
     //  this.usuario = this.util.getData();
@@ -182,9 +182,16 @@ export class AjustesPage implements OnInit {
   }
 
   obtenerNotificaciones() {
-    let {id_proveedor, id_persona} = this.usuario.proveedor;
+    let idProveedor = null;
+    let idPersona = null;
+    if (this.usuario.proveedor) {
+      idProveedor = this.usuario.proveedor.id_proveedor;
+      idPersona = this.usuario.proveedor.id_persona;
+    } else {
+      idPersona = this.usuario.id_persona;
+    }
 
-    this.notificacionesServide.obtenerNotificaciones(id_proveedor, id_persona).subscribe(
+    this.notificacionesServide.obtenerNotificaciones(idProveedor, idPersona).subscribe(
       response => {
         if (response.code === 200){
           this.lstNotificaciones = response.data;

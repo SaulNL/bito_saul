@@ -1,3 +1,13 @@
+.loader {
+  position: fixed;
+  top: 48%;
+  left: 50%;
+}
+
+ion-spinner {
+  --color: rgba(255, 115, 73, 0.900);
+}
+
 .message-wrap {
   padding: 0 10px; 
 }
@@ -38,7 +48,6 @@
   color: #fff;
   width: auto;
   max-width: 80%;
-  font-size: 15px;
 }
 
 .message-wrap .message .msg-detail .msg-content span.triangle {
@@ -79,9 +88,7 @@
 .message-wrap .message.right .msg-detail .msg-info {
   text-align: right; 
 }
-.message-wrap .message.right .user-img {
-  right: 0; 
-}
+
 .message-wrap .message.right ion-spinner {
   position: absolute;
   right: 10px;
@@ -89,10 +96,10 @@
 }
 .message-wrap .message.right .msg-detail .msg-content {
   float: right;
-  background: #fa3e9c;
+  background: rgba(255, 115, 73, 0.900);
 }
 .message-wrap .message.right .msg-detail .msg-content span.triangle {
-  background-color: #fa3e9c;
+  background: rgba(255, 115, 73, 0.900);
   border-bottom-width: 0;
   border-left-width: 0;
   right: -5px; 
@@ -105,7 +112,7 @@ ion-icon {
 .send-message {
     font-size: 10px;
     margin-top: 10px;
-    --background: #fa3e9c; //rgb(255,153,37);
+    --background:rgba(255, 115, 73, 0.900);
 }
 
 ion-textarea.message-input {
