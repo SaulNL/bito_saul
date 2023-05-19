@@ -474,7 +474,7 @@ export class PedidoNegocioComponent implements OnInit {
      pedidoOrdenMP(data){
         this.pasarelaServicies.pedidoOrdenMP(data).subscribe(
             response => {
-                window.location = JSON.parse(response).data.init_point;
+                window.open(JSON.parse(response).data.init_point);
             }
         );
     }

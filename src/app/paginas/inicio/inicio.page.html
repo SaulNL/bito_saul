@@ -5,7 +5,6 @@
     (buscarEmit)="buscarToolbar($event)" titulo="Inicio"></app-toolbar-busqueda>
 
 </ion-toolbar>
-
 <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
   <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
   <app-boton-top [content]="content" [cordenada]="cordenada" [platform]="isIOS" *ngIf="!isIOS"></app-boton-top>
@@ -19,6 +18,7 @@
   <app-spinner [loader]="loaderNegocios" [message]="msj"></app-spinner>
   <app-spinner *ngIf="mostrarloaderInicio" [loader]="loaderInicio" [message]="msj"></app-spinner>
   <div *ngIf="!loader">
+    <ion-button (click)="irPedido()">pedido</ion-button>
     <ion-grid>
       <ion-row>
         <ion-col class="ion-col" size-md="12">
