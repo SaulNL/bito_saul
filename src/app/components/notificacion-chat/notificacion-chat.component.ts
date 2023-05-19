@@ -54,7 +54,7 @@ export class NotificacionChatComponent implements OnInit {
           res.data.map((msj) => {
             msj.fecha = new Date(msj.fecha).toLocaleString();
           });
-
+          this.loader = false;
           if (res.data.length != this.mensajes.length) {
             this.mensajes = res.data;
             this.scrollToBottom();
