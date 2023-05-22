@@ -309,7 +309,7 @@
             <ion-row class="ion-align-items-center">
               <ion-col size="12" class="ion-text-center">
                 <ion-button [disabled]="blnActivaHorario" size="small" class="bg-naranja" type="button"
-                            (click)="agregarHorario()">
+                  (click)="agregarHorario()">
                   Guardar Horario
                 </ion-button>
                 <ion-button size="small" color="medium" type="button" (click)="cancelarHorario()">
@@ -557,7 +557,8 @@
               [(ngModel)]="negocioTO.det_domicilio.codigo_postal" (change)="getAddress()" required></ion-input>
           </ion-item>
           <br />
-          <ion-button *ngIf="blnActivaNegocioFisico" size="small" class="bg-naranja" type="button" (click)="getAddress()">
+          <ion-button *ngIf="blnActivaNegocioFisico" size="small" class="bg-naranja" type="button"
+            (click)="getAddress()">
             <ion-icon name="navigate-circle-outline"></ion-icon>
             Buscar dirección en el mapa
           </ion-button>
@@ -580,12 +581,12 @@
               obligatorios</ion-label>
           </ion-item>
           <ion-button expand="block" type="submit" class="bg-naranja" *ngIf="seEstaClonando == false"
-                      [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
+            [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
             <span *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined">Guardar</span>
             <span *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined">Actualizar</span>
           </ion-button>
           <ion-button expand="block" type="submit" class="bg-naranja" *ngIf="seEstaClonando == true"
-                      [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
+            [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
             <span>Guardar</span>
           </ion-button>
         </ion-list>

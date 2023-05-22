@@ -35,7 +35,7 @@ const routes: Routes = [
       },
       {
         path: 'promocion/:id',
-        loadChildren: () => import('../promocion/promocion.module').then( m => m.PromocionPageModule)
+        loadChildren: () => import('../promocion/promocion.module').then(m => m.PromocionPageModule)
       },
       {
         path: 'negocio/:negocio',
@@ -52,6 +52,10 @@ const routes: Routes = [
       {
         path: 'actualizar-version',
         loadChildren: () => import('../actualizar-version/actualizar-version.module').then(m => m.ActualizarVersionPageModule)
+      },
+      {
+        path: 'mis-eventos',
+        loadChildren: () => import('../mis-eventos/mis-eventos.module').then(m => m.MisEventosPageModule)
       },
       {
         path: '',

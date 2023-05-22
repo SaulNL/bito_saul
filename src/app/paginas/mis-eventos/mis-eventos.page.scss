@@ -1,0 +1,33 @@
+.eventosContent {
+    display: flex;
+    padding: 15px;
+    flex-direction: column;
+    background-color: #fff;
+    margin: 15px;
+    border-radius: 15px;
+    width: 93vw;
+    padding-left: 15px;
+}
+
+.eventoContent {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.eventocreado {
+    display: flex;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+
+.eventoImg {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.eventTitle {
+    margin-left: 20px;
+    color: #606060;
+    width: 100vw;
+}
