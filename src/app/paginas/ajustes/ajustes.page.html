@@ -1,12 +1,17 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    <ion-title> Perfil </ion-title>
+    <ion-title> Perfil</ion-title>
     <ion-buttons *ngIf="usuario !== null" slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-buttons slot="end" (click)="presentActionSheet()">
-      <ion-button>
-        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+
+    <ion-buttons slot="end" class="btns-tool-end">
+      <ion-button *ngIf="(numNotifiSinLeer != 0 && numNotifiSinLeer != undefined)" (click)="abrirPaginaNotificaciones()">
+        <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+      </ion-button>
+      <ion-badge class="badge">{{numNotifiSinLeer}}</ion-badge>
+      <ion-button (click)="presentActionSheet()">
+        <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -100,7 +105,7 @@
             </ion-card>
           </ion-col>-->
 
-          <ion-col *ngIf="estadisticas">
+          <!-- <ion-col *ngIf="estadisticas">
             <ion-card>
               <ion-card-content>
                 <div class="ion-text-center" [routerLink]="['/tabs/home/estadisticas']">
@@ -109,7 +114,7 @@
                 </div>
               </ion-card-content>
             </ion-card>
-          </ion-col>
+          </ion-col> -->
 
           <ion-col>
             <ion-card>

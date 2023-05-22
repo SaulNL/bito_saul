@@ -8,7 +8,7 @@ import { StatisticsFilterInterface, StatisticsFilterModel } from './../../models
 import { StatisticsByBusinessInterface, BusinessStatisticsLoaderInterface, BusinessStatisticsLoaderModel, BusinessStatisticsInterface, BusinessStatisticsModel } from './../../models/statistic-model';
 import { Params } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import Moment from 'moment';
 import { ToadNotificacionService } from './../../../api/toad-notificacion.service';
 import { GeneralServicesService } from 'src/app/api/general-services.service';

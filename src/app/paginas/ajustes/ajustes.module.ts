@@ -15,6 +15,6 @@ import { AjustesPage } from './ajustes.page';
     IonicModule,
     AjustesPageRoutingModule
   ],
-  declarations: [AjustesPage]
+    declarations: [AjustesPage]
 })
 export class AjustesPageModule {}

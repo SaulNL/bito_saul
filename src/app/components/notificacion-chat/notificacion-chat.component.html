@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar class="tolbar" mode="ios">
+    <ion-button fill="clear" (click)="cerrarModal()">
+      <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+
+    <ion-title>{{ notificacion.nombre_negocio }}</ion-title>
+
+    <ion-button
+      fill="clear"
+      slot="end"
+      (click)="infoNegocio()"
+      [disabled]="notificacion.url_negocio === null || notificacion.url_negocio.trim().length === 0"
+    >
+      <ion-icon name="storefront-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-spinner *ngIf="loader" name="circular" class="loader"></ion-spinner>
+  <div class="message-wrap" *ngIf="!loader">
+    <div
+      class="message"
+      *ngFor="let msg of mensajes"
+      [class.left]="msg.remitente === 1"
+      [class.right]="msg.remitente === 0"
+    >
+      <ion-avatar class="user-img" *ngIf="msg.remitente === 1">
+        <ion-img
+          alt=""
+          [src]="
+            msg.logo_negocio.trim().length === 0
+              ? 'https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/Proveedor500.png'
+              : msg.logo_negocio
+          "
+        >
+        </ion-img>
+      </ion-avatar>
+      <div class="msg-detail">
+        <div class="msg-info">
+          <p>{{ msg.fecha }}</p>
+        </div>
+        <div class="msg-content">
+          <span class="triangle"></span>
+          <p>{{ msg.mensaje }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer [translucent]="true">
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-textarea
+            [(ngModel)]="mensajeEnviar"
+            aria-label
+            placeholder="Escribir mensaje..."
+            class="message-input"
+          ></ion-textarea>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button class="send-message" (click)="enviarMensaje()">
+            <ion-icon slot="icon-only" name="send"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>
