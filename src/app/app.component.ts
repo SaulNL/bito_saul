@@ -124,6 +124,9 @@ export class AppComponent {
                             } else if(match.$link.path.includes('promocion')) {
                                 this.router.navigateByUrl("/tabs" + match.$link["path"]);
                                 this.modalController.dismiss();
+                            } else if(match.$link.path.includes('pago-realizado')) {
+                                    this.router.navigateByUrl("/tabs" + match.$link["path"]);
+                                    this.modalController.dismiss();
                             } else {
                                 this.router.navigateByUrl('/tabs/negocio' + match.$link["path"]);
                                 this.modalController.dismiss();

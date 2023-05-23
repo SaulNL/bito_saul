@@ -26,11 +26,6 @@ const routes: Routes = [
         loadChildren: () => import('../solicitud/solicitud.module').then(m => m.SolicitudPageModule), canActivate: [AuthGuardService]
       },
       {
-        path: 'pago_realizado',
-        loadChildren: () => import('../pasarelas/pago-realizado/pago-realizado.module')
-            .then(m => m.PagoRealizadoPageModule) , canActivate: [AuthGuardService]
-      },
-      {
         path: 'inicio',
         loadChildren: () => import('../inicio/inicio.module').then(m => m.Tab3PageModule), canActivate: [AuthGuardService]
       },
@@ -59,7 +54,7 @@ const routes: Routes = [
         loadChildren: () => import('../actualizar-version/actualizar-version.module').then(m => m.ActualizarVersionPageModule)
       },
       {
-        path: 'pago-realizado',
+        path: 'pago-realizado/:identificador',
         loadChildren: () => import('../pasarelas/pago-realizado/pago-realizado.module').then( m => m.PagoRealizadoPageModule)
       },
       {

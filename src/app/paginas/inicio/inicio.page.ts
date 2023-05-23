@@ -1272,9 +1272,4 @@ export class InicioPage implements OnInit, AfterViewInit {
     console.log("Cerró el popup")
     this.showPopUp = false;
   }
-
-    irPedido() {
-      // this.router.navigate(['/tabs/pago-realizado']).then();
-      window.open('https://www.mercadopago.com.mx/paid?&utm_source=google&utm_medium=cpc&utm_campaign=MLM_MP_G_AO_GEN_ALL_BRAND_ALL_CONV_EXACT&matt_tool=53751208&matt_word=MLM_MP_G_AO_GEN_ALL_BRAND_ALL_CONV_EXACT&gclid=Cj0KCQjwmN2iBhCrARIsAG_G2i5QunP7XDylx4xfaie8oaBcnigTacfbpJLb-EGN6afNrpGAShBhZjwaAle8EALw_wcB', '_system');
-    }
 }

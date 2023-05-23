@@ -24,13 +24,17 @@ export class PagoRealizadoPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.queryParams
+    this.route.params.subscribe((params) => {
+      alert("params " + JSON.stringify(params))
+
+    })
+    /* this.route.queryParams
         .subscribe(params => {
-              this.pedido = params.pedido;
+              //this.pedido = params.pedido;
               // this.pedido = 'MmxkT2NIU1NDbm5Lalh3R0VNNU1adz09p';
               this.obtenerPedido();
             }
-        );
+        ); */
   }
 
 
