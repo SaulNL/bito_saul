@@ -13,8 +13,6 @@ import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Auth0Service } from "src/app/api/auth0.service";
 import { PedidosService } from "../../api/pedidos.service";
 import { PersonaService } from '../../api/persona.service';
-import {NotificacionesModel} from "../../Modelos/NotificacionesModel";
-import {NotificacionesService} from "../../api/usuario/notificaciones.service"; 
 
 @Component({
   selector: "app-ajustes",
@@ -26,7 +24,6 @@ export class AjustesPage implements OnInit {
   usuario: any;
   url_user: string;
   logon: any;
-  lstNotificaciones: any;
   misNegocios: boolean;
   misAPromociones: boolean;
   solicitudes: boolean;
@@ -48,7 +45,6 @@ export class AjustesPage implements OnInit {
     private _router: Router,
     private navctrl: NavController,
     private active: ActivatedRoute,
-    private notificacionesServide: NotificacionesService,
     private auth0: Auth0Service,
     private validarPermisos: ValidarPermisoService,
     private pedidos: PedidosService,
@@ -61,7 +57,7 @@ export class AjustesPage implements OnInit {
     this.siNoVistos = false;
     this.totalNoVistos = 0;
     this.numNotifiSinLeer = 0;
-    this.lstNotificaciones = [];
+  
     if (this.util.existSession()) {
       this.usuario = this.auth0.getUserData();
       this.setNewDataBasicUser(this.usuario.id_persona);
@@ -72,7 +68,6 @@ export class AjustesPage implements OnInit {
   }
 
   ngOnInit() {
-    this.lstNotificaciones = new Array<NotificacionesModel>();
     this.active.queryParams.subscribe((params) => {
       if (params && params.special) {
         this.usuario = JSON.parse(localStorage.getItem('u_data'));
@@ -94,8 +89,6 @@ export class AjustesPage implements OnInit {
     });
 
     this.numNotifiSinLeer = +localStorage.getItem('notifSinLeer');
-
-    if (this.usuario !== null) this.obtenerNotificaciones();
 
     this.notificacionesVentas();
     //  this.usuario = this.util.getData();
@@ -179,30 +172,6 @@ export class AjustesPage implements OnInit {
 
   misSolicitudes() {
     this._router.navigateByUrl("tabs/home/solicitudes");
-  }
-
-  obtenerNotificaciones() {
-    let idProveedor = null;
-    let idPersona = null;
-    if (this.usuario.proveedor) {
-      idProveedor = this.usuario.proveedor.id_proveedor;
-      idPersona = this.usuario.proveedor.id_persona;
-    } else {
-      idPersona = this.usuario.id_persona;
-    }
-
-    this.notificacionesServide.obtenerNotificaciones(idProveedor, idPersona).subscribe(
-      response => {
-        if (response.code === 200){
-          this.lstNotificaciones = response.data;
-          localStorage.setItem('notificaciones', JSON.stringify(this.lstNotificaciones));
-
-          //this.notificacionesSinAbrir();
-        }
-      },
-      error => {
-      }
-    );
   }
 
   public notificacionesVentas() {

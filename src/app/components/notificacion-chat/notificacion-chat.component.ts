@@ -28,11 +28,11 @@ export class NotificacionChatComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.loader = true;
     this.obtenerMensajes();
   }
 
   obtenerMensajes() {
-    this.loader = true;
     this.idEnvia = null;
     this.idRecibe = null;
 
@@ -46,22 +46,30 @@ export class NotificacionChatComponent implements OnInit {
       this.idRecibe = this.notificacion.id_persona_recibe;
     }
 
-    this.interval = setInterval(() => {
+    if (this.loader) {
+      this.servicioMensajes();
+    } else {
+      this.interval = setInterval(() => {
+        this.servicioMensajes();
+      }, 1000);
+    }
+    this.scrollToBottom();
+  }
 
-      this.service.obtenerMensajesNotificacion(this.idRecibe, this.idEnvia, this.tipo)
-      .subscribe((res) => {
-        if (res.code === 200) {
-          res.data.map((msj) => {
-            msj.fecha = new Date(msj.fecha).toLocaleString();
-          });
-          this.loader = false;
-          if (res.data.length != this.mensajes.length) {
-            this.mensajes = res.data;
-            this.scrollToBottom();
-          }
+  servicioMensajes() { 
+    this.service.obtenerMensajesNotificacion(this.idRecibe, this.idEnvia, this.tipo)
+    .subscribe((res) => {
+      if (res.code === 200) {
+        res.data.map((msj) => {
+          msj.fecha = new Date(msj.fecha).toLocaleString();
+        });
+        this.loader = false;
+        if (res.data.length != this.mensajes.length) {
+          this.mensajes = res.data;
+          this.obtenerMensajes();
         }
-      });
-    }, 2000);
+      }
+    });  
   }
 
   enviarMensaje() {
@@ -76,7 +84,7 @@ export class NotificacionChatComponent implements OnInit {
     };
 
     this.mensajeEnviar = "";
-
+    //this.pushMensaje(nuevoMensaje);
     this.service.guardarMensajeNotificacion(nuevoMensaje);
   }
 

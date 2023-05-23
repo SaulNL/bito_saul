@@ -11,7 +11,12 @@ import { NotificacionesModel } from "src/app/Modelos/NotificacionesModel";
   styleUrls: ["./notificacion.page.scss"],
 })
 export class NotificacionPage implements OnInit {
+  loader: boolean;
+  usuario: any;
+  idPersona: number;
+  idProveedor: number;
   notificaciones: Array<NotificacionesModel>;
+  intervalNotificaciones: any;
 
   constructor(
     private notificacionService: NotificacionesService,
@@ -20,11 +25,51 @@ export class NotificacionPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.notificaciones = JSON.parse(localStorage.getItem("notificaciones"));
-/* 
-    this.notificaciones?.map(notificacion => {
-      notificacion.fecha = new Date(notificacion.fecha).toLocaleDateString();
-    }); */
+  }
+
+  ionViewWillEnter() {
+    this.loader = true;
+    this.notificaciones = [];
+    this.usuario = JSON.parse(localStorage.getItem('u_data'));
+
+    this.obtenerNotificaciones();
+  }
+
+  obtenerNotificaciones() {
+    this.idProveedor = null;
+    this.idPersona = null;
+    
+    if (this.usuario.proveedor) {
+      this.idProveedor = this.usuario.proveedor.id_proveedor;
+      this.idPersona = this.usuario.proveedor.id_persona;
+    } else {
+      this.idPersona = this.usuario.id_persona;
+    }
+
+    if (this.loader) {
+      this.servicioNotificaciones();
+    } else {
+      this.intervalNotificaciones = setInterval(() => {
+        this.servicioNotificaciones();
+      }, 3000);
+    }
+  }
+
+  servicioNotificaciones(){
+    this.notificacionService.obtenerNotificaciones(this.idProveedor, this.idPersona).subscribe(
+      response => {
+        if (response.code === 200){
+          this.loader = false;
+          if (response.data.length != this.notificaciones.length) {
+            this.notificaciones= response.data;
+            this.obtenerNotificaciones();
+          }
+          
+        }
+      },
+      error => {
+      }
+    );
   }
 
   async abrirChat(notificacion) {
@@ -38,6 +83,7 @@ export class NotificacionPage implements OnInit {
   }
 
   cerrar() {
+    clearInterval(this.intervalNotificaciones);
     this.router.navigate(["/tabs/home/perfil"]);
   }
 }
