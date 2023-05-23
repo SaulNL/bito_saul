@@ -21,13 +21,13 @@
                     </div>
                     <!--h2 style="color: ;">$99.99.00</h2-->
                     <div *ngFor="let caracteristica of suscripcion.caracteristicas" style="width:100%; display:flex; justify-content: center; margin-bottom:3em">
-                        <ion-icon name='checkmark-circle' style="color:deeppink"></ion-icon>
+                        <ion-icon name='checkmark-circle' style="color:#ff1dbd"></ion-icon>
                         <!--img class="distintivoIcon" src="assets/icon/certificado_icon.svg"-->
                         <p style="margin-top: 0px; margin-bottom:0px; margin-left: 10px; width:fit-content">{{caracteristica.nombre}}</p>                                  
                     </div>
                     <ion-item>
                         <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
-                          <ion-button mode="ios" size="small" class="bg-rosa" shape="round" (click)="seleccionarSucripcion(suscripcion.id_perfil_caracteristica,suscripcion.nombre)">            
+                          <ion-button mode="ios" size="small" class="bg-naranja" shape="round" (click)="seleccionarSucripcion(suscripcion.id_perfil_caracteristica,suscripcion.nombre)">
                             Seleccione su plan de suscrpción 
                           </ion-button>
                         </div>             

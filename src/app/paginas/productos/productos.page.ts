@@ -548,7 +548,7 @@ export class ProductosPage {
     return imagen;
   }
 
-  public regresarBitoo() {
+  public regresarTinBitoo() {
     localStorage.removeItem("org");
     location.reload();
   }

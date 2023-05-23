@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar class="tolbar" mode="ios">
+    <ion-title>Notificaciones</ion-title>
+
+    <ion-button slot="end" (click)="cerrar()" fill="clear" class="btn-cerrar">
+      <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-spinner *ngIf="loader" name="circular" class="loader"></ion-spinner>
+
+  <ion-list *ngIf="!loader">
+    <ion-item button detail="false" *ngFor="let item of notificaciones" (click)="abrirChat(item)">
+      <ion-avatar slot="start">
+        <ion-img [src]="item.logo_negocio.trim().length === 0 
+          ? 'https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/Proveedor500.png' 
+          : item.logo_negocio">
+        </ion-img>
+      </ion-avatar>
+      <ion-label>
+        <h2>{{item.nombre_negocio}}</h2>
+        <p>{{item.mensaje}}</p>
+      </ion-label>
+      <label style="text-align: center;">
+        <p class="fecha">{{ item.fecha | date:"dd/MM/yyyy" }}</p>
+        <ion-badge color="danger" mode="ios">
+          <span *ngIf="item.no_leidos <= 99">{{item.no_leidos}}</span>
+          <span *ngIf="item.no_leidos > 99">+99</span>
+        </ion-badge>
+      </label>
+    </ion-item>
+  </ion-list>
+</ion-content>

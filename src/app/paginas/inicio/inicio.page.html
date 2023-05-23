@@ -9,7 +9,7 @@
   <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
   <app-boton-top [content]="content" [cordenada]="cordenada" [platform]="isIOS" *ngIf="!isIOS"></app-boton-top>
   <ion-fab *ngIf="isIOS" horizontal="end" vertical="bottom" slot="fixed" class="btn-flotante" (click)="scrollToTop()">
-    <ion-fab-button class="bg-rosa" *ngIf="cordenada >= 100">
+    <ion-fab-button class="bg-naranja" *ngIf="cordenada >= 100">
       <ion-icon name="chevron-up-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
@@ -27,9 +27,9 @@
             <ion-icon class="icono" name="caret-down-outline"></ion-icon>
           </ion-chip>
 
-          <ion-chip *ngIf="selectionAP" (click)="regresarBitoo()" color="danger">
+          <ion-chip *ngIf="selectionAP" (click)="regresarTinBitoo()" color="danger">
             <ion-icon class="icono" name="log-out-outline"></ion-icon>
-            <ion-label><span class="text">Volver a Bitoo</span></ion-label>
+            <ion-label><span class="text">Volver a TinBitoo</span></ion-label>
           </ion-chip>
         </ion-col>
         <ion-col class="ion-col-2" size-md="6">
@@ -70,10 +70,10 @@
         <li class="nav-item">
           <a class="todas" id="pills-home-todos" role="tab" aria-selected="true">
             <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img   (click)="activar()" class="img-gris"
-                src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png">
+                src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/IconosCategorias/todos.png">
             </ion-avatar>
             <ion-avatar *ngIf="idTodo ===true" style="margin-bottom: 1.2rem;" class="image-center"> <img  (click)="borrarFiltrosP()"
-                src="https://ecoevents.blob.core.windows.net/comprandoando/giros/iconos/todas%20las%20categor%C3%ADas.png">
+                src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/IconosCategorias/todos.png">
             </ion-avatar>
 
 
@@ -138,7 +138,7 @@
                 <img *ngIf="proveedor.tienepromociones == 1"
                   (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)"
                   style="position: absolute; width: 170px; cursor: pointer;"
-                  src="../../../assets/images/promo/etiqueta_promo.png">
+                  src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/PROMOCION.png">
                 <div class="logo-negocio">
                   <img (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)" loading="lazy"
                     [src]="proveedor.url_logo !== null ? proveedor.url_logo : 'https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg'"
@@ -164,9 +164,9 @@
                   <ion-card-title> {{proveedor.nombre_corto != "" ? proveedor.nombre_corto :
                     proveedor.nombre_comercial}}</ion-card-title>
                 </div>
-                <div class="distintivos">
-                  <img *ngIf="proveedor.verificado === 1" class="distintivoIcon" src="assets/icon/certificado_icon.svg"
-                    matTooltip="Este negocio está verificado por Bitoo">
+                <div class="distintivos" style="--color-selected: #ff1dbd">
+                  <img *ngIf="proveedor.verificado === 1" class="distintivoIcon" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/VERIFICACIO%CC%81N.svg"
+                    matTooltip="Este negocio está verificado por TinBitoo">
                   <div class="distintivo"
                     *ngFor="let distintivo of proveedor.distintivos.slice(0, proveedor.verificado === 1 ? 3 : 4); index as i">
                     <img class="distintivoIcon" (click)="clickDistintivo(distintivo.nombre, distintivo.descripcion)"
@@ -273,7 +273,7 @@
     <!-- <div *ngIf="banderaVerMas">
       <ion-infinite-scroll threshold="50px" (ionInfinite)="cargarMasNegocios($event)">
         <ion-infinite-scroll-content
-          loadingSpinner="bubbles"
+          loadingSp@er="bubbles"
           [loadingText]="mensaje">
         </ion-infinite-scroll-content>
       </ion-infinite-scroll>

@@ -11,6 +11,7 @@ import { FormularioNegocioPageRoutingModule } from './formulario-negocio-routing
 import { FormularioNegocioPage } from './formulario-negocio.page';
 import {TabsPageModule} from '../../tabs/tabs.module';
 import {MisProductosServiciosPageModule} from '../mis-productos-servicios/mis-productos-servicios.module';
+import { VigenciaPdfDistintivosComponent } from 'src/app/components/vigencia-pdf-distintivos/vigencia-pdf-distintivos.component';
 
 
 @NgModule({
@@ -23,6 +24,6 @@ import {MisProductosServiciosPageModule} from '../mis-productos-servicios/mis-pr
         SpinnerModule,
         MisProductosServiciosPageModule
     ],
-  declarations: [FormularioNegocioPage, SolicitarCambioUrlComponent]
+  declarations: [FormularioNegocioPage, SolicitarCambioUrlComponent, VigenciaPdfDistintivosComponent]
 })
 export class FormularioNegocioPageModule {}

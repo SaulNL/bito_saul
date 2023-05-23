@@ -5,7 +5,7 @@
 ></app-header>
 <app-loader
   [loader]="loaderCreateAccount"
-  message="Creando tu cuenta de Bitoo"
+  message="Creando tu cuenta de TinBitoo"
 ></app-loader>
 <ion-content *ngIf="!loaderCreateAccount">
   <ion-card>
@@ -57,7 +57,7 @@
             mode="ios"
             expand="block"
             type="submit"
-            class="bg-rosa"
+            class="bg-naranja"
             [disabled]="formValidate.invalid && !successProccess"
           >
             Activar

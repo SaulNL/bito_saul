@@ -43,7 +43,7 @@
         <div class="messagePopUp" style="height: 100%; align-items: center;">
           <h4>{{mensajeRespondio}}</h4>
           <div style="display: flex; justify-content: center;">
-            <img src="../../../assets/images/bitoo.png" alt="bitoo" style="width: 150px; height: auto;">
+            <img src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/LOGOTINBITOOCIRCULAR.png" alt="bitoo" style="width: 150px; height: auto;">
           </div>          
         </div>
       </div>          
@@ -54,46 +54,43 @@
   <ion-tab-bar slot="bottom">
     
     <ion-tab-button class="tab-button-principal" (click)="inicio()" tab="inicio" style="--color-selected: #fa4f72">
-      <ion-icon class="icon" *ngIf="activedPage === 'inicio'" src="../../../assets/icons/IconosTabs/Home.svg"></ion-icon>
-      <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'inicio'" src="../../../assets/icons/IconosTabs/Home.svg"></ion-icon>
+      <ion-img class="icon" style="width: 50% ; height: 50%" *ngIf="activedPage === 'inicio'" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/App/Iconos%20footer%20apps/Home.svg"></ion-img>
+      <ion-img class="ion-margin-top" style="width: 50% ; height: 50% ; margin-top: -2%" *ngIf="activedPage !== 'inicio'" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/App/Iconos%20footer%20apps/Home.svg"></ion-img>
       <ion-label *ngIf="activedPage !== 'inicio'"></ion-label>
       <ion-label *ngIf="activedPage === 'inicio'">Inicio</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button class="tab-button-principal" (click)="productos()" tab="productos" style="--color-selected: #fa4f72">
-      <ion-icon class="icon" *ngIf="activedPage === 'productos'" src="../../../assets/icons/IconosTabs/Productos.svg"></ion-icon>
-      <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'productos'" src="../../../assets/icons/IconosTabs/Productos.svg"></ion-icon>
+    <ion-tab-button class="tab-button-principal" (click)="productos()" tab="productos" style="--color-selected:#fa4f72">
+      <ion-img class="icon" style="width: 60% ; height: 60%" *ngIf="activedPage === 'productos'" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/App/Iconos%20footer%20apps/Productos.svg"></ion-img>
+      <ion-img class="ion-margin-top" style="width: 60% ; height: 60% ; margin-top: -2%" *ngIf="activedPage !== 'productos'" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/App/Iconos%20footer%20apps/Productos.svg"></ion-img>
       <ion-label *ngIf="activedPage !== 'productos'"></ion-label>
       <ion-label *ngIf="activedPage === 'productos'">Productos</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button class="tab-button-principal" (click)="promociones()" tab="promociones" style="--color-selected: #fa4f72">
-      <ion-icon class="icon" *ngIf="activedPage === 'promociones'" src="../../../assets/icons/IconosTabs/Ofertas.svg"></ion-icon>
-      <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'promociones'" src="../../../assets/icons/IconosTabs/Ofertas.svg"></ion-icon>
+    <ion-tab-button class="tab-button-principal" (click)="promociones()" tab="promociones" style="--color-selected:#fa4f72">
+      <ion-img class="icon"  style="width: 60% ; height: 60%" *ngIf="activedPage === 'promociones'" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/App/Iconos%20footer%20apps/Ofertas.svg"></ion-img>
+      <ion-img class="ion-margin-top" style="width: 60% ; height: 60% ; margin-top: -2%" *ngIf="activedPage !== 'promociones'" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/App/Iconos%20footer%20apps/Ofertas.svg"></ion-img>
       <ion-label *ngIf="activedPage !== 'promociones'"></ion-label>
       <ion-label *ngIf="activedPage === 'promociones'">Promociones</ion-label>
     </ion-tab-button>
 
     <ion-tab-button tab="requerimientos" class="tab-button-principal" (click)="requerimientos()" style="--color-selected: #fa4f72">
-      <ion-icon class="icon" *ngIf="activedPage === 'requerimientos'" src="../../../assets/icons/IconosTabs/Requerimientos.svg">
-      </ion-icon>
-      <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'requerimientos'" src="../../../assets/icons/IconosTabs/Requerimientos.svg"></ion-icon>
+      <ion-img class="icon" style="width: 60% ; height: 60%" *ngIf="activedPage === 'requerimientos'" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/App/Iconos%20footer%20apps/Requerimientos.svg"></ion-img>
+      <ion-img class="ion-margin-top" style="width: 60% ; height: 60% ; margin-top: -2%"  *ngIf="activedPage !== 'requerimientos'" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/App/Iconos%20footer%20apps/Requerimientos.svg"></ion-img>
       <ion-label *ngIf="activedPage !== 'requerimientos'"></ion-label>
       <ion-label *ngIf="activedPage === 'requerimientos'">Requerimientos</ion-label>
     </ion-tab-button>
 
     <ion-tab-button *ngIf="usuario !== null" tab="mis-favoritos" class="tab-button-principal" (click)="solicitudes()" style="--color-selected: #fa4f72">
-      <ion-icon class="icon" *ngIf="activedPage === 'favoritos'" src="../../../assets/icons/IconosTabs/Favoritos.svg"></ion-icon>
-      <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'favoritos'" src="../../../assets/icons/IconosTabs/Favoritos.svg"></ion-icon>
+      <ion-img class="icon" style="width: 70% ; height: 70%" *ngIf="activedPage === 'favoritos'" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/App/Iconos%20footer%20apps/Favoritos.svg"></ion-img>
+      <ion-img class="ion-margin-top" style="width: 70% ; height: 70% ; margin-top: -2%" *ngIf="activedPage !== 'favoritos'" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/App/Iconos%20footer%20apps/Favoritos.svg"></ion-img>
       <ion-label *ngIf="activedPage !== 'favoritos'"></ion-label>
       <ion-label *ngIf="activedPage === 'favoritos'">Favoritos</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button *ngIf="usuario === null" class="tab-button-principal" (click)="login()"
-      style="--color-selected: #fa4f72" tab="login">
-      <ion-icon class="icon" *ngIf="activedPage === 'perfil'" src="../../../assets/icons/IconosTabs/Perfil.svg"></ion-icon>
-      <ion-icon class="ion-margin-top" *ngIf="activedPage !== 'perfil'"
-        src="../../../assets/icons/IconosTabs/Perfil.svg"></ion-icon>
+    <ion-tab-button *ngIf="usuario === null" class="tab-button-principal" (click)="login()" style="--color-selected: #fa4f72" tab="login">
+      <ion-img class="icon" style="width: 60% ; height: 60%" *ngIf="activedPage === 'perfil'" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/App/Iconos%20footer%20apps/Perfil.svg"></ion-img>
+      <ion-img class="ion-margin-top" style="width: 60% ; height: 60% ; margin-top: -2%"  *ngIf="activedPage !== 'perfil'" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/App/Iconos%20footer%20apps/Perfil.svg"></ion-img>
       <ion-label *ngIf="activedPage !== 'perfil'"></ion-label>
       <ion-label *ngIf="activedPage === 'perfil'">Usuario</ion-label>
     </ion-tab-button>
@@ -109,8 +106,6 @@
       </div>
       <ion-fab *ngIf="(notifSinLeer != 0 && notifSinLeer != undefined)">
         <p class="notif" #hayNotificaciones>{{notifSinLeer}}</p>
-        <!--p class="notif" *ngIf="notifSinLeer == 0 ; else hayNotificaciones"></p>      
-        <ng-template #hayNotificaciones><p class="notif" #hayNotificaciones>{{notifSinLeer}}</p></ng-template-->
       </ion-fab>      
     </ion-tab-button>
   </ion-tab-bar>

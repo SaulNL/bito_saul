@@ -811,7 +811,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.loader = false;
   }
 
-  public regresarBitoo() {
+  public regresarTinBitoo() {
     localStorage.removeItem("org");
     localStorage.removeItem("todo");
     localStorage.removeItem("activarTodos");

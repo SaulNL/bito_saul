@@ -123,7 +123,8 @@
   top: -1%;
   right: -1%;
   border-radius: 25px;
-  color: rebeccapurple;
+  //color: rebeccapurple;
+  color: #FF9925;
   --ion-item-background: rgba(255, 255, 255, 0.527);
 }
 
@@ -160,17 +161,20 @@
 }
 
 .custom-file-input-disabled:hover:before {
-  border-color: #a74eef;
+
+  //border-color: #a74eef;
+  border-color: #FF9925;
 }
 
 .custom-file-input-disabled:active:before {
-  background: #a74eef;
+  //background: #a74eef;
+  background: #FF9925;
 }
 
 .custom-file-input {
   display: block;
   position: relative;
-  color: #fa4f72;
+  color: #FF1DBD;
 }
 
 .custom-file-input input {
@@ -181,10 +185,15 @@
 .custom-file-input:before {
   content: 'Subir Imagen';
   display: block;
-  background: -webkit-linear-gradient(90deg, #fa4f72, #a74eef);
+  background: -webkit-linear-gradient(90deg, #ff1dbd,#FFCE00);
+  background: -o-linear-gradient(90deg, #ff1dbd,#FFCE00);
+  background: -moz-linear-gradient(90deg, #ff1dbd,#FFCE00);
+  background: linear-gradient(90deg, #ff1dbd,#FFCE00);
+
+  /*background: -webkit-linear-gradient(90deg, #fa4f72, #a74eef);
   background: -o-linear-gradient(90deg, #fa4f72, #a74eef);
   background: -moz-linear-gradient(90deg, #fa4f72, #a74eef);
-  background: linear-gradient(90deg, #fa4f72, #a74eef);
+  background: linear-gradient(90deg, #fa4f72, #a74eef);*/
   border-radius: 2px;
   padding: 5px 0px;
   outline: none;
@@ -200,19 +209,25 @@
 }
 
 .custom-file-input:hover:before {
-  border-color: #a74eef;
+  //border-color: #a74eef;
+  border-color: #FF9925;
 }
 
 .custom-file-input:active:before {
-  background: #a74eef;
+  //background: #a74eef;
+  background: #FF9925;
 }
 
 .borrar-botom {
   display: block;
-  background: -webkit-linear-gradient(90deg, #fa4f72, #a74eef);
+  background: -webkit-linear-gradient(90deg, #ff1dbd,#FFCE00);
+  background: -o-linear-gradient(90deg, #ff1dbd,#FFCE00);
+  background: -moz-linear-gradient(90deg, #ff1dbd,#FFCE00);
+  background: linear-gradient(90deg, #ff1dbd,#FFCE00);
+  /*background: -webkit-linear-gradient(90deg, #fa4f72, #a74eef);
   background: -o-linear-gradient(90deg, #fa4f72, #a74eef);
   background: -moz-linear-gradient(90deg, #fa4f72, #a74eef);
-  background: linear-gradient(90deg, #fa4f72, #a74eef);
+  background: linear-gradient(90deg, #fa4f72, #a74eef);*/
   border-radius: 4px;
   padding: 5px 0px;
   outline: none;
@@ -267,8 +282,12 @@
 }
 
 .aplica-button {
-  background-color: #e84c70;
+  background-color: #ff1dbd;
   color: #fff;
   height: 36px;
   border-radius: 5px;
+}
+
+.btn-modal-pdf, .badge-distintivo {
+  font-size: 11px;
 }

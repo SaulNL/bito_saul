@@ -22,7 +22,7 @@ export class RecorteImagenComponent implements OnInit {
   constructor(
     public modalController: ModalController,
     private _utils_cls: UtilsCls
-  ) { 
+  ) {
   }
 
   ngOnInit() { }

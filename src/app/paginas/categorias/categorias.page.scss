@@ -5,7 +5,7 @@
 }
 .image-center{ margin:0 auto; }
 small{
-    --color: #fa4f72;
+    --color: #FF1DBD;
 }
 
 .img-gris{
@@ -21,7 +21,7 @@ small{
 }
 
 .giro-color{
-    color:  #a74eef;
+    color:  #FF1DBD;
     font-size: 10px;
 }
 ion-slide{
@@ -42,4 +42,8 @@ ion-slide{
 
 img[id] {
     scroll-margin-top: 70px;
+}
+
+.text-black{
+    color: #000000;
 }

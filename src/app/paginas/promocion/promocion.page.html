@@ -13,7 +13,7 @@
       <div class="contenedor">
         <img
           class="image"
-          src="https://ecoevents.blob.core.windows.net/comprandoando/img_default/no_imagen.png"
+          src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/LA%20IMAGEN%20NO%20ESTA%20DISPONIBLE%20700%20X%20700.png"
           [srcset]="promocion.url_imagen"
         />
         <div class="middle-modal">
@@ -61,7 +61,7 @@
             <ion-col *ngIf="idPersona!=null" size="6"
               ><ion-button
                 (click)="modalCupon(promocion)"
-                class="bg-rosa"
+                class="bg-naranja"
                 size="small"
                 mode="ios"
                 expand="full"
@@ -128,9 +128,9 @@
           <ion-col class="ion-text-center" *ngFor="let dia of promocion.dias">
             <h2 class="promocion">
               Quedan
-              <span style="color: #fa4f72">{{ promocion.restanDias }} días</span
+              <span style="color: #ff1dbd">{{ promocion.restanDias }} días</span
               >, Aplica:
-              <span style="color: #fa4f72">
+              <span style="color: #ff1dbd">
                 {{ dia.dias}} de {{ dia.hora_inicio}} a {{dia.hora_fin}}
               </span>
             </h2>
@@ -179,7 +179,7 @@
               >
                 <h2
                   class="aDefault promocion"
-                  matTooltip="Bitoo no puede obtener tu ubicación. Por favor activa los permisos de ubicación del navegador para poder determinar la distancia a la que se encuentra el negocio"
+                  matTooltip="TinBitoo no puede obtener tu ubicación. Por favor activa los permisos de ubicación del navegador para poder determinar la distancia a la que se encuentra el negocio"
                 >
                   Distancia desconocida
                 </h2>

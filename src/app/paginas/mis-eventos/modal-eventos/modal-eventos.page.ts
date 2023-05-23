@@ -1,0 +1,345 @@
+import { Component, OnInit } from '@angular/core';
+import { EventosModel } from '../../../Modelos/eventos/EventosModel'
+import { EventoUrlImagen } from '../../../Modelos/eventos/EventoUrlImagen';
+import { NegocioService } from '../../../api/negocio.service';
+import { ToadNotificacionService } from '../../../api/toad-notificacion.service';
+import { EventoService } from '../../../api/evento/evento.service';
+import { GeneralServicesService } from '../../../api/general-services.service';
+import { UtilsCls } from '../../../utils/UtilsCls';
+import { ArchivoComunModel } from './../../../Modelos/ArchivoComunModel';
+import { element } from 'protractor';
+import { ModalController } from '@ionic/angular';
+import { RecorteImagenComponent } from '../../../components/recorte-imagen/recorte-imagen.component';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-modal-eventos',
+  templateUrl: './modal-eventos.page.html',
+  styleUrls: ['./modal-eventos.page.scss'],
+})
+export class ModalEventosPage implements OnInit {
+  public eventData = new EventosModel();
+  public usuario: any;
+  public lstNegocios: any;
+  public tipoPago: any[];
+  public pagoSeleccionado: any[];
+  public tipoEvento: any;
+  public eventoSelect: any;
+  public recurrencia: any;
+  public list_cat_estado: any[];
+  public list_cat_municipio: any[];
+  public list_cat_localidad: any[];
+  public estado: string;
+  public municipio: string;
+  public localidad: string;
+  public resizeToWidth = 0;
+  public resizeToHeight = 0;
+  public edit = null;
+  public eventoInfo: any;
+  public eventoInfo_imagen = null;
+  public negtag: boolean;
+  public tags: any;
+  loader: boolean;
+  public msj = 'Cargando';
+
+  constructor(
+    private negocio_service: NegocioService,
+    private _notificacionService: ToadNotificacionService,
+    private eventoService: EventoService,
+    private _general_service: GeneralServicesService,
+    private _utils_cls: UtilsCls,
+    public modalController: ModalController,
+    private _router: Router,
+  ) { }
+
+  ngOnInit() {
+    this.loader = true;
+    this.usuario = JSON.parse(localStorage.getItem('u_data'));
+    this.edit = localStorage.getItem("editEvent");
+    if (this.edit != null || this.edit != undefined) {
+      this.obtenerDataEvent(this.edit);
+      localStorage.removeItem("editEvent");
+    }
+    this.tipoPago =
+      [
+        { id: 1, tipo: "efectivo" },
+        { id: 2, tipo: "transferencia" },
+        { id: 3, tipo: "tarjeta_credito" },
+        { id: 4, tipo: "tarjeta_debito" }
+      ]
+    this.obtenerNegocios();
+    this.obtenerEventoTipo();
+    this.obtenerRecurrencia();
+    this.obtenerEstados();
+  }
+
+  obtenerNegocios() {
+    this.negocio_service.misNegocios(this.usuario.proveedor.id_proveedor).subscribe(
+      response => {
+        this.lstNegocios = response.data;
+      },
+      error => {
+        this._notificacionService.error(error);
+      }
+    );
+  }
+  obtenerEventoTipo() {
+    this.eventoService.tipoEvento().subscribe(
+      res => {
+        this.tipoEvento = res.data;
+      }
+    )
+  }
+  obtenerEstados() {
+    if (this.edit == null) this.loader = false;
+    this._general_service.getEstadosWS().subscribe(response => {
+      if (this._utils_cls.is_success_response(response.code)) {
+        this.list_cat_estado = response.data.list_cat_estado;
+        // this.loader = false;
+      }
+    },
+      error => {
+        this._notificacionService.error(error);
+      }
+    );
+  }
+  obtenerMunicipio(event) {
+    let idE;
+    if (event.type === 'ionChange') {
+      // this.negocioTO.det_domicilio.id_municipio = [];
+      idE = event.detail.value;
+    } else {
+      idE = event.value;
+    }
+    if (idE > 0) {
+      this._general_service.getMunicipiosAll(idE).subscribe(response => {
+        if (this._utils_cls.is_success_response(response.code)) {
+          this.list_cat_municipio = response.data.list_cat_municipio;
+        }
+      },
+        error => {
+          this._notificacionService.error(error);
+        },
+        () => {
+          //  this.loaderMunicipio = false;
+        }
+      );
+    } else {
+      this.list_cat_municipio = [];
+    }
+  }
+  obtenerLocalidad(event) {
+    let idE;
+    if (event.type === 'ionChange') {
+      // this.negocioTO.det_domicilio.id_localidad = [];
+      idE = event.detail.value;
+    } else {
+      idE = event.value;
+    }
+    if (idE > 0) {
+      this._general_service.getLocalidadAll(idE).subscribe(response => {
+        if (this._utils_cls.is_success_response(response.code)) {
+          this.list_cat_localidad = response.data.list_cat_localidad;
+        }
+      },
+        error => {
+          //   this._notificacionService.pushError(error);
+          this._notificacionService.error(error);
+        },
+        () => {
+          //  this.loaderLocalidad = false;
+        }
+      );
+    } else {
+      this.list_cat_localidad = [];
+    }
+  }
+  obtenerRecurrencia() {
+    this.eventoService.tipoRecurrencia().subscribe(
+      res => {
+        this.recurrencia = res.data;
+      }
+    )
+  }
+  obtenerDataEvent(id) {
+    let body = {
+      id_evento: id
+    }
+    this.eventoService.eventoInfo(body).subscribe(
+      res => {
+        this.asignarValoresEvent(res.data[0])
+        // this.eventoInfo = res.data;
+        // this.eventoInfo_imagen = res.data.url_imagens
+      }
+    )
+  }
+
+  asignarValoresEvent(data) {
+    let pagos = [];
+
+    setTimeout(() => {
+      this.eventData.id_evento = data.id_evento;
+      this.eventData.evento = data.evento;
+      this.eventData.id_negocio = data.id_negocio;
+      this.eventData.id_estado = data.id_estado;
+      this.eventData.fecha = data.fecha;
+      this.eventData.tipo_pago_transferencia = data.tipo_pago_transferencia;
+      this.eventData.tipo_pago_tarjeta_credito = data.tipo_pago_tarjeta_credito;
+      this.eventData.tipo_pago_tarjeta_debito = data.tipo_pago_tarjeta_debito;
+      this.eventData.tipo_pago_efectivo = data.tipo_pago_efectivo;
+      this.eventData.telefono = data.telefono;
+      this.eventData.id_tipo_recurrencia = data.id_tipo_recurrencia;
+      this.eventData.tipo_evento = data.tipo_evento;
+      this.eventData.tags = data.tags;
+      this.eventoInfo_imagen = data.url_imagen;
+
+      if (data.tipo_pago_transferencia == 1) pagos.push(2);
+      if (data.tipo_pago_tarjeta_credito == 1) pagos.push(3);
+      if (data.tipo_pago_tarjeta_debito == 1) pagos.push(4);
+      if (data.tipo_pago_efectivo == 1) pagos.push(1);
+      setTimeout(() => {
+        this.pagoSeleccionado = pagos;
+        this.eventoSelect = data.tipo_evento.split(",");
+      }, 2000)
+      setTimeout(() => {
+        this.eventData.id_municipio = data.id_municipio;
+        setTimeout(() => {
+          this.eventData.id_localidad = data.id_localidad;
+          this.loader = false;
+        },
+          2000);
+      },
+        2000);
+    }, 3000)
+  }
+
+  async submit() {
+    this.loader = true;
+    let urlImg = new EventoUrlImagen;
+    if (this.eventData.imagen.archivo_64 == null && this.eventoInfo_imagen != null) {
+      urlImg.archivo_64 = null;
+      urlImg.nombre_archivo = null;
+      urlImg.url_archivo = this.eventoInfo_imagen;
+      this.eventData.imagen = await urlImg;
+    }
+    this.guardarEvento(this.eventData)
+  }
+
+  guardarEvento(data) {
+    this.eventoService.guardarEvento(data).subscribe(res => {
+      this._router.navigate(["/tabs/mis-eventos"])
+      this.loader = false
+    }),
+      error => {
+        //   this._notificacionService.pushError(error);
+        this._notificacionService.error(error);
+      }
+  }
+
+  onPagoSeleccionado() {
+    this.eventData.tipo_pago_efectivo = this.pagoSeleccionado.find(element => element == 1) ? 1 : 0;
+    this.eventData.tipo_pago_transferencia = this.pagoSeleccionado.find(element => element == 2) ? 1 : 0;
+    this.eventData.tipo_pago_tarjeta_credito = this.pagoSeleccionado.find(element => element == 3) ? 1 : 0;
+    this.eventData.tipo_pago_tarjeta_debito = this.pagoSeleccionado.find(element => element == 4) ? 1 : 0;
+  }
+  onEventoSeleccionado() {
+    let varString = "";
+    this.eventoSelect.forEach((element, index) => {
+      if (index == 0) {
+        varString = element
+      } else {
+        if (this.eventoSelect.length == index + 1) {
+          varString = varString + "," + element;
+          this.eventData.tipo_evento = varString;
+        } else {
+          varString = varString + "," + element;
+        }
+      }
+    });
+  }
+
+  public subir_imagen_cuadrada(event) {
+    let nombre_archivo;
+    if (event.target.files && event.target.files.length) {
+      let height;
+      let width;
+      for (const archivo of event.target.files) {
+        const reader = this._utils_cls.getFileReader();
+        reader.readAsDataURL(archivo);
+        reader.onload = () => {
+          nombre_archivo = archivo.name;
+          const img = new Image();
+          img.src = reader.result as string;
+          img.onload = () => {
+            height = img.naturalHeight;
+            width = img.naturalWidth;
+            if (width === 400 && height === 400) {
+              const file_name = archivo.name;
+              const file = archivo;
+              if (file.size < 3145728) {
+                let file_64: any;
+                const utl = new UtilsCls();
+                utl.getBase64(file).then(
+                  data => {
+                    const archivo = new ArchivoComunModel();
+                    if (file_name != null) {
+                      archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
+                      archivo.archivo_64 = file_64;
+                    }
+                    this.eventData.imagen = archivo;
+                    // console.log("esto se debe guardar", archivo)
+                    /*  this.formGroup1.patchValue({
+                        archivo: archivo
+                      });*/
+                  }
+                );
+              } else {
+                this._notificacionService.alerta('El tama\u00F1o m\u00E1ximo de archivo es de 3 Mb, por favor intente con otro archivo');
+              }
+            } else {
+              this.resizeToWidth = 400;
+              this.resizeToHeight = 400;
+              this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
+                if (r !== undefined) {
+                  const archivo = new ArchivoComunModel();
+                  archivo.nombre_archivo = nombre_archivo,
+                    archivo.archivo_64 = r.data;
+                  this.eventData.imagen = archivo;
+                  // console.log("esto se debe guardar 2", archivo)
+                  // this.blnImgCuadrada = false;
+                }
+              }
+              );
+            }
+          };
+        };
+      }
+    }
+  }
+
+  async abrirModal(evento, width, heigh) {
+    const modal = await this.modalController.create({
+      component: RecorteImagenComponent,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        imageChangedEvent: evento,
+        resizeToWidth: width,
+        resizeToHeight: heigh,
+        IdInput: 'imageUpload'
+      }
+    });
+    await modal.present();
+    const { data } = await modal.onDidDismiss().then(r => {
+      return r;
+    }
+    );
+    return data;
+  }
+
+  agregarTags(tags: string[]) {
+    this.negtag = true;
+    this.tags = tags.join();
+    this.eventData.tags = this.tags;
+  }
+
+}

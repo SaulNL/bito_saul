@@ -1,28 +1,25 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    <ion-title> Perfil </ion-title>
+    <ion-title> Perfil</ion-title>
     <ion-buttons *ngIf="usuario !== null" slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-buttons slot="end" (click)="presentActionSheet()">
-      <ion-button>
-        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+
+    <ion-buttons slot="end" class="btns-tool-end">
+      <ion-button *ngIf="(numNotifiSinLeer != 0 && numNotifiSinLeer != undefined)" (click)="abrirPaginaNotificaciones()">
+        <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+      </ion-button>
+      <ion-badge class="badge">{{numNotifiSinLeer}}</ion-badge>
+      <ion-button (click)="presentActionSheet()">
+        <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content fullscreen *ngIf="usuario !== null">
   <ion-card style="margin-bottom: 3%">
-    <div
-      class="ion-text-center ion-margin-top"
-      [routerLink]="['/tabs/home/perfil/datos-basicos']"
-    >
-      <img
-        *ngIf="usuario.imagen !== ''"
-        class="rounded-circle"
-        [src]="usuario.imagen"
-        alt=""
-      />
+    <div class="ion-text-center ion-margin-top" [routerLink]="['/tabs/home/perfil/datos-basicos']">
+      <img *ngIf="usuario.imagen !== ''" class="rounded-circle" [src]="usuario.imagen" alt="" />
       <img *ngIf="usuario.imagen === ''" class="imagen" alt="" />
     </div>
     <ion-card-header class="ion-text-center">
@@ -70,14 +67,9 @@
           </ion-col>
           <ion-col *ngIf="misVentas">
             <ion-card>
-              <ion-badge *ngIf="siNoVistos" class="total-vistos" color="danger"
-                >{{totalNoVistos}}</ion-badge
-              >
+              <ion-badge *ngIf="siNoVistos" class="total-vistos" color="danger">{{totalNoVistos}}</ion-badge>
               <ion-card-content>
-                <div
-                  class="ion-text-center"
-                  [routerLink]="['/tabs/home/ventas']"
-                >
+                <div class="ion-text-center" [routerLink]="['/tabs/home/ventas']">
                   <ion-icon name="receipt-outline"></ion-icon>
                   <h2>
                     Mis
@@ -91,10 +83,7 @@
           <ion-col *ngIf="misCompras">
             <ion-card>
               <ion-card-content>
-                <div
-                  class="ion-text-center"
-                  [routerLink]="['/tabs/home/compras']"
-                >
+                <div class="ion-text-center" [routerLink]="['/tabs/home/compras']">
                   <ion-icon name="bag-handle-outline"></ion-icon>
                   <h2>Mis compras</h2>
                 </div>
@@ -116,15 +105,23 @@
             </ion-card>
           </ion-col>-->
 
-          <ion-col *ngIf="estadisticas">
+          <!-- <ion-col *ngIf="estadisticas">
             <ion-card>
               <ion-card-content>
-                <div
-                  class="ion-text-center"
-                  [routerLink]="['/tabs/home/estadisticas']"
-                >
+                <div class="ion-text-center" [routerLink]="['/tabs/home/estadisticas']">
                   <ion-icon name="analytics-outline"></ion-icon>
                   <h2>Estadísticas</h2>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col> -->
+
+          <ion-col>
+            <ion-card>
+              <ion-card-content>
+                <div class="ion-text-center" [routerLink]="['/tabs/home/preferencias']">
+                  <ion-icon name="calendar-clear-outline"></ion-icon>
+                  <h2>Mis preferencias</h2>
                 </div>
               </ion-card-content>
             </ion-card>
@@ -133,24 +130,18 @@
           <ion-col>
             <ion-card>
               <ion-card-content>
-                <div
-                  class="ion-text-center"
-                  [routerLink]="['/tabs/home/preferencias']"
-                >
-                  <ion-icon name="bookmarks-outline"></ion-icon>
-                  <h2>Mis preferencias</h2>
+                <div class="ion-text-center" [routerLink]="['/tabs/mis-eventos']">
+                  <ion-icon name="document-lock-outline"></ion-icon>
+                  <h2>Mis eventos</h2>
                 </div>
               </ion-card-content>
             </ion-card>
           </ion-col>
 
-          <ion-col >
+          <ion-col>
             <ion-card>
               <ion-card-content>
-                <div
-                  class="ion-text-center"
-                  [routerLink]="['/tabs/home/privacidad']"
-                >
+                <div class="ion-text-center" [routerLink]="['/tabs/home/privacidad']">
                   <ion-icon name="document-lock-outline"></ion-icon>
                   <h2>Aviso de privacidad y cuenta</h2>
                 </div>
@@ -175,7 +166,7 @@
     </ion-row>
     <ion-row class="ion-align-items-center">
       <ion-col size="12" class="ion-text-center">
-        <small class="bg-gris">Copyright © Bitoo (Softura Solutions) 2020.</small>
+        <small class="bg-gris">Copyright © TinBitoo (Softura Solutions) 2020.</small>
       </ion-col>
     </ion-row>
   </ion-grid>

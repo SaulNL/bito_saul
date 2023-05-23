@@ -22,20 +22,21 @@ import { PersonaService } from '../../api/persona.service';
 })
 export class AjustesPage implements OnInit {
   usuario: any;
-  public url_user: string;
-  public logon: any;
-  public misNegocios: boolean;
-  public misAPromociones: boolean;
-  public solicitudes: boolean;
-  public misVentas: boolean;
-  public misCompras: boolean;
-  public generarSolicitud: boolean;
-  public estadisticas: boolean;
-  public totalNoVistos: number;
-  public subscribe;
-  public siNoVistos: boolean;
-  public versionActualSistema: number;
-  public releaseDate: string;
+  url_user: string;
+  logon: any;
+  misNegocios: boolean;
+  misAPromociones: boolean;
+  solicitudes: boolean;
+  misVentas: boolean;
+  misCompras: boolean;
+  generarSolicitud: boolean;
+  estadisticas: boolean;
+  numNotifiSinLeer: number;
+  totalNoVistos: number;
+  subscribe;
+  siNoVistos: boolean;
+  versionActualSistema: number;
+  releaseDate: string;
 
   constructor(
     private util: UtilsCls,
@@ -55,6 +56,8 @@ export class AjustesPage implements OnInit {
   ) {
     this.siNoVistos = false;
     this.totalNoVistos = 0;
+    this.numNotifiSinLeer = 0;
+  
     if (this.util.existSession()) {
       this.usuario = this.auth0.getUserData();
       this.setNewDataBasicUser(this.usuario.id_persona);
@@ -70,7 +73,6 @@ export class AjustesPage implements OnInit {
         this.usuario = JSON.parse(localStorage.getItem('u_data'));
         if (localStorage.getItem("isRedirected") === "false") {
           localStorage.setItem("isRedirected", "true");
-          //location.reload();
         }
       }
     });
@@ -85,6 +87,8 @@ export class AjustesPage implements OnInit {
         this.notificacionesVentas();
       }
     });
+
+    this.numNotifiSinLeer = +localStorage.getItem('notifSinLeer');
 
     this.notificacionesVentas();
     //  this.usuario = this.util.getData();
@@ -218,4 +222,9 @@ export class AjustesPage implements OnInit {
     const content: NotificationInterface = this.create.createNotificationFirebaseWithNotUser();
     this.notification.updateUserWithNotification(content);
   }
+
+  abrirPaginaNotificaciones() {
+    this._router.navigate(["/tabs/notificaciones"]);
+  }
+
 }
