@@ -17,8 +17,14 @@ export class MisEventosPage implements OnInit {
   constructor(
     private _router: Router,
     private eventoService: EventoService,
-    private notificacionService: ToadNotificacionService
+    private notificacionService: ToadNotificacionService,
   ) { }
+
+  ionViewWillEnter() {
+    this.loader = true;
+    let id_proveedor = localStorage.getItem("id_proveedor")
+    this.obtenerEventos(id_proveedor);
+  }
 
   ngOnInit() {
     this.loader = true;

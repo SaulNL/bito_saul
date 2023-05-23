@@ -46,10 +46,7 @@ export class EventoService {
       }));
   }
   guardarEvento(data): Observable<any> {
-    console.log("antes de convertir", data)
     let body = JSON.stringify(data);
-    console.log("convertido0", body)
-    console.log("esto se guarda", data)
     this._http.setDataSerializer('utf8');
     return from(this._http.post(this.url + 'api/eventos/guardar', body, AppSettings.getHeadersToken()).then((data) => {
       return JSON.parse(data.data);
@@ -59,7 +56,6 @@ export class EventoService {
       }));
   }
   obtenerEvento(id): Observable<any> {
-    console.log("antes de enviar", id)
     let body = JSON.stringify(id);
     this._http.setDataSerializer('utf8');
     return from(this._http.post(this.url + 'api/eventos/persona', body, AppSettings.getHeadersToken()).then((data) => {

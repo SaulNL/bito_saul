@@ -214,6 +214,7 @@ export class ModalEventosPage implements OnInit {
   }
 
   async submit() {
+    this.loader = true;
     let urlImg = new EventoUrlImagen;
     if (this.eventData.imagen.archivo_64 == null && this.eventoInfo_imagen != null) {
       urlImg.archivo_64 = null;
@@ -227,6 +228,7 @@ export class ModalEventosPage implements OnInit {
   guardarEvento(data) {
     this.eventoService.guardarEvento(data).subscribe(res => {
       this._router.navigate(["/tabs/mis-eventos"])
+      this.loader = false
     }),
       error => {
         //   this._notificacionService.pushError(error);
