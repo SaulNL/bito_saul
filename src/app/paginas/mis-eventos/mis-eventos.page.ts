@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { EventoService } from '../../api/evento/evento.service';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
+import { RnaService } from 'src/app/api/rna/rna.service';
 
 @Component({
   selector: 'app-mis-eventos',
@@ -18,6 +19,7 @@ export class MisEventosPage implements OnInit {
     private _router: Router,
     private eventoService: EventoService,
     private notificacionService: ToadNotificacionService,
+    private rna: RnaService
   ) { }
 
   ionViewWillEnter() {
@@ -28,8 +30,15 @@ export class MisEventosPage implements OnInit {
 
   ngOnInit() {
     this.loader = true;
+    this.usarRNA()
     let id_proveedor = localStorage.getItem("id_proveedor")
     this.obtenerEventos(id_proveedor);
+  }
+
+  usarRNA() {
+    this.rna.rnaStart(7, 10, 10, 10).then(Response => {
+      console.log("esta es la red", Response)
+    })
   }
 
   AgregarEvento() {
