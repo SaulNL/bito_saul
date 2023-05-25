@@ -45,6 +45,7 @@ export class RnaService {
             leakyReluAlpha: 0.01,
         };
 
+        this.filtros = new FiltrosModel();
         // this.netN = new brain.recurrent.LSTM();
     }
     /***
@@ -69,7 +70,6 @@ export class RnaService {
 
                 this.getDataService(idPersona, nNegocios).subscribe(
                     respuesta => {
-
                         if (respuesta.code === 200) {
                             this.data = respuesta.data;
                             this.negociosMasVisitados = this.data[1];
