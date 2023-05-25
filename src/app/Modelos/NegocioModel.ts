@@ -49,7 +49,7 @@ export class NegocioModel {
 
   organizaciones: string;
   nombre_organizacion: string;
-  distintivos: string;
+  distintivos: any[];
   nombre_distintivos: string;
   tags: any;
   lugares_entrega: any;

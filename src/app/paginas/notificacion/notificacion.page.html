@@ -14,10 +14,10 @@
   <ion-list *ngIf="!loader">
     <ion-item button detail="false" *ngFor="let item of notificaciones" (click)="abrirChat(item)">
       <ion-avatar slot="start">
-        <ion-img [src]="item.logo_negocio.trim().length === 0 
+        <img [src]="item.logo_negocio.trim().length === 0 
           ? 'https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/Proveedor500.png' 
-          : item.logo_negocio">
-        </ion-img>
+          : item.logo_negocio"/>
+        
       </ion-avatar>
       <ion-label>
         <h2>{{item.nombre_negocio}}</h2>

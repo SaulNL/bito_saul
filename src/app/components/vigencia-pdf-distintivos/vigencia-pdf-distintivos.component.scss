@@ -1,3 +1,9 @@
+.close {
+    --color: white;
+    font-size: 15px;
+    margin-right: 10px;
+}
+
 .loader-pdf {
     display: flex; 
     justify-content: center; 
@@ -24,7 +30,7 @@
 }
 
 .boton {
-    background: linear-gradient(90deg,#fa4f72,#a74eef);
+    background-color: #fa4f72;
     color: white;
     padding: 11px;
     display: flex;

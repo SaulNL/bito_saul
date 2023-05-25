@@ -51,7 +51,7 @@ export class NotificacionPage implements OnInit {
     } else {
       this.intervalNotificaciones = setInterval(() => {
         this.servicioNotificaciones();
-      }, 3000);
+      }, 5000);
     }
   }
 
@@ -61,7 +61,7 @@ export class NotificacionPage implements OnInit {
         if (response.code === 200){
           this.loader = false;
           if (response.data.length != this.notificaciones.length) {
-            this.notificaciones= response.data;
+            this.notificaciones = response.data;
             this.obtenerNotificaciones();
           }
           

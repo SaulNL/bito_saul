@@ -5,11 +5,10 @@
     <ion-title *ngIf="segmentModel === 'domicilio'"> Domicilio </ion-title>
     <ion-title *ngIf="segmentModel === 'contacto'"> Contacto </ion-title>
     <ion-title *ngIf="segmentModel === 'productos'&& seEstaClonando "> Productos </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="cancelar()">
-        <ion-icon name="close-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    
+    <ion-button slot="end" (click)="cancelar()" fill="clear" class="close">
+      <ion-icon name="close" slot="icon-only"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 

@@ -3,7 +3,6 @@ import { ModalController } from '@ionic/angular';
 import { ArchivoComunModel } from 'src/app/Modelos/ArchivoComunModel';
 import { ToadNotificacionService } from 'src/app/api/toad-notificacion.service';
 import { UtilsCls } from 'src/app/utils/UtilsCls';
-import moment from 'moment';
 
 @Component({
   selector: 'app-vigencia-pdf-distintivos',
@@ -25,15 +24,15 @@ export class VigenciaPdfDistintivosComponent implements OnInit {
     private _utils_cls: UtilsCls, 
     private modalController: ModalController) { }
 
-  ngOnInit() {
-    alert(JSON.stringify(this.distintivo))    
+  ngOnInit() {    
   }
 
   abrirPdf() {
-    if (this.distintivo.url_comprobante_vigencia != null) {
-      window.open(this.distintivo.url_comprobante_vigencia, '_self')
+
+    if (this.distintivo.url_comprobante_vigencia != null && this.distintivo.archivo === undefined) {
+      window.open(this.distintivo.url_comprobante_vigencia, '_blank');
     } else {
-      this.notificaciones.alerta("Debe guardar el negocio para generar la url del pdf");
+      this.notificaciones.alerta("Asegúrese de agregar un pdf y luego guarde el negocio para generar la url");
     }
   }
 
@@ -51,10 +50,9 @@ export class VigenciaPdfDistintivosComponent implements OnInit {
         const archivo = new ArchivoComunModel();
         archivo.nombre_archivo = this._utils_cls.convertir_nombre(fileName);
         archivo.archivo_64 = file64;
-
-        
         this.distintivo.archivo = archivo;
-        console.log(this.distintivo)
+        this.notificaciones.success("¡Archivo agregado con exito!");
+
       });
     } else {
       this.notificaciones.alerta("El archivo sobrepasa los 5 MB");
