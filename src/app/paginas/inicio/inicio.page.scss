@@ -52,7 +52,17 @@
 }
 
 .custom-col {
-  margin-left: 0.5px;
+  margin-right: 0.1%;
+}
+
+.eventosButton{
+  --background:#e1e1e2;
+  color: #1e1c1c;
+  font-size: 12px;
+  margin-top: 8px;
+  width: 65px;
+  height: 62%;
+  margin-left: 0.1%;
 }
 
 .mapa{
@@ -60,6 +70,8 @@
   color: #1e1c1c;
   font-size: 12px;
   margin-top: 8px;
+  width: 85px;
+  height: 62%;
 }
 .mapa .icono{
   padding-right: 5px;

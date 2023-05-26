@@ -9,8 +9,12 @@ const routes: Routes = [
     component: EventosPage
   },
   {
-    path: 'reservaciones',
+    path: 'reservaciones/:id',
     loadChildren: () => import('./reservaciones/reservaciones.module').then( m => m.ReservacionesPageModule)
+  },
+  {
+    path: 'generar-reservacion',
+    loadChildren: () => import('./generar-reservacion/generar-reservacion.module').then( m => m.GenerarReservacionPageModule)
   },
 ];
 

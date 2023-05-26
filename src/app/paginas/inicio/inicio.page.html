@@ -19,29 +19,28 @@
   <app-spinner [loader]="loaderNegocios" [message]="msj"></app-spinner>
   <app-spinner *ngIf="mostrarloaderInicio" [loader]="loaderInicio" [message]="msj"></app-spinner>
   <div *ngIf="!loader">
-    <ion-grid>
+    <ion-grid style="margin-left: 0.1%;">
       <ion-row>
-        <ion-col class="ion-col" size-md="12">
+        <ion-col>
           <ion-chip *ngIf="!selectionAP" color="dark" (click)="openPlazasAfiliacionesModal()">
             <small class="text">Destacados</small>
             <ion-icon class="icono" name="caret-down-outline"></ion-icon>
           </ion-chip>
 
           <ion-chip *ngIf="selectionAP" (click)="regresarTinBitoo()" color="danger">
-            <ion-icon class="icono" name="log-out-outline"></ion-icon>
+            <ion-icon class="custom-col" name="log-out-outline"></ion-icon>
             <ion-label><span class="text">Volver a TinBitoo</span></ion-label>
           </ion-chip>
         </ion-col>
-        <ion-col class="ion-col-2" size-md="6">
-          <ion-button mode="ios" size="small" class="mapa" shape="round" [disabled]="listaCategorias.length === 0"
+        <ion-col>
+          <ion-button mode="ios" class="mapa" shape="round" [disabled]="listaCategorias.length === 0"
             (click)="abrirModalMapa()">
             <ion-icon class="icono" name="map-outline"></ion-icon>
             <small>Mapa</small>
           </ion-button>
         </ion-col>
-
-        <ion-col class="custom-col" size-md="6">
-          <ion-button mode="ios" size="small" class="mapa" shape="round" (click)="openEventos()">
+        <ion-col>
+          <ion-button mode="ios" class="eventosButton" shape="round" (click)="openEventos()">
             <small>Eventos</small>
           </ion-button>
         </ion-col>

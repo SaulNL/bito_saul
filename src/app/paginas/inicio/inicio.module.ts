@@ -12,7 +12,6 @@ import {FiltrosBusquedaModule} from "../../componentes/filtros-busqueda/filtros-
 import {TabsPageModule} from '../tabs/tabs.module';
 import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-negocios.component';
 import {InfinitoScrollModule} from '../../componentes/infinito-scroll/infinito-scroll.module';
-import {EventosPageModule} from '../eventos/eventos.module';
 
 @NgModule({
   imports: [
@@ -26,8 +25,7 @@ import {EventosPageModule} from '../eventos/eventos.module';
     RouterModule.forChild([{ path: '', component: InicioPage }]),
     Tab3PageRoutingModule,
       FiltrosBusquedaModule,
-      TabsPageModule,
-      EventosPageModule
+      TabsPageModule
   ],
     declarations: [InicioPage, MapaNegociosComponent]
 })
