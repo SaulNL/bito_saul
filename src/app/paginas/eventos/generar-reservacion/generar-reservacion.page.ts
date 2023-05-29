@@ -1,12 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {EventosService} from '../../../api/eventos.service';
-import easyQRCode from 'easyqrcodejs';
 import {IEventoQr} from '../../../interfaces/IEventoQr';
-import html2canvas from 'html2canvas';
-import {FilesystemDirectory, Plugins} from '@capacitor/core';
 import {ToadNotificacionService} from '../../../api/toad-notificacion.service';
-const { Filesystem } = Plugins;
 
 @Component({
   selector: 'app-generar-reservacion',
@@ -14,7 +10,7 @@ const { Filesystem } = Plugins;
   styleUrls: ['./generar-reservacion.page.scss'],
 })
 export class GenerarReservacionPage implements OnInit {
-  @ViewChild('qrcode') qrcode: ElementRef;
+  @ViewChild('qrCode', { static: false }) qrCodeElement: ElementRef;
   public cadena: any;
   public infoEvento: any;
   public qr: any;
@@ -26,6 +22,7 @@ export class GenerarReservacionPage implements OnInit {
   registro2 = false;
   registro3 = false;
   public urlData: string;
+  qrData: string = '';
 
 
   constructor(
@@ -33,8 +30,8 @@ export class GenerarReservacionPage implements OnInit {
       private router: Router,
       private notifi: ToadNotificacionService,
   ) {
-      this.infoEvento = [];
-      this.loaderReservaciones = false;
+    this.infoEvento = [];
+    this.loaderReservaciones = false;
   }
 
   ngOnInit() {
@@ -47,18 +44,16 @@ export class GenerarReservacionPage implements OnInit {
 
   // tslint:disable-next-line:use-lifecycle-interface
   ngAfterViewInit(): void {
-    console.log('qr1', this.qrcode);
-    const options = {
-      text: 'Texto del código QR',
-      width: 200,
-      height: 200,
-      correctLevel: easyQRCode.CorrectLevel.H,
+    const evento: IEventoQr = {
+      id_evento: this.cadena[0],
+      id_persona: this.cadena[1],
+      fc_evento_reservacion: this.cadena[2],
+      cantidad_persona: this.cadena[3]
     };
-
-    this.qr = new easyQRCode(this.qrcode.nativeElement, options);
+    this.qrData = JSON.stringify(evento);
   }
 
-  regresar(){
+  regresar() {
     this.router.navigate(['/tabs/eventos'], {
       queryParams: {
         special: true
@@ -78,39 +73,11 @@ export class GenerarReservacionPage implements OnInit {
   }
 
   descargar() {
-    this.loaderCupon = true;
-    setTimeout(() => {
-      if (this.registro1 || this.registro2){
-        this.crearImagen(this.infoEvento);
-      }
-      if (this.registro3){
-        this.loaderCupon = false;
-        this.notifi.error('Este evento no es valido para usted');
-      }
-    }, 200);
-  }
 
-  crearImagen(cadena) {
-    html2canvas(document.querySelector('#contenido')).then(canvas => {
-
-
-      const fileName = 'qr_promo' + this.numeroAleatorioDecimales(10, 1000) + cadena.evento + '.png';
-      Filesystem.writeFile({
-        path: fileName,
-        data: canvas.toDataURL().toString(),
-        directory: FilesystemDirectory.Documents
-      }).then(() => {
-        this.notifi.exito('Se descargo correctamente cupón de ' + cadena.evento);
-      }, error => {
-        this.notifi.error(error);
-      });
-      this.loaderCupon = false;
-    });
   }
 
   numeroAleatorioDecimales(min, max) {
-    let num = Math.random() * (max - min);
+    var num = Math.random() * (max - min);
     return num + min;
   }
-
 }

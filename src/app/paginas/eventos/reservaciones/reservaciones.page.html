@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    <ion-title class="ion-text-center">#</ion-title>
+    <ion-title>{{infoEvento[0]?.evento}}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="regresar()">
         <ion-icon name="close-outline"></ion-icon>
@@ -9,45 +9,89 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-    <div style="background-color: white; padding: 10px;">
-        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 150px;">
-            <ion-label>DESCRIPCIÓN DEL EVENTO</ion-label>
+<app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
+<ion-content *ngIf="loaderReservaciones">
+  <ion-card>
+    <ion-card-content>
+
+        <img [src]="infoEvento[0]?.url_imagen" style="margin-left: 28px; height: 200px; width: 250px; margin-bottom: 12px; margin-top: 6px;">
+
+        <div style="display: flex; align-items: center; margin-bottom: 9px;">
+          <ion-label class="titulos">Fecha y hora:</ion-label>
+            <div class="mostrarDatos">{{numeroDia}}/{{meses[numeroMes]}}/{{anio}}  {{hora12h}}</div>
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 9px;">
+          <ion-label class="titulos">Ubicación:</ion-label>
+            <div class="mostrarDatos">{{nombreLocalidad}}{{nombreMunicipio}}{{nombreEstado}}</div>
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 9px;">
+            <ion-label class="titulos">Tipo de evento:</ion-label>
+            <div class="mostrarDatos">{{infoEvento[0]?.tipo_evento}}</div>
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 9px;">
+          <ion-label class="titulos">Número telefonico:</ion-label>
+            <div class="mostrarDatos">{{infoEvento[0]?.telefono}}</div>
+        </div>
+        <div style=" display: flex; align-items: center; margin-bottom: 9px;">
+          <ion-label class="titulos">Método de pago:</ion-label>
+          <ion-input class="colorInput" readonly><p class="centro">
+            <ng-container *ngIf="infoEvento[0]?.tipo_pago_transferencia === 1">Transferencia, </ng-container>
+            <ng-container *ngIf="infoEvento[0]?.tipo_pago_tarjeta_credito === 1">Tarjeta de credito, </ng-container>
+            <ng-container *ngIf="infoEvento[0]?.tipo_pago_tarjeta_debito === 1">Tarjeta de debito, </ng-container>
+            <ng-container *ngIf="infoEvento[0]?.tipo_pago_efectivo === 1">Efectivo</ng-container>
+          </p>
+          </ion-input>
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 16px;">
+          <ion-label class="titulos">Se repite:</ion-label>
+            <div class="mostrarDatos">{{nombreRecurrencia}}</div>
         </div>
 
-        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-            <ion-label class="titulos">Fecha y hora:</ion-label>
-            <ion-input class="colorInput" readonly></ion-input>
-        </div>
-        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-            <ion-label class="titulos">Ubicación:</ion-label>
-            <ion-input class="colorInput" readonly></ion-input>
-        </div>
-        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-            <ion-label class="titulos">Número telefonico:</ion-label>
-            <ion-input class="colorInput" readonly></ion-input>
-        </div>
-        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-            <ion-label class="titulos">Método de pago:</ion-label>
-            <ion-input class="colorInput" readonly></ion-input>
-        </div>
-        <div style="display: flex; align-items: center; margin-bottom: 40px;">
-            <ion-label class="titulos">Se repite:</ion-label>
-            <ion-input class="colorInput" readonly></ion-input>
-        </div>
+        <div *ngIf="mostrarLabel" style="display: flex; flex-direction: column; align-items: center;">
 
-        <div style="display: flex; justify-content: center; align-items: center;">
-            <ion-label class="noPersonas">No. de personas</ion-label>
-        </div>
-        <div style="display: flex; justify-content: center; align-items: center; width: 100px; margin-bottom: 40px;">
-            <ion-input class="inputP" type="text"></ion-input>
-        </div>
+            <ion-label class="noPersonas1">Complete todos los campos <span style="color: red">*</span></ion-label>
 
-        <div style="display: flex; justify-content: center; align-items: center">
-            <ion-button class="eventButton">
-                Generar reservación
+            <ion-item style="margin-bottom: 10px;" *ngIf="infoEvento[0]?.id_tipo_recurrencia == 2">
+                <ion-label>Fecha <span style="color: red">*</span> </ion-label>
+                <ion-datetime display-format="DD/MM/YYYY" min="{{minFecha}}" max="{{maxFecha}}" [(ngModel)]="fechaSeleccionada"></ion-datetime>
+            </ion-item>
+
+            <ion-item style="margin-bottom: 10px; width: 68vw;" *ngIf="infoEvento[0]?.id_tipo_recurrencia == 3">
+                <ion-label>Fecha: <span style="color: red">*</span></ion-label>
+                <ion-select class="selects" [(ngModel)]="fechaSeleccionada">
+                    <ion-select-option *ngFor="let dia of martesArray" [value]="dia">{{ dia }}</ion-select-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item style="margin-bottom: 10px; width: 68vw;" *ngIf="infoEvento[0]?.id_tipo_recurrencia == 4">
+                <ion-label>Fecha: <span style="color: red">*</span></ion-label>
+                <ion-select class="selects" [(ngModel)]="fechaSeleccionada" style="width: 100%;">
+                    <ion-select-option *ngFor="let date of mesesArray" >{{ date }}</ion-select-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-label class="noPersonas">No. de personas <span style="color: red">*</span></ion-label>
+            <ion-input class="inputP" type="number" [(ngModel)]="noPersonas"></ion-input>
+
+
+
+            <div style="display: flex; justify-content: center; align-items: center">
+            <ion-button class="bg-naranja" [disabled]="!noPersonas" (click)="guardar()">
+              Generar reservación
             </ion-button>
+          </div>
+          <div>
+            <ion-button class="bg-naranja" (click)="mostrarLabel = false">
+              Cancelar reservación
+            </ion-button>
+          </div>
         </div>
 
-    </div>
+        <div *ngIf="!mostrarLabel" style="display: flex; justify-content: center; align-items: center">
+          <ion-button class="bg-naranja" (click)="mostrarLabel = true">
+            Generar reservación
+          </ion-button>
+        </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

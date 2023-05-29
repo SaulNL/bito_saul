@@ -4,6 +4,7 @@ import { TabsPage } from './tabs.page';
 import { AuthGuardService } from "../../api/auth-guard.service";
 import { GuardLoginService } from 'src/app/api/busqueda/guard-login.service';
 
+// @ts-ignore
 const routes: Routes = [
   {
     path: 'tabs',
@@ -54,14 +55,14 @@ const routes: Routes = [
         loadChildren: () => import('../actualizar-version/actualizar-version.module').then(m => m.ActualizarVersionPageModule)
       },
       {
+        path:  'eventos',
+        loadChildren: () => import('../../paginas/eventos/eventos.module').then(  m => m. EventosPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/inicio',
         pathMatch: 'full'
       },
-      {
-        path: 'eventos',
-        loadChildren: () => import('../../paginas/eventos/eventos.module').then( m => m.EventosPageModule)
-      }
     ]
   },
   {

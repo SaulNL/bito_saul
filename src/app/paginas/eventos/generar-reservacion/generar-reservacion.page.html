@@ -15,8 +15,7 @@
 
   <div style="display: flex; justify-content: center; align-items: center; margin-top: 5px">
     <ion-button (click)="descargar()" class="bg-naranja">
-      <ion-spinner *ngIf="loaderCupon" name="bubbles"></ion-spinner>
-      <span>{{loaderCupon ? 'Generando reservación..' : 'DESCARGAR RESERVACIÓN'}}</span>
+      DESCARGAR RESERVACIÓN
     </ion-button>
   </div>
 
@@ -42,9 +41,9 @@
       <p style="color: #FFF; margin-bottom: 1vw; margin-top: 3px;">Fecha de reservación</p>
       <p style="color: #FFF; margin-bottom: 2vw; margin-top: 2px;">{{cadena[2]}}</p>
 
-      <div #qrcode></div>
+      <qrcode #qrCode [qrdata]="qrData"></qrcode>
 
-      <div style="font-size: 10px; display: flex; justify-content: center; align-items: center;">
+      <div style="font-size: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 1px">
         <ion-label>*Aplican restricciones*</ion-label>
       </div>
 
