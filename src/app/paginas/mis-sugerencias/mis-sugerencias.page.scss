@@ -1,0 +1,96 @@
+.contenedorTodo {
+    width: 93vw;
+    max-height: 84vh;
+    background-color: #fff;
+    margin: 15px;
+    border-radius: 15px;
+    overflow: hidden scroll;
+}
+
+p {
+    font-size: x-large;
+    padding-top: 15px;
+    margin-left: 9px;
+}
+
+.promoContainer,
+.productsContainer {
+    display: flex;
+}
+
+.promoCard,
+.productCard {
+    height: 320px;
+    width: 50%;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(235, 235, 235);
+    margin: 5px;
+}
+
+.imgPromo {
+    margin-bottom: 5px;
+    border-radius: 15px;
+}
+
+.tagsPromo {
+    display: flex;
+    min-height: 20px;
+    background-color: #d5d4d4;
+    color: #000;
+    justify-content: center;
+    /* align-items: center; */
+    overflow: hidden;
+    font-size: small;
+    border-radius: 15px;
+    padding: 5px;
+    margin-bottom: 6px;
+}
+
+.tipoPromo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.tituloPromo,
+.nombreNegocio {
+    display: flex;
+    justify-content: center;
+    text-transform: uppercase;
+    overflow: hidden;
+    height: 20px;
+}
+
+.tituloPromo {
+    justify-content: flex-start;
+    font-size: 14px;
+}
+
+.nombreNegocio {
+    padding-bottom: 20px;
+}
+
+.promoEstado {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    width: 50%;
+    height: 20px;
+    color: #fff;
+    border-radius: 15px;
+}
+
+.productDescription {
+    padding-bottom: 5px;
+    overflow: hidden;
+    max-height: 100px;
+}
+
+.productPrecio {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}

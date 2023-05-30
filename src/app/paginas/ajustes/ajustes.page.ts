@@ -57,7 +57,6 @@ export class AjustesPage implements OnInit {
     this.siNoVistos = false;
     this.totalNoVistos = 0;
     this.numNotifiSinLeer = 0;
-  
     if (this.util.existSession()) {
       this.usuario = this.auth0.getUserData();
       this.setNewDataBasicUser(this.usuario.id_persona);

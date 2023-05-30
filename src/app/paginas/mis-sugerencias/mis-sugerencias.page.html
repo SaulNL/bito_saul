@@ -2,62 +2,43 @@
   <ion-toolbar class="tol-bar">
     <ion-title>Sugerencias</ion-title>
     <ion-buttons slot="start">
-      <ion-button id="btnRegresar" routerLink="inicio">
+      <ion-button id="btnRegresar" [routerLink]="['/tabs/inicio']">
         <ion-icon name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content fullscreen>
-  <div *ngFor="let cat of listaVerMas; index as a">
-    <div class="container-1">
-      <h2 id="ancla{{a}}">{{cat.nombre}}</h2>
-      <br>
-    </div>
-    <div class="container-2">
-      <ion-card *ngFor="let proveedor of cat.negocios">
-        <div>
-          <img *ngIf="proveedor.tienepromociones == 1"
-               (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)"
-               style="position: absolute; width: 170px; cursor: pointer;"
-               src="../../../assets/images/promo/etiqueta_promo.png">
-          <div class="logo-negocio">
-            <img (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)" loading="lazy"
-                 [src]="proveedor.url_logo !== null ? proveedor.url_logo : 'https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg'"
-                 alt="Falla al cargar la imagen">
-          </div>
-          <div *ngIf="idNegocio===proveedor.id_negocio" class="ion-justify-content-center dots">
-            <ion-spinner name="dots" style="margin: -10px 0px 0px 0px;" class="spinner-color"></ion-spinner>
-          </div>
-        </div>
-        <div class="header-card" *ngIf="proveedor.giro !== null">
-          <div class="tag-giro">{{proveedor.giro }}</div>
-        </div>
 
-        <div class="body-card">
-          <div>
-                  <span
-                          [ngClass]="proveedor.abierto == 'ABIERTO' ? 'tag tag-green': 'tag tag-red'">{{proveedor.abierto}}</span>
+<ion-content>
 
-            <app-dar-like-negocio [negocio]="proveedor" [usuario]="user" [mostrarLike]="existeSesion">
-            </app-dar-like-negocio>
-          </div>
-          <div>
-            <ion-card-title> {{proveedor.nombre_corto != "" ? proveedor.nombre_corto :
-                    proveedor.nombre_comercial}}</ion-card-title>
-          </div>
-          <div class="distintivos">
-            <img *ngIf="proveedor.verificado === 1" class="distintivoIcon" src="assets/icon/certificado_icon.svg"
-                 matTooltip="Este negocio está verificado por Bitoo">
-            <div class="distintivo"
-                 *ngFor="let distintivo of proveedor.distintivos.slice(0, proveedor.verificado === 1 ? 3 : 4); index as i">
-              <img class="distintivoIcon"
-                   [src]="distintivo.icon">
-            </div>
-          </div>
+  <div class="contenedorTodo">
+    <p>PROMOCIONES</p>
+    <div class="promoContainer" *ngIf="datoss">
+      <div class="promoCard" *ngFor="let promocion of sugerencias.promociones.slice(0, promoCantidad); let i = index">
+        <div class="nombreNegocio">{{promocion.nombre_comercial}}</div>
+        <img class="imgPromo" src="{{promocion.url_imagen}}" alt="UnaImagen">
+        <div class="tagsPromo">{{promocion.promocion}}</div>
+        <div class="tipoPromo">{{promocion.tipo_promocion}}</div>
+        <div class="tituloPromo">{{this.tagsPromo[i]}}</div>
+        <div style="display: flex; justify-content: flex-end; padding-top: 10px;">
+          <div class="promoEstado" [style.background-color]="bgPromo[i]">{{promocion.abierto}}</div>
         </div>
-      </ion-card>
+      </div>
     </div>
+
+    <p>PRODUCTOS Y SERVICIOS</p>
+    <div class="productsContainer" *ngIf="datoss">
+      <div class="productCard" *ngFor="let product of sugerencias.productos.slice(0, promoCantidad); let i = index">
+        <div class="nombreNegocio">{{product.negocio.nombre}}</div>
+        <img class="imgPromo" [src]="product.imagen[0]" alt="UnaImagen">
+        <div class="tagsPromo">{{product.nombre}}</div>
+        <div class="productDescription">{{product.descripcion}}</div>
+        <div class="productPrecio">$ {{product.precio}}</div>
+      </div>
+    </div>
+
+    <p>NEGOCIOS</p>
+
   </div>
 
 </ion-content>

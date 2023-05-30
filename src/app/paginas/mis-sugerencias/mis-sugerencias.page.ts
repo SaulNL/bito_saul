@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {UtilsCls} from '../../utils/UtilsCls';
-import {BusquedaService} from '../../api/busqueda.service';
-import {ToadNotificacionService} from '../../api/toad-notificacion.service';
-import {Router} from '@angular/router';
+import { UtilsCls } from '../../utils/UtilsCls';
+import { RnaService } from 'src/app/api/rna/rna.service';
 
 @Component({
   selector: 'app-mis-sugerencias',
@@ -12,68 +10,55 @@ import {Router} from '@angular/router';
 })
 export class MisSugerenciasPage implements OnInit {
 
-  public listaVerMas: any[] = [];
-  public user: any;
-  public idNegocio: number;
-  public tFiltro: boolean;
-  public existeSesion: boolean;
+  public sugerencias: any;
+  public promoCantidad: number = 2;
+  public tagsPromo: any[];
+  public datoss = false;
+  public bgPromo: any[];
 
   constructor(
-      private principalSercicio: BusquedaService,
-      private util: UtilsCls,
-      private notificaciones: ToadNotificacionService,
-      private ruta: Router,
+    private RNA: RnaService
   ) {
-    this.listaVerMas = [];
-    this.user = this.util.getUserData();
-    this.existeSesion = this.util.existe_sesion();
+    this.tagsPromo = []
+    this.bgPromo = []
   }
 
   ngOnInit() {
-    this.Sugerencias();
+    this.obtenerSugerenciasRNA();
   }
 
-  public Sugerencias() {
-    this.principalSercicio.obtenerPrincipalInicio()
-        .subscribe(
-            (response) => {
-              if (response.code === 200) {
-                const listaCategorias = response.data;
-                let uno = listaCategorias[0].negocios.slice(0, 10);
-                let dos = listaCategorias[1].negocios.slice(0, 10);
-                let tres = listaCategorias[2].negocios.slice(0, 10);
-                this.listaVerMas = [
-                    {'nombre': 'Promociones', 'negocios': uno}, {
-                  'nombre': 'Productos y Servicios',
-                  'negocios': dos
-                }, {'nombre': 'Negocios', 'negocios': tres}];
-              }
-            }, (error) => {
-            });
+  obtenerSugerenciasRNA() {
+    console.log("entre en la llamada del servicio")
+    this.RNA.rnaStart(7, 10, 10, 10).then(res => {
+      this.datoss = true;
+      let data = JSON.stringify(res)
+      let json = JSON.parse(data)
+      this.sugerencias = json;
+      console.log("res de la RNA", json)
+      this.ajustarDatosPromo(json.promociones);
+    })
   }
 
-  negocioRuta(negocioURL, proveedor) {
-
-    this.idNegocio = proveedor;
-    setTimeout(() => {
-      if (negocioURL == "") {
-        this.notificaciones.error(
-            "Este negocio aún no cumple los requisitos mínimos"
-        );
+  ajustarDatosPromo(promo) {
+    console.log(promo)
+    // if (promo.abierto == "ABIERTO") {
+    //   console.log("entreCambioColor")
+    //   this.bgPromo = "#00ff00";
+    // }
+    promo.forEach(element => {
+      let tags = element.tags.map(tag => tag.replace("#", "")).join(", ");
+      this.tagsPromo.push(tags)
+      if (element.abierto == "ABIERTO") {
+        console.log("verde")
+        this.bgPromo.push("#2aac09d5");
       } else {
-
-        if (this.tFiltro === true) {
-          localStorage.setItem("isRedirected", "false");
-          this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
-
-
-        } else {
-          localStorage.setItem("isRedirected", "true");
-          this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
-        }
-
+        console.log("rojo")
+        this.bgPromo.push("#e11212c7");
       }
-    }, 1000);
+    });
+    console.log("estas son las tags", this.tagsPromo)
 
   }
+
+
 }

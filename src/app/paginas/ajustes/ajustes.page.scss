@@ -10,7 +10,7 @@ img {
   position: relative;
 }
 
-.badge{
+.badge {
   position: absolute;
   top: 2px;
   left: 25px;
@@ -35,4 +35,11 @@ ion-card-content div ion-icon {
   position: relative;
   top: 10px;
   left: 15px;
+}
+
+.tamanioCard {
+  height: 115px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
