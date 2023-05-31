@@ -14,7 +14,9 @@
   <ion-card>
     <ion-card-content>
 
-        <img [src]="infoEvento[0]?.url_imagen" style="margin-left: 28px; height: 200px; width: 250px; margin-bottom: 12px; margin-top: 6px;">
+        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 12px; margin-top: 6px;">
+            <img [src]="infoEvento[0]?.url_imagen" style="height: 200px; width: 250px;">
+        </div>
 
         <div style="display: flex; align-items: center; margin-bottom: 9px;">
           <ion-label class="titulos">Fecha y hora:</ion-label>
@@ -34,13 +36,12 @@
         </div>
         <div style=" display: flex; align-items: center; margin-bottom: 9px;">
           <ion-label class="titulos">Método de pago:</ion-label>
-          <ion-input class="colorInput" readonly><p class="centro">
+          <div class="mostrarDatos">
             <ng-container *ngIf="infoEvento[0]?.tipo_pago_transferencia === 1">Transferencia, </ng-container>
             <ng-container *ngIf="infoEvento[0]?.tipo_pago_tarjeta_credito === 1">Tarjeta de credito, </ng-container>
             <ng-container *ngIf="infoEvento[0]?.tipo_pago_tarjeta_debito === 1">Tarjeta de debito, </ng-container>
             <ng-container *ngIf="infoEvento[0]?.tipo_pago_efectivo === 1">Efectivo</ng-container>
-          </p>
-          </ion-input>
+          </div>
         </div>
         <div style="display: flex; align-items: center; margin-bottom: 16px;">
           <ion-label class="titulos">Se repite:</ion-label>

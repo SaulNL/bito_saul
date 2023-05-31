@@ -19,8 +19,8 @@
   <app-spinner [loader]="loaderNegocios" [message]="msj"></app-spinner>
   <app-spinner *ngIf="mostrarloaderInicio" [loader]="loaderInicio" [message]="msj"></app-spinner>
   <div *ngIf="!loader">
-    <ion-grid style="margin-left: 0.1%;">
-      <ion-row>
+    <ion-grid>
+      <ion-row style="display: flex;">
         <ion-col>
           <ion-chip *ngIf="!selectionAP" color="dark" (click)="openPlazasAfiliacionesModal()">
             <small class="text">Destacados</small>
@@ -28,13 +28,13 @@
           </ion-chip>
 
           <ion-chip *ngIf="selectionAP" (click)="regresarTinBitoo()" color="danger">
-            <ion-icon class="custom-col" name="log-out-outline"></ion-icon>
+            <ion-icon name="log-out-outline"></ion-icon>
             <ion-label><span class="text">Volver a TinBitoo</span></ion-label>
           </ion-chip>
         </ion-col>
         <ion-col>
           <ion-button mode="ios" class="mapa" shape="round" [disabled]="listaCategorias.length === 0"
-            (click)="abrirModalMapa()">
+                      (click)="abrirModalMapa()">
             <ion-icon class="icono" name="map-outline"></ion-icon>
             <small>Mapa</small>
           </ion-button>
@@ -45,7 +45,7 @@
           </ion-button>
         </ion-col>
 
-        <ion-col class="custom-col" size-md="6">
+        <ion-col>
           <ion-chip *ngIf="filtroActivo" (click)="borrarFiltrosP()" color="danger">
             <ion-icon class="icono" name="trash-outline" color="danger"></ion-icon>
             <ion-label><span class="text">Borrar Filtros</span></ion-label>
@@ -56,6 +56,7 @@
           </ion-chip>
         </ion-col>
       </ion-row>
+
     </ion-grid>
 
     <ion-grid>

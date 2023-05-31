@@ -188,21 +188,30 @@ export class ReservacionesPage implements OnInit {
 
   reservacionPorFechas(){
   if ( this.infoEvento[0]?.id_tipo_recurrencia === 2){
-      const fechaActual = new Date(this.infoEvento[0]?.fecha);
-      this.minFecha = fechaActual.toISOString();
-      const fechaMaxima = new Date();
-      fechaMaxima.setFullYear(fechaMaxima.getFullYear() + 1);
-      this.maxFecha = fechaMaxima.toISOString();
+      const fechaReservacion = new Date(this.infoEvento[0]?.fecha);
+      const fechaActual = new Date();
+      if ( fechaReservacion < fechaActual){
+        this.minFecha = fechaActual.toISOString();
+        const fechaMaxima = new Date();
+        fechaMaxima.setFullYear(fechaMaxima.getFullYear() + 1);
+        this.maxFecha = fechaMaxima.toISOString();
+      }else{
+        this.minFecha = fechaReservacion.toISOString();
+        const fechaMaxima = new Date();
+        fechaMaxima.setFullYear(fechaMaxima.getFullYear() + 1);
+        this.maxFecha = fechaMaxima.toISOString();
+      }
+
     }
   }
 
   mostrarSemanal(){
     this.martesArray = [];
-    const fechaActual = new Date(this.infoEvento[0]?.fecha);
-    const anioActual = fechaActual.getFullYear();
-    const mesActual = fechaActual.getMonth();
-    const diaActual = fechaActual.getDate();
-    const numDia = fechaActual.getDay();
+    const fechaEvento = new Date(this.infoEvento[0]?.fecha);
+    const anioActual = fechaEvento.getFullYear();
+    const mesActual = fechaEvento.getMonth();
+    const diaActual = fechaEvento.getDate();
+    const numDia = fechaEvento.getDay();
 
     for (let mes = mesActual; mes < 12; mes++) {
       const maxDia = (mes === mesActual) ? 31 - diaActual + 1 : 31;
@@ -258,7 +267,7 @@ export class ReservacionesPage implements OnInit {
     }
 
     this.cadenaReservacion = [eventoId, this.idPersona, this.fechaReservacion, nPersonas];
-    //this.generarReservacion(this.cadenaReservacion);
+    this.generarReservacion(this.cadenaReservacion);
     this.router.navigate(['/tabs/eventos/generar-reservacion'], { state: { cadena: this.cadenaReservacion } });
   }
 

@@ -42,3 +42,17 @@ ion-chip{
   margin-bottom: 5px;
   border-radius: 5px;
 }
+
+.qrClass{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60vw !important;
+  height: 62vw !important;
+  background-size: 100% 100%;
+}
+
+.claseQr{
+  height: 50vw;
+  width: 50vw;
+}
