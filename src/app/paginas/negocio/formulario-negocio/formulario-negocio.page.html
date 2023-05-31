@@ -5,11 +5,10 @@
     <ion-title *ngIf="segmentModel === 'domicilio'"> Domicilio </ion-title>
     <ion-title *ngIf="segmentModel === 'contacto'"> Contacto </ion-title>
     <ion-title *ngIf="segmentModel === 'productos'&& seEstaClonando "> Productos </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="cancelar()">
-        <ion-icon name="close-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    
+    <ion-button slot="end" (click)="cancelar()" fill="clear" class="close">
+      <ion-icon name="close" slot="icon-only"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -188,14 +187,35 @@
           <ion-item disabled="{{disabled}}">
             <ion-label position="stacked">Distintivos</ion-label>
             <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idDistintivos" name="idDist" *ngIf="features10"
-              #distintivos="ngModel" [(ngModel)]="negocioTO.distintivos" placeholder="{{ tipoDistAux }}">
+              #distintivos="ngModel" [(ngModel)]="negocioTO.distintivos" placeholder="{{ tipoDistAux }}" (ionChange)="selectDistintivos($event)">
               <ion-select-option *ngFor="let dist of lstDistintivos" [value]="dist.id_distintivo">{{dist.nombre}}
               </ion-select-option>
             </ion-select>
           </ion-item>
-          <div>
-            <div>Seleccione sus distintivos</div>
-          </div>
+
+          <ion-card class="ion-margin-top">
+            <div class="ion-text-center">
+              <h5>Lista de distintivos seleccionados</h5>
+            </div>
+          </ion-card>
+
+          <ion-list *ngIf="distintivosSeleccionados.length > 0">
+            <ion-item *ngFor="let elemento of distintivosSeleccionados; let i = index;">
+              <ion-label>
+                <small>{{i + 1}}. {{elemento.nombre}}</small>
+              </ion-label>
+              
+              <ion-button *ngIf="elemento.requiere_vigencia == 1" class="btn-modal-pdf" mode="ios" size="small" fill="outline" 
+              [color]="elemento.fc_vencimiento == null ? 'danger' : 'primary'" (click)="abrirModalPdfVigencia(elemento)">
+                <span *ngIf="elemento.fc_vencimiento == null"> Registrar vigencia</span>
+                <span *ngIf="elemento.fc_vencimiento != null">Editar vigencia</span>
+              </ion-button>
+
+              <div *ngIf="elemento.requiere_vigencia == 0">
+                <ion-badge color="tertiary" class="badge-distintivo">No se requiere vigencia</ion-badge>
+              </div>
+            </ion-item>
+          </ion-list>
 
           <ion-item>
             <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
@@ -309,7 +329,7 @@
             <ion-row class="ion-align-items-center">
               <ion-col size="12" class="ion-text-center">
                 <ion-button [disabled]="blnActivaHorario" size="small" class="bg-naranja" type="button"
-                            (click)="agregarHorario()">
+                  (click)="agregarHorario()">
                   Guardar Horario
                 </ion-button>
                 <ion-button size="small" color="medium" type="button" (click)="cancelarHorario()">
@@ -557,7 +577,8 @@
               [(ngModel)]="negocioTO.det_domicilio.codigo_postal" (change)="getAddress()" required></ion-input>
           </ion-item>
           <br />
-          <ion-button *ngIf="blnActivaNegocioFisico" size="small" class="bg-naranja" type="button" (click)="getAddress()">
+          <ion-button *ngIf="blnActivaNegocioFisico" size="small" class="bg-naranja" type="button"
+            (click)="getAddress()">
             <ion-icon name="navigate-circle-outline"></ion-icon>
             Buscar dirección en el mapa
           </ion-button>
@@ -580,12 +601,12 @@
               obligatorios</ion-label>
           </ion-item>
           <ion-button expand="block" type="submit" class="bg-naranja" *ngIf="seEstaClonando == false"
-                      [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
+            [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
             <span *ngIf="negocioTO.id_negocio === null || negocioTO.id_negocio === undefined">Guardar</span>
             <span *ngIf="negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined">Actualizar</span>
           </ion-button>
           <ion-button expand="block" type="submit" class="bg-naranja" *ngIf="seEstaClonando == true"
-                      [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
+            [disabled]="domicilioInvalid(formDomicilio.invalid, negocioTO.dias)">
             <span>Guardar</span>
           </ion-button>
         </ion-list>

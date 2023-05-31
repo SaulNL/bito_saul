@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Mis Eventos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="AgregarEvento()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="!loader">
+  <div class="eventosContent">
+    <ion-label class="eventocreado">Eventos Creados</ion-label>
+    <ion-list>
+      <ion-item-sliding class="eventoContent" *ngFor="let evento of eventos; let i = index">
+        <ion-item>
+          <img class="eventoImg" src="{{evento.url_imagen}}" alt="{{evento.evento}}">
+          <!-- <ion-label class="eventTitle">{{evento.evento}}</ion-label> -->
+          <p class="eventTitle">{{evento.evento}}</p>
+          <ion-icon style="color: #000;" name="chevron-back-outline"></ion-icon>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option color="warning" (click)="editarEvento(evento.id_evento)"><ion-icon
+              name="create-outline"></ion-icon></ion-item-option>
+          <ion-item-option color="danger" (click)="eliminarEvento(evento.id_evento,i)"><ion-icon
+              name="trash-outline"></ion-icon></ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+
+      <!-- <ion-item class="eventoContent" *ngFor="let evento of eventos">
+        <img class="eventoImg" src="{{evento.url_imagen}}" alt="{{evento.evento}}">
+        <ion-label class="eventTitle">{{evento.evento}}</ion-label>
+      </ion-item> -->
+
+    </ion-list>
+  </div>
+
+
+</ion-content>

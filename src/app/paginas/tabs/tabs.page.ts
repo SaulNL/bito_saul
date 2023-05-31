@@ -26,7 +26,7 @@ export class TabsPage implements OnInit {
   public isAndroid: boolean;
   private plazaAfiliacion: AfiliacionPlazaModel | null;
   public misNotificaciones: any;
-  public notifSinLeer :number = +localStorage.getItem("notifSinLeer");
+  public notifSinLeer :number = + localStorage.getItem("notifSinLeer");
   public id_proveedor:any;
   showPopUp: boolean=false;
   showPopUpGracias: boolean = false;
@@ -66,27 +66,16 @@ export class TabsPage implements OnInit {
     const pagina = localStorage.getItem('activedPage');
     const prod = localStorage.getItem('productos');
     const neg = localStorage.getItem('negocios');
-    var id_proveedor: number = +localStorage.getItem('id_proveedor');
-    this.notificacionesServide.obtenerNotificaciones(id_proveedor).subscribe(
-      response => {
-        if (response.code === 200){          
-          this.misNotificaciones= response.data;
-          this.notificacionesSinAbrir();
-        }            
-      },
-      error => {
-      }
-    );
-    this.actualizarNotificaciones();
-    this.actualizarEncuestas();
-   
 
-    if (neg==='active' && this.isIos){
+    if (this.usuario !== null) this.obtenerNotificaciones();
+    
+    //this.actualizarNotificaciones();
+    this.actualizarEncuestas();
+
+    if (neg === 'active' && this.isIos){
       this.activedPage = 'inicio';
-    
     }
-    
-    if (prod==='active' && this.router.navigate(['/tabs/productos'], {
+    if (prod === 'active' && this.router.navigate(['/tabs/productos'], {
       queryParams: {
         special: true
       }
@@ -231,68 +220,59 @@ export class TabsPage implements OnInit {
     await alert.present();
   }
 
-  obtenerNotificaciones(){    
-    //console.log("PRUEBIOTAA: "+ typeof localStorage.getItem('id_proveedor'))
-    if(localStorage.getItem('id_proveedor')!="null" && localStorage.getItem('id_proveedor')!=undefined){
-      var id_proveedor: number = +localStorage.getItem('id_proveedor');
-      //console.log("existe id_proveedor: "+id_proveedor)
-      this.notificacionesServide.obtenerNotificaciones(id_proveedor).subscribe(
-        response => {
-          if (response.code === 200){          
-        if (response.code === 200){          
-          if (response.code === 200){          
-            this.misNotificaciones= response.data;
-            this.notificacionesSinAbrir();
-          }            
-        }            
-          }            
-        },
-        error => {
+  obtenerNotificaciones() {
+    let idProveedor = null;
+    let idPersona = null;
+    if (this.usuario.proveedor) {
+      idProveedor = this.usuario.proveedor.id_proveedor;
+      idPersona = this.usuario.proveedor.id_persona;
+    } else {
+      idPersona = this.usuario.id_persona;
+    }
+
+    this.notificacionesServide.obtenerNotificaciones(idProveedor, idPersona).subscribe(
+      response => {
+        if (response.code === 200){
+          this.misNotificaciones = response.data;
+          this.notificacionesSinAbrir();
         }
-      );
-    }else{console.log("NO existe id_proveedor: ")}  
+      },
+      error => {
+      }
+    );
   }
 
-  notificacionesSinAbrir(){    
-    localStorage.setItem("notifSinLeer",this.misNotificaciones.filter(item =>{
-      return item.estatus == 1;
-    }).length)
-    this.notifSinLeer = +localStorage.getItem("notifSinLeer")/*this.misNotificaciones.filter(item =>{
-      return item.estatus == 1;
-    }).length;*/
+  notificacionesSinAbrir(){
+    localStorage.setItem('notifSinLeer', this.misNotificaciones.filter(item =>{
+      return item.estatus = 1;
+    }).length);
+    this.notifSinLeer = +localStorage.getItem('notifSinLeer');
   }
 
-  actualizarNotificaciones(){          
-    setInterval(( ) =>{     
-
-        this.obtenerNotificaciones();
-                  
-    }, 30000);         
+  actualizarNotificaciones(){
+    setInterval(( ) => {
+        //this.obtenerNotificaciones();
+    }, 30000);
   }
-  async actualizarEncuestas(){  
-    this.filtroVariable.variable="intervaloTiempoPreguntaRapida";
+  async actualizarEncuestas(){
+    this.filtroVariable.variable = 'intervaloTiempoPreguntaRapida';
 
     await this.AdministracionService.obtenerVariable(this.filtroVariable).subscribe(response =>{
-      let valor   
-      //console.log("response del tiempo ="+JSON.stringify(response)+" lenght"+ response.data.length) 
-      if(response.data == undefined || response.data.length == 0) {
-        valor = null;        
+      let valor;
+      if (response.data === undefined || response.data.length === 0) {
+        valor = null;
       }else{
-        valor = response.data[0];//indice 0 por que solo se debe mostrar una encuesta a la vez
-        //console.log("Se le asigna valor a obtenerVariable = "+valor.valor)
+        valor = response.data[0];
         localStorage.setItem('valorMostrarEncuesta', JSON.stringify(valor.valor));
-        
-        let valorMostrarEncuesta = Number(localStorage.getItem("valorMostrarEncuesta"))*60;
-        if(valorMostrarEncuesta==0){
-          
-          valorMostrarEncuesta=60
-        } 
-        //console.log("Las encuestas se actualizan cada: "+valorMostrarEncuesta*1000)
-        setInterval(( ) =>{               
-          this.obtenerEncuestas()           
-        },valorMostrarEncuesta*1000); //valorMostrarEncuesta*1000); //13000)
-      }                               
-    })              
+        let valorMostrarEncuesta = Number(localStorage.getItem('valorMostrarEncuesta')) * 60;
+        if (valorMostrarEncuesta === 0){
+          valorMostrarEncuesta = 60;
+        }
+        setInterval(( ) => {
+          this.obtenerEncuestas();
+        }, valorMostrarEncuesta * 1000);
+      }
+    });
   }
   obtenerEncuestas(){
     this.contesto=false;

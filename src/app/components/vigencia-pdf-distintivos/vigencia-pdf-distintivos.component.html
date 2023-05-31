@@ -1,0 +1,62 @@
+<ion-header translucent>
+  <ion-toolbar class="tolbar">
+    <ion-title>Registrar vigencia</ion-title>
+
+    <ion-button slot="end" (click)="cerrarModal()" fill="clear" class="close">
+      <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+
+  <ion-card>
+    <ion-card-content>
+
+      <ion-item>
+        <ion-label position="stacked">Fecha de vencimiento del distintivo <span style="color: red">*</span></ion-label>
+        <ion-datetime #picker displayFormat="D/MM/YYYY" max="2050" name="fechaVigencia"
+          [(ngModel)]="distintivo.fc_vencimiento"></ion-datetime>
+        <ion-icon slot="end" name="calendar-outline" (click)="picker.open()"></ion-icon>
+      </ion-item>
+
+      <div class="ion-margin">
+        <div *ngIf="loaderPdf" class="loader-pdf">
+          <ion-spinner name="dots"></ion-spinner>
+        </div>
+
+        <div *ngIf="!loaderPdf" class="contenedor-pdf">
+          <div class="icono-pdf">
+            <ion-button (click)="abrirPdf()" fill="clear">
+              <ion-icon
+                name="document-text-outline"
+                style="font-size: 30px; color: white;"
+              ></ion-icon>
+            </ion-button>
+
+          </div>
+          <h4 style="margin: 5px 0">PDF</h4>
+          <small id="emailHelp" class="form-text text-muted">Tamaño máximo de archivo 5 MB</small>
+        </div>
+
+          <div *ngIf="!loaderPdf" style="display: flex; justify-content: center; align-items: center" >
+            <label
+              for="imagenCarta"
+            >
+              <div class="boton" *ngIf="distintivo.url_comprobante_vigencia == null">Agregar</div>
+              <div class="boton" *ngIf="distintivo.url_comprobante_vigencia != null">Editar</div>
+            </label>
+
+            <input
+              type="file"
+              id="imagenCarta"
+              hidden
+              accept="application/pdf"
+              (change)="subirCarta($event)"
+            />
+        </div>
+      </div>
+          
+    </ion-card-content>
+  </ion-card>
+</ion-content>

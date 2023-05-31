@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
-import { AuthGuardService } from "../../api/auth-guard.service";
+import { AuthGuardService } from '../../api/auth-guard.service';
 import { GuardLoginService } from 'src/app/api/busqueda/guard-login.service';
 
-// @ts-ignore
 const routes: Routes = [
   {
     path: 'tabs',
@@ -36,7 +35,7 @@ const routes: Routes = [
       },
       {
         path: 'promocion/:id',
-        loadChildren: () => import('../promocion/promocion.module').then( m => m.PromocionPageModule)
+        loadChildren: () => import('../promocion/promocion.module').then(m => m.PromocionPageModule)
       },
       {
         path: 'negocio/:negocio',
@@ -59,10 +58,23 @@ const routes: Routes = [
         loadChildren: () => import('../../paginas/eventos/eventos.module').then(  m => m. EventosPageModule)
       },
       {
+        path: 'mis-eventos',
+        loadChildren: () => import('../mis-eventos/mis-eventos.module').then(m => m.MisEventosPageModule)
+      },
+      {
+        path: 'mis-sugerencias',
+        loadChildren: () => import('../../paginas/mis-sugerencias/mis-sugerencias.module').then(m => m.MisSugerenciasModule
+        )
+      },
+      {
+        path: 'notificaciones',
+        loadChildren: () => import('../../paginas/notificacion/notificacion.module').then(m => m.NotificacionPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/inicio',
         pathMatch: 'full'
-      },
+      }
     ]
   },
   {

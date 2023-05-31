@@ -1,0 +1,126 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/mis-eventos" icon="arrow-back-outline" text="">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Agregar Evento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-spinner [loader]="loader" [message]="msj"></app-spinner>
+  <div class="eventoContenido">
+    <form class="eventoForm" (ngSubmit)="submit()" #eventForm="ngForm">
+      <div class="titulo">
+        <ion-item>
+          <ion-label style="width: auto !important;">
+            EVENTO:
+          </ion-label>
+          <ion-input name="Evento" placeholder="Nombre del evento" [(ngModel)]="eventData.evento" maxlength="100"
+            required></ion-input>
+        </ion-item>
+      </div>
+      <div class="img">
+        <div class="form-group" style="display: flex; justify-content: center; align-items: center">
+          <div class="avatar-upload">
+            <div class="avatar-edit">
+              <input type="file" hidden id="imageUpload" accept="image/*" (change)="subir_imagen_cuadrada($event)"
+                required />
+              <label for="imageUpload">
+                <ion-icon name="camera-outline" style="position: relative; top: 7px"></ion-icon>
+              </label>
+            </div>
+            <div class="avatar-preview">
+              <div *ngIf="eventData.imagen.archivo_64 === null || eventData.imagen.archivo_64 === undefined"
+                id="imageUpload"
+                [ngStyle]="eventoInfo_imagen !== null ? {'background-image': 'url('+eventoInfo_imagen+')'} : ''">
+              </div>
+              <div *ngIf="eventData.imagen.archivo_64 !== null || eventData.imagen.archivo_64 !== undefined"
+                [ngStyle]="{'background-image': 'url('+eventData.imagen.archivo_64+')'}"></div>
+            </div>
+            <label for="imageUpload"></label>
+          </div>
+        </div>
+      </div>
+      <div class="formulario">
+
+        <ion-item>
+          <ion-label>Asociar negocio</ion-label>
+          <ion-select class="bg" id="id_negocio" name="id_negocio" justify="end" label="End"
+            placeholder="Asociar negocio" [(ngModel)]="eventData.id_negocio" required #asociarNegocio="ngModel">
+            <ion-select-option *ngFor="let negocio of lstNegocios"
+              [value]="negocio.id_negocio">{{negocio.nombre_comercial}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Fecha y hora</ion-label>
+          <ion-datetime class="bg" placeholder="Fechas" name="fecha" displayFormat="DD/MM/YYYY"
+            [(ngModel)]="eventData.fecha" required></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label>Estado</ion-label>
+          <ion-select class="bg" name="estado" justify="end" label="End" placeholder="Seleccione un estado"
+            [(ngModel)]="eventData.id_estado" (ionChange)="obtenerMunicipio($event)" required>
+            <ion-select-option *ngFor="let estado of list_cat_estado"
+              [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Municipio</ion-label>
+          <ion-select class="bg" name="municipio" justify="end" label="End" placeholder="Seleccione un municipio"
+            [(ngModel)]="eventData.id_municipio" (ionChange)="obtenerLocalidad($event)" required>
+            <ion-select-option *ngFor="let municipio of list_cat_municipio"
+              [value]="municipio.id_municipio">{{municipio.nombre}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Localidad</ion-label>
+          <ion-select class="bg" name="localidad" justify="end" label="End" placeholder="Seleccione una localidad"
+            [(ngModel)]="eventData.id_localidad">
+            <ion-select-option *ngFor="let localidad of list_cat_localidad"
+              [value]="localidad.id_localidad">{{localidad.nombre}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Numero de telefono</ion-label>
+          <ion-input class="bg" type="tel" name="telefono" pattern="[0-9]*" inputmode="numeric"
+            placeholder="Numero de telefono" [(ngModel)]="eventData.telefono" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Metodo de pago</ion-label>
+          <ion-select class="bg" name="tipo_pago_efectivo" multiple="true" justify="end" label="End"
+            placeholder="Metodo de pago" [(ngModel)]="pagoSeleccionado" (ionChange)="onPagoSeleccionado()" required>
+            <ion-select-option *ngFor="let pago of tipoPago" [value]="pago.id">{{pago.tipo}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Repetir</ion-label>
+          <ion-select class="bg" name="id_tipo_recurrencia" justify="end" label="End" placeholder="Repetir"
+            [(ngModel)]="eventData.id_tipo_recurrencia" required>
+            <ion-select-option *ngFor="let recu of recurrencia"
+              [value]="recu.id_tipo_recurrencia">{{recu.nombre}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Tipo de evento</ion-label>
+          <ion-select class="bg" name="tipo_evento" justify="end" multiple="true" label="End"
+            placeholder="Tipo de evento" [(ngModel)]="eventoSelect" (ionChange)="onEventoSeleccionado()" required>
+            <ion-select-option *ngFor="let evento of tipoEvento"
+              [value]="evento.nombre">{{evento.nombre}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <app-input-tags [tags]="eventData.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
+        </ion-item>
+
+        <ion-button type="submit" class="bg-naranja" [disabled]="!eventForm.valid">Guardar</ion-button>
+      </div>
+    </form>
+  </div>
+
+</ion-content>

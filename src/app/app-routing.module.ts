@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./paginas/tabs/tabs.module').then(m => m.TabsPageModule)
-  }
+  },
 
 ];
 @NgModule({
