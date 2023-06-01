@@ -25,7 +25,8 @@ export class PagoRealizadoPage implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      alert("params " + JSON.stringify(params))
+      this.pedido = params.pedido;
+      this.obtenerPedido();
 
     })
     /* this.route.queryParams
