@@ -472,6 +472,8 @@ export class PedidoNegocioComponent implements OnInit {
     }
 
      pedidoOrdenMP(data){
+        data.type_request = 'mobile';
+        data.type_mobile = this.platform.is('ios') ? 'ios' : 'android';
         this.pasarelaServicies.pedidoOrdenMP(data).subscribe(
             response => {
                 window.open(JSON.parse(response).data.init_point);
