@@ -205,12 +205,22 @@ export class ReservacionesPage implements OnInit {
     }
   }
 
-  mostrarSemanal(){
+  mostrarSemanal() {
     this.martesArray = [];
     const fechaEvento = new Date(this.infoEvento[0]?.fecha);
-    const anioActual = fechaEvento.getFullYear();
-    const mesActual = fechaEvento.getMonth();
-    const diaActual = fechaEvento.getDate();
+    const fechaActual = new Date();
+
+    let anioActual = fechaEvento.getFullYear();
+    let mesActual = fechaEvento.getMonth();
+    let diaActual = fechaEvento.getDate();
+
+    // Comparar fecha del evento con fecha actual
+    if (fechaEvento < fechaActual) {
+      anioActual = fechaActual.getFullYear();
+      mesActual = fechaActual.getMonth();
+      diaActual = fechaActual.getDate();
+    }
+
     const numDia = fechaEvento.getDay();
 
     for (let mes = mesActual; mes < 12; mes++) {
@@ -226,6 +236,7 @@ export class ReservacionesPage implements OnInit {
       }
     }
   }
+
 
 
   mostrarMeses() {
