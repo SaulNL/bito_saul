@@ -828,39 +828,30 @@ export class FormularioNegocioPage implements OnInit {
 
   selectDistintivos(event: any) {
     let idDistintivos = event.detail.value;
+    setTimeout(() => {
+      this.distintivosSeleccionados = [];
 
-    if (this.distintivosSeleccionados.length > 0) {
       for (const id of idDistintivos) {
+        let distintivoTodo = this.negocioTO.distintivosTodo.find(dist => dist.id_distintivo === id);
 
-        let distintivo = this.distintivosSeleccionados.find(dist => dist.id_distintivo === id);
+        if (distintivoTodo != undefined) {
+          let distintivo = distintivoTodo.distintivo;
 
-        if (this.distintivosSeleccionados.includes(distintivo)) {
-
-          this.distintivosSeleccionados.forEach((dist, index) => {
-            if (!idDistintivos.includes(dist.id_distintivo)) {
-
-              this.distintivosSeleccionados.splice(index, 1);
-            }
-          });
-
+          if (!this.distintivosSeleccionados.some(dist => dist.id_distintivo === id)) {
+            this.distintivosSeleccionados.push(distintivo);
+          }
         } else {
+          let distintivoLista = this.lstDistintivos.find(dist => dist.id_distintivo == id);
 
-          let distintivoTodo = this.negocioTO.distintivosTodo.find(dist => dist.id_distintivo === id);
-
-          if (distintivoTodo != undefined) {
-            this.distintivosSeleccionados.push(distintivoTodo.distintivo)
-
-          } else {
-            let distintivoLista = this.lstDistintivos.find(dist => dist.id_distintivo == id);
-  
-            this.distintivosSeleccionados.push(distintivoLista)
+          if (!this.distintivosSeleccionados.some(dist => dist.id_distintivo === id)) {
+            this.distintivosSeleccionados.push(distintivoLista);
           }
         }
       }
-    }
+    }, 1000)
 
-    //alert(JSON.stringify("seleccionados " + JSON.stringify(this.distintivosSeleccionados)));
   }
+
 
   /**
      * Funcion para enviar a validar la url del negocio
@@ -1230,6 +1221,7 @@ export class FormularioNegocioPage implements OnInit {
           valido = false
         }
         if (valido) {
+          console.log(this.negocioGuardar, 'guardar1');
           this.negocioGuardar.productos = this.listaProductos;
           this.negocioServico.guardar(this.negocioGuardar).subscribe(
             response => {
@@ -1269,6 +1261,7 @@ export class FormularioNegocioPage implements OnInit {
           valido = false
         }
         if (valido) {
+          console.log(this.negocioGuardar, 'guardar2');
           this.negocioServico.guardar(this.negocioGuardar).subscribe(
             response => {
               if (response.code === 200) {
@@ -1348,6 +1341,7 @@ export class FormularioNegocioPage implements OnInit {
       this.negocioGuardar.distintivos.push(distintivo)
     });
 
+    console.log(this.negocioGuardar, 'distintivos');
      
     this.negocioGuardar.perfiles_caracteristicas = this.negocioTO.perfiles_caracteristicas;
     //console.log('perfiles_caracteristicas' + this.negocioGuardar.perfiles_caracteristicas);
