@@ -852,7 +852,6 @@ export class FormularioNegocioPage implements OnInit {
 
   }
 
-
   /**
      * Funcion para enviar a validar la url del negocio
      * @param evento
