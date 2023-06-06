@@ -620,7 +620,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
     let nombre = this.informacionNegocio.nombre_comercial;
     this.msj = 'Descargando archivo....';
-    this.loader = true;
 
     if (this.isIOS) {
       setTimeout(() => {
