@@ -1220,7 +1220,6 @@ export class FormularioNegocioPage implements OnInit {
           valido = false
         }
         if (valido) {
-          console.log(this.negocioGuardar, 'guardar1');
           this.negocioGuardar.productos = this.listaProductos;
           this.negocioServico.guardar(this.negocioGuardar).subscribe(
             response => {
@@ -1260,7 +1259,6 @@ export class FormularioNegocioPage implements OnInit {
           valido = false
         }
         if (valido) {
-          console.log(this.negocioGuardar, 'guardar2');
           this.negocioServico.guardar(this.negocioGuardar).subscribe(
             response => {
               if (response.code === 200) {
@@ -1340,8 +1338,6 @@ export class FormularioNegocioPage implements OnInit {
       this.negocioGuardar.distintivos.push(distintivo)
     });
 
-    console.log(this.negocioGuardar, 'distintivos');
-     
     this.negocioGuardar.perfiles_caracteristicas = this.negocioTO.perfiles_caracteristicas;
     //console.log('perfiles_caracteristicas' + this.negocioGuardar.perfiles_caracteristicas);
     if (this.cnvn_date === undefined) {
