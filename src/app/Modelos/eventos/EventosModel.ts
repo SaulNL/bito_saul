@@ -2,6 +2,8 @@ import { EventoImagen } from './EventoImagen'
 import { EventoUrlImagen } from './EventoUrlImagen';
 
 export class EventosModel {
+    public activo: number;
+    public requiere_confirmacion: number | null;
     public id_evento: number | null;
     public evento: string;
     public id_negocio: number;
@@ -19,7 +21,9 @@ export class EventosModel {
     public imagen = new EventoImagen() || new EventoUrlImagen();
     public tags: string;
 
-    constructor(id_evento = null, evento = "", id_negocio = 0, fecha = "", id_estado = "", id_municipio = "", id_localidad = "", telefono = "", tipo_pago_transferencia = 0, tipo_pago_tarjeta_credito = 0, tipo_pago_tarjeta_debito = 0, tipo_pago_efectivo = 0, id_tipo_recurrencia = 0, tipo_evento = "", tags = "") {
+    constructor(activo = 0, requiere_confirmacion = 0, id_evento = null, evento = "", id_negocio = 0, fecha = "", id_estado = "", id_municipio = "", id_localidad = "", telefono = "", tipo_pago_transferencia = 0, tipo_pago_tarjeta_credito = 0, tipo_pago_tarjeta_debito = 0, tipo_pago_efectivo = 0, id_tipo_recurrencia = 0, tipo_evento = "", tags = "") {
+        this.activo = activo;
+        this.requiere_confirmacion = requiere_confirmacion;
         this.id_evento = id_evento;
         this.evento = evento;
         this.id_negocio = id_negocio;

@@ -5,7 +5,7 @@ import { UtilsCls } from 'src/app/utils/UtilsCls';
 import { Auth0Service } from '../../api/busqueda/auth0.service';
 import { NavBarServiceService } from '../../api/busqueda/nav-bar-service.service';
 import { SideBarService } from '../../api/busqueda/side-bar-service';
-import { Platform } from "@ionic/angular";
+import { MenuController, Platform } from "@ionic/angular";
 
 @Component({
     selector: 'app-toolbar-busqueda',
@@ -32,7 +32,8 @@ export class ToolbarBusquedaComponent implements OnInit {
         private pedidosServicios: PedidosService,
         private _utils_cls: UtilsCls,
         private active: ActivatedRoute,
-        private platform: Platform
+        private platform: Platform,
+        private menuCtrl: MenuController
     ) {
         this.totalNoVistos = 0;
         this.permisos = [];
@@ -157,5 +158,9 @@ export class ToolbarBusquedaComponent implements OnInit {
         localStorage.removeItem('byCategorias');
         localStorage.setItem('isRedirected', 'false');
         this.router.navigate(['/tabs/categorias']);
+    }
+
+    openMenu() {
+        this.menuCtrl.toggle()
     }
 }

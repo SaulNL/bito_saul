@@ -13,7 +13,7 @@ import { RecorteImagenComponent } from "../../components/recorte-imagen/recorte-
 import { ImageCropperModule } from "ngx-image-cropper";
 import { TabsPage } from "./tabs.page";
 import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/filtros-busqueda.component";
-import {InputLugaresEntregaComponent} from '../../components/input-lugares-entrega/input-lugares-entrega.component';
+import { InputLugaresEntregaComponent } from '../../components/input-lugares-entrega/input-lugares-entrega.component';
 import { ModalLoguearseComponent } from '../../componentes/modal-loguearse/modal-loguearse.component'
 import { BannerAnunciosComponent } from '../../componentes/banner-anuncios/banner-anuncios.component';
 import { ModalPromocionNegocioComponent } from '../../componentes/modal-promocion-negocio/modal-promocion-negocio.component';
@@ -55,6 +55,6 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
     ModalLoguearseComponent,
     ModalPromocionNegocioComponent
   ],
-  providers: [ SocialSharing ],
+  providers: [SocialSharing],
 })
-export class TabsPageModule {}
+export class TabsPageModule { }

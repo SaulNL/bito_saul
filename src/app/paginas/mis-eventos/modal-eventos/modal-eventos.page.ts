@@ -41,6 +41,8 @@ export class ModalEventosPage implements OnInit {
   public tags: any;
   loader: boolean;
   public msj = 'Cargando';
+  public activoBTN: boolean = false;
+  public confirmacionBTN: boolean = false;
 
   constructor(
     private negocio_service: NegocioService,
@@ -62,10 +64,10 @@ export class ModalEventosPage implements OnInit {
     }
     this.tipoPago =
       [
-        { id: 1, tipo: "efectivo" },
-        { id: 2, tipo: "transferencia" },
-        { id: 3, tipo: "tarjeta_credito" },
-        { id: 4, tipo: "tarjeta_debito" }
+        { id: 1, tipo: "Efectivo" },
+        { id: 2, tipo: "Transferencia" },
+        { id: 3, tipo: "Tarjeta credito" },
+        { id: 4, tipo: "Tarjeta debito" }
       ]
     this.obtenerNegocios();
     this.obtenerEventoTipo();
@@ -175,9 +177,14 @@ export class ModalEventosPage implements OnInit {
   }
 
   asignarValoresEvent(data) {
+    console.log("data", data)
     let pagos = [];
 
     setTimeout(() => {
+      this.eventData.activo = data.activo
+      this.activoBTN = data.activo == 1 ? true : false;
+      this.eventData.requiere_confirmacion = data.requiere_confirmacion;
+      this.confirmacionBTN = data.activo == 1 ? true : false;
       this.eventData.id_evento = data.id_evento;
       this.eventData.evento = data.evento;
       this.eventData.id_negocio = data.id_negocio;
@@ -226,6 +233,7 @@ export class ModalEventosPage implements OnInit {
   }
 
   guardarEvento(data) {
+    console.log("datos a guardar", data)
     this.eventoService.guardarEvento(data).subscribe(res => {
       this._router.navigate(["/tabs/mis-eventos"])
       this.loader = false
@@ -340,6 +348,18 @@ export class ModalEventosPage implements OnInit {
     this.negtag = true;
     this.tags = tags.join();
     this.eventData.tags = this.tags;
+  }
+
+  verificarActivo(evento, tipo) {
+    console.log(evento.detail.checked)
+    console.log(this.activoBTN)
+    if (tipo) {
+      this.eventData.activo = evento.detail.checked == false ? 0 : 1;
+    }
+    if (!tipo) {
+      this.eventData.requiere_confirmacion = evento.detail.checked == false ? 0 : 1;
+    }
+
   }
 
 }

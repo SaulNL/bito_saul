@@ -4,10 +4,13 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
+import { BrowserModule } from '@angular/platform-browser';
+import { PromocionInfoComponent } from './promocion-info/promocion-info.component';
+import { ViewQrPromocionComponent } from 'src/app/components/viewqr-promocion/viewqr-promocion.component';
 import { MisSugerenciasPageRoutingModule } from './mis-sugerencias-routing.module';
-
+import { Tab2PageModule } from '../promociones/promociones.module';
 import { MisSugerenciasPage } from './mis-sugerencias.page';
-import {DarLikeNegocioModule} from '../../componentes/dar-like-negocio/dar-like-negocio.module';
+import { DarLikeNegocioModule } from '../../componentes/dar-like-negocio/dar-like-negocio.module';
 
 @NgModule({
   imports: [
@@ -15,8 +18,12 @@ import {DarLikeNegocioModule} from '../../componentes/dar-like-negocio/dar-like-
     FormsModule,
     IonicModule,
     MisSugerenciasPageRoutingModule,
-    DarLikeNegocioModule
+    DarLikeNegocioModule,
+    Tab2PageModule
   ],
-  declarations: [MisSugerenciasPage]
+  declarations: [
+    MisSugerenciasPage,
+    PromocionInfoComponent,
+  ]
 })
-export class MisSugerenciasModule {}
+export class MisSugerenciasModule { }

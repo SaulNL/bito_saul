@@ -1,0 +1,27 @@
+ion-menu::part(backdrop) {
+    background-color: rgba(255, 0, 255, 0.5);
+}
+
+ion-menu::part(container) {
+    border-radius: 0 20px 20px 0;
+
+    box-shadow: 4px 0px 16px rgba(255, 0, 255, 0.18);
+}
+
+.bgToolbar {
+    --background: linear-gradient(90deg, #F761CC 0%, #FF7859 100%);
+    --color: #fff;
+}
+
+// --ion-item-background: none;
+
+.opcion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ion-icon {
+    color: #000;
+    margin-right: 5px;
+}
