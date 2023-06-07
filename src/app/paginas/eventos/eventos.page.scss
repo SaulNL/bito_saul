@@ -1,0 +1,49 @@
+#btnRegresar {
+  text-transform: capitalize;
+}
+
+.date-label {
+  opacity: 0.5;
+  position: absolute;
+  top: 0;
+  right: 15px;
+  font-size: 10px;
+  margin-top: 20px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background-color: white;
+  border-radius: 3px;
+  width: 68%;
+}
+
+.colorButton{
+  --background: linear-gradient(90deg,  #FF9925 0%,  #FFCE00 100%) !important;
+  --color: white;
+}
+
+.gray-background {
+  background-color: lightgray;
+}
+
+.white-background {
+  background-color: white;
+}
+
+.my-section {
+  position: relative;
+  z-index: 9999;
+  opacity: 0.9; /* Ajusta el valor de opacidad según sea necesario */
+}

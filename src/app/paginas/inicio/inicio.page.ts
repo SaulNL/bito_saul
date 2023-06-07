@@ -729,6 +729,11 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     return await this.modal.present();
   }
+
+  public openEventos() {
+    this.ruta.navigate(['/tabs/eventos']);
+  }
+
   private buscarSeleccionado(seleccionado: any) {
     this.seleccionado = seleccionado;
     this.Filtros = new FiltrosModel();

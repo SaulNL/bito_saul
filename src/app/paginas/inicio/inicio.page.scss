@@ -51,11 +51,30 @@
   text-align: center;
 }
 
+.custom-col {
+  margin-right: 0.1%;
+}
+
+.custom-padding {
+  padding: 10px;
+}
+
+.eventosButton{
+  --background:#e1e1e2;
+  color: #1e1c1c;
+  font-size: 12px;
+  margin-top: 8px;
+  width: 65px;
+  height: 62%;
+}
+
 .mapa{
   --background:#e1e1e2;
   color: #1e1c1c;
   font-size: 12px;
   margin-top: 8px;
+  width: 85px;
+  height: 62%;
 }
 .mapa .icono{
   padding-right: 5px;

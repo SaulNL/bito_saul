@@ -1,0 +1,111 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title style="margin-left: 10%;">Eventos</ion-title>
+    <ion-buttons slot="start">
+      <ion-button id="btnRegresar" (click)="regresar()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+
+  <ion-item>
+      <div>
+        <ion-label (click)="abrirModal()">Filtro <ion-icon name="caret-down-outline"></ion-icon>
+        </ion-label>
+      </div>
+      <div class="modal-overlay" *ngIf="isOpen">
+        <div class="modal">
+
+          <div style="display: flex; justify-content: flex-end;">
+            <ion-button style="--background:#e1e1e2;" (click)="cerrarModal()">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </div>
+
+          <ion-item>
+            <ion-label position="stacked">Fecha</ion-label>
+            <ion-select [(ngModel)]="fechaSeleccionada" (ionChange)="cargarFecha($event)">
+              <ion-select-option value="Hoy">Hoy</ion-select-option>
+              <ion-select-option value="Mañana">Mañana</ion-select-option>
+              <ion-select-option value="Esta semana">Esta semana</ion-select-option>
+              <ion-select-option value="Este mes">Este mes</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Tipo evento</ion-label>
+            <ion-select multiple="true"  [(ngModel)]="eventoSeleccionado">
+              <ion-select-option *ngFor="let evento of tipoEvento;" [value]="evento.nombre">{{evento.nombre}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Estado <span style="color: red">*</span></ion-label>
+            <ion-select placeholder="{{ estadoAux }}" [disabled]="btnEstado" ok-text="Ok" cancel-text="Cancelar"
+                        name="estado" required #compEstado="ngModel" [(ngModel)]="filtroEvento.id_estado"
+                        (ionChange)="get_list_cat_municipio($event)">
+              <ion-select *ngFor="let e of list_cat_estado">
+                <ion-select-option [value]="e.id_estado">{{e.nombre}}</ion-select-option>
+              </ion-select>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Municipio <span style="color: red">*</span></ion-label>
+            <ion-select placeholder="{{ municiAux }}" [disabled]="btnMuncipio" ok-text="Ok" cancel-text="Cancelar"
+                        name="municipio" required #compMunicipio="ngModel" [(ngModel)]="filtroEvento.id_municipio"
+                        (ionChange)="get_list_cat_localidad($event)">
+              <ion-select *ngFor="let mun of list_cat_municipio">
+                <ion-select-option [value]="mun.id_municipio">
+                  {{mun.nombre}}
+                </ion-select-option>
+              </ion-select>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Localidad</ion-label>
+            <ion-select placeholder="{{ localiAux }}" [disabled]="btnLocalidad" ok-text="Ok" cancel-text="Cancelar"
+                        name="localidad" required #compLocalidad="ngModel" [(ngModel)]="filtroEvento.id_localidad">
+              <ng-container *ngFor="let loc of list_cat_localidad">
+                <ion-select-option [value]="loc.id_localidad">
+                  {{loc.nombre}}
+                </ion-select-option>
+              </ng-container>
+            </ion-select>
+          </ion-item>
+
+          <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 2px">
+            <ion-button size="small" class="colorButton" (click)="buscarEvento()">
+              Buscar
+            </ion-button>
+          </div>
+          <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 5px">
+            <ion-button size="small" class="colorButton" (click)="limpiarFiltro()">
+              Limpiar filtro
+            </ion-button>
+          </div>
+
+        </div>
+      </div>
+
+  </ion-item>
+
+  <div *ngIf="filtroEvento">
+    <ion-list style="display: flex; flex-direction: column;">
+      <ion-item *ngFor="let dato of eventosAll" (click)="datosEventos(dato.id_evento)">
+        <ion-label>
+          <div style="white-space: pre-wrap; width: 70%">
+            <strong>{{dato.evento}}</strong>
+          </div>
+          <p style="opacity: 0.5">{{dato.negocio}}</p>
+        </ion-label>
+        <ion-label class="date-label">{{convertirFecha(dato.fecha)}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+</ion-content>

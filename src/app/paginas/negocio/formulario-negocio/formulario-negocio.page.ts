@@ -828,38 +828,28 @@ export class FormularioNegocioPage implements OnInit {
 
   selectDistintivos(event: any) {
     let idDistintivos = event.detail.value;
+    setTimeout(() => {
+      this.distintivosSeleccionados = [];
 
-    if (this.distintivosSeleccionados.length > 0) {
       for (const id of idDistintivos) {
+        let distintivoTodo = this.negocioTO.distintivosTodo.find(dist => dist.id_distintivo === id);
 
-        let distintivo = this.distintivosSeleccionados.find(dist => dist.id_distintivo === id);
+        if (distintivoTodo != undefined) {
+          let distintivo = distintivoTodo.distintivo;
 
-        if (this.distintivosSeleccionados.includes(distintivo)) {
-
-          this.distintivosSeleccionados.forEach((dist, index) => {
-            if (!idDistintivos.includes(dist.id_distintivo)) {
-
-              this.distintivosSeleccionados.splice(index, 1);
-            }
-          });
-
+          if (!this.distintivosSeleccionados.some(dist => dist.id_distintivo === id)) {
+            this.distintivosSeleccionados.push(distintivo);
+          }
         } else {
+          let distintivoLista = this.lstDistintivos.find(dist => dist.id_distintivo == id);
 
-          let distintivoTodo = this.negocioTO.distintivosTodo.find(dist => dist.id_distintivo === id);
-
-          if (distintivoTodo != undefined) {
-            this.distintivosSeleccionados.push(distintivoTodo.distintivo)
-
-          } else {
-            let distintivoLista = this.lstDistintivos.find(dist => dist.id_distintivo == id);
-  
-            this.distintivosSeleccionados.push(distintivoLista)
+          if (!this.distintivosSeleccionados.some(dist => dist.id_distintivo === id)) {
+            this.distintivosSeleccionados.push(distintivoLista);
           }
         }
       }
-    }
+    }, 1000)
 
-    //alert(JSON.stringify("seleccionados " + JSON.stringify(this.distintivosSeleccionados)));
   }
 
   /**
@@ -1348,7 +1338,6 @@ export class FormularioNegocioPage implements OnInit {
       this.negocioGuardar.distintivos.push(distintivo)
     });
 
-     
     this.negocioGuardar.perfiles_caracteristicas = this.negocioTO.perfiles_caracteristicas;
     //console.log('perfiles_caracteristicas' + this.negocioGuardar.perfiles_caracteristicas);
     if (this.cnvn_date === undefined) {

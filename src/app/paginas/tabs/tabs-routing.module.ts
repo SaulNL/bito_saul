@@ -54,6 +54,10 @@ const routes: Routes = [
         loadChildren: () => import('../actualizar-version/actualizar-version.module').then(m => m.ActualizarVersionPageModule)
       },
       {
+        path:  'eventos',
+        loadChildren: () => import('../../paginas/eventos/eventos.module').then(  m => m. EventosPageModule)
+      },
+      {
         path: 'mis-eventos',
         loadChildren: () => import('../mis-eventos/mis-eventos.module').then(m => m.MisEventosPageModule)
       },

@@ -550,6 +550,8 @@ export class ProductosPage {
 
   public regresarTinBitoo() {
     localStorage.removeItem("org");
+    localStorage.removeItem("byCategorias");
+    localStorage.removeItem("lstFiltro");
     location.reload();
   }
 
