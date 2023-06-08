@@ -63,8 +63,7 @@ const routes: Routes = [
       },
       {
         path: 'mis-sugerencias',
-        loadChildren: () => import('../../paginas/mis-sugerencias/mis-sugerencias.module').then(m => m.MisSugerenciasModule
-        )
+        loadChildren: () => import('../mis-sugerencias/mis-sugerencias.module').then(m => m.MisSugerenciasModule)
       },
       {
         path: 'notificaciones',

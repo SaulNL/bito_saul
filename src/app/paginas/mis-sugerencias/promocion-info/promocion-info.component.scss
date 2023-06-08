@@ -1,0 +1,127 @@
+.promoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 93vw;
+    max-height: 91vh;
+    background-color: #fff;
+    margin: 15px;
+    border-radius: 15px;
+    overflow: scroll;
+}
+
+.imgPromo {
+    display: flex;
+    background-repeat: no-repeat;
+    background-size: contain;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    height: 50vh;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
+img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+}
+
+button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #F761CC 0%, #FF7859 100%);
+    color: white;
+    border: none;
+    border-radius: 15px;
+}
+
+.colorText {
+    margin: 0;
+    color: black;
+}
+
+.titulo {
+    font-size: xx-large;
+    margin-bottom: 10px;
+}
+
+span,
+.lineaRosa,
+.Proveedor {
+    color: #FF1DBD;
+}
+
+.descripcion {
+    text-align: center;
+    display: flex;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.lineaRosa {
+    height: 3px;
+    width: 70%;
+}
+
+.tipoPromo {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.cuponPromo {
+    display: flex;
+    font-size: 20px;
+    margin-bottom: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.nombrePromo {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.downloadCupon {
+    margin-left: 20px;
+}
+
+.compartirPromo {
+    margin-bottom: 23px;
+}
+
+.termCondiciones {
+    font-size: 20px;
+    color: #808080;
+    margin-bottom: 15px;
+}
+
+.convenioPromo {
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.diasPromo,
+.Proveedor,
+.direccion {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.Proveedor {
+    text-transform: uppercase;
+    font-size: 20px;
+}
+
+.whatsappNumber {
+    background-color: #1c7430;
+    border-radius: 15px;
+    color: #fff;
+    padding: 5px;
+}

@@ -46,6 +46,17 @@
       <div class="formulario">
 
         <ion-item>
+          <ion-label>Activo</ion-label>
+          <ion-toggle slot="end" [(ngModel)]="activoBTN" name="activo"
+            (ionChange)="verificarActivo($event, true)"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>Requiere confirmacion</ion-label>
+          <ion-toggle slot="end" [(ngModel)]="confirmacionBTN" name="confirmacion"
+            (ionChange)="verificarActivo($event, false)"></ion-toggle>
+        </ion-item>
+
+        <ion-item>
           <ion-label>Asociar negocio</ion-label>
           <ion-select class="bg" id="id_negocio" name="id_negocio" justify="end" label="End"
             placeholder="Asociar negocio" [(ngModel)]="eventData.id_negocio" required #asociarNegocio="ngModel">
@@ -85,7 +96,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-label>Numero de telefono</ion-label>
+          <ion-label>Numero de teléfono</ion-label>
           <ion-input class="bg" type="tel" name="telefono" pattern="[0-9]*" inputmode="numeric"
             placeholder="Numero de telefono" [(ngModel)]="eventData.telefono" required></ion-input>
         </ion-item>
