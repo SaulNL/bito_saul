@@ -49,9 +49,11 @@ export class NotificacionPage implements OnInit {
     if (this.loader) {
       this.servicioNotificaciones();
     } else {
+      clearInterval(this.intervalNotificaciones);
+
       this.intervalNotificaciones = setInterval(() => {
         this.servicioNotificaciones();
-      }, 5000);
+      }, 2000);
     }
   }
 
@@ -60,11 +62,11 @@ export class NotificacionPage implements OnInit {
       response => {
         if (response.code === 200){
           this.loader = false;
+          
           if (response.data.length != this.notificaciones.length) {
-            this.notificaciones = response.data;
             this.obtenerNotificaciones();
           }
-          
+          this.notificaciones = response.data;
         }
       },
       error => {

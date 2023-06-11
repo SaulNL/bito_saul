@@ -6,11 +6,10 @@
     </ion-buttons>
 
     <ion-buttons slot="end" class="btns-tool-end">
-      <ion-button *ngIf="(numNotifiSinLeer != 0 && numNotifiSinLeer != undefined)"
-        (click)="abrirPaginaNotificaciones()">
+      <ion-button (click)="abrirPaginaNotificaciones()">
         <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
       </ion-button>
-      <ion-badge class="badge">{{numNotifiSinLeer}}</ion-badge>
+      <ion-badge class="badge" *ngIf="(numNotifiSinLeer != 0 && numNotifiSinLeer != undefined)">{{numNotifiSinLeer}}</ion-badge>
       <ion-button (click)="presentActionSheet()">
         <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
       </ion-button>
