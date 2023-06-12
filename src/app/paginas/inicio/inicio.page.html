@@ -27,9 +27,9 @@
             <ion-icon class="icono" name="caret-down-outline"></ion-icon>
           </ion-chip>
 
-          <ion-chip *ngIf="selectionAP" (click)="regresarTinBitoo()" color="danger">
+          <ion-chip *ngIf="selectionAP" (click)="regresarBitoo()" color="danger">
             <ion-icon name="log-out-outline"></ion-icon>
-            <ion-label><span class="text">Volver a TinBitoo</span></ion-label>
+            <ion-label><span class="text">Volver a Bitoo</span></ion-label>
           </ion-chip>
         </ion-col>
         <ion-col>
@@ -55,11 +55,6 @@
             <ion-icon class="icono" name="filter-outline"></ion-icon>
           </ion-chip>
         </ion-col>
-        <!-- <ion-col class="ion-col-2" size-md="6">
-          <ion-button mode="ios" size="small" class="mapa" shape="round" [routerLink]="['/tabs/mis-sugerencias']">
-            <small>Sugerencias</small>
-          </ion-button>
-        </ion-col> -->
       </ion-row>
 
     </ion-grid>
@@ -81,12 +76,10 @@
 
         <li class="nav-item">
           <a class="todas" id="pills-home-todos" role="tab" aria-selected="true">
-            <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img
-                (click)="activar()" class="img-gris"
+            <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img   (click)="activar()" class="img-gris"
                 src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/IconosCategorias/todos.png">
             </ion-avatar>
-            <ion-avatar *ngIf="idTodo ===true" style="margin-bottom: 1.2rem;" class="image-center"> <img
-                (click)="borrarFiltrosP()"
+            <ion-avatar *ngIf="idTodo ===true" style="margin-bottom: 1.2rem;" class="image-center"> <img  (click)="borrarFiltrosP()"
                 src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/IconosCategorias/todos.png">
             </ion-avatar>
 
@@ -179,9 +172,8 @@
                     proveedor.nombre_comercial}}</ion-card-title>
                 </div>
                 <div class="distintivos" style="--color-selected: #ff1dbd">
-                  <img *ngIf="proveedor.verificado === 1" class="distintivoIcon"
-                    src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/VERIFICACIO%CC%81N.svg"
-                    matTooltip="Este negocio está verificado por TinBitoo">
+                  <img *ngIf="proveedor.verificado === 1" class="distintivoIcon" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/VERIFICACIO%CC%81N.svg"
+                    matTooltip="Este negocio está verificado por Bitoo">
                   <div class="distintivo"
                     *ngFor="let distintivo of proveedor.distintivos.slice(0, proveedor.verificado === 1 ? 3 : 4); index as i">
                     <img class="distintivoIcon" (click)="clickDistintivo(distintivo.nombre, distintivo.descripcion)"

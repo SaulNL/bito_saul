@@ -18,7 +18,7 @@ export class EventosService {
   eventosLista(){
     const body = '';
     this._http.setDataSerializer('utf8');
-    return from(this._http.post(this.url + 'api/eventos/publicados', body, AppSettings.getHeadersToken()).then((data) => {
+    return from(this._http.post(this.url + 'api/eventos/publicados', body, AppSettings.getHeaders()).then((data) => {
       return JSON.parse(data.data);
     })
         .catch((error) => {

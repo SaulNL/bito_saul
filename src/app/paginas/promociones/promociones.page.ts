@@ -191,7 +191,6 @@ export class PromocionesPage implements OnInit {
         this._promociones.buscarPromocinesPublicadasModulo(this.anyFiltros)
             .subscribe(
                 (response) => {
-                    console.log(response)
                     if (response.code === 402) {
                     }
                     if (response.data !== null) {
@@ -271,8 +270,8 @@ export class PromocionesPage implements OnInit {
 
     async mensajeRegistro() {
         const alert = await this.alertController.create({
-            header: 'TinBitoo!',
-            message: "¿Ya tienes una cuenta?",
+          header: 'Bitoo!',
+          message: "¿Ya tienes una cuenta?",
             buttons: [
                 {
                     text: "Iniciar sesión",

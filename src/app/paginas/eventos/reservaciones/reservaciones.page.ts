@@ -245,10 +245,16 @@ export class ReservacionesPage implements OnInit {
     let año = fechaActual.getFullYear();
     let mes = fechaActual.getMonth();
 
+    const fechaHoy = new Date(); // Obtener fecha actual
+
     for (let i = 0; i < 12; i++) {
       const date = new Date(año, mes, dia);
       this.fechaFormateada = format(date, 'dd/MMMM/yyyy', { locale: es });
-      this.mesesArray.push(this.fechaFormateada);
+
+      if (date >= fechaHoy) { // Comprobar si la fecha es igual o posterior a la fecha actual
+        this.mesesArray.push(this.fechaFormateada);
+      }
+
       mes++;
       if (mes > 11) {
         mes = 0;

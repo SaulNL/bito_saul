@@ -6,11 +6,10 @@
     </ion-buttons>
 
     <ion-buttons slot="end" class="btns-tool-end">
-      <ion-button *ngIf="(numNotifiSinLeer != 0 && numNotifiSinLeer != undefined)"
-        (click)="abrirPaginaNotificaciones()">
+      <ion-button (click)="abrirPaginaNotificaciones()">
         <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
       </ion-button>
-      <ion-badge class="badge">{{numNotifiSinLeer}}</ion-badge>
+      <ion-badge class="badge" *ngIf="(numNotifiSinLeer != 0 && numNotifiSinLeer != undefined)">{{numNotifiSinLeer}}</ion-badge>
       <ion-button (click)="presentActionSheet()">
         <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
       </ion-button>
@@ -167,7 +166,7 @@
     </ion-row>
     <ion-row class="ion-align-items-center">
       <ion-col size="12" class="ion-text-center">
-        <small class="bg-gris">Copyright © TinBitoo (Softura Solutions) 2020.</small>
+        <small class="bg-gris">Copyright © Bitoo (Softura Solutions) 2020.</small>
       </ion-col>
     </ion-row>
   </ion-grid>

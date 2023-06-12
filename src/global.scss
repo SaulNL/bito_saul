@@ -215,7 +215,7 @@ ion-fab {
   color: grey !important;
 }
 
-.background-tinbitoo {
+.background-bitoo {
   --background: linear-gradient(90deg,  #FF9925 0%,  #FFCE00 100%) !important;
   color: white;
 }
@@ -294,4 +294,11 @@ ion-fab {
   border-radius: 50px;
   color: rgb(147, 112, 17);
   margin-left: 5px;
+}
+
+.toastChat {
+  --background:rgba(105, 105, 105, 0.9);
+  --border-radius:50px;
+  --color:#fff;
+  --width: 180px;
 }
