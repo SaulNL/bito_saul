@@ -4,7 +4,6 @@ ion-menu::part(backdrop) {
 
 ion-menu::part(container) {
     border-radius: 0 20px 20px 0;
-
     box-shadow: 4px 0px 16px rgba(255, 0, 255, 0.18);
 }
 
@@ -13,15 +12,23 @@ ion-menu::part(container) {
     --color: #fff;
 }
 
+ion-content {
+    --background: none;
+}
+
 // --ion-item-background: none;
+//#FFBF00
+
 
 .opcion {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /* --background: linear-gradient(90deg, #FFBF00 0%, #E19925 100%); */
+    --background: linear-gradient(90deg, #FFBF00 0%, #FF7859 100%);
+    border-radius: 0px 15px 15px 0px;
+    margin-bottom: 1px;
+    color: #fff;
 }
 
 ion-icon {
-    color: #000;
+    color: #fff;
     margin-right: 5px;
 }

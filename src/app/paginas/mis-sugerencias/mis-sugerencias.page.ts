@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilsCls } from '../../utils/UtilsCls';
 import { RnaService } from '../../api/rna/rna.service';
-import { ModalController } from '@ionic/angular';
+import { MenuController, ModalController } from '@ionic/angular';
 import { PromocionInfoComponent } from './promocion-info/promocion-info.component';
 import { ProductoModel } from "../../Modelos/ProductoModel";
 import { ProductInterface } from "../../Bitoo/models/product-model";
@@ -42,9 +42,14 @@ export class MisSugerenciasPage implements OnInit {
     private createObject: CreateObjects,
     private ruta: Router,
     private notificaciones: ToadNotificacionService,
+    private menuCtrl: MenuController
   ) {
     this.tagsPromo = []
     this.bgPromo = []
+  }
+
+  ionViewWillEnter() {
+    this.menuCtrl.close();
   }
 
   ngOnInit() {

@@ -161,6 +161,6 @@ export class ToolbarBusquedaComponent implements OnInit {
     }
 
     openMenu() {
-        this.menuCtrl.toggle()
+        this.menuCtrl.open('menuInicio')
     }
 }

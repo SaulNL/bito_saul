@@ -11,9 +11,6 @@
 
 <ion-content>
   <div class="promoContainer">
-    <!-- <div style="background-image: url({{promocion.url_imagen}});" class="imgPromo">
-      <ion-button>Ver mas</ion-button>
-    </div> -->
     <div class="imgPromo">
       <img src="{{promocion.url_imagen}}" alt="Descripción de la imagen">
       <button (click)="verMas()">Ver más</button>
@@ -25,7 +22,7 @@
     <div class="lineaRosa"></div>
     <div class="colorText tipoPromo">{{promocion.tipo_promocion}}</div>
     <div class="colorText nombrePromo">{{promocion.promocion}}</div>
-    <div class="colorText cuponPromo">
+    <div *ngIf="promocion.tipo_promocion !== 'Anuncio'" class="colorText cuponPromo">
       <div class="colorText porcentaje">
         <span>{{promocion.porcentaje}}%</span> de descuento
       </div>
@@ -35,19 +32,19 @@
         </ion-button>
       </div>
     </div>
-    <div class="colorText compartirPromo">
+    <div *ngIf="promocion.tipo_promocion !== 'Anuncio'" class="colorText compartirPromo">
       <ion-button (click)="compartir(promocion)" shape="round" fill="outline" size="small" color="danger">
         <ion-icon name="share-social-outline" slot="start"></ion-icon>
         Compartir
       </ion-button>
-      <!-- <ion-icon name="share-social-outline" slot="start"></ion-icon>
-      Compartir -->
     </div>
-    <div class="colorText termCondiciones">{{promocion.terminos}}</div>
+    <div *ngIf="promocion.tipo_promocion !== 'Anuncio'" class="colorText termCondiciones">{{promocion.terminos}}</div>
 
-    <div class="convenioPromo"><span>{{promocion.organizaciones[0].nombre}}</span></div>
+    <div *ngIf="promocion.tipo_promocion !== 'Anuncio'" class="convenioPromo">
+      <span>{{promocion.organizaciones[0].nombre}}</span>
+    </div>
 
-    <div class="diasPromo">
+    <div *ngIf="promocion.tipo_promocion !== 'Anuncio'" class="diasPromo">
       Quedan <span>{{diasRestantes}} días</span>, Aplica:
       <span>{{diAplica}} de {{listaDias[0].hora_inicio}} a {{listaDias[0].hora_fin}}</span>
     </div>
@@ -83,49 +80,45 @@
         </a></h2>
     </div>
 
-    <ion-grid>
-      <ion-row>
-        <ion-col size=12>
-          <div (click)="motrarContacto = !motrarContacto;" class="list">
-            <ul>
-              <!-- <li>{{ promocion.estatus.tipo === 1 ? 'Abierto' : 'Cerrado'}}</li> -->
-              <li class="lista">
-                <div>
-                  <!-- {{ promocion.estatus.mensaje }} -->
-                </div>
-                <div style="margin: 0px 5px" *ngIf="!motrarContacto">
-                  <ion-icon name="arrow-up-outline"></ion-icon>
-                </div>
-                <div style="margin: 0px 5px" *ngIf="motrarContacto">
-                  <ion-icon name="arrow-down-outline"></ion-icon>
-                </div>
-              </li>
-            </ul>
-            <div style="margin: 0px 5px" *ngIf="!motrarContacto && promocion.estatus!==undefined">
-              <ion-list>
-                <ion-item *ngFor="let dia of promocion.diasArray">
-                  <ion-grid>
-                    <ion-row class="lista">
-                      <ion-col>
-                        <p [ngClass]="{'negritas':dia.id === hoy}">{{ dia.dia }}</p>
-                      </ion-col>
-                      <ion-col *ngIf="dia.horarios.length > 0">
-                        <span *ngFor="let h of dia.horarios ">
-                          <p class="negritas">{{h.texto}}</p>
-                        </span>
-                      </ion-col>
-                      <ion-col *ngIf="dia.horarios.length === 0">
-                        <ion-badge color="danger">Cerrado</ion-badge>
-                      </ion-col>
-                    </ion-row>
-                  </ion-grid>
-                </ion-item>
-              </ion-list>
+    <ion-col size=12>
+      <div (click)="motrarContacto = !motrarContacto;" class="list">
+        <ul>
+          <li>{{ promocion.estatus.tipo === 1 ? 'Abierto' : 'Cerrado'}}</li>
+          <li class="lista">
+            <div>
+              {{ promocion.estatus.mensaje }}
             </div>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+            <div style="margin: 0px 5px" *ngIf="!motrarContacto">
+              <ion-icon name="arrow-up-outline"></ion-icon>
+            </div>
+            <div style="margin: 0px 5px" *ngIf="motrarContacto">
+              <ion-icon name="arrow-down-outline"></ion-icon>
+            </div>
+          </li>
+        </ul>
+        <div style="margin: 0px 5px" *ngIf="!motrarContacto && promocion.estatus!==undefined">
+          <ion-list>
+            <ion-item *ngFor="let dia of promocion.diasArray">
+              <ion-grid>
+                <ion-row class="lista">
+                  <ion-col>
+                    <p [ngClass]="{'negritas':dia.id === hoy}">{{ dia.dia }}</p>
+                  </ion-col>
+                  <ion-col *ngIf="dia.horarios.length > 0">
+                    <span *ngFor="let h of dia.horarios ">
+                      <p class="negritas">{{h.texto}}</p>
+                    </span>
+                  </ion-col>
+                  <ion-col style="display: flex; align-items: center;" *ngIf="dia.horarios.length === 0">
+                    <ion-badge color="danger">Cerrado</ion-badge>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </ion-list>
+        </div>
+      </div>
+    </ion-col>
 
   </div>
 
