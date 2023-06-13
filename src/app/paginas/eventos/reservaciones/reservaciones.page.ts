@@ -9,6 +9,7 @@ import {UtilsCls} from '../../../utils/UtilsCls';
 import {ToadNotificacionService} from '../../../api/toad-notificacion.service';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import {AlertController} from '@ionic/angular';
 
 @Component({
   selector: 'app-reservaciones',
@@ -59,7 +60,8 @@ export class ReservacionesPage implements OnInit {
       private router: Router,
       private utils: UtilsCls,
       private _general_service: GeneralServicesService,
-      private notificaciones: ToadNotificacionService
+      private notificaciones: ToadNotificacionService,
+      public alertController: AlertController,
   ) {
     this.infoEvento = [];
     this.cadenaReservacion = [];
@@ -133,7 +135,7 @@ export class ReservacionesPage implements OnInit {
           if (this.utils.is_success_response(response.code)) {
             this.list_cat_estado = response.data.list_cat_estado;
             this.list_cat_estado.forEach(element => {
-              if (element.id_estado == this.infoEvento[0].id_estado) {
+              if (element.id_estado == this.infoEvento[0]?.id_estado) {
                 this.nombreEstado = element.nombre;
               }
             });
@@ -151,7 +153,7 @@ export class ReservacionesPage implements OnInit {
             if (this.utils.is_success_response(res.code)) {
               this.list_cat_municipio = res.data.list_cat_municipio;
               this.list_cat_municipio.forEach(element => {
-                if (element.id_municipio == this.infoEvento[0].id_municipio) {
+                if (element.id_municipio == this.infoEvento[0]?.id_municipio) {
                   this.nombreMunicipio = element.nombre + ', ';
                 }
               });
@@ -284,8 +286,10 @@ export class ReservacionesPage implements OnInit {
     }
 
     this.cadenaReservacion = [eventoId, this.idPersona, this.fechaReservacion, nPersonas];
-    this.generarReservacion(this.cadenaReservacion);
-    this.router.navigate(['/tabs/eventos/generar-reservacion'], { state: { cadena: this.cadenaReservacion } });
+    //this.generarReservacion(this.cadenaReservacion);
+    this.eventosService.setReservacionObj(this.cadenaReservacion);
+    this.mensajeRegistro();
+    //this.router.navigate(['/tabs/eventos/generar-reservacion'], { state: { cadena: this.cadenaReservacion } });
   }
 
   generarReservacion(reservacion: any): void{
@@ -293,6 +297,14 @@ export class ReservacionesPage implements OnInit {
     this.eventosService.realizarReservacion(detalles).subscribe(res => {
       this.detalleReser = res.data;
     });
+  }
+
+  async mensajeRegistro() {
+    const alert = await this.alertController.create({
+      header: 'Bitoo!',
+      message: "Su reservación ya fue realizada \n espere su confirmación",
+    });
+    await alert.present();
   }
 
 }
