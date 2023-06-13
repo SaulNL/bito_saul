@@ -9,6 +9,7 @@ import {FiltroEventosModel} from '../Modelos/FiltroEventosModel';
 })
 export class EventosService {
     selectedObj: any;
+    reservacionObj: any;
 
   constructor(
       private _http: HTTP
@@ -22,6 +23,14 @@ export class EventosService {
 
     getSelectedObj() {
         return this.selectedObj;
+    }
+
+    setReservacionObj(obj: any){
+        this.reservacionObj = obj;
+    }
+
+    getReservacionObj(){
+        return this.reservacionObj;
     }
 
   eventosLista(){

@@ -16,6 +16,10 @@ const { Filesystem } = Plugins;
 })
 export class GenerarReservacionPage implements OnInit {
   @ViewChild('qrcode', { static: false }) qrcode: ElementRef;
+  public meses: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  public numeroDia: number;
+  public numeroMes: number;
+  public anio: number;
   public cadena: any;
   public infoEvento: any;
   public qr: any;
@@ -41,8 +45,10 @@ export class GenerarReservacionPage implements OnInit {
 
   ngOnInit() {
     this.cadena = history.state.cadena;
-    const idDetalle = this.cadena[0];
+    console.log(this.cadena, 'cadena');
+    const idDetalle = this.cadena.id_evento;
     this.obtenerInfoEvento(idDetalle);
+    this.convertirFechaHora();
     const datosUsuario = JSON.parse(localStorage.getItem('u_data'));
     this.usuario = `${datosUsuario.nombre} ${datosUsuario.paterno} ${datosUsuario.materno}`;
   }
@@ -51,10 +57,10 @@ export class GenerarReservacionPage implements OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
       const evento: IEventoQr = {
-        id_evento: this.cadena[0],
-        id_persona: this.cadena[1],
-        fc_evento_reservacion: this.cadena[2],
-        cantidad_persona: this.cadena[3]
+        id_evento: this.cadena.id_evento,
+        id_persona: this.cadena.id_persona,
+        fc_evento_reservacion: this.cadena.fc_evento_reservacion,
+        cantidad_persona: this.cadena.cantidad_persona,
       };
       this.urlData =btoa(JSON.stringify(evento)) ;
 
@@ -65,7 +71,7 @@ export class GenerarReservacionPage implements OnInit {
         colorDark: '#000000',
         dotScale: 0.4,
         width: 190,
-        height: 210,
+        height: 200,
         correctLevel: QRCode.CorrectLevel.Q,
         logoBackgroundTransparent: true,
         format: 'PNG',
@@ -120,9 +126,16 @@ export class GenerarReservacionPage implements OnInit {
     });
   }
 
-
   numeroAleatorioDecimales(min, max) {
     var num = Math.random() * (max - min);
     return num + min;
+  }
+
+  convertirFechaHora(){
+    const fecha = this.cadena.fc_evento_reservacion;
+    const fechaObjeto = new Date(fecha);
+    this.numeroDia = fechaObjeto.getDate();
+    this.numeroMes = fechaObjeto.getMonth();
+    this.anio = fechaObjeto.getFullYear();
   }
 }

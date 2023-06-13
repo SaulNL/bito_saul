@@ -36,15 +36,15 @@
 
       <div style="display: flex; align-items: center">
         <p style="color: #FFF;">No. personas:</p>
-        <p style="color: #FFF; margin-left: 2px;">{{cadena[3]}}</p>
+        <p style="color: #FFF; margin-left: 2px;">{{cadena.cantidad_persona}}</p>
       </div>
 
       <p style="color: #FFF; margin-bottom: 1vw; margin-top: 3px;">Fecha de reservación</p>
-      <p style="color: #FFF; margin-bottom: 2vw; margin-top: 2px;">{{cadena[2]}}</p>
+      <p style="color: #FFF; margin-bottom: 2vw; margin-top: 2px;">{{numeroDia}}/{{meses[numeroMes]}}/{{anio}}</p>
 
       <div #qrcode class="qrClass" ></div>
 
-      <div style="font-size: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 1px">
+      <div style="font-size: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 1px; margin-top: 1vw;">
         <ion-label>*Aplican restricciones*</ion-label>
       </div>
 

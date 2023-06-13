@@ -83,12 +83,12 @@ export class AjustesPage implements OnInit {
     });
 
     this.active.queryParams.subscribe((params) => {
+      this.numNotifiSinLeer = Number(localStorage.getItem('notifSinLeer'));
+
       if (params && params.ventas) {
         this.notificacionesVentas();
       }
     });
-
-    this.numNotifiSinLeer = +localStorage.getItem('notifSinLeer');
 
     this.notificacionesVentas();
     //  this.usuario = this.util.getData();

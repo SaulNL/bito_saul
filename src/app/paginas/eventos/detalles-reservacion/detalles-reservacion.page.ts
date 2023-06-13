@@ -20,6 +20,7 @@ export class DetallesReservacionPage implements OnInit {
   public msj = 'Cargando';
   public idEventoReservacion: number | null;
   public infoReservacion: any;
+  public detallesReservacion: any;
   public numeroDia: number;
   public numeroMes: number;
   public anio: number;
@@ -40,6 +41,7 @@ export class DetallesReservacionPage implements OnInit {
   ) {
     this.loaderReservaciones = false;
     this.infoEvento = [];
+    this.detallesReservacion = [];
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
     this.list_cat_localidad = new Array<CatLocalidadModel>();
@@ -47,12 +49,9 @@ export class DetallesReservacionPage implements OnInit {
 
   ngOnInit() {
     this.infoReservacion = this.eventosService.getSelectedObj();
+    this.detallesReservacion = this.eventosService.getReservacionObj();
     this.convertirFechaHora();
     this.obtenerListaEvento();
-    this.load_cat_estados();
-    this.obtenerNombreMunicipios();
-    this.obtenerNombreLocalidades();
-    this.loaderReservaciones = true;
   }
 
   regresar(){
@@ -72,10 +71,15 @@ export class DetallesReservacionPage implements OnInit {
   }
 
   obtenerListaEvento(): void {
+    console.log(this.infoReservacion, 'info');
     this.eventosService.eventoDetalle(this.infoReservacion.id_evento).subscribe(
         res => {
           this.infoEvento = res.data;
           console.log(this.infoEvento, 'evento');
+          console.log(this.infoEvento[0]?.id_estado, 'municipio');
+          this.load_cat_estados();
+          this.obtenerNombreMunicipios();
+          this.obtenerNombreLocalidades();
         });
   }
 
@@ -85,8 +89,9 @@ export class DetallesReservacionPage implements OnInit {
           if (this.utils.is_success_response(response.code)) {
             this.list_cat_estado = response.data.list_cat_estado;
             this.list_cat_estado.forEach(element => {
-              if (element.id_estado === this.infoEvento[0].id_estado) {
+              if (element.id_estado == this.infoEvento[0]?.id_estado) {
                 this.nombreEstado = element.nombre;
+                this.loaderReservaciones = true;
               }
             });
           }
@@ -103,7 +108,7 @@ export class DetallesReservacionPage implements OnInit {
           if (this.utils.is_success_response(res.code)) {
             this.list_cat_municipio = res.data.list_cat_municipio;
             this.list_cat_municipio.forEach(element => {
-              if (element.id_municipio === this.infoEvento[0].id_municipio) {
+              if (element.id_municipio == this.infoEvento[0]?.id_municipio) {
                 this.nombreMunicipio = element.nombre + ', ';
               }
             });
@@ -119,7 +124,7 @@ export class DetallesReservacionPage implements OnInit {
           if (this.utils.is_success_response(res.code)) {
             this.list_cat_localidad = res.data.list_cat_localidad;
             this.list_cat_localidad.forEach(element => {
-              if (element.id_localidad === this.infoEvento[0]?.id_localidad) {
+              if (element.id_localidad == this.infoEvento[0]?.id_localidad) {
                 this.nombreLocalidad = element.nombre + ', ';
               }
             });
@@ -127,6 +132,11 @@ export class DetallesReservacionPage implements OnInit {
         }, error => {
           this.notificaciones.error(error);
         });
+  }
+
+  reservacion(){
+    console.log(this.infoReservacion, 'infoReservacion');
+    this.router.navigate(['/tabs/eventos/generar-reservacion'], { state: { cadena: this.infoReservacion } });
   }
 
 }
