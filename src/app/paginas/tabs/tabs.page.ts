@@ -5,8 +5,6 @@ import { Auth0Service } from "../../api/busqueda/auth0.service";
 import { Router } from "@angular/router";
 import { Platform, AlertController } from '@ionic/angular';
 import {AfiliacionPlazaModel} from "../../Modelos/AfiliacionPlazaModel";
-import { exists } from "fs";
-import { ReloadComponent } from "src/app/Bitoo/components/reload/reload.component";
 import { NotificacionesService } from "src/app/api/usuario/notificaciones.service";
 import moment from "moment";
 import { AdministracionService } from "src/app/api/administracion-service.service";
@@ -38,6 +36,9 @@ export class TabsPage implements OnInit {
   contesto: boolean=false;
   filtroVariable : FiltroCatVariableModel= new FiltroCatVariableModel
   mensajeRespondio: string;
+  idProveedor: number;
+  idPersona: number;
+
   constructor(
       private util: UtilsCls,
       private sideBarService: SideBarService,
@@ -221,19 +222,30 @@ export class TabsPage implements OnInit {
   }
 
   obtenerNotificaciones() {
-    let idProveedor = null;
-    let idPersona = null;
+    this.idProveedor = null;
+    this.idPersona = null;
+  
     if (this.usuario.proveedor) {
-      idProveedor = this.usuario.proveedor.id_proveedor;
-      idPersona = this.usuario.proveedor.id_persona;
+      this.idProveedor = this.usuario.proveedor.id_proveedor;
+      this.idPersona = this.usuario.proveedor.id_persona;
     } else {
-      idPersona = this.usuario.id_persona;
+      this.idPersona = this.usuario.id_persona;
     }
-
-    this.notificacionesServide.obtenerNotificaciones(idProveedor, idPersona).subscribe(
+  
+    setInterval(() => {
+      this.servicioNotificaciones();
+    }, 5000);
+  
+  }
+  
+  servicioNotificaciones() {
+    this.notificacionesServide.obtenerNotificaciones(this.idProveedor, this.idPersona).subscribe(
       response => {
         if (response.code === 200){
           this.misNotificaciones = response.data;
+          console.log("servicio notificacione tabs");
+  
+          console.log(JSON.stringify(this.misNotificaciones));
           this.notificacionesSinAbrir();
         }
       },
@@ -241,11 +253,13 @@ export class TabsPage implements OnInit {
       }
     );
   }
-
+  
   notificacionesSinAbrir(){
-    localStorage.setItem('notifSinLeer', this.misNotificaciones.filter(item =>{
-      return item.estatus = 1;
-    }).length);
+    const sumaNoleidos = this.misNotificaciones.map(item => item.no_leidos).reduce((prev, curr) => prev + curr, 0);
+  
+    localStorage.setItem('notifSinLeer', sumaNoleidos);
+  
+    console.log(JSON.stringify(localStorage.getItem('notifSinLeer')));
     this.notifSinLeer = +localStorage.getItem('notifSinLeer');
   }
 

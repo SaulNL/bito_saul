@@ -295,3 +295,10 @@ ion-fab {
   color: rgb(147, 112, 17);
   margin-left: 5px;
 }
+
+.toastChat {
+  --background:rgba(105, 105, 105, 0.9);
+  --border-radius:50px;
+  --color:#fff;
+  --width: 180px;
+}
