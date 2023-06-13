@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar class="tolbar">
     <ion-buttons slot="start">
-      <ion-menu-button class="blanco"></ion-menu-button>
+      <ion-menu-button class="blanco" menu="menuUsuario"></ion-menu-button>
     </ion-buttons>
     <ion-title>Mis Negocios</ion-title>
     <ion-buttons slot="end" (click)="agregarNegocio()">
@@ -20,15 +20,10 @@
       <ion-card-header>
         <ion-item lines="none">
           <ion-avatar slot="start" (click)="datosNegocio(item)">
-            <img
-              *ngIf="item.url_logo !== '' && item.url_logo !== null "
-              src="{{ item.url_logo }}"
-              alt="{{ item.nombre_comercial }}"
-            />
-            <img
-              *ngIf="item.url_logo === '' || item.url_logo === null  "
-              src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg"
-            />
+            <img *ngIf="item.url_logo !== '' && item.url_logo !== null " src="{{ item.url_logo }}"
+              alt="{{ item.nombre_comercial }}" />
+            <img *ngIf="item.url_logo === '' || item.url_logo === null  "
+              src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg" />
           </ion-avatar>
           <ion-label (click)="datosNegocio(item)">
             <h2>{{item.nombre_comercial}}</h2>
@@ -36,8 +31,8 @@
           </ion-label>
           <ion-button slot="end" size="small" (click)="viewQr(item)">
             <ion-icon name="qr-code-outline"></ion-icon>
-          </ion-button>          
-        </ion-item> 
+          </ion-button>
+        </ion-item>
         <ion-item>
           <ion-label>
             <div class="tag-matriz" *ngIf="item.id_negocio_matriz === null">
@@ -51,16 +46,14 @@
             <ion-icon name="add-outline"></ion-icon>
             <!--p>Crear sucursal</p-->
             <p>Clonar negocio</p>
-          </ion-button> 
-        </ion-item>                      
-      </ion-card-header>      
+          </ion-button>
+        </ion-item>
+      </ion-card-header>
     </ion-card>
   </ion-list>
   <div *ngIf="listaNegocios.length === 0">
     <ion-chip color="warning">
-      <ion-label
-        ><strong>Lo sentimos!</strong> Aún no tiene negocios creados.</ion-label
-      >
+      <ion-label><strong>Lo sentimos!</strong> Aún no tiene negocios creados.</ion-label>
     </ion-chip>
   </div>
 </ion-content>

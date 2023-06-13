@@ -1,23 +1,19 @@
 <ion-header>
   <ion-toolbar class="tolbar">
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button menu="menuUsuario"></ion-menu-button>
     </ion-buttons>
     <ion-title>Conócenos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content
-  [fullscreen]="true"
-  [scrollEvents]="true"
-  (ionScroll)="cordenada = $event.detail.scrollTop"
->
+<ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
   <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
-  
-  <ion-slides  pager = "true" [options]="slideOptsOne" >
-      <ion-slide *ngFor="let imagenConocenos of listImagsConocenos">
-          <img src="{{imagenConocenos.imagen}}">
-      </ion-slide>
+
+  <ion-slides pager="true" [options]="slideOptsOne">
+    <ion-slide *ngFor="let imagenConocenos of listImagsConocenos">
+      <img src="{{imagenConocenos.imagen}}">
+    </ion-slide>
   </ion-slides>
 
   <!-- seccion 2 -->
@@ -32,11 +28,8 @@
     <ion-row>
       <ion-col>
         <div align="center">
-          <iframe
-            class="embed-responsive-item"
-            src="https://www.youtube.com/embed/RGf2qdFnjhY?rel=0"
-            frameborder="0"
-          ></iframe>
+          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/RGf2qdFnjhY?rel=0"
+            frameborder="0"></iframe>
         </div>
       </ion-col>
     </ion-row>
@@ -54,7 +47,9 @@
     </ion-row>
     <ion-row>
       <ion-col></ion-col>
-      <ion-col><div class="col-4 linea"></div></ion-col>
+      <ion-col>
+        <div class="col-4 linea"></div>
+      </ion-col>
       <ion-col></ion-col>
     </ion-row>
   </ion-grid>
@@ -76,25 +71,24 @@
             con los que podrás contactarte para pedir ese producto o servicio
             que necesias en tiempo real. <br /><br />
             Recibe tus pedidos hasta la puerta de tu hogar acordando con el
-            proveedor la manera de pago que mejor te convenga.<strong
-              >(De momento solo en caso de que el comercio ofrezca esta
-              modalidad)</strong
-            >
+            proveedor la manera de pago que mejor te convenga.<strong>(De momento solo en caso de que el comercio
+              ofrezca esta
+              modalidad)</strong>
           </p>
         </div>
       </ion-col>
       <ion-col size="12" size-sm>
         <div>
-          <img
-            src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/APARTADO_SOLICITUDES/CHICA.png"
-            class="img-fluid mx-auto"
-          />
+          <img src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/APARTADO_SOLICITUDES/CHICA.png"
+            class="img-fluid mx-auto" />
         </div>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col></ion-col>
-      <ion-col><div class="col-4 linea"></div></ion-col>
+      <ion-col>
+        <div class="col-4 linea"></div>
+      </ion-col>
       <ion-col></ion-col>
     </ion-row>
   </ion-grid>
@@ -106,16 +100,16 @@
           <h2>REGÍSTRATE PARA COMENZAR A USAR <span>BITOO!</span></h2>
         </div>
         <div align="center">
-          <img
-            class="mx-auto img-fluid"
-            src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/APARTADO_SOLICITUDES/PASO2.png"
-          />
+          <img class="mx-auto img-fluid"
+            src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/APARTADO_SOLICITUDES/PASO2.png" />
         </div>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col></ion-col>
-      <ion-col><div class="col-4 linea"></div></ion-col>
+      <ion-col>
+        <div class="col-4 linea"></div>
+      </ion-col>
       <ion-col></ion-col>
     </ion-row>
   </ion-grid>
@@ -132,10 +126,8 @@
     <ion-row>
       <ion-col size="12" size-sm>
         <div align="center">
-          <img
-            class="mx-auto img-fluid"
-            src="https://ecoevents.blob.core.windows.net/comprandoando/conocenos/imagen%202.png"
-          />
+          <img class="mx-auto img-fluid"
+            src="https://ecoevents.blob.core.windows.net/comprandoando/conocenos/imagen%202.png" />
         </div>
       </ion-col>
       <ion-col size="12" size-sm>
@@ -153,7 +145,9 @@
     </ion-row>
     <ion-row>
       <ion-col></ion-col>
-      <ion-col><div class="col-4 linea"></div></ion-col>
+      <ion-col>
+        <div class="col-4 linea"></div>
+      </ion-col>
       <ion-col></ion-col>
     </ion-row>
   </ion-grid>
@@ -169,17 +163,16 @@
     <ion-row>
       <ion-col>
         <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9 d-block">
-          <img
-            data-aos="zoom-in"
-            class="img-fluid mx-auto"
-            src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/APARTADO_SOLICITUDES/PASO2.png"
-          />
+          <img data-aos="zoom-in" class="img-fluid mx-auto"
+            src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/APARTADO_SOLICITUDES/PASO2.png" />
         </div>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col></ion-col>
-      <ion-col><div class="col-4 linea"></div></ion-col>
+      <ion-col>
+        <div class="col-4 linea"></div>
+      </ion-col>
       <ion-col></ion-col>
     </ion-row>
   </ion-grid>
@@ -209,23 +202,12 @@
           </div> -->
         <div class="row justify-content-center py-4 linksmtw" align="center">
           <div>
-            <a href="http://m.me/SofturaSolutions" target="_blank"
-              ><img
-                src="https://ecoevents.blob.core.windows.net/comprandoando/conocenos/msn.png"
-                alt="Messenger"
-            /></a>
-            <a href="https://t.me/Bitoo_Mx" target="_blank"
-              ><img
-                src="https://ecoevents.blob.core.windows.net/comprandoando/conocenos/telegram.png"
-                alt="Telegram"
-            /></a>
-            <a
-              href="https://api.whatsapp.com/send?phone=522411016729"
-              target="_blank"
-              ><img
-                src="https://ecoevents.blob.core.windows.net/comprandoando/conocenos/whats.png"
-                alt="Whatsapp"
-            /></a>
+            <a href="http://m.me/SofturaSolutions" target="_blank"><img
+                src="https://ecoevents.blob.core.windows.net/comprandoando/conocenos/msn.png" alt="Messenger" /></a>
+            <a href="https://t.me/Bitoo_Mx" target="_blank"><img
+                src="https://ecoevents.blob.core.windows.net/comprandoando/conocenos/telegram.png" alt="Telegram" /></a>
+            <a href="https://api.whatsapp.com/send?phone=522411016729" target="_blank"><img
+                src="https://ecoevents.blob.core.windows.net/comprandoando/conocenos/whats.png" alt="Whatsapp" /></a>
           </div>
         </div>
       </ion-col>
@@ -278,9 +260,7 @@
             <div class="ion-text-center">
               <img
                 src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/APARTADO_SOLICITUDES/QR%20188.png"
-                alt=""
-                class="img-fluid mx-auto"
-              />
+                alt="" class="img-fluid mx-auto" />
               <p>Visualización de <br />menús por QR</p>
             </div>
           </ion-card-content>
@@ -292,9 +272,7 @@
             <div class="ion-text-center">
               <img
                 src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/APARTADO_SOLICITUDES/EVALUACIO%C2%A6%C3%BCN%20188.png"
-                alt=""
-                class="img-fluid mx-auto"
-              />
+                alt="" class="img-fluid mx-auto" />
               <p>Evaluación de <br />proveedores</p>
             </div>
           </ion-card-content>
@@ -306,9 +284,7 @@
             <div class="ion-text-center">
               <img
                 src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/APARTADO_SOLICITUDES/COMPRA%20EN%20LINEA.png"
-                alt=""
-                class="img-fluid mx-auto"
-              />
+                alt="" class="img-fluid mx-auto" />
               <p>Compra en<br />línea</p>
             </div>
           </ion-card-content>
@@ -320,9 +296,7 @@
             <div class="ion-text-center">
               <img
                 src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/APARTADO_SOLICITUDES/ENTREGA%20A%20DOMICILIO.png"
-                alt=""
-                class="img-fluid mx-auto"
-              />
+                alt="" class="img-fluid mx-auto" />
               <p>Envíos a<br />domicilio</p>
             </div>
           </ion-card-content>
@@ -331,9 +305,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button expand="full" color="danger" (click)="rutaLink('/')"
-          >Comienza a explorar</ion-button
-        >
+        <ion-button expand="full" color="danger" (click)="rutaLink('/')">Comienza a explorar</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

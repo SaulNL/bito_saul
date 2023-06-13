@@ -8,7 +8,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UtilsCls } from "../../utils/UtilsCls";
 import { AppSettings } from "../../AppSettings";
-import { ActionSheetController, NavController, Platform } from "@ionic/angular";
+import { ActionSheetController, MenuController, NavController, Platform } from "@ionic/angular";
 import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Auth0Service } from "src/app/api/auth0.service";
 import { PedidosService } from "../../api/pedidos.service";
@@ -52,7 +52,8 @@ export class AjustesPage implements OnInit {
     private personaService: PersonaService,
     private notification: NotificationWithFirebaseService,
     private validate: ValidatorData,
-    private create: CreateObjects
+    private create: CreateObjects,
+    private menuCtrl: MenuController
   ) {
     this.siNoVistos = false;
     this.totalNoVistos = 0;
@@ -224,6 +225,9 @@ export class AjustesPage implements OnInit {
 
   abrirPaginaNotificaciones() {
     this._router.navigate(["/tabs/notificaciones"]);
+  }
+  openMenu() {
+    this.menuCtrl.open('menuUsuario')
   }
 
 }

@@ -6,6 +6,7 @@ import { UtilsCls } from "../../../utils/UtilsCls";
 import { AppSettings } from "../../../AppSettings";
 import { SideBarService } from "./../../../api/busqueda/side-bar-service";
 import { Auth0Service } from "./../../../api/busqueda/auth0.service";
+import { Router } from '@angular/router';
 @Component({
   selector: "app-dashboard",
   templateUrl: "./dashboard.page.html",
@@ -34,7 +35,9 @@ export class DashboardPage implements OnInit {
     private menuController: MenuController,
     private auth0: Auth0Service,
     private sideBarService: SideBarService,
-    private validarPermiso: ValidarPermisoService) {
+    private validarPermiso: ValidarPermisoService,
+    private router: Router,
+  ) {
     this.user = this.util.getUserData();
     this.permitirPermiso(JSON.parse(String(localStorage.getItem('u_permisos'))));
     const ls = localStorage.getItem("nav");
@@ -122,5 +125,13 @@ export class DashboardPage implements OnInit {
   openFirst() {
     this.menuController.enable(true, "first");
     this.menuController.open("first");
+  }
+  openCat() {
+    localStorage.removeItem('byCategorias');
+    localStorage.setItem('isRedirected', 'false');
+    this.router.navigate(['/tabs/categorias']);
+  }
+  openSug() {
+    this.router.navigate(['/tabs/mis-sugerencias']);
   }
 }

@@ -166,7 +166,7 @@ export class TabsPage implements OnInit {
     localStorage.removeItem("byCategorias");
     localStorage.setItem("isRedirected", "false");
     localStorage.setItem("resetFiltro", "0");
-    this.router.navigate(["/tabs/home/perfil"], {
+    this.router.navigate(["/tabs/home"], {
       queryParams: { special: true },
     });
     localStorage.setItem("activedPage", "perfil2");
