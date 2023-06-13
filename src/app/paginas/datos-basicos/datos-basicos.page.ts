@@ -36,6 +36,7 @@ export class DatosBasicosPage implements OnInit {
   resizeToWidth: number = 0;
   resizeToHeight: number = 0;
   maintainAspectRatio: boolean = false;
+  fechaSeleccionada: boolean = false;
   
   public lstAfiliaciones: any;
   public tipoAfl: any;
@@ -340,5 +341,9 @@ export class DatosBasicosPage implements OnInit {
             this.lstAflUsuario = [];
             this.lstOrgUsuario = [];
           }    
+  }
+
+  fechaSeleccionadaSeleccionada() {
+    this.fechaSeleccionada = true;
   }
 }
