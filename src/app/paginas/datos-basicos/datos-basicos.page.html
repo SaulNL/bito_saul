@@ -109,15 +109,15 @@
             <div *ngIf="celular.errors.required">El celular es requerido</div>
           </div>
           <ion-item>
-            <ion-label position="stacked">Fecha Nacimiento</ion-label>
+            <ion-label position="stacked">Fecha Nacimiento  <span style="color: red">*</span></ion-label>
             <ion-datetime
               #picker
               displayFormat="D/MM/YYYY"
               [min]="minDate"
               [max]="maxDate"
               value="{{usuarioSistema.fecha_nacimiento | date: 'yyyy-MM-dd'}}"
-              
               required
+              (ionChange)="fechaSeleccionadaSeleccionada()"
             ></ion-datetime>
             <ion-icon
               slot="end"
@@ -189,7 +189,7 @@
           </ion-item>
           
         </ion-list>
-        <ion-button type="submit" class="bg-naranja" expand="block"
+        <ion-button [disabled]="!fechaSeleccionada" type="submit" class="bg-naranja" expand="block"
           >Actualizar</ion-button
         >
       </form>

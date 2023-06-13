@@ -63,18 +63,18 @@
   --background:#e1e1e2;
   color: #1e1c1c;
   font-size: 12px;
-  margin-top: 8px;
+  margin-top: 5px;
   width: 65px;
-  height: 62%;
+  height: 79%;
 }
 
 .mapa{
   --background:#e1e1e2;
   color: #1e1c1c;
   font-size: 12px;
-  margin-top: 8px;
+  margin-top: 5px;
   width: 85px;
-  height: 62%;
+  height: 79%;
 }
 .mapa .icono{
   padding-right: 5px;
@@ -209,6 +209,7 @@ ion-card {
 
 .header-card {
   margin: 8px 2px;
+  text-align: center;
 }
 
 .body-card {
@@ -279,6 +280,13 @@ ion-card-title {
   --background: #d3d3d3;
   --color: rgb(43, 43, 43);
   font-size: 11px;
+}
+
+.boton-mas-negocios{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2px;
 }
 
 .icono-ver-mas{

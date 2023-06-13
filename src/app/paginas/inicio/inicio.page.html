@@ -155,8 +155,9 @@
                   <ion-spinner name="dots" style="margin: -10px 0px 0px 0px;" class="spinner-color"></ion-spinner>
                 </div>
               </div>
-              <div class="header-card" *ngIf="proveedor.giro !== null">
-                <div class="tag-giro">{{proveedor.giro }}</div>
+              <div class="header-card">
+                <ion-card-title> {{proveedor.nombre_corto != "" ? proveedor.nombre_corto :
+                        proveedor.nombre_comercial}}</ion-card-title>
               </div>
 
               <div class="body-card">
@@ -167,9 +168,8 @@
                   <app-dar-like-negocio [negocio]="proveedor" [usuario]="user" [mostrarLike]="existeSesion">
                   </app-dar-like-negocio>
                 </div>
-                <div>
-                  <ion-card-title> {{proveedor.nombre_corto != "" ? proveedor.nombre_corto :
-                    proveedor.nombre_comercial}}</ion-card-title>
+                <div *ngIf="proveedor.giro !== null">
+                  <div class="tag-giro">{{proveedor.giro }}</div>
                 </div>
                 <div class="distintivos" style="--color-selected: #ff1dbd">
                   <img *ngIf="proveedor.verificado === 1" class="distintivoIcon" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/VERIFICACIO%CC%81N.svg"

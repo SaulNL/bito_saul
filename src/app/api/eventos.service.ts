@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AppSettings} from '../AppSettings';
 import {from, Observable} from 'rxjs';
 import {HTTP} from '@ionic-native/http/ngx';
@@ -8,12 +8,21 @@ import {FiltroEventosModel} from '../Modelos/FiltroEventosModel';
   providedIn: 'root'
 })
 export class EventosService {
+    selectedObj: any;
 
   constructor(
       private _http: HTTP
   ) { }
 
   url = `${AppSettings.API_ENDPOINT}`;
+
+    setSelectedObj(obj: any) {
+        this.selectedObj = obj;
+    }
+
+    getSelectedObj() {
+        return this.selectedObj;
+    }
 
   eventosLista(){
     const body = '';
@@ -52,7 +61,7 @@ export class EventosService {
   buscarFiltroEvento(filtroEvento: FiltroEventosModel): Observable<any>{
       const body = JSON.stringify(filtroEvento);
       this._http.setDataSerializer('utf8');
-      return from(this._http.post(this.url + 'api/eventos/publicados', body, AppSettings.getHeadersToken()).then((data) => {
+      return from(this._http.post(this.url + 'api/eventos/publicados', body, AppSettings.getHeaders()).then((data) => {
               return JSON.parse(data.data);
           })
           .catch((error) => {
@@ -108,4 +117,25 @@ export class EventosService {
     }
 
 
+    mostrarReservaciones(idPersona: number): Observable<any>{
+        const body = JSON.stringify({id_persona: idPersona});
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(this.url + 'api/eventos/listaReservacionesUsuario', body, AppSettings.getHeadersToken()).then((data) => {
+            return JSON.parse(data.data);
+        })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
+    detalleReservacion(idEventoReservacion: number): Observable<any>{
+        const body = JSON.stringify({id_evento_reservacion: idEventoReservacion});
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(this.url + 'api/eventos/listaReservacionesUsuario', body, AppSettings.getHeadersToken()).then((data) => {
+            return JSON.parse(data.data);
+        })
+            .catch((error) => {
+                return error;
+            }));
+    }
 }

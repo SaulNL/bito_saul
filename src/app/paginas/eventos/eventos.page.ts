@@ -8,7 +8,7 @@ import {ToadNotificacionService} from '../../api/toad-notificacion.service';
 import {CatMunicipioModel} from '../../Modelos/CatMunicipioModel';
 import {CatLocalidadModel} from '../../Modelos/CatLocalidadModel';
 import {FiltroEventosModel} from '../../Modelos/FiltroEventosModel';
-import {DatePipe} from '@angular/common';
+import {AlertController} from '@ionic/angular';
 
 @Component({
   selector: 'app-eventos',
@@ -16,6 +16,8 @@ import {DatePipe} from '@angular/common';
   styleUrls: ['./eventos.page.scss'],
 })
 export class EventosPage implements OnInit {
+  public existeSesion: boolean;
+  public user: any;
   opciones: string[] = ['Hoy', 'Mañana', 'Esta semana', 'Este mes'];
   public dias: string[] = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'];
   public meses: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -56,6 +58,7 @@ export class EventosPage implements OnInit {
       private route: ActivatedRoute,
       private _general_service: GeneralServicesService,
       private _utils_cls: UtilsCls,
+      public alertController: AlertController,
   ) {
     this.eventosDatos = [];
     this.tipoEvento = [];
@@ -70,6 +73,8 @@ export class EventosPage implements OnInit {
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
     this.list_cat_localidad = new Array<CatLocalidadModel>();
+    this.user = this._utils_cls.getUserData();
+    this.existeSesion = _utils_cls.existe_sesion();
   }
 
   ngOnInit() {
@@ -98,6 +103,11 @@ export class EventosPage implements OnInit {
     this.eventosService.eventosLista().subscribe(
         res => {
           this.eventosAll = res.data;
+          this.eventosAll.sort((a, b) => {
+            const fechaA = new Date(a.fecha);
+            const fechaB = new Date(b.fecha);
+            return fechaA.getTime() - fechaB.getTime();
+          });
         });
   }
 
@@ -118,9 +128,12 @@ export class EventosPage implements OnInit {
   }
 
   datosEventos(id: number): void {
-    this.objeto = id;
-    this.router.navigateByUrl(`/tabs/eventos/reservaciones/${id}`);
-    console.log(this.objeto, 'candea');
+    if (!this.existeSesion){
+      this.mensajeRegistro();
+    }else{
+      this.objeto = id;
+      this.router.navigateByUrl(`/tabs/eventos/reservaciones/${id}`);
+    }
   }
 
   convertirFecha(fecha: string): string{
@@ -149,6 +162,14 @@ export class EventosPage implements OnInit {
     this.btnMuncipio = true;
     this.filtroEvento.id_localidad = null;
     this.btnLocalidad = true;
+  }
+
+  misReservaciones(){
+    if (!this.existeSesion){
+      this.mensajeRegistro();
+    }else{
+      this.router.navigate(['/tabs/eventos/mis-reservaciones']);
+    }
   }
 
   private load_cat_estados() {
@@ -281,9 +302,15 @@ export class EventosPage implements OnInit {
     this.eventosService.buscarFiltroEvento(this.filtroEvento).subscribe(
         (response) => {
           this.eventosAll = response.data;
+          this.eventosAll.sort((a, b) => {
+            const fechaA = new Date(a.fecha);
+            const fechaB = new Date(b.fecha);
+            return fechaA.getTime() - fechaB.getTime();
+          });
         },
         (error) => {
         });
+    this.limpiarFiltro();
   }
 
   cargarFecha(event: any): void{
@@ -296,8 +323,16 @@ export class EventosPage implements OnInit {
 
     if ( seleccion === 'Hoy'){
       this.filtroEvento.fecha_inicio = fecha;
+      this.filtroEvento.fecha_fin = null;
     }else if (seleccion === 'Mañana'){
+      const opcion3 = new Date();
+      opcion3.setDate(opcion3.getDate() + 1);
+      const year3 = opcion3.getFullYear();
+      const month3 = ('0' + (opcion3.getMonth() + 1)).slice(-2);
+      const day3 = ('0' + opcion3.getDate()).slice(-2);
+      const fecha3 = year3 + '-' + month3 + '-' + day3;
       this.filtroEvento.fecha_inicio = fecha;
+      this.filtroEvento.fecha_fin = fecha3;
     }else if ( seleccion === 'Esta semana'){
       // Agrego los 7 dias de mas
       const opcion1 = new Date();
@@ -319,6 +354,30 @@ export class EventosPage implements OnInit {
       this.filtroEvento.fecha_inicio = fecha;
       this.filtroEvento.fecha_fin = fecha2;
     }
+  }
+
+  async mensajeRegistro() {
+    const alert = await this.alertController.create({
+      header: 'Bitoo!',
+      message: "¿Ya tienes una cuenta?",
+      buttons: [
+        {
+          text: "Iniciar sesión",
+          cssClass: 'text-grey',
+          handler: () => {
+            this.router.navigate(['/tabs/login']);
+          }
+        },
+        {
+          text: "Registrate",
+          cssClass: 'text-rosa',
+          handler: () => {
+            this.router.navigate(["/tabs/login/sign-up"]);
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
 }

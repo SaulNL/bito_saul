@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title>Detalles de la reservacion</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="regresar()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
+<ion-content *ngIf="loaderReservaciones">
+  <ion-card>
+    <ion-card-content>
+
+      <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 12px; margin-top: 6px;">
+        <img [src]="infoReservacion.url_imagenevento" style="height: 200px; width: 250px;">
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 9px;">
+        <ion-label class="titulos">Fecha de reservación:</ion-label>
+        <div class="mostrarDatos">{{numeroDia}}/{{meses[numeroMes]}}/{{anio}}</div>
+      </div>
+      <div style="display: flex; align-items: center; margin-bottom: 9px;">
+        <ion-label class="titulos">Ubicación:</ion-label>
+        <div class="mostrarDatos">{{nombreLocalidad}}{{nombreMunicipio}}{{nombreEstado}}</div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

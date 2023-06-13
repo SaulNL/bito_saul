@@ -16,6 +16,10 @@
         <ion-label (click)="abrirModal()">Filtro <ion-icon name="caret-down-outline"></ion-icon>
         </ion-label>
       </div>
+    <div class="label_reservaciones">
+      <ion-label (click)="misReservaciones()">Mis reservaciones</ion-label>
+    </div>
+
       <div class="modal-overlay" *ngIf="isOpen">
         <div class="modal">
 
@@ -26,7 +30,7 @@
           </div>
 
           <ion-item>
-            <ion-label position="stacked">Fecha</ion-label>
+            <ion-label position="stacked">Recurrencia</ion-label>
             <ion-select [(ngModel)]="fechaSeleccionada" (ionChange)="cargarFecha($event)">
               <ion-select-option value="Hoy">Hoy</ion-select-option>
               <ion-select-option value="Mañana">Mañana</ion-select-option>
