@@ -27,7 +27,7 @@
 									<div class="ion-text-center">
 									    <strong style="color: black;">Promociones creadas</strong>
 									</div>
-									<div *ngFor="let promocion of listaPromoOriginal">
+									<div *ngFor="let promocion of listaPromoOriginal | slice:0:mostrarNegocios">
 										<ion-item (click)="seleccionarPromocion(promocion)">
 											<ion-avatar slot="start" *ngIf="promocion.url_imagen === ''; else imagen">
 												<img  [src]="promocion.url_imagen_banner" [alt]="promocion.promocion">
@@ -45,6 +45,11 @@
         									</ion-buttons>
 										</ion-item>
 									</div>
+									<div class="boton-ver-mas ion-justify-content-center ion-text-center">
+										<ion-button (click)="mostrarRegistros()">
+											{{ mostrarNegocios < listaPromoOriginal.length ? 'Ver más' : 'Ver menos' }}
+										</ion-button>
+									</div>
 								</ion-card-content>
 								 
 							</ion-card>
@@ -57,7 +62,7 @@
 
 								<ion-button expand="full" fill="outline" (click)="escanearQR()"><ion-icon name='qr-code-sharp'></ion-icon>Escanear QR</ion-button>
 								<div class="ion-text-center" style="margin-top: 20px">
-									<strong style="color: black;">Publicaciones que haz realizado </strong>
+									<strong style="color: black;">Publicaciones vigentes que haz realizado </strong>
 								</div>
 
 								<div style="display: flex; justify-content: center; align-items: center;">
@@ -73,7 +78,7 @@
 									<ion-icon name="chevron-up-outline" size="large" *ngIf="mostrarListaAnunciosPublicadas "></ion-icon>
 								</div>
 								<div class="ion-text-center" style="margin-top: 20px">
-									<strong style="color: black;">Publicaciones de anuncios que has realizado </strong>
+									<strong style="color: black;">Histórico de anuncios que has realizado </strong>
 
 								</div>
 
@@ -119,7 +124,7 @@
 									<ion-icon name="chevron-up-outline" size="large" *ngIf="mostrarListaPromocionesPublicadas"></ion-icon>
 								</div>
 								<div class="ion-text-center" style="margin-top: 20px">
-									<strong style="color: black;">Publicaciones de promociones que has realizado
+									<strong style="color: black;">Histórico de promociones que has realizado
 
 									</strong>
 
