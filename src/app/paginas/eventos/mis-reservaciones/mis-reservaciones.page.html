@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title>Mis reservaciones</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="regresar()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
+<ion-content *ngIf="loaderReservaciones">
+
+  <ion-list style="display: flex; flex-direction: column;">
+    <ion-item *ngFor="let dato of reservacionesAll" (click)="datosEventos(dato)">
+      <ion-label>
+        <div style="white-space: pre-wrap; width: 70%">
+          <strong>{{dato.evento}}</strong>
+        </div>
+        <p style="opacity: 0.5">{{dato.negocio}}</p>
+      </ion-label>
+      <ion-label class="date-label">{{convertirFecha(dato.fc_evento_reservacion)}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
