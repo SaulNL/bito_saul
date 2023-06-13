@@ -20,6 +20,50 @@ const routes: Routes = [
     path: 'datos-complementarios',
     loadChildren: () => import('../datos-complementarios/datos-complementarios.module').then(m => m.DatosComplementariosPageModule)
   },
+  {
+    path: 'conocenos',
+    loadChildren: () => import('../busqueda/busqueda/conocenos/conocenos.module').then(m => m.ConocenosPageModule)
+  },
+  {
+    path: 'solicitudes',
+    loadChildren: () => import('../solicitudes/solicitudes.module').then(m => m.SolicitudesPageModule)
+  },
+  {
+    path: 'promociones',
+    loadChildren: () => import('../mispromociones/mispromociones.module').then(m => m.MispromocionesPageModule)
+  },
+  {
+    path: 'ventas',
+    loadChildren: () => import('../pedidos/pedidos-negocio/pedidos-negocio.module').then(m => m.PedidosNegocioPageModule)
+  },
+  {
+    path: 'compras',
+    loadChildren: () => import('../pedidos/pedidos-dialog/pedidos-dialog.module').then(m => m.PedidosDialogPageModule)
+  },
+  {
+    path: 'negocio',
+    loadChildren: () => import('../../paginas/negocio/negocio.module').then(m => m.NegocioPageModule)
+  },
+  {
+    path: 'ser-proveedor',
+    loadChildren: () => import('../quiero-vender/quiero-vender.module').then(m => m.QuieroVenderPageModule)
+  },
+  {
+    path: 'solicitud',
+    loadChildren: () => import('../solicitud/solicitud.module').then(m => m.SolicitudPageModule)
+  },
+  {
+    path: 'estadisticas',
+    loadChildren: () => import('../estadisticas/estadisticas.module').then(m => m.EstadisticasPageModule)
+  },
+  {
+    path: 'preferencias',
+    loadChildren: () => import('../preferencias/preferencias.module').then(m => m.PreferenciasPageModule)
+  },
+  {
+    path: 'privacidad',
+    loadChildren: () => import('../aviso-privacidad-cuenta/aviso-privacidad-cuenta.module').then(m => m.AvisoPrivacidadCuentaPageModule)
+  }
 ];
 
 @NgModule({

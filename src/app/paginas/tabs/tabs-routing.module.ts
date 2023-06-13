@@ -43,7 +43,7 @@ const routes: Routes = [
       },
       {
         path: 'home',
-        loadChildren: () => import('../home/dashboard/dashboard.module').then(m => m.DashboardPageModule)
+        loadChildren: () => import('./../ajustes/ajustes.module').then(m => m.AjustesPageModule), canActivate: [AuthGuardService]
       },
       {
         path: 'login',
@@ -54,8 +54,8 @@ const routes: Routes = [
         loadChildren: () => import('../actualizar-version/actualizar-version.module').then(m => m.ActualizarVersionPageModule)
       },
       {
-        path:  'eventos',
-        loadChildren: () => import('../../paginas/eventos/eventos.module').then(  m => m. EventosPageModule)
+        path: 'eventos',
+        loadChildren: () => import('../../paginas/eventos/eventos.module').then(m => m.EventosPageModule)
       },
       {
         path: 'mis-eventos',

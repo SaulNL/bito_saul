@@ -36,10 +36,14 @@ import { MenuComponent } from './components/menu/menu.component';
 import { SpinnerModule } from 'src/app/componentes/spinner/spinner.module';
 import { LikeProductModule } from 'src/app/Bitoo/components/like-product/like-product.module';
 import { SliderImagesModule } from 'src/app/Bitoo/module/slider-images.module';
+import { MenuUsuarioComponent } from './components/menu-usuario/menu-usuario.component';
+import { UtilsCls } from './utils/UtilsCls';
+import { Auth0Service } from './api/busqueda/auth0.service';
 
 @NgModule({
   declarations: [AppComponent, SeleccionarSucripcionComponent, ModalQuienVioRequerimientoComponent, PopOverVisitsComponent, ModalDetalleProductoComponent,
-    MenuComponent
+    MenuComponent,
+    MenuUsuarioComponent
   ],
   entryComponents: [],
   imports: [SpinnerModule,
@@ -61,7 +65,9 @@ import { SliderImagesModule } from 'src/app/Bitoo/module/slider-images.module';
     SocialSharing,
     { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy },
     Deeplinks,
-    SignInWithApple
+    SignInWithApple,
+    UtilsCls,
+    Auth0Service
   ],
   bootstrap: [AppComponent],
   exports: [MenuComponent]

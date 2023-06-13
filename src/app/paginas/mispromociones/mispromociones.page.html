@@ -1,174 +1,205 @@
 <ion-header>
-  <ion-toolbar class="tolbar">
-	<ion-buttons slot="start">
-		<ion-menu-button></ion-menu-button>
-	  </ion-buttons>
-	<ion-title>Mis anuncios y promociones</ion-title>
-	<ion-buttons slot="end">
-		<ion-button (click)="agregar()">
-			<ion-icon name="add-outline"></ion-icon>
-		</ion-button>
-	  </ion-buttons>
-  </ion-toolbar>
+	<ion-toolbar class="tolbar">
+		<ion-buttons slot="start">
+			<ion-menu-button menu="menuUsuario"></ion-menu-button>
+		</ion-buttons>
+		<ion-title>Mis anuncios y promociones</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="agregar()">
+				<ion-icon name="add-outline"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
 </ion-header>
 <app-spinner [loader]="loaderAnuncios" [message]="msj"></app-spinner>
 <app-boton-top [content]="content" [cordenada]="cordenada" *ngIf="isIOS"></app-boton-top>
 
-<ion-content *ngIf="!loaderAnuncios" [scrollEvents]="true"  (ionScroll)="cordenada = $event.detail.scrollTop">
-		<ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
-			<ion-refresher-content></ion-refresher-content>
-	  	</ion-refresher>
+<ion-content *ngIf="!loaderAnuncios" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+	<ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+	<div>
+		<div>
 			<div>
 				<div>
-					<div>
-						<div>
-							<ion-card>
-								<ion-card-content>
-									<div class="ion-text-center">
-									    <strong style="color: black;">Promociones creadas</strong>
-									</div>
-									<div *ngFor="let promocion of listaPromoOriginal | slice:0:mostrarNegocios">
-										<ion-item (click)="seleccionarPromocion(promocion)">
-											<ion-avatar slot="start" *ngIf="promocion.url_imagen === ''; else imagen">
-												<img  [src]="promocion.url_imagen_banner" [alt]="promocion.promocion">
-											</ion-avatar>
-											<ng-template #imagen>
-												<ion-avatar slot="start" >
-													<img  [src]="promocion.url_imagen" [alt]="promocion.promocion">
-												</ion-avatar>
-											</ng-template>
-											<ion-label class="ion-text-wrap">
-												<p>{{promocion.promocion}} </p>
-											</ion-label>
-											<ion-buttons slot="end">
-         										<ion-icon name="chevron-forward-outline"></ion-icon>
-        									</ion-buttons>
-										</ion-item>
-									</div>
-									<div class="boton-ver-mas ion-justify-content-center ion-text-center">
-										<ion-button (click)="mostrarRegistros()">
-											{{ mostrarNegocios < listaPromoOriginal.length ? 'Ver más' : 'Ver menos' }}
+					<ion-card>
+						<ion-card-content>
+							<div class="ion-text-center">
+								<strong style="color: black;">Promociones creadas</strong>
+							</div>
+							<div *ngFor="let promocion of listaPromoOriginal | slice:0:mostrarNegocios">
+								<ion-item (click)="seleccionarPromocion(promocion)">
+									<ion-avatar slot="start" *ngIf="promocion.url_imagen === ''; else imagen">
+										<img [src]="promocion.url_imagen_banner" [alt]="promocion.promocion">
+									</ion-avatar>
+									<ng-template #imagen>
+										<ion-avatar slot="start">
+											<img [src]="promocion.url_imagen" [alt]="promocion.promocion">
+										</ion-avatar>
+									</ng-template>
+									<ion-label class="ion-text-wrap">
+										<p>{{promocion.promocion}} </p>
+									</ion-label>
+									<ion-buttons slot="end">
+										<ion-icon name="chevron-forward-outline"></ion-icon>
+									</ion-buttons>
+								</ion-item>
+							</div>
+							<div class="boton-ver-mas ion-justify-content-center ion-text-center">
+								<ion-button (click)="mostrarRegistros()">
+									{{ mostrarNegocios < listaPromoOriginal.length ? 'Ver más' : 'Ver menos' }}
 										</ion-button>
-									</div>
-								</ion-card-content>
-								 
-							</ion-card>
-						</div>
-						
-						<app-boton-top [content]="content" [cordenada]="cordenada" *ngIf="!isIOS"></app-boton-top>
+							</div>
+						</ion-card-content>
 
-						<ion-card>
-							<ion-card-content>
-
-								<ion-button expand="full" fill="outline" (click)="escanearQR()"><ion-icon name='qr-code-sharp'></ion-icon>Escanear QR</ion-button>
-								<div class="ion-text-center" style="margin-top: 20px">
-									<strong style="color: black;">Publicaciones vigentes que haz realizado </strong>
-								</div>
-
-								<div style="display: flex; justify-content: center; align-items: center;">
-									<p style="color: black;">{{publicacionesHechasTotal}}</p>
-								</div>
-								
-							</ion-card-content>
-		
-						<ion-card>
-							<ion-card-content>
-								<div style="height:5px ;" class="ion-text-end" (click)=" mostrarListaAnunciosPublicadas  = !mostrarListaAnunciosPublicadas ">
-									<ion-icon name="chevron-down-outline" size="large" *ngIf="!mostrarListaAnunciosPublicadas "></ion-icon>
-									<ion-icon name="chevron-up-outline" size="large" *ngIf="mostrarListaAnunciosPublicadas "></ion-icon>
-								</div>
-								<div class="ion-text-center" style="margin-top: 20px">
-									<strong style="color: black;">Histórico de anuncios que has realizado </strong>
-
-								</div>
-
-								 <ion-searchbar *ngIf="mostrarListaAnunciosPublicadas " (keyup)="btnBuscarAnuncios()" [(ngModel)]="filtroAnuncio" type="text"></ion-searchbar>
-								 <div *ngIf="lstPromocionesPublicadas !== undefined" style="width: 100%;">
-									<ion-list>
-										<div *ngFor="let promoPubli of lstAnuncios; let i = index;" >
-											<ion-item *ngIf="i < 0 && !mostrarListaAnunciosPublicadas " >
-												<ion-avatar (click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
-													<img  [src]="promoPubli.url_imagen" [alt]="promoPubli.promocion">
-												</ion-avatar>
-												<ion-label class="ion-text-wrap ion-text-center" style="margin: 5px;" (click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
-													<h3 style="text-align: center;">{{ promoPubli.promocion }}</h3>
-													<h4><strong>{{ promoPubli.fecha_inicio }}</strong> al <strong>{{ promoPubli.fecha_fin }}</strong></h4>
-												</ion-label>
-												<ion-buttons slot="end">
-													<ion-toggle color="danger"  *ngIf="promoPubli.activo_public === 1"  (ionChange)="dejar(promoPubli, $event, i)" [checked]="promoPubli.activo === 1" [value]="i"></ion-toggle>
-												</ion-buttons>
-											</ion-item>
-											<ion-item *ngIf="mostrarListaAnunciosPublicadas " >
-												<ion-avatar (click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
-													<img  [src]="promoPubli.url_imagen" [alt]="promoPubli.promocion">
-												</ion-avatar>
-												<ion-label class="ion-text-wrap ion-text-center" style="margin: 5px;" (click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
-													<h3 style="text-align: center;">{{ promoPubli.promocion }}</h3>
-													<h4><strong>{{ promoPubli.fecha_inicio }}</strong> al <strong>{{ promoPubli.fecha_fin }}</strong></h4>
-													<ion-spinner *ngIf="!loaderModal && idPromo===promoPubli.id_promocion"  name="dots" class="spinner-color"></ion-spinner>
-												</ion-label>
-												<ion-buttons slot="end">
-													<ion-toggle color="danger"  *ngIf="promoPubli.activo_public === 1"  (ionChange)="dejar(promoPubli, $event, i)" [checked]="promoPubli.activo === 1" [value]="i"></ion-toggle>
-												</ion-buttons>
-											</ion-item>
-										</div>
-									</ion-list>
-								</div>
-							</ion-card-content>
-						</ion-card>
-
-						<ion-card>
-							<ion-card-content>
-								<div style="height:5px ;" class="ion-text-end" (click)=" mostrarListaPromocionesPublicadas = !mostrarListaPromocionesPublicadas">
-									<ion-icon name="chevron-down-outline" size="large" *ngIf="!mostrarListaPromocionesPublicadas"></ion-icon>
-									<ion-icon name="chevron-up-outline" size="large" *ngIf="mostrarListaPromocionesPublicadas"></ion-icon>
-								</div>
-								<div class="ion-text-center" style="margin-top: 20px">
-									<strong style="color: black;">Histórico de promociones que has realizado
-
-									</strong>
-
-								</div>
-
-								 <ion-searchbar *ngIf="mostrarListaPromocionesPublicadas"  (keyup)="btnBuscarPromciones()" [(ngModel)]="filtro" type="text"></ion-searchbar>
-								 <div *ngIf="lstPromocionesPublicadas !== undefined" style="width: 100%;">
-									<ion-list>
-										<div *ngFor="let promoPubli of lstPromo; let i = index;" >
-											<ion-item *ngIf="i < 0 && !mostrarListaPromocionesPublicadas" >
-												<ion-avatar (click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
-													<img  [src]="promoPubli.url_imagen" [alt]="promoPubli.promocion">
-												</ion-avatar>
-												<ion-label class="ion-text-wrap ion-text-center" style="margin: 5px;" (click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
-													<h3 style="text-align: center;">{{ promoPubli.promocion }}</h3>
-													<h4><strong>{{ promoPubli.fecha_inicio }}</strong> al <strong>{{ promoPubli.fecha_fin }}</strong></h4>
-												</ion-label>
-												<ion-buttons slot="end">
-													<ion-toggle color="danger"  *ngIf="promoPubli.activo_public === 1"  (ionChange)="dejar(promoPubli, $event, i)" [checked]="promoPubli.activo === 1" [value]="i"></ion-toggle>
-												</ion-buttons>
-											</ion-item>
-											<ion-item *ngIf="mostrarListaPromocionesPublicadas" >
-												<ion-avatar (click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
-													<img  [src]="promoPubli.url_imagen" [alt]="promoPubli.promocion">
-												</ion-avatar>
-												<ion-label class="ion-text-wrap ion-text-center" style="margin: 5px;" (click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
-													<h3 style="text-align: center;">{{ promoPubli.promocion }}</h3>
-													<h4><strong>{{ promoPubli.fecha_inicio }}</strong> al <strong>{{ promoPubli.fecha_fin }}</strong></h4>
-													<ion-spinner *ngIf="!loaderModal && idPromo===promoPubli.id_promocion"  name="dots" class="spinner-color"></ion-spinner>
-												</ion-label>
-												<ion-buttons slot="end">
-													<ion-toggle color="danger"  *ngIf="promoPubli.activo_public === 1"  (ionChange)="dejar(promoPubli, $event, i)" [checked]="promoPubli.activo === 1" [value]="i"></ion-toggle>
-												</ion-buttons>
-											</ion-item>
-										</div>
-									</ion-list>
-								</div>
-							</ion-card-content>
-						</ion-card>
-						</ion-card>
-
-					</div>
+					</ion-card>
 				</div>
 
-			</div> 	
+				<app-boton-top [content]="content" [cordenada]="cordenada" *ngIf="!isIOS"></app-boton-top>
+
+				<ion-card>
+					<ion-card-content>
+
+						<ion-button expand="full" fill="outline" (click)="escanearQR()"><ion-icon
+								name='qr-code-sharp'></ion-icon>Escanear QR</ion-button>
+						<div class="ion-text-center" style="margin-top: 20px">
+							<strong style="color: black;">Publicaciones vigentes que haz realizado </strong>
+						</div>
+
+						<div style="display: flex; justify-content: center; align-items: center;">
+							<p style="color: black;">{{publicacionesHechasTotal}}</p>
+						</div>
+
+					</ion-card-content>
+
+					<ion-card>
+						<ion-card-content>
+							<div style="height:5px ;" class="ion-text-end"
+								(click)=" mostrarListaAnunciosPublicadas  = !mostrarListaAnunciosPublicadas ">
+								<ion-icon name="chevron-down-outline" size="large"
+									*ngIf="!mostrarListaAnunciosPublicadas "></ion-icon>
+								<ion-icon name="chevron-up-outline" size="large"
+									*ngIf="mostrarListaAnunciosPublicadas "></ion-icon>
+							</div>
+							<div class="ion-text-center" style="margin-top: 20px">
+								<strong style="color: black;">Histórico de anuncios que has realizado </strong>
+
+							</div>
+
+							<ion-searchbar *ngIf="mostrarListaAnunciosPublicadas " (keyup)="btnBuscarAnuncios()"
+								[(ngModel)]="filtroAnuncio" type="text"></ion-searchbar>
+							<div *ngIf="lstPromocionesPublicadas !== undefined" style="width: 100%;">
+								<ion-list>
+									<div *ngFor="let promoPubli of lstAnuncios; let i = index;">
+										<ion-item *ngIf="i < 0 && !mostrarListaAnunciosPublicadas ">
+											<ion-avatar
+												(click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
+												<img [src]="promoPubli.url_imagen" [alt]="promoPubli.promocion">
+											</ion-avatar>
+											<ion-label class="ion-text-wrap ion-text-center" style="margin: 5px;"
+												(click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
+												<h3 style="text-align: center;">{{ promoPubli.promocion }}</h3>
+												<h4><strong>{{ promoPubli.fecha_inicio }}</strong> al <strong>{{
+														promoPubli.fecha_fin }}</strong></h4>
+											</ion-label>
+											<ion-buttons slot="end">
+												<ion-toggle color="danger" *ngIf="promoPubli.activo_public === 1"
+													(ionChange)="dejar(promoPubli, $event, i)"
+													[checked]="promoPubli.activo === 1" [value]="i"></ion-toggle>
+											</ion-buttons>
+										</ion-item>
+										<ion-item *ngIf="mostrarListaAnunciosPublicadas ">
+											<ion-avatar
+												(click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
+												<img [src]="promoPubli.url_imagen" [alt]="promoPubli.promocion">
+											</ion-avatar>
+											<ion-label class="ion-text-wrap ion-text-center" style="margin: 5px;"
+												(click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
+												<h3 style="text-align: center;">{{ promoPubli.promocion }}</h3>
+												<h4><strong>{{ promoPubli.fecha_inicio }}</strong> al <strong>{{
+														promoPubli.fecha_fin }}</strong></h4>
+												<ion-spinner *ngIf="!loaderModal && idPromo===promoPubli.id_promocion"
+													name="dots" class="spinner-color"></ion-spinner>
+											</ion-label>
+											<ion-buttons slot="end">
+												<ion-toggle color="danger" *ngIf="promoPubli.activo_public === 1"
+													(ionChange)="dejar(promoPubli, $event, i)"
+													[checked]="promoPubli.activo === 1" [value]="i"></ion-toggle>
+											</ion-buttons>
+										</ion-item>
+									</div>
+								</ion-list>
+							</div>
+						</ion-card-content>
+					</ion-card>
+
+					<ion-card>
+						<ion-card-content>
+							<div style="height:5px ;" class="ion-text-end"
+								(click)=" mostrarListaPromocionesPublicadas = !mostrarListaPromocionesPublicadas">
+								<ion-icon name="chevron-down-outline" size="large"
+									*ngIf="!mostrarListaPromocionesPublicadas"></ion-icon>
+								<ion-icon name="chevron-up-outline" size="large"
+									*ngIf="mostrarListaPromocionesPublicadas"></ion-icon>
+							</div>
+							<div class="ion-text-center" style="margin-top: 20px">
+								<strong style="color: black;">Histórico de promociones que has realizado
+
+								</strong>
+
+							</div>
+
+							<ion-searchbar *ngIf="mostrarListaPromocionesPublicadas" (keyup)="btnBuscarPromciones()"
+								[(ngModel)]="filtro" type="text"></ion-searchbar>
+							<div *ngIf="lstPromocionesPublicadas !== undefined" style="width: 100%;">
+								<ion-list>
+									<div *ngFor="let promoPubli of lstPromo; let i = index;">
+										<ion-item *ngIf="i < 0 && !mostrarListaPromocionesPublicadas">
+											<ion-avatar
+												(click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
+												<img [src]="promoPubli.url_imagen" [alt]="promoPubli.promocion">
+											</ion-avatar>
+											<ion-label class="ion-text-wrap ion-text-center" style="margin: 5px;"
+												(click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
+												<h3 style="text-align: center;">{{ promoPubli.promocion }}</h3>
+												<h4><strong>{{ promoPubli.fecha_inicio }}</strong> al <strong>{{
+														promoPubli.fecha_fin }}</strong></h4>
+											</ion-label>
+											<ion-buttons slot="end">
+												<ion-toggle color="danger" *ngIf="promoPubli.activo_public === 1"
+													(ionChange)="dejar(promoPubli, $event, i)"
+													[checked]="promoPubli.activo === 1" [value]="i"></ion-toggle>
+											</ion-buttons>
+										</ion-item>
+										<ion-item *ngIf="mostrarListaPromocionesPublicadas">
+											<ion-avatar
+												(click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
+												<img [src]="promoPubli.url_imagen" [alt]="promoPubli.promocion">
+											</ion-avatar>
+											<ion-label class="ion-text-wrap ion-text-center" style="margin: 5px;"
+												(click)="abrirModalDetalle(promoPubli.id_promocion, promoPubli.activo_public)">
+												<h3 style="text-align: center;">{{ promoPubli.promocion }}</h3>
+												<h4><strong>{{ promoPubli.fecha_inicio }}</strong> al <strong>{{
+														promoPubli.fecha_fin }}</strong></h4>
+												<ion-spinner *ngIf="!loaderModal && idPromo===promoPubli.id_promocion"
+													name="dots" class="spinner-color"></ion-spinner>
+											</ion-label>
+											<ion-buttons slot="end">
+												<ion-toggle color="danger" *ngIf="promoPubli.activo_public === 1"
+													(ionChange)="dejar(promoPubli, $event, i)"
+													[checked]="promoPubli.activo === 1" [value]="i"></ion-toggle>
+											</ion-buttons>
+										</ion-item>
+									</div>
+								</ion-list>
+							</div>
+						</ion-card-content>
+					</ion-card>
+				</ion-card>
+
+			</div>
+		</div>
+
+	</div>
 
 </ion-content>
