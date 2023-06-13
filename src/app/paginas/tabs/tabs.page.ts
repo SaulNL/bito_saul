@@ -24,7 +24,7 @@ export class TabsPage implements OnInit {
   public isAndroid: boolean;
   private plazaAfiliacion: AfiliacionPlazaModel | null;
   public misNotificaciones: any;
-  public notifSinLeer: number = + localStorage.getItem("notifSinLeer");
+  public notifSinLeer: number;
   public id_proveedor: any;
   showPopUp: boolean = false;
   showPopUpGracias: boolean = false;
@@ -70,7 +70,6 @@ export class TabsPage implements OnInit {
 
     if (this.usuario !== null) this.obtenerNotificaciones();
 
-    //this.actualizarNotificaciones();
     this.actualizarEncuestas();
 
     if (neg === 'active' && this.isIos) {
@@ -243,9 +242,7 @@ export class TabsPage implements OnInit {
       response => {
         if (response.code === 200) {
           this.misNotificaciones = response.data;
-          // console.log("servicio notificacione tabs");
 
-          // console.log(JSON.stringify(this.misNotificaciones));
           this.notificacionesSinAbrir();
         }
       },
@@ -259,15 +256,9 @@ export class TabsPage implements OnInit {
 
     localStorage.setItem('notifSinLeer', sumaNoleidos);
 
-    // console.log(JSON.stringify(localStorage.getItem('notifSinLeer')));
-    this.notifSinLeer = +localStorage.getItem('notifSinLeer');
+    this.notifSinLeer = Number(localStorage.getItem('notifSinLeer'));
   }
 
-  actualizarNotificaciones() {
-    setInterval(() => {
-      //this.obtenerNotificaciones();
-    }, 30000);
-  }
   async actualizarEncuestas() {
     this.filtroVariable.variable = 'intervaloTiempoPreguntaRapida';
 
