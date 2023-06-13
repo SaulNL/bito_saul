@@ -11,10 +11,33 @@
   margin-top: 15px;
 }
 
+.label_filtro{
+  background-color: #e1e1e2;
+  width: 23vw;
+  border-radius: 10px;
+  height: 9vw;
+  padding: 5px;
+  text-align: center;
+}
+
+.label_filtro:active {
+  background-color: #f2f2f2;
+}
+
 .label_reservaciones{
+  background-color: #e1e1e2;
+  width: 40vw;
+  border-radius: 10px;
   position: absolute;
   right: 3%;
-  text-align: right;
+  /*text-align: right;*/
+  height: 9vw;
+  padding: 5px;
+  text-align: center;
+}
+
+.label_reservaciones:active{
+  background-color: #f2f2f2;
 }
 
 .modal-overlay {

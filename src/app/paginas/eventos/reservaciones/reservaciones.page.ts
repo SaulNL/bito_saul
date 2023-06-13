@@ -48,7 +48,7 @@ export class ReservacionesPage implements OnInit {
   mesSeleccionado: string;
   minFecha: string;
   maxFecha: string;
-  martesArray: Date[];
+  semanasArray: Date[];
   mesesArray: Date[] = [];
   fechaReservacion: any;
 
@@ -208,37 +208,33 @@ export class ReservacionesPage implements OnInit {
   }
 
   mostrarSemanal() {
-    this.martesArray = [];
+    this.semanasArray = [];
     const fechaEvento = new Date(this.infoEvento[0]?.fecha);
     const fechaActual = new Date();
 
-    let anioActual = fechaEvento.getFullYear();
-    let mesActual = fechaEvento.getMonth();
-    let diaActual = fechaEvento.getDate();
-
-    // Comparar fecha del evento con fecha actual
-    if (fechaEvento < fechaActual) {
-      anioActual = fechaActual.getFullYear();
-      mesActual = fechaActual.getMonth();
-      diaActual = fechaActual.getDate();
-    }
+    let anioActual = fechaActual.getFullYear();
+    let mesActual = fechaActual.getMonth();
+    let diaActual = fechaActual.getDate();
 
     const numDia = fechaEvento.getDay();
 
-    for (let mes = mesActual; mes < 12; mes++) {
-      const maxDia = (mes === mesActual) ? 31 - diaActual + 1 : 31;
+    let fecha = new Date(anioActual, mesActual, diaActual);
 
-      for (let dia = (mes === mesActual) ? diaActual : 1; dia <= maxDia; dia++) {
-        const fecha = new Date(anioActual, mes, dia);
+    // Si la fecha ya pasó, avanzar a la siguiente semana
+    if (fecha < fechaEvento) {
+      fecha.setDate(fecha.getDate() + 7 - (fecha.getDay() - numDia));
+    }
 
-        if (fecha.getDay() === numDia) {
-          this.fechaFormateada = format(fecha, 'dd/MMMM/yyyy', { locale: es });
-          this.martesArray.push(this.fechaFormateada);
-        }
+    // Iterar mientras estemos en el mismo año
+    while (fecha.getFullYear() === anioActual) {
+      if (fecha.getDay() === numDia) {
+        this.fechaFormateada = format(fecha, 'dd/MMMM/yyyy', { locale: es });
+        this.semanasArray.push(this.fechaFormateada);
       }
+
+      fecha.setDate(fecha.getDate() + 1); // Avanzar al siguiente día
     }
   }
-
 
 
   mostrarMeses() {
@@ -286,7 +282,7 @@ export class ReservacionesPage implements OnInit {
     }
 
     this.cadenaReservacion = [eventoId, this.idPersona, this.fechaReservacion, nPersonas];
-    //this.generarReservacion(this.cadenaReservacion);
+    this.generarReservacion(this.cadenaReservacion);
     this.eventosService.setReservacionObj(this.cadenaReservacion);
     this.mensajeRegistro();
     //this.router.navigate(['/tabs/eventos/generar-reservacion'], { state: { cadena: this.cadenaReservacion } });
@@ -299,12 +295,22 @@ export class ReservacionesPage implements OnInit {
     });
   }
 
+  limpiarFiltro(){
+    this.router.navigate(['/tabs/eventos']);
+    this.mostrarLabel = false;
+    this.fechaSeleccionada = null;
+    this.noPersonas = null;
+  }
+
   async mensajeRegistro() {
-    const alert = await this.alertController.create({
-      header: 'Bitoo!',
-      message: "Su reservación ya fue realizada \n espere su confirmación",
-    });
-    await alert.present();
+    setTimeout(async () => {
+      this.limpiarFiltro();
+      const alert = await this.alertController.create({
+        header: 'Bitoo!',
+        message: "Su reservación ya fue realizada \n espere su confirmación",
+      });
+      await alert.present();
+    }, 400);
   }
 
 }

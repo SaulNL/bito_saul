@@ -60,7 +60,7 @@
             <ion-item style="margin-bottom: 10px; width: 68vw;" *ngIf="infoEvento[0]?.id_tipo_recurrencia == 3">
                 <ion-label>Fecha: <span style="color: red">*</span></ion-label>
                 <ion-select class="selects" [(ngModel)]="fechaSeleccionada">
-                    <ion-select-option *ngFor="let dia of martesArray" [value]="dia">{{ dia }}</ion-select-option>
+                    <ion-select-option *ngFor="let dia of semanasArray" [value]="dia">{{ dia }}</ion-select-option>
                 </ion-select>
             </ion-item>
 
