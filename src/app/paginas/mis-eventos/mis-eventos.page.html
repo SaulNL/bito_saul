@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<app-spinner [loader]="loader" [message]="msj" *ngIf="loader"></app-spinner>
 <ion-content *ngIf="!loader">
   <div class="eventosContent">
     <ion-label class="eventocreado">Eventos Creados</ion-label>

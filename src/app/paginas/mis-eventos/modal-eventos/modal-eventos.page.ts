@@ -11,6 +11,7 @@ import { element } from 'protractor';
 import { ModalController } from '@ionic/angular';
 import { RecorteImagenComponent } from '../../../components/recorte-imagen/recorte-imagen.component';
 import { Router } from '@angular/router';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-modal-eventos',
@@ -95,6 +96,7 @@ export class ModalEventosPage implements OnInit {
   obtenerEstados() {
     if (this.edit == null) this.loader = false;
     this._general_service.getEstadosWS().subscribe(response => {
+      console.log("estado", response)
       if (this._utils_cls.is_success_response(response.code)) {
         this.list_cat_estado = response.data.list_cat_estado;
         // this.loader = false;
@@ -111,10 +113,15 @@ export class ModalEventosPage implements OnInit {
       // this.negocioTO.det_domicilio.id_municipio = [];
       idE = event.detail.value;
     } else {
-      idE = event.value;
+      if (event.value == undefined) {
+        idE = event
+      } else {
+        idE = event.value;
+      }
     }
     if (idE > 0) {
       this._general_service.getMunicipiosAll(idE).subscribe(response => {
+        console.log("municipio", response)
         if (this._utils_cls.is_success_response(response.code)) {
           this.list_cat_municipio = response.data.list_cat_municipio;
         }
@@ -136,10 +143,15 @@ export class ModalEventosPage implements OnInit {
       // this.negocioTO.det_domicilio.id_localidad = [];
       idE = event.detail.value;
     } else {
-      idE = event.value;
+      if (event.value == undefined) {
+        idE = event
+      } else {
+        idE = event.value;
+      }
     }
     if (idE > 0) {
       this._general_service.getLocalidadAll(idE).subscribe(response => {
+        console.log("localidad", response)
         if (this._utils_cls.is_success_response(response.code)) {
           this.list_cat_localidad = response.data.list_cat_localidad;
         }
@@ -180,7 +192,7 @@ export class ModalEventosPage implements OnInit {
     console.log("data", data)
     let pagos = [];
 
-    setTimeout(() => {
+    setTimeout(async () => {
       this.eventData.activo = data.activo
       this.activoBTN = data.activo == 1 ? true : false;
       this.eventData.requiere_confirmacion = data.requiere_confirmacion;
@@ -188,7 +200,18 @@ export class ModalEventosPage implements OnInit {
       this.eventData.id_evento = data.id_evento;
       this.eventData.evento = data.evento;
       this.eventData.id_negocio = data.id_negocio;
-      this.eventData.id_estado = data.id_estado;
+      this.eventData.id_estado = await data.id_estado;
+      if (this.eventData.id_estado != "") {
+        await this.obtenerMunicipio(this.eventData.id_estado)
+      }
+      setTimeout(async () => {
+        this.eventData.id_municipio = await data.id_municipio;
+        // this.obtenerLocalidad(this.eventData.id_municipio)
+        setTimeout(async () => {
+          this.eventData.id_localidad = await data.id_localidad;
+        }, 1500);
+      }, 1500);
+
       this.eventData.fecha = data.fecha;
       this.eventData.tipo_pago_transferencia = data.tipo_pago_transferencia;
       this.eventData.tipo_pago_tarjeta_credito = data.tipo_pago_tarjeta_credito;
@@ -208,16 +231,12 @@ export class ModalEventosPage implements OnInit {
         this.pagoSeleccionado = pagos;
         this.eventoSelect = data.tipo_evento.split(",");
       }, 2000)
-      setTimeout(() => {
-        this.eventData.id_municipio = data.id_municipio;
-        setTimeout(() => {
-          this.eventData.id_localidad = data.id_localidad;
-          this.loader = false;
-        },
-          2000);
-      },
-        2000);
-    }, 3000)
+
+      // this.eventData.id_municipio = data.id_municipio;
+      // this.eventData.id_localidad = data.id_localidad;
+      console.log("asignado", this.eventData)
+      this.loader = false;
+    }, 1000)
   }
 
   async submit() {
@@ -235,8 +254,12 @@ export class ModalEventosPage implements OnInit {
   guardarEvento(data) {
     console.log("datos a guardar", data)
     this.eventoService.guardarEvento(data).subscribe(res => {
-      this._router.navigate(["/tabs/mis-eventos"])
-      this.loader = false
+      console.log(res)
+      if (res.code == 200) {
+        this.loader = false
+        this._notificacionService.exito('Evento Guardado');
+        this._router.navigate(["/tabs/mis-eventos"])
+      }
     }),
       error => {
         //   this._notificacionService.pushError(error);

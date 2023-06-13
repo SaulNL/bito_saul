@@ -9,8 +9,8 @@
 </ion-header>
 
 <ion-content>
-  <app-spinner [loader]="loader" [message]="msj"></app-spinner>
-  <div class="eventoContenido">
+  <app-spinner [loader]="loader" [message]="msj" *ngIf="loader"></app-spinner>
+  <div class="eventoContenido" *ngIf="!loader">
     <form class="eventoForm" (ngSubmit)="submit()" #eventForm="ngForm">
       <div class="titulo">
         <ion-item>
@@ -125,7 +125,7 @@
               [value]="evento.nombre">{{evento.nombre}}</ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-item>
+        <ion-item *ngIf="!loader">
           <app-input-tags [tags]="eventData.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
         </ion-item>
 

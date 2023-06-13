@@ -52,6 +52,7 @@ export class MisEventosPage implements OnInit {
   }
 
   eliminarEvento(idEvento, index) {
+    this.loader = true;
     let body = {
       id_evento: idEvento
     }
@@ -59,6 +60,10 @@ export class MisEventosPage implements OnInit {
     this.eventos.splice(index, 1)
 
     this.eventoService.eliminarEvento(body).subscribe(Response => {
+      if (Response.code == 200) {
+        this.loader = false;
+        this.notificacionService.exito("Se elimino correctamente")
+      }
     }),
       error => {
         this.notificacionService.error(error);
