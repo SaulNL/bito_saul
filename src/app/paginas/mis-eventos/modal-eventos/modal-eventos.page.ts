@@ -196,7 +196,7 @@ export class ModalEventosPage implements OnInit {
       this.eventData.activo = data.activo
       this.activoBTN = data.activo == 1 ? true : false;
       this.eventData.requiere_confirmacion = data.requiere_confirmacion;
-      this.confirmacionBTN = data.activo == 1 ? true : false;
+      this.confirmacionBTN = data.requiere_confirmacion == 1 ? true : false;
       this.eventData.id_evento = data.id_evento;
       this.eventData.evento = data.evento;
       this.eventData.id_negocio = data.id_negocio;
