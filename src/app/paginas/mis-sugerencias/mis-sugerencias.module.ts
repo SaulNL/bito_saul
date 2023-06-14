@@ -11,6 +11,7 @@ import { MisSugerenciasPageRoutingModule } from './mis-sugerencias-routing.modul
 import { Tab2PageModule } from '../promociones/promociones.module';
 import { MisSugerenciasPage } from './mis-sugerencias.page';
 import { DarLikeNegocioModule } from '../../componentes/dar-like-negocio/dar-like-negocio.module';
+import { SpinnerModule } from 'src/app/componentes/spinner/spinner.module';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { DarLikeNegocioModule } from '../../componentes/dar-like-negocio/dar-lik
     IonicModule,
     MisSugerenciasPageRoutingModule,
     DarLikeNegocioModule,
-    Tab2PageModule
+    Tab2PageModule,
+    SpinnerModule
   ],
   declarations: [
     MisSugerenciasPage,

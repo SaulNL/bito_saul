@@ -37,7 +37,7 @@ export class DatosBasicosPage implements OnInit {
   resizeToHeight: number = 0;
   maintainAspectRatio: boolean = false;
   fechaSeleccionada: boolean = false;
-  
+
   public lstAfiliaciones: any;
   public tipoAfl: any;
   public tipoOrg: any;
@@ -105,7 +105,7 @@ export class DatosBasicosPage implements OnInit {
     const usuario_sistema = JSON.parse(localStorage.getItem("u_sistema"));
     this.loader = true;
 
-   
+
     if (this.arrayAfl === undefined) {
       this.arrayAfl = []
     }
@@ -132,35 +132,35 @@ export class DatosBasicosPage implements OnInit {
         this.usuarioSistema.afiliaciones.push(afiliacion);
       });
 
-      
+
       this.arrayOrg.forEach(org => {
 
-            const afiliacion = new ConvenioModel();
-            afiliacion.id_organizacion = org;
+        const afiliacion = new ConvenioModel();
+        afiliacion.id_organizacion = org;
 
-            afiliacion.id_usuario = usuario_sistema.id_usuario_sistema;
+        afiliacion.id_usuario = usuario_sistema.id_usuario_sistema;
 
-            afiliacion.identificacion = "";
+        afiliacion.identificacion = "";
 
-            afiliacion.nombre_empresa = this.nombreEmpresa 
+        afiliacion.nombre_empresa = this.nombreEmpresa
 
-            this.usuarioSistema.afiliaciones.push(afiliacion);
+        this.usuarioSistema.afiliaciones.push(afiliacion);
 
       });
-      
+
     }
-   
+
     const miPrimeraPromise = new Promise((resolve, reject) => {
       this.servicioPersona.guardar(this.usuarioSistema).subscribe(
         data => {
           if (data.code === 200) {
             const resultado = this.sesionUtl.actualizarSesion();
-            this.router.navigate(['/tabs/home/perfil']);
+            this.router.navigate(['/tabs/home']);
             this.loader = false;
             this.notificaciones.exito(data.data.mensaje);
             resolve(resultado);
             setTimeout(() => {
-              this.router.navigate(['/tabs/home/perfil']);
+              this.router.navigate(['/tabs/home']);
             }, 1500);
           }
         },
@@ -175,7 +175,7 @@ export class DatosBasicosPage implements OnInit {
     });
   }
   regresar() {
-    this.router.navigate(['/tabs/home/perfil']);
+    this.router.navigate(['/tabs/home']);
   }
   convercionFechaNac(event) {
     let fecha = event.detail.value;
@@ -258,10 +258,10 @@ export class DatosBasicosPage implements OnInit {
 
   afiliado(evento) {
     const theValue = parseInt(evento.detail.value);
-  
+
     this.arrayAfl = [theValue];
     // const found =afl.find(element => element === 99998);
-    
+
     if (theValue != null) {
       this.afl_etiqueta = true;
     }
@@ -271,21 +271,21 @@ export class DatosBasicosPage implements OnInit {
     //   this.nombre_empresa_afl = false;
     // }
     let filteredArr = this.lstAfiliaciones.find(data => data.id_organizacion === theValue);
-   
 
-    this.etiqueta_name =  filteredArr.etiqueta_identificacion != null ? filteredArr.etiqueta_identificacion : "No.";
+
+    this.etiqueta_name = filteredArr.etiqueta_identificacion != null ? filteredArr.etiqueta_identificacion : "No.";
 
   }
 
   async obtenerAfiliaciones() {
-    await  this.obtenerOrgAfilUsuario();
+    await this.obtenerOrgAfilUsuario();
     this.servicioPersona.obtenerAfiliaciones().subscribe((response) => {
       this.lstAfiliaciones = Object.values(response.data);
-      if (this.lstAflUsuario.length >0) {
+      if (this.lstAflUsuario.length > 0) {
         this.lstAfiliaciones.forEach((element) => {
           this.lstAflUsuario.forEach((elements) => {
             if (element.id_organizacion == elements.id_organizacion) {
-              this.idAfl=elements.id_organizacion
+              this.idAfl = elements.id_organizacion
               this.tipoAfl = element.nombre;
               this.etiqueta_name = element.etiqueta_identificacion
               this.afl_etiqueta = true;
@@ -298,24 +298,24 @@ export class DatosBasicosPage implements OnInit {
   }
 
   organizacion(evento) {
-    
+
     const org = evento.detail.value.map(item => parseInt(item));
-    this.arrayOrg = org; 
+    this.arrayOrg = org;
 
   }
 
 
   async obtenerOrganizaciones() {
-    await  this.obtenerOrgAfilUsuario();
+    await this.obtenerOrgAfilUsuario();
     this.servicioPersona.obtenerOrganizaciones().subscribe((response) => {
       this.lstOrganizaciones = Object.values(response.data);
-      if (this.lstOrgUsuario.length >0) {
-        this.lstOrganizaciones .forEach((element) => {
+      if (this.lstOrgUsuario.length > 0) {
+        this.lstOrganizaciones.forEach((element) => {
           this.lstOrgUsuario.forEach((elements) => {
-            if (element.id_organizacion == elements.id_organizacion) {           
-              this.tipoOrg = element.nombre; 
-                this.nombreEmpresa = elements.nombre_empresa
-              
+            if (element.id_organizacion == elements.id_organizacion) {
+              this.tipoOrg = element.nombre;
+              this.nombreEmpresa = elements.nombre_empresa
+
             }
           });
         });
@@ -324,23 +324,23 @@ export class DatosBasicosPage implements OnInit {
   }
 
 
-  async obtenerOrgAfilUsuario(){
+  async obtenerOrgAfilUsuario() {
     const usuario_sistema = JSON.parse(localStorage.getItem("u_sistema"));
     var respuesta = await this.servicioPersona.obtenerOrgAfilUsuario(usuario_sistema.id_usuario_sistema).toPromise();
 
-          if (respuesta.code === 200) {
-            this.lstAflUsuario = Object.values(respuesta.data.list_afiliaciones_usuario);
-            this.lstOrgUsuario = Object.values(respuesta.data.list_organizaciones_usuario);
-            
-              this.organizacion_id = []
-              let array = this.lstOrgUsuario;
-              for( const item of array){
-                this.organizacion_id.push(item.id_organizacion);
-              }
-          } else {
-            this.lstAflUsuario = [];
-            this.lstOrgUsuario = [];
-          }    
+    if (respuesta.code === 200) {
+      this.lstAflUsuario = Object.values(respuesta.data.list_afiliaciones_usuario);
+      this.lstOrgUsuario = Object.values(respuesta.data.list_organizaciones_usuario);
+
+      this.organizacion_id = []
+      let array = this.lstOrgUsuario;
+      for (const item of array) {
+        this.organizacion_id.push(item.id_organizacion);
+      }
+    } else {
+      this.lstAflUsuario = [];
+      this.lstOrgUsuario = [];
+    }
   }
 
   fechaSeleccionadaSeleccionada() {

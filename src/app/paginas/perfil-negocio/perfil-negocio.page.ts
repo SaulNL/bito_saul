@@ -1097,8 +1097,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
           handler: () => {
             this.blockk.tf = true;
             this.bolsa = [];
-            if (this.ruta === "/tabs/home/perfil") {
-              this.router.navigate(["/tabs/home/perfil"], {
+            if (this.ruta === "/tabs/home") {
+              this.router.navigate(["/tabs/home"], {
                 queryParams: { special: true },
               });
             } else {

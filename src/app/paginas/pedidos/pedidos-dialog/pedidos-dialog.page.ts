@@ -55,8 +55,8 @@ export class PedidosDialogPage implements OnInit {
   private longitud: number;
   pedidoAbierto: any;
   public selectTO: any;
-public  inicioFecha:String ;
-public  finalFecha:String ;
+  public inicioFecha: String;
+  public finalFecha: String;
   public subscribe;
   public navegacion: any;
   public loaderSearch = false;
@@ -76,8 +76,8 @@ public  finalFecha:String ;
     this.lstFiltroEstatus = [1, 2, 3, 4, 5, 6];
     this.loaderBtn = false;
     this.blnCancelar = false;
-    this.inicioFecha="";
-    this.finalFecha="";
+    this.inicioFecha = "";
+    this.finalFecha = "";
   }
 
   ngOnInit() {
@@ -116,56 +116,56 @@ public  finalFecha:String ;
     return fecha2;
   }
   dayFecha() {
-    var actual= new Date();
-    var mon= ""+(actual.getMonth() + 1);
-    if(mon.length==1){
-      mon="0"+mon;
+    var actual = new Date();
+    var mon = "" + (actual.getMonth() + 1);
+    if (mon.length == 1) {
+      mon = "0" + mon;
     }
-    var day= ""+actual.getDate();
-    if(day.length==1){
-      day="0"+day;
+    var day = "" + actual.getDate();
+    if (day.length == 1) {
+      day = "0" + day;
     }
-    return actual.getFullYear() + "-" +mon + "-" + day;
+    return actual.getFullYear() + "-" + mon + "-" + day;
 
   }
   weekFecha() {
-    var actual= new Date();
+    var actual = new Date();
     actual.setDate(actual.getDate() - 7);
-    var mon= ""+(actual.getMonth() + 1);
-    if(mon.length==1){
-      mon="0"+mon;
+    var mon = "" + (actual.getMonth() + 1);
+    if (mon.length == 1) {
+      mon = "0" + mon;
     }
-    var day= ""+actual.getDate();
-    if(day.length==1){
-      day="0"+day;
+    var day = "" + actual.getDate();
+    if (day.length == 1) {
+      day = "0" + day;
     }
-    return actual.getFullYear() + "-" +mon + "-" + day;
+    return actual.getFullYear() + "-" + mon + "-" + day;
 
   }
-  
+
   format2(fecha: String) {
     var cadena = fecha.substring(0, fecha.indexOf("T"));
     return cadena;
   }
 
   moothFecha() {
-    var actual= new Date();
+    var actual = new Date();
     actual.setDate(actual.getDate() - 30);
-    var mon= ""+(actual.getMonth() + 1);
-    if(mon.length==1){
-      mon="0"+mon;
+    var mon = "" + (actual.getMonth() + 1);
+    if (mon.length == 1) {
+      mon = "0" + mon;
     }
-    var day= ""+actual.getDate();
-    if(day.length==1){
-      day="0"+day;
+    var day = "" + actual.getDate();
+    if (day.length == 1) {
+      day = "0" + day;
     }
-    return actual.getFullYear() + "-" +mon + "-" + day;
+    return actual.getFullYear() + "-" + mon + "-" + day;
 
   }
 
-  clickEvaluar(opcion:number) {
-    this.inicioFecha="";
-    this.finalFecha="";
+  clickEvaluar(opcion: number) {
+    this.inicioFecha = "";
+    this.finalFecha = "";
     const id = this.utilsCls.getIdPersona();
     this.loaderB = true;
     this.loaderSearch = true;
@@ -173,35 +173,35 @@ public  finalFecha:String ;
       id_persona: id,
       estatus: this.lstFiltroEstatus
     };
-    if(opcion==1){
-      pedidosNegocios.fecha_inicio =this.dayFecha();
+    if (opcion == 1) {
+      pedidosNegocios.fecha_inicio = this.dayFecha();
       pedidosNegocios.fecha_final = this.dayFecha();
     }
-    if(opcion==2){
-      pedidosNegocios.fecha_inicio =this.weekFecha();
+    if (opcion == 2) {
+      pedidosNegocios.fecha_inicio = this.weekFecha();
       pedidosNegocios.fecha_final = this.dayFecha();
     }
-    if(opcion==3){
-      pedidosNegocios.fecha_inicio =this.moothFecha();
+    if (opcion == 3) {
+      pedidosNegocios.fecha_inicio = this.moothFecha();
       pedidosNegocios.fecha_final = this.dayFecha();
     }
     this.pedidosServicios
-    .pedidosNegocios2(pedidosNegocios)
-    .subscribe(
-      (res) => {
-        //this.loader = false;
-        this.listaNegocioPedididos = res.data;
-        this.loaderB = false;
-        this.loaderSearch = false;
-      },
-      (error) => {
-        this.loaderB = false;
-        this.loaderSearch = false;
-        //this.loader = false;
-      }
-    );
+      .pedidosNegocios2(pedidosNegocios)
+      .subscribe(
+        (res) => {
+          //this.loader = false;
+          this.listaNegocioPedididos = res.data;
+          this.loaderB = false;
+          this.loaderSearch = false;
+        },
+        (error) => {
+          this.loaderB = false;
+          this.loaderSearch = false;
+          //this.loader = false;
+        }
+      );
   }
-  fechasRengo(){
+  fechasRengo() {
     const id = this.utilsCls.getIdPersona();
     this.loaderB = true;
     this.loaderSearch = true;
@@ -210,23 +210,23 @@ public  finalFecha:String ;
       estatus: this.lstFiltroEstatus
     };
 
-    pedidosNegocios.fecha_inicio =this.format2(this.inicioFecha);
+    pedidosNegocios.fecha_inicio = this.format2(this.inicioFecha);
     pedidosNegocios.fecha_final = this.format2(this.finalFecha);
     this.pedidosServicios
-    .pedidosNegocios2(pedidosNegocios)
-    .subscribe(
-      (res) => {
-        //this.loader = false;
-        this.listaNegocioPedididos = res.data;
-        this.loaderB = false;
-        this.loaderSearch = false;
-      },
-      (error) => {
-        this.loaderB = false;
-        this.loaderSearch = false;
-        //this.loader = false;
-      }
-    );
+      .pedidosNegocios2(pedidosNegocios)
+      .subscribe(
+        (res) => {
+          //this.loader = false;
+          this.listaNegocioPedididos = res.data;
+          this.loaderB = false;
+          this.loaderSearch = false;
+        },
+        (error) => {
+          this.loaderB = false;
+          this.loaderSearch = false;
+          //this.loader = false;
+        }
+      );
   }
   buscar() {
     const id = this.utilsCls.getIdPersona();
@@ -305,7 +305,7 @@ public  finalFecha:String ;
   }
 
   regresar() {
-    this.router.navigate(['/tabs/home/perfil'], {
+    this.router.navigate(['/tabs/home'], {
       queryParams: {
         special: true
       }

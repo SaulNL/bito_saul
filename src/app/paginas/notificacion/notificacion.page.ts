@@ -22,7 +22,7 @@ export class NotificacionPage implements OnInit {
     private notificacionService: NotificacionesService,
     private router: Router,
     private modalCtrl: ModalController
-  ) {}
+  ) { }
 
   ngOnInit() {
   }
@@ -38,7 +38,7 @@ export class NotificacionPage implements OnInit {
   obtenerNotificaciones() {
     this.idProveedor = null;
     this.idPersona = null;
-    
+
     if (this.usuario.proveedor) {
       this.idProveedor = this.usuario.proveedor.id_proveedor;
       this.idPersona = this.usuario.proveedor.id_persona;
@@ -57,12 +57,12 @@ export class NotificacionPage implements OnInit {
     }
   }
 
-  servicioNotificaciones(){
+  servicioNotificaciones() {
     this.notificacionService.obtenerNotificaciones(this.idProveedor, this.idPersona).subscribe(
       response => {
-        if (response.code === 200){
+        if (response.code === 200) {
           this.loader = false;
-          
+
           if (response.data.length != this.notificaciones.length) {
             this.obtenerNotificaciones();
           }
@@ -86,6 +86,6 @@ export class NotificacionPage implements OnInit {
 
   cerrar() {
     clearInterval(this.intervalNotificaciones);
-    this.router.navigate(["/tabs/home/perfil"]);
+    this.router.navigate(["/tabs/home"]);
   }
 }

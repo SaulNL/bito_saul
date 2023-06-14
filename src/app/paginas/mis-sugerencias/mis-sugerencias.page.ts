@@ -35,6 +35,7 @@ export class MisSugerenciasPage implements OnInit {
   public loader: boolean;
   public uData: any;
   public listaDias: any[];
+  public msj = 'Cargando';
 
   constructor(
     private RNA: RnaService,
@@ -42,7 +43,7 @@ export class MisSugerenciasPage implements OnInit {
     private createObject: CreateObjects,
     private ruta: Router,
     private notificaciones: ToadNotificacionService,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
   ) {
     this.tagsPromo = []
     this.bgPromo = []
@@ -50,26 +51,60 @@ export class MisSugerenciasPage implements OnInit {
 
   ionViewWillEnter() {
     this.menuCtrl.close();
-  }
-
-  ngOnInit() {
-    this.uData = JSON.parse(localStorage.getItem('u_data'));
     this.obtenerSugerenciasRNA();
   }
 
+  ngOnInit() {
+    this.loader = true
+    this.uData = JSON.parse(localStorage.getItem('u_data'));
+    // this.obtenerSugerenciasRNA();
+  }
+
   obtenerSugerenciasRNA() {
-    console.log("entre en la llamada del servicio")
-    this.RNA.rnaStart(7, 10, 10, 10).then(res => {
-      this.datoss = true;
-      let data = JSON.stringify(res)
-      let json = JSON.parse(data)
-      this.sugerencias = json;
-      this.cantidadPromo = json.promociones.length;
-      this.cantidadProduct = json.productos.length;
-      this.cantidadNego = json.negocios.length;
-      console.log("res de la RNA", json)
-      this.ajustarDatosPromo(json.promociones);
-    })
+    console.log("entre en la llamada del servicio");
+    this.loader = true;
+    this.datoss = false;
+    const timeout = 15000;
+
+    const promise = this.RNA.rnaStart(7, 10, 10, 10);
+
+    const timeoutPromise = new Promise<void>((resolve, reject) => {
+      setTimeout(() => {
+        reject(new Error('Tiempo de espera excedido'));
+      }, timeout);
+    });
+
+    Promise.race([promise, timeoutPromise])
+      .then(res => {
+        this.loader = false;
+        this.datoss = true;
+        let data = JSON.stringify(res);
+        let json = JSON.parse(data);
+        this.sugerencias = json;
+        this.cantidadPromo = json.promociones.length;
+        this.cantidadProduct = json.productos.length;
+        this.cantidadNego = json.negocios.length;
+        console.log("res de la RNA", json);
+        this.ajustarDatosPromo(json.promociones);
+      })
+      .catch(error => {
+        this.loader = false;
+        console.error(error);
+        this.notificaciones.error("😭😭 Lo sentimos No encontramos sugerencias para ti 😭😭")
+        this.ruta.navigateByUrl('/tabs/inicio');
+      });
+    // this.RNA.rnaStart(7, 10, 10, 10).then(res => {
+    //   this.loader = false;
+    //   this.datoss = true;
+    //   let data = JSON.stringify(res)
+    //   let json = JSON.parse(data)
+    //   this.sugerencias = json;
+    //   this.cantidadPromo = json.promociones.length;
+    //   this.cantidadProduct = json.productos.length;
+    //   this.cantidadNego = json.negocios.length;
+    //   console.log("res de la RNA", json)
+    //   this.ajustarDatosPromo(json.promociones);
+    // })
   }
 
   getFirstImage(image) {

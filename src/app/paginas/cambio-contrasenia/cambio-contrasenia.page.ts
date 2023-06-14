@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { PersonaService } from '../../api/persona.service';
 import { LoadingController } from '@ionic/angular';
-import {ToadNotificacionService} from "../../api/toad-notificacion.service";
-import {Router} from "@angular/router";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { Router } from "@angular/router";
 
 
 
@@ -33,43 +33,43 @@ export class CambioContraseniaPage implements OnInit {
     private router: Router
   ) {
     this.user = JSON.parse(localStorage.getItem('u_sistema'));;
-    this.blnIguales =  false;
+    this.blnIguales = false;
     this.loader = false;
   }
 
 
   ngOnInit() {
-  this.iniciarForm();
+    this.iniciarForm();
   }
-  iniciarForm(){
+  iniciarForm() {
     this.formGroup1 = this._formBuilder.group({
       contraseniaActual: ['', Validators.required],
       contraseniaN: ['', Validators.required],
       contraseniaR: ['', Validators.required],
     });
   }
-  contraseniasIguales(){
+  contraseniasIguales() {
     if (this.contraseniaRepit !== undefined) {
       this.blnIguales = (this.contrasenia !== this.contraseniaRepit);
     }
 
     this.blnIgualesPassOriginalNuevo = (this.contraseniaAct !== undefined && this.contraseniaAct !== null
-    && this.contrasenia !== undefined && this.contrasenia !== null
-    && this.contraseniaAct === this.contrasenia);
+      && this.contrasenia !== undefined && this.contrasenia !== null
+      && this.contraseniaAct === this.contrasenia);
   }
   cambiarContrasenia() {
-    if (this.formGroup1.valid){
+    if (this.formGroup1.valid) {
       this.loader = true;
-      const contra = {contaseniaAtual: this.contraseniaAct, newContrasenia: this.contrasenia};
+      const contra = { contaseniaAtual: this.contraseniaAct, newContrasenia: this.contrasenia };
       this.servicioPersona.cambiarContrasenia(this.user.id_usuario_sistema, contra).subscribe(
-        respuesta =>{
-          if (respuesta.code === 200){
+        respuesta => {
+          if (respuesta.code === 200) {
             this.loader = false;
             this.notificaciones.exito('se guardo con éxito');
             this.iniciarForm();
-            this.router.navigate(['/tabs/home/perfil']);
+            this.router.navigate(['/tabs/home']);
           }
-          if (respuesta.code === 402){
+          if (respuesta.code === 402) {
             this.loader = false;
             this.notificaciones.alerta(respuesta.message);
           }

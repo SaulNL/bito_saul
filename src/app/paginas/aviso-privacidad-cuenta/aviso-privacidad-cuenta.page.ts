@@ -22,7 +22,7 @@ import { CreateObjects } from '../../Bitoo/helper/create-object';
 export class AvisoPrivacidadCuentaPage implements OnInit {
   usuario: any;
   public listMotivo: any;
-  public idMotivo:number;
+  public idMotivo: number;
   public termsConditions: boolean;
   public id_motivo: number;
   public idUsuario: number;
@@ -39,14 +39,14 @@ export class AvisoPrivacidadCuentaPage implements OnInit {
     private auth0: Auth0Service,
     private validate: ValidatorData,
     private create: CreateObjects,
-    
-  ) { 
-   
-   
+
+  ) {
+
+
   }
 
   ngOnInit() {
-    
+
     this.obtenerMotivo();
 
     this.sideBarService.change.subscribe(() => {
@@ -59,12 +59,12 @@ export class AvisoPrivacidadCuentaPage implements OnInit {
       this.navctrl.navigateRoot("tabs/inicio");
     }
   }
-  
+
   /**
    * regresa al perfil
    */
   regresar() {
-    this.router.navigate(['/tabs/home/perfil'], {
+    this.router.navigate(['/tabs/home'], {
       queryParams: {
         special: true
       }
@@ -75,22 +75,22 @@ export class AvisoPrivacidadCuentaPage implements OnInit {
    * Inicializa las variables por default
    */
   private init() {
-    this.termsConditions=false;
-    this.idMotivo=null;    
+    this.termsConditions = false;
+    this.idMotivo = null;
   }
 
-   /**
-   * Resetea el formulario 
-   */
+  /**
+  * Resetea el formulario 
+  */
   public backTo(event: NgForm) {
     event.reset();
   }
 
-  
+
   /**
    *  cierra sesion y regresa a negocios
    */
-  cerrarsesion(){
+  cerrarsesion() {
 
     this.closeNotification();
     if (AppSettings.resetToken(this.router)) {
@@ -101,33 +101,33 @@ export class AvisoPrivacidadCuentaPage implements OnInit {
       localStorage.clear();
       this.notification.inicialize();
     }
-    
+
 
   }
   /**
    *  Funcion para eliminar la cuenta
    */
-  eliminarCuenta(form: NgForm){
+  eliminarCuenta(form: NgForm) {
 
     this.id_motivo = form.value.idMotivo;
 
     const usuario_sistema = JSON.parse(localStorage.getItem("u_sistema"));
-    this.idUsuario =usuario_sistema.id_usuario_sistema;
-    
-    this.eliminarCuentaService.eliminarCuenta(this.idUsuario,this.id_motivo)
-   .subscribe(
-      response => {
-        if (response.code === 200 ) {
-          
-          this.cerrarsesion();
-          this.notificaciones.success(response.message);
-          
-        }         
-      },
-      error => {
-        this.notificaciones.error(error);
-       
-      })
+    this.idUsuario = usuario_sistema.id_usuario_sistema;
+
+    this.eliminarCuentaService.eliminarCuenta(this.idUsuario, this.id_motivo)
+      .subscribe(
+        response => {
+          if (response.code === 200) {
+
+            this.cerrarsesion();
+            this.notificaciones.success(response.message);
+
+          }
+        },
+        error => {
+          this.notificaciones.error(error);
+
+        })
 
   }
 
@@ -148,21 +148,21 @@ export class AvisoPrivacidadCuentaPage implements OnInit {
   public disableButtom(formSignUp: NgForm): boolean {
     return (
       formSignUp.invalid ||
-      !this.termsConditions 
+      !this.termsConditions
     );
   }
 
-   /**
-  * Funcion para obtener el  motivo de eliminar cuenta
-  */
+  /**
+ * Funcion para obtener el  motivo de eliminar cuenta
+ */
   public obtenerMotivo() {
-  
+
     this.loader = false;
     this.eliminarCuentaService.motivoEliminarCuenta().subscribe(
       response => {
         if (response.code === 200 && response.data.list_cat_motivos_eliminar_cuenta.length > 0) {
           this.listMotivo = response.data.list_cat_motivos_eliminar_cuenta;
-        } 
+        }
         this.loader = true;
       }, error => {
         this.notificaciones.error(error);
@@ -172,17 +172,17 @@ export class AvisoPrivacidadCuentaPage implements OnInit {
   }
 
 
-   /**
-   * Valida para actualizar el token para las notificaciones en cerrar sesión
-   */
-    private closeNotification() {
-      if (this.validate.isTokenExist()) {
-        this.updateNotification();
-      } else {
-        this.notification.inicialize();
-        this.updateNotification();
-      }
+  /**
+  * Valida para actualizar el token para las notificaciones en cerrar sesión
+  */
+  private closeNotification() {
+    if (this.validate.isTokenExist()) {
+      this.updateNotification();
+    } else {
+      this.notification.inicialize();
+      this.updateNotification();
     }
+  }
 
   /**
   *Actualiza el token para las notificaciones al cerrar sesión
