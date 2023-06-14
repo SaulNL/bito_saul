@@ -43,6 +43,8 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   public distanciaNegocio: string="";
   public promoPublico = false;
   public promoAfil = false;
+  isOpen: boolean = false;
+
   hoy: any;
   public diasArray = [
     { id: 1, dia: "Lunes", horarios: [], hi: null, hf: null },
@@ -351,5 +353,15 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
       this.notificaciones.alerta(respuesta.message);
     }
 
+  }
+
+  verImagen(){
+    this.isOpen = true;
+  }
+
+  cerrarModal(event: MouseEvent) {
+    if (event.target === event.currentTarget) {
+      this.isOpen = false;
+    }
   }
 }

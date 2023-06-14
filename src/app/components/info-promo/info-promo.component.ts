@@ -29,6 +29,7 @@ export class InfoPromoComponent implements OnInit {
   public miLng: any;
   public hoy: any;
   id_cupon_promocion: number;
+  isOpen: boolean = false;
 
   constructor(
     public modalController: ModalController,
@@ -45,6 +46,17 @@ export class InfoPromoComponent implements OnInit {
     this.hoy = new Date();
     this.hoy = this.hoy.getDay() !== 0 ? this.hoy.getDay() : 7;
   }
+
+  verImagen(){
+    this.isOpen = true;
+  }
+
+  cerrarModal(event: MouseEvent) {
+    if (event.target === event.currentTarget) {
+      this.isOpen = false;
+    }
+  }
+
 
   masInformacion(promocion: any) {
     this.router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
