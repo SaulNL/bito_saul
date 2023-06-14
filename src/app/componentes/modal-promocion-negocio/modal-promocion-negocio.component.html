@@ -10,7 +10,14 @@
 </ion-header>
 <ion-content fullscreen>
   <ion-card class="ion-text-center ion-margin">
-    <img [src]="promocionTO.url_imagen_banner" />
+    <div>
+      <div class="contenedorPromocion">
+        <img class="imagePromocion" [src]="promocionTO.url_imagen_banner">
+        <div class="modalPromocion">
+          <button class="botonPromocion" (click)="verImagen()">Ver imagen</button>
+        </div>
+      </div>
+    </div>
 
     <ion-card-content *ngIf="!loader">
       <br>
@@ -280,5 +287,9 @@
                   
     </div>
   </ion-card>
+
+  <div class="modal-overlayPromocion" *ngIf="isOpen" (click)="cerrarModal($event)">
+    <ion-img [src]="promocionTO.url_imagen"></ion-img>
+  </div>
 </ion-content>
         
