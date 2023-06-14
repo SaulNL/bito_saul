@@ -8,11 +8,11 @@ import { SideBarService } from '../../api/busqueda/side-bar-service';
 import { LOCAL_STORAGE_KEY } from '../../utils/localStorageKey';
 import { IPaginacion } from '../../interfaces/IPaginacion';
 import { PaginacionUtils } from '../../utils/paginacion-util';
-import {ToadNotificacionService} from '../../api/toad-notificacion.service';
-import {AfiliacionPlazaModel} from '../../Modelos/AfiliacionPlazaModel';
-import {throwError} from 'rxjs';
-import {PersonaService} from '../../api/persona.service';
-import {UtilsCls} from '../../utils/UtilsCls';
+import { ToadNotificacionService } from '../../api/toad-notificacion.service';
+import { AfiliacionPlazaModel } from '../../Modelos/AfiliacionPlazaModel';
+import { throwError } from 'rxjs';
+import { PersonaService } from '../../api/persona.service';
+import { UtilsCls } from '../../utils/UtilsCls';
 @Component({
   selector: "app-categorias",
   templateUrl: "./categorias.page.html",
@@ -53,7 +53,7 @@ export class CategoriasPage implements OnInit {
   public primeraPagRandom: number;
   public paginaPrevia: number;
   public idTodo: boolean;
-  public  idGiro: number = null;
+  public idGiro: number = null;
   public lstCatTipoGiro: any;
   public listaCategorias: Array<any>;
   public listaCategoriasMostrar: Array<any>;
@@ -92,10 +92,12 @@ export class CategoriasPage implements OnInit {
     if (localStorage.getItem('activarTodos') === 'true') {
       this.banderaVerMas = false;
       this.idTodo = true;
+      console.log(1, this.idTodo)
     } else {
       this.idTodo = false;
+      console.log(2, this.idTodo)
     }
-    this.obtenerCategorias();
+    this.obtenerCategorias(null);
     if (window.innerWidth <= 768) {
       this.imgMobil = true;
     } else {
@@ -112,21 +114,21 @@ export class CategoriasPage implements OnInit {
     }
   }
 
-  obtenerCategorias() {
-    this.busquedaService
-      .obtenerCategorias(this.paginacion.siguientePagina)
-      .subscribe(
-        (response) => {
-          this.listaCategorias.push(...response.data.data);
-          this.listaCategoriasMostrar.push(...response.data.data);
-          this.paginacion = PaginacionUtils.establecerDatosDePaginacion(
-            response.data
-          );
-        },
-        (error) => {
-          alert(error);
-        }
-      );
+  obtenerCategorias(giro) {
+    console.log("paginacion", this.paginacion)
+    this.busquedaService.obtenerCategoriasGiros(giro).subscribe((response) => {
+      this.listaCategorias = response.data
+      console.log("lista:", this.listaCategorias)
+      // this.listaCategorias.push(...response.data.data);
+      // this.listaCategoriasMostrar.push(...response.data.data);
+      // this.paginacion = PaginacionUtils.establecerDatosDePaginacion(
+      //   response.data
+      // );
+    },
+      (error) => {
+        alert(error);
+      }
+    );
   }
 
   seleccionarCategoria(subCategoria) {
@@ -148,7 +150,7 @@ export class CategoriasPage implements OnInit {
     if (
       this.paginacion.totalDePaginasPorConsulta < this.paginacion.totalDePaginas
     ) {
-      this.obtenerCategorias();
+      // this.obtenerCategorias();
       setTimeout(() => {
         evento.target.complete();
       }, 800);
@@ -158,32 +160,37 @@ export class CategoriasPage implements OnInit {
   }
 
   public obtenergiros() {
-    this.principalSercicio.obtenerGiros().subscribe(
-        response => {
-          this.lstCatTipoGiro = response.data;
-          this.lstCatTipoGiro.map(i => {
-            const aux = i.nombre;
-            i.nombreB = aux.replace(' y ', (' y' + '<div></div>'));
-          });
-        },
-        error => {
-          this.notificaciones.error(error);
-        }
+    this.principalSercicio.obtenerGiros().subscribe(response => {
+      console.log(response)
+      this.lstCatTipoGiro = response.data;
+      this.lstCatTipoGiro.map(i => {
+        const aux = i.nombre;
+        i.nombreB = aux.replace(' y ', (' y' + '<div></div>'));
+      });
+    },
+      error => {
+        this.notificaciones.error(error);
+      }
     );
   }
 
-  async buscarByGiro(event, giro) {
+  async buscarByGiro(nombre, giro) {
+    console.log(nombre, giro)
+    this.idTodo = giro == null ? true : false;
+    console.log(3, this.idTodo)
+    this.obtenerCategorias(giro)
     this.filtros = true;
-    this.nombreseleccion = event;
-    this.idTodo = true;
+    this.nombreseleccion = nombre;
+    // this.idTodo = true;
     this.idGiro = giro;
   }
 
   async activar() {
-  this.filtros = false;
-  this.nombreseleccion = '';
-  this.idGiro = 0;
-  this.idTodo = false;
+    this.filtros = false;
+    this.nombreseleccion = '';
+    this.idGiro = 0;
+    this.idTodo = false;
+    console.log(4, this.idTodo)
   }
 
 

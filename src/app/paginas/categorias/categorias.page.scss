@@ -3,38 +3,38 @@
         width: calc(100% + 32px);
     }
 }
-.image-center{ margin:0 auto; }
-small{
+
+.image-center {
+    margin: 0 auto;
+}
+
+small {
     --color: #FF1DBD;
 }
 
-.img-gris{
+.img-gris {
     -webkit-filter: grayscale(1);
     filter: grayscale(1);
 
 }
 
-.todas{
+.todas {
     text-decoration: none;
     color: rgb(48, 47, 47);
     font-size: 12px;
 }
 
-.giro-color{
-    color:  #FF1DBD;
+.giro-color {
+    color: #FF1DBD;
     font-size: 10px;
 }
-ion-slide{
-    width: 4em !important; height: 7em;
+
+ion-slide {
+    width: 4em !important;
+    height: 7em;
 }
 
-.loaderArribaShow{
-    visibility: visible;
-}
-.loaderArribaHide{
-    visibility: hidden;
-}
-.position-num{
+.position-num {
     position: absolute;
     top: 1rem;
     left: 1rem;
@@ -44,6 +44,6 @@ img[id] {
     scroll-margin-top: 70px;
 }
 
-.text-black{
+.text-black {
     color: #000000;
 }
