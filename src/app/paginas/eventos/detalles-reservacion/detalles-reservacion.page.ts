@@ -71,12 +71,9 @@ export class DetallesReservacionPage implements OnInit {
   }
 
   obtenerListaEvento(): void {
-    console.log(this.infoReservacion, 'info');
     this.eventosService.eventoDetalle(this.infoReservacion.id_evento).subscribe(
         res => {
           this.infoEvento = res.data;
-          console.log(this.infoEvento, 'evento');
-          console.log(this.infoEvento[0]?.id_estado, 'municipio');
           this.load_cat_estados();
           this.obtenerNombreMunicipios();
           this.obtenerNombreLocalidades();
@@ -135,7 +132,6 @@ export class DetallesReservacionPage implements OnInit {
   }
 
   reservacion(){
-    console.log(this.infoReservacion, 'infoReservacion');
     this.router.navigate(['/tabs/eventos/generar-reservacion'], { state: { cadena: this.infoReservacion } });
   }
 

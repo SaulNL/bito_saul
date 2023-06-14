@@ -45,7 +45,6 @@ export class GenerarReservacionPage implements OnInit {
 
   ngOnInit() {
     this.cadena = history.state.cadena;
-    console.log(this.cadena, 'cadena');
     const idDetalle = this.cadena.id_evento;
     this.obtenerInfoEvento(idDetalle);
     this.convertirFechaHora();
@@ -70,7 +69,7 @@ export class GenerarReservacionPage implements OnInit {
         colorLight: '#ffffff',
         colorDark: '#000000',
         dotScale: 0.4,
-        width: 190,
+        width: 200,
         height: 200,
         correctLevel: QRCode.CorrectLevel.Q,
         logoBackgroundTransparent: true,

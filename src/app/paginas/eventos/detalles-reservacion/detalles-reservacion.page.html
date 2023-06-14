@@ -49,9 +49,16 @@
       </div>
       <div style="display: flex; align-items: center; margin-bottom: 9px;">
         <ion-label class="titulos">Número de personas:</ion-label>
-        <div class="mostrarDatos">{{infoReservacion.id_persona}}</div>
+        <div class="mostrarDatos">{{infoReservacion.cantidad_persona}}</div>
       </div>
+
       <div *ngIf="infoReservacion.generar_reservacion === 0" style="display: flex; justify-content: center; align-items: center">
+        <div class="mensajeReservacion">
+          <strong>En espera que confirmen tu reservación</strong>
+        </div>
+      </div>
+
+      <div *ngIf="infoReservacion.generar_reservacion === 1" style="display: flex; justify-content: center; align-items: center">
         <ion-button class="bg-naranja" (click)="reservacion()">
           Descargar reservación
         </ion-button>
