@@ -1,7 +1,12 @@
 <ion-menu side="start" menuId="menuInicio" contentId="main-content">
   <ion-header>
     <ion-toolbar class="bgToolbar">
-      <ion-title>Menu</ion-title>
+      <div class="menuTitle">
+        <img src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/LOGOTINBITOOCIRCULAR.png"
+          alt="logoBitoo">
+        <ion-title *ngIf="logeado">Hola {{nombreUsuario}} </ion-title>
+        <ion-title *ngIf="!logeado">Hola <br><span>Te recomiendo iniciar sesión</span> </ion-title>
+      </div>
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">

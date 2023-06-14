@@ -214,7 +214,7 @@ export class DatosComplementariosPage implements OnInit {
         data => {
           if (data.code === 200) {
             this.loader = false;
-            this.router.navigate(['/tabs/home/perfil']);
+            this.router.navigate(['/tabs/home']);
             this.notificaciones.exito('Los datos se actualizaron');
             const resultado = this.sesionUtl.actualizarSesion();
             resolve(resultado);
@@ -222,7 +222,7 @@ export class DatosComplementariosPage implements OnInit {
           if (data.code === 402) {
             this.notificaciones.alerta(data.message);
             const resultado = this.sesionUtl.actualizarSesion();
-            this.router.navigate(['/tabs/home/perfil']);
+            this.router.navigate(['/tabs/home']);
             this.loader = false;
             resolve(resultado);
           }

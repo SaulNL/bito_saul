@@ -10,8 +10,8 @@
 </ion-header>
 
 <ion-content>
-
-  <div class="contenedorTodo">
+  <app-spinner [loader]="loader" [message]="msj" *ngIf="loader"></app-spinner>
+  <div *ngIf="!loader" class="contenedorTodo">
     <div *ngIf="masPromo">
       <p>PROMOCIONES</p>
       <div class="promoContainer" *ngIf="datoss">
