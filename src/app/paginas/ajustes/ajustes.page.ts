@@ -37,7 +37,7 @@ export class AjustesPage implements OnInit {
   siNoVistos: boolean;
   versionActualSistema: number;
   releaseDate: string;
-
+  interval: any;
   constructor(
     private util: UtilsCls,
     public actionSheetController: ActionSheetController,
@@ -83,7 +83,10 @@ export class AjustesPage implements OnInit {
     });
 
     this.active.queryParams.subscribe((params) => {
-      this.numNotifiSinLeer = Number(localStorage.getItem('notifSinLeer'));
+
+      this.interval = setInterval(() => {
+        this.numNotifiSinLeer = Number(localStorage.getItem('notifSinLeer'));
+      },1000)
 
       if (params && params.ventas) {
         this.notificacionesVentas();
@@ -102,6 +105,10 @@ export class AjustesPage implements OnInit {
       this.navctrl.navigateRoot("tabs/inicio");
     }
     this.url_user = AppSettings.API_ENDPOINT + "img/user.png";
+  }
+
+  ionViewWillLeave(){
+    clearInterval(this.interval);
   }
 
   private validar(permisos: Array<PermisoModel>) {

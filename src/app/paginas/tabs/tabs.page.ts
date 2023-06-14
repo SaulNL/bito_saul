@@ -243,6 +243,8 @@ export class TabsPage implements OnInit {
         if (response.code === 200) {
           this.misNotificaciones = response.data;
 
+          localStorage.setItem('notificaciones', JSON.stringify(this.misNotificaciones));
+
           this.notificacionesSinAbrir();
         }
       },

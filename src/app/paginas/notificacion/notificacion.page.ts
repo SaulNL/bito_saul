@@ -17,6 +17,7 @@ export class NotificacionPage implements OnInit {
   idProveedor: number;
   notificaciones: Array<NotificacionesModel>;
   intervalNotificaciones: any;
+  interval: any;
 
   constructor(
     private notificacionService: NotificacionesService,
@@ -32,10 +33,19 @@ export class NotificacionPage implements OnInit {
     this.notificaciones = [];
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
 
-    this.obtenerNotificaciones();
+    this.interval = setInterval(() => {
+      this.notificaciones = JSON.parse(localStorage.getItem('notificaciones'))
+      this.loader = false;
+    },2000)
+
+    //this.obtenerNotificaciones();
   }
 
-  obtenerNotificaciones() {
+  ionViewWillLeave(){
+   clearInterval(this.interval);
+  }
+
+  /* obtenerNotificaciones() {
     this.idProveedor = null;
     this.idPersona = null;
 
@@ -72,7 +82,7 @@ export class NotificacionPage implements OnInit {
       error => {
       }
     );
-  }
+  } */
 
   async abrirChat(notificacion) {
     const modal = await this.modalCtrl.create({
