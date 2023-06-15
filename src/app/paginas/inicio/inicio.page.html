@@ -5,7 +5,6 @@
     (buscarEmit)="buscarToolbar($event)" titulo="Inicio"></app-toolbar-busqueda>
 
 </ion-toolbar>
-
 <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
   <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
   <app-boton-top [content]="content" [cordenada]="cordenada" [platform]="isIOS" *ngIf="!isIOS"></app-boton-top>
@@ -277,7 +276,7 @@
     </div> -->
 
     <!-- Se ocupaba cuando redirigia a ver mas negociosX -->
-    <!-- <div *ngIf="banderaVerMas"> 
+    <!-- <div *ngIf="banderaVerMas">
       <ion-infinite-scroll threshold="50px" (ionInfinite)="cargarMasNegocios($event)">
         <ion-infinite-scroll-content
           loadingSp@er="bubbles"

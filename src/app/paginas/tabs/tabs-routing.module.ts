@@ -54,6 +54,10 @@ const routes: Routes = [
         loadChildren: () => import('../actualizar-version/actualizar-version.module').then(m => m.ActualizarVersionPageModule)
       },
       {
+        path: 'pago-realizado/:pedido',
+        loadChildren: () => import('../pasarelas/pago-realizado/pago-realizado.module').then( m => m.PagoRealizadoPageModule)
+      },
+      {
         path: 'eventos',
         loadChildren: () => import('../../paginas/eventos/eventos.module').then(m => m.EventosPageModule)
       },

@@ -8,6 +8,10 @@ const routes: Routes = [
     component: NegocioPage
   },
   {
+    path: 'brokers',
+    loadChildren: () => import('../pasarelas/brokers/brokers.module').then( m => m.BrokersPageModule)
+  },
+  {
     path: 'view-qr',
     loadChildren: () => import('./view-qr/view-qr.module').then( m => m.ViewQrPageModule)
   },

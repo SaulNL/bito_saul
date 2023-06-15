@@ -1,0 +1,59 @@
+<div>
+  <img width="50"  src="https://ps.w.org/woocommerce-mercadopago/assets/icon-256x256.png?rev=2653727">
+</div>
+<div *ngIf="!tokenGuardado; else editar" style="background: white !important;">
+  <ion-row *ngIf="loader;else body">
+    <ion-col class="ion-text-center">
+      <ion-spinner></ion-spinner>
+    </ion-col>
+  </ion-row>
+  <ng-template #body>
+    <ion-list class="my-ion-list">
+      <ion-row>
+        <ion-col>
+          <span style="font-size: small" class="">Para activar los pagos en linea por medio de Mercado pago, es necesario que registre en nuestra plataforma el Access token de su cuenta, presione aquí para conocer como obtenerla *</span>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item fill="solid">
+            <ion-label position="floating">Accesstoken</ion-label>
+            <ion-input name="token" [(ngModel)]="accessToken"  [clearInput] = "true"  ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-button expand="block" (click)="guardarToken()">Guardar</ion-button>
+          <ion-button expand="block" *ngIf="tokenGuardado === false && datosGuardados.idNegocioBrokers !== null"  (click)="tokenGuardado = true">
+            Cancelar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+  </ng-template>
+
+</div>
+<ng-template #editar>
+  <div  style="background: white !important;" class="ion-text-center">
+      <ion-list class="my-ion-list">
+        <ion-row class="mt-5">
+          <ion-col>
+            <ion-icon class="icono-check" name="checkmark-circle-outline"></ion-icon>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            Ya cuentas con un token configurado
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-button class="mt-5" expand="block" (click)="tokenGuardado = false">Cambiar</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+  </div>
+</ng-template>
+
