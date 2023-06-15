@@ -24,7 +24,7 @@ export class PasarelasService {
         this.url + 'api/brokers/mercadoPago/agregarAT', body,
          AppSettings.getHeadersToken()
     ).then( r => {
-      return r.data;
+      return JSON.parse(r.data);
     }));
   }
 

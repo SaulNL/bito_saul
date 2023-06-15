@@ -215,7 +215,4 @@ export class CardNegocioPage implements OnInit {
 
   }
 
-  irBrokers() {
-    this.router.navigate(['/tabs/home/negocio/brokers'], { queryParams: { idNegocio: this.negocioTO.id_negocio } }).then();
-  }
 }

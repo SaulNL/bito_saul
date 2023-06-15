@@ -1,17 +1,7 @@
-<ion-header>
-
-  <ion-toolbar class="tolbar">
-    <ion-buttons slot="start">
-      <ion-back-button text=""></ion-back-button>
-    </ion-buttons>
-    <ion-title>Mercado Pago</ion-title>
-
-    <ion-buttons *ngIf="tokenGuardado === false && datosGuardados.idNegocioBrokers !== null" slot="end" (click)="tokenGuardado = true">
-      Cancelar
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-<ion-content *ngIf="!tokenGuardado; else editar" style="background: white !important;">
+<div>
+  <img width="50"  src="https://ps.w.org/woocommerce-mercadopago/assets/icon-256x256.png?rev=2653727">
+</div>
+<div *ngIf="!tokenGuardado; else editar" style="background: white !important;">
   <ion-row *ngIf="loader;else body">
     <ion-col class="ion-text-center">
       <ion-spinner></ion-spinner>
@@ -28,21 +18,24 @@
         <ion-col>
           <ion-item fill="solid">
             <ion-label position="floating">Accesstoken</ion-label>
-            <ion-input type="email" [clearInput] = "true"  ></ion-input>
+            <ion-input name="token" [(ngModel)]="accessToken"  [clearInput] = "true"  ></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
           <ion-button expand="block" (click)="guardarToken()">Guardar</ion-button>
+          <ion-button expand="block" *ngIf="tokenGuardado === false && datosGuardados.idNegocioBrokers !== null"  (click)="tokenGuardado = true">
+            Cancelar
+          </ion-button>
         </ion-col>
       </ion-row>
     </ion-list>
   </ng-template>
 
-</ion-content>
+</div>
 <ng-template #editar>
-  <ion-content  style="background: white !important;" class="ion-text-center">
+  <div  style="background: white !important;" class="ion-text-center">
       <ion-list class="my-ion-list">
         <ion-row class="mt-5">
           <ion-col>
@@ -61,6 +54,6 @@
           </ion-col>
         </ion-row>
       </ion-list>
-  </ion-content>
+  </div>
 </ng-template>
 

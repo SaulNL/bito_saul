@@ -9,12 +9,15 @@ import { MercadoPagoPageRoutingModule } from './mercado-pago-routing.module';
 import { MercadoPagoPage } from './mercado-pago.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    MercadoPagoPageRoutingModule
-  ],
-  declarations: [MercadoPagoPage]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        MercadoPagoPageRoutingModule
+    ],
+    exports: [
+        MercadoPagoPage
+    ],
+    declarations: [MercadoPagoPage]
 })
 export class MercadoPagoPageModule {}

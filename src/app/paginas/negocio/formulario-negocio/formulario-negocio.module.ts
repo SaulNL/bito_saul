@@ -12,6 +12,7 @@ import { FormularioNegocioPage } from './formulario-negocio.page';
 import {TabsPageModule} from '../../tabs/tabs.module';
 import {MisProductosServiciosPageModule} from '../mis-productos-servicios/mis-productos-servicios.module';
 import { VigenciaPdfDistintivosComponent } from 'src/app/components/vigencia-pdf-distintivos/vigencia-pdf-distintivos.component';
+import {MercadoPagoPageModule} from '../../pasarelas/mercado-pago/mercado-pago.module';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { VigenciaPdfDistintivosComponent } from 'src/app/components/vigencia-pdf
         FormularioNegocioPageRoutingModule,
         TabsPageModule,
         SpinnerModule,
-        MisProductosServiciosPageModule
+        MisProductosServiciosPageModule,
+        MercadoPagoPageModule
     ],
   declarations: [FormularioNegocioPage, SolicitarCambioUrlComponent, VigenciaPdfDistintivosComponent]
 })

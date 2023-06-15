@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {BrokersPage} from '../brokers/brokers.page';
 import {PasarelasService} from '../../../api/pasarelas/pasarelas.service';
 import {INegocioBrokerAT} from '../../../interfaces/pasarelas/INegocioBrokerAT';
@@ -13,7 +13,7 @@ import {ToadNotificacionService} from '../../../api/toad-notificacion.service';
 })
 export class MercadoPagoPage implements OnInit {
 
-    public idNegocio: string;
+    @Input() public idNegocio: string | null = null;
     public accessToken: string;
     public loaderGuardar: boolean;
 
@@ -21,6 +21,7 @@ export class MercadoPagoPage implements OnInit {
     public tokenGuardado = false;
     public respuesta: any;
     public loader: boolean;
+    public mensaje = '';
 
     constructor(
         private pasarelaServices: PasarelasService,
@@ -33,11 +34,6 @@ export class MercadoPagoPage implements OnInit {
     }
 
     ngOnInit(): void {
-        this.route.queryParams
-            .subscribe(params => {
-                    this.idNegocio = params.idNegocio;
-                }
-            );
         this.obtenerAT();
     }
 
@@ -48,12 +44,17 @@ export class MercadoPagoPage implements OnInit {
 
         this.loaderGuardar = true;
         this.pasarelaServices.guardar(parametro).subscribe(
-            res => {
+            (res) => {
+                const code = res.code;
+                this.mensaje = JSON.stringify(code);
                 if (res.code === 200) {
                     this.tokenGuardado = true;
                     this.notificacionService.exito('Token guardado exitosamente');
                 } else {
-                    this.notificacionService.error(res.message);
+                    this.mensaje = typeof res.code;
+                    res.message.forEach(i => {
+                        this.notificacionService.error(i);
+                    });
                 }
             },
             error => {
@@ -73,6 +74,7 @@ export class MercadoPagoPage implements OnInit {
         this.pasarelaServices.obtenerAT(parametro).subscribe(
             res => {
                 const datos = {} as INegocioBrokerAT;
+                this.mensaje = "siiiiiiiiiiiiiiiii"
                 if (res.data !== null && res.data !== undefined) {
                     datos.idNegocioBrokers = res.data.negocio_broker.id_negocio_brokers;
                     datos.accessToken = res.data.negocio_broker.access_token;
