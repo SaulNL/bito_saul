@@ -14,10 +14,10 @@
   <ion-list *ngIf="!loader">
     <ion-item button detail="false" *ngFor="let item of notificaciones" (click)="abrirChat(item)">
       <ion-avatar slot="start">
-        <ion-img [src]="item.logo_negocio.trim().length === 0 
+        <img [src]="item.logo_negocio.trim().length === 0 
           ? 'https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/Proveedor500.png' 
-          : item.logo_negocio">
-        </ion-img>
+          : item.logo_negocio"/>
+        
       </ion-avatar>
       <ion-label>
         <h2>{{item.nombre_negocio}}</h2>
@@ -25,7 +25,7 @@
       </ion-label>
       <label style="text-align: center;">
         <p class="fecha">{{ item.fecha | date:"dd/MM/yyyy" }}</p>
-        <ion-badge color="danger" mode="ios">
+        <ion-badge color="danger" mode="ios" *ngIf="item.no_leidos > 0">
           <span *ngIf="item.no_leidos <= 99">{{item.no_leidos}}</span>
           <span *ngIf="item.no_leidos > 99">+99</span>
         </ion-badge>

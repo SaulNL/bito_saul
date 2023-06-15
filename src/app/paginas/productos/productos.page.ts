@@ -548,8 +548,10 @@ export class ProductosPage {
     return imagen;
   }
 
-  public regresarTinBitoo() {
+  public regresarBitoo() {
     localStorage.removeItem("org");
+    localStorage.removeItem("byCategorias");
+    localStorage.removeItem("lstFiltro");
     location.reload();
   }
 

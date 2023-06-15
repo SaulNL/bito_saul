@@ -1,0 +1,58 @@
+.contendorR{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  background-image: url(https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/App/FONDO%20PROMOCIONES.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: 1px solid black;
+  /* padding-bottom: 20px; */
+  border-radius: 15px;
+  width: 97vw;
+  text-align: center;
+}
+
+.tituloR{
+  margin: 8px;
+}
+
+.imagenEvento{
+  height: 60vw;
+  width: 80vw;
+  margin-bottom: 4vw;
+  /* padding: 15px; */
+  border-radius: 5px
+}
+
+#qrcode {
+  margin-left: 10vw;
+  width: 70vw !important;
+  height: 70vw !important;
+  background-size: 100% 100%;
+}
+
+ion-chip{
+  --background: #FFF;
+  justify-content: center;
+}
+
+
+.styleQr{
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.qrClass{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60vw !important;
+  height: 62vw !important;
+  background-size: 100% 100%;
+}
+
+.claseQr{
+  height: 50vw;
+  width: 50vw;
+}

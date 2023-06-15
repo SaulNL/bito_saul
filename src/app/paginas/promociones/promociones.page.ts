@@ -1,17 +1,17 @@
-import {AfiliacionPlazaModel} from '../../Modelos/AfiliacionPlazaModel';
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {PromocionesService} from "../../api/promociones.service";
-import {IonContent, LoadingController, Platform} from "@ionic/angular";
-import {FiltrosService} from "../../api/filtros.service";
-import {ProveedorServicioService} from "../../api/proveedor-servicio.service";
-import {ToadNotificacionService} from "../../api/toad-notificacion.service";
-import {ActivatedRoute} from "@angular/router";
+import { AfiliacionPlazaModel } from '../../Modelos/AfiliacionPlazaModel';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { PromocionesService } from "../../api/promociones.service";
+import { IonContent, LoadingController, Platform } from "@ionic/angular";
+import { FiltrosService } from "../../api/filtros.service";
+import { ProveedorServicioService } from "../../api/proveedor-servicio.service";
+import { ToadNotificacionService } from "../../api/toad-notificacion.service";
+import { ActivatedRoute } from "@angular/router";
 import { Router } from "@angular/router";
 import { AlertController, ModalController } from "@ionic/angular";
 /* Modelos */
-import {PromocionesModel} from "../../Modelos/PromocionesModel";
-import {FiltrosModel} from "../../Modelos/FiltrosModel";
-import {UtilsCls} from "../../utils/UtilsCls";
+import { PromocionesModel } from "../../Modelos/PromocionesModel";
+import { FiltrosModel } from "../../Modelos/FiltrosModel";
+import { UtilsCls } from "../../utils/UtilsCls";
 import { ModalLoguearseComponent } from 'src/app/componentes/modal-loguearse/modal-loguearse.component';
 
 @Component({
@@ -23,8 +23,8 @@ export class PromocionesPage implements OnInit {
     @ViewChild(IonContent) content: IonContent;
     private loaderPrincipal: HTMLIonLoadingElement;
     public lstPromociones: Array<PromocionesModel>;
-    public posicionRandom : number=0;
-    public rep:number=0;
+    public posicionRandom: number = 0;
+    public rep: number = 0;
     public anyFiltros: FiltrosModel;
     public loader: boolean = false;
     public Filtros: FiltrosModel;
@@ -43,7 +43,7 @@ export class PromocionesPage implements OnInit {
     public idPersona: number | null;
     public existeSesion: boolean;
     public selectionAP: boolean;
-    public plazaAfiliacionNombre : any;
+    public plazaAfiliacionNombre: any;
     private modal: any;
 
     constructor(
@@ -54,7 +54,7 @@ export class PromocionesPage implements OnInit {
         public _notificacionService: ToadNotificacionService,
         private active: ActivatedRoute,
         private platform: Platform,
-        private utils : UtilsCls,
+        private utils: UtilsCls,
         private router: Router,
         public modalController: ModalController,
         public alertController: AlertController
@@ -82,8 +82,8 @@ export class PromocionesPage implements OnInit {
         // }
         const selected = localStorage.getItem("org");
         if (selected != null) {
-        this.plazaAfiliacionNombre = JSON.parse(
-            String(localStorage.getItem("org")));
+            this.plazaAfiliacionNombre = JSON.parse(
+                String(localStorage.getItem("org")));
         };
         //this.selectionAP = true;
         this.loader = true;
@@ -109,14 +109,13 @@ export class PromocionesPage implements OnInit {
         });
     }
 
-    ionViewWillEnter()
-    {
+    ionViewWillEnter() {
         // if (localStorage.getItem("isRedirected") === "false") {
         //     localStorage.setItem("isRedirected", "true");
         //     location.reload();
         // }
 
-         //En esta funcion se vuelve a inicializar las variables para elimar el reload
+        //En esta funcion se vuelve a inicializar las variables para elimar el reload
         this.posicionRandom = 0;
         this.rep = 0;
         this.cargando = "Cargando";
@@ -141,13 +140,13 @@ export class PromocionesPage implements OnInit {
             this.obtenerPromociones();
         }
     }
-    public aleatorio(a,b) {
-        return Math.round(Math.random()*(b-a)+parseInt(a));
+    public aleatorio(a, b) {
+        return Math.round(Math.random() * (b - a) + parseInt(a));
     }
 
-    public scroll(){         
-        var elem= document.getElementById("imagenCarta")
-        var posicion;               
+    public scroll() {
+        var elem = document.getElementById("imagenCarta")
+        var posicion;
         /*if(elem!=null){
             this.rep++
         }
@@ -158,17 +157,17 @@ export class PromocionesPage implements OnInit {
             }   
             setTimeout(scrolling, 1000);                         
         }*/
-        if (elem!=null){   
-            posicion = elem.getBoundingClientRect();                   
+        if (elem != null) {
+            posicion = elem.getBoundingClientRect();
             //elem.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});             
-            if(posicion.top != 0 && this.rep == 0){
+            if (posicion.top != 0 && this.rep == 0) {
                 this.rep++
-                
+
                 setTimeout(() => {
-                    this.content.scrollToPoint(0,posicion.top)
-                  }, 1000);                                
-            }                                                                                                                                                        
-        }                               
+                    this.content.scrollToPoint(0, posicion.top)
+                }, 1000);
+            }
+        }
     }
     public obtenerPromociones() {
         if (navigator.geolocation && this.anyFiltros.tipoBusqueda === 1) {
@@ -195,21 +194,21 @@ export class PromocionesPage implements OnInit {
                     if (response.code === 402) {
                     }
                     if (response.data !== null) {
-                        this.lstPromociones = response.data;                        
+                        this.lstPromociones = response.data;
                         //console.log("lista promos de promos page"+JSON.stringify(this.lstPromociones));
                         this.loader = false;
-                        this.posicionRandom= this.aleatorio(0,this.lstPromociones.length-1)                                                
+                        this.posicionRandom = this.aleatorio(0, this.lstPromociones.length - 1)
                         // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}                                   
                     } else {
-                        this.lstPromociones = [];  
+                        this.lstPromociones = [];
                     }
                 },
                 () => {
 
-                    this.lstPromociones = [];                  
+                    this.lstPromociones = [];
                 },
                 () => {
-                    window.scrollTo({top: 0, behavior: "smooth"});
+                    window.scrollTo({ top: 0, behavior: "smooth" });
                 }
             );
     }
@@ -256,22 +255,22 @@ export class PromocionesPage implements OnInit {
         );
     }
 
-    public mostrarLoguearse(){
+    public mostrarLoguearse() {
         if (this.existeSesion) {
-        }else{
-            if(this.plazaAfiliacion != null){
-                
-            }else{
-                setTimeout(() =>{
-                    this. mensajeRegistro();
-                  },100)
+        } else {
+            if (this.plazaAfiliacion != null) {
+
+            } else {
+                setTimeout(() => {
+                    this.mensajeRegistro();
+                }, 100)
             }
         }
     }
- 
+
     async mensajeRegistro() {
         const alert = await this.alertController.create({
-          header: 'TinBitoo!',
+          header: 'Bitoo!',
           message: "¿Ya tienes una cuenta?",
             buttons: [
                 {
@@ -291,5 +290,5 @@ export class PromocionesPage implements OnInit {
             ],
         });
         await alert.present();
-      }
+    }
 }

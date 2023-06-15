@@ -1,10 +1,10 @@
 <!--lista Cabezera-->
 <ion-header>
-  <ion-toolbar  class="tolbar">
+  <ion-toolbar class="tolbar">
     <ion-buttons slot="start">
       <ion-button>
-      <ion-menu-button></ion-menu-button>
-    </ion-button>
+        <ion-menu-button menu="menuUsuario"></ion-menu-button>
+      </ion-button>
     </ion-buttons>
     <ion-title>Mis requerimientos de compra</ion-title>
     <ion-buttons slot="end">
@@ -14,10 +14,10 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
- <app-spinner [loader]="loading(loaderSc, loaderSp)" [message]="cargando"></app-spinner>
- <ion-content *ngIf="!loaderSc && !loaderSp" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
-   <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
-   <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+<app-spinner [loader]="loading(loaderSc, loaderSp)" [message]="cargando"></app-spinner>
+<ion-content *ngIf="!loaderSc && !loaderSp" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+  <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
+  <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-card>
@@ -30,16 +30,16 @@
       </ion-chip>
     </div>
     <ion-card-header *ngIf="numeroSolicitudes > 0">
-     <ion-list *ngFor="let solicitud of lstSolicitudes" >
-      <ion-item (click)="seleccionarSolicitud(solicitud)">
-        <img [src]="solicitud.url_imagen" style="border-radius: 100%;width: 35px;height: 35px;margin-right: 5px">
-        <ion-label>{{solicitud.solicitud}}</ion-label>
-        <ion-buttons slot="end">
-          <ion-icon name="chevron-forward-outline"></ion-icon>
-        </ion-buttons>
-      </ion-item>
-    </ion-list>
-  </ion-card-header>
+      <ion-list *ngFor="let solicitud of lstSolicitudes">
+        <ion-item (click)="seleccionarSolicitud(solicitud)">
+          <img [src]="solicitud.url_imagen" style="border-radius: 100%;width: 35px;height: 35px;margin-right: 5px">
+          <ion-label>{{solicitud.solicitud}}</ion-label>
+          <ion-buttons slot="end">
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </ion-buttons>
+        </ion-item>
+      </ion-list>
+    </ion-card-header>
   </ion-card>
   <ion-card>
     <div class="ion-text-center ion-margin-top">
@@ -51,18 +51,18 @@
       </ion-chip>
     </div>
     <ion-card-header *ngIf="numeroPublicadas > 0">
-    <ion-searchbar [placeholder]="textoDeBusqueda" (ionInput)="btnBuscar($event)" [(ngModel)]="filtro" type="text"></ion-searchbar>
-    <br>
-    <ion-list *ngFor="let soliPubli of lstSolicitudesPublicadas; index as is">
-      <ion-item (click)="selecAdminPublicada(soliPubli)">
-      <img src="{{soliPubli.url_imagen}}" style="width:8vw; margin: 5px;">
-      <ion-label>{{soliPubli.solicitud}}</ion-label>
-      <ion-buttons slot="end">
-        <ion-icon name="chevron-forward-outline"></ion-icon>
-      </ion-buttons>
-    </ion-item>
-    </ion-list>
-  </ion-card-header>
+      <ion-searchbar [placeholder]="textoDeBusqueda" (ionInput)="btnBuscar($event)" [(ngModel)]="filtro"
+        type="text"></ion-searchbar>
+      <br>
+      <ion-list *ngFor="let soliPubli of lstSolicitudesPublicadas; index as is">
+        <ion-item (click)="selecAdminPublicada(soliPubli)">
+          <img src="{{soliPubli.url_imagen}}" style="width:8vw; margin: 5px;">
+          <ion-label>{{soliPubli.solicitud}}</ion-label>
+          <ion-buttons slot="end">
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </ion-buttons>
+        </ion-item>
+      </ion-list>
+    </ion-card-header>
   </ion-card>
 </ion-content>
-

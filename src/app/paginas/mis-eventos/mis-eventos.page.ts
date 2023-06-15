@@ -24,6 +24,7 @@ export class MisEventosPage implements OnInit {
     this.loader = true;
     let id_proveedor = localStorage.getItem("id_proveedor")
     this.obtenerEventos(id_proveedor);
+    console.log("estas entrando en la vista", this.loader, id_proveedor)
   }
 
   ngOnInit() {
@@ -41,6 +42,7 @@ export class MisEventosPage implements OnInit {
       id_proveedor: id
     }
     this.eventoService.obtenerEvento(body).subscribe(Response => {
+      console.log(Response)
       this.eventos = Response.data
       this.loader = false
     }),
@@ -50,6 +52,7 @@ export class MisEventosPage implements OnInit {
   }
 
   eliminarEvento(idEvento, index) {
+    this.loader = true;
     let body = {
       id_evento: idEvento
     }
@@ -57,6 +60,10 @@ export class MisEventosPage implements OnInit {
     this.eventos.splice(index, 1)
 
     this.eventoService.eliminarEvento(body).subscribe(Response => {
+      if (Response.code == 200) {
+        this.loader = false;
+        this.notificacionService.exito("Se elimino correctamente")
+      }
     }),
       error => {
         this.notificacionService.error(error);

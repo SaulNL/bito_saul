@@ -43,7 +43,7 @@ const routes: Routes = [
       },
       {
         path: 'home',
-        loadChildren: () => import('../home/dashboard/dashboard.module').then(m => m.DashboardPageModule)
+        loadChildren: () => import('./../ajustes/ajustes.module').then(m => m.AjustesPageModule), canActivate: [AuthGuardService]
       },
       {
         path: 'login',
@@ -58,12 +58,16 @@ const routes: Routes = [
         loadChildren: () => import('../pasarelas/pago-realizado/pago-realizado.module').then( m => m.PagoRealizadoPageModule)
       },
       {
+        path: 'eventos',
+        loadChildren: () => import('../../paginas/eventos/eventos.module').then(m => m.EventosPageModule)
+      },
+      {
         path: 'mis-eventos',
         loadChildren: () => import('../mis-eventos/mis-eventos.module').then(m => m.MisEventosPageModule)
       },
       {
         path: 'mis-sugerencias',
-        loadChildren: () => import('../../paginas/mis-sugerencias/mis-sugerencias.module').then(m => m.MisSugerenciasModule)
+        loadChildren: () => import('../mis-sugerencias/mis-sugerencias.module').then(m => m.MisSugerenciasModule)
       },
       {
         path: 'notificaciones',

@@ -2,62 +2,86 @@
   <ion-toolbar class="tol-bar">
     <ion-title>Sugerencias</ion-title>
     <ion-buttons slot="start">
-      <ion-button id="btnRegresar" routerLink="inicio">
+      <ion-button id="btnRegresar" [routerLink]="['/tabs/inicio']">
         <ion-icon name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content fullscreen>
-  <div *ngFor="let cat of listaVerMas; index as a">
-    <div class="container-1">
-      <h2 id="ancla{{a}}">{{cat.nombre}}</h2>
-      <br>
-    </div>
-    <div class="container-2">
-      <ion-card *ngFor="let proveedor of cat.negocios">
-        <div>
-          <img *ngIf="proveedor.tienepromociones == 1"
-               (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)"
-               style="position: absolute; width: 170px; cursor: pointer;"
-               src="../../../assets/images/promo/etiqueta_promo.png">
-          <div class="logo-negocio">
-            <img (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)" loading="lazy"
-                 [src]="proveedor.url_logo !== null ? proveedor.url_logo : 'https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg'"
-                 alt="Falla al cargar la imagen">
-          </div>
-          <div *ngIf="idNegocio===proveedor.id_negocio" class="ion-justify-content-center dots">
-            <ion-spinner name="dots" style="margin: -10px 0px 0px 0px;" class="spinner-color"></ion-spinner>
-          </div>
-        </div>
-        <div class="header-card" *ngIf="proveedor.giro !== null">
-          <div class="tag-giro">{{proveedor.giro }}</div>
-        </div>
 
-        <div class="body-card">
-          <div>
-                  <span
-                          [ngClass]="proveedor.abierto == 'ABIERTO' ? 'tag tag-green': 'tag tag-red'">{{proveedor.abierto}}</span>
-
-            <app-dar-like-negocio [negocio]="proveedor" [usuario]="user" [mostrarLike]="existeSesion">
-            </app-dar-like-negocio>
-          </div>
-          <div>
-            <ion-card-title> {{proveedor.nombre_corto != "" ? proveedor.nombre_corto :
-                    proveedor.nombre_comercial}}</ion-card-title>
-          </div>
-          <div class="distintivos">
-            <img *ngIf="proveedor.verificado === 1" class="distintivoIcon" src="assets/icon/certificado_icon.svg"
-                 matTooltip="Este negocio está verificado por Bitoo">
-            <div class="distintivo"
-                 *ngFor="let distintivo of proveedor.distintivos.slice(0, proveedor.verificado === 1 ? 3 : 4); index as i">
-              <img class="distintivoIcon"
-                   [src]="distintivo.icon">
+<ion-content>
+  <app-spinner [loader]="loader" [message]="msj" *ngIf="loader"></app-spinner>
+  <div *ngIf="!loader" class="contenedorTodo">
+    <div *ngIf="masPromo">
+      <p>PROMOCIONES</p>
+      <div class="promoContainer" *ngIf="datoss">
+        <div class="promoCard" *ngFor="let promocion of sugerencias.promociones.slice(0, promoCantidad); let i = index"
+          (click)="crearModalPromocion(promocion)">
+          <div class="bodyPromo">
+            <div class="nombreNegocio">{{promocion.nombre_comercial}}</div>
+            <img class="imgPromo" src="{{promocion.url_imagen}}" alt="UnaImagen">
+            <div class="tagsPromo"><span>{{promocion.promocion}}</span></div>
+            <div class="tipoPromo">{{promocion.tipo_promocion}}</div>
+            <div class="tituloPromo"><span>{{this.tagsPromo[i]}}</span></div>
+            <div style="display: flex; justify-content: center;">
+              <div class="promoEstado"
+                [style.background-color]="promocion.abierto === 'ABIERTO' ? '#2aac09d5' : '#e11212c7'">
+                {{promocion.abierto}}</div>
             </div>
           </div>
         </div>
-      </ion-card>
+      </div>
+      <ion-button *ngIf="cantidadPromo > 4" expand="block" shape="round" color="medium" (click)="verMas(1)">
+        <span *ngIf="masMenos">Ver mas promociones</span>
+        <span *ngIf="!masMenos">Ver menos promociones</span>
+      </ion-button>
     </div>
+
+    <div *ngIf="masProductos">
+      <p>PRODUCTOS Y SERVICIOS</p>
+      <div class="productsContainer" *ngIf="datoss">
+        <div class="productCard" (click)="CrearModalProducto(product)"
+          *ngFor="let product of sugerencias.productos.slice(0, productCantidad); let i = index">
+          <div class="bodyPromo">
+            <div class="nombreNegocio">{{product.negocio.nombre}}</div>
+            <img class="imgPromo" [src]="getFirstImage(product.imagen)" alt="UnaImagen">
+            <div class="tagsPromo"><span>{{product.nombre}}</span></div>
+            <div class="productDescription"><span>{{product.descripcion}}</span></div>
+            <div class="productPrecio">$ {{product.precio}}</div>
+          </div>
+        </div>
+      </div>
+      <ion-button *ngIf="cantidadProduct > 4" expand="block" shape="round" color="medium" (click)="verMas(2)">
+        <span *ngIf="masMenos">Ver mas productos</span>
+        <span *ngIf="!masMenos">Ver menos productos</span>
+      </ion-button>
+    </div>
+
+    <div *ngIf="masNegocios">
+      <p>NEGOCIOS</p>
+      <div class="promoContainer" *ngIf="datoss">
+        <div class="promoCard" (click)="abrirNego(negocio.url_negocio)"
+          *ngFor="let negocio of sugerencias.negocios.slice(0, negoCantidad); let i = index">
+          <div class="bodyPromo">
+            <div class="nombreNegocio">{{negocio.nombre_corto}}</div>
+            <img class="imgPromo" src="{{negocio.url_logo}}" alt="UnaImagen">
+            <div class="tagsPromo"><span>{{negocio.giro}}</span></div>
+            <!-- <div class="tipoPromo">{{negocio.tipo_promocion}}</div> -->
+            <div class="tituloPromo"><span>{{negocio.descripcion}}</span></div>
+            <div style="display: flex; justify-content: center; margin-top: 15px;">
+              <div class="promoEstado"
+                [style.background-color]="negocio.abierto.toLowerCase() === 'abierto' ? '#2aac09d5' : '#e11212c7'">
+                {{negocio.abierto}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ion-button *ngIf="cantidadNego > 4" expand="block" shape="round" color="medium" (click)="verMas(3)">
+        <span *ngIf="masMenos">Ver mas negocios</span>
+        <span *ngIf="!masMenos">Ver menos negocios</span>
+      </ion-button>
+    </div>
+
   </div>
 
 </ion-content>

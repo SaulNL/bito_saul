@@ -828,45 +828,28 @@ export class FormularioNegocioPage implements OnInit {
 
   selectDistintivos(event: any) {
     let idDistintivos = event.detail.value;
+    setTimeout(() => {
+      this.distintivosSeleccionados = [];
 
-    if (this.distintivosSeleccionados.length > 0) {
       for (const id of idDistintivos) {
+        let distintivoTodo = this.negocioTO.distintivosTodo.find(dist => dist.id_distintivo === id);
 
-        let distintivo = this.distintivosSeleccionados.find(dist => dist.id_distintivo === id);
+        if (distintivoTodo != undefined) {
+          let distintivo = distintivoTodo.distintivo;
 
-        if (this.distintivosSeleccionados.includes(distintivo)) {
-          //alert("si inculye " + id)
-
-          this.distintivosSeleccionados.forEach((dist, index) => {
-            if (!idDistintivos.includes(dist.id_distintivo)) {
-
-              this.distintivosSeleccionados.splice(index, 1);
-              //alert("no oncluyee elemn " + dist.id_distintivo)
-            }
-          });
-
+          if (!this.distintivosSeleccionados.some(dist => dist.id_distintivo === id)) {
+            this.distintivosSeleccionados.push(distintivo);
+          }
         } else {
+          let distintivoLista = this.lstDistintivos.find(dist => dist.id_distintivo == id);
 
-          //alert("noo inculye " + id)
-
-          let distintivoTodo = this.negocioTO.distintivosTodo.find(dist => dist.id_distintivo === id);
-
-          //7alert("disitintoooooo " + JSON.stringify(distintivoTodo))
-
-          if (distintivoTodo != undefined) {
-            this.distintivosSeleccionados.push(distintivoTodo.distintivo)
-
-          } else {
-            //alert("distintivoListt " + id)
-            let distintivoLista = this.lstDistintivos.find(dist => dist.id_distintivo == id);
-  
-            this.distintivosSeleccionados.push(distintivoLista)
+          if (!this.distintivosSeleccionados.some(dist => dist.id_distintivo === id)) {
+            this.distintivosSeleccionados.push(distintivoLista);
           }
         }
       }
-    }
+    }, 1000)
 
-    //alert(JSON.stringify("seleccionados " + JSON.stringify(this.distintivosSeleccionados)));
   }
 
   /**
@@ -1192,11 +1175,6 @@ export class FormularioNegocioPage implements OnInit {
     }
   }
 
-  guardar2() {
-    //alert(JSON.stringify(this.negocioTO))
-    console.log(JSON.stringify(this.negocioTO))
-  }
-
   guardar(formulario) {
     const formularioInfo = document.getElementById('formNegocio');
     //this.loader = true;
@@ -1242,12 +1220,8 @@ export class FormularioNegocioPage implements OnInit {
           valido = false
         }
         if (valido) {
-          //console.log(this.negocioGuardar.nombre_comercial + ' Y ' + this.nombreAnterior);
-          //console.log(dirActual.calle + ' Y ' + dirAnterior);
           this.negocioGuardar.productos = this.listaProductos;
-          // console.log("Guardar Negocio Clonado" + JSON.stringify(this.negocioGuardar))
-          console.log(JSON.stringify(this.negocioGuardar));
-          /* this.negocioServico.guardar(this.negocioGuardar).subscribe(
+          this.negocioServico.guardar(this.negocioGuardar).subscribe(
             response => {
               if (response.code === 200) {
                 this.notificaciones.exito('Tu negocio se guardo exitosamente');
@@ -1256,16 +1230,13 @@ export class FormularioNegocioPage implements OnInit {
               } else {
                 this.loader = false;
                 this.notificaciones.alerta(JSON.stringify(response.message));
-                alert(JSON.stringify(response));
-                //console.log('HOLA---------' + JSON.stringify(response));
               }
             },
             error => {
               this.notificaciones.error(error);
               this.loader = false;
-              //console.log('ERROR:--------' + JSON.stringify(error));
             }
-          ); */
+          );
         }
       } else {
         valido = true
@@ -1281,7 +1252,6 @@ export class FormularioNegocioPage implements OnInit {
           this.loader = false;
           valido = false
         }
-        //console.log("Verdeeee: "+JSON.stringify(this.negocioGuardar.perfiles_caracteristicas))
         if (this.negocioTO.perfiles_caracteristicas < 1) {
           this.nextTab('informacion');
           this.notificaciones.error('Debe agregar un plan de suscripción');
@@ -1289,16 +1259,13 @@ export class FormularioNegocioPage implements OnInit {
           valido = false
         }
         if (valido) {
-          // console.log("Guardar Negocio Nuevo o Editado" + JSON.stringify(this.negocioGuardar))
           this.negocioServico.guardar(this.negocioGuardar).subscribe(
             response => {
               if (response.code === 200) {
                 this.notificaciones.exito('Tu negocio se guardo exitosamente');
-                // console.log('Guardar Negocio nuevo o editar' + JSON.stringify(this.negocioGuardar));
                 this.loader = false;
                 this.router.navigate(['/tabs/home/negocio'], { queryParams: { special: true } });
               } else {
-                //console.log('sssss' + JSON.stringify(this.negocioGuardar));
                 this.loader = false;
                 this.notificaciones.alerta(response.message);
               }
@@ -1344,7 +1311,33 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.otra_subcategoria = '';
     this.negocioGuardar.organizaciones = this.negocioTO.organizaciones;
     this.negocioGuardar.plazas = this.negocioTO.plazas;
-    this.negocioGuardar.distintivos = this.negocioTO.distintivos;
+
+    this.negocioGuardar.distintivos = [];
+
+    this.distintivosSeleccionados.forEach(element => {
+      let {id_distintivo, fc_vencimiento, url_comprobante_vigencia, archivo} = element;
+
+      let distintivo = {};
+
+      let date = new Date(fc_vencimiento);
+      fc_vencimiento = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+
+      if (archivo === undefined) {
+        distintivo = {
+          id: id_distintivo,
+          fecha_vencimiento: fc_vencimiento,
+          url_archivo: url_comprobante_vigencia
+        }
+      } else {
+        distintivo = {
+          id: id_distintivo,
+          fecha_vencimiento: fc_vencimiento,
+          archivo
+        }
+      }      
+      this.negocioGuardar.distintivos.push(distintivo)
+    });
+
     this.negocioGuardar.perfiles_caracteristicas = this.negocioTO.perfiles_caracteristicas;
     //console.log('perfiles_caracteristicas' + this.negocioGuardar.perfiles_caracteristicas);
     if (this.cnvn_date === undefined) {

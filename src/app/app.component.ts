@@ -8,7 +8,7 @@ import { ModalController, NavController, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NgZone } from '@angular/core';
 import { NegocioService } from './api/negocio.service';
 import { VistasBitooModel } from 'src/app/Modelos/vistasBitooModel';
@@ -30,6 +30,7 @@ export class AppComponent {
     public device: number;
     public versionActualSistema: number;
     public temporal: DeviceInfoModel;
+    public inicio: boolean;
 
     constructor(
         private platform: Platform,
@@ -45,12 +46,19 @@ export class AppComponent {
         private android: VersionAndroidService,
         private notification: NotificationWithFirebaseService,
         private validate: ValidatorData,
-        private create: CreateObjects
+        private create: CreateObjects,
+        private route: ActivatedRoute
     ) {
         this.initializeApp();
         this.visitasBitooModel = new VistasBitooModel();
         this.versionActualSistema = (this.platform.is('android')) ? AppSettings.VERSION_ANDROID : AppSettings.VERSION_IOS;
         this.device = (this.platform.is('android')) ? AppSettings.ID_DB_PLATFORM_ANDROID : AppSettings.ID_DB_PLATFORM_IOS;
+        this.router.events.subscribe((event) => {
+            if (event instanceof NavigationEnd) {
+                // console.log("url: ", event.url)
+                this.inicio = event.url == "/tabs/home?special=true" || event.url == "/tabs/home/conocenos" || event.url == "/tabs/home" || event.url == "/tabs/home/negocio" || event.url == "/tabs/home/solicitudes" || event.url == "/tabs/home/promociones" || event.url == "/tabs/mis-favoritos" || event.url == "/tabs/home/preferencias" || event.url == "/tabs/mis-eventos" ? true : false;
+            }
+        });
     }
 
     initializeApp() {
@@ -121,7 +129,7 @@ export class AppComponent {
                                 let urlTempP = match.$link.path.slice(1);
                                 const urlPlaza = urlTempP.slice(6);
                                 this.obtenerPlaza(urlPlaza);
-                            } else if(match.$link.path.includes('promocion')) {
+                            } else if (match.$link.path.includes('promocion')) {
                                 this.router.navigateByUrl("/tabs" + match.$link["path"]);
                                 this.modalController.dismiss();
                             } else if(match.$link.path.includes('pago-realizado')) {

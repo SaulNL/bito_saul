@@ -43,9 +43,9 @@
       </ion-button>
     </ion-buttons>
     <ion-buttons *ngIf="selectionAP">
-      <ion-chip (click)="regresarTinBitoo()" color="danger">
+      <ion-chip (click)="regresarBitoo()" color="danger">
         <ion-icon name="log-out-outline"></ion-icon>
-        <ion-label>Volver a Tinbitoo</ion-label>
+        <ion-label>Volver a Bitoo</ion-label>
       </ion-chip>
     </ion-buttons>
     <ion-buttons slot="end" *ngIf="!filtroActivo">
@@ -92,8 +92,7 @@
         <ion-badge color="medium">{{producto.ubicacion !=null ? producto.ubicacion.nombre_localidad:'Sin ubicación'}}
         </ion-badge>
       </ion-label>
-      <app-dar-like-producto [producto]="producto" [usuario]="user"
-        [mostrarLike]="existeSesion"></app-dar-like-producto>
+      <app-dar-like-producto [producto]="producto" [usuario]="user" [mostrarLike]="existeSesion"></app-dar-like-producto>
     </ion-item>
   </ion-list>
   <ion-grid *ngIf="lstProductos.length === 0 && selectionAP === true">

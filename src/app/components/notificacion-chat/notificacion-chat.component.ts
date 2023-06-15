@@ -1,6 +1,6 @@
 import { Router } from "@angular/router";
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
-import { IonContent, ModalController } from "@ionic/angular";
+import { IonContent, ModalController, ToastController } from "@ionic/angular";
 import { NotificacionesService } from "../../api/usuario/notificaciones.service";
 
 @Component({
@@ -23,6 +23,7 @@ export class NotificacionChatComponent implements OnInit {
 
   constructor(
     private service: NotificacionesService,
+    private toastController: ToastController,
     private modalCtrl: ModalController,
     private router: Router
   ) {}
@@ -49,9 +50,11 @@ export class NotificacionChatComponent implements OnInit {
     if (this.loader) {
       this.servicioMensajes();
     } else {
+      clearInterval(this.interval);
+
       this.interval = setInterval(() => {
         this.servicioMensajes();
-      }, 1000);
+      }, 1500);
     }
     this.scrollToBottom();
   }
@@ -84,17 +87,20 @@ export class NotificacionChatComponent implements OnInit {
     };
 
     this.mensajeEnviar = "";
-    //this.pushMensaje(nuevoMensaje);
+    this.toastEnviarMsj();
     this.service.guardarMensajeNotificacion(nuevoMensaje);
   }
 
-  pushMensaje(msg: any) {
-    msg.remitente = 0;
+  async toastEnviarMsj() {
+    
+    const toast = await this.toastController.create({
+      message: 'Enviando mensaje...',
+      duration: 1500,
+      position: 'bottom',
+      cssClass: 'toastChat'
+    });
 
-    if (msg.id_persona_envia === this.idRecibe || msg.id_negocio_envia === this.idRecibe) {
-      this.mensajes.push(msg);
-    } 
-    this.scrollToBottom();
+    await toast.present();
   }
 
   scrollToBottom() {
@@ -106,8 +112,8 @@ export class NotificacionChatComponent implements OnInit {
   }
 
   cerrarModal() {
+    clearInterval(this.interval);
     this.modalCtrl.dismiss();
-    clearInterval(this.interval)
   }
 
   infoNegocio() {

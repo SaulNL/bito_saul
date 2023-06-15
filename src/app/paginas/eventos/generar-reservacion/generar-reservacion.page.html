@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title>Reservación</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="regresar()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
+<ion-content *ngIf="loaderReservaciones">
+
+
+  <div style="display: flex; justify-content: center; align-items: center; margin-top: 5px">
+    <ion-button (click)="descargar()" class="bg-naranja">
+      <ion-spinner *ngIf="loaderCupon" name="bubbles"></ion-spinner>
+      <span>{{loaderCupon ? 'Generando QR..' : 'Descargar reservación'}}</span>
+    </ion-button>
+  </div>
+
+  <div style="display: flex; justify-content: center; margin-top: 5px">
+    <div class="contendorR">
+
+      <h1 style="color: #FFF; margin-top: 8vw; margin-bottom: 1vw;">EVENTO</h1>
+
+      <p style="color: #FFF; margin-bottom: 6vw">{{infoEvento[0]?.evento}}</p>
+
+      <img [src]="infoEvento[0]?.url_imagen" class="imagenEvento">
+
+
+      <ion-chip style="margin-bottom: 2px;">
+        <ion-label>{{usuario}}</ion-label>
+      </ion-chip>
+
+      <div style="display: flex; align-items: center">
+        <p style="color: #FFF;">No. personas:</p>
+        <p style="color: #FFF; margin-left: 2px;">{{cadena.cantidad_persona}}</p>
+      </div>
+
+      <p style="color: #FFF; margin-bottom: 1vw; margin-top: 3px;">Fecha de reservación</p>
+      <p style="color: #FFF; margin-bottom: 2vw; margin-top: 2px;">{{numeroDia}}/{{meses[numeroMes]}}/{{anio}}</p>
+
+      <div #qrcode class="qrClass" ></div>
+
+      <div style="font-size: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 1px; margin-top: 1vw;">
+        <ion-label>*Aplican restricciones*</ion-label>
+      </div>
+
+    </div>
+  </div>
+</ion-content>

@@ -24,7 +24,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { SignInWithApple } from '@ionic-native/sign-in-with-apple/ngx';
-import { LocalNotifications} from '@ionic-native/local-notifications/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { CommonModule } from '@angular/common';
@@ -32,17 +32,23 @@ import { SeleccionarSucripcionComponent } from './components/seleccionar-suscrip
 import { ModalQuienVioRequerimientoComponent } from './components/modal-quien-vio-requerimiento/modal-quien-vio-requerimiento.component';
 import { PopOverVisitsComponent } from './Bitoo/components/pop-over-visits/pop-over-visits.component';
 import { ModalDetalleProductoComponent } from './components/modal-detalle-producto/modal-detalle-producto.component';
-
+import { MenuComponent } from './components/menu/menu.component';
 import { SpinnerModule } from 'src/app/componentes/spinner/spinner.module';
 import { LikeProductModule } from 'src/app/Bitoo/components/like-product/like-product.module';
 import { SliderImagesModule } from 'src/app/Bitoo/module/slider-images.module';
+import { MenuUsuarioComponent } from './components/menu-usuario/menu-usuario.component';
+import { UtilsCls } from './utils/UtilsCls';
+import { Auth0Service } from './api/busqueda/auth0.service';
 
 @NgModule({
-declarations: [AppComponent,SeleccionarSucripcionComponent,ModalQuienVioRequerimientoComponent,PopOverVisitsComponent,ModalDetalleProductoComponent],
+  declarations: [AppComponent, SeleccionarSucripcionComponent, ModalQuienVioRequerimientoComponent, PopOverVisitsComponent, ModalDetalleProductoComponent,
+    MenuComponent,
+    MenuUsuarioComponent
+  ],
   entryComponents: [],
   imports: [SpinnerModule,
     SliderImagesModule,
-    LikeProductModule,CommonModule, BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule],
+    LikeProductModule, CommonModule, BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule],
   providers: [
     LocalNotifications,
     StatusBar,
@@ -59,8 +65,11 @@ declarations: [AppComponent,SeleccionarSucripcionComponent,ModalQuienVioRequerim
     SocialSharing,
     { provide: RouteConfigLoadStart, useClass: IonicRouteStrategy },
     Deeplinks,
-    SignInWithApple
+    SignInWithApple,
+    UtilsCls,
+    Auth0Service
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [MenuComponent]
 })
 export class AppModule { }

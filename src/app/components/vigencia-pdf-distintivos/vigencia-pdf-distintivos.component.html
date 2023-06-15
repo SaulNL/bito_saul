@@ -1,11 +1,10 @@
 <ion-header translucent>
-  <ion-toolbar class="bg-rosa">
+  <ion-toolbar class="tolbar">
     <ion-title>Registrar vigencia</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="cerrarModal()">
-        <ion-icon class="blanco" name="close-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+
+    <ion-button slot="end" (click)="cerrarModal()" fill="clear" class="close">
+      <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -60,10 +59,4 @@
           
     </ion-card-content>
   </ion-card>
-  <div>
-
-    
-    {{distintivo.fc_vencimiento}}
-  
-  </div>
 </ion-content>

@@ -29,80 +29,94 @@ export class InfoPromoComponent implements OnInit {
   public miLng: any;
   public hoy: any;
   id_cupon_promocion: number;
+  isOpen: boolean = false;
 
-  constructor( 
-              public modalController: ModalController, 
-              private router: Router, 
-              private _haversineService: HaversineService,
-              private _promociones: PromocionesService,
-              private notificaciones: ToadNotificacionService,
-              private socialSharing: SocialSharing
-              ) { }
+  constructor(
+    public modalController: ModalController,
+    private router: Router,
+    private _haversineService: HaversineService,
+    private _promociones: PromocionesService,
+    private notificaciones: ToadNotificacionService,
+    private socialSharing: SocialSharing
+  ) { }
 
   ngOnInit() {
+    console.log(this.promocion)
     this.calcularDistancia(this.promocion);
     this.hoy = new Date();
     this.hoy = this.hoy.getDay() !== 0 ? this.hoy.getDay() : 7;
   }
 
+  verImagen(){
+    this.isOpen = true;
+  }
+
+  cerrarModal(event: MouseEvent) {
+    if (event.target === event.currentTarget) {
+      this.isOpen = false;
+    }
+  }
+
+
   masInformacion(promocion: any) {
-      this.router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
-            queryParams: { route: true }});
+    this.router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
+      queryParams: { route: true }
+    });
     this.modalController.dismiss();
   }
 
   private calcularDistancia(promocion: any) {
     navigator.geolocation.getCurrentPosition(posicion => {
-        this.miLat = posicion.coords.latitude;
-        this.miLng = posicion.coords.longitude;
-        this.blnPermisoUbicacion = true;
-        let start = {
-          latitude: this.miLat,
-          longitude: this.miLng
-        }
-        let end = {
-          latitude: promocion.latitud,
-          longitude: promocion.longitud
-        };
-        let dis = this._haversineService.getDistanceInKilometers(start, end);
-        promocion.distanciaNegocio = dis.toFixed(2);
-      },
+      this.miLat = posicion.coords.latitude;
+      this.miLng = posicion.coords.longitude;
+      this.blnPermisoUbicacion = true;
+      let start = {
+        latitude: this.miLat,
+        longitude: this.miLng
+      }
+      let end = {
+        latitude: promocion.latitud,
+        longitude: promocion.longitud
+      };
+      let dis = this._haversineService.getDistanceInKilometers(start, end);
+      promocion.distanciaNegocio = dis.toFixed(2);
+    },
       error => {
         this.blnPermisoUbicacion = false;
       });
   }
 
   async crearModal() {
-    await  this.guardarCupon();
-      const modal = await this.modalController.create({
-        component: ViewQrPromocionComponent,
-        componentProps: {
-          'promocion': this.promocion,
-          'idPersona': this.idPersona,
-          'id_cupon_promocion': this.id_cupon_promocion
-        }
-      });
-  
-      return await modal.present();
-  
-    }
-  
-    async guardarCupon() {
+    await this.guardarCupon();
+    const modal = await this.modalController.create({
+      component: ViewQrPromocionComponent,
+      componentProps: {
+        'promocion': this.promocion,
+        'idPersona': this.idPersona,
+        'id_cupon_promocion': this.id_cupon_promocion
+      }
+    });
 
-      var respuesta = await this._promociones.solicitarCupon(this.promocion.id_promocion, this.idPersona).toPromise();
-      if (respuesta.code === 200) {
-        
-        this.id_cupon_promocion = respuesta.data.id_cupon_promocion
-      }
-      if (respuesta.code === 402) {
-        
-        this.notificaciones.alerta(respuesta.message);
-      }
-  
+    return await modal.present();
+
+  }
+
+  async guardarCupon() {
+
+    var respuesta = await this._promociones.solicitarCupon(this.promocion.id_promocion, this.idPersona).toPromise();
+    if (respuesta.code === 200) {
+
+      this.id_cupon_promocion = respuesta.data.id_cupon_promocion
+    }
+    if (respuesta.code === 402) {
+
+      this.notificaciones.alerta(respuesta.message);
     }
 
-  compartir(promocion){
+  }
+
+  compartir(promocion) {
     let url = AppSettings.URL_FRONT + 'promocion/' + promocion.id_promocion;
-    this.socialSharing.share('😃¡Te recomiendo esta promoción!😉', 'Promoción', promocion.url_imagen, url );
+    this.socialSharing.share('😃¡Te recomiendo esta promoción!😉', 'Promoción', promocion.url_imagen, url);
   }
 }

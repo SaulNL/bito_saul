@@ -19,26 +19,32 @@
   <app-spinner *ngIf="mostrarloaderInicio" [loader]="loaderInicio" [message]="msj"></app-spinner>
   <div *ngIf="!loader">
     <ion-grid>
-      <ion-row>
-        <ion-col class="ion-col" size-md="12">
+      <ion-row style="display: flex;">
+        <ion-col>
           <ion-chip *ngIf="!selectionAP" color="dark" (click)="openPlazasAfiliacionesModal()">
             <small class="text">Destacados</small>
             <ion-icon class="icono" name="caret-down-outline"></ion-icon>
           </ion-chip>
 
-          <ion-chip *ngIf="selectionAP" (click)="regresarTinBitoo()" color="danger">
-            <ion-icon class="icono" name="log-out-outline"></ion-icon>
-            <ion-label><span class="text">Volver a TinBitoo</span></ion-label>
+          <ion-chip *ngIf="selectionAP" (click)="regresarBitoo()" color="danger">
+            <ion-icon name="log-out-outline"></ion-icon>
+            <ion-label><span class="text">Volver a Bitoo</span></ion-label>
           </ion-chip>
         </ion-col>
-        <ion-col class="ion-col-2" size-md="6">
-          <ion-button mode="ios" size="small" class="mapa" shape="round" [disabled]="listaCategorias.length === 0"
-            (click)="abrirModalMapa()">
+        <ion-col>
+          <ion-button mode="ios" class="mapa" shape="round" [disabled]="listaCategorias.length === 0"
+                      (click)="abrirModalMapa()">
             <ion-icon class="icono" name="map-outline"></ion-icon>
-            <small >Mapa</small>
+            <small>Mapa</small>
           </ion-button>
         </ion-col>
-        <ion-col size-md="6">
+        <ion-col>
+          <ion-button mode="ios" class="eventosButton" shape="round" (click)="openEventos()">
+            <small>Eventos</small>
+          </ion-button>
+        </ion-col>
+
+        <ion-col>
           <ion-chip *ngIf="filtroActivo" (click)="borrarFiltrosP()" color="danger">
             <ion-icon class="icono" name="trash-outline" color="danger"></ion-icon>
             <ion-label><span class="text">Borrar Filtros</span></ion-label>
@@ -49,6 +55,7 @@
           </ion-chip>
         </ion-col>
       </ion-row>
+
     </ion-grid>
 
     <ion-grid>
@@ -147,8 +154,9 @@
                   <ion-spinner name="dots" style="margin: -10px 0px 0px 0px;" class="spinner-color"></ion-spinner>
                 </div>
               </div>
-              <div class="header-card" *ngIf="proveedor.giro !== null">
-                <div class="tag-giro">{{proveedor.giro }}</div>
+              <div class="header-card">
+                <ion-card-title> {{proveedor.nombre_corto != "" ? proveedor.nombre_corto :
+                        proveedor.nombre_comercial}}</ion-card-title>
               </div>
 
               <div class="body-card">
@@ -159,13 +167,12 @@
                   <app-dar-like-negocio [negocio]="proveedor" [usuario]="user" [mostrarLike]="existeSesion">
                   </app-dar-like-negocio>
                 </div>
-                <div>
-                  <ion-card-title> {{proveedor.nombre_corto != "" ? proveedor.nombre_corto :
-                    proveedor.nombre_comercial}}</ion-card-title>
+                <div *ngIf="proveedor.giro !== null">
+                  <div class="tag-giro">{{proveedor.giro }}</div>
                 </div>
                 <div class="distintivos" style="--color-selected: #ff1dbd">
                   <img *ngIf="proveedor.verificado === 1" class="distintivoIcon" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/VERIFICACIO%CC%81N.svg"
-                    matTooltip="Este negocio está verificado por TinBitoo">
+                    matTooltip="Este negocio está verificado por Bitoo">
                   <div class="distintivo"
                     *ngFor="let distintivo of proveedor.distintivos.slice(0, proveedor.verificado === 1 ? 3 : 4); index as i">
                     <img class="distintivoIcon" (click)="clickDistintivo(distintivo.nombre, distintivo.descripcion)"

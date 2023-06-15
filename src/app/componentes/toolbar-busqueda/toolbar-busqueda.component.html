@@ -2,21 +2,24 @@
   <ion-toolbar class="tolbar">
     <div style="display: flex">
       <ion-buttons slot="start">
-        <ion-button class="blanco" (click)="verSolicitudes()">
-            <ion-icon name="list-outline">xs</ion-icon>
-        </ion-button>
-    </ion-buttons>
-    <ion-title>{{titulo}}</ion-title>
-    <ion-searchbar debounce="1000" [placeholder]="placeHolder" (keyup.enter)="buscar()"
+
+        <!-- <ion-button (click)="openMenu()">
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button> -->
+        <ion-menu-button menu="menuInicio"></ion-menu-button>
+
+      </ion-buttons>
+      <ion-title>{{titulo}}</ion-title>
+      <ion-searchbar debounce="1000" [placeholder]="placeHolder" (keyup.enter)="buscar()"
         (ngModelChange)="buscarParch($event)" (keypress)="searchItems($event)" [(ngModel)]="strBuscar"
         (ionClear)="limpiar()" inputmode="search"></ion-searchbar>
-    <ion-buttons *ngIf="pescar" slot="end">
+      <ion-buttons *ngIf="pescar" slot="end">
         <ion-button class="blanco" (click)="buscar()">
-            <ion-icon name="search-outline"></ion-icon>
+          <ion-icon name="search-outline"></ion-icon>
         </ion-button>
-    </ion-buttons>
+      </ion-buttons>
 
     </div>
-     
+
   </ion-toolbar>
 </ion-header>

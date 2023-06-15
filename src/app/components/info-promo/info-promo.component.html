@@ -1,11 +1,13 @@
-  <div> 
+  <div>
     <div class="contenedor">
       <img class="image" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/LA%20IMAGEN%20NO%20ESTA%20DISPONIBLE%20700%20X%20700.png" [srcset]="promocion.url_imagen">
       <div class="middle-modal">
-        <button class="boton" (click)="masInformacion(promocion)">Más información</button>
+        <button class="boton" (click)="verImagen()">Ver imagen</button>
+        <!--<button class="boton" (click)="masInformacion(promocion)">Más información</button>-->
       </div>
     </div>
   </div>
+
   <ion-grid>
     <ion-row (click)="masInformacion(promocion)">
       <ion-col class="ion-text-center" >
@@ -54,9 +56,9 @@
           <h2 class="promocion" style="color: grey;">{{ promocion.terminos }}</h2>
         </ion-col>
       </ion-row>
-     
+
       <ion-row >
-     
+
         <ion-col class="ion-text-center">
           <h2 class="sinMargin rosa" *ngFor="let org of promocion.organizaciones ">{{org.nombre}}</h2>
         </ion-col>
@@ -68,7 +70,7 @@
           <h2 class="sinMargin promocion">{{ promocion.promocion }}</h2>
         </ion-col>
       </ion-row>
-    
+
       <ion-row>
         <ion-col class="ion-text-center">
           <h2 class="promocion" style="color: grey;">{{ promocion.terminos }}</h2>
@@ -114,7 +116,7 @@
                     target="_blank">Ir al lugar</a></ion-badge>
                 </ion-col>
                 <ion-col size="12" class="ion-text-center" *ngIf="!blnPermisoUbicacion">
-                  <h2 class="aDefault promocion" matTooltip="TinBitoo no puede obtener tu ubicación. Por favor activa los permisos de ubicación del navegador para poder determinar la distancia a la que se encuentra el negocio">
+                  <h2 class="aDefault promocion" matTooltip="Bitoo no puede obtener tu ubicación. Por favor activa los permisos de ubicación del navegador para poder determinar la distancia a la que se encuentra el negocio">
                       Distancia desconocida
                   </h2>
                </ion-col>
@@ -169,3 +171,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <div class="modal-overlayPromocion" *ngIf="isOpen" (click)="cerrarModal($event)">
+    <ion-img [src]="promocion.url_imagen"></ion-img>
+  </div>

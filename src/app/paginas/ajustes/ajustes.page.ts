@@ -8,7 +8,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UtilsCls } from "../../utils/UtilsCls";
 import { AppSettings } from "../../AppSettings";
-import { ActionSheetController, NavController, Platform } from "@ionic/angular";
+import { ActionSheetController, MenuController, NavController, Platform } from "@ionic/angular";
 import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Auth0Service } from "src/app/api/auth0.service";
 import { PedidosService } from "../../api/pedidos.service";
@@ -37,7 +37,7 @@ export class AjustesPage implements OnInit {
   siNoVistos: boolean;
   versionActualSistema: number;
   releaseDate: string;
-
+  interval: any;
   constructor(
     private util: UtilsCls,
     public actionSheetController: ActionSheetController,
@@ -52,12 +52,12 @@ export class AjustesPage implements OnInit {
     private personaService: PersonaService,
     private notification: NotificationWithFirebaseService,
     private validate: ValidatorData,
-    private create: CreateObjects
+    private create: CreateObjects,
+    private menuCtrl: MenuController
   ) {
     this.siNoVistos = false;
     this.totalNoVistos = 0;
     this.numNotifiSinLeer = 0;
-  
     if (this.util.existSession()) {
       this.usuario = this.auth0.getUserData();
       this.setNewDataBasicUser(this.usuario.id_persona);
@@ -83,12 +83,15 @@ export class AjustesPage implements OnInit {
     });
 
     this.active.queryParams.subscribe((params) => {
+
+      this.interval = setInterval(() => {
+        this.numNotifiSinLeer = Number(localStorage.getItem('notifSinLeer'));
+      },1000)
+
       if (params && params.ventas) {
         this.notificacionesVentas();
       }
     });
-
-    this.numNotifiSinLeer = +localStorage.getItem('notifSinLeer');
 
     this.notificacionesVentas();
     //  this.usuario = this.util.getData();
@@ -102,6 +105,10 @@ export class AjustesPage implements OnInit {
       this.navctrl.navigateRoot("tabs/inicio");
     }
     this.url_user = AppSettings.API_ENDPOINT + "img/user.png";
+  }
+
+  ionViewWillLeave(){
+    clearInterval(this.interval);
   }
 
   private validar(permisos: Array<PermisoModel>) {
@@ -122,21 +129,21 @@ export class AjustesPage implements OnInit {
           text: "Mi Cuenta",
           icon: "person-outline",
           handler: () => {
-            this._router.navigate(["/tabs/home/perfil/datos-basicos"]);
+            this._router.navigate(["/tabs/home/datos-basicos"]);
           },
         },
         {
           text: "Cambiar Contraseña",
           icon: "key-outline",
           handler: () => {
-            this._router.navigate(["/tabs/home/perfil/cambio-contrasenia"]);
+            this._router.navigate(["/tabs/home/cambio-contrasenia"]);
           },
         },
         {
           text: "Datos Complementarios",
           icon: "create-outline",
           handler: () => {
-            this._router.navigate(["/tabs/home/perfil/datos-complementarios"]);
+            this._router.navigate(["/tabs/home/datos-complementarios"]);
           },
         },
         {
@@ -225,6 +232,9 @@ export class AjustesPage implements OnInit {
 
   abrirPaginaNotificaciones() {
     this._router.navigate(["/tabs/notificaciones"]);
+  }
+  openMenu() {
+    this.menuCtrl.open('menuUsuario')
   }
 
 }

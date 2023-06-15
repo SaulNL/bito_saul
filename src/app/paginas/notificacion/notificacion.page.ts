@@ -17,12 +17,13 @@ export class NotificacionPage implements OnInit {
   idProveedor: number;
   notificaciones: Array<NotificacionesModel>;
   intervalNotificaciones: any;
+  interval: any;
 
   constructor(
     private notificacionService: NotificacionesService,
     private router: Router,
     private modalCtrl: ModalController
-  ) {}
+  ) { }
 
   ngOnInit() {
   }
@@ -32,13 +33,22 @@ export class NotificacionPage implements OnInit {
     this.notificaciones = [];
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
 
-    this.obtenerNotificaciones();
+    this.interval = setInterval(() => {
+      this.notificaciones = JSON.parse(localStorage.getItem('notificaciones'))
+      this.loader = false;
+    },2000)
+
+    //this.obtenerNotificaciones();
   }
 
-  obtenerNotificaciones() {
+  ionViewWillLeave(){
+   clearInterval(this.interval);
+  }
+
+  /* obtenerNotificaciones() {
     this.idProveedor = null;
     this.idPersona = null;
-    
+
     if (this.usuario.proveedor) {
       this.idProveedor = this.usuario.proveedor.id_proveedor;
       this.idPersona = this.usuario.proveedor.id_persona;
@@ -49,28 +59,30 @@ export class NotificacionPage implements OnInit {
     if (this.loader) {
       this.servicioNotificaciones();
     } else {
+      clearInterval(this.intervalNotificaciones);
+
       this.intervalNotificaciones = setInterval(() => {
         this.servicioNotificaciones();
-      }, 3000);
+      }, 2000);
     }
   }
 
-  servicioNotificaciones(){
+  servicioNotificaciones() {
     this.notificacionService.obtenerNotificaciones(this.idProveedor, this.idPersona).subscribe(
       response => {
-        if (response.code === 200){
+        if (response.code === 200) {
           this.loader = false;
+
           if (response.data.length != this.notificaciones.length) {
-            this.notificaciones= response.data;
             this.obtenerNotificaciones();
           }
-          
+          this.notificaciones = response.data;
         }
       },
       error => {
       }
     );
-  }
+  } */
 
   async abrirChat(notificacion) {
     const modal = await this.modalCtrl.create({
@@ -84,6 +96,6 @@ export class NotificacionPage implements OnInit {
 
   cerrar() {
     clearInterval(this.intervalNotificaciones);
-    this.router.navigate(["/tabs/home/perfil"]);
+    this.router.navigate(["/tabs/home"]);
   }
 }

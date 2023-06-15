@@ -170,6 +170,11 @@ export class MispromocionesPage implements OnInit {
         this._promociones_service.buscar(this.seleccionTO).subscribe(
             (response) => {
                 this.listaPromoOriginal = response.data;
+                this.listaPromoOriginal.sort((a, b) => {
+                    const fechaA = new Date(a.fecha_inicio_public);
+                    const fechaB = new Date(b.fecha_inicio_public);
+                    return fechaA.getTime() - fechaB.getTime();
+                });
                 //this.listaPromociones = this.listaPromoOriginal.slice(0, 15);
                 this.filtro = "";
                 this.filtroAnuncio="";                
@@ -494,6 +499,9 @@ export class MispromocionesPage implements OnInit {
         }
     }
 
+    mostrarRegistros() {
+        this.mostrarNegocios = this.mostrarNegocios < this.listaPromoOriginal.length ? this.listaPromoOriginal.length : 5;
+    }
 
     public recargar(event: any) {
         setTimeout(() => {

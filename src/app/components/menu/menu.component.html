@@ -1,0 +1,24 @@
+<ion-menu side="start" menuId="menuInicio" contentId="main-content">
+  <ion-header>
+    <ion-toolbar class="bgToolbar">
+      <div class="menuTitle">
+        <img src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/LOGOTINBITOOCIRCULAR.png"
+          alt="logoBitoo">
+        <ion-title *ngIf="logeado">Hola {{nombreUsuario}} </ion-title>
+        <ion-title *ngIf="!logeado">Hola <br><span>Te recomiendo iniciar sesión</span> </ion-title>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-list>
+      <ion-item class="opcion" (click)="openCat()">
+        <ion-icon name="grid"></ion-icon>
+        <ion-label>Categorias</ion-label>
+      </ion-item>
+      <ion-item class="opcion" (click)="openSug()">
+        <ion-icon name="fast-food"></ion-icon>
+        <ion-label>Sugerencias</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>

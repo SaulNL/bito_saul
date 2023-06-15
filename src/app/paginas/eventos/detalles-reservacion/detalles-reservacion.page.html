@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title>Detalles de la reservación</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="regresar()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
+<ion-content *ngIf="loaderReservaciones">
+  <ion-card>
+    <ion-card-content>
+
+      <h1 class="labelEventos">
+        <strong>{{infoReservacion.evento}}</strong>
+      </h1>
+
+      <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 12px; margin-top: 6px;">
+        <img [src]="infoReservacion.url_imagenevento" style="height: 200px; width: 250px;">
+      </div>
+
+      <div style="display: flex; align-items: center; margin-bottom: 9px;">
+        <ion-label class="titulos">Fecha de reservación:</ion-label>
+        <div class="mostrarDatos">{{numeroDia}}/{{meses[numeroMes]}}/{{anio}}</div>
+      </div>
+      <div style="display: flex; align-items: center; margin-bottom: 9px;">
+        <ion-label class="titulos">Ubicación:</ion-label>
+        <div class="mostrarDatos">{{nombreLocalidad}}{{nombreMunicipio}}{{nombreEstado}}</div>
+      </div>
+      <div style="display: flex; align-items: center; margin-bottom: 9px;">
+        <ion-label class="titulos">Tipo de evento:</ion-label>
+        <div class="mostrarDatos">{{infoEvento[0]?.tipo_evento}}</div>
+      </div>
+      <div style="display: flex; align-items: center; margin-bottom: 9px;">
+        <ion-label class="titulos">Número telefonico:</ion-label>
+        <div class="mostrarDatos">{{infoEvento[0]?.telefono}}</div>
+      </div>
+      <div style=" display: flex; align-items: center; margin-bottom: 9px;">
+        <ion-label class="titulos">Método de pago:</ion-label>
+        <div class="mostrarDatos">
+          <ng-container *ngIf="infoEvento[0]?.tipo_pago_transferencia === 1">Transferencia, </ng-container>
+          <ng-container *ngIf="infoEvento[0]?.tipo_pago_tarjeta_credito === 1">Tarjeta de credito, </ng-container>
+          <ng-container *ngIf="infoEvento[0]?.tipo_pago_tarjeta_debito === 1">Tarjeta de debito, </ng-container>
+          <ng-container *ngIf="infoEvento[0]?.tipo_pago_efectivo === 1">Efectivo</ng-container>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; margin-bottom: 9px;">
+        <ion-label class="titulos">Número de personas:</ion-label>
+        <div class="mostrarDatos">{{infoReservacion.cantidad_persona}}</div>
+      </div>
+
+      <div *ngIf="infoReservacion.generar_reservacion === 0" style="display: flex; justify-content: center; align-items: center">
+        <div class="mensajeReservacion">
+          <strong>En espera que confirmen tu reservación</strong>
+        </div>
+      </div>
+
+      <div *ngIf="infoReservacion.generar_reservacion === 1" style="display: flex; justify-content: center; align-items: center">
+        <ion-button class="bg-naranja" (click)="reservacion()">
+          Descargar reservación
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

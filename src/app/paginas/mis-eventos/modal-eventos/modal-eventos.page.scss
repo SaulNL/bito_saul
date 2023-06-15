@@ -122,7 +122,7 @@ button {
 .aso {}
 
 ion-label {
-    width: 60vw !important;
+    width: 80vw !important;
 }
 
 #eventoH1 {
@@ -132,5 +132,6 @@ ion-label {
 
 .bg {
     background-color: antiquewhite;
-    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
 }
