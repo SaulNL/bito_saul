@@ -11,6 +11,7 @@ export class FiltrosModel {
   public idCategoriaNegocio: Array<any>;
   public idEstado: any;
   public idMunicipio: any;
+  public idDistintivo: any;
   public idLocalidad: any;
   public tipoBusqueda: number;
   public idNegocio: number;
@@ -35,7 +36,8 @@ export class FiltrosModel {
     idGiro: number = null,
     abierto: number = null,
     id_persona: number = null,
-    organizacion: number | null = null
+    organizacion: number | null = null,
+    idDistintivo: number | null = null
   ) {
     this.strBuscar = strBuscar;
     this.intEstado = intEstado;
@@ -50,6 +52,7 @@ export class FiltrosModel {
     this.idCategoriaNegocio = idCategoriaNegocio;
     this.idEstado = null;
     this.idMunicipio = null;
+    this.idDistintivo = null;
     this.idLocalidad = null;
     this.abierto = null;
     this.tipoBusqueda = 0;

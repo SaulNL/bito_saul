@@ -61,22 +61,6 @@
                 </ion-col>
             </ion-row>
         </div>
-        <!-- <div *ngFor="let nomCategoria of listaCategorias">
-            <ion-row *ngIf="nomCategoria.nombre === nombreseleccion">
-                <img id="{{nomCategoria.nombre}}" *ngIf="nomCategoria.url_imagen_movil !== null && imgMobil==true"
-                    [src]="nomCategoria.url_imagen_movil" alt="Falla al cargar la imagen">
-                <img id="{{nomCategoria.nombre}}" *ngIf="nomCategoria.url_imagen !== null && imgMobil==false"
-                    [src]="nomCategoria.url_imagen" alt="Falla al cargar la imagen">
-                <ion-col sizeLg="3" sizeXs="6" sizeSm="4" sizeMd="4"
-                    *ngFor="let subCategoria of nomCategoria.categorias" (click)="seleccionarCategoria(subCategoria)">
-                    <ion-badge class="md hydrated position-num">{{subCategoria.cantidad_negocios}}</ion-badge>
-                    <img class="img-card-w" *ngIf="subCategoria.url_imagen !== null"
-                        src="https://ecoevents.blob.core.windows.net/comprandoando/Categor%C3%ADas/Im%C3%A1genes%20Sub%20Categor%C3%ADas/Alimentos%20y%20Bebidas/Fondas%20y%20Cocinas%20Econ%C3%B3micas.png"
-                        [srcset]="subCategoria.url_imagen" alt="Falla al cargar la imagen">
-                    <p style="text-align: center;">{{subCategoria.nombre}}</p>
-                </ion-col>
-            </ion-row>
-        </div> -->
     </ion-grid>
     <!-- <app-infinito-scroll *ngIf="true" (respuesta)="cargarMasPaginas($event)" [activado]="true"
         [msj]="paginacion.mensaje"></app-infinito-scroll> -->
