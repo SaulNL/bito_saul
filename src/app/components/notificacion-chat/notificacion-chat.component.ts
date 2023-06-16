@@ -54,7 +54,7 @@ export class NotificacionChatComponent implements OnInit {
 
       this.interval = setInterval(() => {
         this.servicioMensajes();
-      }, 1500);
+      }, 5000);
     }
     this.scrollToBottom();
   }
@@ -95,7 +95,7 @@ export class NotificacionChatComponent implements OnInit {
     
     const toast = await this.toastController.create({
       message: 'Enviando mensaje...',
-      duration: 1500,
+      duration: 5000,
       position: 'bottom',
       cssClass: 'toastChat'
     });

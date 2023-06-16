@@ -56,10 +56,9 @@ export class CardNegocioPage implements OnInit {
       (response) => {
         this.negocioTO = response.data;
         this.btload = true;
-        //console.log("fun buscarNegocio: ", JSON.stringify(this.negocioTO))
       },
       (error) => {
-
+        console.log(error);
       }
     );
   }
@@ -83,15 +82,15 @@ export class CardNegocioPage implements OnInit {
   }
 
   /*crearSucursal() {
-    const negocio = this.negocioTO;    
-    this.guard.activeForm = true;    
-    
+    const negocio = this.negocioTO;
+    this.guard.activeForm = true;
+
     console.log("card Negocio crearSucursal---------"+JSON.stringify(negocio))
     this.negocioTO = JSON.parse(JSON.stringify(negocio));
     this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
     let all = {
       info: this.negocioTO,
-      pys: this.negocioGuardar, 
+      pys: this.negocioGuardar,
     };
     let navigationExtras = JSON.stringify(all);
     console.log("card Negocio all---------"+navigationExtras)
@@ -215,4 +214,5 @@ export class CardNegocioPage implements OnInit {
         });
 
   }
+
 }

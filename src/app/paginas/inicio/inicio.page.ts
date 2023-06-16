@@ -139,6 +139,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     private platform: Platform,
     public alertController: AlertController,
     private filtrosService:FiltrosService,
+    private router: Router,
   ) {
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
@@ -302,14 +303,14 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.banderaVerMas = false;
     setTimeout(() => {
       this.obtenerPreferencias(this.user.id_persona)
-    }, (4000));    
+    }, (4000));
   }
 
   async obtenerPreferencias(id_persona:number){
     this.filtrosService.obtenerPreferencias(id_persona).subscribe(
       async response => {
           if(response.code==200){
-            var listaPreferencias = response.data.preferencias;    
+            var listaPreferencias = response.data.preferencias;
             if(listaPreferencias.length<1){
               const Toast = Swal.mixin({
                 toast: true,
@@ -321,24 +322,24 @@ export class InicioPage implements OnInit, AfterViewInit {
                 icon: 'info',
                 showDenyButton: false,
                 showCancelButton: true,
-                showConfirmButton: true,  
+                showConfirmButton: true,
                 confirmButtonText:'¡Claro!',
                 cancelButtonText:'Después',
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
               }).then((result) => {
-                if (result.isConfirmed) {          
+                if (result.isConfirmed) {
                   this.ruta.navigate(["/tabs/home/preferencias"]);
                 }else if(result.isDismissed || result.isDenied){
                 }
-              }) 
-            }  
-          }                           
+              })
+            }
+          }
         },
       error => {
       }
     );
-    
+
   }
 
   private load() {
@@ -452,7 +453,7 @@ export class InicioPage implements OnInit, AfterViewInit {
         this.negociosIdMapa();
         this.banderaVerMas == false;
       } else {
-        
+
         this.listaCategorias = respuesta.data.lst_cat_negocios.data
         this.negociosIdMapa();
       }
@@ -557,7 +558,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       var respuesta = await this.principalSercicio
         .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
       this.validarResultadosDeCategorias(respuesta);
-  
+
       const byCategorias2 = localStorage.getItem("filtroactual");
       if (
         byCategorias2 !== null &&
@@ -1009,7 +1010,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     } else {
       this.indice == 0 ? this.verMasNegociosCon = true : this.indice == 1 ? this.verMasNegociosPromo = true : this.verMasNegociosVistos = true;
     }
-    if (ancla == "ancla0") {//Se conservan posiciones estaticas de forma provicional 
+    if (ancla == "ancla0") {//Se conservan posiciones estaticas de forma provicional
       this.content.scrollToPoint(0, 330, 500)
     } if (ancla == "ancla1") {
       this.content.scrollToPoint(0, 1800, 500)

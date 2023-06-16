@@ -21,6 +21,9 @@ import { MsPersonaModel } from 'src/app/Modelos/MsPersonaModel';
 import { CatLocalidadModel } from 'src/app/Modelos/CatLocalidadModel';
 import { PersonaService } from '../../api/persona.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
+import {PasarelasService} from "../../api/pasarelas/pasarelas.service";
+import Swal from "sweetalert2";
+import {IResponse} from "../../interfaces/pasarelas/IResponse";
 
 
 const { Geolocation } = Plugins;
@@ -117,6 +120,8 @@ export class PedidoNegocioComponent implements OnInit {
         private _utils_cls: UtilsCls,
         public getCoordinatesMap: UbicacionMapa,
         public formBuilder: FormBuilder,
+        private pasarelaServicies: PasarelasService
+
     ) {
         this.lat = 19.31905;
         this.numeroMesa = 0;
@@ -174,6 +179,7 @@ export class PedidoNegocioComponent implements OnInit {
             .subscribe((respuesta) => {
                 if (respuesta.code === HttpStatusCode.OK as number) {
                     this.pagos = respuesta.data.list_cat_tipo_pago as Array<IPago>;
+                    this.pagos.push( {id_tipo_pago: 99, nombre: 'Mercado pago', activo : true});
                 } else {
                     this.pagos = new Array<IPago>();
                 }
@@ -439,17 +445,38 @@ export class PedidoNegocioComponent implements OnInit {
     private registrarPedido(pedido: PedidoNegocioModel) {
         const datos = JSON.parse(localStorage.getItem('u_data'));
         const telephoneUsuario = datos.celular;
+
+        const auxPedido = Object.assign({}, pedido);
+
+        if (pedido.idTipoPago === 99){
+            pedido.idTipoPago = 1;
+        }
         this.negocioService.registrarPedido(pedido).subscribe(
             (response) => {
-                if (response.code === 200) {//Validar que el usuario ya haya regisrado su informacion(se queda CARGANDO)
-                    this.enviarSms(telephoneUsuario, this.lista[0].idNegocio);
-                    this.loader = false;
+                if (response.code === 200) {
+                    if (auxPedido.idTipoPago === 99){
+                        this.pedidoOrdenMP(response.data);
+                    }else {
+                        // Validar que el usuario ya haya regisrado su informacion(se queda CARGANDO)
+                        this.enviarSms(telephoneUsuario, this.lista[0].idNegocio);
+                        this.loader = false;
+                    }
                 } else {
                     this.mesajes.error('Ocurrió un error al generar el pedido');
                 }
             }, () => {
                 this.loader = false;
                 this.mesajes.error('Ocurrió un error al generar el pedido');
+            }
+        );
+    }
+
+     pedidoOrdenMP(data){
+        data.type_request = 'mobile';
+        data.type_mobile = this.platform.is('ios') ? 'ios' : 'android';
+        this.pasarelaServicies.pedidoOrdenMP(data).subscribe(
+            response => {
+                window.open(JSON.parse(response).data.init_point);
             }
         );
     }

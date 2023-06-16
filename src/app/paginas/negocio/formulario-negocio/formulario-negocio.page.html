@@ -170,7 +170,7 @@
             </ion-select>
           </ion-item>
           <!-- <div *ngIf="tipoSubCategoria.invalid" class="alert">
-            <div>Seleccione un tipo subcategoria</div> 
+            <div>Seleccione un tipo subcategoria</div>
           </div> -->
           <ion-item>
             <ion-label position="stacked">Descripción del Negocio <span style="color: red">*</span>
@@ -204,8 +204,8 @@
               <ion-label>
                 <small>{{i + 1}}. {{elemento.nombre}}</small>
               </ion-label>
-              
-              <ion-button *ngIf="elemento.requiere_vigencia == 1" class="btn-modal-pdf" mode="ios" size="small" fill="outline" 
+
+              <ion-button *ngIf="elemento.requiere_vigencia == 1" class="btn-modal-pdf" mode="ios" size="small" fill="outline"
               [color]="elemento.fc_vencimiento == null ? 'danger' : 'primary'" (click)="abrirModalPdfVigencia(elemento)">
                 <span *ngIf="elemento.fc_vencimiento == null"> Registrar vigencia</span>
                 <span *ngIf="elemento.fc_vencimiento != null">Editar vigencia</span>
@@ -466,6 +466,9 @@
             <div *ngIf="metodoPago.invalid" class="alert">
               <div>Seleccione el campo métodos de pago</div>
             </div>
+          </ion-card>
+          <ion-card  *ngIf="negocioTO.id_negocio !== null">
+            <app-mercado-pago [idNegocio]="negocioTO.id_negocio"></app-mercado-pago>
           </ion-card>
           <ion-item>
             <ion-label>Los campos con <span style="color: red">*</span>son

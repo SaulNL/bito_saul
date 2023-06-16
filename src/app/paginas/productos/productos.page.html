@@ -1,21 +1,8 @@
-<!-- <ion-toolbar class="tolbar">
-  <div style="display: flex">
-    <ion-buttons slot="start">
-      <ion-button class="blanco" (click)="verSolicitudes()">
-        <ion-icon name="list-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>Productos</ion-title>
-    <app-toolbar-busqueda
-      [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar productos en ' + plazaAfiliacionNombre.nombre : 'Buscar productos' "
-      (buscarEmit)="buscarToolbar($event)"
-    ></app-toolbar-busqueda>
-  </div>
-</ion-toolbar> -->
-
-<app-toolbar-busqueda
+<ion-toolbar class="tolbar">
+  <app-toolbar-busqueda
   [placeHolder]="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined ? 'Buscar productos en ' + plazaAfiliacionNombre.nombre : 'Buscar productos' "
   (buscarEmit)="buscarToolbar($event)" titulo="Productos"></app-toolbar-busqueda>
+</ion-toolbar>
 
 <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
 <ion-content *ngIf="!loader" [fullscreen]="true" [scrollEvents]="true"

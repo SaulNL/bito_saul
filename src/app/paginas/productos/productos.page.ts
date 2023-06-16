@@ -104,7 +104,6 @@ export class ProductosPage {
 
   ngOnInit(): void {
     this.active.queryParams.subscribe((params: Params) => {
-      //console.log("UPdate")
       if (params.byCloseProduct) {
         const product: ProductInterface = JSON.parse(params.byCloseProduct);
         this.updateProduct(product, this.lstProductos);
@@ -215,7 +214,6 @@ export class ProductosPage {
     }
     this.servicioProductos.obtenerIniciales(this.anyFiltros).subscribe(
       (response) => {
-        console.log(response)
         this.lstProductos = response.data.lstProductos;
 
         if (this.lstProductos.length > 0) {
@@ -236,9 +234,7 @@ export class ProductosPage {
 
           this.servicioProductos.obtenerProductos(this.anyFiltros).subscribe(
             response2 => {
-              //console.log("Listado de productos con el filtro: "+JSON.stringify(this.anyFiltros)+"\nLista prod: "+JSON.stringify(response.data.lstProductos))
-              console.log('respuesta2', response2)
-              console.log('posible error', this.anyFiltros)
+
               if (response2.data.lstProductos.length > 0) {
                 this.blnBtnMapa = true;
                 const tempLstProduct = response2.data.lstProductos;
@@ -310,12 +306,10 @@ export class ProductosPage {
     let bandera = true;
     let filtro = new FiltroABCModel();
     const tamanio = this.filtroABC.length;
-    //console.log("Lista de letras + "+this.filtroABC )
     while (bandera) {
       incremento++;
       const pos = Math.round(Math.random() * (tamanio - 0) + 0);
       filtro = this.filtroABC[pos];
-      console.log("filtro:" + JSON.stringify(filtro)/*"letra: "+ filtro.letra+" activo: "+filtro.activo*/)
       let letra = filtro.letra
       let activo = filtro.activo
       if (letra != "Todos" && activo == 1) {
@@ -343,11 +337,9 @@ export class ProductosPage {
    * @author Paola Coba
    */
   public async obtenerProductoPorLetra(filtro: FiltroABCModel) {
-    console.log("filtro por letra buscar: " + JSON.stringify(filtro))
     localStorage.removeItem('lstProductosOriginal');
     this.loader = true;
     let letra = filtro.letra;
-    //console.log("letraxxxxx "+letra)
     if (filtro.id === this.filtroCheckend) {
       this.filtroCheckend = null;
       filtro.letra = "";
@@ -365,9 +357,8 @@ export class ProductosPage {
           (response) => {
             this.lstProductosOriginal = response.data.lstProductos;
             localStorage.setItem('lstProductosOriginal', JSON.stringify(this.lstProductosOriginal));
-            //console.log("Listado de productos con el filtro con letra: "+JSON.stringify(this.anyFiltros)+"\nLista prod: "+JSON.stringify(response.data.lstProductos))
-            //this.obtenerProductoPorLetra(filtro)
             this.obtenerProductosFav();
+
             if (this.lstProductosOriginal.length > 6) {
               this.lstProductos = this.lstProductosOriginal.slice(0, 6);
 
@@ -413,7 +404,7 @@ export class ProductosPage {
   async modalDetalleProducto(producto: ProductoModel) {
     this.loader = true
     var product: ProductInterface = this.createObject.createProduct(producto);
-    //console.log("palabraBuqueda MOdal: "+this.palabraBuqueda)
+
     if (this.palabraBuqueda == "" || this.palabraBuqueda == undefined) {
       this.palabraBuqueda = ""
     }
@@ -457,7 +448,6 @@ export class ProductosPage {
   async buscarToolbar(event) {
     await this.borrarFiltros();
     this.palabraBuqueda = event
-    console.log("palabra", event)
     this.anyFiltros = new FiltrosModel();
     this.anyFiltros.idEstado = 29;
     this.anyFiltros.idTipoNegocio = null;
@@ -470,7 +460,6 @@ export class ProductosPage {
       this.borrarFiltros();
       this.obtenerProductos();
     } else {
-      console.log("anyfiltros", this.anyFiltros)
       this.obtenerProductos();
     }
   }
@@ -487,7 +476,6 @@ export class ProductosPage {
       this.modal.dismiss({
         dismissed: true,
       });
-      console.log("que tiene esto?", res)
       localStorage.setItem('lstFiltro', JSON.stringify(res))
       this.filtroActivo = true;
       this.anyFiltros = res;
