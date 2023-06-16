@@ -151,4 +151,19 @@ export class FiltrosService {
         this.actualizar = true;
         this.change.emit(this.actualizar);
     }
+
+
+    obtenerCatDistintivos(): Observable<any> {
+        const body = JSON.stringify({});
+        this.http.setDataSerializer('utf8');
+        return from(this.http.post(
+            this.url + 'api/catalogo/distintivos/obtenerTodosActivos',
+            body, AppSettings.getHeaders())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
 }

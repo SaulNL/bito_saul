@@ -4,6 +4,7 @@ import { FiltrosModel } from "../../Modelos/FiltrosModel";
 import { Plugins } from '@capacitor/core';
 import { FiltrosService } from "../../api/filtros.service";
 import { CatTipoNegocioModel } from 'src/app/Modelos/CatTipoNegocioModel';
+import {CatDistintivosModel} from '../../Modelos/CatDistintivosModel';
 
 const { Geolocation } = Plugins;
 declare var google: any;
@@ -42,8 +43,9 @@ export class FiltrosBusquedaComponent implements OnInit {
     tipoNegocio: number;
     listaTipoNegocio: any;
     abierto: string = 'abiertos/cerrados';
-
-
+    public lstDistintivos: Array<CatDistintivosModel>;
+    public distintivo: any;
+    distintivoAux: any;
 
     constructor(
         private modalCtrl: ModalController,
@@ -93,6 +95,7 @@ export class FiltrosBusquedaComponent implements OnInit {
         this.miUbicacionlatitud = 0;
         this.kilometrosSlider = 1;
         this.tipoNegocio = 0;
+        this.obtenerCatDistintivos();
         if (this.filtros.idEstado !== null) {
             this.estado = this.filtros.idEstado;
             this.obtenerCatMunicipio();
@@ -114,6 +117,9 @@ export class FiltrosBusquedaComponent implements OnInit {
         }
         if (this.filtros.idCategoriaNegocio !== null) {
             this.subCategoria = this.filtros.idCategoriaNegocio;
+        }
+        if (this.filtros.idDistintivo !== null){
+            this.distintivo = this.filtros.idDistintivo;
         }
         if (this.filtros.kilometros <= 10) {
             this.kilometrosSlider = this.filtros.kilometros;
@@ -258,6 +264,11 @@ export class FiltrosBusquedaComponent implements OnInit {
         this.subCategorias();
     }
 
+    selectDistintivo(){
+        this.filtros.idDistintivo = this.distintivo;
+    }
+
+
     subCategorias() {
         // if (this.isProductPage) {
         //     this.categoria = null;
@@ -289,6 +300,18 @@ export class FiltrosBusquedaComponent implements OnInit {
     selectSubCategoria() {
         this.filtros.idCategoriaNegocio = this.subCategoria;
     }
+
+    public obtenerCatDistintivos() {
+        this.filtroServicio.obtenerCatDistintivos().subscribe((response) => {
+            this.lstDistintivos = response.data;
+            this.lstDistintivos.forEach(element => {
+                if (element.id_distintivo == this.distintivo) {
+                    this.distintivoAux = element.nombre;
+                }
+            });
+        });
+    }
+
 
     public selectTipoNegocio(evento) {
         if (evento.detail.checked === true) {
