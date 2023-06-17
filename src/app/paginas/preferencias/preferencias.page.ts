@@ -5,6 +5,7 @@ import { ToadNotificacionService } from 'src/app/api/toad-notificacion.service';
 import { ModalController } from '@ionic/angular';
 import { ModalSeleccionarPreferenciasComponent } from 'src/app/components/modal-seleccionar-preferencias/modal-seleccionar-preferencias.component';
 import { UtilsCls } from 'src/app/utils/UtilsCls';
+import {Router} from '@angular/router';
 @Component({
   selector: 'app-preferencias',
   templateUrl: './preferencias.page.html',
@@ -19,13 +20,22 @@ export class PreferenciasPage implements OnInit {
   public msj = 'Cargando';
   listaGirosColor : any[]=[]
   listaGiros: any[]=[];
+  regresarValor: any;
   listaPreferencias: any;
+  listaNueva: any;
   subCatSelect: any;
   totalGirosSeleccionados: number;
-  constructor(private filtrosService:FiltrosService,
-    private util: UtilsCls,
-    public modalController: ModalController,
-    private toadNotificacionService: ToadNotificacionService,) { this.user = this.util.getUserData();}
+  banderaSub25: boolean;
+  constructor(
+      private filtrosService:FiltrosService,
+      private util: UtilsCls,
+      public modalController: ModalController,
+      private toadNotificacionService: ToadNotificacionService,
+      private router: Router,
+  ) {
+    this.user = this.util.getUserData();
+    this.listaNueva = [];
+  }
 
   ngOnInit() {
     this.loader = true;
@@ -37,9 +47,9 @@ export class PreferenciasPage implements OnInit {
       async response => {
           this.listaPreferencias = response.data.preferencias;
           //console.log("listaPreferencias:  \n"+JSON.stringify(await this.listaPreferencias))
-          this.obtenerGiros()   
-           
-        },
+          this.obtenerGiros();
+          this.contarTotal();
+      },
       error => {
       }
     );
@@ -54,12 +64,10 @@ export class PreferenciasPage implements OnInit {
         if ( this.listaGiros[i].id_giro === this.listaPreferencias[j].id_giro){
           this.totalGirosSeleccionados ++;
           j = this.listaPreferencias.length;
-
           }
       }
 
     }
-    console.log('Giros seleccionados: ', this.totalGirosSeleccionados);
   }
   
   obtenerGiros(){    
@@ -69,7 +77,7 @@ export class PreferenciasPage implements OnInit {
           this.listaGiros= response.data;
           setTimeout(() => {
             this.pintarGiro();
-            this.contarGiros()
+            this.contarGiros();
           }, (500));
         }else{
           this.toadNotificacionService.error("Algo sucedió, intentalo mas tarde");
@@ -118,9 +126,7 @@ export class PreferenciasPage implements OnInit {
         this.listaGirosColor[index].active="false"
         this.totalGirosSeleccionados=this.totalGirosSeleccionados-1
       }
-      this.listaPreferencias = this.subCatSelect.data.data
-
-      
+      this.listaPreferencias = this.subCatSelect.data.data;
     }else{
       this.toadNotificacionService.alerta("Solo puedes agregar 5 categorias");
     }
@@ -141,6 +147,8 @@ export class PreferenciasPage implements OnInit {
     await modal.present();
     var data = await modal.onDidDismiss().then(r => {
       if (r !== undefined) {
+        this.regresarValor =r;
+        this.contarRegreso(this.regresarValor);
         return r;
       }else{
         return null;
@@ -156,8 +164,14 @@ export class PreferenciasPage implements OnInit {
       preferencias: this.listaPreferencias
     }
     //console.log("guardar preferencias payload:\n"+JSON.stringify(payload))
+    /*
     this.loader = true;
     this.msj="Guardando sus preferencias, espere un momento"
+    */
+    setTimeout(() => {
+      location.reload();
+    }, 300);
+
     this.filtrosService.guardarMisPreferencias(payload).subscribe(
       async response => {   
         if(response.code==200){
@@ -175,6 +189,25 @@ export class PreferenciasPage implements OnInit {
       error => {
       }
     );
+  }
+
+  contarTotal(){
+    if ( this.listaPreferencias.length === 25) {
+      this.banderaSub25 = false;
+    }else{
+      this.banderaSub25 = true;
+    }
+  }
+
+  contarRegreso(regreso){
+    const r = regreso.data.data;
+    if ( r.length === 25) {
+      this.banderaSub25 = true;
+    }else if (r.length < 25){
+      this.banderaSub25 = true;
+    }else{
+      this.banderaSub25 = false;
+    }
   }
 
 }

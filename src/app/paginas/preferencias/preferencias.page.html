@@ -13,7 +13,8 @@
     {{msj}}
   </ion-label>
 </div>
-<ion-content><!--*ngIf="!loader" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop"-->
+<ion-content >
+<!--<ion-content>*ngIf="!loader" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop"-->
   <!--app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top-->
   <!--app-spinner [loader]="loader" [message]="msj"></app-spinner-->
   <ion-card>
@@ -42,7 +43,7 @@
 
     <ion-item>
       <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
-        <ion-button mode="ios" size="small" class="bg-naranja" shape="round" (click)="guardarPreferencias()">
+        <ion-button mode="ios" size="small" class="bg-naranja" shape="round" [disabled]="!banderaSub25" (click)="guardarPreferencias()">
           Guardar preferencias
         </ion-button>
       </div>
