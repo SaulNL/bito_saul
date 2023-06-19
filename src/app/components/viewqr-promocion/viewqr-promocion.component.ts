@@ -152,8 +152,7 @@ export class ViewQrPromocionComponent implements OnInit {
     this.qrdata = '';
   }
 
-  descargar() {
-    this.imgCupon = document.getElementById('contenido');
+  async descargar() {
     this.loaderCupon = true;
     setTimeout(() => {
       if (this.registro1 || this.registro2) {
@@ -165,11 +164,10 @@ export class ViewQrPromocionComponent implements OnInit {
       }
     }, 200);
   }
+
   async crearImagen(promocion) {
 
     html2canvas(document.querySelector("#contenido")).then(canvas => {
-
-
       const fileName = 'qr_promo' + this.numeroAleatorioDecimales(10, 1000) + promocion.nombre_comercial + '.png';
       Filesystem.writeFile({
         path: fileName,
