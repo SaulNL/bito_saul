@@ -174,11 +174,12 @@
                   <img *ngIf="proveedor.verificado === 1" class="distintivoIcon" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/VERIFICACIO%CC%81N.svg"
                     matTooltip="Este negocio está verificado por Bitoo">
                   <div class="distintivo"
-                    *ngFor="let distintivo of proveedor.distintivos.slice(0, proveedor.verificado === 1 ? 3 : 4); index as i">
+                    *ngFor="let distintivo of proveedor.distintivos?.slice(0, proveedor.verificado === 1 ? 3 : 4); index as i">
                     <img class="distintivoIcon" (click)="clickDistintivo(distintivo.nombre, distintivo.descripcion)"
                       [src]="distintivo.icon">
                   </div>
                 </div>
+
               </div>
             </ion-card>
           </div>

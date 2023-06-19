@@ -103,6 +103,19 @@
             </ng-container>
         </ion-select>
     </ion-item>
+    <ion-item-divider>
+        <ion-label>
+            Distintivos
+        </ion-label>
+    </ion-item-divider>
+    <ion-item>
+        <ion-label>Distintivos</ion-label>
+        <ion-select placeholder="{{distintivoAux}}" [(ngModel)]="distintivo" (ionChange)="selectDistintivo()">
+            <ng-container *ngFor="let dis of lstDistintivos;">
+                <ion-select-option [value]="dis.id_distintivo">{{dis.nombre}}</ion-select-option>
+            </ng-container>
+        </ion-select>
+    </ion-item>
     <ion-list>
         <ion-list-header>
             <ion-label>Entega a domicilio</ion-label>
