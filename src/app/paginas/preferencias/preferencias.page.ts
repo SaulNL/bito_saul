@@ -164,10 +164,10 @@ export class PreferenciasPage implements OnInit {
       preferencias: this.listaPreferencias
     }
     //console.log("guardar preferencias payload:\n"+JSON.stringify(payload))
-    /*
+
     this.loader = true;
     this.msj="Guardando sus preferencias, espere un momento"
-    */
+
     setTimeout(() => {
       location.reload();
     }, 300);

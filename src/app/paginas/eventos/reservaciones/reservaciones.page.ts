@@ -222,7 +222,7 @@ export class ReservacionesPage implements OnInit {
 
     // Si la fecha ya pasó, avanzar a la siguiente semana
     if (fecha < fechaEvento) {
-      fecha.setDate(fecha.getDate() + 7 - (fecha.getDay() - numDia));
+      fecha = new Date(fechaEvento.getFullYear(), fechaEvento.getMonth(), fechaEvento.getDate());
     }
 
     // Iterar mientras estemos en el mismo año
@@ -232,9 +232,10 @@ export class ReservacionesPage implements OnInit {
         this.semanasArray.push(this.fechaFormateada);
       }
 
-      fecha.setDate(fecha.getDate() + 1); // Avanzar al siguiente día
+      fecha.setDate(fecha.getDate() + 1); // Avanzar a la siguiente semana
     }
   }
+
 
 
   mostrarMeses() {
