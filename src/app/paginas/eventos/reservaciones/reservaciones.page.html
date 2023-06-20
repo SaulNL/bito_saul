@@ -76,7 +76,11 @@
 
 
             <div style="display: flex; justify-content: center; align-items: center">
-                <ion-button class="bg-naranja" [disabled]="!noPersonas" (click)="guardar()">
+                <ion-button *ngIf="infoEvento[0]?.id_tipo_recurrencia == 2 || infoEvento[0]?.id_tipo_recurrencia == 3 || infoEvento[0]?.id_tipo_recurrencia == 4"
+                            class="bg-naranja" [disabled]="!noPersonas || !fechaSeleccionada" (click)="guardar()">
+                    Generar reservación
+                </ion-button>
+                <ion-button *ngIf="infoEvento[0]?.id_tipo_recurrencia == 1" class="bg-naranja" [disabled]="!noPersonas" (click)="guardar()">
                     Generar reservación
                 </ion-button>
             </div>
