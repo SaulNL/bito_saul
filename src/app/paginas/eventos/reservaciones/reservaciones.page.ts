@@ -314,4 +314,10 @@ export class ReservacionesPage implements OnInit {
     }, 400);
   }
 
+  filtro(){
+    this.fechaSeleccionada = null;
+    this.noPersonas = null;
+    this.mostrarLabel = false;
+  }
+
 }
