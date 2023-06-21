@@ -72,6 +72,14 @@ export class TabsPage implements OnInit {
 
     this.actualizarEncuestas();
 
+    // se agregaron estas lineas para mandar simpre al inicio cada cierran y abren la app
+
+    localStorage.removeItem("activedPage");
+    localStorage.setItem("activedPage", "inicio");
+    this.activedPage = localStorage.getItem("activedPage");
+
+    /* Se comentaron estas lineas de codigo para que siempre mande al inicio cuando cierran y abren la app
+
     if (neg === 'active' && this.isIos) {
       this.activedPage = 'inicio';
     }
@@ -98,7 +106,7 @@ export class TabsPage implements OnInit {
     }
 
     localStorage.removeItem('activedPage');
-    localStorage.removeItem('productos');
+    localStorage.removeItem('productos'); */
   }
 
   inicio() {
