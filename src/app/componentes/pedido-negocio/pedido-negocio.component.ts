@@ -158,7 +158,7 @@ export class PedidoNegocioComponent implements OnInit {
     async obtenerFeatures() {
         await this._general_service.features(this.idNegocio).subscribe(
             response => {
-                console.log("FEATURES del id_negocio " + this.idNegocio + ", " + JSON.stringify(response))
+                //console.log("FEATURES del id_negocio " + this.idNegocio + ", " + JSON.stringify(response))
                 if (response.data.lenght != 0) {
                     response.data.forEach(feature => {
                         if (feature.id_caracteristica == 2) {
@@ -451,24 +451,44 @@ export class PedidoNegocioComponent implements OnInit {
         if (pedido.idTipoPago === 99){
             pedido.idTipoPago = 1;
         }
-        this.negocioService.registrarPedido(pedido).subscribe(
-            (response) => {
-                if (response.code === 200) {
-                    if (auxPedido.idTipoPago === 99){
-                        this.pedidoOrdenMP(response.data);
-                    }else {
-                        // Validar que el usuario ya haya regisrado su informacion(se queda CARGANDO)
-                        this.enviarSms(telephoneUsuario, this.lista[0].idNegocio);
+        
+        let banderaMP = true;
+
+        if(auxPedido.idTipoPago === 99){
+            pedido.pedido.forEach(function (value){
+                if(value.cantidad_disponibles === null){
+                    banderaMP = false;
+                }
+            });
+        }
+
+        if(banderaMP){
+            this.negocioService.registrarPedido(pedido).subscribe(
+                (response) => {
+                    if (response.code === 200) {
+                        if (auxPedido.idTipoPago === 99){
+                            this.pedidoOrdenMP(response.data);
+                        }else {
+                            // Validar que el usuario ya haya regisrado su informacion(se queda CARGANDO)
+                            this.enviarSms(telephoneUsuario, this.lista[0].idNegocio);
+                            this.loader = false;
+                        }
+                    }else if(response.code === 302) {
                         this.loader = false;
+                        this.mesajes.error(response.message);
                     }
-                } else {
+                    else {
+                        this.mesajes.error('Ocurrió un error al generar el pedido');
+                    }
+                }, () => {
+                    this.loader = false;
                     this.mesajes.error('Ocurrió un error al generar el pedido');
                 }
-            }, () => {
-                this.loader = false;
-                this.mesajes.error('Ocurrió un error al generar el pedido');
-            }
-        );
+            );
+        }else{
+            this.loader = false;
+            this.mesajes.error('Para pagar con mercado pago el producto debe definir disponibilidad');
+        }
     }
 
      pedidoOrdenMP(data){
