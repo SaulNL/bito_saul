@@ -13,7 +13,7 @@
   <app-spinner [loader]="loader" [message]="msj" *ngIf="loader"></app-spinner>
   <div *ngIf="!loader" class="contenedorTodo">
     <div *ngIf="masPromo">
-      <p>PROMOCIONES</p>
+      <p *ngIf="cantidadPromo >= 1">PROMOCIONES</p>
       <div class="promoContainer" *ngIf="datoss">
         <div class="promoCard" *ngFor="let promocion of sugerencias.promociones.slice(0, promoCantidad); let i = index"
           (click)="crearModalPromocion(promocion)">
@@ -38,7 +38,7 @@
     </div>
 
     <div *ngIf="masProductos">
-      <p>PRODUCTOS Y SERVICIOS</p>
+      <p *ngIf="cantidadProduct >= 1">PRODUCTOS Y SERVICIOS</p>
       <div class="productsContainer" *ngIf="datoss">
         <div class="productCard" (click)="CrearModalProducto(product)"
           *ngFor="let product of sugerencias.productos.slice(0, productCantidad); let i = index">
@@ -58,7 +58,7 @@
     </div>
 
     <div *ngIf="masNegocios">
-      <p>NEGOCIOS</p>
+      <p *ngIf="cantidadNego >= 1">NEGOCIOS</p>
       <div class="promoContainer" *ngIf="datoss">
         <div class="promoCard" (click)="abrirNego(negocio.url_negocio)"
           *ngFor="let negocio of sugerencias.negocios.slice(0, negoCantidad); let i = index">

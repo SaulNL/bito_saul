@@ -51,22 +51,21 @@ export class MisSugerenciasPage implements OnInit {
 
   ionViewWillEnter() {
     this.menuCtrl.close();
-    this.obtenerSugerenciasRNA();
+    // this.obtenerSugerenciasRNA();
   }
 
   ngOnInit() {
     this.loader = true
     this.uData = JSON.parse(localStorage.getItem('u_data'));
-    // this.obtenerSugerenciasRNA();
+    this.obtenerSugerenciasRNA(this.uData);
   }
 
-  obtenerSugerenciasRNA() {
-    console.log("entre en la llamada del servicio");
-    this.loader = true;
+  obtenerSugerenciasRNA(usuario) {
+    // this.loader = true;
     this.datoss = false;
     const timeout = 15000;
 
-    const promise = this.RNA.rnaStart(7, 10, 10, 10);
+    const promise = this.RNA.rnaStart(usuario.id_persona, 10, 10, 10);
 
     const timeoutPromise = new Promise<void>((resolve, reject) => {
       setTimeout(() => {
@@ -84,7 +83,6 @@ export class MisSugerenciasPage implements OnInit {
         this.cantidadPromo = json.promociones.length;
         this.cantidadProduct = json.productos.length;
         this.cantidadNego = json.negocios.length;
-        console.log("res de la RNA", json);
         this.ajustarDatosPromo(json.promociones);
       })
       .catch(error => {
@@ -93,18 +91,7 @@ export class MisSugerenciasPage implements OnInit {
         this.notificaciones.error("😭😭 Lo sentimos No encontramos sugerencias para ti 😭😭")
         this.ruta.navigateByUrl('/tabs/inicio');
       });
-    // this.RNA.rnaStart(7, 10, 10, 10).then(res => {
-    //   this.loader = false;
-    //   this.datoss = true;
-    //   let data = JSON.stringify(res)
-    //   let json = JSON.parse(data)
-    //   this.sugerencias = json;
-    //   this.cantidadPromo = json.promociones.length;
-    //   this.cantidadProduct = json.productos.length;
-    //   this.cantidadNego = json.negocios.length;
-    //   console.log("res de la RNA", json)
-    //   this.ajustarDatosPromo(json.promociones);
-    // })
+
   }
 
   getFirstImage(image) {
@@ -120,12 +107,10 @@ export class MisSugerenciasPage implements OnInit {
   }
 
   ajustarDatosPromo(promo) {
-    console.log(promo)
     promo.forEach((element) => {
       let tags = element.tags.map(tag => tag.replace("#", "")).join(", ");
       this.tagsPromo.push(tags)
     });
-    console.log("estas son las tags", this.tagsPromo)
   }
 
   verMas(tipo) {
@@ -181,7 +166,7 @@ export class MisSugerenciasPage implements OnInit {
     modal.onDidDismiss()
       .then((data) => {
         const user = data['data'];
-        this.loader = true;
+        // this.loader = true;
       });
     return await modal.present();
   }
