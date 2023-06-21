@@ -1,4 +1,5 @@
-.contendorR{
+.contendorR,
+.contendorCuponDownload {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,11 +14,11 @@
   text-align: center;
 }
 
-.tituloR{
+.tituloR {
   margin: 8px;
 }
 
-.imagenEvento{
+.imagenEvento {
   height: 60vw;
   width: 80vw;
   margin-bottom: 4vw;
@@ -32,27 +33,28 @@
   background-size: 100% 100%;
 }
 
-ion-chip{
+ion-chip {
   --background: #FFF;
   justify-content: center;
 }
 
 
-.styleQr{
+.styleQr {
   margin-bottom: 5px;
   border-radius: 5px;
 }
 
-.qrClass{
+.qrClass {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60vw !important;
-  height: 62vw !important;
+  width: 70vw !important;
+  height: 70vw !important;
   background-size: 100% 100%;
+  margin-top: 20px;
 }
 
-.claseQr{
+.claseQr {
   height: 50vw;
   width: 50vw;
 }

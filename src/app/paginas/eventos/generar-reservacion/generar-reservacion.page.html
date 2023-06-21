@@ -20,31 +20,69 @@
     </ion-button>
   </div>
 
-  <div style="display: flex; justify-content: center; margin-top: 5px">
-    <div class="contendorR">
+  <!-- <div style="display: flex; justify-content: center; margin-top: 5px">
+    <div class="contendorCuponDownload">
 
-      <h1 style="color: #FFF; margin-top: 8vw; margin-bottom: 1vw;">EVENTO</h1>
+      <p *ngIf="htmlDownload" style="color: #FFF; margin-bottom: 6vw; font-size: 40px;">{{infoEvento[0]?.evento}}</p>
 
-      <p style="color: #FFF; margin-bottom: 6vw">{{infoEvento[0]?.evento}}</p>
-
-      <img [src]="infoEvento[0]?.url_imagen" class="imagenEvento">
-
-
-      <ion-chip style="margin-bottom: 2px;">
+      <ion-chip *ngIf="htmlDownload" style="margin-bottom: 2px;">
         <ion-label>{{usuario}}</ion-label>
       </ion-chip>
 
-      <div style="display: flex; align-items: center">
-        <p style="color: #FFF;">No. personas:</p>
-        <p style="color: #FFF; margin-left: 2px;">{{cadena.cantidad_persona}}</p>
+      <div #qrcode class="qrClass"></div>
+
+      <div *ngIf="htmlDownload" style="display: flex; flex-direction: column; text-align: center; font-size: 25px;">
+        <p style="color: #FFF;">No. personas: {{cadena.cantidad_persona}}</p>
+        <p style="color: #FFF; margin-bottom: 1vw; margin-top: 3px;">Fecha de reservación</p>
+        <p style="color: #FFF; margin-bottom: 2vw; margin-top: 2px;">{{numeroDia}}/{{meses[numeroMes]}}/{{anio}}</p>
       </div>
 
-      <p style="color: #FFF; margin-bottom: 1vw; margin-top: 3px;">Fecha de reservación</p>
-      <p style="color: #FFF; margin-bottom: 2vw; margin-top: 2px;">{{numeroDia}}/{{meses[numeroMes]}}/{{anio}}</p>
+      <div
+        style="font-size: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 1px; margin-top: 1vw;">
+        <ion-label>*Aplican restricciones*</ion-label>
+      </div>
 
-      <div #qrcode class="qrClass" ></div>
+    </div>
+  </div> -->
 
-      <div style="font-size: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 1px; margin-top: 1vw;">
+  <div style="display: flex; justify-content: center; margin-top: 5px">
+    <div class="contendorR">
+
+      <h1 *ngIf="!htmlDownload" style="color: #FFF; margin-top: 8vw; margin-bottom: 1vw;">EVENTO</h1>
+
+      <p *ngIf="!htmlDownload" style="color: #FFF; margin-bottom: 6vw">{{infoEvento[0]?.evento}}</p>
+
+      <img *ngIf="!htmlDownload" [src]="infoEvento[0]?.url_imagen" class="imagenEvento">
+
+
+      <ion-chip *ngIf="!htmlDownload" style="margin-bottom: 2px;">
+        <ion-label>{{usuario}}</ion-label>
+      </ion-chip>
+
+      <div *ngIf="!htmlDownload" style="display: flex; align-items: center">
+        <p style="color: #FFF;">No. personas: {{cadena.cantidad_persona}}</p>
+      </div>
+
+      <p *ngIf="!htmlDownload" style="color: #FFF; margin-bottom: 1vw; margin-top: 3px;">Fecha de reservación</p>
+      <p *ngIf="!htmlDownload" style="color: #FFF; margin-bottom: 2vw; margin-top: 2px;">
+        {{numeroDia}}/{{meses[numeroMes]}}/{{anio}}</p>
+
+      <p *ngIf="htmlDownload" style="color: #FFF; margin-bottom: 6vw; font-size: 40px;">{{infoEvento[0]?.evento}}</p>
+
+      <ion-chip *ngIf="htmlDownload" style="margin-bottom: 2px;">
+        <ion-label>{{usuario}}</ion-label>
+      </ion-chip>
+
+      <div #qrcode class="qrClass"></div>
+
+      <div *ngIf="htmlDownload" style="display: flex; flex-direction: column; text-align: center; font-size: 25px;">
+        <p style="color: #FFF;">No. personas: {{cadena.cantidad_persona}}</p>
+        <p style="color: #FFF; margin-bottom: 1vw; margin-top: 3px;">Fecha de reservación</p>
+        <p style="color: #FFF; margin-bottom: 2vw; margin-top: 2px;">{{numeroDia}}/{{meses[numeroMes]}}/{{anio}}</p>
+      </div>
+
+      <div
+        style="font-size: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 1px; margin-top: 1vw;">
         <ion-label>*Aplican restricciones*</ion-label>
       </div>
 

@@ -1,11 +1,11 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
-import {EventosService} from '../../../api/eventos.service';
-import {IEventoQr} from '../../../interfaces/IEventoQr';
-import {ToadNotificacionService} from '../../../api/toad-notificacion.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { EventosService } from '../../../api/eventos.service';
+import { IEventoQr } from '../../../interfaces/IEventoQr';
+import { ToadNotificacionService } from '../../../api/toad-notificacion.service';
 import QRCode from 'easyqrcodejs';
 import html2canvas from 'html2canvas';
-import {FilesystemDirectory, Plugins} from '@capacitor/core';
+import { FilesystemDirectory, Plugins } from '@capacitor/core';
 
 const { Filesystem } = Plugins;
 
@@ -32,12 +32,13 @@ export class GenerarReservacionPage implements OnInit {
   registro3 = false;
   public urlData: string;
   qrData: string = '';
+  public htmlDownload: boolean = false;
 
 
   constructor(
-      private eventosService: EventosService,
-      private router: Router,
-      private notifi: ToadNotificacionService,
+    private eventosService: EventosService,
+    private router: Router,
+    private notifi: ToadNotificacionService,
   ) {
     this.infoEvento = [];
     this.loaderReservaciones = false;
@@ -61,7 +62,7 @@ export class GenerarReservacionPage implements OnInit {
         fc_evento_reservacion: this.cadena.fc_evento_reservacion,
         cantidad_persona: this.cadena.cantidad_persona,
       };
-      this.urlData =btoa(JSON.stringify(evento)) ;
+      this.urlData = btoa(JSON.stringify(evento));
 
       const options = {
 
@@ -69,15 +70,15 @@ export class GenerarReservacionPage implements OnInit {
         colorLight: '#ffffff',
         colorDark: '#000000',
         dotScale: 0.4,
-        width: 200,
-        height: 200,
+        width: 300,
+        height: 300,
         correctLevel: QRCode.CorrectLevel.Q,
         logoBackgroundTransparent: true,
         format: 'PNG',
         compressionLevel: 6,
         quality: 0.75,
       };
-      this.qr=new QRCode(this.qrcode.nativeElement, options);
+      this.qr = new QRCode(this.qrcode.nativeElement, options);
     }, 2000)
   }
 
@@ -94,16 +95,17 @@ export class GenerarReservacionPage implements OnInit {
   obtenerInfoEvento(id: string): void {
     const idDetalle = id;
     this.eventosService.eventoDetalle(idDetalle).subscribe(
-        res => {
-          this.infoEvento = res.data;
-          this.loaderReservaciones = true;
-        });
+      res => {
+        this.infoEvento = res.data;
+        this.loaderReservaciones = true;
+      });
   }
 
   descargar() {
+    this.htmlDownload = true;
     this.loaderCupon = true;
     setTimeout(() => {
-        this.crearImagen(this.infoEvento);
+      this.crearImagen(this.infoEvento);
     }, 200);
   }
 
@@ -117,8 +119,10 @@ export class GenerarReservacionPage implements OnInit {
         directory: FilesystemDirectory.Documents
       }).then(() => {
         this.notifi.exito('Se descargó correctamente el qr de la reservación.');
+        this.htmlDownload = false;
       }, error => {
         this.notifi.error(error);
+        this.htmlDownload = false;
       });
 
       this.loaderCupon = false;
@@ -130,7 +134,7 @@ export class GenerarReservacionPage implements OnInit {
     return num + min;
   }
 
-  convertirFechaHora(){
+  convertirFechaHora() {
     const fecha = this.cadena.fc_evento_reservacion;
     const fechaObjeto = new Date(fecha);
     this.numeroDia = fechaObjeto.getDate();
