@@ -16,7 +16,7 @@ export class ProductoModel{
     public idProducto: any;
     public select: any;
     public existencia: any;
-
+    public cantidad_disponible: any;
 
     constructor(nombre = null, descripcion = null, precio = null, categoria = null, imagenes = null, negocio = null, idProducto = null, usuario_dio_like = null) {
         this.nombre = nombre;

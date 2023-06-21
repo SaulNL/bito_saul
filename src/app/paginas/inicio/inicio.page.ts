@@ -144,7 +144,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
     this.obtenergiros();
-
+    this.regresarBitoo(); // se puso este metodo para que cuando cierren la app y vuelvan entrar, mande al nuevo inicio
+    
     if (localStorage.getItem("idGiro") != null) {
       this.idGiro = JSON.parse(localStorage.getItem("idGiro"));
     }

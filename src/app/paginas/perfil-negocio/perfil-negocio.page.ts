@@ -1191,6 +1191,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         idNegocio: pro.negocio.idNegocio,
         nombre: pro.nombre,
         descripcion: pro.descripcion,
+        cantidad_disponibles: pro.cantidad_disponibles
       };
       let existe = false;
       this.bolsa.map((it) => {
