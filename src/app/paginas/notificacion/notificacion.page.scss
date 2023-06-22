@@ -17,3 +17,13 @@ ion-spinner {
 .fecha {
   font-size: 8.5px;
 }
+
+.item-warning {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.item-warning > ion-icon {
+  margin-right: 5px;
+  font-size: 25px;
+}

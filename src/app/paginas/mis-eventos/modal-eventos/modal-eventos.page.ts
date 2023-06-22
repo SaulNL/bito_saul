@@ -368,8 +368,10 @@ export class ModalEventosPage implements OnInit {
   }
 
   agregarTags(tags: string[]) {
+    console.log("desde el Modal:", tags)
     this.negtag = true;
-    this.tags = tags.join();
+    this.tags = tags.join(', ');
+    console.log("tags?", tags)
     this.eventData.tags = this.tags;
   }
 

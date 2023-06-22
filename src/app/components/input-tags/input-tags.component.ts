@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-input-tags',
@@ -7,9 +8,11 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 })
 export class InputTagsComponent implements OnInit {
 
-  public tagContainer;
-  public input;
+  public tagActual: any[] = [];
+  public nuevaTag: string;
+  public placeHolder: string;
   @Input() public tags;
+  @Input() public tipo: boolean;
   @Output() _enviarTags: EventEmitter<any>;
 
   constructor() {
@@ -17,88 +20,52 @@ export class InputTagsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tagContainer = document.querySelector('.tag-container');
-    this.input = document.querySelector('.input');
-    this.input.addEventListener('ionInput', (e) => {
-      if (e.detail.data === ',') {
-        if (this.input.value.length !== 0) {
-          console.log(typeof this.tags)
-          let numero = this.input.value.indexOf(",");
-          let tag = this.input.value.slice(0, numero);
-          if (typeof this.tags == 'string') {
-            this.tags = this.tags.split(",");
-            this.tags.push(tag);
-            console.log("soy JSON", this.tags)
-          } else {
-            this.tags.push(tag);
-          }
-          this.agregarTags();
-          this._enviarTags.emit(this.tags);
-          this.input.value = '';
+    this.asignarValoresTAgs()
+    console.log("tipo", this.tipo);
+    this.placeHolder = this.tipo == false ? "Enter o (,) para guardar la tag" : "(,) para guardar la tag";
+  }
+
+  agregartag(event) {
+    const value = event.target.value.trim();
+    console.log(value)
+    if (value.endsWith(',') || event.key === 'Enter') {
+      let conComa = (event.target as HTMLInputElement).value;
+      console.log(conComa)
+      if (conComa != "") {
+        this.nuevaTag = conComa.replace(/,/g, "")
+        if (this.tagActual[0] == '') {
+          this.tagActual.splice(0)
         }
+        this.tagActual.push(this.nuevaTag);
+        this._enviarTags.emit(this.tagActual);
       }
-    }, false);
-
-    this.input.addEventListener('ionInput', (e) => {
-      if (e.detail.data === ',') {
-        this.input.value = '';
-      }
-    }, false);
-
-    document.addEventListener('click', (e: MouseEvent) => {
-      const element = e.target as HTMLElement;
-      if (element.tagName === 'I') {
-        const value = element.getAttribute('data-item');
-        const index = this.tags.indexOf(value);
-        this.tags = [...this.tags.slice(0, index), ...this.tags.slice(index + 1)];
-        this.agregarTags();
-        this._enviarTags.emit(this.tags);
-      }
-    });
-
-    if (this.tags.length !== 0) {
-      this.agregarTags();
-      this._enviarTags.emit(this.tags);
+      (event.target as HTMLInputElement).value = '';
     }
   }
 
-  crearTag(label) {
-    const div = document.createElement('div');
-    div.setAttribute('class', 'tag');
-    const span = document.createElement('span');
-    div.style.padding = '5px';
-    div.style.border = '1px solid #ccc';
-    div.style.margin = '5px';
-    div.style.display = 'flex';
-    div.style.alignItems = 'center';
-    div.style.borderRadius = '15px';
-    div.style.background = '#c9c9c9';
-    div.style.fontSize = '16px';
-    span.innerHTML = label;
-    const closeBn = document.createElement('i');
-    closeBn.style.fontSize = "16px";
-    closeBn.style.marginLeft = "5px";
-    closeBn.style.color = "#606060";
-    closeBn.setAttribute('class', 'material-icons');
-    closeBn.setAttribute('data-item', label);
-    closeBn.innerHTML = 'cancel';
-    div.appendChild(span);
-    div.appendChild(closeBn);
-    return div;
-  }
-
-  agregarTags() {
-    if (this.tags[0] === "" && this.tags.length === 1) {
-      this.tags = [];
-    } else {
-      const borrar = document.querySelectorAll('.tag');
-      borrar.forEach(tag => {
-        tag.parentElement.removeChild(tag);
-      });
-      this.tags.slice().reverse().forEach(etiqueta => {
-        const tag = this.crearTag(etiqueta);
-        this.tagContainer.prepend(tag);
-      });
+  asignarValoresTAgs() {
+    if (this.tags[0] == '' || typeof this.tags == "object" && this.tags.length == 0) {
+      this.tags = '';
     }
+    if (typeof this.tags == "object" && this.tags[0] != '') {
+      let stringTag = '';
+      this.tags.forEach((element, index) => {
+
+        if (index === this.tags.length - 1) {
+          stringTag += element
+        } else {
+          stringTag += `${element}, `
+        }
+        console.log(stringTag)
+      })
+      this.tags = stringTag;
+    }
+    console.log(typeof this.tags, this.tags)
+    this.tagActual = this.tags.split(", ")
+  }
+  eliminarTag(index) {
+    this.tagActual.splice(index, 1)
+    this._enviarTags.emit(this.tagActual)
+
   }
 }

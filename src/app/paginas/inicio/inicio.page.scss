@@ -33,13 +33,24 @@
   font-size: 13px;
 }
 
-@media (max-width: 500px) {
-  .text{
-    font-size: 9px;
-  }
+.boton-margen-l {
+  margin-left: 15px;;
+}
 
-  .text2, .icono{
+.boton-margen-r {
+  margin-right: 15px;;
+}
+
+@media (max-width: 500px) {
+  .text, .text2, .icono{
     font-size: 10px;
+  }
+  .boton-margen-l {
+    margin-left: 11px;;
+  }
+  
+  .boton-margen-r {
+    margin-right: 11px;;
   }
 }
 
@@ -60,21 +71,19 @@
 }
 
 .eventosButton{
-  --background:#e1e1e2;
-  color: #1e1c1c;
-  font-size: 12px;
-  margin-top: 5px;
+  --background:#eeeeee;
+  --color: #1e1c1c;
+  font-size: 13px;
   width: 65px;
   height: 79%;
 }
 
 .mapa{
-  --background:#e1e1e2;
-  color: #1e1c1c;
+  --background:#eeeeee;
+  --color: #1e1c1c;
   font-size: 12px;
-  margin-top: 5px;
   width: 85px;
-  height: 79%;
+  height: 25px;
 }
 .mapa .icono{
   padding-right: 5px;

@@ -55,7 +55,7 @@ export class AppComponent {
         this.device = (this.platform.is('android')) ? AppSettings.ID_DB_PLATFORM_ANDROID : AppSettings.ID_DB_PLATFORM_IOS;
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
-                // console.log("url: ", event.url)
+                console.log("url: ", event.url)
                 this.inicio = event.url == "/tabs/home?special=true" || event.url == "/tabs/home/conocenos" || event.url == "/tabs/home" || event.url == "/tabs/home/negocio" || event.url == "/tabs/home/solicitudes" || event.url == "/tabs/home/promociones" || event.url == "/tabs/mis-favoritos" || event.url == "/tabs/home/preferencias" || event.url == "/tabs/mis-eventos" ? true : false;
             }
         });
@@ -132,9 +132,9 @@ export class AppComponent {
                             } else if (match.$link.path.includes('promocion')) {
                                 this.router.navigateByUrl("/tabs" + match.$link["path"]);
                                 this.modalController.dismiss();
-                            } else if(match.$link.path.includes('pago-realizado')) {
-                                    this.router.navigateByUrl("/tabs" + match.$link["path"]);
-                                    this.modalController.dismiss();
+                            } else if (match.$link.path.includes('pago-realizado')) {
+                                this.router.navigateByUrl("/tabs" + match.$link["path"]);
+                                this.modalController.dismiss();
                             } else {
                                 this.router.navigateByUrl('/tabs/negocio' + match.$link["path"]);
                                 this.modalController.dismiss();

@@ -468,10 +468,10 @@ export class FormSolicitudPage implements OnInit {
         if (response.code === 200) {
           this.listMiNegocio = response.data;
           this.listMiNegocio.forEach(element => {
-            if (element.id_negocio == this.actualTO.id_negocio) {             
+            if (element.id_negocio == this.actualTO.id_negocio) {
               this.negoAux = element.nombre_comercial;
             }
-          });       
+          });
         }
       },
       (error) => {
@@ -510,28 +510,28 @@ export class FormSolicitudPage implements OnInit {
       );
   }
 
-  async getAddress(){
+  async getAddress() {
     let estado = this.list_cat_estado.filter(estado => estado.id_estado == this.actualTO.det_domicilio.id_estado)[0].nombre;
     let municipio = this.list_cat_municipio.filter(municipio => municipio.id_municipio == this.actualTO.det_domicilio.id_municipio)[0].nombre;
     let localidad = this.list_cat_localidad.filter(localidad => localidad.id_localidad == this.actualTO.det_domicilio.id_localidad)[0].nombre;
-    let address = localidad+" "+municipio+" "+estado;
+    let address = localidad + " " + municipio + " " + estado;
     this.getCoordinates(address);
   }
 
-  async getCoordinates(address){
+  async getCoordinates(address) {
     this.getCoordinatesMap.getPosts(address)
-    .then(async data => {
-      const arrayPosts:any = data;
-      let latitud = arrayPosts.results[0].geometry.location.lat;
-      let longitud = arrayPosts.results[0].geometry.location.lng;
-      let gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
-      const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
-        this.actualTO.det_domicilio.latitud = res.coords.latitude;
-        this.actualTO.det_domicilio.longitud = res.coords.longitude;
-        this.map.panTo([latitud, longitud]);
-        this.marker.setLatLng([latitud, longitud]);
-      })
+      .then(async data => {
+        const arrayPosts: any = data;
+        let latitud = arrayPosts.results[0].geometry.location.lat;
+        let longitud = arrayPosts.results[0].geometry.location.lng;
+        let gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
+        const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
+          this.actualTO.det_domicilio.latitud = res.coords.latitude;
+          this.actualTO.det_domicilio.longitud = res.coords.longitude;
+          this.map.panTo([latitud, longitud]);
+          this.marker.setLatLng([latitud, longitud]);
+        })
 
-    })
+      })
   }
 }
