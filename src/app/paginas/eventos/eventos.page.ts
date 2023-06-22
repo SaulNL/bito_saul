@@ -283,6 +283,7 @@ export class EventosPage implements OnInit {
     this.btnMuncipio = true;
     this.filtroEvento.id_localidad = null;
     this.btnLocalidad = true;
+    this.obtenerListaEvento();
   }
 
   public buscarEvento() {
@@ -310,7 +311,6 @@ export class EventosPage implements OnInit {
         },
         (error) => {
         });
-    this.limpiarFiltro();
   }
 
   cargarFecha(event: any): void{
