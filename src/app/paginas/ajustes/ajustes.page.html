@@ -9,7 +9,7 @@
       <ion-button (click)="abrirPaginaNotificaciones()">
         <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
       </ion-button>
-      <ion-badge class="badge" *ngIf="(numNotifiSinLeer != 0 && numNotifiSinLeer != undefined)">
+      <ion-badge mode="md" class="badge" *ngIf="(numNotifiSinLeer != 0 && numNotifiSinLeer != undefined)">
         <span *ngIf="numNotifiSinLeer <= 99">{{numNotifiSinLeer}}</span>
         <span *ngIf="numNotifiSinLeer > 99">99+</span>
       </ion-badge>

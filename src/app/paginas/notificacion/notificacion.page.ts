@@ -3,7 +3,6 @@ import { NotificacionesService } from "../../api/usuario/notificaciones.service"
 import { Router } from "@angular/router";
 import { ModalController } from "@ionic/angular";
 import { NotificacionChatComponent } from "../../components/notificacion-chat/notificacion-chat.component";
-import { NotificacionesModel } from "src/app/Modelos/NotificacionesModel";
 
 @Component({
   selector: "app-notificacion",
@@ -15,7 +14,7 @@ export class NotificacionPage implements OnInit {
   usuario: any;
   idPersona: number;
   idProveedor: number;
-  notificaciones: Array<NotificacionesModel>;
+  notificaciones: any[] = [];
   intervalNotificaciones: any;
   interval: any;
 

@@ -123,7 +123,7 @@
       <ion-label *ngIf="activedPage === 'perfil'">Usuario</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button *ngIf="usuario !== null" (click)="perfil()">
+    <ion-tab-button mode="md" *ngIf="usuario !== null" (click)="perfil()">
       <div>
         <ion-avatar>
           <img src="https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg" [srcset]="usuario.imagen" />

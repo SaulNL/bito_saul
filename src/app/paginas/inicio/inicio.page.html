@@ -18,7 +18,40 @@
   <app-spinner [loader]="loaderNegocios" [message]="msj"></app-spinner>
   <app-spinner *ngIf="mostrarloaderInicio" [loader]="loaderInicio" [message]="msj"></app-spinner>
   <div *ngIf="!loader">
-    <ion-grid>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-chip *ngIf="!selectionAP" color="dark" class="boton-margen-r" (click)="openPlazasAfiliacionesModal()">
+          <small class="text">Destacados</small>
+          <ion-icon class="icono" name="caret-down-outline"></ion-icon>
+        </ion-chip>
+  
+        <ion-chip *ngIf="selectionAP" (click)="regresarBitoo()" color="danger">
+          <ion-label><span class="text">Volver a Bitoo</span></ion-label>
+        </ion-chip>
+  
+        <ion-button mode="ios" class="mapa" shape="round" [disabled]="listaCategorias.length === 0" (click)="abrirModalMapa()">
+          <ion-icon class="icono" name="map-outline"></ion-icon>
+          <small class="text">Mapa</small>
+        </ion-button>
+  
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-chip class="eventosButton" (click)="openEventos()" color="dark">
+          <small>Eventos</small>
+        </ion-chip>
+  
+        <ion-chip *ngIf="filtroActivo" (click)="borrarFiltrosP()" color="danger" >
+          <ion-label><span class="text">Borrar Filtros</span></ion-label>
+        </ion-chip>
+  
+        <ion-chip *ngIf="!filtroActivo" class="text2 boton-margen-l" color="dark" (click)="abrirFiltros()" ><span>Filtros</span>
+          <ion-icon class="icono" name="filter-outline"></ion-icon>
+        </ion-chip>
+        
+      </ion-buttons>
+    </ion-toolbar>
+    
+    <!--<ion-grid>
       <ion-row style="display: flex;">
         <ion-col>
           <ion-chip *ngIf="!selectionAP" color="dark" (click)="openPlazasAfiliacionesModal()">
@@ -56,7 +89,7 @@
         </ion-col>
       </ion-row>
 
-    </ion-grid>
+    </ion-grid> -->
 
     <ion-grid>
       <ion-row class="ion-align-items-center">
