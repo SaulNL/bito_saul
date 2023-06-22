@@ -126,7 +126,7 @@
           </ion-select>
         </ion-item>
         <ion-item *ngIf="!loader">
-          <app-input-tags [tags]="eventData.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
+          <app-input-tags [tipo]="false" [tags]="eventData.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
         </ion-item>
 
         <ion-button type="submit" class="bg-naranja" [disabled]="!eventForm.valid">Guardar</ion-button>

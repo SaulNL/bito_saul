@@ -5,7 +5,7 @@
     <ion-title *ngIf="segmentModel === 'domicilio'"> Domicilio </ion-title>
     <ion-title *ngIf="segmentModel === 'contacto'"> Contacto </ion-title>
     <ion-title *ngIf="segmentModel === 'productos'&& seEstaClonando "> Productos </ion-title>
-    
+
     <ion-button slot="end" (click)="cancelar()" fill="clear" class="close">
       <ion-icon name="close" slot="icon-only"></ion-icon>
     </ion-button>
@@ -187,7 +187,8 @@
           <ion-item disabled="{{disabled}}">
             <ion-label position="stacked">Distintivos</ion-label>
             <ion-select ok-text="Ok" cancel-text="Cancelar" multiple id="idDistintivos" name="idDist" *ngIf="features10"
-              #distintivos="ngModel" [(ngModel)]="negocioTO.distintivos" placeholder="{{ tipoDistAux }}" (ionChange)="selectDistintivos($event)">
+              #distintivos="ngModel" [(ngModel)]="negocioTO.distintivos" placeholder="{{ tipoDistAux }}"
+              (ionChange)="selectDistintivos($event)">
               <ion-select-option *ngFor="let dist of lstDistintivos" [value]="dist.id_distintivo">{{dist.nombre}}
               </ion-select-option>
             </ion-select>
@@ -205,8 +206,9 @@
                 <small>{{i + 1}}. {{elemento.nombre}}</small>
               </ion-label>
 
-              <ion-button *ngIf="elemento.requiere_vigencia == 1" class="btn-modal-pdf" mode="ios" size="small" fill="outline"
-              [color]="elemento.fc_vencimiento == null ? 'danger' : 'primary'" (click)="abrirModalPdfVigencia(elemento)">
+              <ion-button *ngIf="elemento.requiere_vigencia == 1" class="btn-modal-pdf" mode="ios" size="small"
+                fill="outline" [color]="elemento.fc_vencimiento == null ? 'danger' : 'primary'"
+                (click)="abrirModalPdfVigencia(elemento)">
                 <span *ngIf="elemento.fc_vencimiento == null"> Registrar vigencia</span>
                 <span *ngIf="elemento.fc_vencimiento != null">Editar vigencia</span>
               </ion-button>
@@ -305,7 +307,7 @@
           <ion-label>Ayúdanos a que la búsqueda de tu negocio sea más
             efectiva</ion-label>
           <ion-item>
-            <app-input-tags [tags]="negocioTO.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
+            <app-input-tags [tipo]="true" [tags]="negocioTO.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
           </ion-item>
           <ion-label>Horario de atención <span style="color: red">*</span></ion-label>
           <ion-item>
@@ -467,7 +469,7 @@
               <div>Seleccione el campo métodos de pago</div>
             </div>
           </ion-card>
-          <ion-card  *ngIf="negocioTO.id_negocio !== null">
+          <ion-card *ngIf="negocioTO.id_negocio !== null">
             <app-mercado-pago [idNegocio]="negocioTO.id_negocio"></app-mercado-pago>
           </ion-card>
           <ion-item>

@@ -1,20 +1,12 @@
 <ion-header>
   <ion-toolbar class="tolbar">
     <ion-buttons slot="start" text="">
-      <ion-back-button
-        defaultHref="tabs/home/solicitudes"
-        text=""
-      ></ion-back-button>
+      <ion-back-button defaultHref="tabs/home/solicitudes" text=""></ion-back-button>
     </ion-buttons>
     <ion-title>
+      <span *ngIf="actualTO.id_persona_solicitud === null || actualTO.id_persona_solicitud === undefined">Agregar</span>
       <span
-        *ngIf="actualTO.id_persona_solicitud === null || actualTO.id_persona_solicitud === undefined"
-        >Agregar</span
-      >
-      <span
-        *ngIf="actualTO.id_persona_solicitud !== null && actualTO.id_persona_solicitud !== undefined"
-        >Modificar</span
-      >
+        *ngIf="actualTO.id_persona_solicitud !== null && actualTO.id_persona_solicitud !== undefined">Modificar</span>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -23,67 +15,36 @@
 <ion-content *ngIf="!loader">
   <ion-card style="margin-bottom: 15%">
     <ion-card-content>
-      <ion-label color="dark" class="ion-justify-content-evenly"
-            ><strong>**</strong> Solicitar la contratación de servicios o la adquisición de materiales de almacén o materiales de consumo.<strong>**</strong> 
+      <ion-label color="dark" class="ion-justify-content-evenly"><strong>**</strong> Solicitar la contratación de
+        servicios o la adquisición de materiales de almacén o materiales de consumo.<strong>**</strong>
       </ion-label>
-      <form
-        #formVariable="ngForm"
-        class="form-horizontal"
-        (ngSubmit)="guardar(formVariable)"
-      >
+      <form #formVariable="ngForm" class="form-horizontal" (ngSubmit)="guardar(formVariable)">
         <ion-list>
           <ion-item>
-            <ion-label position="stacked"
-              >¿Qué esta buscando o requiriendo?</ion-label
-            >
-            <ion-input
-              id="idCompNombre"
-              name="idCompNombre"
-              #compSolicitud="ngModel"
-              [(ngModel)]="actualTO.solicitud"
-              required
-            ></ion-input>
+            <ion-label position="stacked">¿Qué esta buscando o requiriendo?</ion-label>
+            <ion-input id="idCompNombre" name="idCompNombre" #compSolicitud="ngModel" [(ngModel)]="actualTO.solicitud"
+              required></ion-input>
           </ion-item>
-          <div
-            *ngIf="compSolicitud.touched  && compSolicitud.invalid"
-            class="alert"
-          >
+          <div *ngIf="compSolicitud.touched  && compSolicitud.invalid" class="alert">
             <div *ngIf="compSolicitud.errors.required">
               Agregue nombre de su requerimiento de compra
             </div>
           </div>
-          <ion-item>
-            <ion-label position="stacked"
-              >Escriba las palabras (tags) que describen a lo que
-              busca:</ion-label
-            >
-            <app-input-tags
-              [tags]="actualTO.tags"
-              (_enviarTags)="agregarTags($event)"
-            ></app-input-tags>
+          <ion-item *ngIf="!loader">
+            <app-input-tags [tipo]="true" [tags]="actualTO.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
           </ion-item>
           <ion-item>
-            <ion-label position="stacked"
-              >Los siguientes campos ayudarán a clasificar y que encuentren tu
+            <ion-label position="stacked">Los siguientes campos ayudarán a clasificar y que encuentren tu
               requerimiento de compra más rapido.
             </ion-label>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Tipo de Negocio</ion-label>
-            <ion-select
-              placeholder="{{ tipoNegoAux }}"
-              name="idtipoNegocio"
-              required
-              #tipoNegocio="ngModel"
-              [(ngModel)]="actualTO.id_tipo_negocio"
-              ok-text="Ok"
-              cancel-text="Cancelar"
-              (ionChange)="categoriaPrincipal($event)"
-            >
+            <ion-select placeholder="{{ tipoNegoAux }}" name="idtipoNegocio" required #tipoNegocio="ngModel"
+              [(ngModel)]="actualTO.id_tipo_negocio" ok-text="Ok" cancel-text="Cancelar"
+              (ionChange)="categoriaPrincipal($event)">
               <ng-container *ngFor="let item of listTipoNegocio">
-                <ion-select-option [value]="item.id_tipo_negocio"
-                  >{{item.nombre}}</ion-select-option
-                >
+                <ion-select-option [value]="item.id_tipo_negocio">{{item.nombre}}</ion-select-option>
               </ng-container>
             </ion-select>
           </ion-item>
@@ -92,19 +53,11 @@
           </div>
           <ion-item>
             <ion-label position="stacked">Negocio</ion-label>
-            <ion-select
-              placeholder="{{ negoAux }}"
-              name="idNegocio"
-              required
-              #idNegocio="ngModel"
-              [(ngModel)]="actualTO.id_negocio"
-              ok-text="Ok"
-              cancel-text="Cancelar"
-            >
+            <ion-select placeholder="{{ negoAux }}" name="idNegocio" required #idNegocio="ngModel"
+              [(ngModel)]="actualTO.id_negocio" ok-text="Ok" cancel-text="Cancelar">
               <ng-container *ngFor="let item of listMiNegocio">
-                <ion-select-option *ngIf="item.activo !=0 && item.activo != '0'" [value]="item.id_negocio"
-                  >{{item.nombre_comercial}}</ion-select-option
-                >
+                <ion-select-option *ngIf="item.activo !=0 && item.activo != '0'"
+                  [value]="item.id_negocio">{{item.nombre_comercial}}</ion-select-option>
               </ng-container>
             </ion-select>
           </ion-item>
@@ -113,19 +66,10 @@
           </div>
           <ion-item>
             <ion-label position="stacked">Categoría</ion-label>
-            <ion-select
-              placeholder="{{ tipoGiroAux }}"
-              name="idtipoGiro"
-              required
-              #tipoGiro="ngModel"
-              ok-text="Ok"
-              cancel-text="Cancelar"
-              [(ngModel)]="actualTO.id_giro"
-              (ionChange)="subcategorias($event)"
-            >
+            <ion-select placeholder="{{ tipoGiroAux }}" name="idtipoGiro" required #tipoGiro="ngModel" ok-text="Ok"
+              cancel-text="Cancelar" [(ngModel)]="actualTO.id_giro" (ionChange)="subcategorias($event)">
               <ng-container *ngFor="let item of listCategorias">
-                <ion-select-option [value]="item.id_giro"
-                  >{{item.nombre}}
+                <ion-select-option [value]="item.id_giro">{{item.nombre}}
                 </ion-select-option>
               </ng-container>
             </ion-select>
@@ -135,18 +79,10 @@
           </div>
           <ion-item>
             <ion-label position="stacked">SubCategoría</ion-label>
-            <ion-select
-              placeholder="{{ tipoSubAux }}"
-              name="idtipoSubCategorias"
-              required
-              #tipoSubCategoria="ngModel"
-              ok-text="Ok"
-              cancel-text="Cancelar"
-              [(ngModel)]="actualTO.id_categoria"
-            >
+            <ion-select placeholder="{{ tipoSubAux }}" name="idtipoSubCategorias" required #tipoSubCategoria="ngModel"
+              ok-text="Ok" cancel-text="Cancelar" [(ngModel)]="actualTO.id_categoria">
               <ng-container *ngFor="let item of listaSubCategorias">
-                <ion-select-option [value]="item.id_categoria"
-                  >{{item.nombre}}
+                <ion-select-option [value]="item.id_categoria">{{item.nombre}}
                 </ion-select-option>
               </ng-container>
             </ion-select>
@@ -156,31 +92,15 @@
           </div>
           <ion-item>
             <ion-label position="stacked">Descripción:</ion-label>
-            <ion-input
-              id="descipcion"
-              name="descipcion"
-              type="text"
-              #compValor="ngModel"
-              [(ngModel)]="actualTO.descripcion"
-              required
-            ></ion-input>
+            <ion-input id="descipcion" name="descipcion" type="text" #compValor="ngModel"
+              [(ngModel)]="actualTO.descripcion" required></ion-input>
           </ion-item>
           <ion-item *ngIf="mostrarAfiliacion">
-            <ion-label position="stacked"
-              >Mostrar requerimiento de compra solo para:</ion-label
-            >
-            <ion-select
-              placeholder="{{ tipoOrg }}"
-              name="organizaciones"
-              #organizaciones="ngModel"
-              ok-text="Ok"
-              cancel-text="Cancelar"
-              [(ngModel)]="actualTO.organizaciones"
-              multiple
-            >
+            <ion-label position="stacked">Mostrar requerimiento de compra solo para:</ion-label>
+            <ion-select placeholder="{{ tipoOrg }}" name="organizaciones" #organizaciones="ngModel" ok-text="Ok"
+              cancel-text="Cancelar" [(ngModel)]="actualTO.organizaciones" multiple>
               <ng-container *ngFor="let item of lstOrganizaciones">
-                <ion-select-option [value]="item.id_organizacion"
-                  >{{item.nombre}}
+                <ion-select-option [value]="item.id_organizacion">{{item.nombre}}
                 </ion-select-option>
               </ng-container>
             </ion-select>
@@ -191,38 +111,21 @@
             </div>
           </div>
           <br />
-          <ion-label
-            >Los siguientes campos ayudarán a que puedan contactarte</ion-label
-          >
+          <ion-label>Los siguientes campos ayudarán a que puedan contactarte</ion-label>
           <ion-item>
             <ion-label position="stacked">Número de celular:</ion-label>
-            <ion-input
-              id="idCompTelefono"
-              name="idCompTelefono"
-              type="tel"
-              #compTelefono="ngModel"
-              [(ngModel)]="actualTO.telefono"
-              required
-            ></ion-input>
+            <ion-input id="idCompTelefono" name="idCompTelefono" type="tel" #compTelefono="ngModel"
+              [(ngModel)]="actualTO.telefono" required></ion-input>
           </ion-item>
-          <div
-            *ngIf="compTelefono.touched  && compTelefono.invalid"
-            class="alert"
-          >
+          <div *ngIf="compTelefono.touched  && compTelefono.invalid" class="alert">
             <div *ngIf="compTelefono.errors.required">
               Agregue un número de celular
             </div>
           </div>
           <ion-item>
             <ion-label position="stacked">Correo electrónico</ion-label>
-            <ion-input
-              id="idCompCorreo"
-              name="idCompCorreo"
-              type="email"
-              #compCorreo="ngModel"
-              [(ngModel)]="actualTO.correo"
-              required
-            ></ion-input>
+            <ion-input id="idCompCorreo" name="idCompCorreo" type="email" #compCorreo="ngModel"
+              [(ngModel)]="actualTO.correo" required></ion-input>
           </ion-item>
           <div *ngIf="compCorreo.touched  && compCorreo.invalid" class="alert">
             <div *ngIf="compCorreo.errors.required">
@@ -233,22 +136,12 @@
           <span>¿Para qué lugar es esta solicitud?</span>
           <ion-item>
             <ion-label position="stacked">Estado</ion-label>
-            <ion-select
-              [disabled]="btnEstado"
-              ok-text="Ok"
-              cancel-text="Cancelar"
-              name="estado"
-              required
-              #compEstado="ngModel"
-              [(ngModel)]="actualTO.det_domicilio.id_estado"
-              [(ngModel)]="actualTO.det_domicilio.id_estado"
-              (ionChange)="get_list_cat_municipio($event)"
-              placeholder="{{ estaAux }}"
-            >
+            <ion-select [disabled]="btnEstado" ok-text="Ok" cancel-text="Cancelar" name="estado" required
+              #compEstado="ngModel" [(ngModel)]="actualTO.det_domicilio.id_estado"
+              [(ngModel)]="actualTO.det_domicilio.id_estado" (ionChange)="get_list_cat_municipio($event)"
+              placeholder="{{ estaAux }}">
               <ng-container *ngFor="let e of list_cat_estado">
-                <ion-select-option [value]="e.id_estado"
-                  >{{e.nombre}}</ion-select-option
-                >
+                <ion-select-option [value]="e.id_estado">{{e.nombre}}</ion-select-option>
               </ng-container>
             </ion-select>
           </ion-item>
@@ -257,17 +150,9 @@
           </div>
           <ion-item>
             <ion-label position="stacked">Municipio</ion-label>
-            <ion-select
-              [disabled]="btnMuncipio"
-              ok-text="Ok"
-              cancel-text="Cancelar"
-              name="municipio"
-              required
-              #compMunicipio="ngModel"
-              [(ngModel)]="actualTO.det_domicilio.id_municipio"
-              (ionChange)="get_list_cat_localidad($event)"
-              placeholder="{{ muniAux }}"
-            >
+            <ion-select [disabled]="btnMuncipio" ok-text="Ok" cancel-text="Cancelar" name="municipio" required
+              #compMunicipio="ngModel" [(ngModel)]="actualTO.det_domicilio.id_municipio"
+              (ionChange)="get_list_cat_localidad($event)" placeholder="{{ muniAux }}">
               <ng-container *ngFor="let mun of list_cat_municipio">
                 <ion-select-option [value]="mun.id_municipio">
                   {{mun.nombre}}
@@ -280,144 +165,80 @@
           </div>
           <ion-item>
             <ion-label position="stacked">Localidad</ion-label>
-            <ion-select
-              placeholder="{{ locaAux }}"
-              [disabled]="btnLocalidad"
-              ok-text="Ok"
-              cancel-text="Cancelar"
-              name="localidad"
-              required
-              #compLocalidad="ngModel"
-              [(ngModel)]="actualTO.det_domicilio.id_localidad"
-            >
+            <ion-select placeholder="{{ locaAux }}" [disabled]="btnLocalidad" ok-text="Ok" cancel-text="Cancelar"
+              name="localidad" required #compLocalidad="ngModel" [(ngModel)]="actualTO.det_domicilio.id_localidad">
               <ng-container *ngFor="let loc of list_cat_localidad">
                 <ion-select-option [value]="loc.id_localidad">
-                  {{loc.nombre}}</ion-select-option
-                >
+                  {{loc.nombre}}</ion-select-option>
               </ng-container>
             </ion-select>
           </ion-item>
           <div *ngIf="compLocalidad.invalid" class="alert">
             <div>Seleccione una Localidad</div>
           </div>
-          <br/>
-          <ion-button
-          size="small"
-          class="bg-naranja"
-          type="button"
-          (click)="getAddress()"
-        >
-          <ion-icon name="navigate-circle-outline"></ion-icon>
-          Buscar dirección
-        </ion-button>
           <br />
-          <ion-label
-            >Selecciona una ubicación<span style="color: red">*</span
-            >:</ion-label
-          >
+          <ion-button size="small" class="bg-naranja" type="button" (click)="getAddress()">
+            <ion-icon name="navigate-circle-outline"></ion-icon>
+            Buscar dirección
+          </ion-button>
+          <br />
+          <ion-label>Selecciona una ubicación<span style="color: red">*</span>:</ion-label>
           <ion-grid>
             <ion-row>
               <ion-col>
                 <div id="mapId" style="height: 200px"></div>
               </ion-col>
             </ion-row>
-            <ion-button
-              size="small"
-              class="bg-naranja"
-              type="button"
-              (click)="localizacionTiempo(1)"
-            >
+            <ion-button size="small" class="bg-naranja" type="button" (click)="localizacionTiempo(1)">
               <ion-icon name="navigate-circle-outline"></ion-icon>
               Ubicación Actual
             </ion-button>
           </ion-grid>
-          <ion-label class="ion-text-center"
-            >Imagen de lo que buscas o solicitas:</ion-label
-          >
+          <ion-label class="ion-text-center">Imagen de lo que buscas o solicitas:</ion-label>
           <br />
-          <ion-label class="ion-text-center"
-            >Puedes subir tu imagen o crearla con nuestro editor. Recuerda que
-            las medidas son 500 x 500 pixeles.</ion-label
-          >
+          <ion-label class="ion-text-center">Puedes subir tu imagen o crearla con nuestro editor. Recuerda que
+            las medidas son 500 x 500 pixeles.</ion-label>
           <ion-item class="ion-text-center" *ngIf="blnImgCuadrada">
-            <div
-              class="punteado"
-              data-toggle="tooltip"
-              data-placement="right"
-              title="Agregar una imagen relacionado con lo que busca o solicita (500 x 500 pixeles)"
-            >
+            <div class="punteado" data-toggle="tooltip" data-placement="right"
+              title="Agregar una imagen relacionado con lo que busca o solicita (500 x 500 pixeles)">
               <div style="margin-top: 67px"></div>
             </div>
           </ion-item>
           <div *ngIf="!blnImgCuadrada">
-            <div
-              style="
+            <div style="
                 display: flex;
                 justify-content: center;
                 align-items: center;
-              "
-            >
+              ">
               <div class="contenido">
-                <img
-                  style="width: 200px"
-                  class="image"
-                  *ngIf="actualTO.imagen !== undefined"
-                  src="{{actualTO.imagen.archivo_64}}"
-                  alt="Falla al cargar imagen"
-                  width="200"
-                  height="200"
-                />
-                <img
-                  style="width: 200px"
-                  class="image"
+                <img style="width: 200px" class="image" *ngIf="actualTO.imagen !== undefined"
+                  src="{{actualTO.imagen.archivo_64}}" alt="Falla al cargar imagen" width="200" height="200" />
+                <img style="width: 200px" class="image"
                   *ngIf="actualTO.url_imagen !== undefined && actualTO.imagen === undefined"
-                  src="{{actualTO.url_imagen}}"
-                  alt="Falla al cargar imagen"
-                  width="200"
-                  height="200"
-                />
+                  src="{{actualTO.url_imagen}}" alt="Falla al cargar imagen" width="200" height="200" />
               </div>
             </div>
           </div>
           <div class="avatar-upload">
             <div class="avatar-edit">
-              <input
-                #inputTarjeta
-                id="cuadrado"
-                type="file"
-                accept="image/*"
-                name="img_promo"
-                (change)="subir_imagen_cuadrada($event)"
-                required
-              />
+              <input #inputTarjeta id="cuadrado" type="file" accept="image/*" name="img_promo"
+                (change)="subir_imagen_cuadrada($event)" required />
               <label for="cuadrado">
-                <ion-icon
-                  name="camera-outline"
-                  style="
+                <ion-icon name="camera-outline" style="
                     position: relative;
                     top: 7px;
                     font-size: 18px;
                     color: black;
-                  "
-                ></ion-icon>
+                  "></ion-icon>
               </label>
             </div>
           </div>
         </ion-list>
-        <ion-button
-          expand="block"
-          type="submit"
-          class="bg-naranja"
-          [disabled]="formVariable.invalid"
-        >
+        <ion-button expand="block" type="submit" class="bg-naranja" [disabled]="formVariable.invalid">
           <span
-            *ngIf="actualTO.id_persona_solicitud === null || actualTO.id_persona_solicitud === undefined"
-            >Guardar</span
-          >
+            *ngIf="actualTO.id_persona_solicitud === null || actualTO.id_persona_solicitud === undefined">Guardar</span>
           <span
-            *ngIf="actualTO.id_persona_solicitud !== null && actualTO.id_persona_solicitud !== undefined"
-            >Actualizar</span
-          >
+            *ngIf="actualTO.id_persona_solicitud !== null && actualTO.id_persona_solicitud !== undefined">Actualizar</span>
         </ion-button>
       </form>
     </ion-card-content>

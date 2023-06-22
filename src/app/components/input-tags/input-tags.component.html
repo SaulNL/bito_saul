@@ -1,19 +1,13 @@
+<ion-label style="color: #000;">Tags:</ion-label>
 <div class="container">
-  <!-- <div class="tag-container" style="background-color: white;">
-  </div>
-  <ion-list>
-    <ion-item>
-      <ion-label class="ion-text-wrap" position="floating">Escriba las palabras (tags):</ion-label>
-      <ion-input placeholder="Use (,) para crear un tag" class="input"></ion-input>
-    </ion-item>
-  </ion-list> -->
 
-  <p>Ayudanos a que la busqueda de tu evento se mas efectiva</p>
   <div class="tags" *ngIf="tagActual[0] != ''">
     <ion-chip *ngFor="let tag of tagActual; let i = index">
       <ion-label>{{tag}}</ion-label>
       <ion-icon (click)="eliminarTag(i)" name="close-circle-outline"></ion-icon>
     </ion-chip>
   </div>
-  <ion-input placeholder="Agregar etiqueta" [(ngModel)]="nuevaTag" (keydown)="agregartag($event)"></ion-input>
+  <ion-input placeholder="{{placeHolder}}" [(ngModel)]="nuevaTag" (keyup)="agregartag($event)"></ion-input>
+  <br>
 </div>
+<span>Ayudenos a mejorar la busqueda (Ingrese tags)</span>
