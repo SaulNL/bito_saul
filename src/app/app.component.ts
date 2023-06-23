@@ -31,6 +31,18 @@ export class AppComponent {
     public versionActualSistema: number;
     public temporal: DeviceInfoModel;
     public inicio: boolean;
+    public rutas = [
+        "/tabs/home?special=true",
+        "/tabs/home/conocenos",
+        "/tabs/home",
+        "/tabs/home/negocio",
+        "/tabs/home/solicitudes",
+        "/tabs/home/promociones",
+        "/tabs/mis-favoritos",
+        "/tabs/home/preferencias",
+        "/tabs/mis-eventos",
+        "/tabs/home/ser-proveedor"
+    ]
 
     constructor(
         private platform: Platform,
@@ -56,7 +68,7 @@ export class AppComponent {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 console.log("url: ", event.url)
-                this.inicio = event.url == "/tabs/home?special=true" || event.url == "/tabs/home/conocenos" || event.url == "/tabs/home" || event.url == "/tabs/home/negocio" || event.url == "/tabs/home/solicitudes" || event.url == "/tabs/home/promociones" || event.url == "/tabs/mis-favoritos" || event.url == "/tabs/home/preferencias" || event.url == "/tabs/mis-eventos" || event.url == "/tabs/home/ser-proveedor" ? true : false;
+                this.inicio = this.rutas.find(element => element == event.url) ? true : false;
             }
         });
     }
