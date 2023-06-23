@@ -1,8 +1,9 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    <ion-title>
-      Quiero Vender
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="menuUsuario"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Quiero vender</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding" *ngIf="loader" fullscreen>
@@ -94,7 +95,7 @@
               <div *ngIf="correo.errors.required">el correo materno es requerido</div>
             </div>
             <ion-item>
-              <ion-label position="stacked">Sexo</ion-label>
+              <ion-label position="stacked">Sexo <span style="color: red">*</span></ion-label>
               <ion-select ok-text="Ok" cancel-text="Cancelar" #sexo="ngModel" name="sexo"
                 [(ngModel)]="proveedorTO.genero" required>
                 <ion-select-option *ngFor="let s of sexos" [value]="s.id">{{s.sexo}}</ion-select-option>
@@ -119,14 +120,14 @@
               </div>
             </div>
             <ion-item>
-              <ion-label position="stacked">Fecha de nacimiento</ion-label>
+              <ion-label position="stacked">Fecha de nacimiento <span style="color: red">*</span></ion-label>
               <ion-datetime displayFormat="D/MM/YYYY" value="{{proveedorTO.fecha_nacimiento }}"
-                (ionChange)="convercionFechaNac($event)" required></ion-datetime>
+                            (ionChange)="convercionFechaNac($event)" required></ion-datetime>
             </ion-item>
           </ion-list>
           <ion-row>
             <ion-col size="12">
-              <ion-button expand="full" type="submit" class="bg-naranja" [disabled]="formBasicos.invalid">Siguente
+              <ion-button expand="full" type="submit" class="bg-naranja" [disabled]="formBasicos.invalid || proveedorTO.fecha_nacimiento == null">Siguente
               </ion-button>
             </ion-col>
           </ion-row>

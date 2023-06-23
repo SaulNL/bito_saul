@@ -144,6 +144,7 @@ export class ModalSeleccionarPreferenciasComponent implements OnInit {
     return indice
   }
   limpiarCategoria(){
+    this.totalCategoriasSeleccionadas = null;
     this.listaSubCategoriesColor.forEach((cat, index) => {
       if(cat.active != undefined){
         cat.active="false"
@@ -151,7 +152,7 @@ export class ModalSeleccionarPreferenciasComponent implements OnInit {
         let indiceBorrar = this.buscarIndex(this.subcategorias,cat.id_categoria)
         this.subcategorias.splice(indiceBorrar, 1);
       }      
-    });    
+    });
 
   }
 

@@ -15,6 +15,7 @@ import { PersonaService } from '../../api/persona.service';
 import { Router } from '@angular/router';
 import { SessionUtil } from '../../utils/sessionUtil';
 import { LoadingController } from '@ionic/angular';
+import {MenuController} from "@ionic/angular";
 
 @Component({
   selector: 'app-quiero-vender',
@@ -73,7 +74,8 @@ export class QuieroVenderPage implements OnInit {
     private servicioPersona: PersonaService,
     private _router: Router,
     private sesionUtl: SessionUtil,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private menuCtrl: MenuController
   ) {
 
     this.proveedorTO = new MsPersonaModel();
@@ -197,6 +199,10 @@ export class QuieroVenderPage implements OnInit {
         };
       }
     }
+  }
+
+  ionViewWillEnter() {
+    this.menuCtrl.close();
   }
 
   async abrirModal(evento, width, heigh) {

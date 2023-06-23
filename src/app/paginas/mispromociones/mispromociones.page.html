@@ -45,8 +45,8 @@
 									</ion-buttons>
 								</ion-item>
 							</div>
-							<div class="boton-ver-mas ion-justify-content-center ion-text-center">
-								<ion-button (click)="mostrarRegistros()">
+							<div *ngIf="listaPromoOriginal != null && listaPromoOriginal != 0" class="boton-ver-mas ion-justify-content-center ion-text-center">
+								<ion-button fill="outline" (click)="mostrarRegistros()">
 									{{ mostrarNegocios < listaPromoOriginal.length ? 'Ver más' : 'Ver menos' }}
 										</ion-button>
 							</div>
