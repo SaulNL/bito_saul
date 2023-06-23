@@ -21,16 +21,13 @@ export class InputTagsComponent implements OnInit {
 
   ngOnInit() {
     this.asignarValoresTAgs()
-    console.log("tipo", this.tipo);
     this.placeHolder = this.tipo == false ? "Enter o (,) para guardar la tag" : "(,) para guardar la tag";
   }
 
   agregartag(event) {
     const value = event.target.value.trim();
-    console.log(value)
     if (value.endsWith(',') || event.key === 'Enter') {
       let conComa = (event.target as HTMLInputElement).value;
-      console.log(conComa)
       if (conComa != "") {
         this.nuevaTag = conComa.replace(/,/g, "")
         if (this.tagActual[0] == '') {
@@ -56,11 +53,9 @@ export class InputTagsComponent implements OnInit {
         } else {
           stringTag += `${element}, `
         }
-        console.log(stringTag)
       })
       this.tags = stringTag;
     }
-    console.log(typeof this.tags, this.tags)
     this.tagActual = this.tags.split(", ")
   }
   eliminarTag(index) {

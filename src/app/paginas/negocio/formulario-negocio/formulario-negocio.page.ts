@@ -16,7 +16,7 @@ import moment from 'moment';
 import { CatLocalidadModel } from './../../../Modelos/CatLocalidadModel';
 import { CatMunicipioModel } from './../../../Modelos/CatMunicipioModel';
 import { CatEstadoModel } from './../../../Modelos/CatEstadoModel';
-import { Map, tileLayer, marker, Marker} from 'leaflet';
+import { Map, tileLayer, marker, Marker } from 'leaflet';
 import { Plugins } from '@capacitor/core';
 const { Geolocation } = Plugins;
 import { GeneralServicesService } from './../../../api/general-services.service';
@@ -25,6 +25,7 @@ import { CatDistintivosModel } from 'src/app/Modelos/CatDistintivosModel';
 import { SeleccionarSucripcionComponent } from 'src/app/components/seleccionar-suscripcion/seleccionar-suscripcion.component';
 import { DetDomicilioModel } from 'src/app/Modelos/DetDomicilioModel';
 import { VigenciaPdfDistintivosComponent } from 'src/app/components/vigencia-pdf-distintivos/vigencia-pdf-distintivos.component';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-formulario-negocio',
@@ -229,7 +230,7 @@ export class FormularioNegocioPage implements OnInit {
         const datos = JSON.parse(params.special);
         this.negocioTO = datos.info;
         this.obtenerFeatures(this.negocioTO.id_negocio);
-        // this.buscarNegocio(this.negocioTO.id_negocio)
+        this.buscarNegocio(this.negocioTO.id_negocio)
         this.fotografiasArray = this.negocioTO.fotografias;
 
         this.buscardatos();
@@ -253,7 +254,7 @@ export class FormularioNegocioPage implements OnInit {
     });
 
 
-    this.buscarNegocio(this.negocioTO.id_negocio);
+    // this.buscarNegocio(this.negocioTO.id_negocio);
     this.metodosPago = [
       { id: 1, metodo: 'Transferencia Electrónica', value: this.negocioTO.tipo_pago_transferencia },
       { id: 2, metodo: 'Tajeta de Crédito', value: this.negocioTO.tipo_pago_tarjeta_credito },
@@ -286,10 +287,12 @@ export class FormularioNegocioPage implements OnInit {
           serviciosTags = datosNegocio.serviciosTags;
           this.negocioTO.tags = JSON.stringify(serviciosTags);
         }
-        if (this.iden === 1) {
-          productoTags = datosNegocio.productoTags;
-          this.negocioTO.tags = JSON.stringify(productoTags);
-        }
+        // if (this.iden === 1) {
+        //   productoTags = datosNegocio.productoTags;
+        //   console.log("antes de guardarTags", productoTags)
+        //   this.negocioTO.tags = JSON.stringify(productoTags);
+        //   console.log("tags2", this.negocioTO)
+        // }
         this.listaVista = repsuesta.data.categorias !== undefined ? repsuesta.agrupados : [];
 
         //console.log('Dataproductos' + JSON.stringify(this.listaVista));
@@ -483,6 +486,7 @@ export class FormularioNegocioPage implements OnInit {
           }
         },
         error => {
+          console.log(error)
         }
       );
     }
@@ -742,7 +746,6 @@ export class FormularioNegocioPage implements OnInit {
       }
     });
     await modal.present();
-   
   }
 
   agregarTags(tags: string[]) {
@@ -819,7 +822,6 @@ export class FormularioNegocioPage implements OnInit {
 
           elemento.distintivo.fc_vencimiento = elemento.fc_vencimiento;
           elemento.distintivo.url_comprobante_vigencia = elemento.url_comprobante_vigencia;
-          
           this.distintivosSeleccionados.push(elemento.distintivo);
         }
       });
@@ -1315,7 +1317,7 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioGuardar.distintivos = [];
 
     this.distintivosSeleccionados.forEach(element => {
-      let {id_distintivo, fc_vencimiento, url_comprobante_vigencia, archivo} = element;
+      let { id_distintivo, fc_vencimiento, url_comprobante_vigencia, archivo } = element;
 
       let distintivo = {};
 
@@ -1326,7 +1328,12 @@ export class FormularioNegocioPage implements OnInit {
         distintivo = {
           id: id_distintivo,
           fecha_vencimiento: fc_vencimiento,
-          url_archivo: url_comprobante_vigencia
+          archivo: {
+            archivo_64: null,
+            nombre_archivo: null,
+            url_archivo: url_comprobante_vigencia
+          }
+
         }
       } else {
         distintivo = {
@@ -1334,7 +1341,7 @@ export class FormularioNegocioPage implements OnInit {
           fecha_vencimiento: fc_vencimiento,
           archivo
         }
-      }      
+      }
       this.negocioGuardar.distintivos.push(distintivo)
     });
 

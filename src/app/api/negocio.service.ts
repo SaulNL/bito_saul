@@ -195,34 +195,36 @@ export class NegocioService {
     buscarNegocio(idNegocio: any): Observable<any> {
         const body = JSON.stringify({ id: idNegocio });
         this._http.setDataSerializer('utf8');
-        return from(this._http.post(
-            this.url + 'api/buscar/negocio',
-            body, AppSettings.getHeadersToken())
-            .then((data) => {
-                return JSON.parse(data.data);
-            })
+        return from(this._http.post(this.url + 'api/buscar/negocio', body, AppSettings.getHeadersToken()).then((data) => {
+            let respuesta;
+            respuesta = JSON.parse(data.data)
+            return JSON.parse(data.data);
+        })
             .catch((error) => {
                 return error;
             }));
     }
 
     getUrlNegocioById(id: number) {
-        const body = JSON.stringify({ idNegocio: id });
-        this._http.setDataSerializer('utf8');
-        return from(
-            this._http.post(
-                this.url + 'api/service/urlNegocios', body, AppSettings.getHeaders()
-            ).then(
-                (data) => {
-                    return JSON.parse(data.data);
-                }
-            ).catch(
-                (error) => {
-                    return error;
-                }
-            )
-        );
+        const body = JSON.stringify({ id: id });
+        return this.http.post(
+            this.url + 'api/buscar/negocio', body,
+            { headers: AppSettings.getHeadersToken() }
+        ).pipe(map(res => {
+            return res;
+        }));
     }
+
+    // buscarNegocio(idNegocio: any): Observable < any > {
+    //     const body = JSON.stringify({ id: idNegocio });
+    //     return this.http.post(
+    //         this.url + 'api/buscar/negocio', body,
+    //         { headers: AppSettingsService.getHeadersToken() }
+    //     ).pipe(map(res => {
+    //         return res;
+    //     }));
+    // }
+
 
     obtenerComentariosNegocio(idNegocio: number): Observable<any> {
         const body = JSON.stringify({ id_negocio: idNegocio });
@@ -534,7 +536,7 @@ export class NegocioService {
 
 
     solicitarValidacionNegocio(idNegocio: any): Observable<any> {
-        console.log("Body: "+idNegocio)
+        console.log("Body: " + idNegocio)
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/validar/validacionNegocio',

@@ -26,12 +26,9 @@
         </div>
 
         <div *ngIf="!loaderPdf" class="contenedor-pdf">
-          <div class="icono-pdf">
+          <div class="icono-pdf" [style.background-color]="pdfBg">
             <ion-button (click)="abrirPdf()" fill="clear">
-              <ion-icon
-                name="document-text-outline"
-                style="font-size: 30px; color: white;"
-              ></ion-icon>
+              <ion-icon name="document-text-outline" style="font-size: 30px; color: white;"></ion-icon>
             </ion-button>
 
           </div>
@@ -39,24 +36,25 @@
           <small id="emailHelp" class="form-text text-muted">Tamaño máximo de archivo 5 MB</small>
         </div>
 
-          <div *ngIf="!loaderPdf" style="display: flex; justify-content: center; align-items: center" >
-            <label
-              for="imagenCarta"
-            >
-              <div class="boton" *ngIf="distintivo.url_comprobante_vigencia == null">Agregar</div>
-              <div class="boton" *ngIf="distintivo.url_comprobante_vigencia != null">Editar</div>
+        <div class="botones">
+          <div *ngIf="!loaderPdf" style="display: flex; justify-content: center; align-items: center">
+            <label for="imagenCarta">
+              <div class="boton" *ngIf="distintivo.url_comprobante_vigencia == null &&  distintivo.archivo == null">
+                Agregar</div>
+              <div class="boton" *ngIf="distintivo.url_comprobante_vigencia != null || distintivo.archivo != null">
+                Editar</div>
             </label>
 
-            <input
-              type="file"
-              id="imagenCarta"
-              hidden
-              accept="application/pdf"
-              (change)="subirCarta($event)"
-            />
+            <input type="file" id="imagenCarta" hidden accept="application/pdf" (change)="subirCarta($event)" />
+          </div>
+
+          <div class="eliminarCarta" *ngIf="distintivo.url_comprobante_vigencia != null || distintivo.archivo != null"
+            (click)="eliminarCarta()">
+            <div class="boton" style="height: 36px; width: 53px;">Eliminar</div>
+          </div>
         </div>
       </div>
-          
+
     </ion-card-content>
   </ion-card>
 </ion-content>

@@ -18,13 +18,15 @@ export class VigenciaPdfDistintivosComponent implements OnInit {
 
   loaderPdf: boolean = false;
   carta: any
+  public pdfBg: string;
 
   constructor(
-    private notificaciones: ToadNotificacionService, 
-    private _utils_cls: UtilsCls, 
+    private notificaciones: ToadNotificacionService,
+    private _utils_cls: UtilsCls,
     private modalController: ModalController) { }
 
-  ngOnInit() {    
+  ngOnInit() {
+    this.pdfBg = this.distintivo.url_comprobante_vigencia != null || this.distintivo.archivo != null ? "#00b347" : "#df5555";
   }
 
   abrirPdf() {
@@ -37,7 +39,7 @@ export class VigenciaPdfDistintivosComponent implements OnInit {
   }
 
   subirCarta(event) {
-    
+
     const fileName = event.target.files[0].name;
     const file = event.target.files[0];
 
@@ -51,12 +53,19 @@ export class VigenciaPdfDistintivosComponent implements OnInit {
         archivo.nombre_archivo = this._utils_cls.convertir_nombre(fileName);
         archivo.archivo_64 = file64;
         this.distintivo.archivo = archivo;
+        this.pdfBg = this.distintivo.url_comprobante_vigencia != null || this.distintivo.archivo != null ? "#00b347" : "#df5555";
         this.notificaciones.success("¡Archivo agregado con exito!");
 
       });
     } else {
       this.notificaciones.alerta("El archivo sobrepasa los 5 MB");
     }
+  }
+
+  eliminarCarta() {
+    if (this.distintivo.url_comprobante_vigencia) delete this.distintivo.url_comprobante_vigencia;
+    if (this.distintivo.archivo) delete this.distintivo.archivo;
+    this.pdfBg = this.distintivo.url_comprobante_vigencia != null || this.distintivo.archivo != null ? "#00b347" : "#df5555";
   }
 
   cerrarModal() {
