@@ -30,7 +30,7 @@ export class GeneralServicesService {
       }));
   }
   public getMunicipios(id_estado: number): Observable<any> {
-    const body = JSON.stringify({ id_estado: id_estado, conNegocios:1 });
+    const body = JSON.stringify({ id_estado: id_estado, conNegocios: 1 });
     this.http.setDataSerializer("utf8");
     return from(this.http.post(`${this.url}api/catalogo/municipio/list`, body, AppSettings.getHeaders())
       .then((data) => {
@@ -42,7 +42,7 @@ export class GeneralServicesService {
   }
 
   public getMunicipiosAll(id_estado: number): Observable<any> {
-    const body = JSON.stringify({ id_estado: id_estado});
+    const body = JSON.stringify({ id_estado: id_estado });
     this.http.setDataSerializer("utf8");
     return from(this.http.post(`${this.url}api/catalogo/municipio/list`, body, AppSettings.getHeaders())
       .then((data) => {
@@ -54,7 +54,7 @@ export class GeneralServicesService {
   }
 
   public getLocalidad(id_municipio: number): Observable<any> {
-    const body = JSON.stringify({ id_municipio: id_municipio, conNegocios:1 });
+    const body = JSON.stringify({ id_municipio: id_municipio, conNegocios: 1 });
     this.http.setDataSerializer("utf8");
     return from(this.http.post(`${this.url}api/catalogo/localidad/list`, body, AppSettings.getHeaders())
       .then((data) => {
@@ -114,23 +114,22 @@ export class GeneralServicesService {
         return error;
       }));
   }
- /**
-   * Servicio listado de negocios VIP
-   */
+  /**
+    * Servicio listado de negocios VIP
+    */
   obtenerPrincipalVip(): Observable<any> {
     const body = JSON.stringify({});
     this.http.setDataSerializer('utf8');
     return from(this.http.post(
-        this.url + 'api/negocios/vip/obtener',
-        body,  AppSettings.getHeaders())
-        .then((data) => {
-          console.log("NEGOCIOS VIP: " + JSON.stringify(data.data));
-            return JSON.parse(data.data);
-           
-        })
-        .catch((error) => {
-            return error;
-        }));
+      this.url + 'api/negocios/vip/obtener',
+      body, AppSettings.getHeaders())
+      .then((data) => {
+        return JSON.parse(data.data);
+
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
   /**
    * Servicio para obtener el tiempo de espera por sms
@@ -181,9 +180,9 @@ export class GeneralServicesService {
       }));
   }
 
-  obtenerOrganizaciones(idUsuario , idProveedor): Observable<any> {
+  obtenerOrganizaciones(idUsuario, idProveedor): Observable<any> {
     this.http.setDataSerializer("utf8");
-    const body = JSON.stringify({id_usuario:idUsuario,id_proveedor:idProveedor});
+    const body = JSON.stringify({ id_usuario: idUsuario, id_proveedor: idProveedor });
     return from(this.http.post(
       this.url + 'api/catalogo/organizaciones/obtenerTodasActivasUsuario',
       body, AppSettings.getHeadersToken())
@@ -209,27 +208,27 @@ export class GeneralServicesService {
       }));
   }
 
-  features(idNegocio: number):Observable<any>{
-    const body = JSON.stringify({"id" : idNegocio});
+  features(idNegocio: number): Observable<any> {
+    const body = JSON.stringify({ "id": idNegocio });
     this.http.setDataSerializer('utf8');
     return from(this.http.post(`${this.url}api/buscar/caracteristicasnegocio`, body, AppSettings.getHeadersToken())
-    .then((data) => {
-      return JSON.parse(data.data);
-    })
-    .catch((error) => {
-      return error;
-    }));
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 
-  suscripciones():Observable<any>{
+  suscripciones(): Observable<any> {
     const body = JSON.stringify({});
     this.http.setDataSerializer('utf8');
     return from(this.http.post(`${this.url}api/admin/catalogos/obtener/perfilesCaracteristicasActivos`, body, AppSettings.getHeadersToken())
-    .then((data) => {
-      return JSON.parse(data.data);
-    })
-    .catch((error) => {
-      return error;
-    }));
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
   }
 }

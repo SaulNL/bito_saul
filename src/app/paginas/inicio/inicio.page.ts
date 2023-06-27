@@ -125,6 +125,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   favoritos: any[] = [];
   buttonDisabled: boolean;
   public subCAt: boolean;
+  public afi: boolean;
 
   constructor(
     public loadingController: LoadingController,
@@ -144,7 +145,11 @@ export class InicioPage implements OnInit, AfterViewInit {
   ) {
     this.subCAt = localStorage.getItem('subCat') != undefined ? true : false;
     if (this.subCAt) {
-      localStorage.removeItem('subCat')
+      localStorage.removeItem('subCat');
+    }
+    this.afi = localStorage.getItem('afi') != undefined ? true : false;
+    if (this.afi) {
+      localStorage.removeItem('afi');
     }
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
@@ -383,6 +388,10 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.subCAt = localStorage.getItem('subCat') != undefined ? true : false;
     if (this.subCAt) {
       localStorage.removeItem('subCat')
+    }
+    this.afi = localStorage.getItem('afi') != undefined ? true : false;
+    if (this.afi) {
+      localStorage.removeItem('afi');
     }
 
     if (this.isIOS) {
@@ -828,10 +837,12 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   public regresarBitoo() {
-    if (!this.subCAt) {
+    if (!this.subCAt || !this.afi) {
       localStorage.removeItem("todo");
     }
-    localStorage.removeItem("org");
+    if (!this.afi) {
+      localStorage.removeItem("org");
+    }
     localStorage.removeItem("activarTodos");
 
     this.objectSelectAfiliacionPlaza = null;
@@ -864,7 +875,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.filtroActivo = false;
-    if (!this.subCAt) {
+    if (!this.subCAt || !this.afi) {
       localStorage.removeItem("todo");
     }
     const org = localStorage.getItem("org");
@@ -947,7 +958,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   public obtenerPrincipalInicio(nombre?: string) {
     this.isLoading = false;
     this.loaderTop = false
-    if (!this.subCAt) {
+    if (!this.subCAt || !this.afi) {
       localStorage.removeItem("todo");
     }
     this.idTodo = false;

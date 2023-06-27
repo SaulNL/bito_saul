@@ -32,12 +32,12 @@ export class PlazasAfiliacionesComponent implements OnInit {
   public afiliacion: boolean;
   public plaza: boolean;
   public vip: boolean;
-  idProvedor: number=null;
+  idProvedor: number = null;
   listConvenios: AfiliacionPlazaModel[];
   public selectAflPlz: boolean;
   public selectIdAflPlz: number;
   public selectVip: number;
-  
+
   constructor(
     private modalCtr: ModalController,
     private router: Router,
@@ -57,9 +57,9 @@ export class PlazasAfiliacionesComponent implements OnInit {
     this.afiliacion = true;
     this.plaza = false;
     this.vip = false;
-    this.selectAflPlz=false;
-    this.selectIdAflPlz=null;
-    this.selectVip=null;
+    this.selectAflPlz = false;
+    this.selectIdAflPlz = null;
+    this.selectVip = null;
   }
 
   ngOnInit() {
@@ -67,9 +67,9 @@ export class PlazasAfiliacionesComponent implements OnInit {
     //   this.afiliacion = this.validarPermiso.isChecked(this.permisos, 'ver_afiliacion')
     //   this.obtenerOrganizacion();
     // }
-    this.obtenerNegociosVip() 
+    this.obtenerNegociosVip()
     this.obtenerPlazas();
-    if(this.idUsuario!=null){
+    if (this.idUsuario != null) {
       this.obtenerOrganizacion();
     }
   }
@@ -88,33 +88,35 @@ export class PlazasAfiliacionesComponent implements OnInit {
     this.showHidenVip = !change;
   }
   public selectOption(selected: AfiliacionPlazaModel) {
-    this.selectAflPlz=true;
-    this.selectIdAflPlz=selected.id_organizacion;
+    localStorage.setItem('afi', 'afi');
+    this.selectAflPlz = true;
+    this.selectIdAflPlz = selected.id_organizacion;
     const existSelection = localStorage.getItem('org');
     (existSelection) ? localStorage.removeItem('org') : '';
     localStorage.setItem('org', JSON.stringify(selected));
     localStorage.setItem("todo", "todo");
-    setTimeout(()=>{      
-    location.reload();
-  }, 500);
+    setTimeout(() => {
+      location.reload();
+    }, 500);
   }
 
- public selectOptionVip(selected2: NegocioModel) {
-   
+  public selectOptionVip(selected2: NegocioModel) {
+
     this.selectVip = selected2.url_negocio;
-    
+
     const existSelection = localStorage.getItem('vip');
     (existSelection) ? localStorage.removeItem('vip') : '';
     localStorage.setItem('vip', JSON.stringify(selected2));
-    if(this.selectVip != null){
+    if (this.selectVip != null) {
       var promo = this.selectVip;
       this.router.navigate(['/tabs/negocio/' + this.selectVip], {
-            queryParams: { route: true , clickBanner: true, promo:promo}});
+        queryParams: { route: true, clickBanner: true, promo: promo }
+      });
     }
-    
-    setTimeout(()=>{      
+
+    setTimeout(() => {
       this.modalCtr.dismiss();
-  }, 500);
+    }, 500);
 
   }
 
@@ -122,42 +124,42 @@ export class PlazasAfiliacionesComponent implements OnInit {
     this.loaderOrg = false;
     const user = JSON.parse(localStorage.getItem('u_data'));
     const usuario_sistema = JSON.parse(localStorage.getItem("u_sistema"));
-    this.idUsuario=usuario_sistema.id_usuario_sistema
-    
-    if(user.proveedor !=null){
-      this.idProvedor=user.proveedor.id_proveedor;
+    this.idUsuario = usuario_sistema.id_usuario_sistema
+
+    if (user.proveedor != null) {
+      this.idProvedor = user.proveedor.id_proveedor;
     }
-      
-    this.generalService.obtenerOrganizaciones(this.idUsuario,this.idProvedor)
-   .subscribe(
-      response => {
-        if (response.code === 200 ) {
-          
-          this.listAfiliacines = response.data;
-          
-          this.listConvenios=response.convenios;
-          
-          if(this.listConvenios.length<0){
-            this.listConvenios=[];
+
+    this.generalService.obtenerOrganizaciones(this.idUsuario, this.idProvedor)
+      .subscribe(
+        response => {
+          if (response.code === 200) {
+
+            this.listAfiliacines = response.data;
+
+            this.listConvenios = response.convenios;
+
+            if (this.listConvenios.length < 0) {
+              this.listConvenios = [];
+            }
+            this.listAfiliacines = this.listAfiliacines.concat(this.listConvenios);
+            var hash = {};
+            this.listAfiliacines = this.listAfiliacines.filter(function (current) {
+              var exists = !hash[current.id_organizacion];
+              hash[current.id_organizacion] = true;
+              return exists;
+            });
+
+          } else {
+            this.afiliacion = false;
           }
-          this.listAfiliacines=this.listAfiliacines.concat(this.listConvenios);
-          var hash = {};
-          this.listAfiliacines = this.listAfiliacines.filter(function(current) {
-            var exists = !hash[current.id_organizacion];
-            hash[current.id_organizacion] = true;
-            return exists;
-          });
-          
-        } else {
-          this.afiliacion = false;
+          this.loaderOrg = true;
+        },
+        error => {
+          this.notificaciones.error(error);
+          this.loaderOrg = true;
         }
-        this.loaderOrg = true;
-      },
-      error => {
-        this.notificaciones.error(error);
-        this.loaderOrg = true;
-      }
-    )
+      )
   }
 
   public obtenerPlazas() {
