@@ -24,13 +24,10 @@ export class MenuComponent implements OnInit {
   ) {
     this.user = this.util.getUserData();
     this.logeado = Object.keys(this.user).length === 0 ? false : true;
-    console.log("secion?", this.logeado)
-    console.log("user:", this.user)
 
     this.nombreUsuario = `${this.user.nombre}`
   }
   ionViewWillEnter() {
-    console.log("holaaaaa")
   }
 
   ngOnInit() {

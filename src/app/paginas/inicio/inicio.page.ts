@@ -124,6 +124,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   loaderVerMas = false;
   favoritos: any[] = [];
   buttonDisabled: boolean;
+  public subCAt: boolean;
 
   constructor(
     public loadingController: LoadingController,
@@ -138,14 +139,18 @@ export class InicioPage implements OnInit, AfterViewInit {
     private auth0Service: Auth0Service,
     private platform: Platform,
     public alertController: AlertController,
-    private filtrosService:FiltrosService,
+    private filtrosService: FiltrosService,
     private router: Router,
   ) {
+    this.subCAt = localStorage.getItem('subCat') != undefined ? true : false;
+    if (this.subCAt) {
+      localStorage.removeItem('subCat')
+    }
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
     this.obtenergiros();
     this.regresarBitoo(); // se puso este metodo para que cuando cierren la app y vuelvan entrar, mande al nuevo inicio
-    
+
     if (localStorage.getItem("idGiro") != null) {
       this.idGiro = JSON.parse(localStorage.getItem("idGiro"));
     }
@@ -307,36 +312,36 @@ export class InicioPage implements OnInit, AfterViewInit {
     }, (4000));
   }
 
-  async obtenerPreferencias(id_persona:number){
+  async obtenerPreferencias(id_persona: number) {
     this.filtrosService.obtenerPreferencias(id_persona).subscribe(
       async response => {
-          if(response.code==200){
-            var listaPreferencias = response.data.preferencias;
-            if(listaPreferencias.length<1){
-              const Toast = Swal.mixin({
-                toast: true,
-                position: 'center'
-              })
-              Toast.fire({
-                title: "Queremos conocer más sobre tus gustos en Bitoo.",
-                text: "Registra tus preferencias",
-                icon: 'info',
-                showDenyButton: false,
-                showCancelButton: true,
-                showConfirmButton: true,
-                confirmButtonText:'¡Claro!',
-                cancelButtonText:'Después',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  this.ruta.navigate(["/tabs/home/preferencias"]);
-                }else if(result.isDismissed || result.isDenied){
-                }
-              })
-            }
+        if (response.code == 200) {
+          var listaPreferencias = response.data.preferencias;
+          if (listaPreferencias.length < 1) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'center'
+            })
+            Toast.fire({
+              title: "Queremos conocer más sobre tus gustos en Bitoo.",
+              text: "Registra tus preferencias",
+              icon: 'info',
+              showDenyButton: false,
+              showCancelButton: true,
+              showConfirmButton: true,
+              confirmButtonText: '¡Claro!',
+              cancelButtonText: 'Después',
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.ruta.navigate(["/tabs/home/preferencias"]);
+              } else if (result.isDismissed || result.isDenied) {
+              }
+            })
           }
-        },
+        }
+      },
       error => {
       }
     );
@@ -375,6 +380,11 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   ionViewWillEnter() {
+    this.subCAt = localStorage.getItem('subCat') != undefined ? true : false;
+    if (this.subCAt) {
+      localStorage.removeItem('subCat')
+    }
+
     if (this.isIOS) {
       this.getCurrentPosition();
     }
@@ -699,7 +709,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       localStorage.setItem("filtroactual", d1);
       localStorage.setItem("todo", "todo");
       if (res == false) {
-        this.borrarFiltrosP()
+        this.borrarFiltrosP(false)
       } else {
         this.buscarNegocios(true);
       }
@@ -818,36 +828,45 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   public regresarBitoo() {
+    if (!this.subCAt) {
+      localStorage.removeItem("todo");
+    }
     localStorage.removeItem("org");
-    localStorage.removeItem("todo");
     localStorage.removeItem("activarTodos");
 
     this.objectSelectAfiliacionPlaza = null;
     this.borrarFiltros();
-    this.borrarFiltrosP();
+    this.borrarFiltrosP(false);
 
   }
   borrarFiltros() {
     this.isLoading = false;
     this.loaderTop = false
-    localStorage.removeItem("byCategorias");
+    if (!this.subCAt) {
+      localStorage.removeItem("byCategorias");
+    }
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
     this.filtroActivo = false;
     this.buscarNegocios(true);
   }
-  borrarFiltrosP() {
+  borrarFiltrosP(click) {
+    this.subCAt = click == true ? false : true;
     this.loader = true;
     localStorage.removeItem("filtroactual");
-    localStorage.removeItem("byCategorias");
+    if (!this.subCAt) {
+      localStorage.removeItem("byCategorias");
+    }
     localStorage.removeItem("filtroActivo");
     localStorage.removeItem("idGiro");
     this.idGiro = null;
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.filtroActivo = false;
-    localStorage.removeItem("todo");
+    if (!this.subCAt) {
+      localStorage.removeItem("todo");
+    }
     const org = localStorage.getItem("org");
     if (org != null) {
       this.activar();
@@ -871,7 +890,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   negocioRuta(negocioURL, proveedor) {
-
     this.idNegocio = proveedor;
     setTimeout(() => {
       if (negocioURL == "") {
@@ -929,7 +947,9 @@ export class InicioPage implements OnInit, AfterViewInit {
   public obtenerPrincipalInicio(nombre?: string) {
     this.isLoading = false;
     this.loaderTop = false
-    localStorage.removeItem("todo");
+    if (!this.subCAt) {
+      localStorage.removeItem("todo");
+    }
     this.idTodo = false;
     this.loader = true;
     this.loaderInicio = true;
@@ -979,8 +999,6 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.listaCompleta = this.listaCategorias[this.indice];
     let len = this.listaVerMas[this.indice].negocios.length
     let lenCat = this.listaCategorias[this.indice].negocios.length;
-    console.log(this.listaCompleta.negocios.length)
-    console.log(this.listaVerMas)
     if (len < lenCat) {
 
       for (let i = len; i <= lenCat; i++) {
@@ -1080,7 +1098,6 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     var noPaginas = await this.principalSercicio.obtenerNumeroPaginas(this.Filtros, 1);
     var rand = this.random(1, JSON.stringify(noPaginas.data.last_page))
-    console.log("Pagina random : " + rand)
     this.totalPaginas = Math.ceil((this.totalDeNegocios / 20));
     this.primeraPagRandom = rand;
     this.paginaPivote = rand;
@@ -1171,7 +1188,6 @@ export class InicioPage implements OnInit, AfterViewInit {
           this.listaCategorias.push(...respuesta.lst_cat_negocios.data);
           this.negociosIdMapa();
         } else {
-          console.log(JSON.stringify(respuesta.lst_cat_negocios.data))
           this.listaCategorias = respuesta.lst_cat_negocios.data
           this.negociosIdMapa();
         }
@@ -1184,7 +1200,6 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.isLoading = true;
     this.paginaPrevia--
     this.buttonDisabled = true;
-    console.log("mas paginas arriba, se carga la pagina: " + this.paginaPrevia)
     if (this.totalDeNegociosPorConsulta > 20) {
       this.buscarNegociosArriba(false);
     }
@@ -1269,13 +1284,11 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
   }
   clickDistintivo(tag: string, object: string) {
-    console.log("Clickeo sobre la insignia de: " + tag + " con la descripcion: " + object)
     this.showPopUp = true;
     this.insigniaTitle = tag
     this.insigniaDescrip = object
   }
   closePopUp() {
-    console.log("Cerró el popup")
     this.showPopUp = false;
   }
 }

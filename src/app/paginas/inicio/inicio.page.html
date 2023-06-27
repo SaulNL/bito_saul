@@ -24,33 +24,35 @@
           <small class="text">Destacados</small>
           <ion-icon class="icono" name="caret-down-outline"></ion-icon>
         </ion-chip>
-  
+
         <ion-chip *ngIf="selectionAP" (click)="regresarBitoo()" color="danger">
           <ion-label><span class="text">Volver a Bitoo</span></ion-label>
         </ion-chip>
-  
-        <ion-button mode="ios" class="mapa" shape="round" [disabled]="listaCategorias.length === 0" (click)="abrirModalMapa()">
+
+        <ion-button mode="ios" class="mapa" shape="round" [disabled]="listaCategorias.length === 0"
+          (click)="abrirModalMapa()">
           <ion-icon class="icono" name="map-outline"></ion-icon>
           <small class="text">Mapa</small>
         </ion-button>
-  
+
       </ion-buttons>
       <ion-buttons slot="end">
         <ion-chip class="eventosButton" (click)="openEventos()" color="dark">
           <small>Eventos</small>
         </ion-chip>
-  
-        <ion-chip *ngIf="filtroActivo" (click)="borrarFiltrosP()" color="danger" >
+
+        <ion-chip *ngIf="filtroActivo" (click)="borrarFiltrosP(true)" color="danger">
           <ion-label><span class="text">Borrar Filtros</span></ion-label>
         </ion-chip>
-  
-        <ion-chip *ngIf="!filtroActivo" class="text2 boton-margen-l" color="dark" (click)="abrirFiltros()" ><span>Filtros</span>
+
+        <ion-chip *ngIf="!filtroActivo" class="text2 boton-margen-l" color="dark"
+          (click)="abrirFiltros()"><span>Filtros</span>
           <ion-icon class="icono" name="filter-outline"></ion-icon>
         </ion-chip>
-        
+
       </ion-buttons>
     </ion-toolbar>
-    
+
     <!--<ion-grid>
       <ion-row style="display: flex;">
         <ion-col>
@@ -108,10 +110,12 @@
 
         <li class="nav-item">
           <a class="todas" id="pills-home-todos" role="tab" aria-selected="true">
-            <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img   (click)="activar()" class="img-gris"
+            <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img
+                (click)="activar()" class="img-gris"
                 src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/IconosCategorias/todos.png">
             </ion-avatar>
-            <ion-avatar *ngIf="idTodo ===true" style="margin-bottom: 1.2rem;" class="image-center"> <img  (click)="borrarFiltrosP()"
+            <ion-avatar *ngIf="idTodo ===true" style="margin-bottom: 1.2rem;" class="image-center"> <img
+                (click)="borrarFiltrosP(true)"
                 src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/IconosCategorias/todos.png">
             </ion-avatar>
 
@@ -189,7 +193,7 @@
               </div>
               <div class="header-card">
                 <ion-card-title> {{proveedor.nombre_corto != "" ? proveedor.nombre_corto :
-                        proveedor.nombre_comercial}}</ion-card-title>
+                  proveedor.nombre_comercial}}</ion-card-title>
               </div>
 
               <div class="body-card">
@@ -204,7 +208,8 @@
                   <div class="tag-giro">{{proveedor.giro }}</div>
                 </div>
                 <div class="distintivos" style="--color-selected: #ff1dbd">
-                  <img *ngIf="proveedor.verificado === 1" class="distintivoIcon" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/VERIFICACIO%CC%81N.svg"
+                  <img *ngIf="proveedor.verificado === 1" class="distintivoIcon"
+                    src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/VERIFICACIO%CC%81N.svg"
                     matTooltip="Este negocio está verificado por Bitoo">
                   <div class="distintivo"
                     *ngFor="let distintivo of proveedor.distintivos?.slice(0, proveedor.verificado === 1 ? 3 : 4); index as i">

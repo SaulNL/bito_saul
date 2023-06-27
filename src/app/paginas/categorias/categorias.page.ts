@@ -85,7 +85,7 @@ export class CategoriasPage implements OnInit {
 
   ngOnInit() {
     this.obtenergiros();
-    if (localStorage.getItem('isRedirected') === 'false' && !this.isIOS) {
+    if (localStorage.getItem('isRedirected') === 'false' && this.isIOS) {
       localStorage.setItem('isRedirected', 'true');
       location.reload();
     }
@@ -123,6 +123,7 @@ export class CategoriasPage implements OnInit {
   }
 
   seleccionarCategoria(subCategoria) {
+    localStorage.setItem('subCat', 'true')
     localStorage.setItem('todo', 'todo');
     localStorage.removeItem('byCategorias');
     localStorage.setItem('byCategorias', JSON.stringify(subCategoria));
