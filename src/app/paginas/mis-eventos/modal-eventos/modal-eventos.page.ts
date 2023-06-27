@@ -278,6 +278,7 @@ export class ModalEventosPage implements OnInit {
     this.eventoSelect.forEach((element, index) => {
       if (index == 0) {
         varString = element
+        this.eventData.tipo_evento = this.eventoSelect.length <= 1 ? element : ""
       } else {
         if (this.eventoSelect.length == index + 1) {
           varString = varString + "," + element;
