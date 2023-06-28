@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { UbicacionModel } from './../../Modelos/busqueda/UbicacionModel';
 import { AlertController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import {RegistrarPromotionService} from "../../api/registrar-promotion.service";
+import { RegistrarPromotionService } from "../../api/registrar-promotion.service";
 
 
 @Component({
@@ -20,6 +20,7 @@ import {RegistrarPromotionService} from "../../api/registrar-promotion.service";
 export class BannerPromocionesComponent implements OnInit {
   @Input() anyFiltros: any;
   @Input() tieneFiltro: any;
+  @Input() afi: boolean;
   filtro: any;
   lstPromociones: any;
   public lstAvisos: any;
@@ -37,7 +38,7 @@ export class BannerPromocionesComponent implements OnInit {
   public miUbicacionlongitud: number;
   public ubicacion = new UbicacionModel();
   private plazaAfiliacion: AfiliacionPlazaModel;
-  
+
   constructor(
     private servicioPromociones: PromocionesService,
     private navBarServiceService: NavBarServiceService,
@@ -50,6 +51,7 @@ export class BannerPromocionesComponent implements OnInit {
     this.lstPromociones = [];
     this.lstAvisos = [];
   }
+  ionview
   ngOnInit() {
     this.obtenerGeolocalizacion();
     this.obtenerPromociones(this.anyFiltros);
@@ -91,71 +93,34 @@ export class BannerPromocionesComponent implements OnInit {
      * @author Omar
      */
   public obtenerPromociones(filtro: any) {
-    if(!this.tieneFiltro){
-      filtro.strBuscar='';
+    if (!this.tieneFiltro) {
+      filtro.strBuscar = '';
       filtro.intEstado = 0;
       filtro.strMunicipio = "";
-      filtro.typeGetOption=true;
-        filtro.kilometros = null;
-        filtro.latitud = 0;
-        filtro.longitud = 0;
-        filtro.idTipoNegocio = null;
-        filtro.blnEntrega = null;
-        filtro.idGiro = null;
-        filtro.idCategoriaNegocio = null;
-        filtro.idEstado = 29;
-        filtro.idMunicipio = null;
-        filtro.idLocalidad = null;
-        filtro.abierto = null;
-        filtro.tipoBusqueda = 0;
-        filtro.id_persona = null;
-        filtro.organizacion=null;
-      /*filtro.strBuscar='';
-      filtro.intEstado = null;
-      filtro.strMunicipio = null;
-        filtro.kilometros = 10;
-        filtro.latitud = 0;
-        filtro.longitud = 0;
-        filtro.idTipoNegocio = null;
-        filtro.blnEntrega = null;
-        filtro.idGiro = null;
-        filtro.idCategoriaNegocio = null;
-        filtro.idEstado = null;
-        filtro.idMunicipio = null;
-        filtro.idLocalidad = null;
-        filtro.abierto = null;
-        filtro.tipoBusqueda = 0;
-        filtro.id_persona = null;*/
+      filtro.typeGetOption = true;
+      filtro.kilometros = null;
+      filtro.latitud = 0;
+      filtro.longitud = 0;
+      filtro.idTipoNegocio = null;
+      filtro.blnEntrega = null;
+      filtro.idGiro = null;
+      filtro.idCategoriaNegocio = null;
+      filtro.idEstado = 29;
+      filtro.idMunicipio = null;
+      filtro.idLocalidad = null;
+      filtro.abierto = null;
+      filtro.tipoBusqueda = 0;
+      filtro.id_persona = null;
+      filtro.organizacion = null;
     }
     this.plazaAfiliacion = JSON.parse(localStorage.getItem('org'));
     if (this.plazaAfiliacion != null) {
       filtro.organizacion = this.plazaAfiliacion.id_organizacion;
     }
-    /*await this.servicioPromociones.buscarPromocinesPublicadasModulo(filtro).subscribe(
-      response => {
-        let lstCatPromos = response.data
-        lstCatPromos.forEach((categoria,index) => {
-          this.lstPromociones.push(lstCatPromos[index].promociones)//response.data;
-        });
-
-        this.lstPromociones.forEach((promo,index) => {
-          console.log("cada promo: "+JSON.stringify(promo))
-        });
-        
-        console.log("lista prmomos de banenr: "+this.lstPromociones.length)//JSON.stringify(this.lstPromociones))
-        //this.loaderPromo = false;
-      },
+    this.servicioPromociones.buscarPromocinesPublicadasFiltros(filtro).subscribe(response => {
+      this.lstPromociones = response.data;
+    },
       error => {
-        // this._notificacionService.pushError(error);
-      }
-    );*/
-    this.servicioPromociones.buscarPromocinesPublicadasFiltros(filtro).subscribe(
-      response => {
-        this.lstPromociones = response.data;
-        //this.loaderPromo = false;
-      },
-      error => {
-        // this._notificacionService.pushError(error);
       }
     );
   }
@@ -163,11 +128,9 @@ export class BannerPromocionesComponent implements OnInit {
    * Funcion para obtener avisos
 */
   public obtenerAvisos() {
-    // this.loaderPromo = true;
     this.servicioPromociones.obtenerAvisos(this.autho.getIdPersona()).subscribe(
       response => {
         this.lstAvisos = response.data;
-        // this.loaderPromo = false;
       },
       error => {
         //this._notificacionService.pushError(error);
@@ -180,8 +143,6 @@ export class BannerPromocionesComponent implements OnInit {
   * @author Omar
   */
   accionPromocion(promocion) {
-    // localStorage.setItem("isRedirected", "false");
-    // this.urlNegocio = 'tabs/negocio/' + promocion.url_negocio;
     this.promocion = promocion;
     this.masInformacion(promocion);
     this.visteMiPromocion(promocion);
@@ -200,14 +161,6 @@ export class BannerPromocionesComponent implements OnInit {
     this.ubicacion.latitud = this.miUbicacionlatitud;
     this.ubicacion.longitud = this.miUbicacionlongitud;
     this.vioPromo.registrarQuienVio(promocion.id_promocion, this.autho.getExistIdPersona(), this.ubicacion.latitud, this.ubicacion.longitud);
-    // this.servicioPromociones.guardarQuienVioPromocion(promocion, this.ubicacion).subscribe(
-    //   response => {
-    //     if (response.code === 200) {
-    //     }
-    //   },
-    //   error => {
-    //   }
-    // );
 
   }
   /**
@@ -230,16 +183,15 @@ export class BannerPromocionesComponent implements OnInit {
   * @author Omar
   */
   rutaLink(ruta: string) {
-    //this._router.navigateByUrl('#' + ruta, { skipLocationChange: true });
     setTimeout(() => this._router.navigate([ruta]));
   }
 
-  
-   masInformacion(promocion: any) {
-    //console.log("promo antes de abrir link:"+JSON.stringify(promocion)) AQUI VAMOS BIEN, ES EL MISMO JSON QUE EL DE PROMOS
-     let promo = promocion.id_promocion;
+
+  masInformacion(promocion: any) {
+    let promo = promocion.id_promocion;
     this._router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
-          queryParams: { route: true , clickBanner: true, promo: promo}});
+      queryParams: { route: true, clickBanner: true, promo: promo }
+    });
 
   }
 

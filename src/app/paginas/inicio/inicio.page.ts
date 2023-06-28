@@ -154,7 +154,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
     this.obtenergiros();
-    this.regresarBitoo(); // se puso este metodo para que cuando cierren la app y vuelvan entrar, mande al nuevo inicio
+    this.regresarBitoo(false); // se puso este metodo para que cuando cierren la app y vuelvan entrar, mande al nuevo inicio
 
     if (localStorage.getItem("idGiro") != null) {
       this.idGiro = JSON.parse(localStorage.getItem("idGiro"));
@@ -474,7 +474,10 @@ export class InicioPage implements OnInit, AfterViewInit {
         this.banderaVerMas == false;
       } else {
 
-        this.listaCategorias = respuesta.data.lst_cat_negocios.data
+        this.listaCategorias = await respuesta.data.lst_cat_negocios.data
+        this.loader = false;
+        this.loaderInicio = false;
+        this.mostrarloaderInicio = false;
         this.negociosIdMapa();
       }
     } else {
@@ -663,7 +666,6 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     const org = localStorage.getItem("org");
     const categorias = localStorage.getItem("byCategorias");
-    //console.log(this.mapa);
     if (org === null && categorias === null && this.idGiro === null && localStorage.getItem("todo") === null) {
       this.loader = false;
       this.selectionAP = false;
@@ -836,7 +838,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.loader = false;
   }
 
-  public regresarBitoo() {
+  public regresarBitoo(activacion) {
     if (!this.subCAt || !this.afi) {
       localStorage.removeItem("todo");
     }
@@ -848,6 +850,9 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.objectSelectAfiliacionPlaza = null;
     this.borrarFiltros();
     this.borrarFiltrosP(false);
+    if (activacion) {
+      location.reload();
+    }
 
   }
   borrarFiltros() {
@@ -941,7 +946,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   cargarMasNegocios(event: any) {
     let negocios = [];
     this.listaCategorias.map(e => negocios = e.negocios);
-    //console.log("Tamaño de lista"+this.listaCategorias.length)
     if (this.listaVerMas.length != negocios.length) {
       setTimeout(() => {
         this.mostrarNegocios += 4;
@@ -966,7 +970,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.loaderInicio = true;
     this.banderaVerMas = false;
 
-    if (nombre === undefined) {
+    if (nombre === undefined && !this.afi) {
       this.principalSercicio.obtenerPrincipalInicio()
         .subscribe(
           (response) => {
@@ -1015,7 +1019,6 @@ export class InicioPage implements OnInit, AfterViewInit {
       for (let i = len; i <= lenCat; i++) {
         if (i + 1 <= lenCat) {
           let nuevosDatos = this.listaVerMas[this.indice].negocios.push(this.listaCategorias[this.indice].negocios[i]);
-          //console.log(nuevosDatos);
         }
       }
     }
@@ -1128,7 +1131,6 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   async activar() {
     this.banderaVerMas == false;
-    //console.log("Activar Method")
     this.listaCategorias = [];
     this.primeraPagRandom = 0;
     this.paginaPrevia = 0;
@@ -1173,25 +1175,14 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
     if (cantidadDeResultados > 0) {
       if (buscaArriba == true) {
-        //console.log("Unshift---------------")
         this.listaCategorias.unshift(...respuesta.lst_cat_negocios.data);
         this.negociosIdMapa()
         this.isLoading = false;
-        /*if (
-          this.listaCategorias[this.lengthLista - 1].nombre ==
-          this.listaCategorias[this.lengthLista].nombre ||
-          this.listaCategorias[this.lengthLista - 1].nombre == ""
-        ) {
-          this.listaCategorias[this.lengthLista].nombre = "";
-        }*/
       } else {
-        //console.log("Push---------------")
         this.actualPagina = respuesta.lst_cat_negocios.current_page;
         this.siguientePagina = this.actualPagina + 1;
-        //this.siguienteGiro = this.actualGiro +1;
         this.totalDeNegocios = respuesta.lst_cat_negocios.total;
         this.totalDeNegociosPorConsulta = respuesta.lst_cat_negocios.to;
-        //console.log("\ntotalNegocios: "+ JSON.stringify(this.totalDeNegocios+"\n"+"Negocios-PorConsulta: "+JSON.stringify(this.totalDeNegociosPorConsulta))+"\nPagina actual: "+this.actualPagina+"\nSiguiente Pagina: "+this.siguientePagina)
         this.categoriasEstaVacios = false;
         this.lengthLista = this.listaCategorias.length;
 
@@ -1254,7 +1245,6 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.selectionAP = false;
       this.obtenerPrincipalInicio();
     }
-    //await this.cargarCategorias();
 
     this.loader = false;
 
@@ -1275,8 +1265,6 @@ export class InicioPage implements OnInit, AfterViewInit {
       var respuesta = await this.principalSercicio
         .obtenerNegocioPorCategoria(this.Filtros, this.paginaPrevia)
 
-      //console.log("Pagina previa obtenida: "+ respuesta.data.lst_cat_negocios.current_page+"\nSiguiente pagina previa"+respuesta.data.lst_cat_negocios.current_page)
-
       this.validarResultadosDeCategoriaSeleccionada(respuesta.data, true);
       const byCategorias2 = localStorage.getItem("filtroactual");
       if (
@@ -1290,7 +1278,6 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.loader = false;
     } catch (error) {
       this.loader = false;
-      // this.notificaciones.error("Error al buscar los datos" + error.message);
       this.notificaciones.error("No hay conexión a internet, conectate a una red");
     }
   }

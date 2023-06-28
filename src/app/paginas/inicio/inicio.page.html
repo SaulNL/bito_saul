@@ -25,7 +25,7 @@
           <ion-icon class="icono" name="caret-down-outline"></ion-icon>
         </ion-chip>
 
-        <ion-chip *ngIf="selectionAP" (click)="regresarBitoo()" color="danger">
+        <ion-chip *ngIf="selectionAP" (click)="regresarBitoo(true)" color="danger">
           <ion-label><span class="text">Volver a Bitoo</span></ion-label>
         </ion-chip>
 
@@ -96,7 +96,7 @@
     <ion-grid>
       <ion-row class="ion-align-items-center">
         <div *ngIf="objectSelectAfiliacionPlaza !== null && objectSelectAfiliacionPlaza !== undefined"
-          style="background-color: #3c3c3c; color: white; font-size: small" class="ion-text-center">
+          style="background-color: #3c3c3c; color: white; font-size: small; width: 100vw; " class="ion-text-center;">
           <p style="padding-inline: 5%">
             ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA
             <img style="width: 25px; margin-top: 2%" src="{{objectSelectAfiliacionPlaza.icon}}" />

@@ -3,7 +3,7 @@ import { BusquedaService } from '../../api/busqueda.service';
 import { Router } from '@angular/router';
 import { FiltrosModel } from '../../Modelos/FiltrosModel';
 import { HostListener } from '@angular/core';
-import { IonContent, NavController, Platform } from '@ionic/angular';
+import { IonContent, MenuController, NavController, Platform } from '@ionic/angular';
 import { SideBarService } from '../../api/busqueda/side-bar-service';
 import { LOCAL_STORAGE_KEY } from '../../utils/localStorageKey';
 import { IPaginacion } from '../../interfaces/IPaginacion';
@@ -71,6 +71,7 @@ export class CategoriasPage implements OnInit {
     private principalSercicio: BusquedaService,
     private notificaciones: ToadNotificacionService,
     private personaServcie: PersonaService,
+    private menuCtrl: MenuController,
   ) {
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
@@ -82,13 +83,16 @@ export class CategoriasPage implements OnInit {
     this.filtros = false;
     this.nombreseleccion = '';
   }
+  ionViewWillEnter() {
+    this.menuCtrl.close();
+  }
 
   ngOnInit() {
     this.obtenergiros();
-    if (localStorage.getItem('isRedirected') === 'false' && this.isIOS) {
-      localStorage.setItem('isRedirected', 'true');
-      location.reload();
-    }
+    // if (localStorage.getItem('isRedirected') === 'false' && this.isIOS) {
+    //   localStorage.setItem('isRedirected', 'true');
+    //   location.reload();
+    // }
     if (localStorage.getItem('activarTodos') === 'true') {
       this.banderaVerMas = false;
       this.idTodo = true;

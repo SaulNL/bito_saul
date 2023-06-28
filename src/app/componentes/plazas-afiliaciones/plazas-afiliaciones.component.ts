@@ -63,10 +63,6 @@ export class PlazasAfiliacionesComponent implements OnInit {
   }
 
   ngOnInit() {
-    // if (this.idUsuario != null && this.idUsuario > 0) {
-    //   this.afiliacion = this.validarPermiso.isChecked(this.permisos, 'ver_afiliacion')
-    //   this.obtenerOrganizacion();
-    // }
     this.obtenerNegociosVip()
     this.obtenerPlazas();
     if (this.idUsuario != null) {
@@ -187,7 +183,6 @@ export class PlazasAfiliacionesComponent implements OnInit {
       response => {
         if (response.code === 200) {
           this.listNegociosVip = response.data.lst_cat_negocios;
-          console.log("NEGOCIOS VIP: " + JSON.stringify(this.listNegociosVip));
 
         } else {
           this.vip = false;
