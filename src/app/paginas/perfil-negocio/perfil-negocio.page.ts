@@ -281,10 +281,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
             this.informacionNegocio = response.data;
             this.promociones = this.informacionNegocio.promociones;
             this.promociones.forEach(promo => {
-              console.log(promo)
               if (promo.id_promocion == params.promo) {
                 setTimeout(() => {
-                  console.log("modal1")
                   this.abrirModalPromocion(promo)
                 }, 1000)
               }
