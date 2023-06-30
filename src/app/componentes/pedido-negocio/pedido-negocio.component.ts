@@ -507,7 +507,6 @@ export class PedidoNegocioComponent implements OnInit {
         //this.loader = true;
         this.pedido = new PedidoNegocioModel(this.lista[0].idNegocio, this.utilsCls.getIdPersona(), this.tipoEnvio, this.lista, this.idTipoDePago);
         this.pedido.detalle = this.detalle;
-        console.log('convevio', this.convenio);
         if (this.tipoEnvio !== null) {
             switch (this.tipoEnvio) {
                 case 1:
@@ -582,8 +581,6 @@ export class PedidoNegocioComponent implements OnInit {
         }).catch((error) => {
 
         });
-        console.log('lat2', this.lat);
-        console.log('lng2', this.lng);
     }
 
     getLatLong(e) {
@@ -750,8 +747,6 @@ export class PedidoNegocioComponent implements OnInit {
             }).catch((error) => {
                 this.mesajes.error("Ocurrió un error al consultar la dirección, intente de nuevo más tarde ");
             })
-        console.log('lat1', this.lat);
-        console.log('lng1', this.lng);
     }
 
     async activar() {
@@ -796,8 +791,6 @@ export class PedidoNegocioComponent implements OnInit {
         this.destino = this.lat + ',' + this.lng;
         var responseDistKm = await this.getCoordinatesMap.getDistanciaKmTiempo(this.origen, this.destino).toPromise();
 
-        console.log('origen', this.origen);
-        console.log('destino', this.destino);
         if (responseDistKm.status == "OK") {
 
 
