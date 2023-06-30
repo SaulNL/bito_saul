@@ -110,12 +110,6 @@ export class ProductosPage {
       }
     });
 
-    // if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
-    //   localStorage.setItem("isRedirected", "true");
-    //   //location.reload();
-    //   localStorage.removeItem("activedPage");
-    // }
-
     const selected = localStorage.getItem("org");
     if (selected != null) {
       this.plazaAfiliacionNombre = JSON.parse(
@@ -164,11 +158,7 @@ export class ProductosPage {
   }
 
   ionViewWillEnter() {
-    // if (localStorage.getItem("isRedirected") === "false") {
-    //   localStorage.setItem("isRedirected", "true");
-    //   location.reload();
-    //   //localStorage.removeItem("activedPage");
-    // }
+    this.filtroActivo = !localStorage.getItem('lstFiltro') ? false : true;
 
     //En esta funcion se vuelve a inicializar las variables para eliminar el reload
     this.cargando = "Cargando";
@@ -315,9 +305,6 @@ export class ProductosPage {
       if (letra != "Todos" && activo == 1) {
         bandera = false;
         this.obtenerProductoPorLetra(filtro);
-        /*setTimeout(() => {
-          this.obtenerProductoPorLetra(filtro);
-        }, 500);*/
       } else {
         bandera = true;
       }

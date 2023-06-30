@@ -276,19 +276,15 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
     this.route.queryParams.subscribe((params) => {
       if (params.clickBanner && params) {
-        //console.log("Vienes del baner de promociones, el id de esta promo es: "+params.promo)
         this.negocioService.obteneretalleNegocio(this.negocio, this.user.id_persona).subscribe((response) => {
           if (response.data !== null) {
             this.informacionNegocio = response.data;
             this.promociones = this.informacionNegocio.promociones;
-            //console.log("TAMAÑO DE LISTA PROMOS-----"+this.promociones.length)
             this.promociones.forEach(promo => {
-              //console.log("Promo clikeada: "+params.promo+" --> Promo de lista: "+promo.id_promocion)
+              console.log(promo)
               if (promo.id_promocion == params.promo) {
-                //promo.estatus=this.estatus
-                //promo.diasArray= this.diasArray
-                //console.log("OK Coincidencia --> "+promo.id_promocion)
                 setTimeout(() => {
+                  console.log("modal1")
                   this.abrirModalPromocion(promo)
                 }, 1000)
               }
@@ -328,11 +324,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
       this.marker = marker([lat, lng], { icon: myIcon, draggable: false }).addTo(
         this.map
       );
-      /* this.marker.on("dragend", () => {
-        this.getLatLong({ latlng: this.marker.getLatLng() });
-      }); */
     }, 500);
-    //console.log("Esta es la info que carga el mapa:\n"+"lat: "+lat+" long: "+lng)
   }
   getLatLong(e) {
     this.miLat = e.latlng.lat;
@@ -407,7 +399,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
               this.calcularDistancia();
               this.obtenerSucursaleslst(this.informacionNegocio.id_negocio);
             }
-            //console.log("infoNego: "+JSON.stringify(this.informacionNegocio))
           } else {
             this.presentError();
           }
@@ -883,7 +874,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
   private horarios(negocio: any) {
     this.estatus = { tipo: 0, mensaje: "No abre hoy" };
-    //console.log("horarios: ", this.diasArray)
     const hros = negocio.horarios;
     let hoy: any;
     hoy = new Date();

@@ -53,46 +53,6 @@
       </ion-buttons>
     </ion-toolbar>
 
-    <!--<ion-grid>
-      <ion-row style="display: flex;">
-        <ion-col>
-          <ion-chip *ngIf="!selectionAP" color="dark" (click)="openPlazasAfiliacionesModal()">
-            <small class="text">Destacados</small>
-            <ion-icon class="icono" name="caret-down-outline"></ion-icon>
-          </ion-chip>
-
-          <ion-chip *ngIf="selectionAP" (click)="regresarBitoo()" color="danger">
-            <ion-icon name="log-out-outline"></ion-icon>
-            <ion-label><span class="text">Volver a Bitoo</span></ion-label>
-          </ion-chip>
-        </ion-col>
-        <ion-col>
-          <ion-button mode="ios" class="mapa" shape="round" [disabled]="listaCategorias.length === 0"
-                      (click)="abrirModalMapa()">
-            <ion-icon class="icono" name="map-outline"></ion-icon>
-            <small>Mapa</small>
-          </ion-button>
-        </ion-col>
-        <ion-col>
-          <ion-button mode="ios" class="eventosButton" shape="round" (click)="openEventos()">
-            <small>Eventos</small>
-          </ion-button>
-        </ion-col>
-
-        <ion-col>
-          <ion-chip *ngIf="filtroActivo" (click)="borrarFiltrosP()" color="danger">
-            <ion-icon class="icono" name="trash-outline" color="danger"></ion-icon>
-            <ion-label><span class="text">Borrar Filtros</span></ion-label>
-          </ion-chip>
-
-          <ion-chip *ngIf="!filtroActivo" class="text2" color="dark" (click)="abrirFiltros()"><span>Filtros</span>
-            <ion-icon class="icono" name="filter-outline"></ion-icon>
-          </ion-chip>
-        </ion-col>
-      </ion-row>
-
-    </ion-grid> -->
-
     <ion-grid>
       <ion-row class="ion-align-items-center">
         <div *ngIf="objectSelectAfiliacionPlaza !== null && objectSelectAfiliacionPlaza !== undefined"
@@ -149,11 +109,6 @@
     <ion-refresher *ngIf="!isIOS" slot="fixed" (ionRefresh)="recargar($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <!--ion-row *ngIf="paginaPrevia>0" style="justify-content: center;" (click)="cargarMasPaginasArriba($event)"
-    [ngClass]="isLoading==true? 'loaderArribaShow' : 'loaderArribaHide'">
-      <ion-spinner #cargaArriba id="cargaArriba" name="bubbles"></ion-spinner>
-      <p>Cargando negocios</p>
-    </ion-row-->
     <ion-row *ngIf="loaderTop" [ngClass]="loaderTop? 'loaderArribaShow' : 'loaderArribaHide'">
       <ion-col size="12">
         <div class="ver-mas">
@@ -305,24 +260,6 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <!-- <div *ngIf="!banderaVerMas">
-      <app-infinito-scroll
-        *ngIf="true"
-        (respuesta)="cargarMasPaginas($event)"
-        [activado]="true"
-        [msj]="mensaje"
-      ></app-infinito-scroll>
-    </div> -->
-
-    <!-- Se ocupaba cuando redirigia a ver mas negociosX -->
-    <!-- <div *ngIf="banderaVerMas">
-      <ion-infinite-scroll threshold="50px" (ionInfinite)="cargarMasNegocios($event)">
-        <ion-infinite-scroll-content
-          loadingSp@er="bubbles"
-          [loadingText]="mensaje">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
-    </div> -->
   </div>
   <app-banner-anuncios></app-banner-anuncios>
 

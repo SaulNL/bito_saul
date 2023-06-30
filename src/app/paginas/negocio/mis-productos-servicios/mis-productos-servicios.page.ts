@@ -72,8 +72,8 @@ export class MisProductosServiciosPage implements OnInit {
   public totalProductosServicios: number;
   public fotosPermitidas: number;
   public numeroFotos: number;
-  public agregarImagen:boolean;
-  public editar:boolean;
+  public agregarImagen: boolean;
+  public editar: boolean;
   public arrayFotos: any;
 
   slidesOptions = {
@@ -82,7 +82,7 @@ export class MisProductosServiciosPage implements OnInit {
     loop: false,
     spaceBetween: 10,
   };
-  
+
   constructor(
     private router: Router,
     private active: ActivatedRoute,
@@ -151,7 +151,7 @@ export class MisProductosServiciosPage implements OnInit {
         //   );
         this.obtenerCaracteristicasNegocio();
         //Cuando este el cronJon ya no sera necesaria y se tiene que eliminar 
-        setTimeout(()=>{
+        setTimeout(() => {
           this.deshabilitarExistenciaPS();
         }, 5000);
       }
@@ -180,7 +180,7 @@ export class MisProductosServiciosPage implements OnInit {
           text: "Cancel",
           icon: "close",
           role: "cancel",
-          handler: () => {},
+          handler: () => { },
         },
       ],
     });
@@ -213,11 +213,11 @@ export class MisProductosServiciosPage implements OnInit {
 
           if (this.iden === 2) {
             this.serviciosTags = this.datosNegocio.serviciosTags;
-            this.negocioTO.tags=[...this.serviciosTags];
+            this.negocioTO.tags = [...this.serviciosTags];
           }
           if (this.iden === 1) {
             this.productoTags = this.datosNegocio.productoTags;
-             this.negocioTO.tags=[...this.productoTags];
+            this.negocioTO.tags = [...this.productoTags];
           }
 
           if (
@@ -237,7 +237,7 @@ export class MisProductosServiciosPage implements OnInit {
                   this.datosNegocio = repsuesta.data;
                   this.static = repsuesta.data;
                 },
-                (error) => {}
+                (error) => { }
               );
           }
           this.loader = false;
@@ -350,7 +350,7 @@ export class MisProductosServiciosPage implements OnInit {
             break;
         }
       },
-      (error) => {},
+      (error) => { },
       () => {
         this.loadPdf = false;
       }
@@ -375,7 +375,7 @@ export class MisProductosServiciosPage implements OnInit {
   }
 
   agregarTags(tags: string[]) {
-    this.negocioTO.tags=[...tags];
+    this.negocioTO.tags = [...tags];
     if (this.iden === 2) {
       this.serviciosTags = tags;
       this.datosNegocio.serviciosTags = tags;
@@ -434,7 +434,7 @@ export class MisProductosServiciosPage implements OnInit {
         {
           text: "Cancelar",
           role: "cancel",
-          handler: () => {},
+          handler: () => { },
         },
         {
           text: "Aceptar",
@@ -527,7 +527,7 @@ export class MisProductosServiciosPage implements OnInit {
             this.agregarClas = false;
             this.blnNuevaCategoria = false;
           },
-          () => {},
+          () => { },
           () => {
             this.notificacionService.exito("Se agrego la categoría con éxito");
           }
@@ -540,16 +540,17 @@ export class MisProductosServiciosPage implements OnInit {
     this.listaProductos = item;
     this.mostrarListaProductos = !this.mostrarListaProductos;
   }
-  
-  verificacionProductosServicios(){
-    if(this.totalProductosServicios >= this.maximoProductos){
+
+  verificacionProductosServicios() {
+    if (this.totalProductosServicios >= this.maximoProductos) {
       this.mensajeMaximoProductos = true;
-    }else{
-      this.mensajeMaximoProductos = false;      
+    } else {
+      this.mensajeMaximoProductos = false;
     }
   }
-  
+
   public agregarProductos() {
+    console.log("agregar")
     this.verificacionProductosServicios();
     this.mostrarListaProductos = !this.mostrarListaProductos;
     this.agregarProducto = true;
@@ -598,17 +599,17 @@ export class MisProductosServiciosPage implements OnInit {
                       this.utilscls.convertir_nombre(file_name) + ".jpg";
                     imagen.archivo_64 = file_64;
                   }
-                  
+
                   if (!Array.isArray(this.productoNuevo.imagen)) {
                     this.productoNuevo.imagen = [imagen];
                     this.numeroFotos = 1;
-                  }else{
+                  } else {
                     this.productoNuevo.imagen.push(imagen)
                     this.numeroFotos++
                   }
-                  if(this.numeroFotos >= this.fotosPermitidas){
-                    this.agregarImagen=true
-                  }  
+                  if (this.numeroFotos >= this.fotosPermitidas) {
+                    this.agregarImagen = true
+                  }
                   this.procesando_img = false;
                   this.blnImgCuadrada = false;
                 });
@@ -620,25 +621,25 @@ export class MisProductosServiciosPage implements OnInit {
               this.resizeToWidth = 400;
               this.resizeToHeight = 400;
               const fName = archivo.name + ".jpg";
-            
+
               this.abrirModalImagen(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
                 if (r !== undefined) {
                   const imagen = new ArchivoComunModel();
                   imagen.nombre_archivo = this.utilscls.convertir_nombre(fName),
-                  imagen.archivo_64 = r.data;
+                    imagen.archivo_64 = r.data;
                   if (!Array.isArray(this.productoNuevo.imagen)) {
-                      this.productoNuevo.imagen = [imagen];
-                      this.numeroFotos = 1;
-                  }else{
+                    this.productoNuevo.imagen = [imagen];
+                    this.numeroFotos = 1;
+                  } else {
                     this.productoNuevo.imagen.push(imagen)
                     this.numeroFotos++
                   }
-        
+
                   this.numeroFotos = this.productoNuevo.imagen.length;
-          
-                  if(this.numeroFotos >= this.fotosPermitidas){
-                    this.agregarImagen=true
-                  }               
+
+                  if (this.numeroFotos >= this.fotosPermitidas) {
+                    this.agregarImagen = true
+                  }
                 }
               });
             }
@@ -820,7 +821,7 @@ export class MisProductosServiciosPage implements OnInit {
               if (item.id_categoria === this.productoNuevo.id_categoria) {
                 this.productoNuevo =
                   this.datosNegocio.productos[
-                    this.datosNegocio.productos.length - 1
+                  this.datosNegocio.productos.length - 1
                   ];
                 this.productoNuevo.index =
                   this.datosNegocio.productos.length - 1;
@@ -834,7 +835,7 @@ export class MisProductosServiciosPage implements OnInit {
             this.blnEditando = false;
             this.productoNuevo = new DtosMogoModel();
           },
-          (error) => {},
+          (error) => { },
           () => {
             this.banderaGuardar = false;
             this.regresarLista();
@@ -852,7 +853,7 @@ export class MisProductosServiciosPage implements OnInit {
               if (item.id_categoria === this.productoNuevo.id_categoria) {
                 this.productoNuevo =
                   this.datosNegocio.servicios[
-                    this.datosNegocio.servicios.length - 1
+                  this.datosNegocio.servicios.length - 1
                   ];
                 this.productoNuevo.index =
                   this.datosNegocio.servicios.length - 1;
@@ -866,7 +867,7 @@ export class MisProductosServiciosPage implements OnInit {
             this.blnEditando = false;
             this.productoNuevo = new DtosMogoModel();
           },
-          (error) => {},
+          (error) => { },
           () => {
             this.banderaGuardar = false;
             this.regresarLista();
@@ -899,15 +900,14 @@ export class MisProductosServiciosPage implements OnInit {
   }
 
   async editarRegistro(produc: any) {
-    if((this.totalProductosServicios === this.maximoProductos) &&  !produc.existencia)
-    {      
+    if ((this.totalProductosServicios === this.maximoProductos) && !produc.existencia) {
       const alert = await this.alertController.create({
         header: 'Bitoo!',
         message: "No puede poner en existencia otro producto al menos que desactive uno o cambie de plan",
       });
 
       await alert.present();
-    }else{
+    } else {
       this.agregarImagen = false;
       this.editar = true;
       this.mostrarListaProductos = !this.mostrarListaProductos;
@@ -921,11 +921,11 @@ export class MisProductosServiciosPage implements OnInit {
         //this.numeroFotos = this.productoNuevo.imagen.lenght;
       }
       this.numeroFotos = Object.values(this.productoNuevo.imagen).length;
-      if(this.numeroFotos >= this.fotosPermitidas){
-        this.agregarImagen=true
-      }  
+      if (this.numeroFotos >= this.fotosPermitidas) {
+        this.agregarImagen = true
+      }
       this.opcion = 2;
-    }    
+    }
   }
 
   actualizar(produc) {
@@ -970,7 +970,7 @@ export class MisProductosServiciosPage implements OnInit {
         this.blnEditando = false;
         this.blnformMobile = false;
       },
-      () => {},
+      () => { },
       () => {
         this.banderaGuardar = false;
         this.notificacionService.exito(
@@ -994,11 +994,10 @@ export class MisProductosServiciosPage implements OnInit {
     //delete this.productoNuevo.imagen[idStr]
 
     this.numeroFotos = Object.values(this.productoNuevo.imagen).length;
-    if(this.numeroFotos <= this.fotosPermitidas)
-    {
-      this.agregarImagen=false
-    }  
-    
+    if (this.numeroFotos <= this.fotosPermitidas) {
+      this.agregarImagen = false
+    }
+
   }
 
   public isService(type: number) {
@@ -1026,7 +1025,7 @@ export class MisProductosServiciosPage implements OnInit {
         : [];
       return this.obtenerTotal(selection);
     }
-    
+
     let productosActivos = [];
     this.datosNegocio.productos.forEach((element) => {
       if (element.existencia) {
@@ -1045,58 +1044,58 @@ export class MisProductosServiciosPage implements OnInit {
     return lista.length;
   }
 
-  eliminarProducto(produc: any, tipo:string) {
+  eliminarProducto(produc: any, tipo: string) {
     let datosAEnviar: DatosNegocios;
     const datos = JSON.stringify(this.datosNegocio);
     datosAEnviar = JSON.parse(datos);
 
     if (tipo === 'producto') {
-      let productIndex = datosAEnviar.productos.map(function(e) { return e.idProducto; }).indexOf(produc.idProducto);
+      let productIndex = datosAEnviar.productos.map(function (e) { return e.idProducto; }).indexOf(produc.idProducto);
       datosAEnviar.productos.splice(productIndex, 1);
-    }else{
-      let productIndex = datosAEnviar.servicios.map(function(e) { return e.idProducto; }).indexOf(produc.idProducto);
+    } else {
+      let productIndex = datosAEnviar.servicios.map(function (e) { return e.idProducto; }).indexOf(produc.idProducto);
       datosAEnviar.servicios.splice(productIndex, 1);
     }
-    
-       this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
-        (respuesta) => {
-          if (respuesta.code === 200) {
-            if (tipo === 'producto') {
-              this.notificacionService.exito(
-                "Se eliminó correctamente el producto " + produc.nombre, 
-              );
-            }else{
-              this.notificacionService.exito(
-                "Se eliminó correctamente el servicio " + produc.nombre
-              );
-            }
-            location.reload();
+
+    this.sercicioNegocio.guardarProductoServio(datosAEnviar).subscribe(
+      (respuesta) => {
+        if (respuesta.code === 200) {
+          if (tipo === 'producto') {
+            this.notificacionService.exito(
+              "Se eliminó correctamente el producto " + produc.nombre,
+            );
           } else {
-            this.notificacionService.error(respuesta.message);
+            this.notificacionService.exito(
+              "Se eliminó correctamente el servicio " + produc.nombre
+            );
           }
-        },
-        (error) => {
-          this.notificacionService.error(
-            "Ocurrio un error al eliminar el producto, por favor inténtalo más tarde"
-          );
-        },
+          location.reload();
+        } else {
+          this.notificacionService.error(respuesta.message);
+        }
+      },
+      (error) => {
+        this.notificacionService.error(
+          "Ocurrio un error al eliminar el producto, por favor inténtalo más tarde"
+        );
+      },
     );
   }
 
-  async alertProductDelete(produc: any, tipo:string) {
+  async alertProductDelete(produc: any, tipo: string) {
     const alert = await this.alertController.create({
       header: "Eliminar",
-      message: tipo === 'producto' ?  `¿Estás seguro de que deseas eliminar el producto: ${produc.nombre}?` :  `¿Estás seguro de que deseas eliminar el servicio: ${produc.nombre}?`,
+      message: tipo === 'producto' ? `¿Estás seguro de que deseas eliminar el producto: ${produc.nombre}?` : `¿Estás seguro de que deseas eliminar el servicio: ${produc.nombre}?`,
       buttons: [
         {
           text: "Cancelar",
           role: "cancel",
-          handler: () => {},
+          handler: () => { },
         },
         {
           text: "Aceptar",
           handler: () => {
-            this.eliminarProducto(produc,tipo);
+            this.eliminarProducto(produc, tipo);
           },
         },
       ],
@@ -1106,74 +1105,70 @@ export class MisProductosServiciosPage implements OnInit {
   }
 
   obtenerCaracteristicasNegocio() {
-     this.generalServicio.features(this.negocioTO.id_negocio)
-     .subscribe(
-         (response) => {
-           this.caracteristicasNegocios = response.data;
-            if(this.iden === 1){//productos
-              let featureProductosPermitidos = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 7 )
-              let featureFotosPermitidas = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 9 )
+    this.generalServicio.features(this.negocioTO.id_negocio)
+      .subscribe(
+        (response) => {
+          this.caracteristicasNegocios = response.data;
+          if (this.iden === 1) {//productos
+            let featureProductosPermitidos = this.caracteristicasNegocios.find(feature => feature.id_caracteristica === 7)
+            let featureFotosPermitidas = this.caracteristicasNegocios.find(feature => feature.id_caracteristica === 9)
 
-              if(featureProductosPermitidos!= undefined)
-              {
-                this.maximoProductos = featureProductosPermitidos.cantidad;
-              }else{
-                //cuando un negocio no tenga un perfil registrado en productos se pone la cantidad del perfil gratuito
-                this.maximoProductos = 150;
-              }
+            if (featureProductosPermitidos != undefined) {
+              this.maximoProductos = featureProductosPermitidos.cantidad;
+            } else {
+              //cuando un negocio no tenga un perfil registrado en productos se pone la cantidad del perfil gratuito
+              this.maximoProductos = 150;
+            }
 
-              if(featureFotosPermitidas!= undefined)
-              {
-                this.fotosPermitidas = featureFotosPermitidas.cantidad;
-              }else{
-                //cuando un negocio no tenga un perfil registrado en productos se pone la cantidad del perfil gratuito
-                this.fotosPermitidas = 4;
-              }
+            if (featureFotosPermitidas != undefined) {
+              this.fotosPermitidas = featureFotosPermitidas.cantidad;
+            } else {
+              //cuando un negocio no tenga un perfil registrado en productos se pone la cantidad del perfil gratuito
+              this.fotosPermitidas = 4;
+            }
 
-           }else if(this.iden === 2){ //servicios
-              let featureServiciosPermitidos = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 8 )
-              let featureFotosPermitidas = this.caracteristicasNegocios.find( feature => feature.id_caracteristica === 9 )
+          } else if (this.iden === 2) { //servicios
+            let featureServiciosPermitidos = this.caracteristicasNegocios.find(feature => feature.id_caracteristica === 8)
+            let featureFotosPermitidas = this.caracteristicasNegocios.find(feature => feature.id_caracteristica === 9)
 
-              if(featureServiciosPermitidos!= undefined)
-              {
-                this.maximoProductos = featureServiciosPermitidos.cantidad;
-              }else{
-                //cuando un negocio no tenga un perfil registrado en servicios se pone la cantidad de fotos gratuito
-                this.maximoProductos = 150;
-              }
+            if (featureServiciosPermitidos != undefined) {
+              this.maximoProductos = featureServiciosPermitidos.cantidad;
+            } else {
+              //cuando un negocio no tenga un perfil registrado en servicios se pone la cantidad de fotos gratuito
+              this.maximoProductos = 150;
+            }
 
-              if(featureFotosPermitidas!= undefined)
-              {
-                this.fotosPermitidas = featureFotosPermitidas.cantidad;
-              }else{
-                //cuando un negocio no tenga un perfil registrado en productos se pone la cantidad de fotos gratuito
-                this.fotosPermitidas = 4;
-              }
+            if (featureFotosPermitidas != undefined) {
+              this.fotosPermitidas = featureFotosPermitidas.cantidad;
+            } else {
+              //cuando un negocio no tenga un perfil registrado en productos se pone la cantidad de fotos gratuito
+              this.fotosPermitidas = 4;
+            }
 
-           }
-         },
-         (error) => {
-           this.notificacionService.error(error);
-         }
+          }
+        },
+        (error) => {
+          this.notificacionService.error(error);
+        }
       );
-  } 
+  }
 
   //Esta funcion se usa para deshabilitar los últimos productos si cambia de perfil (Bug:Se tiene que salir a productos para ver los deshabilitados, solo pasa la primera vez que se deshabilitar)
   //Cuando este el cronJon ya no sera necesaria y se tiene que eliminar 
-  deshabilitarExistenciaPS(){
-    
-    if(this.totalProductosServicios > this.maximoProductos){
-      if(this.iden === 1){
-        this.datosNegocio.productos.forEach((object,index)=>{
-            if(index >= this.maximoProductos){
-                object.existencia = false;
-            };
+  deshabilitarExistenciaPS() {
+
+    if (this.totalProductosServicios > this.maximoProductos) {
+      if (this.iden === 1) {
+        this.datosNegocio.productos.forEach((object, index) => {
+          if (index >= this.maximoProductos) {
+            object.existencia = false;
+          };
         });
-      }else if(this.iden === 2){
-        this.datosNegocio.servicios.forEach((object,index)=>{
-            if(index >= this.maximoProductos){
-                object.existencia = false;
-            };
+      } else if (this.iden === 2) {
+        this.datosNegocio.servicios.forEach((object, index) => {
+          if (index >= this.maximoProductos) {
+            object.existencia = false;
+          };
         });
       }
 
@@ -1187,11 +1182,11 @@ export class MisProductosServiciosPage implements OnInit {
           //   console.log("entro a 200")
           //   // this.listaProductos = this.datosNegocio;
           //   //this.buscarCategoriasProductos();
-            
+
           this.regresarLista();
           // }
-      });
-      
+        });
+
     }
   }
 }

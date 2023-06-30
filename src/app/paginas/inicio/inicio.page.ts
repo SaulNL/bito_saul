@@ -253,7 +253,6 @@ export class InicioPage implements OnInit, AfterViewInit {
       if (params.buscarNegocios && params) {
         this.load();
         const byCategorias = localStorage.getItem("filtroactual");
-
         if (
           byCategorias !== null &&
           byCategorias !== undefined &&
@@ -718,7 +717,8 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.Filtros = res;
       let d1 = JSON.stringify(res);
       localStorage.setItem("filtroactual", d1);
-      localStorage.setItem("todo", "todo");
+      localStorage.setItem("FiltroAct", 'true')
+      localStorage.setItem("todo", "todo")
       if (res == false) {
         this.borrarFiltrosP(false)
       } else {
@@ -840,7 +840,9 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   public regresarBitoo(activacion) {
     if (!this.subCAt || !this.afi) {
-      localStorage.removeItem("todo");
+      if (!localStorage.getItem("FiltroAct")) {
+        localStorage.removeItem("todo");
+      }
     }
     if (!this.afi) {
       localStorage.removeItem("org");
@@ -870,9 +872,10 @@ export class InicioPage implements OnInit, AfterViewInit {
   borrarFiltrosP(click) {
     this.subCAt = click == true ? false : true;
     this.loader = true;
-    localStorage.removeItem("filtroactual");
     if (!this.subCAt) {
       localStorage.removeItem("byCategorias");
+      localStorage.removeItem("filtroactual");
+      localStorage.removeItem("FiltroAct");
     }
     localStorage.removeItem("filtroActivo");
     localStorage.removeItem("idGiro");
@@ -881,7 +884,9 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.Filtros.idEstado = 29;
     this.filtroActivo = false;
     if (!this.subCAt || !this.afi) {
-      localStorage.removeItem("todo");
+      if (!localStorage.getItem("FiltroAct")) {
+        localStorage.removeItem("todo");
+      }
     }
     const org = localStorage.getItem("org");
     if (org != null) {
@@ -963,7 +968,9 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.isLoading = false;
     this.loaderTop = false
     if (!this.subCAt || !this.afi) {
-      localStorage.removeItem("todo");
+      if (!localStorage.getItem("FiltroAct")) {
+        localStorage.removeItem("todo");
+      }
     }
     this.idTodo = false;
     this.loader = true;
@@ -971,41 +978,43 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.banderaVerMas = false;
 
     if (nombre === undefined && !this.afi) {
-      this.principalSercicio.obtenerPrincipalInicio()
-        .subscribe(
-          (response) => {
-            if (response.code === 200) {
-              this.listaCategorias = response.data;
-              let uno = this.listaCategorias[0].negocios.slice(0, 10);
-              let dos = this.listaCategorias[1].negocios.slice(0, 10);
-              let tres = this.listaCategorias[2].negocios.slice(0, 10);
-              this.obtenerNegociosFav();
-              this.banderaVerMas = true;
-              this.listaVerMas = [{ 'nombre': 'Con convenio', 'negocios': uno }, { 'nombre': 'Con promociones', 'negocios': dos }, { 'nombre': 'Más Vistos', 'negocios': tres }];
+      if (!localStorage.getItem("FiltroAct")) {
+        this.principalSercicio.obtenerPrincipalInicio()
+          .subscribe(
+            (response) => {
+              if (response.code === 200) {
+                this.listaCategorias = response.data;
+                let uno = this.listaCategorias[0].negocios.slice(0, 10);
+                let dos = this.listaCategorias[1].negocios.slice(0, 10);
+                let tres = this.listaCategorias[2].negocios.slice(0, 10);
+                this.obtenerNegociosFav();
+                this.banderaVerMas = true;
+                this.listaVerMas = [{ 'nombre': 'Con convenio', 'negocios': uno }, { 'nombre': 'Con promociones', 'negocios': dos }, { 'nombre': 'Más Vistos', 'negocios': tres }];
 
-              if (this.listaCategorias[0].negocios.length <= 10) this.verMasNegociosConBtn = false;
-              if (this.listaCategorias[1].negocios.length <= 10) this.verMasNegociosPromoBtn = false;
-              if (this.listaCategorias[2].negocios.length <= 10) this.verMasNegociosVistosBtn = false;
+                if (this.listaCategorias[0].negocios.length <= 10) this.verMasNegociosConBtn = false;
+                if (this.listaCategorias[1].negocios.length <= 10) this.verMasNegociosPromoBtn = false;
+                if (this.listaCategorias[2].negocios.length <= 10) this.verMasNegociosVistosBtn = false;
 
-              if (this.listaVerMas[0].negocios.length <= 10) this.verMasNegociosCon = false;
-              if (this.listaVerMas[1].negocios.length <= 10) this.verMasNegociosPromo = false;
-              if (this.listaVerMas[2].negocios.length <= 10) this.verMasNegociosVistos = false;
+                if (this.listaVerMas[0].negocios.length <= 10) this.verMasNegociosCon = false;
+                if (this.listaVerMas[1].negocios.length <= 10) this.verMasNegociosPromo = false;
+                if (this.listaVerMas[2].negocios.length <= 10) this.verMasNegociosVistos = false;
 
-              setTimeout(() => {
-                this.loader = false;
-                this.loaderInicio = false;
-                this.mostrarloaderInicio = false;
-              }, 800);
+                setTimeout(() => {
+                  this.loader = false;
+                  this.loaderInicio = false;
+                  this.mostrarloaderInicio = false;
+                }, 800);
+              }
+            },
+            (error) => {
+              this.loader = false;
+              this.loaderInicio = false;
+              this.mostrarloaderInicio = false;
+              //this._notificacionService.error(error);
             }
-          },
-          (error) => {
-            this.loader = false;
-            this.loaderInicio = false;
-            this.mostrarloaderInicio = false;
-            //this._notificacionService.error(error);
-          }
-        );
-      return false;
+          );
+        return false;
+      }
     }
   }
 

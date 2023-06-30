@@ -123,7 +123,9 @@ export class TabsPage implements OnInit {
     localStorage.setItem('negocios', ('active'));
     localStorage.removeItem("activarTodos")
     if (localStorage.getItem("idGiro") === null) {
-      localStorage.removeItem("todo");
+      if (!localStorage.getItem('FiltroAct')) {
+        localStorage.removeItem("todo");
+      }
     }
   }
 
@@ -180,7 +182,7 @@ export class TabsPage implements OnInit {
     this.activedPage = localStorage.getItem("activedPage");
     localStorage.removeItem("productos");
     localStorage.removeItem("negocios");
-    localStorage.removeItem("todo");
+    // localStorage.removeItem("todo");
   }
   login() {
     localStorage.removeItem("byCategorias");
@@ -294,18 +296,13 @@ export class TabsPage implements OnInit {
     this.showPopUpGracias = false
     let infoPersona = JSON.parse(localStorage.getItem('u_sistema'))
     if (infoPersona != null && infoPersona != "") {
-      //console.log("existe id_persona: "+infoPersona.id_persona)
       this.notificacionesServide.obtenerEncuestas(infoPersona.id_persona).subscribe(
         response => {
-          //console.log("obtenerEncuestas = \n"+JSON.stringify(response))
           if (response.code === 200) {
             if (response.data.length > 0) {
               this.misEncuestas = response.data[0];
-              //this.misEncuestas.opciones.pop()                   
               if (this.misEncuestas.hasOwnProperty("id_pregunta_rapida") && this.misEncuestas != undefined) {
-                //console.log("existe id_pregunta_rapida? "+this.misEncuestas.hasOwnProperty("id_pregunta_rapida"))
                 this.hayEncuesta = true;
-                //console.log("mi Encuesta = \n"+ JSON.stringify(this.misEncuestas))  
 
                 this.showPopUp = true;
                 setTimeout(() => {
@@ -326,7 +323,6 @@ export class TabsPage implements OnInit {
         }
       );
     } else {
-      //console.log("NO existe infoPersona")
     }
   }
 
@@ -334,15 +330,10 @@ export class TabsPage implements OnInit {
     this.closePopUp()
     let infoPersona = JSON.parse(localStorage.getItem('u_sistema'))
     let fecha_respuestas = moment().format('YYYY/MM/DD');
-    /*console.log("id_pregunta_rapida: "+id_pregunta_rapida+"\n"+
-    "id_opcion_pregunta_rapida: "+id_opcion_pregunta_rapida+"\n"+
-    "infoPersona: "+infoPersona.id_persona+"\n"+
-    "fecha_respuestas: "+fecha_respuestas)*/
     await this.notificacionesServide.guardarRespuestaEncuesta(id_pregunta_rapida, infoPersona.id_persona, id_opcion_pregunta_rapida, fecha_respuestas).subscribe(
       response => {
         if (response.code === 200) {
           this.mensajeRespondio = this.misEncuestas.mensaje;
-          //console.log("Respuesta codigo 200 "+JSON.stringify(response)+ " Mensjae de respuesta= "+this.mensajeRespondio)          
           this.contesto = true;
           this.showPopUpGracias = true;
           setTimeout(() => {
@@ -350,21 +341,17 @@ export class TabsPage implements OnInit {
           }, 5000);
 
         } else {
-          //console.log("No se guardo codigo "+response.code)
         }
       },
       error => {
-        //console.log("No se guardo error")
       }
     );
   }
   closePopUp() {
-    //console.log("Cerró el popup Encuesta")
     this.showPopUp = false;
   }
 
   closePopUpGracias() {
-    //console.log("Cerró el popup Gracias")
     this.showPopUpGracias = false;
   }
 }
