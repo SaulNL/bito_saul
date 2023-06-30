@@ -106,6 +106,7 @@ export class PedidoNegocioComponent implements OnInit {
     destino: any;
     dstn: number;
     tmp: number;
+    infoNegocio: any;
     constructor(
         private utilsCls: UtilsCls,
         private modalController: ModalController,
@@ -142,6 +143,7 @@ export class PedidoNegocioComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.infoNegocio = this.negocioService.getSelectedObj();
         this.ObtenerDireccionPersonal();
         this.validarCosto();
         if (this._entregaDomicilio === 1) {
@@ -502,9 +504,10 @@ export class PedidoNegocioComponent implements OnInit {
     }
 
     public realizarPedido() {
-        this.loader = true;
+        //this.loader = true;
         this.pedido = new PedidoNegocioModel(this.lista[0].idNegocio, this.utilsCls.getIdPersona(), this.tipoEnvio, this.lista, this.idTipoDePago);
         this.pedido.detalle = this.detalle;
+        console.log('convevio', this.convenio);
         if (this.tipoEnvio !== null) {
             switch (this.tipoEnvio) {
                 case 1:
@@ -522,6 +525,8 @@ export class PedidoNegocioComponent implements OnInit {
                         this.pedido.kilometros = parseFloat(this.distancia);
                         this.pedido.minutos = parseFloat(this.tiempo);
 
+                    }else if (this.convenio === 0){
+                        this.pedido.costo_envio = this.infoNegocio.costo_entrega;
                     }
                     this.registrarPedido(this.pedido);
                     break;
@@ -573,10 +578,12 @@ export class PedidoNegocioComponent implements OnInit {
             this.map.panTo([this.lat, this.lng]);
             this.marker.setLatLng([this.lat, this.lng]);
             this.geocodeLatLng();
+
         }).catch((error) => {
 
         });
-
+        console.log('lat2', this.lat);
+        console.log('lng2', this.lng);
     }
 
     getLatLong(e) {
@@ -743,6 +750,8 @@ export class PedidoNegocioComponent implements OnInit {
             }).catch((error) => {
                 this.mesajes.error("Ocurrió un error al consultar la dirección, intente de nuevo más tarde ");
             })
+        console.log('lat1', this.lat);
+        console.log('lng1', this.lng);
     }
 
     async activar() {
@@ -779,7 +788,7 @@ export class PedidoNegocioComponent implements OnInit {
                 this.lat = latitud;
                 this.lng = longitud;
 
-                this.geocodeLatLng2();
+                //this.geocodeLatLng2();
             }).catch((error) => {
                 this.mesajes.error("Ocurrió un error al consultar la dirección, intente de nuevo más tarde ");
             })
@@ -787,6 +796,8 @@ export class PedidoNegocioComponent implements OnInit {
         this.destino = this.lat + ',' + this.lng;
         var responseDistKm = await this.getCoordinatesMap.getDistanciaKmTiempo(this.origen, this.destino).toPromise();
 
+        console.log('origen', this.origen);
+        console.log('destino', this.destino);
         if (responseDistKm.status == "OK") {
 
 
@@ -798,8 +809,13 @@ export class PedidoNegocioComponent implements OnInit {
             this.tmp = parseFloat(this.tiempo);
 
             var response = await this.negocioService.calcularCostoDeEnvio(this.tmp, this.dstn).toPromise();
-            this.costoDeEnvio = response.data.total;
-            this.costoEntrega = this.costoDeEnvio;
+            if(this.convenio === 1){
+                this.costoDeEnvio = response.data.total;
+                this.costoEntrega = this.costoDeEnvio;
+            }else if (this.convenio === 0){
+                this.costoDeEnvio = parseInt(this.infoNegocio.costo_entrega);
+                this.costoEntrega = this.costoDeEnvio;
+            }
             this.sumarLista();
 
 

@@ -168,10 +168,16 @@
   <ion-list>
     <div *ngIf="tipoEnvio === 2">
       <ion-row class="ion-align-items-center">
-        <ion-col class="ion-text-center">
-          <ion-button size="small" class="bg-naranja " type="button" (click)="getCoordinates()">
+        <ion-col size="6">
+          <ion-button expand="full" size="small" class="bg-naranja c1" type="button" (click)="getCoordinates()" text-wrap>
             <ion-icon name="navigate-circle-outline"></ion-icon>
-            Buscar dirección en el mapa
+            <ion-label class="ion-text-wrap">Usar ubicación capturada</ion-label>
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button expand="full" size="small" class="bg-naranja c1" type="button" (click)="localizacionTiempo()" text-wrap>
+            <ion-icon name="navigate-circle-outline"></ion-icon>
+            <ion-label class="ion-text-wrap">Usar ubicación actual</ion-label>
           </ion-button>
         </ion-col>
       </ion-row>
@@ -182,14 +188,6 @@
           </ion-col>
         </ion-row>
         <p class="ion-text-center">{{estasUbicacion}}</p>
-        <ion-row class="ion-align-items-center">
-          <ion-col class="ion-text-center">
-            <ion-button size="small" class="bg-naranja " type="button" (click)="localizacionTiempo()">
-              <ion-icon name="navigate-circle-outline"></ion-icon>
-              Ubicación Actual
-            </ion-button>
-          </ion-col>
-        </ion-row>
       </ion-grid>
     </div>
 
