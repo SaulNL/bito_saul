@@ -40,7 +40,8 @@ export class DatosPedidoDialogPage implements OnInit {
         });
         if (this.pedido.id_tipo_pedido === 2) {
           this.domicilioEnvio = true;
-          this.textoDomicilio(body.negocio.precioEntrega);
+          //this.textoDomicilio(body.negocio.precioEntrega);
+          this.textoDomicilio(body.pedido.costo_envio);
         }
       }
     });

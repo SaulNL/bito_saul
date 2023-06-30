@@ -56,7 +56,8 @@ export class DatosPedidoNegocioPage implements OnInit {
                 this.pedido = body.pedido;
                 this.visto(this.pedido.id_pedido_negocio);
                 if (this.pedido.id_tipo_pedido === 2) {
-                    this.textoDomicilio(body.precioEntrega);
+                    //this.textoDomicilio(body.precioEntrega);
+                    this.textoDomicilio(body.pedido.costo_envio);
                     this.loadMap();
                     this.domicilioEnvio = true;
                 } else {

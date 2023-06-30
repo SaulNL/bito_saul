@@ -15,6 +15,8 @@ import { StatisticsFilterInterface } from '../Bitoo/models/filters-model';
 })
 export class NegocioService {
 
+    selectedObj: any;
+
     constructor(
         private http: HttpClient,
         private _http: HTTP
@@ -22,6 +24,14 @@ export class NegocioService {
     }
 
     url = `${AppSettings.API_ENDPOINT}`;
+
+    setSelectedObj(obj: any) {
+        this.selectedObj = obj;
+    }
+
+    getSelectedObj() {
+        return this.selectedObj;
+    }
 
     obteneretalleNegocio(negocioo: string, persona: any): Observable<any> {
         const body = JSON.stringify({ negocio: negocioo, id_persona: persona });
