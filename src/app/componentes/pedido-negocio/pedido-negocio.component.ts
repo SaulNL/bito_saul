@@ -777,15 +777,15 @@ export class PedidoNegocioComponent implements OnInit {
         this.getCoordinatesMap.getPosts(this.address)
             .then(async data => {
                 let arrayPosts: any = data;
-                /*
+
                 let latitud = arrayPosts.results[0].geometry.location.lat;
                 let longitud = arrayPosts.results[0].geometry.location.lng;
 
                 this.lat = latitud;
                 this.lng = longitud;
 
-                this.geocodeLatLng2();
-                 */
+                //this.geocodeLatLng2();
+
             }).catch((error) => {
                 this.mesajes.error("Ocurrió un error al consultar la dirección, intente de nuevo más tarde ");
             })
