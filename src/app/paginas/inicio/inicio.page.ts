@@ -577,10 +577,8 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.filtroActivo = true;
     }
     try {
-      console.log("antes de enviar", this.Filtros, this.siguientePagina)
       var respuesta = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
       this.validarResultadosDeCategorias(respuesta);
-      console.log("res", respuesta)
 
       const byCategorias2 = localStorage.getItem("filtroactual");
       if (
