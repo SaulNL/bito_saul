@@ -144,13 +144,13 @@ export class InicioPage implements OnInit, AfterViewInit {
     private router: Router,
   ) {
     this.subCAt = localStorage.getItem('subCat') != undefined ? true : false;
-    if (this.subCAt) {
-      localStorage.removeItem('subCat');
-    }
+    // if (this.subCAt) {
+    //   localStorage.removeItem('subCat');
+    // }
     this.afi = localStorage.getItem('afi') != undefined ? true : false;
-    if (this.afi) {
-      localStorage.removeItem('afi');
-    }
+    // if (this.afi) {
+    //   localStorage.removeItem('afi');
+    // }
     this.byLogin = false;
     this.Filtros = new FiltrosModel();
     this.obtenergiros();
@@ -385,13 +385,13 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   ionViewWillEnter() {
     this.subCAt = localStorage.getItem('subCat') != undefined ? true : false;
-    if (this.subCAt) {
-      localStorage.removeItem('subCat')
-    }
+    // if (this.subCAt) {
+    //   localStorage.removeItem('subCat')
+    // }
     this.afi = localStorage.getItem('afi') != undefined ? true : false;
-    if (this.afi) {
-      localStorage.removeItem('afi');
-    }
+    // if (this.afi) {
+    //   localStorage.removeItem('afi');
+    // }
 
     if (this.isIOS) {
       this.getCurrentPosition();
@@ -577,9 +577,10 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.filtroActivo = true;
     }
     try {
-      var respuesta = await this.principalSercicio
-        .obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
+      console.log("antes de enviar", this.Filtros, this.siguientePagina)
+      var respuesta = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
       this.validarResultadosDeCategorias(respuesta);
+      console.log("res", respuesta)
 
       const byCategorias2 = localStorage.getItem("filtroactual");
       if (
@@ -659,7 +660,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.loaderNegocios = false;
     const todo = localStorage.getItem("todo");
 
-    if (todo === 'todo' || localStorage.getItem('org') != null) {
+    if (localStorage.getItem("subCat") || localStorage.getItem('org') != null) {
       await this.cargarCategorias();
     }
 
@@ -853,6 +854,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.borrarFiltros();
     this.borrarFiltrosP(false);
     if (activacion) {
+      localStorage.removeItem("afi")
+      localStorage.removeItem("FiltroAct")
       location.reload();
     }
 
@@ -876,6 +879,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       localStorage.removeItem("byCategorias");
       localStorage.removeItem("filtroactual");
       localStorage.removeItem("FiltroAct");
+      localStorage.removeItem("subCat")
     }
     localStorage.removeItem("filtroActivo");
     localStorage.removeItem("idGiro");
@@ -977,7 +981,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.loaderInicio = true;
     this.banderaVerMas = false;
 
-    if (nombre === undefined && !this.afi) {
+    if (nombre === undefined && !this.afi && !localStorage.getItem("subCat")) {
       if (!localStorage.getItem("FiltroAct")) {
         this.principalSercicio.obtenerPrincipalInicio()
           .subscribe(
