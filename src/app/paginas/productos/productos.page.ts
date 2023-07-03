@@ -527,6 +527,10 @@ export class ProductosPage {
     localStorage.removeItem("org");
     localStorage.removeItem("byCategorias");
     localStorage.removeItem("lstFiltro");
+    localStorage.removeItem("afi")
+    localStorage.removeItem("isRedirected")
+    localStorage.removeItem("activarTodos")
+    localStorage.removeItem("todo")
     location.reload();
   }
 
