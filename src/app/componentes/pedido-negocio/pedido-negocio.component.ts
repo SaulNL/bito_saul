@@ -517,7 +517,7 @@ export class PedidoNegocioComponent implements OnInit {
                     this.pedido.direccion = this.estasUbicacion;
                     this.pedido.latitud = this.lat;
                     this.pedido.longitud = this.lng;
-                    this.pedido.direccion = this.address;
+                    //this.pedido.direccion = this.address;
 
                     if (this.convenio === 1) {
                         this.pedido.costo_envio = this.costoEntrega;
@@ -572,8 +572,8 @@ export class PedidoNegocioComponent implements OnInit {
      */
     async localizacionTiempo() {
         await Geolocation.getCurrentPosition().then((resp) => {
-            this.lat = resp.coords.latitude
-            this.lng = resp.coords.longitude
+            this.lat = resp.coords.latitude;
+            this.lng = resp.coords.longitude;
             this.map.panTo([this.lat, this.lng]);
             this.marker.setLatLng([this.lat, this.lng]);
             this.geocodeLatLng();
@@ -777,13 +777,15 @@ export class PedidoNegocioComponent implements OnInit {
         this.getCoordinatesMap.getPosts(this.address)
             .then(async data => {
                 let arrayPosts: any = data;
+                /*
                 let latitud = arrayPosts.results[0].geometry.location.lat;
                 let longitud = arrayPosts.results[0].geometry.location.lng;
 
                 this.lat = latitud;
                 this.lng = longitud;
 
-                //this.geocodeLatLng2();
+                this.geocodeLatLng2();
+                 */
             }).catch((error) => {
                 this.mesajes.error("Ocurrió un error al consultar la dirección, intente de nuevo más tarde ");
             })
