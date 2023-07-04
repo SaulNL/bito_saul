@@ -110,6 +110,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   public fotografiasArray: any[];
   public promocionDefault: any;
   public logo: any;
+  public tipoPoS: any;
   currentIndex: Number = 0;
   @ViewChild('carrusel') slides: IonSlides;
   @ViewChild('sucursalo') slides1: IonSlides;
@@ -247,10 +248,11 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       if (params && params.carrito) {
         this.navegacion = true;
+        const PS = null;
         const agregarProducto = JSON.parse(params.carrito);
         if (agregarProducto.agregado) {
           setTimeout(() => {
-            this.agregarBolsaDeta(agregarProducto.producto);
+            this.agregarBolsaDeta(agregarProducto.producto, PS);
           }, 2000);
         }
       }
@@ -1171,7 +1173,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     }, 1500);
   }
 
-  agregarBolsaDeta(pro) {
+  agregarBolsaDeta(pro: any, PoS: number) {
     if (this.existeSesion) {
       const producto = {
         idProducto: pro.idProducto,
@@ -1181,7 +1183,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         idNegocio: pro.negocio.idNegocio,
         nombre: pro.nombre,
         descripcion: pro.descripcion,
-        cantidad_disponibles: pro.cantidad_disponibles
+        cantidad_disponibles: pro.cantidad_disponibles,
+        tipoPoS: PoS,
       };
       let existe = false;
       this.bolsa.map((it) => {
@@ -1213,6 +1216,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
   private addProduct(product: ProductInterface) {
     this.idProduct = product.idProduct;
+    const PS = null;
     const productoTemporal = {
       idProducto: product.idProduct,
       precio: product.price,
@@ -1223,7 +1227,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
       nombre: product.name,
       descripcion: product.description,
     };
-    this.agregarBolsaDeta(productoTemporal);
+    this.agregarBolsaDeta(productoTemporal, PS);
   }
 
   loginGo() {
