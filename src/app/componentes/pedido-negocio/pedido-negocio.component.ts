@@ -21,9 +21,9 @@ import { MsPersonaModel } from 'src/app/Modelos/MsPersonaModel';
 import { CatLocalidadModel } from 'src/app/Modelos/CatLocalidadModel';
 import { PersonaService } from '../../api/persona.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
-import {PasarelasService} from "../../api/pasarelas/pasarelas.service";
+import { PasarelasService } from "../../api/pasarelas/pasarelas.service";
 import Swal from "sweetalert2";
-import {IResponse} from "../../interfaces/pasarelas/IResponse";
+import { IResponse } from "../../interfaces/pasarelas/IResponse";
 
 
 const { Geolocation } = Plugins;
@@ -181,7 +181,7 @@ export class PedidoNegocioComponent implements OnInit {
             .subscribe((respuesta) => {
                 if (respuesta.code === HttpStatusCode.OK as number) {
                     this.pagos = respuesta.data.list_cat_tipo_pago as Array<IPago>;
-                    this.pagos.push( {id_tipo_pago: 99, nombre: 'Mercado pago', activo : true});
+                    this.pagos.push({ id_tipo_pago: 99, nombre: 'Mercado pago', activo: true });
                 } else {
                     this.pagos = new Array<IPago>();
                 }
@@ -450,32 +450,36 @@ export class PedidoNegocioComponent implements OnInit {
 
         const auxPedido = Object.assign({}, pedido);
 
-        if (pedido.idTipoPago === 99){
+        if (pedido.idTipoPago === 99) {
             pedido.idTipoPago = 1;
         }
-        
+
         let banderaMP = true;
 
-        if(auxPedido.idTipoPago === 99){
-            pedido.pedido.forEach(function (value){
-                if(value.cantidad_disponibles === null){
+        if (auxPedido.idTipoPago === 99) {
+            pedido.pedido.forEach(function (value) {
+                if (value.tipoPoS === 1 && value.cantidad_disponibles === null) {
                     banderaMP = false;
+                } else if (value.tipoPoS === 1 && value.cantidad_disponibles !== null) {
+                    banderaMP = true;
+                } else if (value.tipoPoS === 2 && value.cantidad_disponibles === null) {
+                    banderaMP = true;
                 }
             });
         }
 
-        if(banderaMP){
+        if (banderaMP) {
             this.negocioService.registrarPedido(pedido).subscribe(
                 (response) => {
                     if (response.code === 200) {
-                        if (auxPedido.idTipoPago === 99){
+                        if (auxPedido.idTipoPago === 99) {
                             this.pedidoOrdenMP(response.data);
-                        }else {
+                        } else {
                             // Validar que el usuario ya haya regisrado su informacion(se queda CARGANDO)
                             this.enviarSms(telephoneUsuario, this.lista[0].idNegocio);
                             this.loader = false;
                         }
-                    }else if(response.code === 302) {
+                    } else if (response.code === 302) {
                         this.loader = false;
                         this.mesajes.error(response.message);
                     }
@@ -487,13 +491,13 @@ export class PedidoNegocioComponent implements OnInit {
                     this.mesajes.error('Ocurrió un error al generar el pedido');
                 }
             );
-        }else{
+        } else {
             this.loader = false;
             this.mesajes.error('Para pagar con mercado pago el producto debe definir disponibilidad');
         }
     }
 
-     pedidoOrdenMP(data){
+    pedidoOrdenMP(data) {
         data.type_request = 'mobile';
         data.type_mobile = this.platform.is('ios') ? 'ios' : 'android';
         this.pasarelaServicies.pedidoOrdenMP(data).subscribe(
@@ -504,7 +508,7 @@ export class PedidoNegocioComponent implements OnInit {
     }
 
     public realizarPedido() {
-        //this.loader = true;
+        this.loader = true;
         this.pedido = new PedidoNegocioModel(this.lista[0].idNegocio, this.utilsCls.getIdPersona(), this.tipoEnvio, this.lista, this.idTipoDePago);
         this.pedido.detalle = this.detalle;
         if (this.tipoEnvio !== null) {
@@ -517,14 +521,14 @@ export class PedidoNegocioComponent implements OnInit {
                     this.pedido.direccion = this.estasUbicacion;
                     this.pedido.latitud = this.lat;
                     this.pedido.longitud = this.lng;
-                    //this.pedido.direccion = this.address;
+                    // this.pedido.direccion = this.address;
 
                     if (this.convenio === 1) {
                         this.pedido.costo_envio = this.costoEntrega;
                         this.pedido.kilometros = parseFloat(this.distancia);
                         this.pedido.minutos = parseFloat(this.tiempo);
 
-                    }else if (this.convenio === 0){
+                    } else if (this.convenio === 0) {
                         this.pedido.costo_envio = this.infoNegocio.costo_entrega;
                     }
                     this.registrarPedido(this.pedido);
@@ -804,10 +808,10 @@ export class PedidoNegocioComponent implements OnInit {
             this.tmp = parseFloat(this.tiempo);
 
             var response = await this.negocioService.calcularCostoDeEnvio(this.tmp, this.dstn).toPromise();
-            if(this.convenio === 1){
+            if (this.convenio === 1) {
                 this.costoDeEnvio = response.data.total;
                 this.costoEntrega = this.costoDeEnvio;
-            }else if (this.convenio === 0){
+            } else if (this.convenio === 0) {
                 this.costoDeEnvio = parseInt(this.infoNegocio.costo_entrega);
                 this.costoEntrega = this.costoDeEnvio;
             }

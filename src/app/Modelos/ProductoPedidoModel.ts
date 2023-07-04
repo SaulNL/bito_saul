@@ -4,7 +4,8 @@ export class ProductoPedidoModule {
     public descripcion: string;
     public cantidad_disponibles: number;
     public cantidad: number;
-    public nombre : string;
-    public precio : number;
-    public imagen : Array<String>;
+    public nombre: string;
+    public precio: number;
+    public imagen: Array<String>;
+    public tipoPoS: number;
 }
