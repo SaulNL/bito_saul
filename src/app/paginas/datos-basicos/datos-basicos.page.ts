@@ -343,7 +343,9 @@ export class DatosBasicosPage implements OnInit {
     }
   }
 
-  fechaSeleccionadaSeleccionada() {
-    this.fechaSeleccionada = true;
+  fechaSeleccionadaSeleccionada(evento) {
+    if ( evento.detail.value !== null || evento.detail.value !== undefined ){
+      this.fechaSeleccionada = true;
+    }
   }
 }

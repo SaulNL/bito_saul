@@ -117,7 +117,7 @@
               [max]="maxDate"
               value="{{usuarioSistema.fecha_nacimiento | date: 'yyyy-MM-dd'}}"
               required
-              (ionChange)="fechaSeleccionadaSeleccionada()"
+              (ionChange)="fechaSeleccionadaSeleccionada($event)"
             ></ion-datetime>
             <ion-icon
               slot="end"
