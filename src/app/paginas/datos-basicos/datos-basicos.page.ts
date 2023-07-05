@@ -84,6 +84,8 @@ export class DatosBasicosPage implements OnInit {
   private actualizarUsuario(user) {
     this.usuarioSistema = user;
     this.usuarioSistema.fecha_nacimiento = this.usuarioSistema.fecha_nacimiento !== null ? new Date(this.usuarioSistema.fecha_nacimiento) : null;
+    const evento = null;
+    this.fechaSeleccionadaSeleccionada(evento);
   }
 
   private setDataBasicUser() {
@@ -344,8 +346,13 @@ export class DatosBasicosPage implements OnInit {
   }
 
   fechaSeleccionadaSeleccionada(evento) {
-    if ( evento.detail.value !== null || evento.detail.value !== undefined ){
+    if ( evento.detail.value !== null && this.usuarioSistema.fecha_nacimiento === null){
+      this.fechaSeleccionada = true;
+    }else if ( this.usuarioSistema.fecha_nacimiento === null){
+      this.fechaSeleccionada = false;
+    }else if ( this.usuarioSistema.fecha_nacimiento !== null ){
       this.fechaSeleccionada = true;
     }
   }
+
 }
