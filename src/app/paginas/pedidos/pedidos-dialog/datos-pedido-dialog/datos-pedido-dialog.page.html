@@ -76,7 +76,7 @@
       <ion-label>Total : ${{total}}  <span *ngIf="domicilioEnvio">{{domicilioEnvioMessage}}</span></ion-label>
     </ion-item>
     <div *ngIf="!blnCancelar">
-      <ion-button expand="block" *ngIf="pedido.id_estatus_pedido < 4" (click)="cancelar()" color="medium">Cancelar mi
+      <ion-button expand="block" *ngIf="pedido.id_estatus_pedido < 4" [disabled]="pedido.id_estatus_pedido === 2" (click)="cancelar()" color="medium">Cancelar mi
         pedido</ion-button>
       <div class="ion-text-center" *ngIf="pedido.id_estatus_pedido === 5 || pedido.id_estatus_pedido === 6">
         <ion-icon name="ban-outline" style="color: darkred; font-size: 12px;"></ion-icon><span
