@@ -343,7 +343,11 @@ export class DatosBasicosPage implements OnInit {
     }
   }
 
-  fechaSeleccionadaSeleccionada() {
-    this.fechaSeleccionada = true;
+  fechaNacimientoSeleccionada(event: any) {
+    let fecha = event.detail.value;
+    let ms = Date.parse(fecha);
+    fecha = new Date(ms).toISOString();
+    this.usuarioSistema.fecha_nacimiento = fecha;
   }
+
 }
