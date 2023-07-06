@@ -388,16 +388,19 @@
             <ion-row>
               <ion-col size="12">
                 <ion-item>
-                  <ion-label position="floating">Nombre</ion-label>
+                  <ion-label position="floating">Nombre <span style="color: red">*</span></ion-label>
                   <ion-input name="nombre" #nombre="ngModel" [(ngModel)]="productoNuevo.nombre" required></ion-input>
                 </ion-item>
+                <div *ngIf="nombre.touched  && nombre.invalid" class="alert alert-danger">
+                  <div *ngIf="nombre.errors.required">El nombre es requerido</div>
+                </div>
               </ion-col>
             </ion-row>
 
             <ion-row>
               <ion-col size="12">
                 <ion-item>
-                  <ion-label position="floating"> Precio </ion-label>
+                  <ion-label position="floating">Precio </ion-label>
                   <ion-input type="number" name="precio" #precio="ngModel" [(ngModel)]="productoNuevo.precio">
                   </ion-input>
                 </ion-item>
@@ -407,11 +410,14 @@
             <ion-row *ngIf="iden== 1">
               <ion-col size="12">
                 <ion-item>
-                  <ion-label position="floating"> Num existencia</ion-label>
+                  <ion-label position="floating">Num existencia <span style="color: red">*</span></ion-label>
                   <ion-input type="number" name="cantidad_disponibles" #cantidad_disponibles="ngModel"
-                    [(ngModel)]="productoNuevo.cantidad_disponibles">
+                    [(ngModel)]="productoNuevo.cantidad_disponibles" required>
                   </ion-input>
                 </ion-item>
+                <div *ngIf="cantidad_disponibles.touched  && cantidad_disponibles.invalid" class="alert alert-danger">
+                  <div *ngIf="cantidad_disponibles.errors.required">El num existencia es requerido</div>
+                </div>
               </ion-col>
             </ion-row>
 
@@ -432,10 +438,13 @@
             <ion-row>
               <ion-col size="12">
                 <ion-item>
-                  <ion-label position="floating"> Descripción </ion-label>
+                  <ion-label position="floating">Descripción <span style="color: red">*</span></ion-label>
                   <ion-textarea name="descripcion" #descripcion="ngModel" [(ngModel)]="productoNuevo.descripcion"
                     required></ion-textarea>
                 </ion-item>
+                <div *ngIf="descripcion.touched  && descripcion.invalid" class="alert alert-danger">
+                  <div *ngIf="descripcion.errors.required">La descripción es requerida</div>
+                </div>
               </ion-col>
             </ion-row>
 
