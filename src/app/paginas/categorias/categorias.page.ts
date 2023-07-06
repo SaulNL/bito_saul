@@ -127,6 +127,12 @@ export class CategoriasPage implements OnInit {
   }
 
   seleccionarCategoria(subCategoria) {
+    if (localStorage.getItem("FiltroAct")) {
+      localStorage.removeItem("FiltroAct")
+      localStorage.removeItem("filter")
+      localStorage.removeItem("categoriaSeleccionada")
+      localStorage.removeItem("filtroactual")
+    }
     localStorage.setItem('subCat', 'true')
     localStorage.setItem('todo', 'todo');
     localStorage.removeItem('byCategorias');

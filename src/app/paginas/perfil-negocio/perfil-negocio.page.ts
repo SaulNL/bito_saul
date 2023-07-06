@@ -104,8 +104,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   private idPersona: number | null;
   public toProductDetail: boolean;
   public idProduct: string;
-  private latitudNeg: any;
-  private longitudNeg: any;
+  public latitudNeg: any;
+  public longitudNeg: any;
   private convenio_entrega: any;
   public fotografiasArray: any[];
   public promocionDefault: any;
@@ -330,6 +330,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   getLatLong(e) {
     this.miLat = e.latlng.lat;
     this.miLng = e.latlng.lng;
+    console.log("datosPerfil", this.miLat, this.miLng)
     this.map.panTo([this.miLat, this.miLng]);
     this.marker.setLatLng([this.miLat, this.miLng]);
   }
@@ -431,7 +432,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     let intentos = 0;
     const inter = setInterval(() => {
       if (this.mapContainer != null || this.mapContainer != undefined) {
-        this.loadMap();
+        // this.loadMap();
         clearInterval(inter);
       }
       else {
@@ -1463,6 +1464,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   public segmentChanged(event) {
+    console.log(event)
     this.motrarContacto = true;
     this.servicioSub = true;
     this.negocioSub = true;
@@ -1470,6 +1472,10 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.motrarContacto = true;
     this.servicioSub = true;
     this.negocioSub = true;
+    if (event.detail.value === 'ubicacion') {
+      console.log('entre')
+      this.loadMap()
+    }
   }
   public costoMayorA(costo) {
     if (!isNaN(Number(costo)) && Number(costo) === 0) {

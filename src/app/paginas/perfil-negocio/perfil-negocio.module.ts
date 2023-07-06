@@ -10,25 +10,27 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { PerfilNegocioPageRoutingModule } from './perfil-negocio-routing.module';
 import { PerfilNegocioPage } from './perfil-negocio.page';
-import {ComentariosNegocioComponent} from '../../componentes/comentarios-negocio/comentarios-negocio.component';
-import {DarLikeNegocioModule} from '../../componentes/dar-like-negocio/dar-like-negocio.module';
+import { ComentariosNegocioComponent } from '../../componentes/comentarios-negocio/comentarios-negocio.component';
+import { DarLikeNegocioModule } from '../../componentes/dar-like-negocio/dar-like-negocio.module';
 import { ViewQrPromocionComponent } from '../../components/viewqr-promocion/viewqr-promocion.component';
+import { MapaPerfilComponent } from './mapa-perfil/mapa-perfil.component';
 
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        PerfilNegocioPageRoutingModule,
-        DarLikeProductoModule,
-        DetalleProductoModule,
-        DarLikeNegocioModule,
-        SpinnerModule,
-        CalificarNegocioModule,
-        PedidoNegocioModule,
-        DenunciaNegocioPageModule,
-    ],
-  declarations: [PerfilNegocioPage, ComentariosNegocioComponent]
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    PerfilNegocioPageRoutingModule,
+    DarLikeProductoModule,
+    DetalleProductoModule,
+    DarLikeNegocioModule,
+    SpinnerModule,
+    CalificarNegocioModule,
+    PedidoNegocioModule,
+    DenunciaNegocioPageModule
+  ],
+  declarations: [PerfilNegocioPage, ComentariosNegocioComponent,
+    MapaPerfilComponent]
 })
-export class PerfilNegocioPageModule {}
+export class PerfilNegocioPageModule { }

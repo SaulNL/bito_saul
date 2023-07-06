@@ -658,7 +658,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.loaderNegocios = false;
     const todo = localStorage.getItem("todo");
 
-    if (localStorage.getItem("subCat") || localStorage.getItem('org') != null) {
+    if (localStorage.getItem("subCat") || localStorage.getItem('org') != null || todo == "todo") {
       await this.cargarCategorias();
     }
 
@@ -838,6 +838,14 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   public regresarBitoo(activacion) {
+
+    if (localStorage.getItem("FiltroAct")) {
+      localStorage.removeItem("FiltroAct")
+      localStorage.removeItem("filter")
+      localStorage.removeItem("categoriaSeleccionada")
+      localStorage.removeItem("filtroactual")
+    }
+
     if (!this.subCAt || !this.afi) {
       if (!localStorage.getItem("FiltroAct")) {
         localStorage.removeItem("todo");

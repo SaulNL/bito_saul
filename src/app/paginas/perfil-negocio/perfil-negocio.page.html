@@ -320,14 +320,14 @@
           </ion-col>
         </ion-row>
         <br />
-        <ion-row *ngIf="informacionNegocio.tipo_negocio >=1">
+        <!-- <ion-row *ngIf="informacionNegocio.tipo_negocio >=1">
           <ion-col>
             <div #mapContainer id="mapIdPedido" style="height: 200px"></div>
           </ion-col>
-        </ion-row>
+        </ion-row> -->
 
         <ion-grid *ngIf="existeSesion">
-          <ion-row style="display: flex; justify-content: center; align-items: center">
+          <!-- <ion-row style="display: flex; justify-content: center; align-items: center">
             <ion-col size="6" style="align-items: left">
               <h6 *ngIf="informacionNegocio.tipo_negocio >=1">
                 Dirección: {{informacionNegocio.det_domicilio.calle}}
@@ -340,12 +340,10 @@
               </h6>
             </ion-col>
             <ion-col *ngIf="informacionNegocio.tipo_negocio >=1" size="6" style="margin-top: 0%; align-items: center">
-              <!--center-->
               <a href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
                 style="font-size: 15px; font-weight: bolder" (click)="clickRedSocial('Mapa')">CÓMO LLEGAR</a>
-              <!--/center-->
             </ion-col>
-          </ion-row>
+          </ion-row> -->
           <ion-row>
             <div class="estrella" style="
                 display: flex;
@@ -632,7 +630,8 @@
           </ion-card>
         </ion-row>
         <ion-row *ngIf="existeSesion">
-          <ion-col size="12"
+          <app-mapa-perfil [latitudNeg]="latitudNeg" [longitudNeg]="longitudNeg" style="width: 100%;"></app-mapa-perfil>
+          <!-- <ion-col size="12"
             *ngIf="informacionNegocio.tipo_negocio || informacionNegocio.tipo_negocio === null; else online">
             <p>
               Dirección: {{informacionNegocio.det_domicilio.calle}}
@@ -646,7 +645,25 @@
             <p *ngIf="!permisoUbicacionCancelado && miLat && miLng && distanciaNegocio !== 'NaN'">
               <b class="texto-resaltado">A {{distanciaNegocio}} Km Cerca de tí</b>
             </p>
-          </ion-col>
+          </ion-col> -->
+
+          <ion-row style="display: flex; justify-content: center; align-items: center">
+            <ion-col size="6" style="align-items: left">
+              <h6 *ngIf="informacionNegocio.tipo_negocio >=1">
+                Dirección: {{informacionNegocio.det_domicilio.calle}}
+                {{informacionNegocio.det_domicilio.numero_ext}}
+                {{informacionNegocio.det_domicilio.colonia}} ,
+                {{informacionNegocio.det_domicilio.nombre_localidad !==
+                undefined ? informacionNegocio.det_domicilio.nombre_localidad +
+                ', ' : ''}}{{informacionNegocio.det_domicilio.nombre_municipio}}
+                , {{informacionNegocio.det_domicilio.nombre_estado}}
+              </h6>
+            </ion-col>
+            <ion-col *ngIf="informacionNegocio.tipo_negocio >=1" size="6" style="margin-top: 0%; align-items: center">
+              <a href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
+                style="font-size: 15px; font-weight: bolder" (click)="clickRedSocial('Mapa')">CÓMO LLEGAR</a>
+            </ion-col>
+          </ion-row>
           <ng-template #online>
             <ion-col size="12" *ngIf="arrayLugaresEntrega === null">
               <p>Este es un negocio online.</p>
