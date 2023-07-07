@@ -201,7 +201,7 @@ export class FormularioNegocioPage implements OnInit {
 
   ngOnInit() {
     this.obtenerCatOrganizaciones();
-    this. obtenerConvenio();
+    this.obtenerConvenio();
     this.obtenerCaPlazas();
     this.obtenerTipoNegocio()
     this.disabled = true;
