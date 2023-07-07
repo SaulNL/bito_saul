@@ -200,6 +200,9 @@ export class FormularioNegocioPage implements OnInit {
 
 
   ngOnInit() {
+    this.obtenerCatOrganizaciones();
+    this. obtenerConvenio();
+    this.obtenerCaPlazas();
     this.obtenerTipoNegocio()
     this.disabled = true;
     this.listaProductos = [];
@@ -493,10 +496,8 @@ export class FormularioNegocioPage implements OnInit {
     }
   }
   public obtenerTipoNegocio() {
-    console.log("entre")
     this.negocioServico.obtnerTipoNegocio().subscribe(
       response => {
-        console.log("tipo negocio", response.data)
         this.listTipoNegocio = response.data;
         if (this.negocioTO.id_negocio != null) {
           this.listTipoNegocio.forEach(element => {
