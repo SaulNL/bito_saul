@@ -107,17 +107,17 @@
                       margin-left: -10px;
                       border-radius: 1em 1em 0em 0em;
                     " class="ion-text-center">
-                    <ion-chip (click)="mostrarOcultar()" *ngIf="estatus.tipo === 1" color="success">
+                    <ion-chip style="height: 38px" (click)="mostrarOcultar()" *ngIf="estatus.tipo === 1" color="success">
                       <ion-label>Abierto</ion-label>
                     </ion-chip>
-                    <ion-chip (click)="mostrarOcultar()" *ngIf="estatus.tipo === 0" color="danger">
+                    <ion-chip style="height: 38px" (click)="mostrarOcultar()" *ngIf="estatus.tipo === 0" color="danger">
                       <ion-label>Cerrado</ion-label>
                     </ion-chip>
-                    <small (click)="mostrarOcultar()">{{ estatus.mensaje}}</small>
-                    <ion-icon (click)="mostrarOcultar()" style="margin-left: 0px" *ngIf="!motrarContacto"
+                    <small (click)="mostrarOcultar()" style="font-size: 14px">{{ estatus.mensaje}}</small>
+                    <ion-icon (click)="mostrarOcultar()" style="margin-left: 0px; font-size: 14px;" *ngIf="!motrarContacto"
                       name="arrow-up-outline">
                     </ion-icon>
-                    <ion-icon (click)="mostrarOcultar()" style="margin-left: 0px" *ngIf="motrarContacto"
+                    <ion-icon (click)="mostrarOcultar()" style="margin-left: 0px; font-size: 14px;" *ngIf="motrarContacto"
                       name="arrow-down-outline">
                     </ion-icon>
                   </div>

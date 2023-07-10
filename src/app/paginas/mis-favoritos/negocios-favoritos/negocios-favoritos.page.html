@@ -21,7 +21,7 @@
         <p>{{(negocio.descripcion != null)?negocio.descripcion:'Sin descripción'}}</p>
         <ion-badge color="{{ isTypeColor(negocio.abierto) }}"> {{ negocio.abierto }} </ion-badge>
       </ion-label>
-      <ion-chip class="ion-margin-start  ion-activatable hydrated" (click)="darDislike(negocio)" *ngIf="motrarContacto">
+      <ion-chip class="ion-margin-start  ion-activatable hydrated customChip" (click)="darDislike(negocio)" *ngIf="motrarContacto">
         <ion-icon class="text-rosa heartLike hydrated" role="img" name="heart" aria-label="dollar">
         </ion-icon>
         <ion-label class="hydrated">{{ negocio.likes }}</ion-label>

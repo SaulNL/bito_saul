@@ -91,7 +91,7 @@
         </div>
         <div style="display: flex; justify-content: center; align-items: center"
           *ngIf="(negocioTO.id_negocio !== undefined && negocioTO.id_negocio !== null && seEstaClonando == false)">
-          <ion-button size="small" *ngIf=" negocioTO.url_negocio !== null" (click)="solicitarCambioUrl()"
+          <ion-button size="small" style="height: 32px" *ngIf=" negocioTO.url_negocio !== null" (click)="solicitarCambioUrl()"
             color="primary">
             solicitar cambio de url
           </ion-button>
@@ -260,10 +260,10 @@
 
           <ion-row class="ion-align-items-center">
             <ion-col size="12" class="ion-text-center">
-              <ion-button size="small" class="bg-naranja" type="button" (click)="agregarConvenio()">
+              <ion-button size="small" style="height: 32px" class="bg-naranja" type="button" (click)="agregarConvenio()">
                 Agregar convenio
               </ion-button>
-              <ion-button size="small" color="medium" type="button" (click)="cancelarConvenio()">
+              <ion-button size="small" style="height: 32px" color="medium" type="button" (click)="cancelarConvenio()">
                 Limpiar
               </ion-button>
             </ion-col>
@@ -330,11 +330,11 @@
           <ion-grid>
             <ion-row class="ion-align-items-center">
               <ion-col size="12" class="ion-text-center">
-                <ion-button [disabled]="blnActivaHorario" size="small" class="bg-naranja" type="button"
+                <ion-button [disabled]="blnActivaHorario" size="small" style="height: 32px" class="bg-naranja" type="button"
                   (click)="agregarHorario()">
                   Guardar Horario
                 </ion-button>
-                <ion-button size="small" color="medium" type="button" (click)="cancelarHorario()">
+                <ion-button size="small" style="height: 32px" color="medium" type="button" (click)="cancelarHorario()">
                   Limpiar
                 </ion-button>
               </ion-col>
@@ -357,11 +357,11 @@
                 <ion-chip color="tertiary" class="ion-text-center">
                   <ion-label>{{dia.hora_fin}}</ion-label>
                 </ion-chip>
-                <ion-button (click)="editarHorario(dia,i)" color="success" size="small" class="ion-text-center">
-                  <ion-icon name="create-outline"></ion-icon>
+                <ion-button (click)="editarHorario(dia,i)" color="success" size="small" class="ion-text-center customButton">
+                  <ion-icon name="create-outline" class="customButton"></ion-icon>
                 </ion-button>
-                <ion-button (click)="presentAlertEliminar(i)" color="medium" size="small" class="ion-text-center">
-                  <ion-icon name="trash-outline"></ion-icon>
+                <ion-button (click)="presentAlertEliminar(i)" color="medium" size="small" class="ion-text-center customButton">
+                  <ion-icon name="trash-outline" class="customButton"></ion-icon>
                 </ion-button>
               </ion-item>
             </ion-list>
@@ -651,35 +651,35 @@
                 <img src="./../../../../../assets/images/fb.png" alt="" />
               </ion-avatar>
               <ion-input id="idFaceNegocio" name="idFaceNegocio" #faceNegocio="ngModel"
-                [(ngModel)]="negocioTO.id_facebook" placeholder="Facebook :"></ion-input>
+                [(ngModel)]="negocioTO.id_facebook" class="customInput" placeholder="Facebook :"></ion-input>
             </ion-item>
             <ion-item>
               <ion-avatar slot="start">
                 <img src="./../../../../../assets/images/tw.png" alt="" />
               </ion-avatar>
               <ion-input id="idTwiNegocio" name="idTwiNegocio" #twiNegocio="ngModel" [(ngModel)]="negocioTO.twitter"
-                placeholder="Twitter :"></ion-input>
+                         class="customInput" placeholder="Twitter :"></ion-input>
             </ion-item>
             <ion-item>
               <ion-avatar slot="start">
                 <img src="./../../../../../assets/images/insta.png" alt="" />
               </ion-avatar>
               <ion-input id="idInstNegocio" name="idInstNegocio" #instNegocio="ngModel"
-                [(ngModel)]="negocioTO.instagram" placeholder="Instagram :"></ion-input>
+                [(ngModel)]="negocioTO.instagram" class="customInput" placeholder="Instagram :"></ion-input>
             </ion-item>
             <ion-item>
               <ion-avatar slot="start">
                 <img src="./../../../../../assets/images/yt.png" alt="" />
               </ion-avatar>
               <ion-input id="idYouNegocio" name="idYouNegocio" #youNegocio="ngModel" [(ngModel)]="negocioTO.youtube"
-                placeholder="Youtube :"></ion-input>
+                         class="customInput" placeholder="Youtube :"></ion-input>
             </ion-item>
             <ion-item>
               <ion-avatar slot="start">
                 <img src="./../../../../../assets/images/tt.png" alt="" />
               </ion-avatar>
               <ion-input id="idTikNegocio" name="idTikNegocio" #tikNegocio="ngModel" [(ngModel)]="negocioTO.tiktok"
-                placeholder="TikTok :"></ion-input>
+                         class="customInput" placeholder="TikTok :"></ion-input>
             </ion-item>
           </ion-list>
           <ion-item>

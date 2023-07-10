@@ -1,4 +1,4 @@
-<ion-chip class="ion-margin-start  ion-activatable" (click)="onClickLike()" *ngIf="productLike.visibility">
+<ion-chip class="ion-margin-start  ion-activatable customChip" (click)="onClickLike()" *ngIf="productLike.visibility">
   <ion-icon name="heart" role="img" class="text-rosa heartLike" aria-label="dollar" *ngIf="productLike.like else like">
   </ion-icon>
   <ng-template #like>

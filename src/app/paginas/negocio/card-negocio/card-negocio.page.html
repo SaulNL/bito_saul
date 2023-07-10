@@ -14,7 +14,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card style="margin-bottom: 15%;">
+  <ion-card style="min-height: 82.8vh">
     <div class="ion-text-center ion-margin-top">
       <img *ngIf="negocioTO.url_logo !== '' && negocioTO.url_logo !== null "  class="rounded-circle" [src]="negocioTO.url_logo"   alt="">
       <img *ngIf="negocioTO.url_logo === '' || negocioTO.url_logo === null || negocioTO.url_logo === undefined " class="imagen" alt="" >
@@ -43,7 +43,7 @@
   <ion-grid>
     <ion-row class="ion-align-items-center">
       <ion-col size="12" class="ion-text-center">
-        <ion-button *ngIf="(negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined) && (!negocioTO.verificado)" size="small" class="bg-naranja" type="button" (click)="solicitarValidacion()">
+        <ion-button *ngIf="(negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined) && (!negocioTO.verificado)" size="small" class="bg-naranja" style="height: 32px;" type="button" (click)="solicitarValidacion()">
           Solicitar validación de mi negocio
         </ion-button>
       </ion-col>
@@ -51,10 +51,10 @@
 
     <ion-row class="ion-align-items-center">
         <ion-col size="12" class="ion-text-center">
-            <ion-button *ngIf="(negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined) && (!negocioTO.activo)" size="small"  color="success" type="button" (click)="activarConfirmado()">
+            <ion-button *ngIf="(negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined) && (!negocioTO.activo)" size="small"  color="success" style="height: 32px" type="button" (click)="activarConfirmado()">
               Activar
             </ion-button>
-            <ion-button *ngIf="(negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined) && (negocioTO.activo)" size="small"  color="danger" type="button" (click)="presentAlertADesactivar()">
+            <ion-button *ngIf="(negocioTO.id_negocio !== null && negocioTO.id_negocio !== undefined) && (negocioTO.activo)" size="small"  color="danger" style="height: 32px" type="button" (click)="presentAlertADesactivar()">
               Desactivar
             </ion-button>
         </ion-col>

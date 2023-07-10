@@ -1,4 +1,4 @@
-<ion-chip class="ion-margin-start ion-activatable hydrated" (click)="darLike(producto)" *ngIf="!loaderLike">
+<ion-chip class="ion-margin-start ion-activatable hydrated customChip" (click)="darLike(producto)" *ngIf="!loaderLike">
   <ion-icon *ngIf="producto.usuario_dio_like > 0; else like" class="text-rosa heartLike hydrated" role="img"
     name="heart" aria-label="dollar">
   </ion-icon>
@@ -8,6 +8,6 @@
   <ion-label class="hydrated">{{ producto.likes }}</ion-label>
 </ion-chip>
 
-<ion-chip class="ion-margin-start  ion-activatable hydrated" *ngIf="loaderLike">
+<ion-chip class="ion-margin-start  ion-activatable hydrated customChip" *ngIf="loaderLike">
   <ion-spinner style="color: rgb(255, 0, 98);"></ion-spinner>
 </ion-chip>

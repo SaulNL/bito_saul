@@ -13,6 +13,14 @@
     border: solid;
     color: #FF1DBD !important;
 }
+.customChip{
+  height: 38px;
+}
+
+.customExit{
+  font-size: 22px;
+}
+
 .controlesGrid{         
     display: grid;
     grid-template-columns: repeat(2, 1fr);
