@@ -117,7 +117,7 @@
               [max]="maxDate"
               value="{{usuarioSistema.fecha_nacimiento | date: 'yyyy-MM-dd'}}"
               required
-              (ionChange)="fechaSeleccionadaSeleccionada()"
+              (ionChange)="fechaNacimientoSeleccionada($event)"
             ></ion-datetime>
             <ion-icon
               slot="end"
@@ -189,7 +189,7 @@
           </ion-item>
           
         </ion-list>
-        <ion-button [disabled]="!fechaSeleccionada" type="submit" class="bg-naranja" expand="block"
+        <ion-button [disabled]="this.usuarioSistema.fecha_nacimiento == null" type="submit" class="bg-naranja" expand="block"
           >Actualizar</ion-button
         >
       </form>
