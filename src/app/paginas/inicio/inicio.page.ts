@@ -819,7 +819,8 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.listaVerMas = [];
       this.banderaVerMas == false;
       this.consultaTerminada = true;
-      this.loaderTop = true
+      this.loaderTop = true;
+      console.log("entre",this.loaderTop)
     }
     this.buttonDisabled = false;
 
@@ -1127,6 +1128,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.paginaPrevia = this.paginaPivote
     var respuesta = await this.principalSercicio
       .obtenerNegocioPorCategoria(this.Filtros, rand)// rand this.siguienteGiro);
+      console.log(respuesta)
     this.listaCategorias = [];
     if (respuesta.data.lst_cat_negocios.total > 0) {
       this.validarResultadosDeCategoriaSeleccionada(respuesta.data, false);
@@ -1273,6 +1275,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     try {
       var respuesta = await this.principalSercicio
         .obtenerNegocioPorCategoria(this.Filtros, this.paginaPrevia)
+        console.log(respuesta,this.paginaPrevia)
 
       this.validarResultadosDeCategoriaSeleccionada(respuesta.data, true);
       const byCategorias2 = localStorage.getItem("filtroactual");
