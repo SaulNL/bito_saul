@@ -56,13 +56,6 @@ export class ModalEventosPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    let afi = localStorage.getItem("afi")
-    let org;
-    if(afi){
-      org = JSON.parse(localStorage.getItem("org"));
-      console.log("org",org)
-    }
-    
     this.loader = true;
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
     this.edit = localStorage.getItem("editEvent");
@@ -103,6 +96,7 @@ export class ModalEventosPage implements OnInit {
   obtenerEstados() {
     if (this.edit == null) this.loader = false;
     this._general_service.getEstadosWS().subscribe(response => {
+      console.log("estado", response)
       if (this._utils_cls.is_success_response(response.code)) {
         this.list_cat_estado = response.data.list_cat_estado;
         // this.loader = false;
@@ -127,6 +121,7 @@ export class ModalEventosPage implements OnInit {
     }
     if (idE > 0) {
       this._general_service.getMunicipiosAll(idE).subscribe(response => {
+        console.log("municipio", response)
         if (this._utils_cls.is_success_response(response.code)) {
           this.list_cat_municipio = response.data.list_cat_municipio;
         }
@@ -156,6 +151,7 @@ export class ModalEventosPage implements OnInit {
     }
     if (idE > 0) {
       this._general_service.getLocalidadAll(idE).subscribe(response => {
+        console.log("localidad", response)
         if (this._utils_cls.is_success_response(response.code)) {
           this.list_cat_localidad = response.data.list_cat_localidad;
         }
@@ -193,6 +189,7 @@ export class ModalEventosPage implements OnInit {
   }
 
   asignarValoresEvent(data) {
+    console.log("data", data)
     let pagos = [];
 
     setTimeout(async () => {
@@ -234,6 +231,10 @@ export class ModalEventosPage implements OnInit {
         this.pagoSeleccionado = pagos;
         this.eventoSelect = data.tipo_evento.split(",");
       }, 2000)
+
+      // this.eventData.id_municipio = data.id_municipio;
+      // this.eventData.id_localidad = data.id_localidad;
+      console.log("asignado", this.eventData)
       this.loader = false;
     }, 1000)
   }
@@ -251,7 +252,9 @@ export class ModalEventosPage implements OnInit {
   }
 
   guardarEvento(data) {
+    console.log("datos a guardar", data)
     this.eventoService.guardarEvento(data).subscribe(res => {
+      console.log(res)
       if (res.code == 200) {
         this.loader = false
         this._notificacionService.exito('Evento Guardado');
@@ -316,6 +319,10 @@ export class ModalEventosPage implements OnInit {
                       archivo.archivo_64 = file_64;
                     }
                     this.eventData.imagen = archivo;
+                    // console.log("esto se debe guardar", archivo)
+                    /*  this.formGroup1.patchValue({
+                        archivo: archivo
+                      });*/
                   }
                 );
               } else {
@@ -330,6 +337,8 @@ export class ModalEventosPage implements OnInit {
                   archivo.nombre_archivo = nombre_archivo,
                     archivo.archivo_64 = r.data;
                   this.eventData.imagen = archivo;
+                  // console.log("esto se debe guardar 2", archivo)
+                  // this.blnImgCuadrada = false;
                 }
               }
               );
@@ -360,12 +369,16 @@ export class ModalEventosPage implements OnInit {
   }
 
   agregarTags(tags: string[]) {
+    console.log("desde el Modal:", tags)
     this.negtag = true;
     this.tags = tags.join(', ');
+    console.log("tags?", tags)
     this.eventData.tags = this.tags;
   }
 
   verificarActivo(evento, tipo) {
+    console.log(evento.detail.checked)
+    console.log(this.activoBTN)
     if (tipo) {
       this.eventData.activo = evento.detail.checked == false ? 0 : 1;
     }
