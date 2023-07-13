@@ -58,6 +58,10 @@ export class InicioPage implements OnInit, AfterViewInit {
   listaIdsMapa: any;
   filtroActivo: boolean = true;
   user: any;
+  public paginacion = [];
+  public pagSelect : any;
+  public lastPage : number
+  public variablePrueba: boolean = false
   public existeSesion: boolean;
   public msj = "Cargando";
   public tFiltro: boolean;
@@ -115,6 +119,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   paginaPivote: number;
   primeraPagRandom: number;
   paginaPrevia: number;
+  pagBoton: boolean = false;
   scrollAmount: any;
   isLoading: boolean;
   consultaTerminada: boolean = true;
@@ -812,13 +817,13 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.listaVerMas = [];
     this.banderaVerMas == false;
     this.consultaTerminada = true;
-    if (this.paginaPrevia <= 1 || this.paginaPrevia == undefined) {
+    if (this.paginaPrevia == undefined) {
       this.loaderTop = false
     } else {
       this.listaVerMas = [];
       this.banderaVerMas == false;
       this.consultaTerminada = true;
-      this.loaderTop = true
+      this.loaderTop = true;
     }
     this.buttonDisabled = false;
 
@@ -1137,6 +1142,11 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.paginaPrevia = this.paginaPivote
     var respuesta = await this.principalSercicio
       .obtenerNegocioPorCategoria(this.Filtros, rand)// rand this.siguienteGiro);
+      this.paginacion = []
+        this.pagSelect = respuesta.data.lst_cat_negocios.current_page;
+        this.lastPage = respuesta.data.lst_cat_negocios.last_page;
+        this.variablePrueba = true
+      this.generarPaginacion(respuesta);
     this.listaCategorias = [];
     if (respuesta.data.lst_cat_negocios.total > 0) {
       this.validarResultadosDeCategoriaSeleccionada(respuesta.data, false);
@@ -1176,6 +1186,10 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.paginaPrevia = this.paginaPivote
     var respuesta = await this.principalSercicio
       .obtenerNegocioPorCategoria(this.Filtros, rand)//this.siguienteGiro)
+      this.paginacion = []
+        this.pagSelect = respuesta.data.lst_cat_negocios.current_page;
+        this.variablePrueba = true
+      this.generarPaginacion(respuesta);
     this.validarResultadosDeCategorias(await respuesta);
     this.loader = false;
     this.content.scrollToPoint(0, 20);
@@ -1217,9 +1231,30 @@ export class InicioPage implements OnInit, AfterViewInit {
       throw throwError("");
     }
   }
-  cargarMasPaginasArriba() {//Bloquear boton
+
+  cambiarPag(tipo){
+    let paginaActual = this.pagSelect;
+    this.paginaPrevia = tipo == 1 ? paginaActual--:paginaActual;
+    this.paginaPrevia = tipo == 2 ? paginaActual +1:paginaActual;
+    if(this.paginaPrevia >=1 && this.paginaPrevia <= this.lastPage){
+      this.pagBoton = true;
+      this.pagSelect = this.paginaPrevia
+      this.cargarMasPaginasArriba(null)
+    }else{
+      let texto = this.paginaPrevia == 0 ? "Estas en la primera pagina" : "Estas en la ultima pagina";
+      
+      this.paginaPrevia = this.paginaPrevia == 0 ? this.paginaPrevia +1:this.paginaPrevia-1;
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: texto
+      })
+    }
+  }
+
+  cargarMasPaginasArriba(event) {//Bloquear boton
     this.isLoading = true;
-    this.paginaPrevia--
+    this.paginaPrevia = !this.pagBoton ? event.detail.value : this.paginaPrevia;
     this.buttonDisabled = true;
     if (this.totalDeNegociosPorConsulta > 20) {
       this.buscarNegociosArriba(false);
@@ -1269,6 +1304,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   }
   public async cargarCategoriasArriba() {
+    this.pagBoton = false;
     const byCategorias = localStorage.getItem("filtroactual");
     if (
       byCategorias !== null &&
@@ -1281,9 +1317,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.filtroActivo = true;
     }
     try {
-      var respuesta = await this.principalSercicio
-        .obtenerNegocioPorCategoria(this.Filtros, this.paginaPrevia)
-
+      var respuesta = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, this.paginaPrevia)
       this.validarResultadosDeCategoriaSeleccionada(respuesta.data, true);
       const byCategorias2 = localStorage.getItem("filtroactual");
       if (
@@ -1300,6 +1334,11 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.notificaciones.error("No hay conexión a internet, conectate a una red");
     }
   }
+
+  generarPaginacion(respuesta){
+    this.paginacion = Array.from({length: respuesta.data.lst_cat_negocios.last_page}, (_, index) => index + 1);
+  }
+
   clickDistintivo(tag: string, object: string) {
     this.showPopUp = true;
     this.insigniaTitle = tag

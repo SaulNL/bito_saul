@@ -111,15 +111,18 @@
     </ion-refresher>
     <ion-row *ngIf="loaderTop" [ngClass]="loaderTop? 'loaderArribaShow' : 'loaderArribaHide'">
       <ion-col size="12">
-        <div class="ver-mas">
-          <ion-button (click)="cargarMasPaginasArriba()" expand="block" fill="outline" color="medium" size="small"
-            shape="round" disabled={{buttonDisabled}}>
-            <span *ngIf="!isLoading">Ver mas negocios</span>
-            <div *ngIf="isLoading" class="spinner">
-              <ion-spinner color="medium" name="lines-small"></ion-spinner>
-              <span>Cargando</span>
+        <div class="paginacion">
+          <!-- <ion-item *ngIf="variablePrueba"> -->
+            <div class="botonPag" (click)="cambiarPag(1)">
+              <ion-icon name="caret-back"></ion-icon>
             </div>
-          </ion-button>
+            <ion-select [(ngModel)]="pagSelect" (ionChange)="cargarMasPaginasArriba($event)" placeholder="Seleccione una pagina">
+              <ion-select-option *ngFor="let pag of paginacion" [value]="pag">{{pag}}</ion-select-option>
+            </ion-select>
+            <div class="botonPag" (click)="cambiarPag(2)">
+              <ion-icon name="caret-forward"></ion-icon>
+            </div>
+          <!-- </ion-item> -->
         </div>
       </ion-col>
     </ion-row>
