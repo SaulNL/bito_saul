@@ -31,6 +31,7 @@ export class DetallesReservacionPage implements OnInit {
   public list_cat_estado: Array<CatEstadoModel>;
   public list_cat_municipio: Array<CatMunicipioModel>;
   public list_cat_localidad: Array<CatLocalidadModel>;
+  public base64Video = null;
 
   constructor(
       private router: Router,
@@ -50,6 +51,7 @@ export class DetallesReservacionPage implements OnInit {
   ngOnInit() {
     this.infoReservacion = this.eventosService.getSelectedObj();
     this.detallesReservacion = this.eventosService.getReservacionObj();
+    this.base64Video = null;
     this.convertirFechaHora();
     this.obtenerListaEvento();
   }

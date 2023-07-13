@@ -2,7 +2,7 @@
   <ion-toolbar class="tolbar">
     <ion-title>{{infoEvento[0]?.evento}}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="regresar()">
+      <ion-button (click)="regresar()" class="customExit">
         <ion-icon name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -46,6 +46,12 @@
         <div style="display: flex; align-items: center; margin-bottom: 16px;">
           <ion-label class="titulos">Recurrencia:</ion-label>
             <div class="mostrarDatos">{{nombreRecurrencia}}</div>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 9px;" *ngIf="infoEvento[0]?.url_video != null">
+            <video controls style="width: 100%;" class="image" alt="Falla al cargar video"
+                   *ngIf="base64Video == null">
+                <source [src]="infoEvento[0]?.url_video + '#t=0.5'" type="video/mp4">
+            </video>
         </div>
 
         <div *ngIf="mostrarLabel" style="display: flex; flex-direction: column; align-items: center;">

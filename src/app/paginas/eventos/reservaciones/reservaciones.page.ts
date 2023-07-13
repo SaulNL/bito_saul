@@ -51,6 +51,7 @@ export class ReservacionesPage implements OnInit {
   semanasArray: Date[];
   mesesArray: Date[] = [];
   fechaReservacion: any;
+  base64Video = null;
 
   public fechaFormateada: any;
 
@@ -82,6 +83,7 @@ export class ReservacionesPage implements OnInit {
       this.obtenerListaEvento();
     });
     this.idPersona = (this.utils.existSession()) ? this.utils.getIdUsuario() : null;
+    this.base64Video = null;
     this.reservacionPorFechas();
     this.mostrarSemanal();
   }
