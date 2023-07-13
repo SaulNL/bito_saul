@@ -26,7 +26,6 @@ export class InputTagsComponent implements OnInit {
   }
 
   agregartag(event) {
-    console.log("nuevaTag",event.target.value)
     const value = event.target.value.trim();
     if (value.endsWith(',') || event.key === 'Enter') {
       let conComa = (event.target as HTMLInputElement).value;
@@ -35,8 +34,12 @@ export class InputTagsComponent implements OnInit {
         if (this.tagActual[0] == '') {
           this.tagActual.splice(0)
         }
-        
-        this.tagActual.push(this.nuevaTag);
+        console.log("nuevaTag",this.nuevaTag);
+        let existTAg = this.tagActual.find(element => element == this.nuevaTag) ? true :false;
+        if(!existTAg){
+          this.tagActual.push(this.nuevaTag);
+        }
+        console.log("tagActuales",this.tagActual);
         this._enviarTags.emit(this.tagActual);
       }
       (event.target as HTMLInputElement).value = '';

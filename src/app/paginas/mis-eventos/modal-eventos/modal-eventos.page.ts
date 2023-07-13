@@ -56,6 +56,13 @@ export class ModalEventosPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    let afi = localStorage.getItem("afi")
+    let org;
+    if(afi){
+      org = JSON.parse(localStorage.getItem("org"));
+      console.log("org",org)
+    }
+    
     this.loader = true;
     this.usuario = JSON.parse(localStorage.getItem('u_data'));
     this.edit = localStorage.getItem("editEvent");
