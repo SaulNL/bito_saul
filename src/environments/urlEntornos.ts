@@ -17,26 +17,26 @@
  *  public static URL_FRONT = 'https://bitoo.com.mx/';
  */
 
-export const URLS_ENTORNOS = 
+export const URLS_ENTORNOS =
 {
   produccion:{
-    API_ENDPOINT:'https://bitoo-back.azurewebsites.net/',
+    API_ENDPOINT:'https://api.bitoo.com.mx/',
     URL_REGISTRO:'https://bitoo.com.mx/registro',
     URL_FRONT:'https://bitoo.com.mx/'
   },
-  desarrollo:{
-    API_ENDPOINT:'https://dev-back-bitoo.azurewebsites.net/',
-    URL_REGISTRO:'https://dev-front-bitoo.azurewebsites.net/registro',
-    URL_FRONT:'https://dev-front-bitoo.azurewebsites.net/'
+  desarrollo: {
+    API_ENDPOINT: 'https://dev-back-bitoo.azurewebsites.net/',
+    URL_REGISTRO: 'https://dev-front-bitoo.azurewebsites.net/registro',
+    URL_FRONT: 'https://dev-front-bitoo.azurewebsites.net/'
   },
-  beta:{
-    API_ENDPOINT:'http://132.145.168.176:8081/',
-    URL_REGISTRO:'http://132.145.168.176:8081/registro',
-    URL_FRONT:'https://132.145.168.176:8081/'
+  beta: {
+    API_ENDPOINT: 'http://132.145.168.176:8081/',
+    URL_REGISTRO: 'http://132.145.168.176:8081/registro',
+    URL_FRONT: 'https://132.145.168.176:8081/'
   },
-  local:{
-    API_ENDPOINT:'http://192.168.1.72/',
-    URL_REGISTRO:'http://192.168.1.72/registro',
-    URL_FRONT:'http://192.168.1.72/'
+  local: {
+    API_ENDPOINT: 'http://192.168.1.72/',
+    URL_REGISTRO: 'http://192.168.1.72/registro',
+    URL_FRONT: 'http://192.168.1.72/'
   }
 };

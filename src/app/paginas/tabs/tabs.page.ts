@@ -113,7 +113,7 @@ export class TabsPage implements OnInit {
     localStorage.removeItem("productos");
     localStorage.removeItem("activedPage");
     localStorage.setItem('isRedirected', 'false');
-    localStorage.removeItem("byCategorias");
+    // localStorage.removeItem("byCategorias");
     this.router.navigate(["/tabs/inicio"], {
       queryParams: { buscarNegocios: "buscar" },
     });
@@ -131,7 +131,7 @@ export class TabsPage implements OnInit {
 
   promociones() {
     localStorage.removeItem("activedPage");
-    localStorage.removeItem("byCategorias");
+    // localStorage.removeItem("byCategorias");
     localStorage.setItem("isRedirected", "false");
     this.router.navigate(["/tabs/promociones"]);
     localStorage.setItem("resetFiltro", "0");
@@ -141,7 +141,7 @@ export class TabsPage implements OnInit {
   }
   solicitudes() {
     localStorage.removeItem("activedPage");
-    localStorage.removeItem("byCategorias");
+    // localStorage.removeItem("byCategorias");
     this.router.navigate(["/tabs/mis-favoritos"]);
     localStorage.setItem("activedPage", "favoritos");
     this.activedPage = localStorage.getItem("activedPage");
@@ -151,7 +151,7 @@ export class TabsPage implements OnInit {
 
   productos() {
     localStorage.removeItem("activedPage");
-    localStorage.removeItem("byCategorias");
+    // localStorage.removeItem("byCategorias");
     localStorage.setItem("isRedirected", "false");
     this.router.navigate(["/tabs/productos"]);
     localStorage.setItem("resetFiltro", "0");
@@ -163,7 +163,7 @@ export class TabsPage implements OnInit {
 
   requerimientos() {
     localStorage.removeItem("activedPage");
-    localStorage.removeItem("byCategorias");
+    // localStorage.removeItem("byCategorias");
     this.router.navigate(["/tabs/home/solicitud"]);
     localStorage.setItem("activedPage", "requerimientos");
     this.activedPage = localStorage.getItem("activedPage");
@@ -172,7 +172,7 @@ export class TabsPage implements OnInit {
 
   perfil() {
     localStorage.removeItem("activedPage");
-    localStorage.removeItem("byCategorias");
+    // localStorage.removeItem("byCategorias");
     localStorage.setItem("isRedirected", "false");
     localStorage.setItem("resetFiltro", "0");
     this.router.navigate(["/tabs/home"], {
@@ -185,7 +185,7 @@ export class TabsPage implements OnInit {
     // localStorage.removeItem("todo");
   }
   login() {
-    localStorage.removeItem("byCategorias");
+    // localStorage.removeItem("byCategorias");
     localStorage.setItem("isRedirected", "false");
     this.router.navigate(["/tabs/login"]);
     localStorage.setItem("activedPage", "perfil");
