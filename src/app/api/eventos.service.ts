@@ -33,8 +33,13 @@ export class EventosService {
         return this.reservacionObj;
     }
 
-  eventosLista(){
-    const body = '';
+  eventosLista(filtroEvento: any): Observable<any>{
+    let body;
+    if (filtroEvento != null){
+        body = JSON.stringify({organizacion: filtroEvento});
+    }else{
+        body = '';
+    }
     this._http.setDataSerializer('utf8');
     return from(this._http.post(this.url + 'api/eventos/publicados', body, AppSettings.getHeaders()).then((data) => {
       return JSON.parse(data.data);

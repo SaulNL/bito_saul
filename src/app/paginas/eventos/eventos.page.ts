@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EventosService} from '../../api/eventos.service';
 import {CatEstadoModel} from '../../Modelos/CatEstadoModel';
@@ -9,6 +9,7 @@ import {CatMunicipioModel} from '../../Modelos/CatMunicipioModel';
 import {CatLocalidadModel} from '../../Modelos/CatLocalidadModel';
 import {FiltroEventosModel} from '../../Modelos/FiltroEventosModel';
 import {AlertController} from '@ionic/angular';
+import {AfiliacionPlazaModel} from '../../Modelos/AfiliacionPlazaModel';
 
 @Component({
   selector: 'app-eventos',
@@ -38,6 +39,7 @@ export class EventosPage implements OnInit {
   public list_cat_estado: Array<CatEstadoModel>;
   public list_cat_municipio: Array<CatMunicipioModel>;
   public list_cat_localidad: Array<CatLocalidadModel>;
+  public objectSelectAfiliacionPlaza: AfiliacionPlazaModel;
   public filtroEvento: FiltroEventosModel;
   public btnEstado: boolean;
   public btnMuncipio: boolean;
@@ -50,6 +52,10 @@ export class EventosPage implements OnInit {
   public id_localidad: any;
   public noOpcion: any;
   public fechaSeleccionada: string;
+  public afi: any;
+  public org: any;
+  public idOrg: any;
+  public filtroVacio: any;
 
   constructor(
       private eventosService: EventosService,
@@ -79,7 +85,17 @@ export class EventosPage implements OnInit {
 
   ngOnInit() {
     this.banderaLista = true;
-    this.obtenerListaEvento();
+    this.afi = localStorage.getItem('afi');
+    this.load();
+    if (this.afi != null){
+      this.org = JSON.parse(localStorage.getItem('org'));
+      this.idOrg = this.org.id_organizacion;
+      this.obtenerListaEvento(this.idOrg);
+      this.load();
+    }else {
+      this.filtroVacio = null;
+      this.obtenerListaEvento(this.filtroVacio);
+    }
     this.load_cat_estados();
   }
 
@@ -99,8 +115,9 @@ export class EventosPage implements OnInit {
     }
   }
 
-  obtenerListaEvento() {
-    this.eventosService.eventosLista().subscribe(
+  obtenerListaEvento(filtro: any): void {
+    const idDetalle = filtro;
+    this.eventosService.eventosLista(idDetalle).subscribe(
         res => {
           this.eventosAll = res.data;
           this.eventosAll.sort((a, b) => {
@@ -283,12 +300,25 @@ export class EventosPage implements OnInit {
     this.btnMuncipio = true;
     this.filtroEvento.id_localidad = null;
     this.btnLocalidad = true;
-    this.obtenerListaEvento();
+
+    if (this.afi != null){
+      this.org = JSON.parse(localStorage.getItem('org'));
+      this.idOrg = this.org.id_organizacion;
+      this.obtenerListaEvento(this.idOrg);
+    }else {
+      this.filtroVacio = null;
+      this.obtenerListaEvento(this.filtroVacio);
+    }
   }
 
   public buscarEvento() {
     this.isOpen = false;
     this.loader = true;
+    this.afi = localStorage.getItem('afi');
+    if (this.afi != null){
+      this.org = JSON.parse(localStorage.getItem('org'));
+      this.filtroEvento.organizacion = this.org.id_organizacion;
+    }
     if ( this.eventoSeleccionado !== null && this.eventoSeleccionado !== undefined){
       const cadena = this.eventoSeleccionado.join(',');
       this.filtroEvento.tipo_evento = `${cadena}`;
@@ -378,6 +408,12 @@ export class EventosPage implements OnInit {
       ],
     });
     await alert.present();
+  }
+
+  private load() {
+      this.objectSelectAfiliacionPlaza = JSON.parse(
+          String(localStorage.getItem("org"))
+      );
   }
 
 }
