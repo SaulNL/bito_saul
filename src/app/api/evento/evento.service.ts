@@ -65,6 +65,32 @@ export class EventoService {
         return error;
       }));
   }
+
+  obtenerReservaciones(idEvento: any): Observable<any>{
+    const aux = {
+      "id_evento": idEvento
+    };
+    const body = JSON.stringify(aux);
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(this.url + 'api/eventos/listaReservaciones', body, AppSettings.getHeadersToken()).then((data) => {
+      return JSON.parse(data.data);
+    })
+      .catch((error) => {
+        return error;
+    }));
+
+  }
+
+  confirmarReservacion(aux){
+    const body = JSON.stringify(aux);
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(this.url + 'api/eventos/confirmar', body, AppSettings.getHeadersToken()).then((data) => {
+      return JSON.parse(data.data);
+    })
+      .catch((error) => {
+        return error;
+    }));
+  }
   eliminarEvento(id): Observable<any> {
     let body = JSON.stringify(id);
     this._http.setDataSerializer('utf8');

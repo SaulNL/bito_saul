@@ -20,7 +20,6 @@ export class InputTagsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("tags",this.tags)
     this.asignarValoresTAgs()
     this.placeHolder = this.tipo == false ? "Enter o (,) para guardar la tag" : "(,) para guardar la tag";
   }
@@ -34,12 +33,10 @@ export class InputTagsComponent implements OnInit {
         if (this.tagActual[0] == '') {
           this.tagActual.splice(0)
         }
-        console.log("nuevaTag",this.nuevaTag);
         let existTAg = this.tagActual.find(element => element == this.nuevaTag) ? true :false;
         if(!existTAg){
           this.tagActual.push(this.nuevaTag);
         }
-        console.log("tagActuales",this.tagActual);
         this._enviarTags.emit(this.tagActual);
       }
       (event.target as HTMLInputElement).value = '';

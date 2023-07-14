@@ -16,11 +16,10 @@
 <ion-content *ngIf="!loader">
   <div class="eventosContent">
     <ion-label class="eventocreado">Eventos Creados</ion-label>
-    <ion-list>
-      <ion-item-sliding class="eventoContent" *ngFor="let evento of eventos; let i = index">
+    <ion-list class="listaEvento">
+      <ion-item-sliding class="eventoContent" (click)="obtenerLstReservacion(evento.id_evento, evento.url_imagen)" *ngFor="let evento of eventos; let i = index">
         <ion-item>
           <img class="eventoImg" src="{{evento.url_imagen}}" alt="{{evento.evento}}">
-          <!-- <ion-label class="eventTitle">{{evento.evento}}</ion-label> -->
           <p class="eventTitle">{{evento.evento}}</p>
           <ion-icon style="color: #000;" name="chevron-back-outline"></ion-icon>
         </ion-item>
@@ -32,13 +31,53 @@
               name="trash-outline"></ion-icon></ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
+    </ion-list>
+  </div>
 
-      <!-- <ion-item class="eventoContent" *ngFor="let evento of eventos">
-        <img class="eventoImg" src="{{evento.url_imagen}}" alt="{{evento.evento}}">
-        <ion-label class="eventTitle">{{evento.evento}}</ion-label>
+  <div class="confirmacionEventoContainer">
+    <ion-label class="eventocreado">Validar reservacion</ion-label>
+    <div class="imgReservacion" *ngIf="eventoImg">
+      <img [src]="eventoImg" alt="Imagen del evento">
+    </div>
+    <div class="cantidadFaltante" *ngIf="reservacion">
+      Faltantes:
+      <ion-chip>{{cantidadFaltante}}</ion-chip>
+    </div>
+    <p style="text-align: center;">Para visualizar las reservaciones selecciona un evento de la parte superior.</p>
+    <p style="color: red;" *ngIf="!reservacion && evReservacion">No tiene ninguna reservacion registrada</p>
+    <ion-list class="listaEvento">
+      <!-- <ion-item *ngFor="let res of reservacion">
+        <ion-label>{{res.nombresolicitante}} {{res.paternosolicitante}} {{res.maternosolicitante}}</ion-label>
       </ion-item> -->
 
+      <ion-item-sliding class="eventoContent" *ngFor="let res of reservacion let i = index">
+        <ion-item>
+          <!-- <ion-label>{{res.nombresolicitante}} {{res.paternosolicitante}} {{res.maternosolicitante}}</ion-label> -->
+          <div style="width: 40px; height: 100%;" [ngClass]="{'color-1': res.fc_confirmacion != null, 'color-0': res.fc_confirmacion === null}"></div>
+          <p class="eventTitleRes">{{res.nombresolicitante}} {{res.paternosolicitante}} {{res.maternosolicitante}}</p>
+          <ion-icon style="color: #000;" name="chevron-back-outline"></ion-icon>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option color="warning" (click)="mostrarInformacion(i)"><ion-icon name="alert-outline"></ion-icon></ion-item-option> <!-- agregar evento click-->
+          <ion-item-option color="danger" (click)="quitarReservacion(res)" *ngIf="res.fc_confirmacion"><ion-icon name="trash-outline"></ion-icon></ion-item-option>
+          <ion-item-option color="success" (click)="guardarReservacion(res)" *ngIf="!res.fc_confirmacion"><ion-icon name="add-outline"></ion-icon></ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
     </ion-list>
+    
+  </div>
+
+  <div class="informacionContainer" *ngIf="mostrarInfo" (click)="cerrarInformacion()">
+    <div class="seccion-informacion" *ngIf="mostrarInfo">
+      <h2>Solicitante: {{solicitante}}</h2>
+      <div class="informacionReservacion">
+        <ion-label>No. Personas: {{noPersonas}}</ion-label>
+        <ion-label>Fecha de reservacion: {{fechaDeReservacion}}</ion-label>
+        <ion-label>Estatus: {{estatus}}</ion-label>
+        <ion-label>Fecha confirmacion: {{fechaConfirmacion}}</ion-label>
+      </div>
+    </div>
   </div>
 
 
