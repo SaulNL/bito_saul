@@ -154,7 +154,7 @@ export class SignUpPage implements OnInit {
    */
   public openTermsConditions() {
     window.open(
-      "https://ecoevents.blob.core.windows.net/comprandoando/documentos%2FTERMINOS%20Y%20CONDICIONES%20Bitoo.pdf",
+      "https://beta-front.tinbitoo.com.mx/politica/privacidad",
       "_blank"
     );
   }
