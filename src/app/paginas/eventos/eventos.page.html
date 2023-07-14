@@ -98,6 +98,15 @@
 
   </ion-item>
 
+  <div *ngIf="objectSelectAfiliacionPlaza !== null && objectSelectAfiliacionPlaza !== undefined"
+       class="ion-text-center; contenedor">
+    <p style="padding-inline: 5%">
+      ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA
+      <img style="width: 25px; margin-top: 2%" src="{{objectSelectAfiliacionPlaza.icon}}" />
+      {{objectSelectAfiliacionPlaza.nombre}}
+    </p>
+  </div>
+
   <div *ngIf="filtroEvento">
     <ion-list style="display: flex; flex-direction: column;">
       <ion-item *ngFor="let dato of eventosAll" (click)="datosEventos(dato.id_evento)">

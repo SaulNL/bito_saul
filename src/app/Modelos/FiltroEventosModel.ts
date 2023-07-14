@@ -5,4 +5,5 @@ export class FiltroEventosModel{
     public id_estado: number;
     public id_municipio: number;
     public id_localidad: number;
+    public organizacion: number;
 }
