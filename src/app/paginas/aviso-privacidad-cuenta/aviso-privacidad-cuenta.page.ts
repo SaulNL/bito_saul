@@ -27,6 +27,7 @@ export class AvisoPrivacidadCuentaPage implements OnInit {
   public id_motivo: number;
   public idUsuario: number;
   public loader: boolean;
+  public URL_FRONT = AppSettings.URL_FRONT;
 
   constructor(
     private router: Router,
@@ -190,6 +191,13 @@ export class AvisoPrivacidadCuentaPage implements OnInit {
   private updateNotification() {
     const content: NotificationInterface = this.create.createNotificationFirebaseWithNotUser();
     this.notification.updateUserWithNotification(content);
+  }
+
+  public politicas(){
+    window.open(
+        this.URL_FRONT + "politica/privacidad",
+        "_blank"
+    );
   }
 
 }

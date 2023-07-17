@@ -6,6 +6,7 @@ import { ProccessSignUp } from "./../../helper/proccess-sign-up";
 import { SelectedSocialNetwork } from "./../../types/platform-type";
 import { LoginService } from "./../../../api/login.service";
 import { ActivatedRoute } from "@angular/router";
+import {AppSettings} from '../../../AppSettings';
 import {
   UserSignInModel,
   UserSignInInterface,
@@ -54,6 +55,7 @@ export class SignUpPage implements OnInit {
   public loadFacebook: boolean;
   public loadGoogle: boolean;
   public loadApple: boolean;
+  public URL_FRONT = AppSettings.URL_FRONT;
   constructor(
     private router: Router,
     private modalCtr: ModalController,
@@ -154,7 +156,7 @@ export class SignUpPage implements OnInit {
    */
   public openTermsConditions() {
     window.open(
-      "https://ecoevents.blob.core.windows.net/comprandoando/documentos%2FTERMINOS%20Y%20CONDICIONES%20Bitoo.pdf",
+        this.URL_FRONT + "politica/privacidad",
       "_blank"
     );
   }

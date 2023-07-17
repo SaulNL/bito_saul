@@ -34,9 +34,14 @@ export const URLS_ENTORNOS =
     URL_REGISTRO: 'http://132.145.168.176:8081/registro',
     URL_FRONT: 'https://132.145.168.176:8081/'
   },
-  local: {
-    API_ENDPOINT: 'http://192.168.1.72/',
-    URL_REGISTRO: 'http://192.168.1.72/registro',
-    URL_FRONT: 'http://192.168.1.72/'
+  betatinbitoo:{
+    API_ENDPOINT:'https://beta-back.tinbitoo.com.mx/',
+    URL_REGISTRO:'https://beta-front.tinbitoo.com.mx/registro',
+    URL_FRONT:'https://beta-front.tinbitoo.com.mx/'
+  },
+  local:{
+    API_ENDPOINT:'http://192.168.1.72/',
+    URL_REGISTRO:'http://192.168.1.72/registro',
+    URL_FRONT:'http://192.168.1.72/'
   }
 };
