@@ -18,10 +18,10 @@
     <ion-label class="eventocreado">Eventos Creados</ion-label>
     <ion-list class="listaEvento">
       <ion-item-sliding class="eventoContent" (click)="obtenerLstReservacion(evento.id_evento, evento.url_imagen)" *ngFor="let evento of eventos; let i = index">
-        <ion-item>
+        <ion-item (click)="onClickItem($event)">
           <img class="eventoImg" src="{{evento.url_imagen}}" alt="{{evento.evento}}">
           <p class="eventTitle">{{evento.evento}}</p>
-          <ion-icon style="color: #000;" name="chevron-back-outline"></ion-icon>
+          <ion-icon class="moveLeft" style="color: #000;" name="chevron-back-outline"></ion-icon>
         </ion-item>
 
         <ion-item-options side="end">
@@ -51,11 +51,10 @@
       </ion-item> -->
 
       <ion-item-sliding class="eventoContent" *ngFor="let res of reservacion let i = index">
-        <ion-item>
-          <!-- <ion-label>{{res.nombresolicitante}} {{res.paternosolicitante}} {{res.maternosolicitante}}</ion-label> -->
+        <ion-item (click)="onClickItem($event)">
           <div style="width: 40px; height: 100%;" [ngClass]="{'color-1': res.fc_confirmacion != null, 'color-0': res.fc_confirmacion === null}"></div>
           <p class="eventTitleRes">{{res.nombresolicitante}} {{res.paternosolicitante}} {{res.maternosolicitante}}</p>
-          <ion-icon style="color: #000;" name="chevron-back-outline"></ion-icon>
+          <ion-icon class="moveLeft" style="color: #000;" name="chevron-back-outline"></ion-icon>
         </ion-item>
 
         <ion-item-options side="end">

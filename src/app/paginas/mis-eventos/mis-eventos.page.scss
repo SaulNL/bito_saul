@@ -41,6 +41,19 @@
 .eventTitleRes{
     margin-left: 5px;
 }
+.moveLeft {
+    animation: moveLeftAnimation 0.5s forwards;
+  }
+  
+  @keyframes moveLeftAnimation {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-10px);
+    }
+  }
+
 .cantidadFaltante{
     display: flex;
     justify-content: flex-end;

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { EventoService } from '../../api/evento/evento.service';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
-import { Platform } from '@ionic/angular';
+import { Platform, AnimationController } from '@ionic/angular';
 
 @Component({
   selector: 'app-mis-eventos',
@@ -35,7 +35,8 @@ export class MisEventosPage implements OnInit {
     private _router: Router,
     private eventoService: EventoService,
     private notificacionService: ToadNotificacionService,
-    private platform: Platform
+    private platform: Platform,
+    private animationCtrl: AnimationController
   ) { }
 
   ionViewWillEnter() {
@@ -165,6 +166,29 @@ export class MisEventosPage implements OnInit {
     this.datosReservacion.id_estatus_reservacion = await 1 ;
     this.datosReservacion.id_evento_reservacion = await data.id_evento_reservacion;
     this.enviarReservacion(data,false)
+  }
+
+  onClickItem(event) {
+    const icon = event.currentTarget.querySelector('ion-icon');
+
+    // Creamos la animación y la configuramos para mover el ícono
+    const moveLeftAnimation = this.animationCtrl.create()
+      .addElement(icon)
+      .duration(500)
+      .fromTo('transform', 'translateX(0)', 'translateX(-10px)');
+
+    // Ejecutamos la animación
+    moveLeftAnimation.play();
+
+    // Revertimos la animación después de 500ms
+    setTimeout(() => {
+      const moveBackAnimation = this.animationCtrl.create()
+        .addElement(icon)
+        .duration(500)
+        .fromTo('transform', 'translateX(-10px)', 'translateX(0)');
+
+      moveBackAnimation.play();
+    }, 500);
   }
 
 }

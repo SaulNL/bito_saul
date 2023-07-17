@@ -118,7 +118,6 @@ export class SignInPage implements OnInit {
     optionSesion: SelectedOptionSesionModel
   ) {
     ConfigGlobal.setUser(response);
-    //console.log(response.data.usuario_sistema.ms_persona.proveedor);
     if (response.data.usuario_sistema.ms_persona.proveedor === null){
       let id_proveedor = null;
       localStorage.setItem("id_proveedor", id_proveedor);
@@ -133,7 +132,7 @@ export class SignInPage implements OnInit {
       this.returnToLocation = JSON.parse(String(optionEnterLogin));
       this.goToRoute(this.returnToLocation.url);
       const pagina = localStorage.getItem('Page');
-
+      
       if(pagina==='Requerimiento'){
         this.goToRouteReque();
       }
@@ -172,7 +171,6 @@ export class SignInPage implements OnInit {
     try {
       this.loginService.login(user).subscribe(        
         (response) => {
-          //console.log("USEEEEEER"+JSON.stringify(user));
           if (response.code === 200) {
             this.proccessSuccessAfterSignIn(response, optionSesion);
           } else {
@@ -271,7 +269,8 @@ export class SignInPage implements OnInit {
   }
 
   private goToRoute(url: string) {
-    this.route.navigate(["/tabs/inicio"], { queryParams: { byLogin: url } });
+    window.location.assign(`/tabs/negocio/${url}`);
+    // this.route.navigate(["/tabs/inicio"], { queryParams: { byLogin: url } });
   }
 
   private goToRouteReque() {
