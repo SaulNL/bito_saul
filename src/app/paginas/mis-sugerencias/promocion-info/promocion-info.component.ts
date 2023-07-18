@@ -33,6 +33,7 @@ export class PromocionInfoComponent implements OnInit {
   public hoy: any;
   id_cupon_promocion: number;
   isAccordionExpanded: boolean = false;
+  isOpen: boolean = false;
 
   constructor(
     public modalController: ModalController,
@@ -46,6 +47,7 @@ export class PromocionInfoComponent implements OnInit {
 
   ngOnInit() {
     this.calcularDistancia(this.promocion);
+    console.log('promocion', this.promocion);
     this.asignarValores(this.promocion.fecha_fin);
     this.hoy = new Date();
     this.hoy = this.hoy.getDay() !== 0 ? this.hoy.getDay() : 7;
@@ -71,6 +73,16 @@ export class PromocionInfoComponent implements OnInit {
       queryParams: { route: true }
     });
     this.modalController.dismiss();
+  }
+
+  verImagen(){
+    this.isOpen = true;
+  }
+
+  cerrarModal(event: MouseEvent) {
+    if (event.target === event.currentTarget) {
+      this.isOpen = false;
+    }
   }
 
   private calcularDistancia(promocion: any) {
@@ -208,6 +220,13 @@ export class PromocionInfoComponent implements OnInit {
     }
 
     this.promocion.estatus = status;
+  }
+
+  masInformacion(promocion: any) {
+    this.router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
+      queryParams: { route: true }
+    });
+    this.modalController.dismiss();
   }
 
 

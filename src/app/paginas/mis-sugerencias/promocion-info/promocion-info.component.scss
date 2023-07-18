@@ -12,121 +12,162 @@
 
 .imgPromo {
     display: flex;
-    background-repeat: no-repeat;
-    background-size: contain;
-    flex-direction: column;
-    position: relative;
-    width: 100%;
-    height: 50vh;
-    justify-content: center;
     align-items: center;
-    border-radius: 15px;
-    margin-bottom: 10px;
+    justify-content: center;
+    margin-bottom: 12px;
+    margin-top: 10px;
 }
 
 img {
-    width: 100%;
-    height: auto;
-    border-radius: 15px;
+    display: block;
+    height: 300px;
+    width: 300px;
 }
 
-button {
+.contendorPrincipal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #E6E5E5;
+    border-radius: 15px;
+    width: 90%;
+    min-height: 70px;
+}
+
+.buttonCoupon{
+    --background: linear-gradient(90deg, #F761CC 0%, #FF7859 100%);
+    --color: #fff;
+    width: 65vw;
+}
+
+label {
+    font-weight: bold;
+    color:  #FF1DBD;
+    font-size: 18px;
+}
+
+.contendorSecundario{
+    background-color: #E6E5E5;
+    border-radius: 15px;
+    width: 90%;
+    min-height: 70px;
+}
+
+.contenedor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    margin-top: 10px;
+}
+
+.middle-modal {
+    transition: .5s ease;
+    opacity: 0;
     position: absolute;
-    top: 50%;
+    top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 10px 20px;
-    background: linear-gradient(90deg, #F761CC 0%, #FF7859 100%);
-    color: white;
-    border: none;
-    border-radius: 15px;
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
 }
 
-.colorText {
-    margin: 0;
-    color: black;
+.image {
+    opacity: 1;
+    display: block;
+    transition: .5s ease;
+    backface-visibility: hidden;
+    width: 100%;
+}
+
+.imagen{
+    opacity: 1;
+    display: block;
+    transition: .5s ease;
+    backface-visibility: hidden;
+    height: 300px;
+    width: 300px;
+}
+
+.contenedor:hover .imagen {
+    opacity: 0.3;
+}
+
+.contenedor:hover .middle-modal {
+    opacity: 1;
+}
+
+.boton {
+    padding: 10px;
+    background: #FF1DBD;
+    color: white;
+    border-radius: 20px;
+    width: 88px;
+}
+
+.modal-overlayPromocion {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.customCol{
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonInf{
+    /* background: linear-gradient(90deg, #F761CC 0%, #FF7859 100%); */
+    /* color: #fff; */
+    border: 2px solid #eb445a; /* Borde de 2 píxeles de ancho y color rojo */
+    border-radius: 25px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    width: 40vw;
+    min-height: 7vw;
+    margin-top: 2px;
+    justify-content: center;
+    /* cursor: pointer; */
+    /* text-decoration: none; */
+}
+
+.contenedorTer{
+    background-color: #E6E5E5;
+    border-radius: 15px;
+    width: 90%;
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.promocion {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.rosa {
+    color: #FF1DBD;
 }
 
 .titulo {
     font-size: xx-large;
     margin-bottom: 10px;
-}
-
-span,
-.lineaRosa,
-.Proveedor {
-    color: #FF1DBD;
-}
-
-.descripcion {
-    text-align: center;
-    display: flex;
-    font-size: 20px;
-    margin-bottom: 15px;
-}
-
-.lineaRosa {
-    min-height: 3px;
-    width: 70%;
-    background-color: #FF1DBD;
-}
-
-.tipoPromo {
-    font-size: 30px;
-    margin-bottom: 10px;
-}
-
-.cuponPromo {
-    display: flex;
-    font-size: 20px;
-    margin-bottom: 15px;
-    justify-content: center;
-    align-items: center;
-}
-
-.nombrePromo {
-    font-size: 22px;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-.downloadCupon {
-    margin-left: 20px;
-}
-
-.compartirPromo {
-    margin-bottom: 23px;
-}
-
-.termCondiciones {
-    font-size: 20px;
-    color: #808080;
-    margin-bottom: 15px;
-}
-
-.convenioPromo {
-    font-size: 30px;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.diasPromo,
-.Proveedor,
-.direccion {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.Proveedor {
-    text-transform: uppercase;
-    font-size: 20px;
-}
-
-.whatsappNumber {
-    background-color: #1c7430;
-    border-radius: 15px;
-    color: #fff;
-    padding: 5px;
 }
 
 ul {
@@ -144,12 +185,13 @@ ul li {
 }
 
 .list {
-    -webkit-box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.75);
-    border-radius: 10px;
+    //-webkit-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+    //-moz-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+    //box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+    border-radius: 20px;
+    background: linear-gradient(90deg, #F761CC 0%, #FF7859 100%);
+    color: white;
 }
-
 .negritas {
     color: black;
     font-weight: bolder;
