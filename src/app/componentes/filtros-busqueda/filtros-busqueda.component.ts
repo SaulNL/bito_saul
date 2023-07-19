@@ -356,6 +356,7 @@ export class FiltrosBusquedaComponent implements OnInit {
         }
     }
     borrarFiltros() {
+        localStorage.removeItem("todo")
         this.filtros = new FiltrosModel();
         this.listaTipoNegocio = [];
         this.buscar();

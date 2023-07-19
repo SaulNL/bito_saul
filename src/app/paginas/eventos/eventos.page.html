@@ -12,12 +12,12 @@
 <ion-content fullscreen>
 
   <ion-item>
-      <div class="label_filtro">
-        <ion-label (click)="abrirModal()">Filtro <ion-icon name="caret-down-outline"></ion-icon>
-        </ion-label>
+      <div class="label_filtro" *ngIf="eventosAll.length > 0" (click)="abrirModal()">
+        <ion-label>Filtro</ion-label>
+        <ion-icon name="caret-down-outline"></ion-icon>
       </div>
-    <div class="label_reservaciones">
-      <ion-label (click)="misReservaciones()">Mis reservaciones</ion-label>
+    <div class="label_reservaciones" *ngIf="this.secion" (click)="misReservaciones()">
+      <ion-label>Mis reservaciones</ion-label>
     </div>
 
       <div class="modal-overlay" *ngIf="isOpen">
@@ -107,8 +107,9 @@
     </p>
   </div>
 
+  <div class="sinNegocios" *ngIf="eventosAll.length == 0">Parece que no hay eventos disponibles</div>
   <div *ngIf="filtroEvento">
-    <ion-list style="display: flex; flex-direction: column;">
+    <ion-list style="display: flex; flex-direction: column;" *ngIf="eventosAll.length > 0">
       <ion-item *ngFor="let dato of eventosAll" (click)="datosEventos(dato.id_evento)">
         <ion-label>
           <div style="white-space: pre-wrap; width: 70%">
