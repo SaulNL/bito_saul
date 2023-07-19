@@ -128,11 +128,11 @@ export class MisEventosPage implements OnInit {
 
   contarFaltantes(json) {
     let contador = 0;
-    
+
     json.forEach(element => {
       contador = element.fc_confirmacion === null ? contador + 1 : contador;
     });
-  
+
     return contador;
   }
 
