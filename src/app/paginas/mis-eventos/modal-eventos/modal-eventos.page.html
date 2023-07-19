@@ -21,28 +21,61 @@
             required></ion-input>
         </ion-item>
       </div>
-      <div class="img">
-        <div class="form-group" style="display: flex; justify-content: center; align-items: center">
-          <div class="avatar-upload">
-            <div class="avatar-edit">
-              <input type="file" hidden id="imageUpload" accept="image/*" (change)="subir_imagen_cuadrada($event)"
-                required />
-              <label for="imageUpload">
-                <ion-icon name="camera-outline" style="position: relative; top: 7px"></ion-icon>
-              </label>
-            </div>
-            <div class="avatar-preview">
-              <div *ngIf="eventData.imagen.archivo_64 === null || eventData.imagen.archivo_64 === undefined"
-                id="imageUpload"
-                [ngStyle]="eventoInfo_imagen !== null ? {'background-image': 'url('+eventoInfo_imagen+')'} : ''">
-              </div>
-              <div *ngIf="eventData.imagen.archivo_64 !== null || eventData.imagen.archivo_64 !== undefined"
-                [ngStyle]="{'background-image': 'url('+eventData.imagen.archivo_64+')'}"></div>
-            </div>
-            <label for="imageUpload"></label>
-          </div>
-        </div>
+
+      <div>
+        <ion-item class="slider">
+          <ion-slides [options]="slideOpts" style="width: 500px;">
+            <ion-slide *ngFor="let foto of fotografiasArray; let i = index">
+              <ion-card>
+                <img src={{foto.url_imagen}} />
+                <img *ngIf="(foto.archivo_64 != null || foto.archivo_64 != '')" src="{{foto.archivo_64}}">
+                <ion-label (click)="borrarFoto(i)" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>
+              </ion-card>
+            </ion-slide>
+
+            <ion-slide *ngFor="let foto of videosArray; let i = index">
+              <ion-card>
+                  <video controls autoplay *ngIf="(foto.archivo_64 !== null && foto.archivo_64 !== '')" width="100%" height="180">
+                    <source type="video/mp4" src="{{foto.archivo_64}}">
+                  </video>
+                <ion-label (click)="borrarVideo(i)" class="borrar-botom" type="buttom">Borrar Video</ion-label>
+              </ion-card>
+            </ion-slide>
+
+
+            <!---------Agregar Imagen---------->
+            <ion-slide style="height:100%; margin-bottom: 5px;" *ngIf="galeriaFull != true">
+              <ion-card>
+                <ion-icon name="image" role="img" class="md hydrated size-icon" aria-label="image"></ion-icon>
+                <label class="custom-file-input">
+                  <input *ngIf="elseBlock" type="file" #fileInput id="imagen-producto-uno"
+                         accept="image/*" (click)="fileInput.value = null" (change)="agregarFoto($event)" />
+                  <ng-template #elseBlock>
+                    <input (click)="agregarFoto($event)" />
+                  </ng-template>
+                </label>
+              </ion-card>
+            </ion-slide>
+
+            <!-----------Agregar Video---------->
+            <ion-slide style="height:100%; margin-bottom: 5px;" *ngIf="galeriaFull != true">
+              <ion-card>
+                <ion-icon name="videocam-outline" role="img" class="md hydrated size-icon" aria-label="image"></ion-icon>
+                <label class="custom-video-input">
+                  <input *ngIf="elseBlock" type="file" #fileInput accept="video/mp4" id="video"
+                         (click)="fileInput.value = null" (change)="seleccionarVideo($event)" />
+
+                  <ng-template #elseBlock>
+                    <input (click)="seleccionarVideo($event)" />
+                  </ng-template>
+                </label>
+              </ion-card>
+            </ion-slide>
+          </ion-slides>
+
+        </ion-item>
       </div>
+
       <div class="formulario">
 
         <ion-item>

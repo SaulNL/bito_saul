@@ -8,7 +8,7 @@ import { GeneralServicesService } from '../../../api/general-services.service';
 import { UtilsCls } from '../../../utils/UtilsCls';
 import { ArchivoComunModel } from './../../../Modelos/ArchivoComunModel';
 import { element } from 'protractor';
-import { ModalController } from '@ionic/angular';
+import {ModalController, Platform} from '@ionic/angular';
 import { RecorteImagenComponent } from '../../../components/recorte-imagen/recorte-imagen.component';
 import { Router } from '@angular/router';
 import { async } from '@angular/core/testing';
@@ -44,6 +44,20 @@ export class ModalEventosPage implements OnInit {
   public msj = 'Cargando';
   public activoBTN: boolean = false;
   public confirmacionBTN: boolean = false;
+  public fotografiasArray: any;
+  public videosArray: any;
+  public numeroFotos: number;
+  public numeroVideos: number;
+  public galeriaFull = false;
+  base64Video = null;
+  public isIos: boolean;
+  numeroFotosPermitidas: number;
+  slideOpts = {
+    slidesPerView: 1.5,
+    centeredSlides: true,
+    loop: false,
+    spaceBetween: 10,
+  };
 
   constructor(
     private negocio_service: NegocioService,
@@ -53,7 +67,13 @@ export class ModalEventosPage implements OnInit {
     private _utils_cls: UtilsCls,
     public modalController: ModalController,
     private _router: Router,
-  ) { }
+    private notificaciones: ToadNotificacionService,
+    private platform: Platform,
+  ) {
+    this.fotografiasArray = [];
+    this.videosArray = [];
+    this.isIos = this.platform.is("ios");
+  }
 
   ngOnInit() {
     this.loader = true;
@@ -80,6 +100,7 @@ export class ModalEventosPage implements OnInit {
     this.negocio_service.misNegocios(this.usuario.proveedor.id_proveedor).subscribe(
       response => {
         this.lstNegocios = response.data;
+        console.log('datosNegocio', this.lstNegocios);
       },
       error => {
         this._notificacionService.error(error);
@@ -221,7 +242,9 @@ export class ModalEventosPage implements OnInit {
       this.eventData.id_tipo_recurrencia = data.id_tipo_recurrencia;
       this.eventData.tipo_evento = data.tipo_evento;
       this.eventData.tags = data.tags;
-      this.eventoInfo_imagen = data.url_imagen;
+      this.fotografiasArray = data.fotografias;
+      this.numeroFotos = this.fotografiasArray.length;
+      console.log('fotografias', data.fotografias);
 
       if (data.tipo_pago_transferencia == 1) pagos.push(2);
       if (data.tipo_pago_tarjeta_credito == 1) pagos.push(3);
@@ -248,7 +271,10 @@ export class ModalEventosPage implements OnInit {
       urlImg.url_archivo = this.eventoInfo_imagen;
       this.eventData.imagen = await urlImg;
     }
-    this.guardarEvento(this.eventData)
+    this.eventData.fotografias = this.fotografiasArray;
+    this.eventData.videos = this.videosArray;
+    console.log('guardarEvento', this.eventData);
+    this.guardarEvento(this.eventData);
   }
 
   guardarEvento(data) {
@@ -386,6 +412,118 @@ export class ModalEventosPage implements OnInit {
       this.eventData.requiere_confirmacion = evento.detail.checked == false ? 0 : 1;
     }
 
+  }
+
+  public agregarFoto(event) {
+    let nombre_archivo;
+    if (event.target.files && event.target.files.length) {
+      let height;
+      let width;
+      for (const archivo of event.target.files) {
+        const reader = this._utils_cls.getFileReader();
+        reader.readAsDataURL(archivo);
+        reader.onload = () => {
+          nombre_archivo = archivo.name;
+          const img = new Image();
+          img.src = reader.result as string;
+          img.onload = () => {
+            height = img.naturalHeight;
+            width = img.naturalWidth;
+            if (width === 400 && height === 400) {
+              const file_name = archivo.name;
+              const file = archivo;
+              if (file.size < 3145728) {
+                let file_64: any;
+                const utl = new UtilsCls();
+                utl.getBase64(file).then(
+                    data => {
+                      const archivo = new ArchivoComunModel();
+                      if (file_name != null) {
+                        archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
+                        archivo.archivo_64 = file_64;
+                      }
+                      this.fotografiasArray.push(archivo);
+                      this.numeroFotos++;
+                      if (this.numeroFotos >= this.numeroFotosPermitidas) {
+                        this.galeriaFull = true;
+                      }
+                    }
+                );
+              } else {
+                this.notificaciones.alerta('El tama\u00F1o m\u00E1ximo de archivo es de 3 Mb, por favor intente con otro archivo');
+              }
+            } else {
+              this.resizeToWidth = 400;
+              this.resizeToHeight = 400;
+              this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
+                    if (r !== undefined) {
+                      const archivo = new ArchivoComunModel();
+                      archivo.nombre_archivo = nombre_archivo,
+                          archivo.archivo_64 = r.data;
+                      this.fotografiasArray.push(archivo);
+                      console.log('imagenes', this.fotografiasArray);
+                      this.numeroFotos++;
+                      if (this.numeroFotos >= this.numeroFotosPermitidas) {
+                        this.galeriaFull = true;
+                      }
+                    }
+                  }
+              );
+            }
+          };
+        };
+      }
+    }
+  }
+
+  public borrarFoto(posicion: number) {
+    this.fotografiasArray.splice(posicion, 1);
+    this.numeroFotos--;
+    if (this.numeroFotos < 3) {
+      this.galeriaFull = false;
+    }
+  }
+
+  public borrarVideo(posicion: number){
+
+  }
+
+  public seleccionarVideo(event: any) {
+    if (event.target.files && event.target.files.length) {
+
+      let archivo = event.target.files[0];
+      if (archivo.size < 100000000) {
+
+        let utl = new UtilsCls();
+        let nombre_video = null;
+        if (this.isIos) {
+          let quitarExtension = archivo.name.toString().slice(0, -3);
+          nombre_video = quitarExtension + 'mp4';
+        } else {
+          nombre_video = archivo.name;
+        }
+
+
+        utl.getBase64(archivo).then((data) => {
+          let base64Video = null;
+          if (this.isIos) {
+            let cortarData = data.toString().slice(20);
+            base64Video = 'data:video/mp4' + cortarData;
+          } else {
+            base64Video = data;
+          }
+
+          let video = new ArchivoComunModel();
+          video.nombre_archivo = this._utils_cls.convertir_nombre(nombre_video);
+          video.archivo_64 = base64Video;
+          this.base64Video = video;
+          this.videosArray.push(this.base64Video);
+          console.log('videos', this.videosArray);
+        });
+      } else {
+        this._notificacionService.alerta("Lo sentimos, el archivo supera los 100 MB");
+      }
+    }
   }
 
 }
