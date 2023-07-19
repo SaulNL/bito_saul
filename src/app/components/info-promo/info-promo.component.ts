@@ -41,7 +41,6 @@ export class InfoPromoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.promocion)
     this.calcularDistancia(this.promocion);
     this.hoy = new Date();
     this.hoy = this.hoy.getDay() !== 0 ? this.hoy.getDay() : 7;
