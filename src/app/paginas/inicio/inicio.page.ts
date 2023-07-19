@@ -724,7 +724,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       localStorage.setItem("FiltroAct", 'true')
       localStorage.setItem("todo", "todo")
       if (res == false) {
-        this.borrarFiltrosP(false)
+        this.borrarFiltrosP(true)
       } else {
         this.buscarNegocios(true);
       }
