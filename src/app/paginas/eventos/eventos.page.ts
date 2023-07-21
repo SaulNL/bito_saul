@@ -35,6 +35,8 @@ export class EventosPage implements OnInit {
   public id_evento: any;
   public negocio: string;
   public loader: any;
+  public loaderReservaciones: boolean;
+  public msj = 'Cargando';
   isOpen: boolean = false;
   public list_cat_estado: Array<CatEstadoModel>;
   public list_cat_municipio: Array<CatMunicipioModel>;
@@ -76,6 +78,7 @@ export class EventosPage implements OnInit {
     this.btnMuncipio = true;
     this.btnLocalidad = true;
     this.loader = false;
+    this.loaderReservaciones = false;
     this.obtenerListaTipoEvento();
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
@@ -122,6 +125,7 @@ export class EventosPage implements OnInit {
     this.eventosService.eventosLista(idDetalle).subscribe(
         res => {
           this.eventosAll = res.data;
+          this.loaderReservaciones = true;
           this.eventosAll.sort((a, b) => {
             const fechaA = new Date(a.fecha);
             const fechaB = new Date(b.fecha);

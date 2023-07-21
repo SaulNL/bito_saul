@@ -9,7 +9,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
+<app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
+<ion-content fullscreen *ngIf="loaderReservaciones">
 
   <ion-item>
       <div class="label_filtro" *ngIf="eventosAll.length > 0" (click)="abrirModal()">
