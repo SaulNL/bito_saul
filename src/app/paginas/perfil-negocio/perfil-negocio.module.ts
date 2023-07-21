@@ -12,9 +12,8 @@ import { PerfilNegocioPageRoutingModule } from './perfil-negocio-routing.module'
 import { PerfilNegocioPage } from './perfil-negocio.page';
 import { ComentariosNegocioComponent } from '../../componentes/comentarios-negocio/comentarios-negocio.component';
 import { DarLikeNegocioModule } from '../../componentes/dar-like-negocio/dar-like-negocio.module';
-import { ViewQrPromocionComponent } from '../../components/viewqr-promocion/viewqr-promocion.component';
 import { MapaPerfilComponent } from './mapa-perfil/mapa-perfil.component';
-
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 
 @NgModule({
   imports: [
@@ -29,6 +28,9 @@ import { MapaPerfilComponent } from './mapa-perfil/mapa-perfil.component';
     CalificarNegocioModule,
     PedidoNegocioModule,
     DenunciaNegocioPageModule
+  ],
+  providers: [
+    InAppBrowser
   ],
   declarations: [PerfilNegocioPage, ComentariosNegocioComponent,
     MapaPerfilComponent]
