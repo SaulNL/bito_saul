@@ -46,7 +46,11 @@ export class ModalEventosPage implements OnInit {
   public confirmacionBTN: boolean = false;
   public fotografiasArray: any;
   public videosArray: any;
+  public fotosArrayAgregar: any;
+  public videosArrayAgregar: any;
   public numeroFotos: number;
+  public numeroFotosEdit: number;
+  public numeroVideosEdit: number;
   public numeroVideos: number;
   public galeriaFull = false;
   base64Video = null;
@@ -72,6 +76,8 @@ export class ModalEventosPage implements OnInit {
   ) {
     this.fotografiasArray = [];
     this.videosArray = [];
+    this.videosArrayAgregar = [];
+    this.fotosArrayAgregar = [];
     this.isIos = this.platform.is("ios");
   }
 
@@ -243,8 +249,22 @@ export class ModalEventosPage implements OnInit {
       this.eventData.tipo_evento = data.tipo_evento;
       this.eventData.tags = data.tags;
       this.fotografiasArray = data.fotografias;
+      this.videosArray = data.videos;
+
+      this.fotografiasArray = this.fotografiasArray.map(foto => {
+        // Iteramos sobre cada propiedad del objeto
+        for (const prop in foto) {
+          // Verificamos si el valor es igual a la cadena "null" y lo convertimos a null
+          if (foto[prop] === "null") {
+            foto[prop] = null;
+          }
+        }
+        return foto;
+      });
+
       this.numeroFotos = this.fotografiasArray.length;
       console.log('fotografias', data.fotografias);
+      console.log('fotografias', this.fotografiasArray);
 
       if (data.tipo_pago_transferencia == 1) pagos.push(2);
       if (data.tipo_pago_tarjeta_credito == 1) pagos.push(3);
@@ -271,8 +291,10 @@ export class ModalEventosPage implements OnInit {
       urlImg.url_archivo = this.eventoInfo_imagen;
       this.eventData.imagen = await urlImg;
     }
-    this.eventData.fotografias = this.fotografiasArray;
-    this.eventData.videos = this.videosArray;
+    this.eventData.fotografias.push(...this.fotografiasArray);
+    this.eventData.fotografias.push(...this.fotosArrayAgregar);
+    this.eventData.videos.push(...this.videosArray);
+    this.eventData.videos.push(...this.videosArrayAgregar);
     console.log('guardarEvento', this.eventData);
     this.guardarEvento(this.eventData);
   }
@@ -442,7 +464,7 @@ export class ModalEventosPage implements OnInit {
                         archivo.nombre_archivo = this._utils_cls.convertir_nombre(file_name);
                         archivo.archivo_64 = file_64;
                       }
-                      this.fotografiasArray.push(archivo);
+                      this.fotosArrayAgregar.push(archivo);
                       this.numeroFotos++;
                       if (this.numeroFotos >= this.numeroFotosPermitidas) {
                         this.galeriaFull = true;
@@ -460,8 +482,7 @@ export class ModalEventosPage implements OnInit {
                       const archivo = new ArchivoComunModel();
                       archivo.nombre_archivo = nombre_archivo,
                           archivo.archivo_64 = r.data;
-                      this.fotografiasArray.push(archivo);
-                      console.log('imagenes', this.fotografiasArray);
+                      this.fotosArrayAgregar.push(archivo);
                       this.numeroFotos++;
                       if (this.numeroFotos >= this.numeroFotosPermitidas) {
                         this.galeriaFull = true;
@@ -476,16 +497,27 @@ export class ModalEventosPage implements OnInit {
     }
   }
 
-  public borrarFoto(posicion: number) {
+  public borrarFotoEdit(posicion: number) {
     this.fotografiasArray.splice(posicion, 1);
-    this.numeroFotos--;
-    if (this.numeroFotos < 3) {
+    this.numeroFotosEdit--;
+    if (this.numeroFotosEdit < 3) {
       this.galeriaFull = false;
     }
   }
 
-  public borrarVideo(posicion: number){
+  public borrarVideoEdit(posicion: number){
+    this.videosArray.splice(posicion, 1);
+    this.numeroVideosEdit--;
+  }
 
+  public borrarFoto(posicion: number) {
+    this.fotosArrayAgregar.splice(posicion, 1);
+    this.numeroFotos--;
+  }
+
+  public borrarVideo(posicion: number){
+    this.videosArrayAgregar.splice(posicion, 1);
+    this.numeroVideos--;
   }
 
   public seleccionarVideo(event: any) {
@@ -517,8 +549,8 @@ export class ModalEventosPage implements OnInit {
           video.nombre_archivo = this._utils_cls.convertir_nombre(nombre_video);
           video.archivo_64 = base64Video;
           this.base64Video = video;
-          this.videosArray.push(this.base64Video);
-          console.log('videos', this.videosArray);
+          this.videosArrayAgregar.push(this.base64Video);
+          console.log('videos', this.videosArrayAgregar);
         });
       } else {
         this._notificacionService.alerta("Lo sentimos, el archivo supera los 100 MB");

@@ -43,6 +43,8 @@ export class ReservacionesPage implements OnInit {
   public id_estado: any;
   public id_municipio: any;
   public id_localidad: any;
+  public fotografiasArray: any;
+  public videosArray: any;
 
   fechaSeleccionada: string;
   mesSeleccionado: string;
@@ -52,6 +54,13 @@ export class ReservacionesPage implements OnInit {
   mesesArray: Date[] = [];
   fechaReservacion: any;
   base64Video = null;
+  slideOpts = {
+    slidesPerView: 1.5,
+    centeredSlides: true,
+    loop: false,
+    spaceBetween: 10,
+  };
+
 
   public fechaFormateada: any;
 
@@ -65,6 +74,8 @@ export class ReservacionesPage implements OnInit {
       public alertController: AlertController,
   ) {
     this.infoEvento = [];
+    this.fotografiasArray = [];
+    this.videosArray = [];
     this.cadenaReservacion = [];
     this.mostrarLabel = false;
     this.infoRecurrencia = [];
@@ -92,6 +103,20 @@ export class ReservacionesPage implements OnInit {
     this.eventosService.eventoDetalle(this.idEvento).subscribe(
         res => {
           this.infoEvento = res.data;
+          console.log('datos', this.infoEvento);
+          this.fotografiasArray = res.data[0].fotografias;
+          this.videosArray = res.data[0].videos;
+          this.fotografiasArray = this.fotografiasArray.map(foto => {
+            // Iteramos sobre cada propiedad del objeto
+            for (const prop in foto) {
+              // Verificamos si el valor es igual a la cadena "null" y lo convertimos a null
+              if (foto[prop] === "null") {
+                foto[prop] = null;
+              }
+            }
+            return foto;
+          });
+          console.log('fotos', this.fotografiasArray);
           this.obtenerListaRecurrencia();
           this.convertirFechaHora();
           this.load_cat_estados();

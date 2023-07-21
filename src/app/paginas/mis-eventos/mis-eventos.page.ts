@@ -62,6 +62,8 @@ export class MisEventosPage implements OnInit {
     }
     this.eventoService.obtenerEvento(body).subscribe(Response => {
       this.eventos = Response.data
+      console.log('evento', this.eventos);
+
       this.loader = false
     }),
       error => {
@@ -100,6 +102,7 @@ export class MisEventosPage implements OnInit {
       if (Response.code == 200) {
         this.evReservacion = false;
         this.reservacion = Response.data
+        console.log('rservacion', this.reservacion);
         this.cantidadFaltante = this.contarFaltantes(this.reservacion);
       }
       if (Response.code == 302) {

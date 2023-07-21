@@ -25,15 +25,41 @@
       <div>
         <ion-item class="slider">
           <ion-slides [options]="slideOpts" style="width: 500px;">
-            <ion-slide *ngFor="let foto of fotografiasArray; let i = index">
-              <ion-card>
-                <img src={{foto.url_imagen}} />
-                <img *ngIf="(foto.archivo_64 != null || foto.archivo_64 != '')" src="{{foto.archivo_64}}">
-                <ion-label (click)="borrarFoto(i)" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>
-              </ion-card>
-            </ion-slide>
 
-            <ion-slide *ngFor="let foto of videosArray; let i = index">
+            <!------------For para mostrar fotos que se editen---------->
+            <ng-container *ngFor="let foto of fotografiasArray; let i = index">
+              <ion-slide *ngIf="foto.url_imagen !== null">
+                <ion-card>
+                  <img src="{{foto.url_imagen}}" />
+                  <ion-label (click)="borrarFotoEdit(i)" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>
+                </ion-card>
+              </ion-slide>
+            </ng-container>
+
+            <!------------For para mostrar vdieos que se editen---------->
+            <ng-container *ngFor="let foto of videosArray; let i = index">
+              <ion-slide *ngIf="foto.url_video !== null">
+                <ion-card>
+                  <video controls autoplay *ngIf="(foto.url_video !== null && foto.url_video !== '')" width="100%" height="180">
+                    <source type="video/mp4" src="{{foto.url_video}}">
+                  </video>
+                  <ion-label (click)="borrarVideoEdit(i)" class="borrar-botom" type="buttom">Borrar Video</ion-label>
+                </ion-card>
+              </ion-slide>
+            </ng-container>
+
+            <!------------For para mostrar fotos que se suben---------->
+            <ng-container *ngFor="let foto of fotosArrayAgregar; let i = index">
+              <ion-slide *ngIf="foto.url_imagen !== null">
+                <ion-card>
+                  <img *ngIf="(foto.archivo_64 != null || foto.archivo_64 != '')" src="{{foto.archivo_64}}">
+                  <ion-label (click)="borrarFoto(i)" class="borrar-botom" type="buttom">Borrar Imagen</ion-label>
+                </ion-card>
+              </ion-slide>
+            </ng-container>
+
+            <!------------For para mostrar videos que se suben---------->
+            <ion-slide *ngFor="let foto of videosArrayAgregar; let i = index">
               <ion-card>
                   <video controls autoplay *ngIf="(foto.archivo_64 !== null && foto.archivo_64 !== '')" width="100%" height="180">
                     <source type="video/mp4" src="{{foto.archivo_64}}">
