@@ -36,7 +36,7 @@ import { ProductosService } from '../../api/productos.service';
 import { ComentariosNegocioComponent } from '../../componentes/comentarios-negocio/comentarios-negocio.component';
 import { OptionBackLogin } from 'src/app/Modelos/OptionBackLoginModel';
 import { FiltrosModel } from 'src/app/Modelos/FiltrosModel';
-const { Share } = Plugins;
+const { Share, Browser } = Plugins;
 const haversineCalculator = require('haversine-calculator');
 
 @Component({
@@ -74,6 +74,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   public modal;
   public banderaS: any;
   public banderaP: any;
+  public producotMatris: any;
   public diasArray = [
     { id: 1, dia: 'Lunes', horarios: [], hi: null, hf: null },
     { id: 2, dia: 'Martes', horarios: [], hi: null, hf: null },
@@ -325,12 +326,10 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         this.map
       );
     }, 500);
-    // console.log("Esta es la info que carga el mapa:\n"+"lat: "+lat+" long: "+lng)
   }
   getLatLong(e) {
     this.miLat = e.latlng.lat;
     this.miLng = e.latlng.lng;
-    console.log("datosPerfil", this.miLat, this.miLng)
     this.map.panTo([this.miLat, this.miLng]);
     this.marker.setLatLng([this.miLat, this.miLng]);
   }
@@ -393,7 +392,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
               this.informacionNegocio.catProductos = [];
               this.informacionNegocio.catServicos = [];
               // this.obtenerPromociones();
-              this.obtenerProductos();
+              this.obtenerProductos(this.informacionNegocio.id_negocio,false);
+              this.obtenerProductosMatris()
               this.obtenerServicios();
               this.obtenerEstatusCalificacion();
               this.guardarQuienVioNegocio(this.informacionNegocio.id_negocio);
@@ -445,15 +445,14 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     }, 1000);
   }
 
-  obtenerProductos() {
-    this.negocioService
-      .obtenerDetalleDeNegocio(
-        this.informacionNegocio.id_negocio,
-        0,
-        this.user.id_persona
-      )
-      .subscribe(
-        (response) => {
+  obtenerProductosMatris(){
+    if(this.informacionNegocio.id_negocio_matriz){
+      this.obtenerProductos(this.informacionNegocio.id_negocio_matriz,true)
+    }
+  }
+
+  obtenerProductos(idNegocio,matris) {
+    this.negocioService.obtenerDetalleDeNegocio(idNegocio,0,this.user.id_persona).subscribe((response) => {
           if (response.code === 200 && response.agrupados != null) {
             const productos = response.agrupados;
             const cats = [];
@@ -474,7 +473,11 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
                   }
                 }
               });
-              this.informacionNegocio.catProductos = cats;
+              if(this.informacionNegocio.id_negocio_matriz && matris){
+                this.informacionNegocio.productosMatris = cats
+              }else{
+                this.informacionNegocio.catProductos = cats;
+              }
             }
           }
           if (response.code === 200) {
@@ -606,68 +609,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   descargarCarta(ruta) {
-    let nombreArchivo = ruta.split('/');
-    nombreArchivo = nombreArchivo.slice(-1);
-
-    let extencion = nombreArchivo.toString().split('.');
-    extencion = extencion.slice(-1);
-
-    const nombre = this.informacionNegocio.nombre_comercial;
-    this.msj = 'Descargando archivo....';
-
-    if (this.isIOS) {
-      setTimeout(() => {
-        const options: any = {
-          method: 'get',
-          responseType: 'blob',
-          headers: {
-            accept: this.getMimetype(extencion),
-          },
-        };
-        this.nativeHTTP.sendRequest(ruta, options)
-          .then((response) => {
-            const blob: Blob = response.data;
-            this.file
-              .writeFile(
-                this.file.documentsDirectory,
-                'carta_' + nombre + '.' + extencion, blob, { replace: true, append: false })
-              .then((response) => {
-                Share.share({
-                  title: 'carta_' + nombre,
-                  url: response.nativeURL,
-                }).then((resShare) => {
-
-                });
-              })
-              .catch((error) => this.notificaciones.error(error));
-          })
-          .catch((error) => this.notificaciones.error(error));
-        // .finally(() => this.loadMap());
-        this.loader = false;
-      }, 700);
-
-    } else {
-      const request: DownloadRequest = {
-        uri: ruta,
-        title: 'carta_' + nombre,
-        description: '',
-        mimeType: '',
-        visibleInDownloadsUi: true,
-        notificationVisibility: NotificationVisibility.VisibleNotifyCompleted,
-        destinationInExternalFilesDir: {
-          dirType: '',
-          subPath: FilesystemDirectory.Documents + '/' + 'carta_' + nombre + '.' + extencion
-        }
-      };
-      this.downloader.download(request).then((location: string) => {
-        this.notificaciones.exito('El Archivo se descargo con exito');
-        this.loader = false;
-      }).catch((error: any) => {
-        this.loader = false;
-        this.notificaciones.error(error);
-      });
-      // .finally(() => this.loadMap());
-    }
+    
+    Browser.open({url:ruta});
   }
 
   getMimetype(name) {
@@ -1464,7 +1407,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   public segmentChanged(event) {
-    console.log(event)
     this.motrarContacto = true;
     this.servicioSub = true;
     this.negocioSub = true;
@@ -1473,7 +1415,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.servicioSub = true;
     this.negocioSub = true;
     if (event.detail.value === 'ubicacion') {
-      console.log('entre')
       this.loadMap()
     }
   }

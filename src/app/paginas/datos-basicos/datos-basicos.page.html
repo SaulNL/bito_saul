@@ -17,59 +17,30 @@
           <ion-item>
             <div class="avatar-upload">
               <div class="avatar-edit">
-                <input
-                  type="file"
-                  id="selfie"
-                  accept="image/*"
-                  (change)="subir_imagen_cuadrado($event)"
-                />
+                <input type="file" id="selfie" accept="image/*" (change)="subir_imagen_cuadrado($event)" />
                 <label for="selfie">
-                  <ion-icon
-                    name="camera-outline"
-                    style="position: relative; top: 7px"
-                  ></ion-icon>
+                  <ion-icon name="camera-outline" style="position: relative; top: 7px"></ion-icon>
                 </label>
               </div>
               <div class="avatar-preview">
-                <div
-                  *ngIf="usuarioSistema.selfie === null || usuarioSistema.selfie === undefined"
-                  id="perfil"
-                  [ngStyle]="usuarioSistema.imagen !== null ? {'background-image': 'url('+usuarioSistema.imagen+')'} : ''"
-                ></div>
-                <div
-                  *ngIf="usuarioSistema.selfie !== null && usuarioSistema.selfie !== undefined"
-                  [ngStyle]="{
-                         'background-image': 'url('+usuarioSistema.selfie.archivo_64+')'}"
-                ></div>
+                <div *ngIf="usuarioSistema.selfie === null || usuarioSistema.selfie === undefined" id="perfil" 
+                [ngStyle]="usuarioSistema.imagen !== null ? {'background-image': 'url('+usuarioSistema.imagen+')'} : ''"></div>
+                <div *ngIf="usuarioSistema.selfie !== null && usuarioSistema.selfie !== undefined" 
+                [ngStyle]="{ 'background-image': 'url('+usuarioSistema.selfie.archivo_64+')'}"></div>
               </div>
               <ion-label>Foto de perfil</ion-label>
             </div>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Nombre</ion-label>
-            <ion-input
-              placeholder="Nombre"
-              #nombre="ngModel"
-              required
-              name="nombre"
-              [(ngModel)]="usuarioSistema.nombre"
-            ></ion-input>
+            <ion-input placeholder="Nombre" #nombre="ngModel" required name="nombre" [(ngModel)]="usuarioSistema.nombre"></ion-input>
           </ion-item>
-          <div
-            *ngIf="nombre.touched  && nombre.invalid"
-            class="alert alert-danger"
-          >
+          <div *ngIf="nombre.touched  && nombre.invalid" class="alert alert-danger">
             <div *ngIf="nombre.errors.required">El nombre es requerido</div>
           </div>
           <ion-item>
             <ion-label position="stacked">Apellido Paterno</ion-label>
-            <ion-input
-              placeholder="Apellido Paterno"
-              #ap="ngModel"
-              required
-              name="ap"
-              [(ngModel)]="usuarioSistema.paterno"
-            ></ion-input>
+            <ion-input placeholder="Apellido Paterno" #ap="ngModel" required name="ap" [(ngModel)]="usuarioSistema.paterno"></ion-input>
           </ion-item>
           <div *ngIf="ap.touched  && ap.invalid" class="alert alert-danger">
             <div *ngIf="ap.errors.required">
@@ -78,13 +49,7 @@
           </div>
           <ion-item>
             <ion-label position="stacked">Apellido Materno</ion-label>
-            <ion-input
-              placeholder="Apellido Materno"
-              #am="ngModel"
-              required
-              name="am"
-              [(ngModel)]="usuarioSistema.materno"
-            ></ion-input>
+            <ion-input placeholder="Apellido Materno" #am="ngModel" required name="am" [(ngModel)]="usuarioSistema.materno"></ion-input>
           </ion-item>
           <div *ngIf="am.touched  && am.invalid" class="alert alert-danger">
             <div *ngIf="am.errors.required">
@@ -93,57 +58,27 @@
           </div>
           <ion-item>
             <ion-label position="stacked">Celular</ion-label>
-            <ion-input
-              placeholder="Celular"
-              type="number"
-              #celular="ngModel"
-              required
-              name="celular"
-              [(ngModel)]="usuarioSistema.celular"
-            ></ion-input>
+            <ion-input placeholder="Celular" type="number" #celular="ngModel" required name="celular" [(ngModel)]="usuarioSistema.celular"></ion-input>
           </ion-item>
-          <div
-            *ngIf="celular.touched  && celular.invalid"
-            class="alert alert-danger"
-          >
+          <div *ngIf="celular.touched  && celular.invalid" class="alert alert-danger">
             <div *ngIf="celular.errors.required">El celular es requerido</div>
           </div>
           <ion-item>
             <ion-label position="stacked">Fecha Nacimiento  <span style="color: red">*</span></ion-label>
-            <ion-datetime
-              #picker
-              displayFormat="D/MM/YYYY"
-              [min]="minDate"
-              [max]="maxDate"
-              value="{{usuarioSistema.fecha_nacimiento | date: 'yyyy-MM-dd'}}"
-              required
-              (ionChange)="fechaNacimientoSeleccionada($event)"
-            ></ion-datetime>
-            <ion-icon
-              slot="end"
-              name="calendar-outline"
-              (click)="picker.open()"
-            ></ion-icon>
+            <ion-datetime #picker displayFormat="D/MM/YYYY" [min]="minDate" [max]="maxDate" 
+            [value]="usuarioSistema.fecha_nacimiento | date: 'yyyy-MM-dd'" name="Fecha" required [(ngModel)]="usuarioSistema.fecha_nacimiento"></ion-datetime>
+            <ion-icon slot="end" name="calendar-outline" (click)="picker.open()"></ion-icon>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Correo</ion-label>
-            <ion-input
-              id="correo"
-              type="email"
-              email
-              name="correo"
-              #correo="ngModel"
-              placeholder="Correo"
-              [(ngModel)]="usuarioSistema.correo"
-            ></ion-input>
+            <ion-input id="correo" type="email" email name="correo" #correo="ngModel" placeholder="Correo"
+              [(ngModel)]="usuarioSistema.correo"></ion-input>
           </ion-item>
 
           <ion-item>
             <ion-label position="stacked">Afiliado a:</ion-label>
             <ion-select ok-text="Ok" cancel-text="Cancelar" id="idAfl" name="idAfl"
-                
-            [(ngModel)]="idAfl
-            " placeholder="{{ tipoAfl }}" (ionChange)="afiliado($event)">
+            [(ngModel)]="idAfl" placeholder="{{ tipoAfl }}" (ionChange)="afiliado($event)">
               <ion-select-option *ngFor="let afl of lstAfiliaciones" [value]="afl.id_organizacion">{{afl.nombre}}
               </ion-select-option>
             </ion-select>
@@ -190,7 +125,7 @@
           
         </ion-list>
         <ion-button [disabled]="this.usuarioSistema.fecha_nacimiento == null" type="submit" class="bg-naranja" expand="block"
-          >Actualizar</ion-button
+        >Actualizar</ion-button
         >
       </form>
     </ion-card-header>
