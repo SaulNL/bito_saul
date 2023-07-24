@@ -52,7 +52,7 @@
 
       <p *ngIf="!htmlDownload" style="color: #FFF; margin-bottom: 6vw">{{infoEvento[0]?.evento}}</p>
 
-      <img *ngIf="!htmlDownload" [src]="infoEvento[0]?.url_imagen" class="imagenEvento">
+      <img *ngIf="!htmlDownload" [src]="infoEvento[0]?.fotografias[0]?.url_imagen" class="imagenEvento">
 
 
       <ion-chip *ngIf="!htmlDownload" style="margin-bottom: 2px;">

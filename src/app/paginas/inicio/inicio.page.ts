@@ -332,7 +332,7 @@ export class InicioPage implements OnInit, AfterViewInit {
               position: 'center'
             })
             Toast.fire({
-              title: "Queremos conocer más sobre tus gustos en Bitoo.",
+              title: "Queremos conocer más sobre tus gustos en Bituyú.",
               text: "Registra tus preferencias",
               icon: 'info',
               showDenyButton: false,
@@ -543,7 +543,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   async AlertActivarUbicacion() {
     const alert = await this.alertController.create({
-      header: 'Bitoo!',
+      header: 'Bituyú!',
       message: "Activa tu ubicación para poder ver los negocios cerca de ti",
       buttons: [
         {

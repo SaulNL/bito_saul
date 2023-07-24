@@ -18,8 +18,27 @@
         <strong>{{infoReservacion.evento}}</strong>
       </h1>
 
-      <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 12px; margin-top: 6px;">
-        <img [src]="infoReservacion.url_imagenevento" style="height: 200px; width: 250px;">
+      <div>
+        <ion-item>
+          <ion-slides style="width: 500px;">
+            <ng-container *ngFor="let foto of fotografiasArray; let i = index">
+              <ion-slide *ngIf="foto.url_imagen !== null">
+                <ion-card>
+                  <img src="{{foto.url_imagen}}"/>
+                </ion-card>
+              </ion-slide>
+            </ng-container>
+            <ng-container *ngFor="let foto of videosArray; let i = index">
+              <ion-slide *ngIf="foto.url_video !== null">
+                <ion-card>
+                  <video controls *ngIf="(foto.url_video !== null && foto.url_video !== '')" width="100%" height="258">
+                    <source type="video/mp4" src="{{foto.url_video}}">
+                  </video>
+                </ion-card>
+              </ion-slide>
+            </ng-container>
+          </ion-slides>
+        </ion-item>
       </div>
 
       <div style="display: flex; align-items: center; margin-bottom: 9px;">
@@ -50,12 +69,6 @@
       <div style="display: flex; align-items: center; margin-bottom: 9px;">
         <ion-label class="titulos">Número de personas:</ion-label>
         <div class="mostrarDatos">{{infoReservacion.cantidad_persona}}</div>
-      </div>
-      <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 9px;" *ngIf="infoEvento[0]?.url_video != null">
-        <video controls style="width: 100%;" class="image" alt="Falla al cargar video"
-               *ngIf="base64Video == null">
-          <source [src]="infoEvento[0]?.url_video + '#t=0.5'" type="video/mp4">
-        </video>
       </div>
 
       <div *ngIf="infoReservacion.generar_reservacion === 0" style="display: flex; justify-content: center; align-items: center">

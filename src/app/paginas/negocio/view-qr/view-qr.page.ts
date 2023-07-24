@@ -52,7 +52,7 @@ export class ViewQrPage implements OnInit {
   ngAfterViewInit(): void {
     const options = {
 
-      title: 'BITOO!',
+      title: 'BITUYÚ!',
       titleFont: "normal normal bold 18px Arial", //font. default is "bold 16px Arial"
       titleColor: "#000000", // color. default is "#000"
       titleBackgroundColor: "#ffffff", // background color. default is "#fff"

@@ -407,12 +407,12 @@
           <ion-col>
             <ion-button shape="round"
               *ngIf="informacionNegocio.cartaProducto !== undefined && informacionNegocio.cartaProducto !== null && informacionNegocio.cartaProducto !== ''"
-              (click)="descargarCarta(informacionNegocio.cartaProducto)" expand="block" class="bg-naranja">
+              (click)="verCarta(informacionNegocio.cartaProducto)" expand="block" class="bg-naranja">
               Ver carta de productos
             </ion-button>
             <ion-button shape="round"
               *ngIf="informacionNegocio.cartaServicio !== undefined && informacionNegocio.cartaServicio !== null&& informacionNegocio.cartaServicio !== ''"
-              (click)="descargarCarta(informacionNegocio.cartaServicio)" expand="full" class="bg-naranja">
+              (click)="verCarta(informacionNegocio.cartaServicio)" expand="full" class="bg-naranja">
               Ver carta de servicios
             </ion-button>
           </ion-col>

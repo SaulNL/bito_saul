@@ -1,7 +1,7 @@
 import { URLS_ENTORNOS } from '../environments/urlEntornos';
 export class AppSettings {
 
-    public static ENTORNO = URLS_ENTORNOS.beta;
+    public static ENTORNO = URLS_ENTORNOS.betatinbitoo;
     public static API_ENDPOINT = AppSettings.ENTORNO.API_ENDPOINT;
     public static URL_FRONT = AppSettings.ENTORNO.URL_FRONT;
     public static URL_REGISTRO = AppSettings.ENTORNO.URL_REGISTRO;
@@ -15,7 +15,7 @@ export class AppSettings {
     public static IMG_ERROR_SOLICITUD = 'https://ecoevents.blob.core.windows.net/comprandoando/img_default/Promo%20banner.png';
     public static IMG_CATEGORIAS_TODAS = 'https://ecoevents.blob.core.windows.net/comprandoando/Categor%C3%ADas/Separador%20categor%C3%ADa%20web/Todas%20las%20categor%C3%ADas.png';
 
-    public static RELEASE_DATE = "06 de julio de 2023";
+    public static RELEASE_DATE = "14 de julio de 2023";
     public static VERSION_SISTEMA = 28;
     public static VERSION_ANDROID = 45; //ESTA SE TIENE QUE ACTUALIZAR
     public static ID_DB_PLATFORM_ANDROID = 55; //ESTO NO SE DEBE MOVER EN FUTURAS VERSIONES, FUNCIONA COMO ID PARA ENCONTRARLO EN LA TABLA DE VARIABLE

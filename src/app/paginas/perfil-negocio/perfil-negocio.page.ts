@@ -18,7 +18,7 @@ import { SideBarService } from '../../api/busqueda/side-bar-service';
 import { ActionSheetController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { DenunciaNegocioPage } from './denuncia-negocio/denuncia-negocio.page';
-import { Plugins, FilesystemDirectory } from '@capacitor/core';
+import { Plugins } from '@capacitor/core';
 import { CalificarNegocioComponent } from '../../componentes/calificar-negocio/calificar-negocio.component';
 import { ProveedorServicioService } from '../../api/busqueda/proveedores/proveedor-servicio.service';
 import { DetalleProductoComponent } from '../../componentes/detalle-producto/detalle-producto.component';
@@ -26,17 +26,16 @@ import { PedidoNegocioComponent } from '../../componentes/pedido-negocio/pedido-
 import { AuthGuardService } from '../../api/auth-guard.service';
 import { NavBarServiceService } from 'src/app/api/busqueda/nav-bar-service.service';
 import { PromocionesModel } from 'src/app/Modelos/PromocionesModel';
-import { File } from '@ionic-native/file/ngx';
-import { HTTP } from '@ionic-native/http/ngx';
 import { icon, Map, Marker, marker, tileLayer } from 'leaflet';
-import { Downloader, DownloadRequest, NotificationVisibility } from '@ionic-native/downloader/ngx';
 import { ModalPromocionNegocioComponent } from 'src/app/componentes/modal-promocion-negocio/modal-promocion-negocio.component';
 import { ProductoModel } from '../../Modelos/ProductoModel';
 import { ProductosService } from '../../api/productos.service';
 import { ComentariosNegocioComponent } from '../../componentes/comentarios-negocio/comentarios-negocio.component';
 import { OptionBackLogin } from 'src/app/Modelos/OptionBackLoginModel';
 import { FiltrosModel } from 'src/app/Modelos/FiltrosModel';
-const { Share, Browser } = Plugins;
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+
+const { Share } = Plugins;
 const haversineCalculator = require('haversine-calculator');
 
 @Component({
@@ -137,8 +136,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   activedPage: string;
   palabraBuqueda: any;
   constructor(
-    private nativeHTTP: HTTP,
-    private file: File,
     private navctrl: NavController,
     private route: ActivatedRoute,
     private toadController: ToastController,
@@ -147,7 +144,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     private notificacionService: ToadNotificacionService,
     private location: Location,
     private util: UtilsCls,
-    private downloader: Downloader,
     private sideBarService: SideBarService,
     public notificaciones: ToadNotificacionService,
     private actionSheetController: ActionSheetController,
@@ -160,6 +156,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     private navBarServiceService: NavBarServiceService,
     private servicioProductos: ProductosService,
     private rutasucursal: Router,
+    private iab: InAppBrowser,
     private createObject: CreateObjects /* private document: DocumentViewer, */ /* private transfer: FileTransfer, */ /* private webview: WebView */
   ) {
     this.Filtros = new FiltrosModel();
@@ -556,27 +553,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
       );
   }
 
-  // loadMap() {
-  //   if (this.informacionNegocio.det_domicilio.latitud !== '0' && this.informacionNegocio.det_domicilio.longitud !== '0') {
-  //     const lat = this.informacionNegocio.det_domicilio.latitud;
-  //     const lng = this.informacionNegocio.det_domicilio.longitud;
-  //     this.map = new Map("mapId").setView([lat, lng], 16);
-  //     tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  //       attribution: "",
-  //     }).addTo(this.map);
-
-  //     var myIcon = icon({
-  //       iconUrl:
-  //         "https://ecoevents.blob.core.windows.net/comprandoando/marker.png",
-  //       iconSize: [45, 41],
-  //       iconAnchor: [13, 41],
-  //     });
-
-  //     marker([lat, lng], { icon: myIcon }).addTo(this.map);
-  //   }
-
-  // }
-
   async configToad(mensaje) {
     const toast = await this.toadController.create({
       color: 'red',
@@ -585,14 +561,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     });
     return await toast.present();
   }
-
-  // cambio() {
-  // if (this.seccion === "ubicacion") {
-  // setTimeout((it) => {
-  // this.loadMap();
-  // }, 100);
-  // }
-  // }
 
   irAlDetalle(producto: any) {
     this.detalle = producto;
@@ -608,9 +576,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.abrirVentana('tel:' + telefono);
   }
 
-  descargarCarta(ruta) {
-    
-    Browser.open({url:ruta});
+  verCarta(ruta) {
+    this.iab.create('https://docs.google.com/viewer?url=' + ruta);
   }
 
   getMimetype(name) {

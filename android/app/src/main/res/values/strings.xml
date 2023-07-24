@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Bitoo</string>
-    <string name="title_activity_main">Bitoo</string>
-    <string name="package_name">mx.com.softura.bitoo.produccion</string>
-    <string name="custom_url_scheme">mx.com.softura.bitoo.produccion</string>
-    <string name="fb_app_name">TinBitoo</string>
+    <string name="app_name">Bituyú</string>
+    <string name="title_activity_main">Bituyú</string>
+    <string name="package_name">mx.com.softura.bituyú.produccion</string>
+    <string name="custom_url_scheme">mx.com.softura.bituyú.produccion</string>
+    <string name="fb_app_name">Bituyú</string>
     <string name="fb_app_id">378335770215970</string>
     <string name="fb_login_protocol_scheme">fb378335770215970</string>
 </resources>

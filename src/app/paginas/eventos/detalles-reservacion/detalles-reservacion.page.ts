@@ -32,6 +32,8 @@ export class DetallesReservacionPage implements OnInit {
   public list_cat_municipio: Array<CatMunicipioModel>;
   public list_cat_localidad: Array<CatLocalidadModel>;
   public base64Video = null;
+  public fotografiasArray: any;
+  public videosArray: any;
 
   constructor(
       private router: Router,
@@ -43,6 +45,8 @@ export class DetallesReservacionPage implements OnInit {
     this.loaderReservaciones = false;
     this.infoEvento = [];
     this.detallesReservacion = [];
+    this.fotografiasArray = [];
+    this.videosArray = [];
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
     this.list_cat_localidad = new Array<CatLocalidadModel>();
@@ -51,6 +55,8 @@ export class DetallesReservacionPage implements OnInit {
   ngOnInit() {
     this.infoReservacion = this.eventosService.getSelectedObj();
     this.detallesReservacion = this.eventosService.getReservacionObj();
+    this.fotografiasArray = this.infoReservacion.fotografias;
+    this.videosArray = this.infoReservacion.videos;
     this.base64Video = null;
     this.convertirFechaHora();
     this.obtenerListaEvento();

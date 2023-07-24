@@ -9,7 +9,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
+<app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
+<ion-content fullscreen *ngIf="loaderReservaciones">
 
   <ion-item>
       <div class="label_filtro" *ngIf="eventosAll.length > 0" (click)="abrirModal()">
@@ -107,7 +108,13 @@
     </p>
   </div>
 
-  <div class="sinNegocios" *ngIf="eventosAll.length == 0">Parece que no hay eventos disponibles</div>
+  <ion-grid *ngIf="eventosAll.length == 0">
+    <ion-text color="primary">
+      <h2>
+        No se encontraron eventos relacionados
+      </h2>
+    </ion-text>
+  </ion-grid>
   <div *ngIf="filtroEvento">
     <ion-list style="display: flex; flex-direction: column;" *ngIf="eventosAll.length > 0">
       <ion-item *ngFor="let dato of eventosAll" (click)="datosEventos(dato.id_evento)">

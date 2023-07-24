@@ -210,4 +210,8 @@ export class PreferenciasPage implements OnInit {
     }
   }
 
+  regresar() {
+    this.router.navigate(['/tabs/home']);
+  }
+
 }
