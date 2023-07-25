@@ -72,7 +72,7 @@ export class NotificacionChatComponent implements OnInit {
           this.obtenerMensajes();
         }
       }
-    });  
+    });
   }
 
   enviarMensaje() {
@@ -119,5 +119,10 @@ export class NotificacionChatComponent implements OnInit {
   infoNegocio() {
     this.cerrarModal();
     this.router.navigate(["/tabs/negocio/" + this.notificacion.url_negocio]);
+  }
+
+  reservacion(evento: any) {
+    this.cerrarModal();
+    this.router.navigate(['/tabs/eventos/generar-reservacion'], { state: { cadena: evento } });
   }
 }

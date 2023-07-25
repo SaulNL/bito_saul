@@ -43,7 +43,7 @@
         </div>
         <div class="msg-content">
           <span class="triangle"></span>
-          <p>{{ msg.mensaje }}</p>
+          <p>{{ msg.mensaje }}<span *ngIf="msg.evento">. Descarga la reservación <a (click)="reservacion(msg.evento)">aqui</a></span></p>
         </div>
       </div>
     </div>
