@@ -39,22 +39,28 @@ export class GenerarReservacionPage implements OnInit {
     private eventosService: EventosService,
     private router: Router,
     private notifi: ToadNotificacionService,
-  ) {
+  ) {}
+
+  ngOnInit() {}
+
+  ngAfterViewInit() {}
+
+  ionViewWillEnter() {
+
+    //constructor
     this.infoEvento = [];
     this.loaderReservaciones = false;
-  }
 
-  ngOnInit() {
+    //ngOninit
     this.cadena = history.state.cadena;
     const idDetalle = this.cadena.id_evento;
     this.obtenerInfoEvento(idDetalle);
     this.convertirFechaHora();
     const datosUsuario = JSON.parse(localStorage.getItem('u_data'));
     this.usuario = `${datosUsuario.nombre} ${datosUsuario.paterno} ${datosUsuario.materno}`;
-  }
 
-  // tslint:disable-next-line:use-lifecycle-interface
-  ngAfterViewInit() {
+    //ngAfterView
+
     setTimeout(() => {
       const evento: IEventoQr = {
         id_evento: this.cadena.id_evento,
@@ -81,7 +87,6 @@ export class GenerarReservacionPage implements OnInit {
       this.qr = new QRCode(this.qrcode.nativeElement, options);
     }, 2000)
   }
-
 
   regresar() {
     this.router.navigate(['/tabs/eventos'], {
