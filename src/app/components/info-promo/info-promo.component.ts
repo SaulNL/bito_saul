@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import {AlertController, ModalController} from '@ionic/angular';
 import { Router } from '@angular/router';
 import { HaversineService, GeoCoord } from "ng2-haversine";
 import { ViewQrPromocionComponent } from '../viewqr-promocion/viewqr-promocion.component';
@@ -7,6 +7,7 @@ import { PromocionesService } from 'src/app/api/promociones.service';
 import { ToadNotificacionService } from 'src/app/api/toad-notificacion.service';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { AppSettings } from 'src/app/AppSettings';
+import {UtilsCls} from "../../utils/UtilsCls";
 
 /*
 declare var require: any;
@@ -30,6 +31,7 @@ export class InfoPromoComponent implements OnInit {
   public hoy: any;
   id_cupon_promocion: number;
   isOpen: boolean = false;
+  public existeSesion: boolean;
 
   constructor(
     public modalController: ModalController,
@@ -37,8 +39,12 @@ export class InfoPromoComponent implements OnInit {
     private _haversineService: HaversineService,
     private _promociones: PromocionesService,
     private notificaciones: ToadNotificacionService,
-    private socialSharing: SocialSharing
-  ) { }
+    private socialSharing: SocialSharing,
+    private _utils_cls: UtilsCls,
+    public alertController: AlertController,
+  ) {
+    this.existeSesion = _utils_cls.existe_sesion();
+  }
 
   ngOnInit() {
     this.calcularDistancia(this.promocion);
@@ -86,18 +92,21 @@ export class InfoPromoComponent implements OnInit {
   }
 
   async crearModal() {
-    await this.guardarCupon();
-    const modal = await this.modalController.create({
-      component: ViewQrPromocionComponent,
-      componentProps: {
-        'promocion': this.promocion,
-        'idPersona': this.idPersona,
-        'id_cupon_promocion': this.id_cupon_promocion
-      }
-    });
+    if (!this.existeSesion){
+      this.mensajeRegistro();
+    }else{
+      await this.guardarCupon();
+      const modal = await this.modalController.create({
+        component: ViewQrPromocionComponent,
+        componentProps: {
+          'promocion': this.promocion,
+          'idPersona': this.idPersona,
+          'id_cupon_promocion': this.id_cupon_promocion
+        }
+      });
 
-    return await modal.present();
-
+      return await modal.present();
+    }
   }
 
   async guardarCupon() {
@@ -117,5 +126,29 @@ export class InfoPromoComponent implements OnInit {
   compartir(promocion) {
     let url = AppSettings.URL_FRONT + 'promocion/' + promocion.id_promocion;
     this.socialSharing.share('😃¡Te recomiendo esta promoción!😉', 'Promoción', promocion.url_imagen, url);
+  }
+
+  async mensajeRegistro() {
+    const alert = await this.alertController.create({
+      header: 'Bituyu!',
+      message: "¿Ya tienes una cuenta?",
+      buttons: [
+        {
+          text: "Iniciar sesión",
+          cssClass: 'text-grey',
+          handler: () => {
+            this.router.navigate(['/tabs/login']);
+          }
+        },
+        {
+          text: "Registrate",
+          cssClass: 'text-rosa',
+          handler: () => {
+            this.router.navigate(["/tabs/login/sign-up"]);
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 }

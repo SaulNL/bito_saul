@@ -394,7 +394,7 @@ export class EventosPage implements OnInit {
 
   async mensajeRegistro() {
     const alert = await this.alertController.create({
-      header: 'Bitoo!',
+      header: 'Bituyu!',
       message: "¿Ya tienes una cuenta?",
       buttons: [
         {

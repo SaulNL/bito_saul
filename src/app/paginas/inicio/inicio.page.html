@@ -72,11 +72,11 @@
           <a class="todas" id="pills-home-todos" role="tab" aria-selected="true">
             <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img
                 (click)="activar()" class="img-gris"
-                src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/IconosCategorias/todos.png">
+                src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/IconosCategorias/todos.png">
             </ion-avatar>
             <ion-avatar *ngIf="idTodo ===true" style="margin-bottom: 1.2rem;" class="image-center"> <img
                 (click)="borrarFiltrosP(true)"
-                src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/IconosCategorias/todos.png">
+                src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/IconosCategorias/todos.png">
             </ion-avatar>
 
 
@@ -139,7 +139,7 @@
                 <img *ngIf="proveedor.tienepromociones == 1"
                   (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)"
                   style="position: absolute; width: 170px; cursor: pointer;"
-                  src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/PROMOCION.png">
+                  src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/PROVEEDOR/PROMOCION.png">
                 <div class="logo-negocio">
                   <img (click)="negocioRuta(proveedor.url_negocio, proveedor.id_negocio)" loading="lazy"
                     [src]="proveedor.url_logo !== null ? proveedor.url_logo : 'https://ecoevents.blob.core.windows.net/comprandoando/avatar.jpg'"
@@ -167,7 +167,7 @@
                 </div>
                 <div class="distintivos" style="--color-selected: #ff1dbd">
                   <img *ngIf="proveedor.verificado === 1" class="distintivoIcon"
-                    src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/VERIFICACIO%CC%81N.svg"
+                    src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/PROVEEDOR/VERIFICACIO%CC%81N.svg"
                     matTooltip="Este negocio está verificado por Bituyú">
                   <div class="distintivo"
                     *ngFor="let distintivo of proveedor.distintivos?.slice(0, proveedor.verificado === 1 ? 3 : 4); index as i">
