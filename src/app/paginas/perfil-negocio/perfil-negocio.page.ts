@@ -155,7 +155,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     private blockk: AuthGuardService,
     private navBarServiceService: NavBarServiceService,
     private servicioProductos: ProductosService,
-    private rutasucursal: Router,
     private iab: InAppBrowser,
     private createObject: CreateObjects /* private document: DocumentViewer, */ /* private transfer: FileTransfer, */ /* private webview: WebView */
   ) {
@@ -202,7 +201,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-
     if (localStorage.getItem('isRedirected') === 'false' && !this.isIOS) {
       localStorage.setItem('isRedirected', 'true');
       location.reload();
@@ -571,10 +569,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
               }else{
                 this.informacionNegocio.catServicos = cats;
               }
-
               console.log("informacionNegocio",this.informacionNegocio)
-
-              
             }
           }
         },
@@ -1522,12 +1517,13 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
     this.serviceProveedores.obtenerSucursales(id).subscribe(
       response => {
-        const negocio = response.data;
         this.lstSucursales = response.data;
         if (this.lstSucursales?.length > 0) {
           this.seccion = 'Sucursales';
+          console.log("seccion", this.seccion)
         }
         else {
+          this.seccion = 'productos';
           this.lstSucursales = [];
         }
       }
@@ -1542,9 +1538,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         );
       } else {
         localStorage.setItem('isRedirected', 'true');
-        this.rutasucursal.navigate(['/tabs/negocio/' + negocioURL]);
-
-
+        this.router.navigate(['/tabs/negocio/' + negocioURL]);
       }
     }, 1000);
 
