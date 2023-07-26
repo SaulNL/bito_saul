@@ -66,6 +66,11 @@ ion-spinner {
   float: left;
   background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+  a {
+    color: rgba(255, 115, 73, 0.900);
+    font-weight: 600;
+    text-decoration-line: underline;
+  }
 }
 .message-wrap .message.left .msg-detail {
   padding-left: 55px; 
@@ -97,6 +102,11 @@ ion-spinner {
 .message-wrap .message.right .msg-detail .msg-content {
   float: right;
   background: rgba(255, 115, 73, 0.900);
+  a {
+    color: white;
+    font-weight: 600;
+    text-decoration-line: underline;
+  }
 }
 .message-wrap .message.right .msg-detail .msg-content span.triangle {
   background: rgba(255, 115, 73, 0.900);
@@ -121,3 +131,4 @@ ion-textarea.message-input {
     --padding-start: 5px;
     --placeholder-color: #636363;
 }
+

@@ -65,19 +65,12 @@ export class ModalConfirmSignUpComponent implements OnInit {
   }
 
   get isSendToMovil() {
-    return this.shippingMethod === 1;
+    return this.shippingMethod === 1 || this.shippingMethod == 2;
   }
 
   public getCodeSms() {
     this.retryCode = true;
-    this.usuarioService
-      .getCode(
-        this.formSignUp.ms_persona.telefono_celular,
-        this.formSignUp.ms_persona.correo,
-        this.shippingMethod
-      )
-      .subscribe(
-        (response) => {
+    this.usuarioService.getCode(this.formSignUp.ms_persona.telefono_celular,this.formSignUp.ms_persona.correo,this.shippingMethod).subscribe((response) => {
           this.formSignUp.idCode = response.data;
           this.initTimer();
         },
