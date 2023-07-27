@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {Router} from "@angular/router";
-import { IonContent } from '@ionic/angular';
+import { IonContent, MenuController } from '@ionic/angular';
 import { ConocenosService } from 'src/app/api/conocenos.service';
 import { ImagenConocenos } from 'src/app/Modelos/ImagenesConocenos';
 
@@ -20,9 +20,13 @@ export class ConocenosPage implements OnInit {
    }; 
   constructor(
     private _router: Router,
-    private _conocenosService: ConocenosService
+    private _conocenosService: ConocenosService,
+    private menuCtrl: MenuController,
   ) { 
     this.listImagsConocenos = [];
+  }
+  ionViewWillEnter() {
+    this.menuCtrl.close();
   }
 
   ngOnInit() {

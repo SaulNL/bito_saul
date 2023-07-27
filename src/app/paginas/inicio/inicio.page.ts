@@ -845,10 +845,12 @@ export class InicioPage implements OnInit, AfterViewInit {
   public regresarBitoo(activacion) {
 
     if (localStorage.getItem("FiltroAct")) {
-      localStorage.removeItem("FiltroAct")
       localStorage.removeItem("filter")
       localStorage.removeItem("categoriaSeleccionada")
-      localStorage.removeItem("filtroactual")
+      if (activacion) {
+        localStorage.removeItem("FiltroAct")
+        localStorage.removeItem("filtroactual")
+      }
     }
 
     if (!this.subCAt || !this.afi) {
@@ -1180,14 +1182,14 @@ export class InicioPage implements OnInit, AfterViewInit {
       : "";
     localStorage.setItem("todo", "todo");
     var noPaginas = await this.principalSercicio.obtenerNumeroPaginas(this.Filtros, 1);
-    var rand = this.random(1, JSON.stringify(noPaginas.data.last_page))
+    var rand = this.random(1, noPaginas.data.last_page)
     this.primeraPagRandom = rand;
     this.paginaPivote = rand;
     this.paginaPrevia = this.paginaPivote
     var respuesta = await this.principalSercicio
       .obtenerNegocioPorCategoria(this.Filtros, rand)//this.siguienteGiro)
       this.paginacion = []
-        this.pagSelect = respuesta.data.lst_cat_negocios.current_page;
+        this.pagSelect = respuesta.data.lst_cat_negocios.last_page <= 1 ? 1 : respuesta.data.lst_cat_negocios.current_page;
         this.variablePrueba = true
       this.generarPaginacion(respuesta);
     this.validarResultadosDeCategorias(await respuesta);

@@ -51,6 +51,10 @@ export class MenuComponent implements OnInit {
     }
   }
 
+  abrirConocenos(){
+    this.router.navigate(['/tabs/home/conocenos']);
+  }
+
   async mensajeRegistro() {
     const alert = await this.alertController.create({
       header: 'Bitoo!',
