@@ -196,3 +196,90 @@ ul li {
     color: black;
     font-weight: bolder;
 }
+
+/*  estilos del cupón  */
+.cent {
+    text-align: center;
+}
+
+::ng-deep app-viewqr-promocion img {
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+}
+
+#qrcode {
+    margin-left: 10vw;
+    width: 70vw !important;
+    height: 70vw !important;
+    background-size: 100% 100%;
+}
+
+svg {
+    visibility: hidden;
+    position: absolute;
+}
+
+app-viewqr-promocion img {
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+}
+
+app-viewqr-promocion>img {
+    width: 100% !important;
+    height: 100% !important;
+;
+    background-size: 100% 100% !important;
+}
+
+#this_one {
+    margin: auto;
+}
+
+@media (max-width: 600px) {
+    .unico {
+        width: 100%;
+    }
+
+}
+
+@media (min-width: 631px) and (max-width: 767px) {
+    .unico {
+        width: 8em;
+    }
+}
+
+#imagenesFondo {
+
+    background-image: url(../../../../assets/images/FONDOPROMOCiONES.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    position: relative;
+    width: 100%;
+}
+
+.font-color-e3dd2a {
+    color: #e3dd2a;
+}
+
+.font-color {
+    color: #FFF;
+}
+
+.bitoo-www {
+    margin-left: 30vw;
+}
+
+.bg-promo {
+    --background: linear-gradient(90deg, #ff1dbd 0%, rgb(255, 206, 0) 100%) !important;
+}
+
+ion-chip {
+    --background: #FFF;
+    justify-content: center;
+}
+
+.content-margin {
+    padding: 1rem 1.5rem;
+}

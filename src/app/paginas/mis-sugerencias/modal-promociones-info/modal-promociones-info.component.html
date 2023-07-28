@@ -1,27 +1,27 @@
 <div class="contenedor">
-  <!--<img class="image" src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/PROVEEDOR/LA%20IMAGEN%20NO%20ESTA%20DISPONIBLE%20700%20X%20700.png" [srcset]="promocion.url_imagen">-->
-  <img class="imagen" src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/PROVEEDOR/LA%20IMAGEN%20NO%20ESTA%20DISPONIBLE%20700%20X%20700.png" [srcset]="promocion.url_imagen">
+  <img class="imagen" src="{{promocion.url_imagen}}">
   <div class="middle-modal">
     <button class="boton" (click)="verImagen()">Ver imagen</button>
     <!--<button class="boton" (click)="masInformacion(promocion)">Más información</button>-->
   </div>
 </div>
+
 <app-spinner [loader]="loader" [message]="msj" class="block-screen"></app-spinner>
 <div *ngIf="promocion.id_tipo_promocion===2" style="display: flex; justify-content: center; align-items: center">
   <div class="contendorPrincipal">
-    <h1 style="margin-top: 5px; margin-bottom: -15px" class="sinMargin rosa" (click)="masInformacion(promocion)">
+    <h1 style="margin-top: 5px; margin-bottom: -15px" class="rosa" (click)="masInformacion(promocion)">
       {{ promocion.nombre_comercial }}</h1>
     <p>{{promocion.promocion}}</p>
 
     <ion-row class="ion-text-center" style="margin-top: -10px">
       <ion-col>
-        <label *ngIf="promocion.porcentaje !== null" >{{ promocion.porcentaje}}%</label>
-        <label *ngIf="promocion.porcentaje !== null" style="text-transform: uppercase;"> de descuento</label>
+        <label *ngIf="promocion.porcentaje !== null" style="color: #FF1DBD;">{{ promocion.porcentaje}}%</label>
+        <label *ngIf="promocion.porcentaje !== null" style="text-transform: uppercase; color: #FF1DBD;"> de descuento</label>
       </ion-col>
     </ion-row>
 
     <ion-button (click)="crearModal()" class="buttonCoupon" shape="round">
-      Descargar cupón
+      <span>Descargar Cupón</span>
     </ion-button>
 
     <ion-button (click)="compartir(promocion)" shape="round" fill="outline" size="small" color="danger" style="margin-bottom: 15px; margin-top: 5px">
@@ -38,22 +38,16 @@
       <ion-col size="6" class="customCol">
         <strong>Términos y condiciones</strong>
         <p style="margin-top: 10px; margin-bottom: 5px">{{ promocion.terminos }}</p>
-
         <div *ngFor="let org of promocion.organizaciones">
           <div class="buttonInf" shape="round">{{org.nombre}}</div>
         </div>
-
       </ion-col>
       <ion-col size="6" class="customCol">
         <ion-icon name="calendar-outline" size="large"></ion-icon>
         <div *ngIf="promocion.id_tipo_promocion===2">
-          <ion-row>
-            <ion-col class="ion-text-center" *ngFor="let item of listaDias">
-              <p style="margin-top: 5px;">Quedan <span style="color: #ff1dbd;">{{ promocion.restanDias }}</span> días, Aplica:
-                <span style="color: #ff1dbd;"> <span *ngFor="let dia of item.dias">{{dia}}</span></span>.</p>
-              <p style="margin-top: -10px;">{{ item.hora_inicio}} a {{item.hora_fin}}</p>
-            </ion-col>
-          </ion-row>
+          <p style="margin-top: 5px;">Quedan <span style="color: #ff1dbd;">{{diasRestantes}}</span> días, Aplica:
+            <span style="color: #ff1dbd;"> {{diAplica}}</span>.</p>
+          <p style="margin-top: -10px;">{{listaDias[0].hora_inicio}} a {{listaDias[0].hora_fin}}</p>
         </div>
       </ion-col>
     </ion-row>
@@ -75,7 +69,6 @@
       </video>
     </div>
     <!-- ----- ------------- --- -->
-
     <strong style="margin-top: 15px;">Contactar al proveedor</strong>
     <div style="display: flex; align-items: center; text-align:center; justify-content: center; width: 90%;">
       <ion-icon name="location-outline" slot="start" style="font-size: 50px; position: relative; top: -15px;"></ion-icon>
@@ -87,7 +80,7 @@
         <ion-badge color="danger"><a href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{promocion.latitud}},{{promocion.longitud}}" target="_blank">Ir al lugar</a></ion-badge>
       </ion-col>
       <ion-col size="12" class="ion-text-center" *ngIf="!blnPermisoUbicacion">
-        <h2 class="aDefault promocion" matTooltip="Bituyú no puede obtener tu ubicación. Por favor activa los permisos de ubicación del navegador para poder determinar la distancia a la que se encuentra el negocio">
+        <h2 class="aDefault promocion" matTooltip="Bitoo no puede obtener tu ubicación. Por favor activa los permisos de ubicación del navegador para poder determinar la distancia a la que se encuentra el negocio">
           Distancia desconocida
         </h2>
       </ion-col>
@@ -143,8 +136,9 @@
 </ion-grid>
 
 <div class="modal-overlayPromocion" *ngIf="isOpen" (click)="cerrarModal($event)">
-   <ion-img [src]="promocion.url_imagen"></ion-img>
+  <ion-img [src]="promocion.url_imagen"></ion-img>
 </div>
+
 
 <div *ngIf="!cupon" id="contenidoCupon" class="bg-promo">
   <div id="imagenesFondo" class="ion-text-center font-color content-margin">

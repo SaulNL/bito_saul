@@ -16,6 +16,13 @@ import { CambiarCuponEstatus } from '../Modelos/CambiarCuponEstatus';
   providedIn: 'root'
 })
 export class PromocionesService {
+  promocion: any;
+  idPersona: any;
+  listaDias: any;
+
+  latitud: any;
+  longitud: any;
+  celular: any;
 
   url = `${AppSettings.API_ENDPOINT}`;
 
@@ -24,6 +31,23 @@ export class PromocionesService {
     private http: HTTP
   ) { }
 
+  setPromocionObj(obj: any) { this.promocion = obj; }
+  getPromocionObj() {return this.promocion; }
+
+  setIdPersonaObj(obj: any) { this.idPersona = obj; }
+  getIdPersonaObj() { return this.idPersona; }
+
+  setListaDiasObj(obj: any) { this.listaDias = obj; }
+  getListaDiasObj() { return this.listaDias; }
+
+  setLatitudObj(obj: any) { this.latitud = obj; }
+  getLatitudObj() { return this.latitud; }
+
+  setLongitudObj(obj: any) { this.longitud = obj; }
+  getLongituddObj() { return this.longitud; }
+
+  setCelularObj(obj: any) { this.celular = obj; }
+  getCelularObj() { return this.celular; }
 
   obtenerDetalle(idPromocion): Observable<any> {
     const body = JSON.stringify({idPromocion});

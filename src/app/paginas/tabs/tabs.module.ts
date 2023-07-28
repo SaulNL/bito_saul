@@ -18,29 +18,35 @@ import { ModalLoguearseComponent } from '../../componentes/modal-loguearse/modal
 import { BannerAnunciosComponent } from '../../componentes/banner-anuncios/banner-anuncios.component';
 import { ModalPromocionNegocioComponent } from '../../componentes/modal-promocion-negocio/modal-promocion-negocio.component';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import {
+    ModalInfoPromocionComponent
+} from "../../componentes/modal-promocion-negocio/modal-info-promocion/modal-info-promocion.component";
+import {SpinnerModule} from "../../componentes/spinner/spinner.module";
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    TabsPageRoutingModule,
-    ImageCropperModule,
-  ],
-  declarations: [
-    TabsPage,
-    BannerPromocionesComponent,
-    BannerAnunciosComponent,
-    ToolbarBusquedaComponent,
-    BotonTopComponent,
-    InputTagsComponent,
-    InputLugaresEntregaComponent,
-    ModalClasificacionComponent,
-    RecorteImagenComponent,
-    FiltrosBusquedaComponent,
-    PlazasAfiliacionesComponent,
-    ModalLoguearseComponent,
-    ModalPromocionNegocioComponent
-  ],
+    imports: [
+        IonicModule,
+        CommonModule,
+        FormsModule,
+        TabsPageRoutingModule,
+        ImageCropperModule,
+        SpinnerModule,
+    ],
+    declarations: [
+        TabsPage,
+        BannerPromocionesComponent,
+        BannerAnunciosComponent,
+        ToolbarBusquedaComponent,
+        BotonTopComponent,
+        InputTagsComponent,
+        InputLugaresEntregaComponent,
+        ModalClasificacionComponent,
+        RecorteImagenComponent,
+        FiltrosBusquedaComponent,
+        PlazasAfiliacionesComponent,
+        ModalLoguearseComponent,
+        ModalPromocionNegocioComponent,
+        ModalInfoPromocionComponent
+    ],
   exports: [
     BannerPromocionesComponent,
     BannerAnunciosComponent,

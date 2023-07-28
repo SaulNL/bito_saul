@@ -1,0 +1,295 @@
+.promoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 93vw;
+  max-height: 91vh;
+  background-color: #fff;
+  margin: 15px;
+  border-radius: 15px;
+  overflow: scroll;
+}
+
+.imgPromo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  margin-top: 10px;
+}
+
+img {
+  display: block;
+  height: 300px;
+  width: 300px;
+}
+
+.contendorPrincipal{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #E6E5E5;
+  border-radius: 15px;
+  width: 90%;
+  min-height: 70px;
+}
+
+.buttonCoupon{
+  --background: linear-gradient(90deg, #F761CC 0%, #FF7859 100%);
+  --color: #fff;
+  width: 65vw;
+}
+
+label {
+  font-weight: bold;
+  color:  #FF1DBD;
+  font-size: 18px;
+}
+
+.contendorSecundario{
+  background-color: #E6E5E5;
+  border-radius: 15px;
+  width: 90%;
+  min-height: 70px;
+}
+
+.contenedor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  margin-top: 10px;
+}
+
+.middle-modal {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.image {
+  opacity: 1;
+  display: block;
+  transition: .5s ease;
+  backface-visibility: hidden;
+  width: 100%;
+}
+
+.imagen{
+  opacity: 1;
+  display: block;
+  transition: .5s ease;
+  backface-visibility: hidden;
+  height: 300px;
+  width: 300px;
+}
+
+.contenedor:hover .imagen {
+  opacity: 0.3;
+}
+
+.contenedor:hover .middle-modal {
+  opacity: 1;
+}
+
+.boton {
+  padding: 10px;
+  background: #FF1DBD;
+  color: white;
+  border-radius: 20px;
+  width: 88px;
+}
+
+.modal-overlayPromocion {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.customCol{
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonInf{
+  /* background: linear-gradient(90deg, #F761CC 0%, #FF7859 100%); */
+  /* color: #fff; */
+  border: 2px solid #eb445a; /* Borde de 2 píxeles de ancho y color rojo */
+  border-radius: 25px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  width: 40vw;
+  min-height: 7vw;
+  margin-top: 2px;
+  justify-content: center;
+  /* cursor: pointer; */
+  /* text-decoration: none; */
+}
+
+.contenedorTer{
+  background-color: #E6E5E5;
+  border-radius: 15px;
+  width: 90%;
+  min-height: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.promocion {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.rosa {
+  color: #FF1DBD;
+}
+
+.titulo {
+  font-size: xx-large;
+  margin-bottom: 10px;
+}
+
+ul {
+  display: flex;
+  justify-content: space-between;
+}
+
+ul li {
+  list-style: none;
+}
+
+.lista {
+  display: flex;
+  justify-content: space-between;
+}
+
+.list {
+  //-webkit-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+  //-moz-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+  //box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+  border-radius: 20px;
+  background: linear-gradient(90deg, #F761CC 0%, #FF7859 100%);
+  color: white;
+}
+.negritas {
+  color: black;
+  font-weight: bolder;
+}
+
+.block-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  pointer-events: none; /* Esto evita que los eventos lleguen a los elementos debajo del bloqueo */
+}
+
+/*  estilos del cupón  */
+.cent {
+  text-align: center;
+}
+
+::ng-deep app-viewqr-promocion img {
+  width: 100%;
+  height: 100%;
+  background-size: 100% 100%;
+}
+
+#qrcode {
+  margin-left: 10vw;
+  width: 70vw !important;
+  height: 70vw !important;
+  background-size: 100% 100%;
+}
+
+svg {
+  visibility: hidden;
+  position: absolute;
+}
+
+app-viewqr-promocion img {
+  width: 100%;
+  height: 100%;
+  background-size: 100% 100%;
+}
+
+app-viewqr-promocion>img {
+  width: 100% !important;
+  height: 100% !important;
+;
+  background-size: 100% 100% !important;
+}
+
+#this_one {
+  margin: auto;
+}
+
+@media (max-width: 600px) {
+  .unico {
+    width: 100%;
+  }
+
+}
+
+@media (min-width: 631px) and (max-width: 767px) {
+  .unico {
+    width: 8em;
+  }
+}
+
+#imagenesFondo {
+
+  background-image: url(../../../../assets/images/FONDOPROMOCiONES.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  position: relative;
+  width: 100%;
+}
+
+.font-color-e3dd2a {
+  color: #e3dd2a;
+}
+
+.font-color {
+  color: #FFF;
+}
+
+.bitoo-www {
+  margin-left: 30vw;
+}
+
+.bg-promo {
+  --background: linear-gradient(90deg, #ff1dbd 0%, rgb(255, 206, 0) 100%) !important;
+}
+
+ion-chip {
+  --background: #FFF;
+  justify-content: center;
+}
+
+.content-margin {
+  padding: 1rem 1.5rem;
+}
