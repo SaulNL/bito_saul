@@ -103,7 +103,6 @@ export class ReservacionesPage implements OnInit {
     this.eventosService.eventoDetalle(this.idEvento).subscribe(
         res => {
           this.infoEvento = res.data;
-          console.log('datos', this.infoEvento);
           this.fotografiasArray = res.data[0].fotografias;
           this.videosArray = res.data[0].videos;
           this.fotografiasArray = this.fotografiasArray.map(foto => {
@@ -116,7 +115,6 @@ export class ReservacionesPage implements OnInit {
             }
             return foto;
           });
-          console.log('fotos', this.fotografiasArray);
           this.obtenerListaRecurrencia();
           this.convertirFechaHora();
           this.load_cat_estados();

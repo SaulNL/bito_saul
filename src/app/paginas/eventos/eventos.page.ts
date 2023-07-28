@@ -59,6 +59,7 @@ export class EventosPage implements OnInit {
   public idOrg: any;
   public filtroVacio: any;
   public secion: string;
+  public fecha: any;
 
   constructor(
       private eventosService: EventosService,
@@ -124,7 +125,17 @@ export class EventosPage implements OnInit {
     const idDetalle = filtro;
     this.eventosService.eventosLista(idDetalle).subscribe(
         res => {
+          const fechaActual = new Date();
+          this.fecha =  fechaActual;
+          this.convertirFecha(this.fecha);
           this.eventosAll = res.data;
+
+          this.eventosAll = this.eventosAll.filter((objeto) => {
+            const fechaA = objeto.fecha > this.fecha;
+            const recurrencia = objeto.id_tipo_recurrencia !== 1;
+            return fechaA || recurrencia;
+          });
+
           this.loaderReservaciones = true;
           this.eventosAll.sort((a, b) => {
             const fechaA = new Date(a.fecha);
@@ -167,6 +178,11 @@ export class EventosPage implements OnInit {
     const diaEscrito = this.dias[this.numDia];
     const diaNumero = this.numeroDia;
     const mesEscrito = this.meses[this.numeroMes];
+
+    const numAño = fechaObjeto.getFullYear();
+    const numeroM = (fechaObjeto.getMonth() + 1).toString().padStart(2, '0');
+
+    this.fecha = `${numAño}-${numeroM}-${diaNumero}`;
 
     return `${diaEscrito} ${diaNumero} de ${mesEscrito}`;
   }
@@ -339,6 +355,16 @@ export class EventosPage implements OnInit {
     this.eventosService.buscarFiltroEvento(this.filtroEvento).subscribe(
         (response) => {
           this.eventosAll = response.data;
+          const fechaActual = new Date();
+          this.fecha =  fechaActual;
+          this.convertirFecha(this.fecha);
+
+          this.eventosAll = this.eventosAll.filter((objeto) => {
+            const fechaA = objeto.fecha > this.fecha;
+            const recurrencia = objeto.id_tipo_recurrencia !== 1;
+            return fechaA || recurrencia;
+          });
+
           this.eventosAll.sort((a, b) => {
             const fechaA = new Date(a.fecha);
             const fechaB = new Date(b.fecha);
