@@ -33,7 +33,6 @@ export class AppComponent {
     public inicio: boolean;
     public rutas = [
         "/tabs/home?special=true",
-        "/tabs/home/conocenos",
         "/tabs/home",
         "/tabs/home/negocio",
         "/tabs/home/solicitudes",

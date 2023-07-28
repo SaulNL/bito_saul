@@ -155,7 +155,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     private blockk: AuthGuardService,
     private navBarServiceService: NavBarServiceService,
     private servicioProductos: ProductosService,
-    private rutasucursal: Router,
     private iab: InAppBrowser,
     private createObject: CreateObjects /* private document: DocumentViewer, */ /* private transfer: FileTransfer, */ /* private webview: WebView */
   ) {
@@ -202,7 +201,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-
     if (localStorage.getItem('isRedirected') === 'false' && !this.isIOS) {
       localStorage.setItem('isRedirected', 'true');
       location.reload();
@@ -367,6 +365,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
             this.longitudNeg = this.informacionNegocio.longitud;
 
             this.promociones = this.informacionNegocio.promociones;
+            console.log(this.promociones)
             if (
               this.informacionNegocio.url_negocio !== null &&
               this.informacionNegocio.url_negocio !== '' &&
@@ -388,10 +387,12 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
             } else {
               this.informacionNegocio.catProductos = [];
               this.informacionNegocio.catServicos = [];
-              // this.obtenerPromociones();
+              this.obtenerPromociones(this.informacionNegocio.id_negocio,false);
               this.obtenerProductos(this.informacionNegocio.id_negocio,false);
               this.obtenerProductosMatris()
-              this.obtenerServicios();
+              this.obtenerServicios(this.informacionNegocio.id_negocio,false);
+              this.obtenerServicioMatris();
+              this.obtenerPromocionAnuncioMatris();
               this.obtenerEstatusCalificacion();
               this.guardarQuienVioNegocio(this.informacionNegocio.id_negocio);
               this.comentariosNegocio(this.informacionNegocio.id_negocio);
@@ -445,6 +446,32 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   obtenerProductosMatris(){
     if(this.informacionNegocio.id_negocio_matriz){
       this.obtenerProductos(this.informacionNegocio.id_negocio_matriz,true)
+    }
+  }
+  obtenerServicioMatris(){
+    if(this.informacionNegocio.id_negocio_matriz){
+      this.obtenerServicios(this.informacionNegocio.id_negocio_matriz,true)
+    }
+  }
+
+  obtenerPromociones(idNegocio,Matris){
+    this.negocioService.obtenerPromocionesAnuncio(idNegocio).subscribe((response) => {
+      console.log("id",idNegocio)
+      console.log("anuncionPromociones",response)
+      if(this.informacionNegocio.id_negocio_matriz && Matris){
+        this.informacionNegocio.anuncioPromocionMatris = response.data;
+      }else{
+        this.informacionNegocio.promociones = response.data;
+      }
+    }),
+    (error) => {
+      confirm('Error al o¿btener los servicios');
+    }
+  }
+
+  obtenerPromocionAnuncioMatris(){
+    if(this.informacionNegocio.id_negocio_matriz){
+      this.obtenerPromociones(this.informacionNegocio.id_negocio_matriz,true);
     }
   }
 
@@ -514,15 +541,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
       );
   }
 
-  obtenerServicios() {
-    this.negocioService
-      .obtenerDetalleDeNegocio(
-        this.informacionNegocio.id_negocio,
-        1,
-        this.user.id_persona
-      )
-      .subscribe(
-        (response) => {
+  obtenerServicios(idNegocio,matris) {
+    this.negocioService.obtenerDetalleDeNegocio(idNegocio,1,this.user.id_persona).subscribe((response) => {
           if (response.code === 200 && response.agrupados != null) {
             const servicios = response.agrupados;
             const cats = [];
@@ -543,7 +563,13 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
                   }
                 }
               });
-              this.informacionNegocio.catServicos = cats;
+
+              if(this.informacionNegocio.id_negocio_matriz && matris){
+                this.informacionNegocio.serviciosMatris = cats
+              }else{
+                this.informacionNegocio.catServicos = cats;
+              }
+              console.log("informacionNegocio",this.informacionNegocio)
             }
           }
         },
@@ -1491,12 +1517,13 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
     this.serviceProveedores.obtenerSucursales(id).subscribe(
       response => {
-        const negocio = response.data;
         this.lstSucursales = response.data;
         if (this.lstSucursales?.length > 0) {
           this.seccion = 'Sucursales';
+          console.log("seccion", this.seccion)
         }
         else {
+          this.seccion = 'productos';
           this.lstSucursales = [];
         }
       }
@@ -1511,9 +1538,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         );
       } else {
         localStorage.setItem('isRedirected', 'true');
-        this.rutasucursal.navigate(['/tabs/negocio/' + negocioURL]);
-
-
+        this.router.navigate(['/tabs/negocio/' + negocioURL]);
       }
     }, 1000);
 

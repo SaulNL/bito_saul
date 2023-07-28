@@ -76,6 +76,20 @@ export class NegocioService {
             }));
     }
 
+    public obtenerPromocionesAnuncio(idNegocio: number): Observable<any> {
+        const body = JSON.stringify({negocio: idNegocio});
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/promociones/buscar/publicadas/byNegocio',
+            body, AppSettings.getHeaders())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
     misNegocios(id: number): Observable<any> {
         const body = JSON.stringify({ id_proveedor: id });
         this._http.setDataSerializer('utf8');
