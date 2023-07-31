@@ -1,42 +1,42 @@
-import { NotificationInterface } from "./../../models/notifications-model";
-import { CreateObjects } from "./../../helper/create-object";
-import { NotificationWithFirebaseService } from "./../../../api/notification-with-firebase.service";
-import { SelectedOptionSesionModel } from "./../../models/selected-option-sesion-model";
-import { OptionSesion } from "./../../types/option-sesion";
-import { SignInOrUpSocialNetworksComponent } from "./../../components/sign-in-or-up-social-networks/sign-in-or-up-social-networks.component";
-import { ResponderInterface } from "./../../models/responder-model";
-import { ContentCommonUserSingUpInterface } from "./../../models/user-sign-up-model";
-import { SelectedSocialNetwork } from "./../../types/platform-type";
-import { ProccessSignUp } from "./../../helper/proccess-sign-up";
-import { UsuarioService } from "./../../../api/busqueda/login/usuario.service";
-import { RecoverPasswordComponent } from "./../../components/recover-password/recover-password.component";
-import { ReturnToModel } from "./../../models/return-to-model";
-import { Location } from "@angular/common";
-import { ToadNotificacionService } from "./../../../api/toad-notificacion.service";
-import { LoginService } from "./../../../api/login.service";
-import { NgForm } from "@angular/forms";
+import { NotificationInterface } from './../../models/notifications-model';
+import { CreateObjects } from './../../helper/create-object';
+import { NotificationWithFirebaseService } from './../../../api/notification-with-firebase.service';
+import { SelectedOptionSesionModel } from './../../models/selected-option-sesion-model';
+import { OptionSesion } from './../../types/option-sesion';
+import { SignInOrUpSocialNetworksComponent } from './../../components/sign-in-or-up-social-networks/sign-in-or-up-social-networks.component';
+import { ResponderInterface } from './../../models/responder-model';
+import { ContentCommonUserSingUpInterface } from './../../models/user-sign-up-model';
+import { SelectedSocialNetwork } from './../../types/platform-type';
+import { ProccessSignUp } from './../../helper/proccess-sign-up';
+import { UsuarioService } from './../../../api/busqueda/login/usuario.service';
+import { RecoverPasswordComponent } from './../../components/recover-password/recover-password.component';
+import { ReturnToModel } from './../../models/return-to-model';
+import { Location } from '@angular/common';
+import { ToadNotificacionService } from './../../../api/toad-notificacion.service';
+import { LoginService } from './../../../api/login.service';
+import { NgForm } from '@angular/forms';
 import {
   UserSignInModel,
   UserSignInInterface,
-} from "../../models/user-sign-in-model";
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Platform, ModalController } from "@ionic/angular";
-import { Subscription } from "rxjs";
-import { ConfigGlobal } from "../../config/config-global";
-import { ResponderModel } from "../../models/responder-model";
-import { ValidatorData } from "../../helper/validations";
-import { ResponseCommon } from "../../helper/is-success-response";
+} from '../../models/user-sign-in-model';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Platform, ModalController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
+import { ConfigGlobal } from '../../config/config-global';
+import { ResponderModel } from '../../models/responder-model';
+import { ValidatorData } from '../../helper/validations';
+import { ResponseCommon } from '../../helper/is-success-response';
 import { AppSettings } from '../../../AppSettings';
 
 @Component({
-  selector: "app-sign-in",
-  templateUrl: "./sign-in.page.html",
-  styleUrls: ["./sign-in.page.scss"],
+  selector: 'app-sign-in',
+  templateUrl: './sign-in.page.html',
+  styleUrls: ['./sign-in.page.scss'],
   providers: [ValidatorData, ResponseCommon, ProccessSignUp, CreateObjects],
 })
 export class SignInPage implements OnInit {
-  @ViewChild("socialNetworks", { static: false })
+  @ViewChild('socialNetworks', { static: false })
   signInChange: SignInOrUpSocialNetworksComponent;
   public loader: boolean;
   public user: UserSignInModel;
@@ -64,9 +64,10 @@ export class SignInPage implements OnInit {
     private usuarioService: UsuarioService,
     private proceesSignUp: ProccessSignUp,
     private notification: NotificationWithFirebaseService,
-    private create: CreateObjects
+    private create: CreateObjects,
+
   ) {
-    this.isIos = this.platform.is("ios");
+    this.isIos = this.platform.is('ios');
     this.init();
     this.ionViewDidEnter();
     this.ionViewWillLeave();
@@ -75,10 +76,10 @@ export class SignInPage implements OnInit {
   }
 
   ngOnInit() {
-    if (localStorage.getItem("isRedirected") === "false" && !this.isIos) {
-      localStorage.setItem("isRedirected", "true");
-      //location.reload();
-      localStorage.removeItem("activedPage");
+    if (localStorage.getItem('isRedirected') === 'false' && !this.isIos) {
+      localStorage.setItem('isRedirected', 'true');
+      // location.reload();
+      localStorage.removeItem('activedPage');
     }
 
     this.activeRoute.queryParams.subscribe((params) => {
@@ -90,7 +91,7 @@ export class SignInPage implements OnInit {
     this.activeRoute.queryParams.subscribe((params) => {
       if (params.perfil && params) {
         this.returnToLocation = JSON.parse(params.perfil);
-        localStorage.setItem("optionLogin", params.perfil);
+        localStorage.setItem('optionLogin', params.perfil);
       }
     });
   }
@@ -104,7 +105,7 @@ export class SignInPage implements OnInit {
     this.loadGoogle = false;
     this.loadApple = false;
     this.user = new UserSignInModel(null, null);
-    this.passwordType = "password";
+    this.passwordType = 'password';
     this.showPassword = false;
   }
   /**
@@ -119,25 +120,27 @@ export class SignInPage implements OnInit {
   ) {
     ConfigGlobal.setUser(response);
     if (response.data.usuario_sistema.ms_persona.proveedor === null){
-      let id_proveedor = null;
-      localStorage.setItem("id_proveedor", id_proveedor);
+      const id_proveedor = null;
+      localStorage.setItem('id_proveedor', id_proveedor);
     }else{
-      let id_proveedor = response.data.usuario_sistema.ms_persona.proveedor.id_proveedor
-      localStorage.setItem("id_proveedor", id_proveedor);
+      const id_proveedor = response.data.usuario_sistema.ms_persona.proveedor.id_proveedor;
+      localStorage.setItem('id_proveedor', id_proveedor);
     }
-    localStorage.setItem("isRedirected", "false");
-    const optionEnterLogin = localStorage.getItem("optionLogin");
+    localStorage.setItem('isRedirected', 'false');
+    const optionEnterLogin = localStorage.getItem('optionLogin');
     this.inicializeNotification();
+    const idEvento = localStorage.getItem('idEvento');
     if (optionEnterLogin != null) {
       this.returnToLocation = JSON.parse(String(optionEnterLogin));
       this.goToRoute(this.returnToLocation.url);
       const pagina = localStorage.getItem('Page');
-      
-      if(pagina==='Requerimiento'){
+      if (pagina === 'Requerimiento'){
         this.goToRouteReque();
       }
+    } else if (idEvento != null){
+      this.route.navigateByUrl(`/tabs/eventos/reservaciones/${idEvento}`);
     } else {
-      window.location.assign("/tabs/inicio");
+      window.location.assign('/tabs/inicio');
     }
     this.toadNotificacionService.exito(response.message);
     this.optionSesionLoad(optionSesion);
@@ -155,7 +158,7 @@ export class SignInPage implements OnInit {
       form.value.password
     );
     const optionSesion: SelectedOptionSesionModel =
-      new SelectedOptionSesionModel("defaultUser");
+      new SelectedOptionSesionModel('defaultUser');
     this.signInCommon(user, optionSesion);
   }
   /**
@@ -169,7 +172,7 @@ export class SignInPage implements OnInit {
     optionSesion: SelectedOptionSesionModel
   ) {
     try {
-      this.loginService.login(user).subscribe(        
+      this.loginService.login(user).subscribe(
         (response) => {
           if (response.code === 200) {
             this.proccessSuccessAfterSignIn(response, optionSesion);
@@ -208,13 +211,13 @@ export class SignInPage implements OnInit {
   ) {
     try {
       switch (selectedSocialNetwork) {
-        case "apple":
+        case 'apple':
           this.signInChange.loaderApple = false;
           break;
-        case "google":
+        case 'google':
           this.signInChange.loaderGoogle = false;
           break;
-        case "facebook":
+        case 'facebook':
           this.signInChange.loaderFacebook = false;
           break;
         default:
@@ -235,7 +238,7 @@ export class SignInPage implements OnInit {
     optionSesion: SelectedOptionSesionModel
   ) {
     this.optionSesionLoad(optionSesion);
-    this.toadNotificacionService.alerta("Usuario y/o contraseña incorrectos");
+    this.toadNotificacionService.alerta('Usuario y/o contraseña incorrectos');
   }
 
   ionViewWillLeave() {
@@ -249,14 +252,14 @@ export class SignInPage implements OnInit {
   }
 
   public backPhysicalBottom() {
-    const optionEnterLogin = localStorage.getItem("optionLogin");
+    const optionEnterLogin = localStorage.getItem('optionLogin');
     this.returnToLocation = JSON.parse(String(optionEnterLogin));
     try {
       switch (this.returnToLocation.type) {
-        case "producto":
+        case 'producto':
           this.location.back();
           break;
-        case "perfil":
+        case 'perfil':
           this.goToRoute(this.returnToLocation.url);
           break;
         default:
@@ -274,7 +277,7 @@ export class SignInPage implements OnInit {
   }
 
   private goToRouteReque() {
-    this.route.navigate(["/tabs/home/solicitud"]);
+    this.route.navigate(['/tabs/home/solicitud']);
   }
   /**
    * @author Juan Antonio Guevara Flores
@@ -291,7 +294,7 @@ export class SignInPage implements OnInit {
    * @description Redirige al page de sign-up-page
    */
   public toSignUp() {
-    this.route.navigate(["/tabs/login/sign-up"]);
+    this.route.navigate(['/tabs/login/sign-up']);
   }
   /**
    * @author Juan Antonio Guevara Flores
@@ -300,17 +303,17 @@ export class SignInPage implements OnInit {
    */
   public response(response: ResponderModel) {
     const optionSesion: SelectedOptionSesionModel =
-      new SelectedOptionSesionModel("socialNetwork", response.socialNetwork);
+      new SelectedOptionSesionModel('socialNetwork', response.socialNetwork);
     if (this.responseCommon.validation(response)) {
       try {
         switch (response.socialNetwork) {
-          case "google":
+          case 'google':
             this.signInGoogle(response, optionSesion);
             break;
-          case "apple":
+          case 'apple':
             this.signInApple(response, optionSesion);
             break;
-          case "facebook":
+          case 'facebook':
             this.signInFacebook(response, optionSesion);
             break;
           default:
@@ -427,7 +430,7 @@ export class SignInPage implements OnInit {
       );
     } catch (error) {
       this.optionSesionSocialNetworks(optionSesion.selectedSocialNetwork);
-      this.toadNotificacionService.error("Error de conección");
+      this.toadNotificacionService.error('Error de conección');
     }
   }
   /**
@@ -442,13 +445,13 @@ export class SignInPage implements OnInit {
   ) {
     try {
       switch (response.socialNetwork) {
-        case "google":
+        case 'google':
           this.createAccountWithGoogle(response, optionSesion);
           break;
-        case "apple":
+        case 'apple':
           this.createAccountWithApple(response, optionSesion);
           break;
-        case "facebook":
+        case 'facebook':
           this.createAccountWithFacebook(response, optionSesion);
           break;
         default:
@@ -622,10 +625,10 @@ export class SignInPage implements OnInit {
   public showHidePassword() {
     if (!this.showPassword) {
       this.showPassword = true;
-      this.passwordType = "text";
+      this.passwordType = 'text';
     } else {
       this.showPassword = false;
-      this.passwordType = "password";
+      this.passwordType = 'password';
     }
   }
 }

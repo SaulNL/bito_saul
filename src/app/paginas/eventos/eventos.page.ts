@@ -162,10 +162,10 @@ export class EventosPage implements OnInit {
   }
 
   datosEventos(id: number): void {
+    this.objeto = id;
     if (!this.existeSesion){
       this.mensajeRegistro();
     }else{
-      this.objeto = id;
       this.router.navigateByUrl(`/tabs/eventos/reservaciones/${id}`);
     }
   }
@@ -420,13 +420,14 @@ export class EventosPage implements OnInit {
 
   async mensajeRegistro() {
     const alert = await this.alertController.create({
-      header: 'Bituyu!',
+      header: 'Bituyú!',
       message: "¿Ya tienes una cuenta?",
       buttons: [
         {
           text: "Iniciar sesión",
           cssClass: 'text-grey',
           handler: () => {
+            localStorage.setItem('idEvento', JSON.stringify(this.objeto));
             this.router.navigate(['/tabs/login']);
           }
         },
