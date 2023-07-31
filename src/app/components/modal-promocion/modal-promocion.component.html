@@ -1,6 +1,7 @@
 <ion-header translucent>
   <ion-toolbar class="bg-naranja">
-    <ion-title> Promoción </ion-title>
+    <ion-title *ngIf="promocion.id_tipo_promocion===2">Promoción</ion-title>
+    <ion-title *ngIf="promocion.id_tipo_promocion===1">Anuncio</ion-title>
     <ion-buttons slot="end">
       <ion-button class="blanco customExit" (click)="dismissModal()">
         <ion-icon class="blanco" name="close-outline"></ion-icon>

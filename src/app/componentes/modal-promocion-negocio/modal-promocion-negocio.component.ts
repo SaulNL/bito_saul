@@ -19,8 +19,6 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   @Input() celular: any;
   @Input() descripcion: any;
 
-  public anuncio_promo: string = "Promoción";
-
   constructor(
     public modalController: ModalController,
     private _promociones: PromocionesService,
