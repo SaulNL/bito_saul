@@ -44,16 +44,14 @@
         </div>
 
       </ion-col>
-      <ion-col size="6" class="customCol">
+      <ion-col size="6" class="customCol" style="flex-direction: column;">
         <ion-icon name="calendar-outline" size="large"></ion-icon>
         <div *ngIf="promocion.id_tipo_promocion===2">
-          <ion-row>
             <ion-col class="ion-text-center" *ngFor="let item of listaDias">
               <p style="margin-top: 5px;">Quedan <span style="color: #ff1dbd;">{{ promocion.restanDias }}</span> días, Aplica:
                 <span style="color: #ff1dbd;"> <span *ngFor="let dia of item.dias">{{dia}}</span></span>.</p>
               <p style="margin-top: -10px;">{{ item.hora_inicio}} a {{item.hora_fin}}</p>
             </ion-col>
-          </ion-row>
         </div>
       </ion-col>
     </ion-row>
