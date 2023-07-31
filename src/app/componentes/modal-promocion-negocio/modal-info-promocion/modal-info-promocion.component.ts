@@ -10,7 +10,7 @@ import {SocialSharing} from "@ionic-native/social-sharing/ngx";
 import {Router} from "@angular/router";
 import {ViewQrPromocionComponent} from "../../../components/viewqr-promocion/viewqr-promocion.component";
 import {AppSettings} from "../../../AppSettings";
-import {ModalController} from "@ionic/angular";
+import {AlertController, ModalController} from "@ionic/angular";
 import {FiltrosModel} from "../../../Modelos/FiltrosModel";
 import {Auth0Service} from "../../../api/auth0.service";
 import {FilesystemDirectory, Plugins} from "@capacitor/core";
@@ -93,6 +93,7 @@ export class ModalInfoPromocionComponent implements OnInit {
       private socialSharing: SocialSharing,
       private auth0: Auth0Service,
       private cdRef: ChangeDetectorRef,
+      public alertController: AlertController,
   ) {
     this.existeSesion = this.util.existe_sesion();
     this.usuario = this.auth0.getUserData();
@@ -347,18 +348,22 @@ export class ModalInfoPromocionComponent implements OnInit {
   }
 
   async crearModal() {
-    this.loader = true;
-    this.cupon = false;
-    await this.guardarCupon();
-    this.nombreOrgUsuario();
-    this.generateQRCode();
-    if (this.registro1 || this.registro2) {
+    if (!this.existeSesion){
+      this.mensajeRegistro();
+    }else{
+      this.loader = true;
+      this.cupon = false;
+      await this.guardarCupon();
+      this.nombreOrgUsuario();
+      this.generateQRCode();
       setTimeout(() => {
-        this.crearImagen(this.promocionTO);
-      }, 1000);
-    }
-    if (this.registro3) {
-      this.notificaciones.error('Este cupón no es valido para usted');
+        if (this.registro1 || this.registro2) {
+          this.crearImagen(this.promocionTO);
+        }
+        if (this.registro3) {
+          this.notificaciones.error('Este cupón no es valido para usted');
+        }
+      }, 200);
     }
   }
 
@@ -483,5 +488,30 @@ export class ModalInfoPromocionComponent implements OnInit {
     var num = Math.random() * (max - min);
     return num + min;
   }
+
+  async mensajeRegistro() {
+    const alert = await this.alertController.create({
+      header: 'Bituyú!',
+      message: "¿Ya tienes una cuenta?",
+      buttons: [
+        {
+          text: "Iniciar sesión",
+          cssClass: 'text-grey',
+          handler: () => {
+            this.router.navigate(['/tabs/login']);
+          }
+        },
+        {
+          text: "Registrate",
+          cssClass: 'text-rosa',
+          handler: () => {
+            this.router.navigate(["/tabs/login/sign-up"]);
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
 
 }
