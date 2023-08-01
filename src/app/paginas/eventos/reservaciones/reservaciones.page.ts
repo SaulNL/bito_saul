@@ -337,7 +337,7 @@ export class ReservacionesPage implements OnInit {
     setTimeout(async () => {
       this.limpiarFiltro();
       const alert = await this.alertController.create({
-        header: 'Bitoo!',
+        header: 'Bituyú!',
         message: 'Su reservación ya fue realizada \n espere su confirmación',
       });
       await alert.present();
