@@ -281,7 +281,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
             this.promociones.forEach(promo => {
               if (promo.id_promocion == params.promo) {
                 setTimeout(() => {
-                  this.abrirModalPromocion(promo)
+                  this.abrirModalPromocion(promo, null)
                 }, 1000)
               }
             });
@@ -365,7 +365,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
             this.longitudNeg = this.informacionNegocio.longitud;
 
             this.promociones = this.informacionNegocio.promociones;
-            console.log(this.promociones)
             if (
               this.informacionNegocio.url_negocio !== null &&
               this.informacionNegocio.url_negocio !== '' &&
@@ -456,8 +455,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
   obtenerPromociones(idNegocio,Matris){
     this.negocioService.obtenerPromocionesAnuncio(idNegocio).subscribe((response) => {
-      console.log("id",idNegocio)
-      console.log("anuncionPromociones",response)
       if(this.informacionNegocio.id_negocio_matriz && Matris){
         this.informacionNegocio.anuncioPromocionMatris = response.data;
       }else{
@@ -569,7 +566,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
               }else{
                 this.informacionNegocio.catServicos = cats;
               }
-              console.log("informacionNegocio",this.informacionNegocio)
             }
           }
         },
@@ -986,7 +982,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
         } else {
           // this.router.navigate(['/tabs/inicio']);
-
+          localStorage.removeItem('modalPromo');
           this.router.navigateByUrl('/tabs/inicio');
           // this.router.navigate(['/tabs/inicio'], { queryParams: { special: true } });
           this.contador = 0;
@@ -1270,12 +1266,13 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   async detallePromocion(promocion: PromocionesModel) {
     if (promocion !== new PromocionesModel()) {
       setTimeout(async () => {
-        await this.abrirModalPromocion(promocion);
+        await this.abrirModalPromocion(promocion, null);
       }, 200);
     }
   }
 
-  async abrirModalPromocion(promo: any) {  // aQUI SE ABRE MODAL DE PROMO
+  async abrirModalPromocion(promo: any, idPromo: any) {  // aQUI SE ABRE MODAL DE PROMO
+    localStorage.setItem('modalPromo', idPromo);
     const modal = await this.modalController.create({
       component: ModalPromocionNegocioComponent,
       componentProps: {
@@ -1520,7 +1517,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         this.lstSucursales = response.data;
         if (this.lstSucursales?.length > 0) {
           this.seccion = 'Sucursales';
-          console.log("seccion", this.seccion)
         }
         else {
           this.seccion = 'productos';
