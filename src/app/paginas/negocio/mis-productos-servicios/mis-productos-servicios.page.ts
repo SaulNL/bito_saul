@@ -902,7 +902,7 @@ export class MisProductosServiciosPage implements OnInit {
   async editarRegistro(produc: any) {
     if ((this.totalProductosServicios === this.maximoProductos) && !produc.existencia) {
       const alert = await this.alertController.create({
-        header: 'Bitoo!',
+        header: 'Bituyú!',
         message: "No puede poner en existencia otro producto al menos que desactive uno o cambie de plan",
       });
 
