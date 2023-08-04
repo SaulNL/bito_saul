@@ -20,7 +20,7 @@ export class ReservacionesPage implements OnInit {
   public meses: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   public idEvento: string;
   public infoEvento: any;
-  public detalleReser: any
+  public detalleReser: any;
   public cadenaReservacion: any;
   mostrarLabel: boolean;
   public infoRecurrencia: any;
@@ -86,6 +86,11 @@ export class ReservacionesPage implements OnInit {
     this.idPersona = null;
     this.existeSesion = utils.existe_sesion();
     this.fechaSeleccionada = null;
+    const idEvento = localStorage.getItem('idEvento');
+    if (idEvento != null){
+      localStorage.removeItem('idEvento');
+      location.reload();
+    }
   }
 
   ngOnInit() {
@@ -109,7 +114,7 @@ export class ReservacionesPage implements OnInit {
             // Iteramos sobre cada propiedad del objeto
             for (const prop in foto) {
               // Verificamos si el valor es igual a la cadena "null" y lo convertimos a null
-              if (foto[prop] === "null") {
+              if (foto[prop] === 'null') {
                 foto[prop] = null;
               }
             }
@@ -237,9 +242,9 @@ export class ReservacionesPage implements OnInit {
     const fechaEvento = new Date(this.infoEvento[0]?.fecha);
     const fechaActual = new Date();
 
-    let anioActual = fechaActual.getFullYear();
-    let mesActual = fechaActual.getMonth();
-    let diaActual = fechaActual.getDate();
+    const anioActual = fechaActual.getFullYear();
+    const mesActual = fechaActual.getMonth();
+    const diaActual = fechaActual.getDate();
 
     const numDia = fechaEvento.getDay();
 
@@ -311,7 +316,7 @@ export class ReservacionesPage implements OnInit {
     this.generarReservacion(this.cadenaReservacion);
     this.eventosService.setReservacionObj(this.cadenaReservacion);
     this.mensajeRegistro();
-    //this.router.navigate(['/tabs/eventos/generar-reservacion'], { state: { cadena: this.cadenaReservacion } });
+    // this.router.navigate(['/tabs/eventos/generar-reservacion'], { state: { cadena: this.cadenaReservacion } });
   }
 
   generarReservacion(reservacion: any): void{
@@ -332,8 +337,8 @@ export class ReservacionesPage implements OnInit {
     setTimeout(async () => {
       this.limpiarFiltro();
       const alert = await this.alertController.create({
-        header: 'Bitoo!',
-        message: "Su reservación ya fue realizada \n espere su confirmación",
+        header: 'Bituyú!',
+        message: 'Su reservación ya fue realizada \n espere su confirmación',
       });
       await alert.present();
     }, 400);

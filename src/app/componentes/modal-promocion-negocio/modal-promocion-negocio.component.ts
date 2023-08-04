@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { PromocionesModel } from 'src/app/Modelos/PromocionesModel';
 import { UtilsCls } from '../../utils/UtilsCls';
 import { PromocionesService } from '../../api/promociones.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-modal-promocion-negocio',
@@ -19,11 +20,10 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   @Input() celular: any;
   @Input() descripcion: any;
 
-  public anuncio_promo: string = "Promoción";
-
   constructor(
     public modalController: ModalController,
     private _promociones: PromocionesService,
+    private router: Router,
   ) {}
 
   ngAfterViewInit(): void {}
@@ -42,8 +42,17 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
   }
 
   cerrar() {
-    this.modalController.dismiss();
-    this.promocionTO = new PromocionesModel();
+    const modalPromo = localStorage.getItem('modalPromo');
+    // @ts-ignore
+    if (modalPromo === '1'){
+      this.modalController.dismiss();
+      this.promocionTO = new PromocionesModel();
+      localStorage.removeItem('modalPromo');
+    }else{
+      this.modalController.dismiss();
+      this.router.navigateByUrl('/tabs/inicio');
+      localStorage.removeItem('modalPromo');
+    }
     //this.router.navigateByUrl("/tabs/promociones");
   }
 

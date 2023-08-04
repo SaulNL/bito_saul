@@ -143,7 +143,6 @@ export class BannerPromocionesComponent implements OnInit {
   * @author Omar
   */
   accionPromocion(promocion) {
-    console.log("entrar promocion")
     this.promocion = promocion;
     this.masInformacion(promocion);
     this.visteMiPromocion(promocion);

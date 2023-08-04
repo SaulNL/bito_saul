@@ -27,7 +27,7 @@ export class DarLikeProductoComponent implements OnInit {
 
   public async alerta(){
     const alert = await this.alertController.create({
-      header: 'Bitoo!',
+      header: 'Bituyú!',
       message: "¿Ya tienes una cuenta?",
       buttons: [
         {

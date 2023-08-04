@@ -27,7 +27,7 @@
         <img
           src="{{(promocion.url_imagen_banner)==='' || (promocion.url_imagen_banner)==null?promocionDefault:promocion.url_imagen_banner}}"
           class="d-block img-fluid" alt="Cargando imagen..." onerror="this.onerror=null;this.src=promocionDefault;"
-          (click)="abrirModalPromocion(promocion)" />
+          (click)="abrirModalPromocion(promocion, 1)" />
       </ion-slide>
     </ion-slides>
   </ng-container>

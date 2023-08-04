@@ -154,7 +154,7 @@ export class ModalConfirmSignUpComponent implements OnInit {
               this.toadNotificationService.alerta(r.message);
               if (r.code === 200) {
                 ConfigGlobal.setUser(r);
-                this.toadNotificationService.exito("Bienvenido a Bitoo");
+                this.toadNotificationService.exito("Bienvenido a Bituyú");
                 this.modalCrl.dismiss({ success: true });
                 this.loaderCreateAccount = false;
               }

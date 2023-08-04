@@ -82,7 +82,7 @@
     <ion-row style="margin-top: -25px;">
       <ion-col size="12" class="ion-text-center" *ngIf="blnPermisoUbicacion">
         <h2 class="promocion">A {{ promocion.distanciaNegocio}} Km cerca de tí.</h2>
-        <ion-badge color="danger"><a href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{promocion.latitud}},{{promocion.longitud}}" target="_blank">Ir al lugar</a></ion-badge>
+        <ion-button size="small" color="danger"><a href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{promocion.latitud}},{{promocion.longitud}}" target="_blank">Ir al lugar</a></ion-button>
       </ion-col>
       <ion-col size="12" class="ion-text-center" *ngIf="!blnPermisoUbicacion">
         <h2 class="aDefault promocion" matTooltip="Bituyú no puede obtener tu ubicación. Por favor activa los permisos de ubicación del navegador para poder determinar la distancia a la que se encuentra el negocio">
@@ -125,7 +125,10 @@
                 <ion-row class="lista">
                   <ion-col><p [ngClass]="{'negritas':dia.id === hoy}">{{ dia.dia }}</p></ion-col>
                   <ion-col *ngIf="dia.horarios.length > 0">
-                    <span *ngFor="let h of dia.horarios "><p class="negritas">{{h.texto}}</p></span>
+                    <div *ngIf="dia.id != hoy">
+                      <span *ngFor="let h of dia.horarios "><p class="negritas">{{h.texto}}</p></span>
+                    </div>
+                    <span *ngIf="dia.id == hoy" class="lstAbierto">Abierto</span>
                   </ion-col>
                   <ion-col *ngIf="dia.horarios.length === 0">
                     <ion-badge color="danger">Cerrado</ion-badge>

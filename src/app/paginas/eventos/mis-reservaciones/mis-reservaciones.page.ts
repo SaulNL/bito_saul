@@ -80,7 +80,7 @@ export class MisReservacionesPage implements OnInit {
 
   async mensajeRegistro() {
     const alert = await this.alertController.create({
-      header: 'Bitoo!',
+      header: 'Bituyú!',
       message: "¿Ya tienes una cuenta?",
       buttons: [
         {

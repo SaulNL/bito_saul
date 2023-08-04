@@ -1,8 +1,9 @@
 <ion-header translucent>
   <ion-toolbar class="tolbar">
-    <ion-title>{{anuncio_promo}}</ion-title>
-    <ion-buttons slot="end" (click)="cerrar()">
-      <ion-button>
+    <ion-title *ngIf="promocionTO.id_tipo_promocion===2">Promoción</ion-title>
+    <ion-title *ngIf="promocionTO.id_tipo_promocion===1">Anuncio</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()" class="customExit">
         <ion-icon name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
