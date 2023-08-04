@@ -74,8 +74,10 @@ export class TabsPage implements OnInit {
 
     // se agregaron estas lineas para mandar simpre al inicio cada cierran y abren la app
 
-    localStorage.removeItem("activedPage");
-    localStorage.setItem("activedPage", "inicio");
+    // localStorage.removeItem("activedPage");
+    if(!localStorage.getItem("activedPage")){
+      localStorage.setItem("activedPage", "inicio");
+    }
     this.activedPage = localStorage.getItem("activedPage");
 
     /* Se comentaron estas lineas de codigo para que siempre mande al inicio cuando cierran y abren la app
@@ -310,7 +312,6 @@ export class TabsPage implements OnInit {
                 }, (this.misEncuestas.duracion_pantalla * 1000));
 
               } else {
-                console.log("No existe id_pregunta_rapida: ")
                 this.hayEncuesta = false;
               }
             }
@@ -353,5 +354,9 @@ export class TabsPage implements OnInit {
 
   closePopUpGracias() {
     this.showPopUpGracias = false;
+  }
+
+  tabActual(){
+
   }
 }

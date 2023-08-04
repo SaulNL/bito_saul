@@ -1258,8 +1258,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.isLoading = true;
     this.paginaPrevia = !this.pagBoton ? event.detail.value : this.paginaPrevia;
     this.buttonDisabled = true;
-    if (this.totalDeNegociosPorConsulta > 20) {
-      this.buscarNegociosArriba(false);
+    if (this.totalDeNegociosPorConsulta > 20  || this.paginaPrevia) {
+      this.buscarNegociosArriba(true);
     }
   }
   public async buscarNegociosArriba(seMuestraElLoader: boolean) {
