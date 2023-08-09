@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IonContent } from '@ionic/angular';
+import {AppSettings} from "../../../AppSettings";
 
 @Component({
   selector: 'app-footer',
@@ -9,6 +10,7 @@ import { IonContent } from '@ionic/angular';
 export class FooterPage implements OnInit {
   @Input() content: IonContent;
   @Input() cordenada: number;
+  public URL_FRONT = AppSettings.URL_FRONT;
 
   constructor() { }
 
@@ -16,7 +18,10 @@ export class FooterPage implements OnInit {
   }
 
   public abrirTerminosCondiciones() {
-    window.open("https://ecoevents.blob.core.windows.net/comprandoando/documentos%2FTERMINOS%20Y%20CONDICIONES%20Bitoo.pdf", "_blank");
+    window.open(
+        this.URL_FRONT + "politica/privacidad",
+        "_blank"
+    );
   }
 
   scrollToTop() {
