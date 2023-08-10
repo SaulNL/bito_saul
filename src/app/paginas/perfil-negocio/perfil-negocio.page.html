@@ -726,7 +726,7 @@
       <ion-grid *ngIf="seccion === 'anuncios'">
         <ion-row>
           <ng-container>
-            <ion-col size="6" *ngFor="let promo of promociones">
+            <ion-col size="6" *ngFor="let promo of informacionNegocio.promociones">
               <ion-card class="m-0 cardsps fixed">
                 <div (click)="abrirModalPromocion(promo)">
                   <img class="img-card-w"
