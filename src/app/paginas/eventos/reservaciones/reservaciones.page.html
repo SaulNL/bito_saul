@@ -65,13 +65,13 @@
 
             <div style="display: flex; align-items: center; margin-bottom: 9px;">
                 <img src="assets/images/eventos/telefono.png" style="width: 50px; height: 50px">
-                <ion-label class="titulos">Número telefonico:</ion-label>
+                <ion-label class="titulos">Teléfono:</ion-label>
                 <div class="mostrarDatos">{{infoEvento[0]?.telefono}}</div>
             </div>
 
             <div style=" display: flex; align-items: center; margin-bottom: 9px;">
                 <img src="assets/images/eventos/metodo%20de%20pago.png" style="width: 50px; height: 50px">
-                <ion-label class="titulos">Método de pago:</ion-label>
+                <ion-label class="titulos">Métodos de pago:</ion-label>
                 <div class="mostrarDatos">
                     <ng-container *ngIf="infoEvento[0]?.tipo_pago_transferencia === 1">Transferencia, </ng-container>
                     <ng-container *ngIf="infoEvento[0]?.tipo_pago_tarjeta_credito === 1">Tarjeta de credito, </ng-container>
@@ -82,7 +82,7 @@
 
             <div style="display: flex; align-items: center; margin-bottom: 16px;">
                 <img src="assets/images/eventos/frecuencia.png" style="width: 50px; height: 50px">
-                <ion-label class="titulos">Recurrencia:</ion-label>
+                <ion-label class="titulos">Frencuencia:</ion-label>
                 <div class="mostrarDatos">{{nombreRecurrencia}}</div>
             </div>
         </div>
