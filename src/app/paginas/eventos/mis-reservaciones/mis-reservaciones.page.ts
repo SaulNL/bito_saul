@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {UtilsCls} from '../../../utils/UtilsCls';
 import {EventosService} from '../../../api/eventos.service';
 import {Router} from '@angular/router';
-import {AlertController} from '@ionic/angular';
+import {AlertController, IonContent} from '@ionic/angular';
 
 @Component({
   selector: 'app-mis-reservaciones',
@@ -10,7 +10,8 @@ import {AlertController} from '@ionic/angular';
   styleUrls: ['./mis-reservaciones.page.scss'],
 })
 export class MisReservacionesPage implements OnInit {
-
+  @ViewChild(IonContent) content: IonContent;
+  public cordenada: number;
   public dias: string[] = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'];
   public meses: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   public idPersona: number | null;

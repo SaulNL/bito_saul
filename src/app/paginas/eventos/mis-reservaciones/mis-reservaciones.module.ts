@@ -8,6 +8,7 @@ import { MisReservacionesPageRoutingModule } from './mis-reservaciones-routing.m
 
 import { MisReservacionesPage } from './mis-reservaciones.page';
 import {SpinnerModule} from '../../../componentes/spinner/spinner.module';
+import {TabsPageModule} from "../../tabs/tabs.module";
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import {SpinnerModule} from '../../../componentes/spinner/spinner.module';
         FormsModule,
         IonicModule,
         MisReservacionesPageRoutingModule,
-        SpinnerModule
+        SpinnerModule,
+        TabsPageModule
     ],
   declarations: [MisReservacionesPage]
 })

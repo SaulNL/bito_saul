@@ -10,7 +10,9 @@
 </ion-header>
 
 <app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
-<ion-content fullscreen *ngIf="loaderReservaciones">
+<ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop" *ngIf="loaderReservaciones">
+  <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
+
   <ion-grid *ngIf="reservacionesAll.length == 0">
     <ion-text color="primary">
       <h2>
