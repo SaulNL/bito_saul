@@ -21,7 +21,8 @@
     </ion-row>
 
     <ion-button (click)="crearModal()" class="buttonCoupon" shape="round">
-      <span>Descargar Cupón</span>
+      <img src="../../../assets/images/icono-cupón.png" alt="Mi Imagen" class="imagen-personalizada">
+      Descargar Cupón
     </ion-button>
 
     <ion-button (click)="compartir(promocion)" shape="round" fill="outline" size="small" color="danger" style="margin-bottom: 15px; margin-top: 5px">
@@ -46,8 +47,10 @@
         <ion-icon name="calendar-outline" size="large"></ion-icon>
         <div *ngIf="promocion.id_tipo_promocion===2">
           <p style="margin-top: 5px;">Quedan <span style="color: #ff1dbd;">{{diasRestantes}}</span> días, Aplica:
-            <span style="color: #ff1dbd;"> {{diAplica}}</span>.</p>
-          <p style="margin-top: -10px;">{{listaDias[0].hora_inicio}} a {{listaDias[0].hora_fin}}</p>
+            <!--<span style="color: #ff1dbd;"> {{diAplica}}</span>.</p>
+          <p style="margin-top: -10px;">{{listaDias[0].hora_inicio}} a {{listaDias[0].hora_fin}}</p>-->
+          <span style="color: #ff1dbd;"> <span *ngFor="let dia of diasApl">{{dia + '\n'}}</span></span>.</p>
+          <p style="margin-top: -10px;">{{promocion.dias[0]?.hora_inicio}} a {{promocion.dias[0]?.hora_fin}}</p>
         </div>
       </ion-col>
     </ion-row>

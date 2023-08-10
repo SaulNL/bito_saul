@@ -57,6 +57,7 @@ export class ModalPromocionesInfoComponent implements OnInit {
   usuario: any;
   loader = false;
   public msj = "Cargando";
+  diasApl: any;
 
   constructor(
       public modalController: ModalController,
@@ -155,6 +156,8 @@ export class ModalPromocionesInfoComponent implements OnInit {
     }
     if (this.registro3) {
       this.notificaciones.error('Este cupón no es valido para usted');
+      this.loader = false;
+      this.cupon = true;
     }
 
   }
@@ -181,7 +184,7 @@ export class ModalPromocionesInfoComponent implements OnInit {
     this.promocion.horarios.forEach(element => {
       dias.push(element.dias.split(',').filter(item => item.trim() !== ''));
     });
-
+    this.diasApl = this.promocion.dias[0]?.dias.split(',');
     dias.forEach(element => {
       element.forEach((elements) => {
         diasArray.push({ dia: elements })
@@ -219,8 +222,8 @@ export class ModalPromocionesInfoComponent implements OnInit {
     }
     diasArray = tempArray;
 
-    this.promocion.diasArray = diasArray
-    this.crearStatus()
+    this.promocion.diasArray = diasArray;
+    this.crearStatus();
   }
 
   crearStatus() {

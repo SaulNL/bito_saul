@@ -39,25 +39,27 @@
 								<strong style="color: black;">Histórico de anuncios y promociones en edición</strong>
 							</div>
 
-							<div *ngFor="let promocion of listaPromoOriginal">
-								<ion-item *ngIf="mostrarListaEdicion">
-									<ion-item (click)="seleccionarPromocion(promocion)">
-										<ion-avatar slot="start" *ngIf="promocion.url_imagen === ''; else imagen">
-											<img [src]="promocion.url_imagen_banner" [alt]="promocion.promocion">
-										</ion-avatar>
-										<ng-template #imagen>
-											<ion-avatar slot="start">
-												<img [src]="promocion.url_imagen" [alt]="promocion.promocion">
+							<div style="width: 100%">
+								<ion-list>
+									<div *ngFor="let promocion of listaPromoOriginal">
+										<ion-item *ngIf="mostrarListaEdicion" (click)="seleccionarPromocion(promocion)">
+											<ion-avatar slot="start" *ngIf="promocion.url_imagen === ''; else imagen">
+												<img [src]="promocion.url_imagen_banner" [alt]="promocion.promocion">
 											</ion-avatar>
-										</ng-template>
-										<ion-label class="ion-text-wrap">
-											<p>{{promocion.promocion}} </p>
-										</ion-label>
-										<ion-buttons slot="end">
-											<ion-icon name="chevron-forward-outline"></ion-icon>
-										</ion-buttons>
-									</ion-item>
-								</ion-item>
+											<ng-template #imagen>
+												<ion-avatar slot="start">
+													<img [src]="promocion.url_imagen" [alt]="promocion.promocion">
+												</ion-avatar>
+											</ng-template>
+											<ion-label class="ion-text-wrap">
+												<p>{{promocion.promocion}}</p>
+											</ion-label>
+											<ion-buttons slot="end" class="ion-item-end">
+												<ion-icon name="chevron-forward-outline"></ion-icon>
+											</ion-buttons>
+										</ion-item>
+									</div>
+								</ion-list>
 							</div>
 
 						</ion-card-content>

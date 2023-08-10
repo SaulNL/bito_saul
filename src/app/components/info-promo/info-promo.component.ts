@@ -167,6 +167,8 @@ export class InfoPromoComponent implements OnInit {
         }
         if (this.registro3) {
           this.notificaciones.error('Este cupón no es valido para usted');
+          this.loader = false;
+          this.cupon = true;
         }
       }, 200);
     }

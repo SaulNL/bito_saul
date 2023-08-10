@@ -296,14 +296,14 @@ export class ReservacionesPage implements OnInit {
   public guardar(){
     const nPersonas = this.noPersonas;
     const eventoId = this.infoEvento[0]?.id_evento;
-    const fehc = this.infoEvento[0]?.fecha;
 
     if ( this.fechaSeleccionada !== null ){
-      const fechaReservacion = new Date(this.fechaSeleccionada);
-      const year = fechaReservacion.getFullYear();
-      const month = ('0' + (fechaReservacion.getMonth() + 1)).slice(-2);
-      const day = ('0' + fechaReservacion.getDate()).slice(-2);
-      this.fechaReservacion = year + '-' + month + '-' + day;
+      const fechaStr = this.fechaSeleccionada;
+      const meses = {
+        enero: 1, febrero: 2, marzo: 3, abril: 4, mayo: 5, junio: 6, julio: 7, agosto: 8, septiembre: 9, octubre: 10, noviembre: 11, diciembre: 12,
+      };
+      const [day, month, year] = fechaStr.split('/');
+      this.fechaReservacion = year + '-' + meses[month] + '-' + day;
     }else if (this.fechaSeleccionada === null || this.fechaSeleccionada === undefined || this.fechaSeleccionada === ''){
       const fechaReservacion1 = new Date(this.infoEvento[0]?.fecha);
       const year = fechaReservacion1.getFullYear();
@@ -311,7 +311,6 @@ export class ReservacionesPage implements OnInit {
       const day = ('0' + fechaReservacion1.getDate()).slice(-2);
       this.fechaReservacion = year + '-' + month + '-' + day;
     }
-
     this.cadenaReservacion = [eventoId, this.idPersona, this.fechaReservacion, nPersonas];
     this.generarReservacion(this.cadenaReservacion);
     this.eventosService.setReservacionObj(this.cadenaReservacion);

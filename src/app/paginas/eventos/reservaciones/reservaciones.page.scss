@@ -1,5 +1,7 @@
 .titulos{
-  width: 41% !important;
+  width: 40% !important;
+  display: inline-block;
+  margin-left: -9px;
 }
 
 .colorInput{
@@ -9,14 +11,14 @@
 }
 
 .mostrarDatos{
-  background-color: antiquewhite;
+  background-color: #C8C8C8;
   padding: 8px;
   overflow: hidden;
   resize: none;
   pointer-events: none;
   width: 51vw;
   min-height: 10vw;
-  border-radius: 3px;
+  border-radius: 20px;
 }
 
 .styleInput{
@@ -24,41 +26,27 @@
 }
 
 .noPersonas{
-  background-color: antiquewhite;
+  background-color: #C8C8C8;
   color: #1e1c1c;
-  border-radius: 3px;
-  width: 200px;
-  height: 30px;
   text-align: center;
+  border-radius: 20px;
   padding: 5px;
-
+  margin-right: 15px;
 }
 
 .noPersonas1{
-  background-color: antiquewhite;
+  background-color: #D8D8D8;
   color: #1e1c1c;
   border-radius: 3px;
-  width: 250px;
+  width: 230px;
   height: 30px;
   text-align: center;
   padding: 5px;
   margin-bottom: 5px;
-
 }
 
 .selects{
  min-width: 69%;
-}
-
-
-.fechas{
-  background-color: antiquewhite;
-  color: #1e1c1c;
-  border-radius: 3px;
-  width: 60vw;
-  height: 30px;
-  text-align: center;
-  padding: 5px;
 }
 
 .centro{
@@ -66,24 +54,11 @@
 }
 .inputP{
   text-align: center;
-  width: 80px;
-  margin-bottom: 10px;
-  --background: #FFFAF0;
-  border-radius: 3px;
-}
+  width: 110px;
+  height: 8vw;
+  --background: #C8C8C8;
+  border-radius: 20px;
 
-.buttonReservacion{
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: #eaeaea;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.buttonReservacion:hover {
-  background-color: #d4d4d4;
 }
 
 #miInput {
@@ -106,3 +81,25 @@
   transition: .5s ease;
   backface-visibility: hidden;
 }
+
+.contenedorEvento{
+  background-color: #EAEAEA;
+  border-radius: 15px;
+  width: 95%;
+  min-height: 70px;
+}
+
+.buttonEvento{
+  --background: linear-gradient(90deg, #F761CC 0%, #FF7859 100%);
+  --color: #fff;
+  width: 65vw;
+}
+
+.buttonEv{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 9px;
+  margin-bottom: 9px;
+}
+

@@ -135,7 +135,7 @@ export class SignInPage implements OnInit {
       this.goToRoute(this.returnToLocation.url);
       const pagina = localStorage.getItem('Page');
       if (pagina === 'Requerimiento'){
-        this.goToRouteReque();
+        this.route.navigateByUrl(`/tabs/home/solicitud`);
       }
     } else if (idEvento != null){
       this.route.navigateByUrl(`/tabs/eventos/reservaciones/${idEvento}`);
@@ -274,10 +274,6 @@ export class SignInPage implements OnInit {
   private goToRoute(url: string) {
     window.location.assign(`/tabs/negocio/${url}`);
     // this.route.navigate(["/tabs/inicio"], { queryParams: { byLogin: url } });
-  }
-
-  private goToRouteReque() {
-    this.route.navigate(['/tabs/home/solicitud']);
   }
   /**
    * @author Juan Antonio Guevara Flores
