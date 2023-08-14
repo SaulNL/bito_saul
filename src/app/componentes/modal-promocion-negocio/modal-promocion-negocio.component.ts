@@ -43,12 +43,11 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
 
   cerrar() {
     const modalPromo = localStorage.getItem('modalPromo');
-    // @ts-ignore
     if (modalPromo === '1'){
       this.modalController.dismiss();
       this.promocionTO = new PromocionesModel();
       localStorage.removeItem('modalPromo');
-    }else{
+    }else {
       this.modalController.dismiss();
       this.router.navigateByUrl('/tabs/inicio');
       localStorage.removeItem('modalPromo');

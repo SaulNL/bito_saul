@@ -66,7 +66,7 @@
     </div>
 
     <!-- ----- VISUALIZACION Y REPRODUCCION DE VIDEO EN ANUNCIO DE NEGOCIO VIP --- -->
-    <div *ngIf="promocion.url_video !== null && promocion.id_tipo_promocion===1 && promocion.vip === 1">
+    <div *ngIf="promocion.url_video !== null && promocion.id_tipo_promocion===1">
       <video controls autoplay *ngIf="promocion.url_video != ''" width="100%" height="300">
         <source type="video/mp4" src="{{promocion.url_video}}">
       </video>

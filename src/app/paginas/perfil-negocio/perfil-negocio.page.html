@@ -726,9 +726,9 @@
       <ion-grid *ngIf="seccion === 'anuncios'">
         <ion-row>
           <ng-container>
-            <ion-col size="6" *ngFor="let promo of informacionNegocio.promociones">
+            <ion-col size="6" *ngFor="let promo of promociones">
               <ion-card class="m-0 cardsps fixed">
-                <div (click)="abrirModalPromocion(promo)">
+                <div (click)="abrirModalPromocion(promo, 1)">
                   <img class="img-card-w"
                     src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/PROVEEDOR/LA%20IMAGEN%20NO%20ESTA%20DISPONIBLE%20700%20X%20700.png"
                     [srcset]="productoImagen(promo.url_imagen)" alt="Falla al cargar la imagen" />
@@ -752,7 +752,7 @@
           <ng-container *ngIf="informacionNegocio.anuncioPromocionMatris">
             <ion-col size="6" *ngFor="let promo of informacionNegocio.anuncioPromocionMatris">
               <ion-card class="m-0 cardsps fixed">
-                <div (click)="abrirModalPromocion(promo)">
+                <div (click)="abrirModalPromocion(promo, 1)">
                   <img class="img-card-w"
                     src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/LA%20IMAGEN%20NO%20ESTA%20DISPONIBLE%20700%20X%20700.png"
                     [srcset]="productoImagen(promo.url_imagen)" alt="Falla al cargar la imagen" />

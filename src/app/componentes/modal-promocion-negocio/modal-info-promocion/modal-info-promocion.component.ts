@@ -99,11 +99,6 @@ export class ModalInfoPromocionComponent implements OnInit {
     this.usuario = this.auth0.getUserData();
   }
 
-  ngAfterViewInit(): void {
-    this.calcularDistancia(this.promocionTO);
-    this.anuncio_promo = this.promocionTO.id_tipo_promocion == 1 ? "Anuncio" : "Promoción"
-  }
-
   ngOnInit() {
     this.promocionTO = this._promociones.getPromocionObj();
     this.idPersona = this._promociones.getIdPersonaObj();
@@ -112,10 +107,10 @@ export class ModalInfoPromocionComponent implements OnInit {
     this.longitud = this._promociones.getLongituddObj();
     this.celular = this._promociones.getCelularObj();
 
-    this.promocionTO.dias.dias = []
+    this.promocionTO.dias.dias = [];
     this.horarios(this.promocionTO.horarios);
-    this.promocionTO.estatus = this.estatus
-    this.promocionTO.diasArray = this.diasArray
+    this.promocionTO.estatus = this.estatus;
+    this.promocionTO.diasArray = this.diasArray;
     this.hoy = new Date();
     this.hoy = this.hoy.getDay() !== 0 ? this.hoy.getDay() : 7;
 
@@ -132,6 +127,12 @@ export class ModalInfoPromocionComponent implements OnInit {
     this.registrarVisitaAPromotion();
     this.nombreOrgUsuario();
   }
+
+  ngAfterViewInit(): void {
+    this.calcularDistancia(this.promocionTO);
+    this.anuncio_promo = this.promocionTO.id_tipo_promocion == 1 ? "Anuncio" : "Promoción"
+  }
+
 
 
   private registrarVisitaAPromotion() {
