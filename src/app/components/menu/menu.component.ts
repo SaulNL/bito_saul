@@ -98,7 +98,7 @@ export class MenuComponent implements OnInit {
       position: 'center'
     })
     Toast.fire({
-      title: "Queremos conocer más sobre tus gustos en Bitoo.",
+      title: "Queremos conocer más sobre tus gustos en Bituyú.",
       text: "Registra tus preferencias",
       icon: 'info',
       showDenyButton: false,

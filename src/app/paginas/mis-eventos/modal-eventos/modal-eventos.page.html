@@ -169,8 +169,8 @@
         </ion-item>
 
         <ion-item>
-          <ion-label>Repetir</ion-label>
-          <ion-select class="bg" name="id_tipo_recurrencia" justify="end" label="End" placeholder="Repetir"
+          <ion-label>Frecuencia</ion-label>
+          <ion-select class="bg" name="id_tipo_recurrencia" justify="end" label="End" placeholder="Frecuencia"
             [(ngModel)]="eventData.id_tipo_recurrencia" required>
             <ion-select-option *ngFor="let recu of recurrencia"
               [value]="recu.id_tipo_recurrencia">{{recu.nombre}}</ion-select-option>
