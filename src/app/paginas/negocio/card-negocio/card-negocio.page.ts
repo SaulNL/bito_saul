@@ -200,7 +200,7 @@ export class CardNegocioPage implements OnInit {
           console.log("response validacion"+JSON.stringify(response))
           if (response.code === 200) {
             if (response.data.code === 200){
-              this.notification.exito('Tu negocio será revisado por un administrador de Bitoo. Recibirás una notificación para conocer el estatus de tu solicitud');
+              this.notification.exito('Tu negocio será revisado por un administrador de Bituyú. Recibirás una notificación para conocer el estatus de tu solicitud');
             }else{
               this.notification.alerta('La solicitud no pudo ser procesada');
             }
