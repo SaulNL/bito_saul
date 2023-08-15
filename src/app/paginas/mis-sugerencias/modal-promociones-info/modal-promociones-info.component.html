@@ -39,6 +39,7 @@
       <ion-col size="6" class="customCol">
         <strong>Términos y condiciones</strong>
         <p style="margin-top: 10px; margin-bottom: 5px">{{ promocion.terminos }}</p>
+        <strong *ngIf="promocion.organizaciones.length != 0" style="margin-bottom: 5px">Valido para:</strong>
         <div *ngFor="let org of promocion.organizaciones">
           <div class="buttonInf" shape="round">{{org.nombre}}</div>
         </div>
