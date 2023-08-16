@@ -12,6 +12,7 @@ import {FiltrosBusquedaModule} from "../../componentes/filtros-busqueda/filtros-
 import {TabsPageModule} from '../tabs/tabs.module';
 import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-negocios.component';
 import {InfinitoScrollModule} from '../../componentes/infinito-scroll/infinito-scroll.module';
+import {ModalInicioComponent} from "../../componentes/modal-inicio/modal-inicio.component";
 
 @NgModule({
   imports: [
@@ -27,6 +28,6 @@ import {InfinitoScrollModule} from '../../componentes/infinito-scroll/infinito-s
       FiltrosBusquedaModule,
       TabsPageModule
   ],
-    declarations: [InicioPage, MapaNegociosComponent]
+    declarations: [InicioPage, MapaNegociosComponent, ModalInicioComponent]
 })
 export class Tab3PageModule {}

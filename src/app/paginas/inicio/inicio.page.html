@@ -13,6 +13,7 @@
       <ion-icon name="chevron-up-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+  <app-modal-inicio *ngIf="loaderVideo"></app-modal-inicio>
   <app-banner-promociones [anyFiltros]="Filtros" [tieneFiltro]="tFiltro"></app-banner-promociones>
   <app-spinner [loader]="loader" [message]="msj"></app-spinner>
   <app-spinner [loader]="loaderNegocios" [message]="msj"></app-spinner>

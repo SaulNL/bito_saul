@@ -1,47 +1,126 @@
-import { PlazasAfiliacionesComponent } from "../../componentes/plazas-afiliaciones/plazas-afiliaciones.component";
-import { AfiliacionPlazaModel } from "../../Modelos/AfiliacionPlazaModel";
-import { Auth0Service } from "../../api/busqueda/auth0.service";
-import { AfterViewInit, Component, EventEmitter, OnInit, ViewChild } from "@angular/core";
+import { PlazasAfiliacionesComponent } from '../../componentes/plazas-afiliaciones/plazas-afiliaciones.component';
+import { AfiliacionPlazaModel } from '../../Modelos/AfiliacionPlazaModel';
+import { Auth0Service } from '../../api/busqueda/auth0.service';
+import { AfterViewInit, Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import {
   IonContent,
   LoadingController,
   ModalController,
   Platform,
   ToastController,
-} from "@ionic/angular";
-import { BusquedaService } from "../../api/busqueda.service";
-import { FiltrosModel } from "../../Modelos/FiltrosModel";
-import { FiltrosBusquedaComponent } from "../../componentes/filtros-busqueda/filtros-busqueda.component";
-import { ToadNotificacionService } from "../../api/toad-notificacion.service";
-import { ActivatedRoute } from "@angular/router";
-import { MapaNegociosComponent } from "../../componentes/mapa-negocios/mapa-negocios.component";
-import { SideBarService } from "../../api/busqueda/side-bar-service";
-import { Router } from "@angular/router";
-import { UtilsCls } from "../../utils/UtilsCls";
-import { PermisoModel } from "src/app/Modelos/PermisoModel";
-import { ICategoriaNegocio } from "src/app/interfaces/ICategoriaNegocio";
+} from '@ionic/angular';
+import { BusquedaService } from '../../api/busqueda.service';
+import { FiltrosModel } from '../../Modelos/FiltrosModel';
+import { FiltrosBusquedaComponent } from '../../componentes/filtros-busqueda/filtros-busqueda.component';
+import { ToadNotificacionService } from '../../api/toad-notificacion.service';
+import { ActivatedRoute } from '@angular/router';
+import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-negocios.component';
+import { SideBarService } from '../../api/busqueda/side-bar-service';
+import { Router } from '@angular/router';
+import { UtilsCls } from '../../utils/UtilsCls';
+import { PermisoModel } from 'src/app/Modelos/PermisoModel';
+import { ICategoriaNegocio } from 'src/app/interfaces/ICategoriaNegocio';
 import { INegocios } from 'src/app/interfaces/INegocios';
-import { throwError } from "rxjs";
-import { AlertController } from "@ionic/angular";
+import { throwError } from 'rxjs';
+import { AlertController } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
-import { PersonaService } from "src/app/api/persona.service";
-import { FiltrosService } from "src/app/api/filtros.service";
-import Swal from "sweetalert2";
+import { PersonaService } from 'src/app/api/persona.service';
+import { FiltrosService } from 'src/app/api/filtros.service';
+import Swal from 'sweetalert2';
+import {ModalInicioComponent} from '../../componentes/modal-inicio/modal-inicio.component';
 
 const { Geolocation } = Plugins;
 declare var google: any;
 
 
 @Component({
-  selector: "app-tab3",
-  templateUrl: "inicio.page.html",
-  styleUrls: ["inicio.page.scss"],
+  selector: 'app-tab3',
+  templateUrl: 'inicio.page.html',
+  styleUrls: ['inicio.page.scss'],
   providers: [SideBarService],
 })
 export class InicioPage implements OnInit, AfterViewInit {
-  @ViewChild(IonContent) content: IonContent;
-  public static readonly MENSAJE_CUANDO_CARGA = "Cargar más";
+
+  constructor(
+    public loadingController: LoadingController,
+    private toadController: ToastController,
+    private principalSercicio: BusquedaService,
+    private modalController: ModalController,
+    private notificaciones: ToadNotificacionService,
+    private route: ActivatedRoute,
+    private ruta: Router,
+    private personaServcie: PersonaService,
+    private util: UtilsCls,
+    private auth0Service: Auth0Service,
+    private platform: Platform,
+    public alertController: AlertController,
+    private filtrosService: FiltrosService,
+    private router: Router,
+  ) {
+    this.loaderVideo = true;
+    this.subCAt = localStorage.getItem('subCat') != undefined ? true : false;
+    // if (this.subCAt) {
+    //   localStorage.removeItem('subCat');
+    // }
+    this.afi = localStorage.getItem('afi') != undefined ? true : false;
+    // if (this.afi) {
+    //   localStorage.removeItem('afi');
+    // }
+    this.byLogin = false;
+    this.Filtros = new FiltrosModel();
+    this.obtenergiros();
+    this.regresarBitoo(false); // se puso este metodo para que cuando cierren la app y vuelvan entrar, mande al nuevo inicio
+
+    if (localStorage.getItem('idGiro') != null) {
+      this.idGiro = JSON.parse(localStorage.getItem('idGiro'));
+    }
+
+    if (localStorage.getItem('activarTodos') === 'true') {
+      this.filtroActivo = true;
+    }
+
+    this.Filtros.idEstado = 29;
+    const byCategorias = localStorage.getItem('filtroactual');
+    if (
+      byCategorias !== null &&
+      byCategorias !== undefined &&
+      byCategorias !== '' &&
+      byCategorias.length > 0
+    ) {
+      const dato = JSON.parse(byCategorias);
+      this.Filtros = dato;
+      if (localStorage.getItem('filtroActivo') === 'true' && !this.isIOS) {
+        this.filtroActivo = true;
+      }
+      this.filtroActivo = true;
+      this.selectionAP = false;
+
+    } else {
+      this.filtroActivo = false;
+
+    }
+    this.listaCategorias = new Array<ICategoriaNegocio>();
+    this.listaIdsMapa = [];
+    this.banderaInicio = false;
+    this.user = this.util.getUserData();
+    this.existeSesion = this.util.existe_sesion();
+    // aqui para cargar
+    this.loaderNegocios = true;
+    this.tFiltro = false;
+    this.afiliacion = true;
+    this.mostrarloaderInicio = true;
+    this.isIOS = this.platform.is('ios');
+    this.route.queryParams.subscribe((params) => {
+      this.subscribe = this.platform.backButton.subscribe(() => {
+        this.backPhysicalBottom();
+      });
+    });
+    localStorage.removeItem('productos');
+    this.modalVideo();
+  }
+  public static readonly MENSAJE_CUANDO_CARGA = 'Cargar más';
   public static readonly PAGINAS_POR_CONSULTA = 20;
+  @ViewChild(IonContent) content: IonContent;
   public lengthLista: number;
   public totalPaginas: number;
   public cordenada: number;
@@ -56,28 +135,28 @@ export class InicioPage implements OnInit, AfterViewInit {
   loader: any;
   loaderNegocios: any;
   listaIdsMapa: any;
-  filtroActivo: boolean = true;
+  filtroActivo = true;
   user: any;
   public paginacion = [];
-  public pagSelect : any;
-  public lastPage : number
-  public variablePrueba: boolean = false
+  public pagSelect: any;
+  public lastPage: number;
+  public variablePrueba = false;
   public existeSesion: boolean;
-  public msj = "Cargando";
+  public msj = 'Cargando';
   public tFiltro: boolean;
   public objectSelectAfiliacionPlaza: AfiliacionPlazaModel;
   public persona: number | null;
   public permisos: Array<PermisoModel> | null;
   public afiliacion: boolean;
   public byLogin: boolean;
-  public isIOS: boolean = false;
+  public isIOS = false;
   public subscribe;
   public categoriasEstaVacios = true;
-  public nombreCategoria = "";
+  public nombreCategoria = '';
   public actualPagina = 0;
   public actualGiro = 0;
   public totalDeNegocios = 0;
-  public loaderTop: boolean = false
+  public loaderTop = false;
   public siguientePagina = this.actualPagina + 1;
   public siguienteGiro = this.actualGiro + 1;
   public mensaje = InicioPage.MENSAJE_CUANDO_CARGA;
@@ -112,6 +191,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   public indice: number;
   mostrarloaderInicio: boolean;
   loaderInicio: boolean;
+  loaderVideo: boolean;
   buscador = false;
   banderaVerMas = false;
   listaVerMas: any[] = [];
@@ -119,10 +199,10 @@ export class InicioPage implements OnInit, AfterViewInit {
   paginaPivote: number;
   primeraPagRandom: number;
   paginaPrevia: number;
-  pagBoton: boolean = false;
+  pagBoton = false;
   scrollAmount: any;
   isLoading: boolean;
-  consultaTerminada: boolean = true;
+  consultaTerminada = true;
   showPopUp: boolean;
   insigniaTitle: string;
   insigniaDescrip: string;
@@ -132,92 +212,16 @@ export class InicioPage implements OnInit, AfterViewInit {
   public subCAt: boolean;
   public afi: boolean;
 
-  constructor(
-    public loadingController: LoadingController,
-    private toadController: ToastController,
-    private principalSercicio: BusquedaService,
-    private modalController: ModalController,
-    private notificaciones: ToadNotificacionService,
-    private route: ActivatedRoute,
-    private ruta: Router,
-    private personaServcie: PersonaService,
-    private util: UtilsCls,
-    private auth0Service: Auth0Service,
-    private platform: Platform,
-    public alertController: AlertController,
-    private filtrosService: FiltrosService,
-    private router: Router,
-  ) {
-    this.subCAt = localStorage.getItem('subCat') != undefined ? true : false;
-    // if (this.subCAt) {
-    //   localStorage.removeItem('subCat');
-    // }
-    this.afi = localStorage.getItem('afi') != undefined ? true : false;
-    // if (this.afi) {
-    //   localStorage.removeItem('afi');
-    // }
-    this.byLogin = false;
-    this.Filtros = new FiltrosModel();
-    this.obtenergiros();
-    this.regresarBitoo(false); // se puso este metodo para que cuando cierren la app y vuelvan entrar, mande al nuevo inicio
-
-    if (localStorage.getItem("idGiro") != null) {
-      this.idGiro = JSON.parse(localStorage.getItem("idGiro"));
-    }
-
-    if (localStorage.getItem("activarTodos") === "true") {
-      this.filtroActivo = true;
-    }
-
-    this.Filtros.idEstado = 29;
-    const byCategorias = localStorage.getItem("filtroactual");
-    if (
-      byCategorias !== null &&
-      byCategorias !== undefined &&
-      byCategorias !== "" &&
-      byCategorias.length > 0
-    ) {
-      const dato = JSON.parse(byCategorias);
-      this.Filtros = dato;
-      if (localStorage.getItem("filtroActivo") === "true" && !this.isIOS) {
-        this.filtroActivo = true;
-      }
-      this.filtroActivo = true;
-      this.selectionAP = false;
-
-    } else {
-      this.filtroActivo = false;
-
-    }
-    this.listaCategorias = new Array<ICategoriaNegocio>();
-    this.listaIdsMapa = [];
-    this.banderaInicio = false;
-    this.user = this.util.getUserData();
-    this.existeSesion = this.util.existe_sesion();
-    //aqui para cargar
-    this.loaderNegocios = true;
-    this.tFiltro = false;
-    this.afiliacion = true;
-    this.mostrarloaderInicio = true;
-    this.isIOS = this.platform.is("ios");
-    this.route.queryParams.subscribe((params) => {
-      this.subscribe = this.platform.backButton.subscribe(() => {
-        this.backPhysicalBottom();
-      });
-    });
-    localStorage.removeItem("productos");
-  }
-
   public backPhysicalBottom() {
-    const option = localStorage.getItem("filter");
+    const option = localStorage.getItem('filter');
     if (option !== null) {
       this.Filtros = new FiltrosModel();
       this.Filtros.idEstado = 29;
-      const byCategorias = localStorage.getItem("filtroactual");
+      const byCategorias = localStorage.getItem('filtroactual');
       if (
         byCategorias !== null &&
         byCategorias !== undefined &&
-        byCategorias !== "" &&
+        byCategorias !== '' &&
         byCategorias.length > 0
       ) {
         const dato = JSON.parse(byCategorias);
@@ -225,22 +229,22 @@ export class InicioPage implements OnInit, AfterViewInit {
         this.filtroActivo = true;
       } else {
 
-        if (localStorage.getItem("filtroActivo") === "true" && !this.isIOS) {
+        if (localStorage.getItem('filtroActivo') === 'true' && !this.isIOS) {
           this.filtroActivo = true;
         } else {
           this.filtroActivo = false;
         }
 
       }
-      localStorage.removeItem("filter");
-      localStorage.setItem("isRedirected", "false");
-      this.ruta.navigate(["/tabs/categorias"]);
+      localStorage.removeItem('filter');
+      localStorage.setItem('isRedirected', 'false');
+      this.ruta.navigate(['/tabs/categorias']);
     }
-    const byCategorias = localStorage.getItem("filtroactual");
+    const byCategorias = localStorage.getItem('filtroactual');
     if (
       byCategorias !== null &&
       byCategorias !== undefined &&
-      byCategorias !== "" &&
+      byCategorias !== '' &&
       byCategorias.length > 0
     ) {
       const dato = JSON.parse(byCategorias);
@@ -250,18 +254,18 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.isLoading = false
-    this.loaderTop = false
+    this.isLoading = false;
+    this.loaderTop = false;
     this.user = this.util.getUserData();
     this.load();
     this.route.queryParams.subscribe((params) => {
       if (params.buscarNegocios && params) {
         this.load();
-        const byCategorias = localStorage.getItem("filtroactual");
+        const byCategorias = localStorage.getItem('filtroactual');
         if (
           byCategorias !== null &&
           byCategorias !== undefined &&
-          byCategorias !== "" &&
+          byCategorias !== '' &&
           byCategorias.length > 0
         ) {
           const dato = JSON.parse(byCategorias);
@@ -273,11 +277,11 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       if (params.byLogin && params) {
         this.negocioRutaByLogin(params.byLogin);
-        const byCategorias = localStorage.getItem("filtroactual");
+        const byCategorias = localStorage.getItem('filtroactual');
         if (
           byCategorias !== null &&
           byCategorias !== undefined &&
-          byCategorias !== "" &&
+          byCategorias !== '' &&
           byCategorias.length > 0
         ) {
           const dato = JSON.parse(byCategorias);
@@ -286,12 +290,12 @@ export class InicioPage implements OnInit, AfterViewInit {
         }
       }
     });
-    const byCategorias = localStorage.getItem("filtroactual");
+    const byCategorias = localStorage.getItem('filtroactual');
 
     if (
       byCategorias !== null &&
       byCategorias !== undefined &&
-      byCategorias !== "" &&
+      byCategorias !== '' &&
       byCategorias.length > 0
     ) {
       const dato = JSON.parse(byCategorias);
@@ -299,8 +303,8 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.filtroActivo = true;
     }
 
-    if (localStorage.getItem("activarTodos") === "true") {
-      this.banderaVerMas == false
+    if (localStorage.getItem('activarTodos') === 'true') {
+      this.banderaVerMas == false;
       this.idTodo = true;
     } else {
       this.idTodo = false;
@@ -308,16 +312,28 @@ export class InicioPage implements OnInit, AfterViewInit {
     const pagina = localStorage.getItem('Page');
 
     if (pagina === 'Requerimiento') {
-      window.location.assign("/tabs/inicio");
-      localStorage.removeItem("Page");
+      window.location.assign('/tabs/inicio');
+      localStorage.removeItem('Page');
     }
-    localStorage.removeItem("productos");
+    localStorage.removeItem('productos');
     localStorage.setItem('negocios', ('active'));
   }
+
+  async modalVideo(){
+    const modal = await this.modalController.create({
+      component: ModalInicioComponent,
+    });
+    modal.onDidDismiss().then((dataReturned) => {
+      this.loaderVideo = dataReturned.data.returnedBoolean;
+      console.log('lo', this.loaderVideo);
+    });
+    await modal.present();
+  }
+
   ngAfterViewInit() {
     this.banderaVerMas = false;
     setTimeout(() => {
-      this.obtenerPreferencias(this.user.id_persona)
+      this.obtenerPreferencias(this.user.id_persona);
     }, (4000));
   }
 
@@ -325,15 +341,15 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.filtrosService.obtenerPreferencias(id_persona).subscribe(
       async response => {
         if (response.code == 200) {
-          var listaPreferencias = response.data.preferencias;
+          const listaPreferencias = response.data.preferencias;
           if (listaPreferencias.length < 1) {
             const Toast = Swal.mixin({
               toast: true,
               position: 'center'
-            })
+            });
             Toast.fire({
-              title: "Queremos conocer más sobre tus gustos en Bituyú.",
-              text: "Registra tus preferencias",
+              title: 'Queremos conocer más sobre tus gustos en Bituyú.',
+              text: 'Registra tus preferencias',
               icon: 'info',
               showDenyButton: false,
               showCancelButton: true,
@@ -344,10 +360,10 @@ export class InicioPage implements OnInit, AfterViewInit {
               cancelButtonColor: '#d33',
             }).then((result) => {
               if (result.isConfirmed) {
-                this.ruta.navigate(["/tabs/home/preferencias"]);
+                this.ruta.navigate(['/tabs/home/preferencias']);
               } else if (result.isDismissed || result.isDenied) {
               }
-            })
+            });
           }
         }
       },
@@ -358,11 +374,11 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   private load() {
-    const selected = localStorage.getItem("org");
+    const selected = localStorage.getItem('org');
     if (selected != null) {
       this.selectionAP = true;
       this.objectSelectAfiliacionPlaza = JSON.parse(
-        String(localStorage.getItem("org"))
+        String(localStorage.getItem('org'))
       );
     }
 
@@ -384,7 +400,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     setTimeout(() => {
       event.target.complete();
       this.ngOnInit();
-      localStorage.removeItem("productos");
+      localStorage.removeItem('productos');
     }, 2000);
   }
 
@@ -402,14 +418,14 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.getCurrentPosition();
     }
 
-    if (localStorage.getItem("loaderNegocio") === "true") {
+    if (localStorage.getItem('loaderNegocio') === 'true') {
       this.idNegocio = null;
-      localStorage.removeItem("loaderNegocio");
+      localStorage.removeItem('loaderNegocio');
     }
 
     if (!this.isIOS) {
       this.platform.backButton.subscribeWithPriority(10, () => {
-        const byCategorias = localStorage.getItem("byCategorias");
+        const byCategorias = localStorage.getItem('byCategorias');
         if (byCategorias != null) {
           this.ruta.navigate(['/tabs/categorias']);
         }
@@ -417,22 +433,22 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
 
 
-    let categoria = localStorage.getItem("seleccionado");
+    const categoria = localStorage.getItem('seleccionado');
     if (this.filtroActivo === false) {
-      localStorage.setItem("resetFiltro", "0");
+      localStorage.setItem('resetFiltro', '0');
     }
-    let estatusFiltro = localStorage.getItem("resetFiltro");
+    let estatusFiltro = localStorage.getItem('resetFiltro');
     if (categoria !== null) {
       this.filtroActivo = true;
       const dato = JSON.parse(categoria);
-      localStorage.setItem("resetFiltro", "1");
-      estatusFiltro = localStorage.getItem("resetFiltro");
+      localStorage.setItem('resetFiltro', '1');
+      estatusFiltro = localStorage.getItem('resetFiltro');
       this.Filtros = new FiltrosModel();
       this.Filtros.idCategoriaNegocio = [dato.id_categoria];
       this.buscarNegocios(true);
-      localStorage.removeItem("seleccionado");
+      localStorage.removeItem('seleccionado');
     }
-    if (categoria === null && estatusFiltro === "0") {
+    if (categoria === null && estatusFiltro === '0') {
       if (
         this.Filtros.abierto === null &&
         this.Filtros.blnEntrega === null &&
@@ -446,8 +462,8 @@ export class InicioPage implements OnInit, AfterViewInit {
         this.Filtros.kilometros === 10 &&
         this.Filtros.latitud === 0 &&
         this.Filtros.longitud === 0 &&
-        this.Filtros.strBuscar === "" &&
-        this.Filtros.strMunicipio === "" &&
+        this.Filtros.strBuscar === '' &&
+        this.Filtros.strMunicipio === '' &&
         this.Filtros.tipoBusqueda === 0
       ) {
       } else {
@@ -478,26 +494,26 @@ export class InicioPage implements OnInit, AfterViewInit {
         this.banderaVerMas == false;
       } else {
 
-        this.listaCategorias = await respuesta.data.lst_cat_negocios.data
+        this.listaCategorias = await respuesta.data.lst_cat_negocios.data;
         this.loader = false;
         this.loaderInicio = false;
         this.mostrarloaderInicio = false;
         this.negociosIdMapa();
       }
     } else {
-      throw throwError("");
+      throw throwError('');
     }
 
     this.obtenerNegociosFav();
   }
   ordenarRandom(listaCat: any[]) {
     let nuevaLista: any[] = [];
-    nuevaLista = listaCat.sort(function () { return Math.random() - 0.5 });
+    nuevaLista = listaCat.sort(function() { return Math.random() - 0.5; });
     return nuevaLista;
   }
 
   public getCurrentPosition() {
-    let gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
+    const gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
     Geolocation.getCurrentPosition(gpsOptions).then(res => {
       this.miUbicacionlatitud = res.coords.latitude;
       this.miUbicacionlongitud = res.coords.longitude;
@@ -544,10 +560,10 @@ export class InicioPage implements OnInit, AfterViewInit {
   async AlertActivarUbicacion() {
     const alert = await this.alertController.create({
       header: 'Bituyú!',
-      message: "Activa tu ubicación para poder ver los negocios cerca de ti",
+      message: 'Activa tu ubicación para poder ver los negocios cerca de ti',
       buttons: [
         {
-          text: "Aceptar",
+          text: 'Aceptar',
           cssClass: 'text-grey',
           // handler: () => {
           //   this.cerrarModal();
@@ -564,17 +580,17 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.obtenerNegocios2([respuesta.data.lst_cat_negocios]);
 
     } else {
-      throw throwError("");
+      throw throwError('');
     }
   }
 
   public async cargarCategorias() {
-    const byCategorias = localStorage.getItem("filtroactual");
+    const byCategorias = localStorage.getItem('filtroactual');
     this.banderaVerMas == false;
     if (
       byCategorias !== null &&
       byCategorias !== undefined &&
-      byCategorias !== "" &&
+      byCategorias !== '' &&
       byCategorias.length > 0
     ) {
       const dato = JSON.parse(byCategorias);
@@ -582,14 +598,14 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.filtroActivo = true;
     }
     try {
-      var respuesta = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina)
+      const respuesta = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina);
       this.validarResultadosDeCategorias(respuesta);
 
-      const byCategorias2 = localStorage.getItem("filtroactual");
+      const byCategorias2 = localStorage.getItem('filtroactual');
       if (
         byCategorias2 !== null &&
         byCategorias2 !== undefined &&
-        byCategorias2 !== "" &&
+        byCategorias2 !== '' &&
         byCategorias2.length > 0
       ) {
         this.filtroActivo = true;
@@ -598,7 +614,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     } catch (error) {
       this.loader = false;
       // this.notificaciones.error("Error al buscar los datos" + error.message);
-      this.notificaciones.error("No hay conexión a internet, conectate a una red");
+      this.notificaciones.error('No hay conexión a internet, conectate a una red');
     }
   }
 
@@ -608,7 +624,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       if (this.Filtros.idCategoriaNegocio == null && this.Filtros.abierto == null && this.Filtros.blnEntrega == null
         && this.Filtros.idGiro == null && this.Filtros.intEstado == 0
         && this.Filtros.idLocalidad == null && this.Filtros.idMunicipio == null && this.Filtros.latitud == 0 && this.Filtros.longitud == 0
-        && this.Filtros.organizacion == null && this.Filtros.strBuscar == "" && this.Filtros.strMunicipio == ""
+        && this.Filtros.organizacion == null && this.Filtros.strBuscar == '' && this.Filtros.strMunicipio == ''
         && this.Filtros.tipoBusqueda == 0
       ) {
         this.banderaInicio = true;
@@ -616,18 +632,18 @@ export class InicioPage implements OnInit, AfterViewInit {
         if (!this.isIOS) {
           this.getCurrentPosition();
         }
-        var responseNegociosTodos = await this.principalSercicio.obtenerNegociosTodosMapa();
+        const responseNegociosTodos = await this.principalSercicio.obtenerNegociosTodosMapa();
         await this.validarResultadosTodos(responseNegociosTodos);
       } else {
         this.banderaInicio = false;
         this.loader = true;
-        var responseNegociosCategorias = await this.principalSercicio.obtenerNegociosTodosFiltroMapa(this.Filtros);
+        const responseNegociosCategorias = await this.principalSercicio.obtenerNegociosTodosFiltroMapa(this.Filtros);
         await this.validarResultadosTodos(responseNegociosCategorias);
       }
-      //this.loader = false;
+      // this.loader = false;
     } catch (error) {
       this.loader = false;
-      this.notificaciones.error("No hay conexión a internet, conectate a una red");
+      this.notificaciones.error('No hay conexión a internet, conectate a una red');
     }
 
   }
@@ -644,12 +660,12 @@ export class InicioPage implements OnInit, AfterViewInit {
     if (usr.id_persona !== undefined) {
       this.Filtros.id_persona = usr.id_persona;
     }
-    const byCategorias = localStorage.getItem("byCategorias");
+    const byCategorias = localStorage.getItem('byCategorias');
     const dato = JSON.parse(byCategorias);
     if (
       byCategorias !== null &&
       byCategorias !== undefined &&
-      byCategorias !== "" &&
+      byCategorias !== '' &&
       byCategorias.length > 0
     ) {
       this.Filtros.idCategoriaNegocio = [dato.id_categoria];
@@ -659,20 +675,20 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.selectionAP
       ? (this.Filtros.organizacion =
         this.objectSelectAfiliacionPlaza.id_organizacion)
-      : "";
+      : '';
     this.loaderNegocios = false;
-    const todo = localStorage.getItem("todo");
+    const todo = localStorage.getItem('todo');
 
-    if (localStorage.getItem("subCat") || localStorage.getItem('org') != null || todo == "todo") {
+    if (localStorage.getItem('subCat') || localStorage.getItem('org') != null || todo == 'todo') {
       await this.cargarCategorias();
     }
 
-    const org = localStorage.getItem("org");
-    const categorias = localStorage.getItem("byCategorias");
-    if (org === null && categorias === null && this.idGiro === null && localStorage.getItem("todo") === null) {
+    const org = localStorage.getItem('org');
+    const categorias = localStorage.getItem('byCategorias');
+    if (org === null && categorias === null && this.idGiro === null && localStorage.getItem('todo') === null) {
       this.loader = false;
       this.selectionAP = false;
-      this.obtenerPrincipalInicio(); //Abre el inicio cuando se abre la app por primera vez
+      this.obtenerPrincipalInicio(); // Abre el inicio cuando se abre la app por primera vez
     }
 
     this.loader = false;
@@ -680,7 +696,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   async configToad(mensaje) {
     const toast = await this.toadController.create({
-      color: "dark",
+      color: 'dark',
       duration: 2000,
       message: mensaje,
     });
@@ -692,15 +708,15 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.Filtros.strBuscar = event;
     this.tFiltro = true;
     this.buscador = false;
-    localStorage.setItem("todo", "todo");
+    localStorage.setItem('todo', 'todo');
 
     if (event === null) {
-      localStorage.removeItem("filtroactual");
+      localStorage.removeItem('filtroactual');
       this.obtenerPrincipalInicio();
     } else {
       this.buscarNegocios(true);
       this.selectionAP = false;
-      this.buscador = true
+      this.buscador = true;
     }
 
   }
@@ -710,21 +726,21 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   async presentModal() {
-    let eventEmitter = new EventEmitter();
+    const eventEmitter = new EventEmitter();
     eventEmitter.subscribe((res) => {
       this.modal.dismiss({
         dismissed: true,
       });
-      let filtroactivo
-      if (res == false) filtroactivo = false;
+      let filtroactivo;
+      if (res == false) { filtroactivo = false; }
       this.filtroActivo = true;
       this.Filtros = res;
-      let d1 = JSON.stringify(res);
-      localStorage.setItem("filtroactual", d1);
-      localStorage.setItem("FiltroAct", 'true')
-      localStorage.setItem("todo", "todo")
+      const d1 = JSON.stringify(res);
+      localStorage.setItem('filtroactual', d1);
+      localStorage.setItem('FiltroAct', 'true');
+      localStorage.setItem('todo', 'todo');
       if (res == false) {
-        this.borrarFiltrosP(true)
+        this.borrarFiltrosP(true);
       } else {
         this.buscarNegocios(true);
       }
@@ -747,7 +763,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   async presentModalPlazasAfiliaciones() {
     this.modal = await this.modalController.create({
       component: PlazasAfiliacionesComponent,
-      cssClass: "custom-modal-plazas-afiliaciones",
+      cssClass: 'custom-modal-plazas-afiliaciones',
       componentProps: {
         idUsuario: this.persona,
         permisos: this.permisos,
@@ -771,8 +787,8 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   async abrirModalMapa() {
     this.listaIdsMapa = [];
-    await this.cargarCargarNegociosMapas()
-    //Vuelve a consultar las cordenadas por si las manda en null anteriormente
+    await this.cargarCargarNegociosMapas();
+    // Vuelve a consultar las cordenadas por si las manda en null anteriormente
     if (this.banderaInicio && this.latitud === undefined && this.longitud === undefined) {
       this.latitud = 19.31905;
       this.longitud = -98.19982;
@@ -793,24 +809,24 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   public negociosIdMapa() {
     this.banderaVerMas == false;
-    let listaIds = [];
+    const listaIds = [];
     this.listaCategorias.map((l) => {
       l.negocios.map((n) => {
         listaIds.push(n);
       });
     });
 
-    let byCategoria = localStorage.getItem("byCategorias");
+    const byCategoria = localStorage.getItem('byCategorias');
 
     if (byCategoria != null) {
-      let categoria = JSON.parse(byCategoria);
+      const categoria = JSON.parse(byCategoria);
       this.Filtros.idCategoriaNegocio = [categoria.id_categoria];
     }
 
-    let idGiro = localStorage.getItem("idGiro");
+    const idGiro = localStorage.getItem('idGiro');
 
     if (idGiro != null) {
-      let id = JSON.parse(idGiro);
+      const id = JSON.parse(idGiro);
       this.Filtros.idGiro = [id];
     }
 
@@ -818,7 +834,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.banderaVerMas == false;
     this.consultaTerminada = true;
     if (this.paginaPrevia == undefined) {
-      this.loaderTop = false
+      this.loaderTop = false;
     } else {
       this.listaVerMas = [];
       this.banderaVerMas == false;
@@ -830,7 +846,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   public obtenerNegocios2(listaCategoriasAll: INegocios[]) {
-    let listaIds = [];
+    const listaIds = [];
     listaCategoriasAll.map((l) => {
       listaIds.push(l);
     });
@@ -844,40 +860,40 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   public regresarBitoo(activacion) {
 
-    if (localStorage.getItem("FiltroAct")) {
-      localStorage.removeItem("filter")
-      localStorage.removeItem("categoriaSeleccionada")
+    if (localStorage.getItem('FiltroAct')) {
+      localStorage.removeItem('filter');
+      localStorage.removeItem('categoriaSeleccionada');
       if (activacion) {
-        localStorage.removeItem("FiltroAct")
-        localStorage.removeItem("filtroactual")
+        localStorage.removeItem('FiltroAct');
+        localStorage.removeItem('filtroactual');
       }
     }
 
     if (!this.subCAt || !this.afi) {
-      if (!localStorage.getItem("FiltroAct")) {
-        localStorage.removeItem("todo");
+      if (!localStorage.getItem('FiltroAct')) {
+        localStorage.removeItem('todo');
       }
     }
     if (!this.afi) {
-      localStorage.removeItem("org");
+      localStorage.removeItem('org');
     }
-    localStorage.removeItem("activarTodos");
+    localStorage.removeItem('activarTodos');
 
     this.objectSelectAfiliacionPlaza = null;
     this.borrarFiltros();
     this.borrarFiltrosP(false);
     if (activacion) {
-      localStorage.removeItem("afi")
-      localStorage.removeItem("FiltroAct")
+      localStorage.removeItem('afi');
+      localStorage.removeItem('FiltroAct');
       location.reload();
     }
 
   }
   borrarFiltros() {
     this.isLoading = false;
-    this.loaderTop = false
+    this.loaderTop = false;
     if (!this.subCAt) {
-      localStorage.removeItem("byCategorias");
+      localStorage.removeItem('byCategorias');
     }
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
@@ -889,23 +905,23 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.subCAt = click == true ? false : true;
     this.loader = true;
     if (!this.subCAt) {
-      localStorage.removeItem("byCategorias");
-      localStorage.removeItem("filtroactual");
-      localStorage.removeItem("FiltroAct");
-      localStorage.removeItem("subCat")
+      localStorage.removeItem('byCategorias');
+      localStorage.removeItem('filtroactual');
+      localStorage.removeItem('FiltroAct');
+      localStorage.removeItem('subCat');
     }
-    localStorage.removeItem("filtroActivo");
-    localStorage.removeItem("idGiro");
+    localStorage.removeItem('filtroActivo');
+    localStorage.removeItem('idGiro');
     this.idGiro = null;
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     this.filtroActivo = false;
     if (!this.subCAt || !this.afi) {
-      if (!localStorage.getItem("FiltroAct")) {
-        localStorage.removeItem("todo");
+      if (!localStorage.getItem('FiltroAct')) {
+        localStorage.removeItem('todo');
       }
     }
-    const org = localStorage.getItem("org");
+    const org = localStorage.getItem('org');
     if (org != null) {
       this.activar();
     }
@@ -913,11 +929,11 @@ export class InicioPage implements OnInit, AfterViewInit {
     if (org === null) {
       this.selectionAP = false;
     }
-    this.loaderTop = false
+    this.loaderTop = false;
     this.isLoading = false;
     if (this.objectSelectAfiliacionPlaza !== null && this.objectSelectAfiliacionPlaza !== undefined) {
-      localStorage.setItem("activarTodos", "true");
-      localStorage.setItem("todo", "todo");
+      localStorage.setItem('activarTodos', 'true');
+      localStorage.setItem('todo', 'todo');
       this.loader = true;
       this.activar();
       this.idTodo = false;
@@ -930,20 +946,20 @@ export class InicioPage implements OnInit, AfterViewInit {
   negocioRuta(negocioURL, proveedor) {
     this.idNegocio = proveedor;
     setTimeout(() => {
-      if (negocioURL == "") {
+      if (negocioURL == '') {
         this.notificaciones.error(
-          "Este negocio aún no cumple los requisitos mínimos"
+          'Este negocio aún no cumple los requisitos mínimos'
         );
       } else {
 
         if (this.tFiltro === true) {
-          localStorage.setItem("isRedirected", "false");
-          this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
+          localStorage.setItem('isRedirected', 'false');
+          this.ruta.navigate(['/tabs/negocio/' + negocioURL]);
 
 
         } else {
-          localStorage.setItem("isRedirected", "true");
-          this.ruta.navigate(["/tabs/negocio/" + negocioURL]);
+          localStorage.setItem('isRedirected', 'true');
+          this.ruta.navigate(['/tabs/negocio/' + negocioURL]);
         }
 
       }
@@ -951,8 +967,8 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   }
   negocioRutaByLogin(url: string) {
-    localStorage.setItem("isRedirected", "false");
-    this.ruta.navigate(["/tabs/negocio/" + url]);
+    localStorage.setItem('isRedirected', 'false');
+    this.ruta.navigate(['/tabs/negocio/' + url]);
   }
   cargarMasPaginas() {
     this.loaderVerMas = true;
@@ -983,10 +999,10 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   public obtenerPrincipalInicio(nombre?: string) {
     this.isLoading = false;
-    this.loaderTop = false
+    this.loaderTop = false;
     if (!this.subCAt || !this.afi) {
-      if (!localStorage.getItem("FiltroAct")) {
-        localStorage.removeItem("todo");
+      if (!localStorage.getItem('FiltroAct')) {
+        localStorage.removeItem('todo');
       }
     }
     this.idTodo = false;
@@ -994,27 +1010,27 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.loaderInicio = true;
     this.banderaVerMas = false;
 
-    if (nombre === undefined && !this.afi && !localStorage.getItem("subCat")) {
-      if (!localStorage.getItem("FiltroAct")) {
+    if (nombre === undefined && !this.afi && !localStorage.getItem('subCat')) {
+      if (!localStorage.getItem('FiltroAct')) {
         this.principalSercicio.obtenerPrincipalInicio()
           .subscribe(
             (response) => {
               if (response.code === 200) {
                 this.listaCategorias = response.data;
-                let uno = this.listaCategorias[0].negocios.slice(0, 10);
-                let dos = this.listaCategorias[1].negocios.slice(0, 10);
-                let tres = this.listaCategorias[2].negocios.slice(0, 10);
+                const uno = this.listaCategorias[0].negocios.slice(0, 10);
+                const dos = this.listaCategorias[1].negocios.slice(0, 10);
+                const tres = this.listaCategorias[2].negocios.slice(0, 10);
                 this.obtenerNegociosFav();
                 this.banderaVerMas = true;
-                this.listaVerMas = [{ 'nombre': 'Con convenio', 'negocios': uno }, { 'nombre': 'Con promociones', 'negocios': dos }, { 'nombre': 'Más Vistos', 'negocios': tres }];
+                this.listaVerMas = [{ nombre: 'Con convenio', negocios: uno }, { nombre: 'Con promociones', negocios: dos }, { nombre: 'Más Vistos', negocios: tres }];
 
-                if (this.listaCategorias[0].negocios.length <= 10) this.verMasNegociosConBtn = false;
-                if (this.listaCategorias[1].negocios.length <= 10) this.verMasNegociosPromoBtn = false;
-                if (this.listaCategorias[2].negocios.length <= 10) this.verMasNegociosVistosBtn = false;
+                if (this.listaCategorias[0].negocios.length <= 10) { this.verMasNegociosConBtn = false; }
+                if (this.listaCategorias[1].negocios.length <= 10) { this.verMasNegociosPromoBtn = false; }
+                if (this.listaCategorias[2].negocios.length <= 10) { this.verMasNegociosVistosBtn = false; }
 
-                if (this.listaVerMas[0].negocios.length <= 10) this.verMasNegociosCon = false;
-                if (this.listaVerMas[1].negocios.length <= 10) this.verMasNegociosPromo = false;
-                if (this.listaVerMas[2].negocios.length <= 10) this.verMasNegociosVistos = false;
+                if (this.listaVerMas[0].negocios.length <= 10) { this.verMasNegociosCon = false; }
+                if (this.listaVerMas[1].negocios.length <= 10) { this.verMasNegociosPromo = false; }
+                if (this.listaVerMas[2].negocios.length <= 10) { this.verMasNegociosVistos = false; }
 
                 setTimeout(() => {
                   this.loader = false;
@@ -1027,7 +1043,7 @@ export class InicioPage implements OnInit, AfterViewInit {
               this.loader = false;
               this.loaderInicio = false;
               this.mostrarloaderInicio = false;
-              //this._notificacionService.error(error);
+              // this._notificacionService.error(error);
             }
           );
         return false;
@@ -1038,18 +1054,18 @@ export class InicioPage implements OnInit, AfterViewInit {
   cargarMasNegociosInicio(nombre) {
     this.indice = nombre === 'Con promociones' ? this.indice = 1 : nombre === 'Con convenio' ? this.indice = 0 : this.indice = 2;
     this.listaCompleta = this.listaCategorias[this.indice];
-    let len = this.listaVerMas[this.indice].negocios.length
-    let lenCat = this.listaCategorias[this.indice].negocios.length;
+    const len = this.listaVerMas[this.indice].negocios.length;
+    const lenCat = this.listaCategorias[this.indice].negocios.length;
     if (len < lenCat) {
 
       for (let i = len; i <= lenCat; i++) {
         if (i + 1 <= lenCat) {
-          let nuevosDatos = this.listaVerMas[this.indice].negocios.push(this.listaCategorias[this.indice].negocios[i]);
+          const nuevosDatos = this.listaVerMas[this.indice].negocios.push(this.listaCategorias[this.indice].negocios[i]);
         }
       }
     }
 
-    let dif = this.listaCategorias[this.indice].negocios.length - this.listaVerMas[this.indice].negocios.length;
+    const dif = this.listaCategorias[this.indice].negocios.length - this.listaVerMas[this.indice].negocios.length;
 
     if (dif < 4) {
 
@@ -1069,19 +1085,19 @@ export class InicioPage implements OnInit, AfterViewInit {
     } else {
       this.indice == 0 ? this.verMasNegociosCon = true : this.indice == 1 ? this.verMasNegociosPromo = true : this.verMasNegociosVistos = true;
     }
-    if (ancla == "ancla0") {//Se conservan posiciones estaticas de forma provicional
-      this.content.scrollToPoint(0, 330, 500)
-    } if (ancla == "ancla1") {
-      this.content.scrollToPoint(0, 1800, 500)
-    } if (ancla == "ancla2") {
-      this.content.scrollToPoint(0, 3500, 500)
+    if (ancla == 'ancla0') {// Se conservan posiciones estaticas de forma provicional
+      this.content.scrollToPoint(0, 330, 500);
+    } if (ancla == 'ancla1') {
+      this.content.scrollToPoint(0, 1800, 500);
+    } if (ancla == 'ancla2') {
+      this.content.scrollToPoint(0, 3500, 500);
     }
   }
 
   obtenerNegociosFav() {
     this.personaServcie.obtenerNegociosFavoritos(this.user.id_persona).subscribe(r => {
       if (r.code == 200) {
-        let favoritos = r.data;
+        const favoritos = r.data;
 
         for (const categoria of this.listaCategorias) {
           for (const nego of categoria.negocios) {
@@ -1118,8 +1134,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.paginaPrevia = 0;
     this.totalDeNegocios = 0;
     this.totalPaginas = 0;
-    localStorage.removeItem("activarTodos");
-    localStorage.setItem("todo", "todo");
+    localStorage.removeItem('activarTodos');
+    localStorage.setItem('todo', 'todo');
     this.idTodo = false;
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
@@ -1127,28 +1143,28 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.banderaVerMas = false;
     this.loaderNegocios = true;
     this.idGiro = event;
-    localStorage.setItem("idGiro", JSON.stringify(this.idGiro))
+    localStorage.setItem('idGiro', JSON.stringify(this.idGiro));
     this.Filtros.idGiro = [this.idGiro];
     this.selectionAP
       ? (this.Filtros.organizacion =
         this.objectSelectAfiliacionPlaza.id_organizacion)
-      : "";
-    let d1 = JSON.stringify(this.Filtros);
-    localStorage.setItem("filtroactual", d1);
+      : '';
+    const d1 = JSON.stringify(this.Filtros);
+    localStorage.setItem('filtroactual', d1);
 
-    var noPaginas = await this.principalSercicio.obtenerNumeroPaginas(this.Filtros, 1);
-    var rand = this.random(1, JSON.stringify(noPaginas.data.last_page))
+    const noPaginas = await this.principalSercicio.obtenerNumeroPaginas(this.Filtros, 1);
+    const rand = this.random(1, JSON.stringify(noPaginas.data.last_page));
     this.totalPaginas = Math.ceil((this.totalDeNegocios / 20));
     this.primeraPagRandom = rand;
     this.paginaPivote = rand;
-    this.paginaPrevia = this.paginaPivote
-    var respuesta = await this.principalSercicio
-      .obtenerNegocioPorCategoria(this.Filtros, rand)// rand this.siguienteGiro);
-      this.paginacion = []
-        this.pagSelect = respuesta.data.lst_cat_negocios.current_page;
-        this.lastPage = respuesta.data.lst_cat_negocios.last_page;
-        this.variablePrueba = true
-      this.generarPaginacion(respuesta);
+    this.paginaPrevia = this.paginaPivote;
+    const respuesta = await this.principalSercicio
+      .obtenerNegocioPorCategoria(this.Filtros, rand); // rand this.siguienteGiro);
+    this.paginacion = [];
+    this.pagSelect = respuesta.data.lst_cat_negocios.current_page;
+    this.lastPage = respuesta.data.lst_cat_negocios.last_page;
+    this.variablePrueba = true;
+    this.generarPaginacion(respuesta);
     this.listaCategorias = [];
     if (respuesta.data.lst_cat_negocios.total > 0) {
       this.validarResultadosDeCategoriaSeleccionada(respuesta.data, false);
@@ -1165,11 +1181,11 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.listaCategorias = [];
     this.primeraPagRandom = 0;
     this.paginaPrevia = 0;
-    localStorage.removeItem("filtroactual");
-    localStorage.removeItem("byCategorias");
-    localStorage.removeItem("filtroActivo");
-    localStorage.removeItem("idGiro");
-    localStorage.setItem("activarTodos", "true");
+    localStorage.removeItem('filtroactual');
+    localStorage.removeItem('byCategorias');
+    localStorage.removeItem('filtroActivo');
+    localStorage.removeItem('idGiro');
+    localStorage.setItem('activarTodos', 'true');
     this.idTodo = true;
     this.loader = true;
     this.idGiro = null;
@@ -1179,26 +1195,26 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.selectionAP
       ? (this.Filtros.organizacion =
         this.objectSelectAfiliacionPlaza.id_organizacion)
-      : "";
-    localStorage.setItem("todo", "todo");
-    var noPaginas = await this.principalSercicio.obtenerNumeroPaginas(this.Filtros, 1);
-    var rand = this.random(1, noPaginas.data.last_page)
+      : '';
+    localStorage.setItem('todo', 'todo');
+    const noPaginas = await this.principalSercicio.obtenerNumeroPaginas(this.Filtros, 1);
+    const rand = this.random(1, noPaginas.data.last_page);
     this.primeraPagRandom = rand;
     this.paginaPivote = rand;
-    this.paginaPrevia = this.paginaPivote
-    var respuesta = await this.principalSercicio
-      .obtenerNegocioPorCategoria(this.Filtros, rand)//this.siguienteGiro)
-      this.paginacion = []
-        this.pagSelect = respuesta.data.lst_cat_negocios.last_page <= 1 ? 1 : respuesta.data.lst_cat_negocios.current_page;
-        this.variablePrueba = true
-      this.generarPaginacion(respuesta);
+    this.paginaPrevia = this.paginaPivote;
+    const respuesta = await this.principalSercicio
+      .obtenerNegocioPorCategoria(this.Filtros, rand); // this.siguienteGiro)
+    this.paginacion = [];
+    this.pagSelect = respuesta.data.lst_cat_negocios.last_page <= 1 ? 1 : respuesta.data.lst_cat_negocios.current_page;
+    this.variablePrueba = true;
+    this.generarPaginacion(respuesta);
     this.validarResultadosDeCategorias(await respuesta);
     this.loader = false;
     this.content.scrollToPoint(0, 20);
-    //this.scrollToTop();
+    // this.scrollToTop();
   }
 
-  //####### PARA CATEGORÍA SELECCIONADA SE AHISLAN METODOS PARA MOSTRAR NEGOCIOS ALEATORIOS###########
+  // ####### PARA CATEGORÍA SELECCIONADA SE AHISLAN METODOS PARA MOSTRAR NEGOCIOS ALEATORIOS###########
   public random(min, max) {
     return Math.floor((Math.random() * (max - min + 1)) + min);
   }
@@ -1211,7 +1227,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     if (cantidadDeResultados > 0) {
       if (buscaArriba == true) {
         this.listaCategorias.unshift(...respuesta.lst_cat_negocios.data);
-        this.negociosIdMapa()
+        this.negociosIdMapa();
         this.isLoading = false;
       } else {
         this.actualPagina = respuesta.lst_cat_negocios.current_page;
@@ -1225,36 +1241,36 @@ export class InicioPage implements OnInit, AfterViewInit {
           this.listaCategorias.push(...respuesta.lst_cat_negocios.data);
           this.negociosIdMapa();
         } else {
-          this.listaCategorias = respuesta.lst_cat_negocios.data
+          this.listaCategorias = respuesta.lst_cat_negocios.data;
           this.negociosIdMapa();
         }
       }
     } else {
-      throw throwError("");
+      throw throwError('');
     }
   }
 
   cambiarPag(tipo){
     let paginaActual = this.pagSelect;
-    this.paginaPrevia = tipo == 1 ? paginaActual--:paginaActual;
-    this.paginaPrevia = tipo == 2 ? paginaActual +1:paginaActual;
-    if(this.paginaPrevia >=1 && this.paginaPrevia <= this.lastPage){
+    this.paginaPrevia = tipo == 1 ? paginaActual-- : paginaActual;
+    this.paginaPrevia = tipo == 2 ? paginaActual + 1 : paginaActual;
+    if (this.paginaPrevia >= 1 && this.paginaPrevia <= this.lastPage){
       this.pagBoton = true;
-      this.pagSelect = this.paginaPrevia
-      this.cargarMasPaginasArriba(null)
+      this.pagSelect = this.paginaPrevia;
+      this.cargarMasPaginasArriba(null);
     }else{
-      let texto = this.paginaPrevia == 0 ? "Estas en la primera pagina" : "Estas en la ultima pagina";
-      
-      this.paginaPrevia = this.paginaPrevia == 0 ? this.paginaPrevia +1:this.paginaPrevia-1;
+      const texto = this.paginaPrevia == 0 ? 'Estas en la primera pagina' : 'Estas en la ultima pagina';
+
+      this.paginaPrevia = this.paginaPrevia == 0 ? this.paginaPrevia + 1 : this.paginaPrevia - 1;
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: texto
-      })
+      });
     }
   }
 
-  cargarMasPaginasArriba(event) {//Bloquear boton
+  cargarMasPaginasArriba(event) {// Bloquear boton
     this.isLoading = true;
     this.paginaPrevia = !this.pagBoton ? event.detail.value : this.paginaPrevia;
     this.buttonDisabled = true;
@@ -1270,12 +1286,12 @@ export class InicioPage implements OnInit, AfterViewInit {
     if (usr.id_persona !== undefined) {
       this.Filtros.id_persona = usr.id_persona;
     }
-    const byCategorias = localStorage.getItem("byCategorias");
+    const byCategorias = localStorage.getItem('byCategorias');
     const dato = JSON.parse(byCategorias);
     if (
       byCategorias !== null &&
       byCategorias !== undefined &&
-      byCategorias !== "" &&
+      byCategorias !== '' &&
       byCategorias.length > 0
     ) {
       this.Filtros.idCategoriaNegocio = [dato.id_categoria];
@@ -1285,18 +1301,18 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.selectionAP
       ? (this.Filtros.organizacion =
         this.objectSelectAfiliacionPlaza.id_organizacion)
-      : "";
+      : '';
     this.loaderNegocios = false;
-    const todo = localStorage.getItem("todo");
+    const todo = localStorage.getItem('todo');
 
     if (todo === 'todo' || localStorage.getItem('org') != null) {
       await this.cargarCategoriasArriba();
     }
 
-    const org = localStorage.getItem("org");
-    const categorias = localStorage.getItem("byCategorias");
+    const org = localStorage.getItem('org');
+    const categorias = localStorage.getItem('byCategorias');
 
-    if (org === null && categorias === null && this.idGiro === null && localStorage.getItem("todo") === null) {
+    if (org === null && categorias === null && this.idGiro === null && localStorage.getItem('todo') === null) {
       this.loader = false;
       this.selectionAP = false;
       this.obtenerPrincipalInicio();
@@ -1307,11 +1323,11 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
   public async cargarCategoriasArriba() {
     this.pagBoton = false;
-    const byCategorias = localStorage.getItem("filtroactual");
+    const byCategorias = localStorage.getItem('filtroactual');
     if (
       byCategorias !== null &&
       byCategorias !== undefined &&
-      byCategorias !== "" &&
+      byCategorias !== '' &&
       byCategorias.length > 0
     ) {
       const dato = JSON.parse(byCategorias);
@@ -1319,13 +1335,13 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.filtroActivo = true;
     }
     try {
-      var respuesta = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, this.paginaPrevia)
+      const respuesta = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, this.paginaPrevia);
       this.validarResultadosDeCategoriaSeleccionada(respuesta.data, true);
-      const byCategorias2 = localStorage.getItem("filtroactual");
+      const byCategorias2 = localStorage.getItem('filtroactual');
       if (
         byCategorias2 !== null &&
         byCategorias2 !== undefined &&
-        byCategorias2 !== "" &&
+        byCategorias2 !== '' &&
         byCategorias2.length > 0
       ) {
         this.filtroActivo = true;
@@ -1333,7 +1349,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.loader = false;
     } catch (error) {
       this.loader = false;
-      this.notificaciones.error("No hay conexión a internet, conectate a una red");
+      this.notificaciones.error('No hay conexión a internet, conectate a una red');
     }
   }
 
@@ -1343,8 +1359,8 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   clickDistintivo(tag: string, object: string) {
     this.showPopUp = true;
-    this.insigniaTitle = tag
-    this.insigniaDescrip = object
+    this.insigniaTitle = tag;
+    this.insigniaDescrip = object;
   }
   closePopUp() {
     this.showPopUp = false;
