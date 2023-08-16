@@ -22,6 +22,8 @@ import {
     ModalInfoPromocionComponent
 } from "../../componentes/modal-promocion-negocio/modal-info-promocion/modal-info-promocion.component";
 import {SpinnerModule} from "../../componentes/spinner/spinner.module";
+import {ModalInicioComponent} from "../../componentes/modal-inicio/modal-inicio.component";
+
 @NgModule({
     imports: [
         IonicModule,
@@ -45,7 +47,8 @@ import {SpinnerModule} from "../../componentes/spinner/spinner.module";
         PlazasAfiliacionesComponent,
         ModalLoguearseComponent,
         ModalPromocionNegocioComponent,
-        ModalInfoPromocionComponent
+        ModalInfoPromocionComponent,
+        ModalInicioComponent
     ],
   exports: [
     BannerPromocionesComponent,

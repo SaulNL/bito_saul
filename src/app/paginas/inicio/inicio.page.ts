@@ -116,7 +116,6 @@ export class InicioPage implements OnInit, AfterViewInit {
       });
     });
     localStorage.removeItem('productos');
-    this.modalVideo();
   }
   public static readonly MENSAJE_CUANDO_CARGA = 'Cargar más';
   public static readonly PAGINAS_POR_CONSULTA = 20;
@@ -319,16 +318,6 @@ export class InicioPage implements OnInit, AfterViewInit {
     localStorage.setItem('negocios', ('active'));
   }
 
-  async modalVideo(){
-    const modal = await this.modalController.create({
-      component: ModalInicioComponent,
-    });
-    modal.onDidDismiss().then((dataReturned) => {
-      this.loaderVideo = dataReturned.data.returnedBoolean;
-      console.log('lo', this.loaderVideo);
-    });
-    await modal.present();
-  }
 
   ngAfterViewInit() {
     this.banderaVerMas = false;

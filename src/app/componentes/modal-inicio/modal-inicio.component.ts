@@ -16,8 +16,7 @@ export class ModalInicioComponent implements OnInit {
 
   ngOnInit() {
     setTimeout(() => {
-      const loaderVideo = false;
-      this.modalController.dismiss({returnedBoolean: loaderVideo});
+      this.modalController.dismiss();
     }, 12000);
   }
 

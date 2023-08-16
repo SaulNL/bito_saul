@@ -3,12 +3,13 @@ import { UtilsCls } from "../../utils/UtilsCls";
 import { SideBarService } from "../../api/busqueda/side-bar-service";
 import { Auth0Service } from "../../api/busqueda/auth0.service";
 import { Router } from "@angular/router";
-import { Platform, AlertController } from '@ionic/angular';
+import {Platform, AlertController, ModalController} from '@ionic/angular';
 import { AfiliacionPlazaModel } from "../../Modelos/AfiliacionPlazaModel";
 import { NotificacionesService } from "src/app/api/usuario/notificaciones.service";
 import moment from "moment";
 import { AdministracionService } from "src/app/api/administracion-service.service";
 import { FiltroCatVariableModel } from './../../Modelos/catalogos/FiltroCatVariableModel';
+import {ModalInicioComponent} from '../../componentes/modal-inicio/modal-inicio.component';
 
 @Component({
   selector: "app-tabs",
@@ -47,12 +48,18 @@ export class TabsPage implements OnInit {
     private platform: Platform,
     public alertController: AlertController,
     private notificacionesServide: NotificacionesService,
-    private AdministracionService: AdministracionService
+    private AdministracionService: AdministracionService,
+    private modalController: ModalController,
   ) {
     this.existeSesion = util.existe_sesion();
     this.activedPage = "";
     this.isIos = this.platform.is('ios');
     this.isAndroid = (this.platform.is('android'));
+
+    setTimeout( () => {
+      this.initializeModal();
+    }, 2000);
+
   }
 
   ngOnInit(): void {
@@ -130,6 +137,17 @@ export class TabsPage implements OnInit {
       }
     }
   }
+
+  async initializeModal() {
+    console.log('ruta', this.router.url);
+    if ( this.router.url == '/tabs/inicio'){
+      const modal = await this.modalController.create({
+        component: ModalInicioComponent,
+      });
+      await modal.present();
+    }
+  }
+
 
   promociones() {
     localStorage.removeItem("activedPage");
