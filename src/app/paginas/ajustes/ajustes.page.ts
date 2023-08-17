@@ -158,6 +158,7 @@ export class AjustesPage implements OnInit {
               });
               location.reload();
               localStorage.clear();
+              localStorage.setItem('modalShown', 'false');
               this.notification.inicialize();
             }
           },

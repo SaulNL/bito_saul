@@ -140,6 +140,7 @@ export class SignInPage implements OnInit {
     } else if (idEvento != null){
       this.route.navigateByUrl(`/tabs/eventos/reservaciones/${idEvento}`);
     } else {
+      localStorage.setItem('modalShown', 'false');
       window.location.assign('/tabs/inicio');
     }
     this.toadNotificacionService.exito(response.message);

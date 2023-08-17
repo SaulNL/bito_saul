@@ -10,6 +10,8 @@ import moment from "moment";
 import { AdministracionService } from "src/app/api/administracion-service.service";
 import { FiltroCatVariableModel } from './../../Modelos/catalogos/FiltroCatVariableModel';
 import {ModalInicioComponent} from '../../componentes/modal-inicio/modal-inicio.component';
+import {DomUtil} from 'leaflet';
+import remove = DomUtil.remove;
 
 @Component({
   selector: "app-tabs",
@@ -139,15 +141,19 @@ export class TabsPage implements OnInit {
   }
 
   async initializeModal() {
-    console.log('ruta', this.router.url);
-    if ( this.router.url == '/tabs/inicio'){
+    const modalShow = localStorage.getItem('modalShown');
+    console.log('modal', modalShow);
+    if (this.router.url == '/tabs/inicio' && modalShow == null){
       const modal = await this.modalController.create({
         component: ModalInicioComponent,
       });
       await modal.present();
-    }
-  }
 
+    } else if (this.router.url == '/tabs/inicio' && modalShow == 'false'){
+      localStorage.removeItem('modalShown');
+    }
+
+  }
 
   promociones() {
     localStorage.removeItem("activedPage");
