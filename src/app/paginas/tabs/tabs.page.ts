@@ -142,7 +142,6 @@ export class TabsPage implements OnInit {
 
   async initializeModal() {
     const modalShow = localStorage.getItem('modalShown');
-    console.log('modal', modalShow);
     if (this.router.url == '/tabs/inicio' && modalShow == null){
       const modal = await this.modalController.create({
         component: ModalInicioComponent,
@@ -152,7 +151,6 @@ export class TabsPage implements OnInit {
     } else if (this.router.url == '/tabs/inicio' && modalShow == 'false'){
       localStorage.removeItem('modalShown');
     }
-
   }
 
   promociones() {

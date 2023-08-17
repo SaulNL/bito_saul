@@ -486,8 +486,8 @@
                   </div>
                 </div>
                 <div>
-                  <ion-fab class="bolsita agregarBolda" (click)="agregarBolsaDeta(producto,1)">
-                    <ion-fab-button class="bosar">
+                  <ion-fab class="bolsita agregarBolda" >
+                    <ion-fab-button [disabled]="carrito" class="bosar" (click)="agregarBolsaDeta(producto,1)">
                       <ion-icon name="bag-add-outline"></ion-icon>
                     </ion-fab-button>
                   </ion-fab>

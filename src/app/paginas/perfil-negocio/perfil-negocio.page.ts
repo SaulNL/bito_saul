@@ -135,6 +135,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   vieneDeModal = false;
   activedPage: string;
   palabraBuqueda: any;
+  carrito = false;
   constructor(
     private navctrl: NavController,
     private route: ActivatedRoute,
@@ -942,6 +943,11 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         }
       });
       this.diasArray = diasArray;
+      if (this.estatus.tipo === 0){
+        this.carrito = true;
+      } else if (this.estatus.tipo === 1) {
+        this.carrito = false;
+      }
     }
   }
 
