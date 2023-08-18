@@ -62,7 +62,7 @@ export class ModalPublicarComponent implements OnInit {
                 this.maxDate = moment.parseZone(this.maxDate).format("YYYY-MM-DD");
                 setTimeout( () => {
                   this.publicacion1 = this.publicacion;
-                }, 750);
+                }, 850);
               }
 
   ngOnInit() {
