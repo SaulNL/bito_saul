@@ -24,7 +24,8 @@ export class ModalPublicarComponent implements OnInit {
   @Input() public publicacion: PublicacionesModel;
   @Input() public mensajePublicacion: PublicacionesModel;
   //@Input() public publicacionesPermitidas: number;
- 
+
+  public publicacion1: any;
   public lstNegocios: Array<NegocioModel>;
   public loaderNegocios = false;
   public usuario: any;
@@ -59,6 +60,9 @@ export class ModalPublicarComponent implements OnInit {
                 this.maxDate = new Date(currentYear - -30, 0, 0);
                 this.minDate = moment.parseZone(this.minDate).format("YYYY-MM-DD");
                 this.maxDate = moment.parseZone(this.maxDate).format("YYYY-MM-DD");
+                setTimeout( () => {
+                  this.publicacion1 = this.publicacion;
+                }, 750);
               }
 
   ngOnInit() {
@@ -72,7 +76,7 @@ export class ModalPublicarComponent implements OnInit {
     this.obtenerDiasPublicacionesSolicitud();
     this.buscarNegocios();
   }
-
+  
   dismiss() {
     this.modalController.dismiss({
       'dismissed': true,
@@ -200,7 +204,6 @@ export class ModalPublicarComponent implements OnInit {
   }
 
   obtenerCaracteristicasNegocio(idNegocio) {
-
      this.generalService.features(idNegocio)
        .subscribe(
          (response) => {

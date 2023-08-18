@@ -31,7 +31,7 @@
           <ion-label for="idNegocio">
             Relacione su negocio:
           </ion-label>
-          <ion-select id="idNegocio" name="idNegocio" [(ngModel)]="publicacion.id_negocio" (change)="decripcionSelect()" (ionChange)="obtenerCaracteristicasNegocio(publicacion.id_negocio);obtenerNumeroPublicacionesPromocion()" (click)="obtenerCaracteristicasNegocio(publicacion.id_negocio);obtenerNumeroPublicacionesPromocion()"required>
+          <ion-select id="idNegocio" name="idNegocio" [(ngModel)]="publicacion1.id_negocio" (change)="decripcionSelect()" (ionChange)="obtenerCaracteristicasNegocio(publicacion.id_negocio);obtenerNumeroPublicacionesPromocion()" (click)="obtenerCaracteristicasNegocio(publicacion.id_negocio);obtenerNumeroPublicacionesPromocion()"required>
             <ion-select-option  *ngFor="let row of lstNegocios"  [value]="row.id_negocio">
               {{row.nombre_comercial}}
             </ion-select-option>
