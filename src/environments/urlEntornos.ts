@@ -20,9 +20,9 @@
 export const URLS_ENTORNOS =
 {
   produccion:{
-    API_ENDPOINT:'https://api.bitoo.com.mx/',
-    URL_REGISTRO:'https://bitoo.com.mx/registro',
-    URL_FRONT:'https://bitoo.com.mx/'
+    API_ENDPOINT:'https://api.bituyu.com.mx/',
+    URL_REGISTRO:'https://bituyu.com.mx/registro',
+    URL_FRONT:'https://bituyu.com.mx/'
   },
   desarrollo: {
     API_ENDPOINT: 'https://dev-back-bitoo.azurewebsites.net/',
