@@ -8,7 +8,7 @@
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-<ion-content [fullscreen]="false">
+<ion-content [fullscreen]="true" style="--background-color: #EAEAEA;">
     <!-- <ion-item style="width: 100%;">
         <ion-slides [options]="slideOpts" style="width: 90%;">
             <ion-slide *ngFor="let suscripcion of this.planes">
@@ -33,35 +33,40 @@
             </ion-slide>
         </ion-slides>
     </ion-item> -->
+    <div style="text-align: center;">
+        <h2 style="font-family: Poppins ; font-weight: bold;"> Elige el plan que más se adapte a tus
+            necesidades </h2>
+          <strong style="background: linear-gradient(162deg, rgba(254,138,10,1) 0%, rgba(255,19,189,1) 63%);
+          -webkit-background-clip: text;
+        color: transparent;
+        margin-bottom: 15px;"> Aprovecha los grandes beneficios que ofrecemos para el crecimiento de tu Empresa y/o
+            Negocio</strong>
 
-    <div class="separacion" style="background-color: #ff1dbd;width: 100vw; display: flex; overflow: scroll; ">
-        <div class="contenedorPlan" *ngFor="let suscripcion of this.planes">
-            <ion-card class="plan_suscripcion" style="width: 90vw;">
-                <p><strong>{{suscripcion.nombre}}</strong></p>
-                <!-- <div class="precio">
-                    <span _ngcontent-fgj-c288="" class="currency">$</span>
-                    <span _ngcontent-fgj-c288="" class="costo">99</span>
-                    <span _ngcontent-fgj-c288="">/mes</span>
-                </div> -->
-                <!--h2 style="color: ;">$99.99.00</h2-->
-                <div *ngFor="let caracteristica of suscripcion.caracteristicas"
-                    style="width:100%; display:flex; justify-content: flex-start; align-items: center; margin-bottom: 5px; margin-left: 10px">
-                    <ion-icon name='checkmark-circle' style="color:#ff1dbd"></ion-icon>
-                    <!--img class="distintivoIcon" src="assets/icon/certificado_icon.svg"-->
-                    <p style="margin-top: 0px; margin-bottom:0px; margin-left: 10px; width:fit-content">
-                        {{caracteristica.nombre}}</p>
-                </div>
-                <ion-item>
-                    <div
-                        style="width: 100%; display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
-                        <ion-button mode="ios" size="small" class="bg-naranja" shape="round"
-                            (click)="seleccionarSucripcion(suscripcion.id_perfil_caracteristica,suscripcion.nombre)">
-                            Seleccione su plan de suscripción
-                        </ion-button>
-                    </div>
-                </ion-item>
-            </ion-card>
-        </div>
+        <div class="contenedorAll">
+            <div class="perfil" *ngFor="let item of planes" >
+              <div class="perfilTitle" [id]="item.nombre === 'Basic Intermedio' ? 'BasicIntermedio' : item.nombre">
+                <h1><strong>{{item.nombre}}</strong></h1>
+                <div class="lineaTitle"></div>
+              </div>
+                      <!--<div class="precio">
+                        <span class="dolar">$</span>
+                        <span class="numero">99</span>
+                        <span class="mes">/mes</span>
+                      </div>-->
+              <div class="caracteristicas">
+                <p *ngFor="let itemAux of item.caracteristicas" style=" text-align: initial;">
+                  <span style="height: 24px; border-radius: 50%; min-width: 24px; padding: 2px; margin: 0px 5px 0px 5px; display: flex;
+                  align-items: center;
+                  justify-content: center;" [id]="item.nombre === 'Basic Intermedio' ? 'BasicIntermedio' : item.nombre">
+                    <ion-icon style="color: #fff;" name="checkmark-outline"></ion-icon> 
+                  </span> 
+                  {{itemAux.nombre}}</p>
+              </div>
+              <div class="seccionBoton">
+                <button [id]="item.nombre === 'Basic Intermedio' ? 'BasicIntermedio' : item.nombre" (click)="seleccionarSucripcion(item.id_perfil_caracteristica,item.nombre)" > Elegir </button>
+              </div>
+            </div>
+          </div>
     </div>
 
 </ion-content>

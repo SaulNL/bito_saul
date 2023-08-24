@@ -1012,7 +1012,6 @@ export class InicioPage implements OnInit, AfterViewInit {
                 this.obtenerNegociosFav();
                 this.banderaVerMas = true;
                 this.listaVerMas = [{ nombre: 'Con convenio', negocios: uno }, { nombre: 'Con promociones', negocios: dos }, { nombre: 'Más Vistos', negocios: tres }];
-
                 if (this.listaCategorias[0].negocios.length <= 10) { this.verMasNegociosConBtn = false; }
                 if (this.listaCategorias[1].negocios.length <= 10) { this.verMasNegociosPromoBtn = false; }
                 if (this.listaCategorias[2].negocios.length <= 10) { this.verMasNegociosVistosBtn = false; }
@@ -1215,6 +1214,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
     if (cantidadDeResultados > 0) {
       if (buscaArriba == true) {
+        this.listaCategorias = []
         this.listaCategorias.unshift(...respuesta.lst_cat_negocios.data);
         this.negociosIdMapa();
         this.isLoading = false;
