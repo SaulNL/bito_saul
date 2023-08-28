@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { ModalInicioComponent } from './modal-inicio.component';
@@ -7,7 +7,7 @@ describe('ModalInicioComponent', () => {
   let component: ModalInicioComponent;
   let fixture: ComponentFixture<ModalInicioComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ModalInicioComponent ],
       imports: [IonicModule.forRoot()]

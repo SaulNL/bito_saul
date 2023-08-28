@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { ModalQuienVioRequerimientoComponent } from './modal-quien-vio-requerimiento.component';
@@ -7,7 +7,7 @@ describe('ModalQuienVioRequerimientoComponent', () => {
   let component: ModalQuienVioRequerimientoComponent;
   let fixture: ComponentFixture<ModalQuienVioRequerimientoComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ModalQuienVioRequerimientoComponent ],
       imports: [IonicModule.forRoot()]

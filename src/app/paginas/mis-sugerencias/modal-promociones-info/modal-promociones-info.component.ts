@@ -12,9 +12,7 @@ import {AppSettings} from "../../../AppSettings";
 import {ICupoon} from "../../../interfaces/ICupon";
 import QRCode from "easyqrcodejs";
 import html2canvas from "html2canvas";
-import {FilesystemDirectory, Plugins} from "@capacitor/core";
-
-const { Filesystem } = Plugins;
+import { Filesystem, Directory } from '@capacitor/filesystem';
 
 @Component({
   selector: 'app-modal-promociones-info',
@@ -334,7 +332,7 @@ export class ModalPromocionesInfoComponent implements OnInit {
         Filesystem.writeFile({
           path: fileName,
           data: canvas.toDataURL().toString(),
-          directory: FilesystemDirectory.Documents
+          directory: Directory.Documents
         }).then(() => {
           this.notificaciones.exito('Se descargo correctamente cupón de ' + promocion.nombre_comercial);
         }, error => {

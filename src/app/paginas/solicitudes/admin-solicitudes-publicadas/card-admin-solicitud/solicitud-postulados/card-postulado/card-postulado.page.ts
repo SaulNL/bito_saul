@@ -9,8 +9,8 @@ import { ToadNotificacionService } from "../../../../../../api/toad-notificacion
 import { Platform } from '@ionic/angular';
 import { HTTP } from "@ionic-native/http/ngx";
 import { File } from "@ionic-native/file/ngx";
-import { Plugins, FilesystemDirectory } from '@capacitor/core';
-const { Share } = Plugins;
+import { Directory } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
 
 @Component({
   selector: "app-card-postulado",
@@ -83,7 +83,7 @@ export class CardPostuladoPage implements OnInit {
       notificationVisibility: NotificationVisibility.VisibleNotifyCompleted,
       destinationInExternalFilesDir: {
         dirType: "",
-        subPath: FilesystemDirectory.Documents + "/" + this.solicitudPostulado.nombre + "_Archivo_Postulado." + this.extencion
+        subPath: Directory.Documents + "/" + this.solicitudPostulado.nombre + "_Archivo_Postulado." + this.extencion
       }
     };
     this.downloader.download(request).then((location: string) => {

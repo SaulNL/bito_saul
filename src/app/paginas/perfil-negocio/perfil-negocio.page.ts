@@ -10,7 +10,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, IonSlides, NavController, Platform, ToastController } from '@ionic/angular';
 import { NegocioService } from '../../api/negocio.service';
 import { BusquedaService } from 'src/app/api/busqueda.service';
-import { Geolocation } from '@capacitor/core';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
 import { Location } from '@angular/common';
 import { UtilsCls } from '../../utils/UtilsCls';
@@ -18,7 +17,6 @@ import { SideBarService } from '../../api/busqueda/side-bar-service';
 import { ActionSheetController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { DenunciaNegocioPage } from './denuncia-negocio/denuncia-negocio.page';
-import { Plugins } from '@capacitor/core';
 import { CalificarNegocioComponent } from '../../componentes/calificar-negocio/calificar-negocio.component';
 import { ProveedorServicioService } from '../../api/busqueda/proveedores/proveedor-servicio.service';
 import { DetalleProductoComponent } from '../../componentes/detalle-producto/detalle-producto.component';
@@ -34,8 +32,9 @@ import { ComentariosNegocioComponent } from '../../componentes/comentarios-negoc
 import { OptionBackLogin } from 'src/app/Modelos/OptionBackLoginModel';
 import { FiltrosModel } from 'src/app/Modelos/FiltrosModel';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { Share } from '@capacitor/share';
+import { Geolocation } from '@capacitor/geolocation';
 
-const { Share } = Plugins;
 const haversineCalculator = require('haversine-calculator');
 
 @Component({

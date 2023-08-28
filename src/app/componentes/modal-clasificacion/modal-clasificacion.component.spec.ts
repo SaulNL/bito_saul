@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { ModalClasificacionComponent } from './modal-clasificacion.component';
@@ -7,7 +7,7 @@ describe('ModalClasificacionComponent', () => {
   let component: ModalClasificacionComponent;
   let fixture: ComponentFixture<ModalClasificacionComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ModalClasificacionComponent ],
       imports: [IonicModule.forRoot()]

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { RecorteImagenComponent } from './recorte-imagen.component';
@@ -7,7 +7,7 @@ describe('RecorteImagenComponent', () => {
   let component: RecorteImagenComponent;
   let fixture: ComponentFixture<RecorteImagenComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RecorteImagenComponent ],
       imports: [IonicModule.forRoot()]

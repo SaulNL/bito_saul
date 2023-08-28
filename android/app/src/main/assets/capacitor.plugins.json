@@ -14,9 +14,5 @@
 	{
 		"pkg": "@capacitor/share",
 		"classpath": "com.capacitorjs.plugins.share.SharePlugin"
-	},
-	{
-		"pkg": "@rdlabo/capacitor-facebook-login",
-		"classpath": "jp.rdlabo.capacitor.plugin.facebook.FacebookLogin"
 	}
 ]

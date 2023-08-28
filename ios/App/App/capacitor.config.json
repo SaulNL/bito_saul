@@ -1,13 +1,20 @@
 {
-  "appId": "mx.com.softura.bitoo.produccion",
-  "appName": "TinBitoo",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "www",
-  "plugins": {
-    "SplashScreen": {
-      "launchShowDuration": 3000
-    }
-  },
-  "cordova": {}
+	"appId": "mx.com.softura.bitoo.produccion",
+	"appName": "TinBitoo",
+	"bundledWebRuntime": false,
+	"npmClient": "npm",
+	"webDir": "www",
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 3000
+		},
+		"PushNotifications": {
+			"presentationOptions": [
+				"badge",
+				"sound",
+				"alert"
+			]
+		}
+	},
+	"cordova": {}
 }

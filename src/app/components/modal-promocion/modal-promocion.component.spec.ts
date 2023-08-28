@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { ModalPromocionComponent } from './modal-promocion.component';
@@ -7,7 +7,7 @@ describe('ModalPromocionComponent', () => {
   let component: ModalPromocionComponent;
   let fixture: ComponentFixture<ModalPromocionComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ModalPromocionComponent ],
       imports: [IonicModule.forRoot()]

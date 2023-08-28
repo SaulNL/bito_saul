@@ -11,7 +11,7 @@ import { element } from 'protractor';
 import {ModalController, Platform} from '@ionic/angular';
 import { RecorteImagenComponent } from '../../../components/recorte-imagen/recorte-imagen.component';
 import { Router } from '@angular/router';
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 
 @Component({
   selector: 'app-modal-eventos',

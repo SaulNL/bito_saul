@@ -1,13 +1,11 @@
 import { NotificationInterface, NotificationModel } from './../Bitoo/models/notifications-model';
 import { Injectable } from '@angular/core';
-import { Plugins, PushNotification, PushNotificationToken, PushNotificationActionPerformed } from '@capacitor/core';
 import { AppSettings } from '../AppSettings';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HTTP } from '@ionic-native/http/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-
-const { PushNotifications } = Plugins;
+import { PushNotifications, Token, PushNotificationSchema } from '@capacitor/push-notifications';
 
 
 @Injectable({
@@ -35,14 +33,14 @@ export class NotificationWithFirebaseService {
    * @description Inicializa el token y lo registra
    */
   public inicializeToken() {
-    PushNotifications.requestPermission().then(result => {
-      if (result.granted) {
+    PushNotifications.requestPermissions().then(result => {
+      if (result.receive === 'granted') {
         PushNotifications.register();
       }
     });
     PushNotifications.addListener(
       'registration',
-      (token: PushNotificationToken) => {
+      (token: Token) => {
         localStorage.setItem('nftoken', String(token.value));
       },
     );
@@ -54,7 +52,7 @@ export class NotificationWithFirebaseService {
   public receiveNotification() {
     PushNotifications.addListener(
       'pushNotificationReceived',
-      (notification: PushNotification) => {
+      (notification: PushNotificationSchema) => {
         this.localNotificationPush(notification);
       },
     );
@@ -64,7 +62,7 @@ export class NotificationWithFirebaseService {
    * @description Activa las notificaciones locales de Ionic si esta en la App en uso (por que las notificaciones de firebase con ionic solo se muestran en la barra de notificaciones si no esta en uso la App)
    * @param notification
    */
-  public localNotificationPush(notification: PushNotification) {
+  public localNotificationPush(notification: PushNotificationSchema) {
     this.localNotifications.schedule({
       title: notification.title,
       text: notification.body,

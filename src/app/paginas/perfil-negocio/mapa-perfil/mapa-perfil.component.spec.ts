@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { MapaPerfilComponent } from './mapa-perfil.component';
@@ -7,7 +7,7 @@ describe('MapaPerfilComponent', () => {
   let component: MapaPerfilComponent;
   let fixture: ComponentFixture<MapaPerfilComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MapaPerfilComponent ],
       imports: [IonicModule.forRoot()]
