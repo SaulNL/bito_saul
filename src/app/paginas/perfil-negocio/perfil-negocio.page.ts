@@ -33,6 +33,7 @@ import { OptionBackLogin } from 'src/app/Modelos/OptionBackLoginModel';
 import { FiltrosModel } from 'src/app/Modelos/FiltrosModel';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { Share } from '@capacitor/share';
+import { Browser } from '@capacitor/browser';
 import { Geolocation } from '@capacitor/geolocation';
 
 const haversineCalculator = require('haversine-calculator');
