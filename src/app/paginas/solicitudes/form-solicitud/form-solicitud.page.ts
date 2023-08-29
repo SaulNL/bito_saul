@@ -12,13 +12,12 @@ import { SolicitudesService } from "./../../../api/solicitudes.service";
 import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
 import { LoadingController } from "@ionic/angular";
 import { ModalController } from "@ionic/angular";
-import { Plugins } from "@capacitor/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { RecorteImagenComponent } from "../../../components/recorte-imagen/recorte-imagen.component";
 import { NegocioService } from "../../../api/negocio.service";
 import { UbicacionMapa } from '../../../api/ubicacion-mapa.service';
+import { Geolocation } from '@capacitor/geolocation';
 
-const { Geolocation } = Plugins;
 @Component({
   selector: "app-form-solicitud",
   templateUrl: "./form-solicitud.page.html",

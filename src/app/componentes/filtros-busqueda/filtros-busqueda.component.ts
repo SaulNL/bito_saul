@@ -1,12 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ModalController } from "@ionic/angular";
 import { FiltrosModel } from "../../Modelos/FiltrosModel";
-import { Plugins } from '@capacitor/core';
 import { FiltrosService } from "../../api/filtros.service";
 import { CatTipoNegocioModel } from 'src/app/Modelos/CatTipoNegocioModel';
 import {CatDistintivosModel} from '../../Modelos/CatDistintivosModel';
+import { Geolocation } from '@capacitor/geolocation';
 
-const { Geolocation } = Plugins;
 declare var google: any;
 
 @Component({

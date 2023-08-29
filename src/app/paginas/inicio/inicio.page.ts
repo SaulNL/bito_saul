@@ -23,13 +23,11 @@ import { ICategoriaNegocio } from 'src/app/interfaces/ICategoriaNegocio';
 import { INegocios } from 'src/app/interfaces/INegocios';
 import { throwError } from 'rxjs';
 import { AlertController } from '@ionic/angular';
-import { Plugins } from '@capacitor/core';
 import { PersonaService } from 'src/app/api/persona.service';
 import { FiltrosService } from 'src/app/api/filtros.service';
 import Swal from 'sweetalert2';
 import {ModalInicioComponent} from '../../componentes/modal-inicio/modal-inicio.component';
-
-const { Geolocation } = Plugins;
+import { Geolocation } from '@capacitor/geolocation';
 declare var google: any;
 
 

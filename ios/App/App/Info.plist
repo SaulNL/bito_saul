@@ -64,11 +64,6 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Habilite el acceso a la camara si requiere tomar la foto de su negocio</string>
 	<key>NSContactsUsageDescription</key>

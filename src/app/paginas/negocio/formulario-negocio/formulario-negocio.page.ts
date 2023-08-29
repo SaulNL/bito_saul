@@ -17,14 +17,13 @@ import { CatLocalidadModel } from './../../../Modelos/CatLocalidadModel';
 import { CatMunicipioModel } from './../../../Modelos/CatMunicipioModel';
 import { CatEstadoModel } from './../../../Modelos/CatEstadoModel';
 import { Map, tileLayer, marker, Marker } from 'leaflet';
-import { Plugins } from '@capacitor/core';
-const { Geolocation } = Plugins;
 import { GeneralServicesService } from './../../../api/general-services.service';
 import { UbicacionMapa } from '../../../api/ubicacion-mapa.service';
 import { CatDistintivosModel } from 'src/app/Modelos/CatDistintivosModel';
 import { SeleccionarSucripcionComponent } from 'src/app/components/seleccionar-suscripcion/seleccionar-suscripcion.component';
 import { DetDomicilioModel } from 'src/app/Modelos/DetDomicilioModel';
 import { VigenciaPdfDistintivosComponent } from 'src/app/components/vigencia-pdf-distintivos/vigencia-pdf-distintivos.component';
+import { Geolocation } from '@capacitor/geolocation';
 import { element } from 'protractor';
 
 @Component({

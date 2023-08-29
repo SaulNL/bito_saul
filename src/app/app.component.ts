@@ -12,10 +12,9 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NgZone } from '@angular/core';
 import { NegocioService } from './api/negocio.service';
 import { VistasBitooModel } from 'src/app/Modelos/vistasBitooModel';
-import { Plugins } from '@capacitor/core';
 import { VersionAndroidService } from './api/version-android.service';
 import { AppSettings } from './AppSettings';
-const { Geolocation } = Plugins;
+import { Geolocation } from '@capacitor/geolocation';
 import { DeviceInfoModel } from "./Modelos/DeviceInfoModel";
 
 @Component({
