@@ -1,6 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/NOTICE', 'META-INF/LICENSE']
+        }
+    }
+    namespace "mx.com.softura.bitoo.produccion"
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "mx.com.softura.bitoo.produccion"
