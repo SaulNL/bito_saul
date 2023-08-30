@@ -191,7 +191,7 @@ export class FiltrosBusquedaComponent implements OnInit {
             this.filtros.idMunicipio = null;
             this.filtros.idLocalidad = null;
         }
-        //console.log("Los filtros de busqueda son: "+JSON.stringify(this.filtros))
+        console.log("Los filtros de busqueda son: ",this.filtros)
         this.buscarPorFiltros.emit(this.filtros);
     }
 
@@ -328,6 +328,7 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     setIonradiogroupEntregaDomicilio(opcion: number) {
+        console.log('entre')
         if (opcion === 1) {
             this.filtros.blnEntrega = true;
         } else if (opcion === 0) {

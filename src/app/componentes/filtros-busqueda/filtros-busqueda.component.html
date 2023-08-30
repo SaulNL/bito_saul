@@ -120,7 +120,7 @@
         <ion-list-header>
             <ion-label>Entega a domicilio</ion-label>
         </ion-list-header>
-        <ion-radio-group [value]="filtros.blnEntrega+''">
+        <!-- <ion-radio-group [value]="filtros.blnEntrega+''">
             <ion-item>
                 <ion-label>Si</ion-label>
                 <ion-radio value="true" color="danger" slot="start"
@@ -131,7 +131,21 @@
                 <ion-radio value="false" color="danger" slot="start"
                     (click)="setIonradiogroupEntregaDomicilio(0)"></ion-radio>
             </ion-item>
-        </ion-radio-group>
+        </ion-radio-group> -->
+        
+        <ion-radio-group value="fresas">
+            <ion-item>
+              <ion-label>si</ion-label>
+              <ion-radio slot="start" color="danger" value="true"
+              (click)="setIonradiogroupEntregaDomicilio(1)"></ion-radio>
+            </ion-item>
+        
+            <ion-item>
+              <ion-label>no</ion-label>
+              <ion-radio slot="start" color="danger" value="false"
+              (click)="setIonradiogroupEntregaDomicilio(0)"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
     </ion-list>
     <ion-list>
         <ion-list-header>
