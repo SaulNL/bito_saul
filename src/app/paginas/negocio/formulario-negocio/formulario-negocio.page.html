@@ -251,12 +251,22 @@
             </ion-select>
           </ion-item>
 
-          <ion-item>
+          <ion-item id="open-modal-date-form-negocio">
             <ion-label position="stacked">Fecha de fin de convenio:</ion-label>
-            <ion-datetime #picker displayFormat="D/MM/YYYY" max="2050" id="afiliadoEmpresa" name="afiliadoEmpresa"
-              [(ngModel)]="cnvn_fecha "></ion-datetime>
-            <ion-icon slot="end" name="calendar-outline" (click)="picker.open()"></ion-icon>
+            <ion-icon slot="end" name="calendar-outline"></ion-icon>
+            <ion-text>
+              {{cnvn_fecha | date: 'dd/MM/yyyy'}}
+            </ion-text>
           </ion-item>
+          <ion-modal trigger="open-modal-date-form-negocio">
+            <ng-template>
+              <ion-content>
+                <ion-datetime #datetimeConvenio max="2050" id="afiliadoEmpresa" name="afiliadoEmpresa" [(ngModel)]="cnvn_fecha" presentation="date"
+                  [showDefaultButtons]="true" doneText="Ok" cancelText="Cancelar">
+                </ion-datetime>
+              </ion-content>
+            </ng-template>
+          </ion-modal>
 
           <ion-row class="ion-align-items-center">
             <ion-col size="12" class="ion-text-center">
@@ -309,17 +319,31 @@
           <ion-item>
             <app-input-tags [tipo]="true" [tags]="negocioTO.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
           </ion-item>
-          <ion-label>Horario de atención <span style="color: red">*</span></ion-label>
-          <ion-item>
+          <ion-label>Horario de atención <span style="color: red">*</span></ion-label>x
+          <ion-item id="open-modal-time-1-form-negocio">
             <ion-label stacked> Horario Inicial </ion-label>
-            <ion-datetime display-format="H:mm" picker-format="H:mm" name="feInicio" #feInicio="ngModel"
-              [(ngModel)]="horarioini" (ionChange)="validarHoraInicio($event)"></ion-datetime>
+            <small>{{horarioini | date: 'H:mm'}}</small>
           </ion-item>
-          <ion-item>
+          <ion-popover trigger="open-modal-time-1-form-negocio" size="cover">
+            <ng-template>
+              <ion-datetime name="feInicio" #feInicio="ngModel" [(ngModel)]="horarioini" 
+                (ionChange)="validarHoraInicio($event)" presentation="time" 
+                [showDefaultButtons]="true" doneText="Ok" cancelText="Cancelar">
+              </ion-datetime>
+            </ng-template>
+          </ion-popover>
+          <ion-item id="open-modal-time-2-form-negocio">
             <ion-label stacked> Horario Final </ion-label>
-            <ion-datetime [disabled]="blnActivaHoraF" display-format="H:mm" picker-format="H:mm" name="fechaFinal"
-              #fechaFinal="ngModel" [(ngModel)]="horariofin" (ionChange)="validarHoraFinal($event)"></ion-datetime>
+            <small>{{horariofin | date: 'H:mm'}}</small>
           </ion-item>
+          <ion-popover trigger="open-modal-time-2-form-negocio" size="cover">
+            <ng-template>
+              <ion-datetime [disabled]="blnActivaHoraF" name="fechaFinal" #fechaFinal="ngModel" 
+                [(ngModel)]="horariofin" (ionChange)="validarHoraFinal($event)" presentation="time" 
+                [showDefaultButtons]="true" doneText="Ok" cancelText="Cancelar">
+              </ion-datetime>
+            </ng-template>
+          </ion-popover>
           <ion-item>
             <ion-label position="stacked">Días de la Semana</ion-label>
             <ion-select [disabled]="blnActivaDias" ok-text="Ok" cancel-text="Cancelar" multiple #dias="ngModel"

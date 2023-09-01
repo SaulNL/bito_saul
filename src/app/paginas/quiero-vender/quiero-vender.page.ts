@@ -81,7 +81,7 @@ export class QuieroVenderPage implements OnInit {
     this.proveedorTO = new MsPersonaModel();
     this.proveedorTO.det_domicilio = new DetDomicilioModel();
     this.proveedorTO = JSON.parse(localStorage.getItem('u_data'));
-    this.proveedorTO.fecha_nacimiento = this.proveedorTO.fecha_nacimiento !== null ? new Date(this.proveedorTO.fecha_nacimiento) : null;
+    this.proveedorTO.fecha_nacimiento = this.proveedorTO.fecha_nacimiento !== null ? new Date(this.proveedorTO.fecha_nacimiento).toISOString() : null;
     this.proveedorTO.det_domicilio = JSON.parse(localStorage.getItem('u_data')).domicilio !== null && undefined ? JSON.parse(localStorage.getItem('u_data')).domicilio : new DetDomicilioModel();
     if (this.proveedorTO.fecha_nacimiento !== null || this.proveedorTO.fecha_nacimiento !== undefined) {
       //    this.fechas = this.proveedorTO.fecha_nacimiento.toISOString();
@@ -494,7 +494,7 @@ export class QuieroVenderPage implements OnInit {
   convercionFechaNac(event) {
     let fecha = event.detail.value;
     let ms = Date.parse(fecha);
-    fecha = new Date(ms);
+    fecha = new Date(ms).toISOString();
     this.proveedorTO.fecha_nacimiento = fecha;
   }
 }

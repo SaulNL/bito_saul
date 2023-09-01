@@ -27,6 +27,7 @@ export class VigenciaPdfDistintivosComponent implements OnInit {
 
   ngOnInit() {
     this.pdfBg = this.distintivo.url_comprobante_vigencia != null || this.distintivo.archivo != null ? "#00b347" : "#df5555";
+    this.distintivo.fc_vencimiento = this.distintivo.fc_vencimiento !== null ? new Date(this.distintivo.fc_vencimiento).toISOString() : null;
   }
 
   abrirPdf() {
@@ -70,6 +71,13 @@ export class VigenciaPdfDistintivosComponent implements OnInit {
 
   cerrarModal() {
     this.modalController.dismiss();
+  }
+
+  selectFechaVencimiento(event: any) {
+    let fecha = event.detail.value;
+    let ms = Date.parse(fecha);
+    fecha = new Date(ms).toISOString();
+    this.distintivo.fc_vencimiento = fecha;
   }
 
 }

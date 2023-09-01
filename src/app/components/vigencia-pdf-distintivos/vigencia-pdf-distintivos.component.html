@@ -13,12 +13,21 @@
   <ion-card>
     <ion-card-content>
 
-      <ion-item>
+      <ion-item id="open-modal-date-vigencia">
         <ion-label position="stacked">Fecha de vencimiento del distintivo <span style="color: red">*</span></ion-label>
-        <ion-datetime #picker displayFormat="D/MM/YYYY" max="2050" name="fechaVigencia"
-          [(ngModel)]="distintivo.fc_vencimiento"></ion-datetime>
-        <ion-icon slot="end" name="calendar-outline" (click)="picker.open()"></ion-icon>
+        <ion-icon slot="end" name="calendar-outline"></ion-icon>
+        <small>{{distintivo.fc_vencimiento | date: 'dd/MM/yyyy'}}</small>
       </ion-item>
+      <ion-modal trigger="open-modal-date-vigencia">
+        <ng-template>
+          <ion-content>
+            <ion-datetime max="2050" name="fechaVigencia" presentation="date" 
+              [value]="distintivo.fc_vencimiento" (ionChange)="selectFechaVencimiento($event)" [showDefaultButtons]="true" 
+              doneText="Ok" cancelText="Cancelar">
+            </ion-datetime>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
 
       <div class="ion-margin">
         <div *ngIf="loaderPdf" class="loader-pdf">
@@ -45,7 +54,7 @@
                 Editar</div>
             </label>
 
-            <input type="file" id="imagenCarta" hidden accept="application/pdf" (change)="subirCarta($event)" />
+            <input type="file" id="imagenCarta" name="carta" hidden accept="application/pdf" (change)="subirCarta($event)" />
           </div>
 
           <div class="eliminarCarta" *ngIf="distintivo.url_comprobante_vigencia != null || distintivo.archivo != null"

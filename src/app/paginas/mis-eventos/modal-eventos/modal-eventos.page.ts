@@ -11,7 +11,6 @@ import { element } from 'protractor';
 import {ModalController, Platform} from '@ionic/angular';
 import { RecorteImagenComponent } from '../../../components/recorte-imagen/recorte-imagen.component';
 import { Router } from '@angular/router';
-import { waitForAsync } from '@angular/core/testing';
 
 @Component({
   selector: 'app-modal-eventos',
@@ -216,7 +215,6 @@ export class ModalEventosPage implements OnInit {
   }
 
   asignarValoresEvent(data) {
-    console.log("data", data)
     let pagos = [];
 
     setTimeout(async () => {
@@ -239,7 +237,8 @@ export class ModalEventosPage implements OnInit {
         }, 1500);
       }, 1500);
 
-      this.eventData.fecha = data.fecha;
+      this.eventData.fecha = data.fecha !== null ? new Date(data.fecha).toISOString() : null;
+
       this.eventData.tipo_pago_transferencia = data.tipo_pago_transferencia;
       this.eventData.tipo_pago_tarjeta_credito = data.tipo_pago_tarjeta_credito;
       this.eventData.tipo_pago_tarjeta_debito = data.tipo_pago_tarjeta_debito;
@@ -300,7 +299,6 @@ export class ModalEventosPage implements OnInit {
   }
 
   guardarEvento(data) {
-    console.log("datos a guardar", data)
     this.eventoService.guardarEvento(data).subscribe(res => {
       console.log(res)
       if (res.code == 200) {
@@ -434,6 +432,13 @@ export class ModalEventosPage implements OnInit {
       this.eventData.requiere_confirmacion = evento.detail.checked == false ? 0 : 1;
     }
 
+  }
+
+  selectFechaEvento(event: any) {
+    let fecha = event.detail.value;
+    let ms = Date.parse(fecha);
+    fecha = new Date(ms).toISOString();
+    this.eventData.fecha = fecha;
   }
 
   public agregarFoto(event) {

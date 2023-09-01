@@ -158,16 +158,31 @@
 
           <ion-label>Horario de promoción </ion-label>
           <ion-icon name="star" class="star" *ngIf="banderaPromocionCompleta"></ion-icon>
-          <ion-item [disabled]="banderaPromocionCompleta">
+
+          <ion-item [disabled]="banderaPromocionCompleta" id="open-modal-time-1-add-promo">
             <ion-label stacked> Horario Inicial </ion-label>
-            <ion-datetime display-format="H:mm" picker-format="H:mm" name="feInicio" #feInicio="ngModel"
-              [(ngModel)]="horarioini" (ionChange)="validarHoraInicio($event)"></ion-datetime>
+            <small>{{horarioini | date: 'H:mm'}}</small>
           </ion-item>
-          <ion-item [disabled]="banderaPromocionCompleta">
+          <ion-popover trigger="open-modal-time-1-add-promo" size="cover">
+            <ng-template>
+              <ion-datetime name="feInicio" #feInicio="ngModel" [(ngModel)]="horarioini" 
+                (ionChange)="validarHoraInicio($event)" presentation="time" [showDefaultButtons]="true" 
+                doneText="Ok" cancelText="Cancelar">
+              </ion-datetime>
+            </ng-template>
+          </ion-popover>
+          <ion-item [disabled]="banderaPromocionCompleta" id="open-modal-time-2-add-promo">
             <ion-label stacked> Horario Final </ion-label>
-            <ion-datetime [disabled]="blnActivaHoraF" display-format="H:mm" picker-format="H:mm" name="fechaFinal"
-              #fechaFinal="ngModel" [(ngModel)]="horariofin" (ionChange)="validarHoraFinal($event)"></ion-datetime>
+            <small>{{horariofin | date: 'H:mm'}}</small>
           </ion-item>
+          <ion-popover trigger="open-modal-time-2-add-promo" size="cover">
+            <ng-template>
+              <ion-datetime [disabled]="blnActivaHoraF" name="fechaFinal"
+                #fechaFinal="ngModel" [(ngModel)]="horariofin" (ionChange)="validarHoraFinal($event)"
+                presentation="time" [showDefaultButtons]="true" doneText="Ok" cancelText="Cancelar">
+              </ion-datetime>
+            </ng-template>
+          </ion-popover>
           <ion-item [disabled]="banderaPromocionCompleta">
             <ion-label position="stacked">Dias de la Semana</ion-label>
             <ion-select [disabled]="blnActivaDias" ok-text="Ok" cancel-text="Cancelar" multiple #dias="ngModel"

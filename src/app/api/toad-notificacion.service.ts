@@ -148,7 +148,7 @@ export class ToadNotificacionService {
   public toastInfo(title:any/*, time:number,buttonText:any*/){
     const Toast = Swal.mixin({
       toast: true,
-      position: 'top-right',
+      position: 'top-start',
       timer: 5000,
       timerProgressBar: true,
     })

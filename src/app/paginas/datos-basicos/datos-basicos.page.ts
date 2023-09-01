@@ -83,7 +83,7 @@ export class DatosBasicosPage implements OnInit {
 
   private actualizarUsuario(user) {
     this.usuarioSistema = user;
-    this.usuarioSistema.fecha_nacimiento = this.usuarioSistema.fecha_nacimiento !== null ? new Date(this.usuarioSistema.fecha_nacimiento) : null;
+    this.usuarioSistema.fecha_nacimiento = this.usuarioSistema.fecha_nacimiento !== null ? new Date(this.usuarioSistema.fecha_nacimiento).toISOString() : null;
   }
 
   private setDataBasicUser() {
@@ -341,5 +341,12 @@ export class DatosBasicosPage implements OnInit {
       this.lstAflUsuario = [];
       this.lstOrgUsuario = [];
     }
+  }
+
+  fechaNacimientoSeleccionada(event: any) {
+    let fecha = event.detail.value;
+    let ms = Date.parse(fecha);
+    fecha = new Date(ms).toISOString();
+    this.usuarioSistema.fecha_nacimiento = fecha;
   }
 }

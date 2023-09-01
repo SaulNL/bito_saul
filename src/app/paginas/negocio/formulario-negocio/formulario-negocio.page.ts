@@ -24,7 +24,7 @@ import { SeleccionarSucripcionComponent } from 'src/app/components/seleccionar-s
 import { DetDomicilioModel } from 'src/app/Modelos/DetDomicilioModel';
 import { VigenciaPdfDistintivosComponent } from 'src/app/components/vigencia-pdf-distintivos/vigencia-pdf-distintivos.component';
 import { Geolocation } from '@capacitor/geolocation';
-import { element } from 'protractor';
+
 
 @Component({
   selector: 'app-formulario-negocio',
@@ -589,12 +589,20 @@ export class FormularioNegocioPage implements OnInit {
       }
     );
   }
-  public subir_imagen_cuadrada(event) {
+
+  uploadPhoto(event: any) {
+
+   alert("upload")
+  }
+  public subir_imagen_cuadrada(event: any) {
     let nombre_archivo;
+    alert("antes del if");
     if (event.target.files && event.target.files.length) {
+      alert("entro evento");
       let height;
       let width;
       for (const archivo of event.target.files) {
+        alert("entro for ");
         const reader = this._utils_cls.getFileReader();
         reader.readAsDataURL(archivo);
         reader.onload = () => {
@@ -605,6 +613,7 @@ export class FormularioNegocioPage implements OnInit {
             height = img.naturalHeight;
             width = img.naturalWidth;
             if (width === 400 && height === 400) {
+              alert("entro tamaño");
               const file_name = archivo.name;
               const file = archivo;
               if (file.size < 3145728) {
@@ -628,6 +637,7 @@ export class FormularioNegocioPage implements OnInit {
                 this.notificaciones.alerta('El tama\u00F1o m\u00E1ximo de archivo es de 3 Mb, por favor intente con otro archivo');
               }
             } else {
+              alert("entro else tamaño");
               this.resizeToWidth = 400;
               this.resizeToHeight = 400;
               this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {

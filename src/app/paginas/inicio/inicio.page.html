@@ -106,6 +106,15 @@
       </ion-slide>
     </ion-slides>
 
+    <input type="file" class="file-input" #fileUpload>
+
+<div>
+    <button mat-mini-fab color="primary" class="upload-btn"
+      (click)="onFileSelected()">
+      <ion-icon name="camera-outline"></ion-icon>
+    </button>
+</div>
+
     <ion-refresher *ngIf="!isIOS" slot="fixed" (ionRefresh)="recargar($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>

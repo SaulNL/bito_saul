@@ -17,26 +17,45 @@
     </div>
     <ion-list>
       <form #formBasicos="ngForm" (ngSubmit)="guardarPublicacion(formBasicos)">
-        <ion-item>
-          <ion-label stacked>
-            Fecha inicial
-          </ion-label>
-          <ion-datetime name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="fechaini" required  [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Inicio" ></ion-datetime>
+        
+        <ion-item id="open-modal-date-1-solicitud">
+          <ion-label position="stacked">Fecha inicial:</ion-label>
+          <ion-icon slot="end" name="calendar-outline"></ion-icon>
+          <small>
+            {{fechaini| date: 'dd/MM/yyyy'}}
+          </small>
+          <small *ngIf="!fechaini" style="color: red">Fecha inicio es requerido</small>
         </ion-item>
-        <div *ngIf="fechaInicio.touched  && fechaInicio.invalid">
-          <div *ngIf="fechaInicio.errors.required">Fecha de Inicio es requerido
-          </div>
-      </div>
-        <ion-item>
-          <ion-label stacked>
-            Fecha final
-          </ion-label>
-          <ion-datetime  name="fechaFinal" #fechaFinal="ngModel" [(ngModel)]="fechafin" required (ionChange)="calcularRangoFechas()" [max]="maxDate" displayFormat="DD/MM/YYYY" placeholder="Fecha Final"></ion-datetime>
+        <ion-modal trigger="open-modal-date-1-solicitud">
+          <ng-template>
+            <ion-content>
+              <ion-datetime name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="fechaini" 
+              required [max]="maxDate" presentation="date" [showDefaultButtons]="true" doneText="Ok" cancelText="Cancelar"></ion-datetime>        
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+
+        <ion-item id="open-modal-date-2-solicitud">
+          <ion-label position="stacked">Fecha final:</ion-label>
+          <ion-icon slot="end" name="calendar-outline"></ion-icon>
+          <small>
+            {{fechafin| date: 'dd/MM/yyyy'}}
+          </small>
+          <small *ngIf="!fechafin" style="color: red">Fecha final es requerido</small>
+          
         </ion-item>
-       <div *ngIf="fechaFinal.touched  && fechaFinal.invalid">
-          <div *ngIf="fechaFinal.errors.required">Fecha Final es requerido
-          </div>
-      </div>
+
+        <ion-modal trigger="open-modal-date-2-solicitud">
+          <ng-template>
+            <ion-content>
+              <ion-datetime name="fechaFinal" #fechaFinal="ngModel" [(ngModel)]="fechafin" required 
+                (ionChange)="calcularRangoFechas()" [max]="maxDate" presentation="date" [showDefaultButtons]="true" 
+                doneText="Ok" cancelText="Cancelar">
+              </ion-datetime>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+        
         <br>
         <div class="ion-text-center">
           <span>Selecciona un rango de fechas no mayor a {{diasPermitidos}} días para la publicación</span>

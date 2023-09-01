@@ -1,7 +1,7 @@
 import { PlazasAfiliacionesComponent } from '../../componentes/plazas-afiliaciones/plazas-afiliaciones.component';
 import { AfiliacionPlazaModel } from '../../Modelos/AfiliacionPlazaModel';
 import { Auth0Service } from '../../api/busqueda/auth0.service';
-import { AfterViewInit, Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import {
   IonContent,
   LoadingController,
@@ -38,7 +38,11 @@ declare var google: any;
   providers: [SideBarService],
 })
 export class InicioPage implements OnInit, AfterViewInit {
-
+  
+  @ViewChild("fileUpload", {
+    read: ElementRef
+  }) fileUpload: ElementRef;
+  
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -1249,11 +1253,8 @@ export class InicioPage implements OnInit, AfterViewInit {
       const texto = this.paginaPrevia == 0 ? 'Estas en la primera pagina' : 'Estas en la ultima pagina';
 
       this.paginaPrevia = this.paginaPrevia == 0 ? this.paginaPrevia + 1 : this.paginaPrevia - 1;
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: texto
-      });
+
+      this.notificaciones.toastInfo(texto);
     }
   }
 
@@ -1351,5 +1352,12 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
   closePopUp() {
     this.showPopUp = false;
+  }
+
+  onFileSelected() {
+
+    alert("file angular")
+
+    let archivos = this.fileUpload.nativeElement.files;
   }
 }
