@@ -22,5 +22,9 @@
 	{
 		"pkg": "@capacitor/share",
 		"classpath": "com.capacitorjs.plugins.share.SharePlugin"
+	},
+	{
+		"pkg": "@capawesome/capacitor-file-picker",
+		"classpath": "io.capawesome.capacitorjs.plugins.filepicker.FilePickerPlugin"
 	}
 ]

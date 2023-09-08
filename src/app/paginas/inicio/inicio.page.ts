@@ -28,6 +28,8 @@ import { FiltrosService } from 'src/app/api/filtros.service';
 import Swal from 'sweetalert2';
 import {ModalInicioComponent} from '../../componentes/modal-inicio/modal-inicio.component';
 import { Geolocation } from '@capacitor/geolocation';
+import { Filesystem, Directory, Encoding, } from '@capacitor/filesystem';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 declare var google: any;
 
 
@@ -1359,5 +1361,15 @@ export class InicioPage implements OnInit, AfterViewInit {
     alert("file angular")
 
     let archivos = this.fileUpload.nativeElement.files;
+  }
+
+  async obtenerPdf(){
+    console.log("estoy entrando")
+    const result = await FilePicker.pickImages({
+      multiple: true,
+    });
+    
+    console.log(result.files[0])
+
   }
 }
