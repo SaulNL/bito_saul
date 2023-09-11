@@ -17,9 +17,9 @@
           <ion-item>
             <div class="avatar-upload">
               <div class="avatar-edit">
-                <input type="file" id="selfie" accept="image/*" (change)="subir_imagen_cuadrado($event)" />
                 <label for="selfie">
-                  <ion-icon name="camera-outline" style="position: relative; top: 7px"></ion-icon>
+                  <ion-icon name="camera-outline" style="position: relative; top: 7px" id="selfie"
+                            (click)="subir_imagen_cuadrado()"></ion-icon>
                 </label>
               </div>
               <div class="avatar-preview">
