@@ -74,31 +74,33 @@
               <ion-card>
                 <ion-icon name="image" role="img" class="md hydrated size-icon" aria-label="image"></ion-icon>
                 <label class="custom-file-input">
-                  <input *ngIf="elseBlock" type="file" #fileInput id="imagen-producto-uno"
-                         accept="image/*" (click)="fileInput.value = null" (change)="agregarFoto($event)" />
-                  <ng-template #elseBlock>
-                    <input (click)="agregarFoto($event)" />
-                  </ng-template>
-                </label>
-              </ion-card>
-            </ion-slide>
-
-            <!-----------Agregar Video---------->
-            <ion-slide style="height:100%; margin-bottom: 5px;" *ngIf="galeriaFull != true">
+                  <!-- <input *ngIf="elseBlock" type="file" #fileInput id="imagen-producto-uno"
+                         accept="image/*" (click)="fileInput.value = null" (change)="agregarFoto($event)" /> -->
+                    <div class="custom-file-input" style="height: 100%; width: 100%; position: relative; z-index: 1;" *ngIf="elseBlock" d="imagen-producto-uno" (click)="obtenerImg()">Este es mi boton para la img</div>
+                         <ng-template #elseBlock>
+                           <!-- <input (click)="agregarFoto($event)" /> -->
+                          </ng-template>
+                        </label>
+                      </ion-card>
+                    </ion-slide>
+                    
+                    <!-----------Agregar Video---------->
+                    <ion-slide style="height:100%; margin-bottom: 5px;" *ngIf="galeriaFull != true">
               <ion-card>
                 <ion-icon name="videocam-outline" role="img" class="md hydrated size-icon" aria-label="image"></ion-icon>
                 <label class="custom-video-input">
-                  <input *ngIf="elseBlock" type="file" #fileInput accept="video/mp4" id="video"
-                         (click)="fileInput.value = null" (change)="seleccionarVideo($event)" />
+                  <!-- <input *ngIf="elseBlock" type="file" #fileInput accept="video/mp4" id="video"
+                  (click)="fileInput.value = null" (change)="seleccionarVideo($event)" /> -->
 
+                  <div class="custom-video-input" style="height: 100%; width: 100%; position: relative; z-index: 1;" *ngIf="elseBlock" d="imagen-producto-uno" (click)="obtenerVideo()">Este es mi boton para el video</div>
+                  
                   <ng-template #elseBlock>
-                    <input (click)="seleccionarVideo($event)" />
+                    <!-- <input (click)="seleccionarVideo($event)" /> -->
                   </ng-template>
                 </label>
               </ion-card>
             </ion-slide>
           </ion-slides>
-
         </ion-item>
       </div>
 

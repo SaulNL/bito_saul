@@ -11,6 +11,7 @@ import { element } from 'protractor';
 import {ModalController, Platform} from '@ionic/angular';
 import { RecorteImagenComponent } from '../../../components/recorte-imagen/recorte-imagen.component';
 import { Router } from '@angular/router';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 @Component({
   selector: 'app-modal-eventos',
@@ -482,6 +483,7 @@ export class ModalEventosPage implements OnInit {
             } else {
               this.resizeToWidth = 400;
               this.resizeToHeight = 400;
+              console.log("img",img.src)
               this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
                     if (r !== undefined) {
                       const archivo = new ArchivoComunModel();
@@ -561,6 +563,54 @@ export class ModalEventosPage implements OnInit {
         this._notificacionService.alerta("Lo sentimos, el archivo supera los 100 MB");
       }
     }
+  }
+
+  async obtenerImg(){
+    const result = await FilePicker.pickImages({
+      multiple: false,
+      readData: true
+    });
+
+    // const contents = await Filesystem.readFile({
+    //   path: result.files[0].path,
+    // });
+
+    let imgPrueba = `data:image/png;base64,${result.files[0].data}`
+
+    this.resizeToWidth = 400;
+    this.resizeToHeight = 400;
+    this.abrirModal(imgPrueba, this.resizeToWidth, this.resizeToHeight).then(r => {
+      if (r !== undefined) {
+        const archivo = new ArchivoComunModel();
+        archivo.nombre_archivo = result.files[0].name,
+        archivo.archivo_64 = r.data;
+        this.fotosArrayAgregar.push(archivo);
+        this.numeroFotos++;
+        if (this.numeroFotos >= this.numeroFotosPermitidas) {
+          this.galeriaFull = true;
+          }
+          }
+        }
+    );
+  }
+
+  async obtenerVideo(){
+    const result = await FilePicker.pickVideos({
+      multiple: false,
+      readData: true
+    });
+    
+    if (result.files[0].size < 100000000) {
+      let video = new ArchivoComunModel();
+            video.nombre_archivo = result.files[0].name;
+            video.archivo_64 = `data:image/png;base64,${result.files[0].data}`
+            this.videosArrayAgregar.push(video);
+    }else {
+        this._notificacionService.alerta("Lo sentimos, el archivo supera los 100 MB");
+      }
+
+
+    // let videoPrueba = `data:image/png;base64,${contents.data}`
   }
 
 }
