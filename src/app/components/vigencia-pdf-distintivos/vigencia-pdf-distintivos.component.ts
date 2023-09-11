@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { ArchivoComunModel } from 'src/app/Modelos/ArchivoComunModel';
 import { ToadNotificacionService } from 'src/app/api/toad-notificacion.service';
 import { UtilsCls } from 'src/app/utils/UtilsCls';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 @Component({
   selector: 'app-vigencia-pdf-distintivos',
@@ -39,7 +40,31 @@ export class VigenciaPdfDistintivosComponent implements OnInit {
     }
   }
 
-  subirCarta(event) {
+  async selectPDF() {
+    let result = null;
+    result = await FilePicker.pickFiles({
+      types: ['application/pdf'],
+      multiple: false,
+      readData: true
+    });
+
+    let file = result.files[0];
+
+    if (file.size < 5242880) {
+      const archivo = new ArchivoComunModel();
+      archivo.nombre_archivo = file.name;
+      archivo.archivo_64 = 'data:application/pdf;base64,' + file.data;
+      
+      this.distintivo.archivo = archivo;
+      this.pdfBg = this.distintivo.url_comprobante_vigencia != null || this.distintivo.archivo != null ? "#00b347" : "#df5555";
+      this.notificaciones.toastSuccessBottom("¡Archivo agregado con exito!");
+
+    } else {
+      this.notificaciones.toastWarningBottom("El archivo sobrepasa los 5 MB");
+    }
+  }
+
+  /* subirCarta(event) {
 
     const fileName = event.target.files[0].name;
     const file = event.target.files[0];
@@ -61,7 +86,7 @@ export class VigenciaPdfDistintivosComponent implements OnInit {
     } else {
       this.notificaciones.alerta("El archivo sobrepasa los 5 MB");
     }
-  }
+  } */
 
   eliminarCarta() {
     if (this.distintivo.url_comprobante_vigencia) delete this.distintivo.url_comprobante_vigencia;

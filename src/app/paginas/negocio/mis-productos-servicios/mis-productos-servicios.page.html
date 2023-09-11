@@ -67,11 +67,11 @@
 
           <div style="display: flex; justify-content: center; align-items: center">
             <label for="imagenCarta" *ngIf="(carta === null || carta === undefined) && !loadPdf">
-              <div class="boton">Agregar</div>
+              <div class="boton" (click)="subirPdf()">Agregar</div>
             </label>
 
             <label for="imagenCarta" *ngIf="carta !== null && carta !== '' && carta !== undefined">
-              <div class="boton">
+              <div class="boton" (click)="subirPdf()">
                 Editar<ion-icon name="create-outline" style="margin-left: 5px"></ion-icon>
               </div>
             </label>
@@ -79,7 +79,8 @@
             <ion-button *ngIf="carta !== null && carta !== '' && carta !== undefined" color="danger"
               (click)="eliminarCarta()">Eliminar<ion-icon name="trash-outline" style="margin-left: 5px"></ion-icon>
             </ion-button>
-            <input type="file" id="imagenCarta" hidden accept="application/pdf" (change)="subirCarta($event)" />
+            <!-- <input type="file" id="imagenCarta" hidden accept="application/pdf" (change)="subirCarta($event)" /> -->
+            <!-- <div id="imagenCarta" style="height: 100%; width: 100%;" ></div>  -->
           </div>
 
           <div>
@@ -373,8 +374,9 @@
                     <ion-card>
                       <ion-icon name="image" role="img" class="md hydrated size-icon" aria-label="image"></ion-icon>
                       <label class="custom-file-input">
-                        <input type="file" #fileInput id="imagen-producto-uno" accept="image/*"
-                          (click)="fileInput.value = null" (change)="subir_imagen_cuadrada($event)" />
+                        <!-- <input type="file" #fileInput id="imagen-producto-uno" accept="image/*"
+                          (click)="fileInput.value = null" (change)="subir_imagen_cuadrada($event)" /> -->
+                          <div class="custom-file-input" style="height: 100%; width: 100%; position: relative; z-index: 1;"  d="imagen-producto-uno" (click)="obtenerImg()">Este es mi boton para la img</div>
                         <ng-template>
                           <input />
                         </ng-template>

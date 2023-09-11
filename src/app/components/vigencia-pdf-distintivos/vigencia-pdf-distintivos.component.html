@@ -47,19 +47,19 @@
 
         <div class="botones">
           <div *ngIf="!loaderPdf" style="display: flex; justify-content: center; align-items: center">
-            <label for="imagenCarta">
-              <div class="boton" *ngIf="distintivo.url_comprobante_vigencia == null &&  distintivo.archivo == null">
-                Agregar</div>
-              <div class="boton" *ngIf="distintivo.url_comprobante_vigencia != null || distintivo.archivo != null">
-                Editar</div>
-            </label>
+            <ion-button color="danger" size="small" (click)="selectPDF()" expand="block">
+              <div *ngIf="distintivo.url_comprobante_vigencia == null &&  distintivo.archivo == null">
+                Agregar
+              </div>
+              <div *ngIf="distintivo.url_comprobante_vigencia != null || distintivo.archivo != null">
+                Editar
+              </div>
+            </ion-button>
 
-            <input type="file" id="imagenCarta" name="carta" hidden accept="application/pdf" (change)="subirCarta($event)" />
-          </div>
-
-          <div class="eliminarCarta" *ngIf="distintivo.url_comprobante_vigencia != null || distintivo.archivo != null"
-            (click)="eliminarCarta()">
-            <div class="boton" style="height: 36px; width: 53px;">Eliminar</div>
+            <ion-button color="danger" size="small" (click)="eliminarCarta()" expand="block" *ngIf="distintivo.url_comprobante_vigencia != null || distintivo.archivo != null">
+              Eliminar
+            </ion-button>
+            
           </div>
         </div>
       </div>
