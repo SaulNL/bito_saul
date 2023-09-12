@@ -194,7 +194,7 @@ export class InfoPromoComponent implements OnInit {
 
   async mensajeRegistro() {
     const alert = await this.alertController.create({
-      header: 'Bituyú!',
+      header: 'Bituyú',
       message: "¿Ya tienes una cuenta?",
       buttons: [
         {

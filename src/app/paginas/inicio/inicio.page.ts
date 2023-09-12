@@ -552,7 +552,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   async AlertActivarUbicacion() {
     const alert = await this.alertController.create({
-      header: 'Bituyú!',
+      header: 'Bituyú',
       message: 'Activa tu ubicación para poder ver los negocios cerca de ti',
       buttons: [
         {
