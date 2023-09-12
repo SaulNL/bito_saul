@@ -82,6 +82,7 @@
                       accept="image/*" (click)="fileInput.value = null" (change)="agregarFoto($event)" /> -->
                       <div class="custom-file-input" style="height: 100%; width: 100%; position: relative; z-index: 1;
                       background: linear-gradient(90deg, #ff1dbd,#FFCE00); color: #fff;" *ngIf="elseBlock" d="imagen-producto-uno" (click)="obtenerImg()">Subir Imagen</div>
+                      <p *ngIf="mensaje" style="color: #ff4154;">{{mensaje}}</p>
                     <ng-template #elseBlock>
                       <!-- <input (click)="agregarFoto($event)" /> -->
                     </ng-template>

@@ -131,6 +131,7 @@ export class FormularioNegocioPage implements OnInit {
   public galeriaFull = false;
   public numeroFotos: number;
   public logo: any;
+  public mensaje = null;
   public negocioAplica: boolean;
   convenioId: number;
   cnvn_fecha: any;
@@ -1725,11 +1726,13 @@ export class FormularioNegocioPage implements OnInit {
   }
 
   async obtenerImg(){
+    this.mensaje = "(Inténtelo de nuevo)";
     const result = await FilePicker.pickImages({
       multiple: false,
       readData: true
     });
-
+    this.mensaje = null;
+    
     let imgPrueba = `data:image/png;base64,${result.files[0].data}`
 
     if (!this.features10) {

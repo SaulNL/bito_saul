@@ -44,6 +44,7 @@ export class FormSolicitudPage implements OnInit {
   public negoAux: any;
   public tipoGiroAux: any;
   public tipoSubAux: any;
+  public mensaje = null;
   public tipoOrg: any;
   public listTipoNegocio: any;
   public listMiNegocio: any;
@@ -536,11 +537,13 @@ export class FormSolicitudPage implements OnInit {
   }
 
   async obtenerImg(){
+    this.mensaje = "(Inténtelo de nuevo)";
     const result = await FilePicker.pickImages({
       multiple: false,
       readData: true
     });
-
+    this.mensaje = null;
+    
     let imgPrueba = `data:image/png;base64,${result.files[0].data}`
 
     this.abrirModal(imgPrueba, 500, 500).then((r) => {

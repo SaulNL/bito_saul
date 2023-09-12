@@ -29,6 +29,7 @@
                 [ngStyle]="{ 'background-image': 'url('+usuarioSistema.selfie.archivo_64+')'}"></div>
               </div>
               <ion-label>Foto de perfil</ion-label>
+              <p *ngIf="mensaje" style="color: #ff4154;">{{mensaje}}</p>
             </div>
           </ion-item>
           <ion-item>

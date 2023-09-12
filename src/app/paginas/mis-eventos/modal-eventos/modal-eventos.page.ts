@@ -55,6 +55,7 @@ export class ModalEventosPage implements OnInit {
   public galeriaFull = false;
   base64Video = null;
   public isIos: boolean;
+  public mensaje = null;
   numeroFotosPermitidas: number;
   slideOpts = {
     slidesPerView: 1.5,
@@ -566,10 +567,12 @@ export class ModalEventosPage implements OnInit {
   }
 
   async obtenerImg(){
+    this.mensaje = "(Inténtelo de nuevo)";
     const result = await FilePicker.pickImages({
       multiple: false,
       readData: true
     });
+    this.mensaje = null;
 
     // const contents = await Filesystem.readFile({
     //   path: result.files[0].path,
@@ -595,10 +598,12 @@ export class ModalEventosPage implements OnInit {
   }
 
   async obtenerVideo(){
+    this.mensaje = "(Inténtelo de nuevo)";
     const result = await FilePicker.pickVideos({
       multiple: false,
       readData: true
     });
+    this.mensaje = null;
     
     if (result.files[0].size < 100000000) {
       let video = new ArchivoComunModel();

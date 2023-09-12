@@ -76,6 +76,7 @@ export class MisProductosServiciosPage implements OnInit {
   public agregarImagen: boolean;
   public editar: boolean;
   public arrayFotos: any;
+  public mensaje = null;
 
   slidesOptions = {
     slidesPerView: 1.5,
@@ -306,11 +307,13 @@ export class MisProductosServiciosPage implements OnInit {
   // }
 
   async subirPdf(){
+    this.mensaje = "(Inténtelo de nuevo)";
     const result = await FilePicker.pickFiles({
       types: ['application/pdf'],
       multiple: false,
       readData: true
     });
+    this.mensaje = null;
 
     if (result.files[0].size < 3145728) {
       const archivo = new ArchivoComunModel();
@@ -1220,10 +1223,13 @@ export class MisProductosServiciosPage implements OnInit {
   }
 
   async obtenerImg(){
+    this.mensaje = "(Inténtelo de nuevo)";
     const result = await FilePicker.pickImages({
       multiple: false,
       readData: true
     });
+
+    this.mensaje = null;
 
     let imgPrueba = `data:image/png;base64,${result.files[0].data}`
 

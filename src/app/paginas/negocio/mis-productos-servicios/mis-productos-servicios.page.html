@@ -68,6 +68,7 @@
           <div style="display: flex; justify-content: center; align-items: center">
             <label for="imagenCarta" *ngIf="(carta === null || carta === undefined) && !loadPdf">
               <div class="boton" (click)="subirPdf()">Agregar</div>
+              <p *ngIf="mensaje" style="color: #ff4154;">{{mensaje}}</p>
             </label>
 
             <label for="imagenCarta" *ngIf="carta !== null && carta !== '' && carta !== undefined">
@@ -377,6 +378,7 @@
                         <!-- <input type="file" #fileInput id="imagen-producto-uno" accept="image/*"
                           (click)="fileInput.value = null" (change)="subir_imagen_cuadrada($event)" /> -->
                           <div class="custom-file-input" style="height: 100%; width: 100%; position: relative; z-index: 1;"  d="imagen-producto-uno" (click)="obtenerImg()">Este es mi boton para la img</div>
+                          <p *ngIf="mensaje" style="color: #ff4154;">{{mensaje}}</p>
                         <ng-template>
                           <input />
                         </ng-template>

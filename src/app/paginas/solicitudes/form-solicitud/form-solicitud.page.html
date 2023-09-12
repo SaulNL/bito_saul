@@ -233,6 +233,7 @@
               </label>
             </div>
           </div>
+          <p *ngIf="mensaje" style="color: #ff4154;">{{mensaje}}</p>
         </ion-list>
         <ion-button expand="block" type="submit" class="bg-naranja" [disabled]="formVariable.invalid">
           <span
