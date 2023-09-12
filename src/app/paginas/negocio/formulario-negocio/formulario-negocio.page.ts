@@ -24,6 +24,7 @@ import { SeleccionarSucripcionComponent } from 'src/app/components/seleccionar-s
 import { DetDomicilioModel } from 'src/app/Modelos/DetDomicilioModel';
 import { VigenciaPdfDistintivosComponent } from 'src/app/components/vigencia-pdf-distintivos/vigencia-pdf-distintivos.component';
 import { Geolocation } from '@capacitor/geolocation';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 
 @Component({
@@ -596,13 +597,10 @@ export class FormularioNegocioPage implements OnInit {
   }
   public subir_imagen_cuadrada(event: any) {
     let nombre_archivo;
-    alert("antes del if");
     if (event.target.files && event.target.files.length) {
-      alert("entro evento");
       let height;
       let width;
       for (const archivo of event.target.files) {
-        alert("entro for ");
         const reader = this._utils_cls.getFileReader();
         reader.readAsDataURL(archivo);
         reader.onload = () => {
@@ -613,7 +611,6 @@ export class FormularioNegocioPage implements OnInit {
             height = img.naturalHeight;
             width = img.naturalWidth;
             if (width === 400 && height === 400) {
-              alert("entro tamaño");
               const file_name = archivo.name;
               const file = archivo;
               if (file.size < 3145728) {
@@ -637,7 +634,6 @@ export class FormularioNegocioPage implements OnInit {
                 this.notificaciones.alerta('El tama\u00F1o m\u00E1ximo de archivo es de 3 Mb, por favor intente con otro archivo');
               }
             } else {
-              alert("entro else tamaño");
               this.resizeToWidth = 400;
               this.resizeToHeight = 400;
               this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
@@ -1705,5 +1701,54 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioTO.alcance_entrega = "";
     this.negocioTO.tiempo_entrega_kilometro = "";
     this.negocioTO.costo_entrega = "";
+  }
+
+  async subirNuevaImg(){
+    const result = await FilePicker.pickImages({
+      multiple: false,
+      readData: true
+    });
+
+    let imgPrueba = `data:image/png;base64,${result.files[0].data}`
+
+    this.abrirModal(imgPrueba, 400, 400).then(r => {
+      if (r !== undefined) {
+        const archivo = new ArchivoComunModel();
+        archivo.nombre_archivo = result.files[0].name,
+          archivo.archivo_64 = r.data;
+        this.negocioTO.logo = archivo;
+        this.negocioTO.local = archivo;
+        // this.blnImgCuadrada = false;
+      }
+    }
+    );
+  }
+
+  async obtenerImg(){
+    const result = await FilePicker.pickImages({
+      multiple: false,
+      readData: true
+    });
+
+    let imgPrueba = `data:image/png;base64,${result.files[0].data}`
+
+    if (!this.features10) {
+      this.notificaciones.alerta("No cuenta con la subscripción requerida para usar esta característica")
+    } else {
+      this.abrirModal(imgPrueba, 400, 400).then(r => {
+        if (r !== undefined) {
+          const archivo = new ArchivoComunModel();
+          archivo.nombre_archivo = result.files[0].name,
+            archivo.archivo_64 = r.data;
+          this.fotografiasArray.push(archivo);
+          this.numeroFotos++;
+          if (this.numeroFotos >= this.numeroFotosPermitidas) {
+            this.galeriaFull = true;
+          }
+        }
+      }
+      );
+    }
+
   }
 }

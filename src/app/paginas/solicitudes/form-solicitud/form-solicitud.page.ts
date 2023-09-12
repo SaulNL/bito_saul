@@ -17,6 +17,7 @@ import { RecorteImagenComponent } from "../../../components/recorte-imagen/recor
 import { NegocioService } from "../../../api/negocio.service";
 import { UbicacionMapa } from '../../../api/ubicacion-mapa.service';
 import { Geolocation } from '@capacitor/geolocation';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 @Component({
   selector: "app-form-solicitud",
@@ -532,5 +533,24 @@ export class FormSolicitudPage implements OnInit {
         })
 
       })
+  }
+
+  async obtenerImg(){
+    const result = await FilePicker.pickImages({
+      multiple: false,
+      readData: true
+    });
+
+    let imgPrueba = `data:image/png;base64,${result.files[0].data}`
+
+    this.abrirModal(imgPrueba, 500, 500).then((r) => {
+      if (r !== undefined) {
+        const archivo = new ArchivoComunModel();
+        (archivo.nombre_archivo = result.files[0].name),
+          (archivo.archivo_64 = r.data);
+        this.actualTO.imagen = archivo;
+        this.blnImgCuadrada = false;
+      }
+    });
   }
 }

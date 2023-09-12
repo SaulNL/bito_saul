@@ -106,8 +106,6 @@
       </ion-slide>
     </ion-slides>
 
-    <input type="file" class="file-input" #fileUpload>
-
 <div>
     <button mat-mini-fab color="primary" class="upload-btn"
       (click)="onFileSelected()">
@@ -136,9 +134,6 @@
       </ion-col>
     </ion-row>
 
-    <div class="pdf" style="background-color: black; color: aliceblue;">
-      <button (click)="obtenerPdf()">Este es mi boton para el pdf</button>
-    </div>
     <div *ngIf="!loaderNegocios">
       <div *ngIf="listaCategorias.length !== 0">
         <div *ngFor="let cat of !banderaVerMas || listaVerMas.length === 0 ? listaCategorias : listaVerMas; index as a">
