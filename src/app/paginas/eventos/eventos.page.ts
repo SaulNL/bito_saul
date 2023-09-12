@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EventosService} from '../../api/eventos.service';
 import {CatEstadoModel} from '../../Modelos/CatEstadoModel';
@@ -8,7 +8,7 @@ import {ToadNotificacionService} from '../../api/toad-notificacion.service';
 import {CatMunicipioModel} from '../../Modelos/CatMunicipioModel';
 import {CatLocalidadModel} from '../../Modelos/CatLocalidadModel';
 import {FiltroEventosModel} from '../../Modelos/FiltroEventosModel';
-import {AlertController} from '@ionic/angular';
+import {AlertController, IonContent} from '@ionic/angular';
 import {AfiliacionPlazaModel} from '../../Modelos/AfiliacionPlazaModel';
 
 @Component({
@@ -17,6 +17,8 @@ import {AfiliacionPlazaModel} from '../../Modelos/AfiliacionPlazaModel';
   styleUrls: ['./eventos.page.scss'],
 })
 export class EventosPage implements OnInit {
+  @ViewChild(IonContent) content: IonContent;
+  public cordenada: number;
   public existeSesion: boolean;
   public user: any;
   opciones: string[] = ['Hoy', 'Mañana', 'Esta semana', 'Este mes'];
