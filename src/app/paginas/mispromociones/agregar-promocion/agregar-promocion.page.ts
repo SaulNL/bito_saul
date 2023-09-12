@@ -50,6 +50,9 @@ export class AgregarPromocionPage implements OnInit {
   public blnImgPoster: boolean;
   public loader: any;
   public msj: "Guardando";
+  public mensaje: string;
+  public mensaje1: string;
+  public mensaje2: string;
   public msj2: "Cargando video...";
   @ViewChild("inputTarjeta") inputTar: ElementRef;
   @ViewChild("inputBanner") inputBanner: ElementRef;
@@ -316,10 +319,16 @@ export class AgregarPromocionPage implements OnInit {
   }
 
   async seleccionarVideo(){
+    if (this.mostrarVideo === true){
+      this.mensaje2 = "(Intentalo de nuevo)"
+    }
+
     const result = await FilePicker.pickVideos({
       multiple: false,
       readData: true
     });
+
+    this.mensaje2 = null;
 
     if (result.files[0].size < 100000000) {
       let video = new ArchivoComunModel();
@@ -431,10 +440,18 @@ export class AgregarPromocionPage implements OnInit {
    */
 
   async subir_imagen_cuadrada() {
+
+    if (this.blnImgCuadrada === true){
+      this.mensaje = "(Intentalo de nuevo)"
+    }
+
     const result = await FilePicker.pickImages({
       multiple: false,
       readData: true
     })
+
+    this.mensaje = null;
+
     if (result.files && result.files.length) {
       for (const archivo of result.files) {
         const img = new Image();
@@ -503,10 +520,16 @@ export class AgregarPromocionPage implements OnInit {
   }
 
   async subir_imagen_rectangulo() {
+    if (this.blnImgRectangulo === true){
+      this.mensaje1 = "(Intentalo de nuevo)"
+    }
+
     const result = await FilePicker.pickImages({
       multiple: false,
       readData: true
     })
+
+    this.mensaje1 = null;
 
     if (result.files && result.files.length) {
       for (const archivo of result.files) {

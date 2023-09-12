@@ -297,7 +297,7 @@
           </div>
         </div>
         <!--? input de la imagen -->
-
+        <p *ngIf="mensaje !== null" style="text-align: center; color: #ff4154">{{mensaje}}</p>
         <!--? Input banner -->
         <div style="margin-top: 10px">
           <div style="display: flex; justify-content: center">
@@ -368,6 +368,7 @@
         <div>
           <div *ngIf="seleccionTo.id_tipo_promocion===1" class="btn btn-info btn-raised">
             <br>
+            <p *ngIf="mensaje1 !== null" style="text-align: center; color: #ff4154">{{mensaje1}}</p>
             <ion-card [disabled]="mostrarVideo">
               <div class="ion-text-center">Subir Video</div>
             </ion-card>
@@ -391,6 +392,7 @@
               </div>
             </div>
             <div>
+              <p *ngIf="mensaje2 !== null" style="text-align: center; color: #ff4154">{{mensaje2}}</p>
               <h6>El video es opcional.</h6>
               <ion-button [disabled]="mostrarVideo" expand="full" class="bg-naranja" (click)="seleccionarVideo()" id="video">
                 <label for="video" [ngClass]="isIos ? 'upload' : 'uploadAndroid'">

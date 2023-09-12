@@ -38,6 +38,7 @@ export class ModalInfoSolicitudComponent implements OnInit {
   public isIos: boolean;
   public type: any;
   public data: any;
+  public mensaje: string;
   constructor(
     public modalController: ModalController,
     private servicioSolicitudes: SolicitudesService,
@@ -192,10 +193,16 @@ export class ModalInfoSolicitudComponent implements OnInit {
    */
 
   async subir_archivo(){
+    if (this.nombreArchivo === '' ){
+      this.mensaje = "(Intentalo de nuevo)"
+    }
+
     const result = await FilePicker.pickFiles({
       multiple: false,
       readData: true
     });
+
+    this.mensaje = null;
 
     const file: any = result.files[0];
     this.type = result.files[0].mimeType;
