@@ -75,7 +75,8 @@
         <p>
           {{producto.descripcion != null ? producto.descripcion:'Sin descripción'}}
         </p>
-        <ion-badge color="primary">{{producto.tipo}}</ion-badge>
+        <ion-badge *ngIf="producto.tipo == 'producto'" color="primary">PRODUCTO</ion-badge>
+        <ion-badge *ngIf="producto.tipo == 'servicio'" style="background-color: purple">SERVICIO</ion-badge>
         <ion-badge color="medium">{{producto.ubicacion !=null ? producto.ubicacion.nombre_localidad:'Sin ubicación'}}
         </ion-badge>
       </ion-label>
