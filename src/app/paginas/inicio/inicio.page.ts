@@ -1356,20 +1356,4 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.showPopUp = false;
   }
 
-  onFileSelected() {
-
-    alert("file angular")
-
-    let archivos = this.fileUpload.nativeElement.files;
-  }
-
-  async obtenerPdf(){
-    console.log("estoy entrando")
-    const result = await FilePicker.pickImages({
-      multiple: true,
-    });
-    
-    console.log(result.files[0])
-
-  }
 }

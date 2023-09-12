@@ -20,6 +20,27 @@
   <div *ngIf="!loader">
     <ion-toolbar>
       <ion-buttons slot="start">
+        <ion-chip *ngIf="filtroActivo" (click)="borrarFiltrosP(true)" color="danger">
+          <ion-label><span class="text">Borrar Filtros</span></ion-label>
+        </ion-chip>
+
+        <ion-chip *ngIf="!filtroActivo" class="text2 boton-margen-l" color="dark"
+                  (click)="abrirFiltros()"><span>Filtros</span>
+          <ion-icon class="icono" name="filter-outline"></ion-icon>
+        </ion-chip>
+
+        <ion-chip class="eventosButton" (click)="openEventos()" color="dark">
+          <small>Eventos</small>
+        </ion-chip>
+
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button mode="ios" class="mapa" shape="round" [disabled]="listaCategorias.length === 0"
+                    (click)="abrirModalMapa()">
+          <ion-icon class="icono" name="map-outline"></ion-icon>
+          <small class="text">Mapa</small>
+        </ion-button>
+
         <ion-chip *ngIf="!selectionAP" color="dark" class="boton-margen-r" (click)="openPlazasAfiliacionesModal()">
           <small class="text">Destacados</small>
           <ion-icon class="icono" name="caret-down-outline"></ion-icon>
@@ -27,27 +48,6 @@
 
         <ion-chip *ngIf="selectionAP" (click)="regresarBitoo(true)" color="danger">
           <ion-label><span class="text">Volver a Bituyú</span></ion-label>
-        </ion-chip>
-
-        <ion-button mode="ios" class="mapa" shape="round" [disabled]="listaCategorias.length === 0"
-          (click)="abrirModalMapa()">
-          <ion-icon class="icono" name="map-outline"></ion-icon>
-          <small class="text">Mapa</small>
-        </ion-button>
-
-      </ion-buttons>
-      <ion-buttons slot="end">
-        <ion-chip class="eventosButton" (click)="openEventos()" color="dark">
-          <small>Eventos</small>
-        </ion-chip>
-
-        <ion-chip *ngIf="filtroActivo" (click)="borrarFiltrosP(true)" color="danger">
-          <ion-label><span class="text">Borrar Filtros</span></ion-label>
-        </ion-chip>
-
-        <ion-chip *ngIf="!filtroActivo" class="text2 boton-margen-l" color="dark"
-          (click)="abrirFiltros()"><span>Filtros</span>
-          <ion-icon class="icono" name="filter-outline"></ion-icon>
         </ion-chip>
 
       </ion-buttons>
@@ -106,15 +106,6 @@
       </ion-slide>
     </ion-slides>
 
-    <input type="file" class="file-input" #fileUpload>
-
-<div>
-    <button mat-mini-fab color="primary" class="upload-btn"
-      (click)="onFileSelected()">
-      <ion-icon name="camera-outline"></ion-icon>
-    </button>
-</div>
-
     <ion-refresher *ngIf="!isIOS" slot="fixed" (ionRefresh)="recargar($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
@@ -136,9 +127,6 @@
       </ion-col>
     </ion-row>
 
-    <div class="pdf" style="background-color: black; color: aliceblue;">
-      <button (click)="obtenerPdf()">Este es mi boton para el pdf</button>
-    </div>
     <div *ngIf="!loaderNegocios">
       <div *ngIf="listaCategorias.length !== 0">
         <div *ngFor="let cat of !banderaVerMas || listaVerMas.length === 0 ? listaCategorias : listaVerMas; index as a">
