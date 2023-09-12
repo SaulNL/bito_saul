@@ -17,25 +17,25 @@
   <ion-header collapse="condense"> </ion-header>
 
   <ion-item>
-    <ion-buttons *ngIf="filtroActivo" slot="end">
+    <ion-buttons *ngIf="filtroActivo" slot="start">
       <ion-chip (click)="borrarFiltros()" color="danger">
         <ion-icon name="trash-outline" color="danger"></ion-icon>
         <ion-label>Borrar Filtros</ion-label>
       </ion-chip>
     </ion-buttons>
-    <ion-buttons *ngIf="!selectionAP">
+    <ion-buttons slot="end" *ngIf="!selectionAP">
       <ion-button (click)="openPlazasAfiliacionesModal()">
         Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span>
         <ion-icon name="caret-down-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons *ngIf="selectionAP">
+    <ion-buttons slot="end" *ngIf="selectionAP">
       <ion-chip (click)="regresarBitoo()" color="danger">
         <ion-icon name="log-out-outline"></ion-icon>
         <ion-label>Volver a Bituyú</ion-label>
       </ion-chip>
     </ion-buttons>
-    <ion-buttons slot="end" *ngIf="!filtroActivo">
+    <ion-buttons slot="start" *ngIf="!filtroActivo">
       <ion-button (click)="abrirFiltros()">Filtros
         <ion-icon name="filter-outline"></ion-icon>
       </ion-button>
