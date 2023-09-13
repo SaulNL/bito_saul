@@ -54,6 +54,9 @@ export class FormularioNegocioPage implements OnInit {
   public resizeToWidth = 0;
   public resizeToHeight = 0;
   private usuario: any;
+  public mensaje = '';
+  public mensaje2: string;
+  public bandera: boolean;
   public entregas = [
     { id: true, respuesta: 'Si' },
     { id: false, respuesta: 'No' }
@@ -131,7 +134,6 @@ export class FormularioNegocioPage implements OnInit {
   public galeriaFull = false;
   public numeroFotos: number;
   public logo: any;
-  public mensaje = null;
   public negocioAplica: boolean;
   convenioId: number;
   cnvn_fecha: any;
@@ -193,6 +195,7 @@ export class FormularioNegocioPage implements OnInit {
     this.btnEstado = false;
     this.btnMuncipio = true;
     this.btnLocalidad = true;
+    this.bandera = true;
     this.loaderSubCategoria = true;
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
@@ -1705,10 +1708,19 @@ export class FormularioNegocioPage implements OnInit {
   }
 
   async subirNuevaImg(){
+    if (this.negocioTO.logo === null ||
+        this.negocioTO.logo === undefined ||
+        this.negocioTO.logo.archivo_64 === '' ||
+        this.negocioTO.logo.archivo_64 === null ||
+        this.negocioTO.logo.archivo_64 === undefined){
+      this.mensaje = "(Inténtelo de nuevo)";
+    }
     const result = await FilePicker.pickImages({
       multiple: false,
       readData: true
     });
+
+    this.mensaje = null;
 
     let imgPrueba = `data:image/png;base64,${result.files[0].data}`
 
@@ -1726,13 +1738,18 @@ export class FormularioNegocioPage implements OnInit {
   }
 
   async obtenerImg(){
-    this.mensaje = "(Inténtelo de nuevo)";
+    if (this.bandera === true){
+      this.mensaje2 = "(Inténtelo de nuevo)";
+    }
+
     const result = await FilePicker.pickImages({
       multiple: false,
       readData: true
     });
-    this.mensaje = null;
-    
+
+    this.bandera = false;
+    this.mensaje2 = null;
+
     let imgPrueba = `data:image/png;base64,${result.files[0].data}`
 
     if (!this.features10) {

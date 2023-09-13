@@ -320,7 +320,7 @@ export class AgregarPromocionPage implements OnInit {
 
   async seleccionarVideo(){
     if (this.mostrarVideo === true){
-      this.mensaje2 = "(Intentalo de nuevo)"
+      this.mensaje2 = "(Inténtelo de nuevo)"
     }
 
     const result = await FilePicker.pickVideos({

@@ -61,6 +61,7 @@
             <label for="imageUpload"></label>
           </div>
         </div>
+        <p *ngIf="mensaje !== null" style="text-align: center; color: #ff4154">{{mensaje}}</p>
         <div style="display: flex; justify-content: center; align-items: center">
           <ion-label> www.bitoo.com.mx/{{negocioTO.url_negocio}}</ion-label>
         </div>
@@ -82,7 +83,7 @@
                       accept="image/*" (click)="fileInput.value = null" (change)="agregarFoto($event)" /> -->
                       <div class="custom-file-input" style="height: 100%; width: 100%; position: relative; z-index: 1;
                       background: linear-gradient(90deg, #ff1dbd,#FFCE00); color: #fff;" *ngIf="elseBlock" d="imagen-producto-uno" (click)="obtenerImg()">Subir Imagen</div>
-                      <p *ngIf="mensaje" style="color: #ff4154;">{{mensaje}}</p>
+                      <p *ngIf="mensaje2 != null && bandera" style="color: #ff4154;">{{mensaje2}}</p>
                     <ng-template #elseBlock>
                       <!-- <input (click)="agregarFoto($event)" /> -->
                     </ng-template>
