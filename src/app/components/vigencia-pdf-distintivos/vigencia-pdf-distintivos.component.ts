@@ -20,11 +20,16 @@ export class VigenciaPdfDistintivosComponent implements OnInit {
   loaderPdf: boolean = false;
   carta: any
   public pdfBg: string;
+  public mensaje: string;
+  public bandera: boolean;
 
   constructor(
     private notificaciones: ToadNotificacionService,
     private _utils_cls: UtilsCls,
-    private modalController: ModalController) { }
+    private modalController: ModalController)
+  {
+    this.bandera = true;
+  }
 
   ngOnInit() {
     this.pdfBg = this.distintivo.url_comprobante_vigencia != null || this.distintivo.archivo != null ? "#00b347" : "#df5555";
@@ -41,6 +46,11 @@ export class VigenciaPdfDistintivosComponent implements OnInit {
   }
 
   async selectPDF() {
+
+    if (this.bandera === true){
+      this.mensaje = "(Inténtelo de nuevo)"
+    }
+
     let result = null;
     result = await FilePicker.pickFiles({
       types: ['application/pdf'],
@@ -48,6 +58,8 @@ export class VigenciaPdfDistintivosComponent implements OnInit {
       readData: true
     });
 
+    this.bandera = false;
+    this.mensaje = null;
     let file = result.files[0];
 
     if (file.size < 5242880) {

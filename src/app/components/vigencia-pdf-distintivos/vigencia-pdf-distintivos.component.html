@@ -41,6 +41,7 @@
             </ion-button>
 
           </div>
+          <p *ngIf="mensaje !== null && bandera" style="text-align: center; color: #ff4154">{{mensaje}}</p>
           <h4 style="margin: 5px 0">PDF</h4>
           <small id="emailHelp" class="form-text text-muted">Tamaño máximo de archivo 5 MB</small>
         </div>
