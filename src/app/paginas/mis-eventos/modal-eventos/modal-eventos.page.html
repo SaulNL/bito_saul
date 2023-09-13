@@ -76,7 +76,7 @@
                 <label class="custom-file-input">
                   <!-- <input *ngIf="elseBlock" type="file" #fileInput id="imagen-producto-uno"
                          accept="image/*" (click)="fileInput.value = null" (change)="agregarFoto($event)" /> -->
-                    <div class="custom-file-input" style="height: 100%; width: 100%; position: relative; z-index: 1;" *ngIf="elseBlock" d="imagen-producto-uno" (click)="obtenerImg()">Este es mi boton para la img</div>
+                    <div class="custom-file-input" style="height: 100%; width: 100%; position: relative; z-index: 1;" *ngIf="elseBlock" d="imagen-producto-uno" (click)="obtenerImg()">Este es mi boton</div>
                          <ng-template #elseBlock>
                            <!-- <input (click)="agregarFoto($event)" /> -->
                           </ng-template>
@@ -92,7 +92,7 @@
                   <!-- <input *ngIf="elseBlock" type="file" #fileInput accept="video/mp4" id="video"
                   (click)="fileInput.value = null" (change)="seleccionarVideo($event)" /> -->
 
-                  <div class="custom-video-input" style="height: 100%; width: 100%; position: relative; z-index: 1;" *ngIf="elseBlock" d="imagen-producto-uno" (click)="obtenerVideo()">Este es mi boton para el video</div>
+                  <div class="custom-video-input" style="height: 100%; width: 100%; position: relative; z-index: 1;" *ngIf="elseBlock" d="imagen-producto-uno" (click)="obtenerVideo()">Este es mi boton</div>
                   
                   <ng-template #elseBlock>
                     <!-- <input (click)="seleccionarVideo($event)" /> -->
@@ -104,8 +104,7 @@
           
         </ion-item>
       </div>
-      <p *ngIf="mensaje" style="color: #ff4154;">{{mensaje}}</p>
-
+      <p *ngIf="mensaje !== null && bandera" style="text-align: center; color: #ff4154">{{mensaje}}</p>
       <div class="formulario">
 
         <ion-item>

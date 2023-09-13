@@ -38,7 +38,8 @@ export class DatosBasicosPage implements OnInit {
   resizeToHeight: number = 0;
   maintainAspectRatio: boolean = false;
   fechaSeleccionada: boolean = false;
-  public mensaje = null;
+  public mensaje: string;
+  public bandera: boolean;
 
   public lstAfiliaciones: any;
   public tipoAfl: any;
@@ -73,6 +74,7 @@ export class DatosBasicosPage implements OnInit {
     this.minDate = moment.parseZone(this.minDate).format("YYYY-MM-DD");
     this.maxDate = moment.parseZone(this.maxDate).format("YYYY-MM-DD");
     this.loader = false;
+    this.bandera = true;
   }
 
   ngOnInit() {
@@ -243,15 +245,17 @@ export class DatosBasicosPage implements OnInit {
    */
 
   async subir_imagen_cuadrado() {
-    this.mensaje = "(Inténtelo de nuevo)"
+    if (this.bandera === true){
+      this.mensaje = "(Inténtelo de nuevo)"
+    }
 
     const result = await FilePicker.pickImages({
       multiple: false,
       readData: true
     })
 
+    this.bandera = false;
     this.mensaje = null;
-    console.log("entre")
 
     let nombre_archivo;
     if (result.files && result.files.length) {

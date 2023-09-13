@@ -55,7 +55,8 @@ export class ModalEventosPage implements OnInit {
   public galeriaFull = false;
   base64Video = null;
   public isIos: boolean;
-  public mensaje = null;
+  public mensaje: string;
+  public bandera: boolean;
   numeroFotosPermitidas: number;
   slideOpts = {
     slidesPerView: 1.5,
@@ -80,6 +81,7 @@ export class ModalEventosPage implements OnInit {
     this.videosArrayAgregar = [];
     this.fotosArrayAgregar = [];
     this.isIos = this.platform.is("ios");
+    this.bandera = true;
   }
 
   ngOnInit() {
@@ -567,11 +569,15 @@ export class ModalEventosPage implements OnInit {
   }
 
   async obtenerImg(){
-    this.mensaje = "(Inténtelo de nuevo)";
+    if (this.bandera === true){
+      this.mensaje = "(Inténtelo de nuevo)"
+    }
+
     const result = await FilePicker.pickImages({
       multiple: false,
       readData: true
     });
+    this.bandera = false;
     this.mensaje = null;
 
     // const contents = await Filesystem.readFile({
@@ -598,11 +604,14 @@ export class ModalEventosPage implements OnInit {
   }
 
   async obtenerVideo(){
-    this.mensaje = "(Inténtelo de nuevo)";
+    if (this.bandera === true){
+      this.mensaje = "(Inténtelo de nuevo)"
+    }
     const result = await FilePicker.pickVideos({
       multiple: false,
       readData: true
     });
+    this.bandera = false;
     this.mensaje = null;
     
     if (result.files[0].size < 100000000) {

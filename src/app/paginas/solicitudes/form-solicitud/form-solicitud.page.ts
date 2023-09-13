@@ -44,7 +44,8 @@ export class FormSolicitudPage implements OnInit {
   public negoAux: any;
   public tipoGiroAux: any;
   public tipoSubAux: any;
-  public mensaje = null;
+  public mensaje: string;
+  public bandera: boolean;
   public tipoOrg: any;
   public listTipoNegocio: any;
   public listMiNegocio: any;
@@ -81,6 +82,7 @@ export class FormSolicitudPage implements OnInit {
     this.btnMuncipio = true;
     this.btnLocalidad = true;
     this.loader = false;
+    this.bandera = true;
   }
   ngOnInit() {
     this.obtenerTipoNegocio();
@@ -537,11 +539,15 @@ export class FormSolicitudPage implements OnInit {
   }
 
   async obtenerImg(){
-    this.mensaje = "(Inténtelo de nuevo)";
+    if (this.bandera === true){
+      this.mensaje = "(Inténtelo de nuevo)"
+    }
+
     const result = await FilePicker.pickImages({
       multiple: false,
       readData: true
     });
+    this.bandera = false;
     this.mensaje = null;
     
     let imgPrueba = `data:image/png;base64,${result.files[0].data}`
