@@ -45,7 +45,7 @@
       <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px">
         <!-- Aqui no aparecia el boton cuando ya habia rebasado las publicaciones permitidas -->
         <div style="width: 30%;">
-          <ion-button type="button" color="success" expand="block" (click)="abrirModal(seleccionTo)">
+          <ion-button type="button" color="success" expand="block" [disabled]="seleccionTo.activo" (click)="abrirModal(seleccionTo)">
             <p style="font-size: 10px;">Publicar</p>
           </ion-button>
         </div>
