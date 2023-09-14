@@ -97,6 +97,9 @@ export class ReservacionesPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ionViewDidEnter(){
     this.route.paramMap.subscribe(params => {
       this.idEvento = params.get('id');
       this.obtenerListaEvento();

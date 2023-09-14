@@ -16,7 +16,7 @@
         <ion-item>
             <ion-slides>
                 <ng-container *ngFor="let foto of fotografiasArray; let i = index">
-                    <ion-slide *ngIf="foto.url_imagen !== null">
+                    <ion-slide style="width: 310px" *ngIf="foto.url_imagen !== null">
                         <ion-card style="width: 70%; height: 231px">
                             <img src="{{foto.url_imagen}}"/>
                         </ion-card>
