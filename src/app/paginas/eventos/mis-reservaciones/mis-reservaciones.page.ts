@@ -58,7 +58,6 @@ export class MisReservacionesPage implements OnInit {
             const fechaB = new Date(b.fc_evento_reservacion);
             return fechaA.getTime() - fechaB.getTime();
           });
-          console.log('reservaciones', this.reservacionesAll);
           this.loaderReservaciones = true;
         });
   }
