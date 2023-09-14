@@ -100,13 +100,13 @@
 
         <ion-item style="margin-bottom: 10px;" *ngIf="infoEvento[0]?.id_tipo_recurrencia == 2" id="open-modal-date-reservaciones">
             <ion-label>Fecha <span style="color: red">*</span> </ion-label>
-            <small>{{fechaSeleccionada | date: 'dd/MM/yyyy'}}</small>
+            <small>{{fechaSeleccionadaDiario | date: 'dd/MM/yyyy'}}</small>
         </ion-item>
         <ion-modal trigger="open-modal-date-reservaciones">
             <ng-template>
                 <ion-content>
                     <ion-datetime [min]="minFecha" [max]="maxFecha" presentation="date" 
-                        [(ngModel)]="fechaSeleccionada" [showDefaultButtons]="true" doneText="Ok" cancelText="Cancelar">
+                        [(ngModel)]="fechaSeleccionadaDiario" [showDefaultButtons]="true" doneText="Ok" cancelText="Cancelar">
                     </ion-datetime>
                 </ion-content>
             </ng-template>
@@ -133,7 +133,7 @@
 
         <div style="display: flex; justify-content: center; align-items: center">
             <ion-button *ngIf="infoEvento[0]?.id_tipo_recurrencia == 2 || infoEvento[0]?.id_tipo_recurrencia == 3 || infoEvento[0]?.id_tipo_recurrencia == 4"
-                        class="buttonEvento" shape="round" [disabled]="!noPersonas || !fechaSeleccionada" (click)="guardar()">
+                        class="buttonEvento" shape="round" [disabled]="!noPersonas || !fechaSeleccionada && !fechaSeleccionadaDiario" (click)="guardar()">
                 <img src="assets/images/eventos/reservación.png" style="width: 35px; height: 35px">
                 Generar reservación
             </ion-button>

@@ -46,6 +46,7 @@ export class ReservacionesPage implements OnInit {
   public fotografiasArray: any;
   public videosArray: any;
 
+  fechaSeleccionadaDiario: string;
   fechaSeleccionada: string;
   mesSeleccionado: string;
   minFecha: string;
@@ -53,6 +54,7 @@ export class ReservacionesPage implements OnInit {
   semanasArray: Date[];
   mesesArray: Date[] = [];
   fechaReservacion: any;
+  fechaReservacionDiario: any;
   base64Video = null;
   slideOpts = {
     slidesPerView: 1.5,
@@ -86,6 +88,7 @@ export class ReservacionesPage implements OnInit {
     this.idPersona = null;
     this.existeSesion = utils.existe_sesion();
     this.fechaSeleccionada = null;
+    this.fechaSeleccionadaDiario = null;
     const idEvento = localStorage.getItem('idEvento');
     if (idEvento != null){
       localStorage.removeItem('idEvento');
@@ -296,6 +299,13 @@ export class ReservacionesPage implements OnInit {
   public guardar(){
     const nPersonas = this.noPersonas;
     const eventoId = this.infoEvento[0]?.id_evento;
+    if (this.fechaSeleccionadaDiario !== null){
+      const fechaDiario = new Date(this.fechaSeleccionadaDiario);
+      const anio = fechaDiario.getFullYear();
+      const mes =  fechaDiario.getMonth() + 1;
+      const dia = fechaDiario.getDate();
+      this.fechaReservacionDiario = anio + '-' + mes + '-' + dia;
+    }
 
     if ( this.fechaSeleccionada !== null ){
       const fechaStr = this.fechaSeleccionada;
@@ -311,7 +321,11 @@ export class ReservacionesPage implements OnInit {
       const day = ('0' + fechaReservacion1.getDate()).slice(-2);
       this.fechaReservacion = year + '-' + month + '-' + day;
     }
-    this.cadenaReservacion = [eventoId, this.idPersona, this.fechaReservacion, nPersonas];
+    if (this.fechaSeleccionadaDiario !== null){
+      this.cadenaReservacion = [eventoId, this.idPersona, this.fechaReservacionDiario, nPersonas];
+    }else {
+      this.cadenaReservacion = [eventoId, this.idPersona, this.fechaReservacion, nPersonas];
+    }
     this.generarReservacion(this.cadenaReservacion);
     this.eventosService.setReservacionObj(this.cadenaReservacion);
     this.mensajeRegistro();
@@ -329,6 +343,7 @@ export class ReservacionesPage implements OnInit {
     this.router.navigate(['/tabs/eventos']);
     this.mostrarLabel = false;
     this.fechaSeleccionada = null;
+    this.fechaSeleccionadaDiario = null;
     this.noPersonas = null;
   }
 
@@ -344,6 +359,7 @@ export class ReservacionesPage implements OnInit {
   }
 
   filtro(){
+    this.fechaSeleccionadaDiario = null;
     this.fechaSeleccionada = null;
     this.noPersonas = null;
     this.mostrarLabel = false;
