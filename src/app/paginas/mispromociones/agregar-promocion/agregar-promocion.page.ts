@@ -442,7 +442,7 @@ export class AgregarPromocionPage implements OnInit {
   async subir_imagen_cuadrada() {
 
     if (this.blnImgCuadrada === true){
-      this.mensaje = "(Intentalo de nuevo)"
+      this.mensaje = "(Inténtelo de nuevo)"
     }
 
     const result = await FilePicker.pickImages({
@@ -521,7 +521,7 @@ export class AgregarPromocionPage implements OnInit {
 
   async subir_imagen_rectangulo() {
     if (this.blnImgRectangulo === true){
-      this.mensaje1 = "(Intentalo de nuevo)"
+      this.mensaje1 = "(Inténtelo de nuevo)"
     }
 
     const result = await FilePicker.pickImages({
