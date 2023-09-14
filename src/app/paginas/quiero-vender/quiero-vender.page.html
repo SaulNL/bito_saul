@@ -31,18 +31,18 @@
           <ion-row>
             <ion-col size='12'>
               <div class="contenedor">
-                <div class="foto" *ngIf="proveedorTO.selfie === null || proveedorTO.selfie === undefined" id="perfil"
+                <div class="foto" *ngIf="!proveedorTO.imagen && !proveedorTO.selfie" id="perfil"
                   [ngStyle]="{'border': '2px solid grey', '
                   background-position': 'center', 'background-size': 'cover'}">
                   <label for="selfie" title="cargar imagen" class="cargar">
                     <em>
-                      <ion-icon name="image-outline" style="font-size: 30px; color: black;"></ion-icon>
+                      <ion-icon name="image-outline" style="font-size: 30px; color: black;" (click)="obtenerImg()"></ion-icon>
                     </em>
                   </label>
                 </div>
-                <div class="foto" *ngIf="proveedorTO.selfie !== null && proveedorTO.selfie !== undefined" [ngStyle]="{
-                  'background-image': 'url('+proveedorTO.selfie.archivo_64+')', 'border': '2px solid green', '
-                  background-position': 'center', 'background-size': 'cover'}">
+                <div class="foto" *ngIf="proveedorTO.imagen" [ngStyle]="{
+                  'background-image': !proveedorTO.selfie ? 'url('+proveedorTO.imagen+')':'url('+proveedorTO.selfie.archivo_64+')', 'border': '2px solid green', '
+                  background-position': 'center', 'background-size': 'cover'}" (click)="obtenerImg()">
                   <label for="selfie" title="cargar imagen" class="cargar">
                     <em>
                       <ion-icon name="image-outline" style="font-size: 30px; color: black;"></ion-icon>
@@ -56,8 +56,8 @@
           </ion-row>
           <ion-row>
             <ion-col size='12'>
-              <input style="display: none;" #selfie id="selfie" type="file" (change)="subir_imagen_cuadrada($event)"
-                accept="image/*" name="selfie" required>
+              <!-- <input style="display: none;" #selfie id="selfie" type="file" (change)="subir_imagen_cuadrada($event)"
+                accept="image/*" name="selfie" required> -->
             </ion-col>
           </ion-row>
           <ion-list>

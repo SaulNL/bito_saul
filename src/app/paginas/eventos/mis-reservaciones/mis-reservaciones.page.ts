@@ -52,6 +52,7 @@ export class MisReservacionesPage implements OnInit {
     this.eventosService.mostrarReservaciones(this.idPersona).subscribe(
         res => {
           this.reservacionesAll = res.data;
+          console.log("datosReservacion",this.reservacionesAll)
           this.reservacionesAll.sort((a, b) => {
             const fechaA = new Date(a.fc_evento_reservacion);
             const fechaB = new Date(b.fc_evento_reservacion);
