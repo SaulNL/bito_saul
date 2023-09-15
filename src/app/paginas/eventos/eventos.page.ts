@@ -91,8 +91,12 @@ export class EventosPage implements OnInit {
   ngOnInit() {
     this.secion = localStorage.getItem("id_proveedor")
     this.banderaLista = true;
-    this.afi = localStorage.getItem('afi');
     this.load();
+
+  }
+
+  ionViewWillEnter(){
+    this.afi = localStorage.getItem('afi');
     if (this.afi != null){
       this.org = JSON.parse(localStorage.getItem('org'));
       this.idOrg = this.org.id_organizacion;
