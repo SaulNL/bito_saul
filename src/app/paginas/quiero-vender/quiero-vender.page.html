@@ -40,7 +40,7 @@
                     </em>
                   </label>
                 </div>
-                <div class="foto" *ngIf="proveedorTO.imagen" [ngStyle]="{
+                <div class="foto" *ngIf="proveedorTO.imagen || proveedorTO.selfie" [ngStyle]="{
                   'background-image': !proveedorTO.selfie ? 'url('+proveedorTO.imagen+')':'url('+proveedorTO.selfie.archivo_64+')', 'border': '2px solid green', '
                   background-position': 'center', 'background-size': 'cover'}" (click)="obtenerImg()">
                   <label for="selfie" title="cargar imagen" class="cargar">

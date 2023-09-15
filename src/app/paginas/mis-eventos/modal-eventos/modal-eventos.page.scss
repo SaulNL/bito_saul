@@ -144,8 +144,12 @@ ion-modal {
 
 .bg {
     background-color: antiquewhite;
+    height: 90%;
     max-width: 150px;
     min-width: 150px;
+    display: flex;
+    padding-left: 15px;
+    align-items: center;
 }
 
 .contenido {

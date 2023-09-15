@@ -264,7 +264,7 @@ export class QuieroVenderPage implements OnInit {
 
   guardar() {
     this.loader = true;
-    if (this.proveedorTO.selfie === null || this.proveedorTO.selfie === undefined) {
+    if (this.proveedorTO.selfie && this.proveedorTO.imagen) {
       this._notificacionService.alerta('Ingrese foto de perfil');
       this.loader = false;
     } else {
