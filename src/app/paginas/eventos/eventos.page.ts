@@ -94,8 +94,12 @@ export class EventosPage implements OnInit {
       this.secion = !idP.id_persona ?  false : true;
     }
     this.banderaLista = true;
-    this.afi = localStorage.getItem('afi');
     this.load();
+
+  }
+
+  ionViewWillEnter(){
+    this.afi = localStorage.getItem('afi');
     if (this.afi != null){
       this.org = JSON.parse(localStorage.getItem('org'));
       this.idOrg = this.org.id_organizacion;
