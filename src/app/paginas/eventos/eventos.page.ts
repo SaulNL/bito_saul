@@ -58,7 +58,7 @@ export class EventosPage implements OnInit {
   public org: any;
   public idOrg: any;
   public filtroVacio: any;
-  public secion: string;
+  public secion: boolean;
   public fecha: any;
 
   constructor(
@@ -89,7 +89,10 @@ export class EventosPage implements OnInit {
   }
 
   ngOnInit() {
-    this.secion = localStorage.getItem("id_proveedor")
+    let idP = JSON.parse(localStorage.getItem('u_data'));
+    if(idP){
+      this.secion = !idP.id_persona ?  false : true;
+    }
     this.banderaLista = true;
     this.afi = localStorage.getItem('afi');
     this.load();
