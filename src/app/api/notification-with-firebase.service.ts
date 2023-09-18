@@ -66,7 +66,7 @@ export class NotificationWithFirebaseService {
     this.localNotifications.schedule({
       title: notification.title,
       text: notification.body,
-      icon: 'https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/LOGOTINBITOOCIRCULAR.png'
+      icon: 'https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/LOGOTINBITOOCIRCULAR.png'
     });
   }
 
