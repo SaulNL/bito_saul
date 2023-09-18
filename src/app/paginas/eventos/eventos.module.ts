@@ -9,6 +9,7 @@ import { EventosPageRoutingModule } from './eventos-routing.module';
 import { EventosPage } from './eventos.page';
 import {SpinnerModule} from '../../componentes/spinner/spinner.module';
 import {TabsPageModule} from "../tabs/tabs.module";
+import {ModalInicioSesionPageModule} from "../modal-inicio-sesion/modal-inicio-sesion.module";
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import {TabsPageModule} from "../tabs/tabs.module";
         IonicModule,
         EventosPageRoutingModule,
         SpinnerModule,
-        TabsPageModule
+        TabsPageModule,
+        ModalInicioSesionPageModule
     ],
   declarations: [EventosPage]
 })

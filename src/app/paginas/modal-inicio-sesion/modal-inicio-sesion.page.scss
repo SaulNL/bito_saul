@@ -1,0 +1,38 @@
+.modalA{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalAlert {
+  background-color: white;
+  border-radius: 4px;
+  width: 75%;
+}
+
+.headerAlert{
+  background: linear-gradient(90deg, #ff1dbd 0%, rgb(245, 196, 0) 100%) !important;
+  color: white;
+  width: 100%;
+}
+
+.btnAlert{
+  --background: linear-gradient(90deg, #ff1dbd 0%, rgb(245, 196, 0) 100%) !important;
+  --color: white;
+}
+
+.closeAlert{
+  color: #8b8b8b;
+  font-size: 11px;
+}
+
+.clasAlert{
+  --background: linear-gradient(90deg, #ff1dbd 0%, rgb(245, 196, 0) 100%) !important;
+  width: 80%
+}

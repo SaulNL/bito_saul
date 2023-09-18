@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, Output, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EventosService} from '../../api/eventos.service';
 import {CatEstadoModel} from '../../Modelos/CatEstadoModel';
@@ -40,6 +40,7 @@ export class EventosPage implements OnInit {
   public loaderReservaciones: boolean;
   public msj = 'Cargando';
   isOpen: boolean = false;
+  public isAlert: boolean = false;
   public list_cat_estado: Array<CatEstadoModel>;
   public list_cat_municipio: Array<CatMunicipioModel>;
   public list_cat_localidad: Array<CatLocalidadModel>;
@@ -105,6 +106,8 @@ export class EventosPage implements OnInit {
       this.obtenerListaEvento(this.filtroVacio);
     }
     this.load_cat_estados();
+    const isAlert = false;
+    this.cerrarAlert(isAlert);
   }
 
   regresar() {
@@ -420,29 +423,13 @@ export class EventosPage implements OnInit {
     }
   }
 
+  cerrarAlert(isAlert: boolean){
+    this.isAlert = isAlert;
+  }
+
   async mensajeRegistro() {
-    const alert = await this.alertController.create({
-      header: 'Bituyú',
-      message: "¿Ya tienes una cuenta?",
-      buttons: [
-        {
-          text: "Iniciar sesión",
-          cssClass: 'text-grey',
-          handler: () => {
-            localStorage.setItem('idEvento', JSON.stringify(this.objeto));
-            this.router.navigate(['/tabs/login']);
-          }
-        },
-        {
-          text: "Registrate",
-          cssClass: 'text-rosa',
-          handler: () => {
-            this.router.navigate(["/tabs/login/sign-up"]);
-          },
-        },
-      ],
-    });
-    await alert.present();
+    this.isAlert = true;
+    localStorage.setItem('idEvento', JSON.stringify(this.objeto));
   }
 
   private load() {
