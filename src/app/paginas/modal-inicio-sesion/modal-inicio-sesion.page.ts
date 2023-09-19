@@ -29,11 +29,11 @@ export class ModalInicioSesionPage implements OnInit {
 
   iniciarSesion(){
     this.router.navigate(['/tabs/login']);
-    this.cerrarAlert(null);
+    this.cerrarAlert(2);
   }
 
   crearCuenta(){
     this.router.navigate(["/tabs/login/sign-up"]);
-    this.cerrarAlert(null);
+    this.cerrarAlert(2);
   }
 }

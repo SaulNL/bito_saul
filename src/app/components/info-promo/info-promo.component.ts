@@ -253,9 +253,14 @@ export class InfoPromoComponent implements OnInit {
     var num = Math.random() * (max - min);
     return num + min;
   }
-
   cerrarAlert(isAlert: boolean){
     this.isAlert = isAlert;
+  }
+
+  dismissModal(bandera: number) {
+    if (bandera === 2){
+      this.modalController.dismiss();
+    }
   }
 
 }
