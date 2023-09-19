@@ -32,6 +32,7 @@ export class DetalleProductoComponent implements OnInit {
     public cantidad: number;
     public activeSelectedProduct: boolean;
     public typeLogin: OptionBackLogin;
+    public isAlert: boolean = false;
     constructor(
         private utilsCls: UtilsCls,
         private modalController: ModalController,
@@ -161,5 +162,13 @@ export class DetalleProductoComponent implements OnInit {
         this.modalController.dismiss({
             'goLogin': this.typeLogin
         });
+    }
+
+    cerrarAlert(isAlert: boolean){
+        this.isAlert = isAlert;
+    }
+
+    abrirAlert(isAlert: boolean){
+        this.isAlert = isAlert;
     }
 }

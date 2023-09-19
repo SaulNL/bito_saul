@@ -140,6 +140,9 @@
     </ion-col>
   </ion-row>
 </ion-grid>
+
+<app-modal-inicio-sesion [isAlert]="isAlert" (banderaAlert)="cerrarAlert($event)"></app-modal-inicio-sesion>
+
 <div class="modal-overlayPromocion" *ngIf="isOpen" (click)="cerrarModal($event)">
   <ion-img [src]="promocionTO.url_imagen"></ion-img>
 </div>

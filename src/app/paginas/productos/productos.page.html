@@ -81,7 +81,7 @@
         </ion-badge>
       </ion-label>
       <app-dar-like-producto [producto]="producto" [usuario]="user"
-        [mostrarLike]="existeSesion"></app-dar-like-producto>
+        [mostrarLike]="existeSesion" (banderaAlert)="abrirAlert($event)"></app-dar-like-producto>
     </ion-item>
   </ion-list>
   <ion-grid *ngIf="lstProductos.length === 0 && selectionAP === true">
@@ -99,4 +99,5 @@
   </ion-grid>
   <app-infinito-scroll (respuesta)="cargarMasProductos($event)" [activado]="scroll" [msj]="mensaje">
   </app-infinito-scroll>
+  <app-modal-inicio-sesion [isAlert]="isAlert" (banderaAlert)="cerrarAlert($event)"></app-modal-inicio-sesion>
 </ion-content>

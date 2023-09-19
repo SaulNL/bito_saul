@@ -106,8 +106,6 @@ export class EventosPage implements OnInit {
       this.obtenerListaEvento(this.filtroVacio);
     }
     this.load_cat_estados();
-    const isAlert = false;
-    this.cerrarAlert(isAlert);
   }
 
   regresar() {
@@ -425,6 +423,12 @@ export class EventosPage implements OnInit {
 
   cerrarAlert(isAlert: boolean){
     this.isAlert = isAlert;
+  }
+
+  borrarIdEvento(idEvento: number){
+    if (idEvento === 1){
+      localStorage.removeItem('idEvento');
+    }
   }
 
   async mensajeRegistro() {

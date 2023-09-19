@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
 export class ModalInicioSesionPage implements OnInit {
   @Input() isAlert: boolean;
   @Output() banderaAlert: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() removeIdEvento: EventEmitter<number> = new EventEmitter<number>();
   constructor(
       private router: Router,
   ) {}
@@ -16,9 +17,10 @@ export class ModalInicioSesionPage implements OnInit {
   ngOnInit() {
   }
 
-  cerrarAlert(){
+  cerrarAlert(bandera: number){
     this.isAlert = false;
     this.banderaAlert.emit(this.isAlert);
+    this.removeIdEvento.emit(bandera);
   }
 
   async mensajeRegistro() {
@@ -27,11 +29,11 @@ export class ModalInicioSesionPage implements OnInit {
 
   iniciarSesion(){
     this.router.navigate(['/tabs/login']);
-    this.cerrarAlert();
+    this.cerrarAlert(null);
   }
 
   crearCuenta(){
     this.router.navigate(["/tabs/login/sign-up"]);
-    this.cerrarAlert();
+    this.cerrarAlert(null);
   }
 }

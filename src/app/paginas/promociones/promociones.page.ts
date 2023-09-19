@@ -45,6 +45,7 @@ export class PromocionesPage implements OnInit {
     public selectionAP: boolean;
     public plazaAfiliacionNombre: any;
     private modal: any;
+    public isAlert: boolean = false;
 
     constructor(
         private _promociones: PromocionesService,
@@ -256,39 +257,18 @@ export class PromocionesPage implements OnInit {
     }
 
     public mostrarLoguearse() {
-        if (this.existeSesion) {
-        } else {
-            if (this.plazaAfiliacion != null) {
-
-            } else {
-                setTimeout(() => {
-                    this.mensajeRegistro();
-                }, 100)
-            }
+        if (!this.existeSesion) {
+            setTimeout(() =>{
+                this.mensajeRegistro();
+            }, 500);
         }
     }
 
     async mensajeRegistro() {
-        const alert = await this.alertController.create({
-          header: 'Bituyú',
-          message: "¿Ya tienes una cuenta?",
-            buttons: [
-                {
-                    text: "Iniciar sesión",
-                    cssClass: 'text-grey',
-                    handler: () => {
-                        this.router.navigate(['/tabs/login']);
-                    }
-                },
-                {
-                    text: "Registrate",
-                    cssClass: 'text-rosa',
-                    handler: () => {
-                        this.router.navigate(["/tabs/login/sign-up"]);
-                    },
-                },
-            ],
-        });
-        await alert.present();
+        this.isAlert = true;
+    }
+
+    cerrarAlert(isAlert: boolean){
+        this.isAlert = isAlert;
     }
 }

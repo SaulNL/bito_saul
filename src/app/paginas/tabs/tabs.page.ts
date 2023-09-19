@@ -181,7 +181,6 @@ export class TabsPage implements OnInit {
     localStorage.setItem("resetFiltro", "0");
     localStorage.setItem("activedPage", "productos");
     this.activedPage = localStorage.getItem("activedPage");
-    this.mostrarLoguearse();
     localStorage.removeItem("productos");
   }
 
@@ -217,42 +216,6 @@ export class TabsPage implements OnInit {
     localStorage.removeItem("productos");
   }
 
-  public mostrarLoguearse() {
-    if (this.existeSesion) {
-    } else {
-      if (this.plazaAfiliacion != null) {
-
-      } else {
-        setTimeout(() => {
-          this.mensajeRegistro();
-        }, 3800);
-      }
-    }
-  }
-
-  async mensajeRegistro() {
-    const alert = await this.alertController.create({
-      header: 'Bituyú',
-      message: "¿Ya tienes una cuenta?",
-      buttons: [
-        {
-          text: "Iniciar sesión",
-          cssClass: 'text-grey',
-          handler: () => {
-            this.router.navigate(['/tabs/login']);
-          }
-        },
-        {
-          text: "Registrate",
-          cssClass: 'text-rosa',
-          handler: () => {
-            this.router.navigate(["/tabs/login/sign-up"]);
-          },
-        },
-      ],
-    });
-    await alert.present();
-  }
 
   obtenerNotificaciones() {
     this.idProveedor = null;
@@ -376,9 +339,5 @@ export class TabsPage implements OnInit {
 
   closePopUpGracias() {
     this.showPopUpGracias = false;
-  }
-
-  tabActual(){
-
   }
 }

@@ -49,6 +49,7 @@ export class ModalInfoPromocionComponent implements OnInit {
   public promoPublico = false;
   public promoAfil = false;
   isOpen: boolean = false;
+  public isAlert: boolean = false;
 
   hoy: any;
   public diasArray = [
@@ -491,28 +492,11 @@ export class ModalInfoPromocionComponent implements OnInit {
   }
 
   async mensajeRegistro() {
-    const alert = await this.alertController.create({
-      header: 'Bituyú!',
-      message: "¿Ya tienes una cuenta?",
-      buttons: [
-        {
-          text: "Iniciar sesión",
-          cssClass: 'text-grey',
-          handler: () => {
-            this.router.navigate(['/tabs/login']);
-          }
-        },
-        {
-          text: "Registrate",
-          cssClass: 'text-rosa',
-          handler: () => {
-            this.router.navigate(["/tabs/login/sign-up"]);
-          },
-        },
-      ],
-    });
-    await alert.present();
-  }
+      this.isAlert = true;
+    }
 
+  cerrarAlert(isAlert: boolean){
+    this.isAlert = isAlert;
+  }
 
 }

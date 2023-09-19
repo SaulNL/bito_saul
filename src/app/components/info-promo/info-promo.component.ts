@@ -56,6 +56,7 @@ export class InfoPromoComponent implements OnInit {
   id_cupon_promocion: number;
   isOpen: boolean = false;
   public existeSesion: boolean;
+  public isAlert: boolean = false;
 
   constructor(
       public modalController: ModalController,
@@ -193,27 +194,7 @@ export class InfoPromoComponent implements OnInit {
   }
 
   async mensajeRegistro() {
-    const alert = await this.alertController.create({
-      header: 'Bituyú',
-      message: "¿Ya tienes una cuenta?",
-      buttons: [
-        {
-          text: "Iniciar sesión",
-          cssClass: 'text-grey',
-          handler: () => {
-            this.router.navigate(['/tabs/login']);
-          }
-        },
-        {
-          text: "Registrate",
-          cssClass: 'text-rosa',
-          handler: () => {
-            this.router.navigate(["/tabs/login/sign-up"]);
-          },
-        },
-      ],
-    });
-    await alert.present();
+    this.isAlert = true;
   }
 
   nombreOrgUsuario() {
@@ -272,4 +253,9 @@ export class InfoPromoComponent implements OnInit {
     var num = Math.random() * (max - min);
     return num + min;
   }
+
+  cerrarAlert(isAlert: boolean){
+    this.isAlert = isAlert;
+  }
+
 }
