@@ -65,12 +65,14 @@
           </strong>
         </ion-row>
 
+        <!-- Se comento los terminos y condiciones
         <ion-row class="ion-margin-top ion-justify-content-center" *ngIf="promocion.terminos?promocion.terminos.length>21:''">
           <strong><p>{{ promocion.terminos | slice:0:21 }}...</p></strong>
         </ion-row>
         <ion-row class="ion-margin-top ion-justify-content-center" *ngIf="promocion.terminos?promocion.terminos.length<=21:''">
           <strong><p>{{ promocion.terminos }}</p></strong>
         </ion-row>
+        -->
         <ion-row class="ion-justify-content-end">
           <ion-badge *ngIf="promocion.abierto == 'ABIERTO'" color="primary">{{ promocion.abierto }}</ion-badge>
           <ion-badge *ngIf="promocion.abierto == 'CERRADO'" color="danger">{{ promocion.abierto }}</ion-badge>
