@@ -39,7 +39,7 @@ export class InputTagsComponent implements OnInit {
         }
         this._enviarTags.emit(this.tagActual);
       }
-      (event.target as HTMLInputElement).value = '';
+      this.nuevaTag =""
     }
   }
 
