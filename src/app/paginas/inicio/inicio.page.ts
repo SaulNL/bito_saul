@@ -61,6 +61,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     private filtrosService: FiltrosService,
     private router: Router,
   ) {
+    localStorage.removeItem('banderaCerrar');
+    localStorage.removeItem('modalPromo');
     this.loaderVideo = true;
     this.subCAt = localStorage.getItem('subCat') != undefined ? true : false;
     // if (this.subCAt) {

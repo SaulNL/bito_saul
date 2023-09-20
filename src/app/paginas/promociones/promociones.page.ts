@@ -72,6 +72,7 @@ export class PromocionesPage implements OnInit {
         this.existeSesion = utils.existe_sesion();
         this.selectionAP = false;
         this.plazaAfiliacionNombre = "";
+        localStorage.setItem('banderaCerrar', 'true');
     }
 
     ngOnInit(): void {

@@ -52,6 +52,13 @@ export class ModalPromocionNegocioComponent implements OnInit, AfterViewInit {
       this.router.navigateByUrl('/tabs/inicio');
       localStorage.removeItem('modalPromo');
     }
+
+    const banderaCerrar = localStorage.getItem('banderaCerrar');
+    if (banderaCerrar === 'true'){
+      this.modalController.dismiss();
+      this.router.navigateByUrl('/tabs/promociones');
+      localStorage.removeItem('banderaCerrar');
+    }
     //this.router.navigateByUrl("/tabs/promociones");
   }
 
