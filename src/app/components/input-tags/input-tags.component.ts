@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { element } from 'protractor';
+import { ToadNotificacionService } from 'src/app/api/toad-notificacion.service';
 
 @Component({
   selector: 'app-input-tags',
@@ -15,7 +15,9 @@ export class InputTagsComponent implements OnInit {
   @Input() public tipo: boolean;
   @Output() _enviarTags: EventEmitter<any>;
 
-  constructor() {
+  constructor(
+    private notificaciones: ToadNotificacionService,
+  ) {
     this._enviarTags = new EventEmitter();
   }
 
@@ -34,17 +36,25 @@ export class InputTagsComponent implements OnInit {
           this.tagActual.splice(0)
         }
         let existTAg = this.tagActual.find(element => element == this.nuevaTag) ? true :false;
-        if(!existTAg){
+        if(!existTAg && this.tagActual.length < 5){
           this.tagActual.push(this.nuevaTag);
+        }else{
+          if(existTAg){
+            this.notificaciones.error(`Ya tienes esta etiqueta.`)
+          }else if(this.tagActual.length >= 5){
+            let mensaje = this.tagActual.length == 5 ? `Haz alcanzo el límite de etiquetas.` : `Superaste el limite de etiquetas. ${this.tagActual.length} de 5`
+            this.notificaciones.error(mensaje)
+          }
         }
         this._enviarTags.emit(this.tagActual);
       }
-      (event.target as HTMLInputElement).value = '';
+      this.nuevaTag =""
     }
   }
 
   asignarValoresTAgs() {
-    if (this.tags[0] == '' || typeof this.tags == "object" && this.tags.length == 0) {
+    console.log("queTiene:", this.tags)
+    if (!this.tags || typeof this.tags == "object" && this.tags.length == 0) {
       this.tags = '';
     }
     if (typeof this.tags == "object" && this.tags[0] != '') {
@@ -60,7 +70,12 @@ export class InputTagsComponent implements OnInit {
       this.tags = stringTag;
     }
     this.tagActual = this.tags.split(", ")
+    if(this.tagActual.length >5){
+      this.notificaciones.toastInfo(`Haz alcanzo el límite de etiquetas. ${this.tagActual.length} de 5`)
+    }
+    console.log("tagsActuales",this.tagActual)
   }
+
   eliminarTag(index) {
     this.tagActual.splice(index, 1)
     this._enviarTags.emit(this.tagActual)

@@ -1,37 +1,87 @@
-.plan_suscripcion{
-    width:90%; 
-    height: fit-content;
-    border-radius: 10px;
-    border-style: solid;
-    border-width: 3px;
-    border-color:rgb(0, 162, 255);
-    max-height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+
+.contenedorAll{
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+  /* align-items: center; */
+  overflow: scroll;
+  overflow-y: hidden;
 }
-.precio{
-    background: linear-gradient(45deg,#8a2be2,#40e0d0);
-  background-clip: border-box;
--webkit-background-clip: text;
-background-clip: text;
--webkit-text-fill-color: transparent;
+.perfil{
+  max-height: 600px;
+    margin-left: 25px;
+    margin-right: 25px;
+    min-width: 300px;
+    background-color: #fff;
+    border-radius: 15px;
+    margin-bottom: 20px;
+
 }
-.currency{
-    position: static;
+.perfilTitle{
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px 15px 0px 0px;
+  color: #fff;
+  flex-direction: column;
 }
-.costo{
-    font-size: 50px;
-    font-family: sans-serif;
+h1{
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
-.icon{
-    width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  margin-right: 10px;
-  background-color: white;
-  cursor: pointer;
-  padding: 5px;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+.lineaTitle{
+  width: 80%;
+  height: 2px;
+  background-color: #fff;
+}
+
+#Gratuito{
+  background: linear-gradient(162deg, rgba(255,255,0,1) 0%, rgba(255,19,189,1) 63%);
+}
+
+#Basico{
+  background: linear-gradient(162deg, rgba(0,235,255,1) 0%, rgba(0,61,230,1) 63%);
+}
+#Premium{
+  background: linear-gradient(162deg, rgba(189, 247 ,163,1) 0%, rgba(0, 158, 224,1) 63%);
+}
+#BasicIntermedio{
+  background: linear-gradient(162deg, rgba(255, 106, 63,1) 0%, rgba(255, 19, 189,1) 63%);
+}
+
+.caracteristicas{
+  height: 75%;
+  overflow: auto;
+  overflow-x: hidden;
+}
+.caracteristicas::-webkit-scrollbar{
+  width: 10px;
+}
+.caracteristicas::-webkit-scrollbar-thumb{
+  background: #888;
+  border-radius: 5px;
+}
+.caracteristicas::-webkit-scrollbar-thumb:hover{
+  background: #555;
+}
+
+.caracteristicas p{
+  display: flex;
+  justify-content: flex-start;
+  margin: 10px 0px 10px 0px;
+}
+
+.seccionBoton{
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.seccionBoton button{
+  border-radius: 15px;
+  height: 50%;
+  color: #fff;
+  width: 50%;
+  border: none;
 }

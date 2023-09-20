@@ -65,6 +65,7 @@ export class ProductosPage {
   public lstProductosOriginal: any;
   public scroll: boolean;
   public mensaje: any;
+  public afi: boolean;
   public cargando = "Cargando";
   private plazaAfiliacion: AfiliacionPlazaModel | null;
   public isIOS: boolean = false;
@@ -101,6 +102,8 @@ export class ProductosPage {
     this.plazaAfiliacionNombre = "";
     this.selectionAP = false;
     this.isIOS = this.platform.is("ios");
+    this.afi = !localStorage.getItem('afi') ? false: true;
+    console.log("afi",this.afi)
   }
 
   ngOnInit(): void {
