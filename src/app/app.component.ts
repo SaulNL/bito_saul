@@ -12,11 +12,11 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NgZone } from '@angular/core';
 import { NegocioService } from './api/negocio.service';
 import { VistasBitooModel } from 'src/app/Modelos/vistasBitooModel';
-import { Plugins } from '@capacitor/core';
 import { VersionAndroidService } from './api/version-android.service';
 import { AppSettings } from './AppSettings';
-const { Geolocation } = Plugins;
+import { Geolocation } from '@capacitor/geolocation';
 import { DeviceInfoModel } from "./Modelos/DeviceInfoModel";
+import { App } from '@capacitor/app';
 
 @Component({
     selector: 'app-root',
@@ -66,16 +66,29 @@ export class AppComponent {
         this.device = (this.platform.is('android')) ? AppSettings.ID_DB_PLATFORM_ANDROID : AppSettings.ID_DB_PLATFORM_IOS;
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
-                console.log("url: ", event.url)
                 this.inicio = this.rutas.find(element => element == event.url) ? true : false;
             }
         });
     }
 
+    /* appLinks() {
+        
+        App.addListener('appUrlOpen', data => {
+            
+          //let url = data.url.slice(9);
+
+          //alert('App opened with URL:' + JSON.stringify(data.url))
+          
+          //this.router.navigateByUrl('/tabs/' + url);
+        });
+    } */
+
+
     initializeApp() {
         this.platform.ready().then(() => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
+            //this.appLinks();
             this.obtenerVersion(this.device);
         });
         this.obtenerIP();

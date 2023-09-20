@@ -20,6 +20,7 @@ import * as moment from 'moment';
 import { HorarioNegocioModel } from '../../../Modelos/HorarioNegocioModel';
 import { HorarioPromocionModel } from '../../../Modelos/HorarioPromocionModel';
 import { GeneralServicesService } from './../../../api/general-services.service';
+import {FilePicker} from "@capawesome/capacitor-file-picker";
 
 @Component({
   selector: "app-agregar-promocion",
@@ -49,6 +50,9 @@ export class AgregarPromocionPage implements OnInit {
   public blnImgPoster: boolean;
   public loader: any;
   public msj: "Guardando";
+  public mensaje: string;
+  public mensaje1: string;
+  public mensaje2: string;
   public msj2: "Cargando video...";
   @ViewChild("inputTarjeta") inputTar: ElementRef;
   @ViewChild("inputBanner") inputBanner: ElementRef;
@@ -314,6 +318,30 @@ export class AgregarPromocionPage implements OnInit {
     }
   }
 
+  async seleccionarVideo(){
+    if (this.mostrarVideo === true){
+      this.mensaje2 = "(Inténtelo de nuevo)"
+    }
+
+    const result = await FilePicker.pickVideos({
+      multiple: false,
+      readData: true
+    });
+
+    this.mensaje2 = null;
+
+    if (result.files[0].size < 100000000) {
+      let video = new ArchivoComunModel();
+      video.nombre_archivo = result.files[0].name;
+      video.archivo_64 = `data:video/png;base64,${result.files[0].data}`
+      this.base64Video = video;
+      this.seleccionTo.video = this.base64Video;
+    }else{
+      this._notificacionService.alerta("Lo sentimos, el archivo supera los 100 MB");
+    }
+  }
+
+  /*
   public seleccionarVideo(event: any) {
     if (event.target.files && event.target.files.length) {
 
@@ -350,7 +378,9 @@ export class AgregarPromocionPage implements OnInit {
       }
     }
   }
+   */
 
+  /*
   public subir_imagen_cuadrada(event) {
     if (event.target.files && event.target.files.length) {
       let height;
@@ -407,6 +437,44 @@ export class AgregarPromocionPage implements OnInit {
     }
   }
 
+   */
+
+  async subir_imagen_cuadrada() {
+
+    if (this.blnImgCuadrada === true){
+      this.mensaje = "(Inténtelo de nuevo)"
+    }
+
+    const result = await FilePicker.pickImages({
+      multiple: false,
+      readData: true
+    })
+
+    this.mensaje = null;
+
+    if (result.files && result.files.length) {
+      for (const archivo of result.files) {
+        const img = new Image();
+        const file_name = archivo.name;
+        img.src = `data:image/png;base64,${archivo.data}`
+        img.onload = () => {
+
+          this.maintainAspectRatio = true;
+          this.resizeToWidth = 500;
+          this.resizeToHeight = 500;
+          this.tipoImagen = 1;
+          this.fileChangeEvent(result);
+          this.abrirModalImagen(
+              img.src,
+              file_name,
+              this.resizeToWidth,
+              this.resizeToHeight
+          );
+        };
+      }
+    }
+  }
+
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
   }
@@ -451,55 +519,35 @@ export class AgregarPromocionPage implements OnInit {
     }
   }
 
-  public subir_imagen_rectangulo(event) {
-    if (event.target.files && event.target.files.length) {
-      let height;
-      let width;
-      for (const archivo of event.target.files) {
-        const reader = this._utils_cls.getFileReader();
-        reader.readAsDataURL(archivo);
-        reader.onload = () => {
-          const img = new Image();
-          const file_name = archivo.name;
-          img.src = reader.result as string;
-          img.onload = () => {
-            height = img.naturalHeight;
-            width = img.naturalWidth;
+  async subir_imagen_rectangulo() {
+    if (this.blnImgRectangulo === true){
+      this.mensaje1 = "(Inténtelo de nuevo)"
+    }
 
-            if (width === 1500 && height === 300) {
-              this.procesando_img = true;
+    const result = await FilePicker.pickImages({
+      multiple: false,
+      readData: true
+    })
 
-              const file = archivo;
-              if (file.size < 3145728) {
-                let file_64: any;
-                const utl = new UtilsCls();
-                utl.getBase64(file).then((data) => {
-                  file_64 = data;
-                  const imagen = new ArchivoComunModel();
-                  imagen.nombre_archivo =
-                    this._utils_cls.convertir_nombre(file_name);
-                  imagen.archivo_64 = file_64;
-                  this.seleccionTo.imagenBanner = imagen;
-                  this.procesando_img = false;
-                  this.blnImgRectangulo = false;
-                });
-              } else {
-                this._notificacionService.alerta("error de imagen");
-              }
-            } else {
-              this.maintainAspectRatio = true;
-              this.resizeToWidth = 1500;
-              this.resizeToHeight = 300;
-              this.tipoImagen = 2;
-              this.fileChangeEvent(event);
-              this.abrirModalImagen(
-                img.src,
-                file_name,
-                this.resizeToWidth,
-                this.resizeToHeight
-              );
-            }
-          };
+    this.mensaje1 = null;
+
+    if (result.files && result.files.length) {
+      for (const archivo of result.files) {
+        const img = new Image();
+        const file_name = archivo.name;
+        img.src = `data:image/png;base64,${archivo.data}`
+        img.onload = () => {
+          this.maintainAspectRatio = true;
+          this.resizeToWidth = 1500;
+          this.resizeToHeight = 300;
+          this.tipoImagen = 2;
+          this.fileChangeEvent(result);
+          this.abrirModalImagen(
+              img.src,
+              file_name,
+              this.resizeToWidth,
+              this.resizeToHeight
+          );
         };
       }
     }

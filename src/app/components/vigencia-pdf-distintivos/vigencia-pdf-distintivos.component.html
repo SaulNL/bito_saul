@@ -13,12 +13,21 @@
   <ion-card>
     <ion-card-content>
 
-      <ion-item>
+      <ion-item id="open-modal-date-vigencia">
         <ion-label position="stacked">Fecha de vencimiento del distintivo <span style="color: red">*</span></ion-label>
-        <ion-datetime #picker displayFormat="D/MM/YYYY" max="2050" name="fechaVigencia"
-          [(ngModel)]="distintivo.fc_vencimiento"></ion-datetime>
-        <ion-icon slot="end" name="calendar-outline" (click)="picker.open()"></ion-icon>
+        <ion-icon slot="end" name="calendar-outline"></ion-icon>
+        <small>{{distintivo.fc_vencimiento | date: 'dd/MM/yyyy'}}</small>
       </ion-item>
+      <ion-modal trigger="open-modal-date-vigencia">
+        <ng-template>
+          <ion-content>
+            <ion-datetime max="2050" name="fechaVigencia" presentation="date" 
+              [value]="distintivo.fc_vencimiento" (ionChange)="selectFechaVencimiento($event)" [showDefaultButtons]="true" 
+              doneText="Ok" cancelText="Cancelar">
+            </ion-datetime>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
 
       <div class="ion-margin">
         <div *ngIf="loaderPdf" class="loader-pdf">
@@ -32,25 +41,26 @@
             </ion-button>
 
           </div>
+          <p *ngIf="mensaje !== null && bandera" style="text-align: center; color: #ff4154">{{mensaje}}</p>
           <h4 style="margin: 5px 0">PDF</h4>
           <small id="emailHelp" class="form-text text-muted">Tamaño máximo de archivo 5 MB</small>
         </div>
 
         <div class="botones">
           <div *ngIf="!loaderPdf" style="display: flex; justify-content: center; align-items: center">
-            <label for="imagenCarta">
-              <div class="boton" *ngIf="distintivo.url_comprobante_vigencia == null &&  distintivo.archivo == null">
-                Agregar</div>
-              <div class="boton" *ngIf="distintivo.url_comprobante_vigencia != null || distintivo.archivo != null">
-                Editar</div>
-            </label>
+            <ion-button color="danger" size="small" (click)="selectPDF()" expand="block">
+              <div *ngIf="distintivo.url_comprobante_vigencia == null &&  distintivo.archivo == null">
+                Agregar
+              </div>
+              <div *ngIf="distintivo.url_comprobante_vigencia != null || distintivo.archivo != null">
+                Editar
+              </div>
+            </ion-button>
 
-            <input type="file" id="imagenCarta" hidden accept="application/pdf" (change)="subirCarta($event)" />
-          </div>
-
-          <div class="eliminarCarta" *ngIf="distintivo.url_comprobante_vigencia != null || distintivo.archivo != null"
-            (click)="eliminarCarta()">
-            <div class="boton" style="height: 36px; width: 53px;">Eliminar</div>
+            <ion-button color="danger" size="small" (click)="eliminarCarta()" expand="block" *ngIf="distintivo.url_comprobante_vigencia != null || distintivo.archivo != null">
+              Eliminar
+            </ion-button>
+            
           </div>
         </div>
       </div>

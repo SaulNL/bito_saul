@@ -74,34 +74,37 @@
               <ion-card>
                 <ion-icon name="image" role="img" class="md hydrated size-icon" aria-label="image"></ion-icon>
                 <label class="custom-file-input">
-                  <input *ngIf="elseBlock" type="file" #fileInput id="imagen-producto-uno"
-                         accept="image/*" (click)="fileInput.value = null" (change)="agregarFoto($event)" />
-                  <ng-template #elseBlock>
-                    <input (click)="agregarFoto($event)" />
-                  </ng-template>
-                </label>
-              </ion-card>
-            </ion-slide>
-
-            <!-----------Agregar Video---------->
-            <ion-slide style="height:100%; margin-bottom: 5px;" *ngIf="galeriaFull != true">
+                  <!-- <input *ngIf="elseBlock" type="file" #fileInput id="imagen-producto-uno"
+                         accept="image/*" (click)="fileInput.value = null" (change)="agregarFoto($event)" /> -->
+                    <div class="custom-file-input" style="height: 100%; width: 100%; position: relative; z-index: 1;" *ngIf="elseBlock" d="imagen-producto-uno" (click)="obtenerImg()">Este es mi boton</div>
+                         <ng-template #elseBlock>
+                           <!-- <input (click)="agregarFoto($event)" /> -->
+                          </ng-template>
+                        </label>
+                      </ion-card>
+                    </ion-slide>
+                    
+                    <!-----------Agregar Video---------->
+                    <ion-slide style="height:100%; margin-bottom: 5px;" *ngIf="galeriaFull != true">
               <ion-card>
                 <ion-icon name="videocam-outline" role="img" class="md hydrated size-icon" aria-label="image"></ion-icon>
                 <label class="custom-video-input">
-                  <input *ngIf="elseBlock" type="file" #fileInput accept="video/mp4" id="video"
-                         (click)="fileInput.value = null" (change)="seleccionarVideo($event)" />
+                  <!-- <input *ngIf="elseBlock" type="file" #fileInput accept="video/mp4" id="video"
+                  (click)="fileInput.value = null" (change)="seleccionarVideo($event)" /> -->
 
+                  <div class="custom-video-input" style="height: 100%; width: 100%; position: relative; z-index: 1;" *ngIf="elseBlock" d="imagen-producto-uno" (click)="obtenerVideo()">Este es mi boton</div>
+                  
                   <ng-template #elseBlock>
-                    <input (click)="seleccionarVideo($event)" />
+                    <!-- <input (click)="seleccionarVideo($event)" /> -->
                   </ng-template>
                 </label>
               </ion-card>
             </ion-slide>
           </ion-slides>
-
+          
         </ion-item>
       </div>
-
+      <p *ngIf="mensaje !== null && bandera" style="text-align: center; color: #ff4154">{{mensaje}}</p>
       <div class="formulario">
 
         <ion-item>
@@ -124,11 +127,24 @@
           </ion-select>
         </ion-item>
 
-        <ion-item>
+        <ion-item id="open-modal-date-eventos">
           <ion-label>Fecha y hora</ion-label>
-          <ion-datetime class="bg" placeholder="Fechas" name="fecha" displayFormat="DD/MM/YYYY"
-            [(ngModel)]="eventData.fecha" required></ion-datetime>
+          <div class="bg">
+            <label position="stacked" *ngIf="!eventData.fecha">Seleccione...</label>
+            <label position="stacked" *ngIf="eventData.fecha">{{eventData.fecha | date: 'dd/MM/yyyy'}} </label>
+          </div>
         </ion-item>
+        <ion-modal trigger="open-modal-date-eventos">
+          <ng-template>
+            <ion-content>
+              <ion-datetime name="fecha" [value]="eventData.fecha" presentation="date-time" 
+                [showDefaultButtons]="true" doneText="Ok" cancelText="Cancelar" 
+                (ionChange)="selectFechaEvento($event)" required>
+                <span slot="time-label">Hora:</span>
+              </ion-datetime>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
         <ion-item>
           <ion-label>Estado</ion-label>
           <ion-select class="bg" name="estado" justify="end" label="End" placeholder="Seleccione un estado"
@@ -156,7 +172,7 @@
 
         <ion-item>
           <ion-label>Numero de teléfono</ion-label>
-          <ion-input class="bg" type="tel" name="telefono" pattern="[0-9]*" inputmode="numeric"
+          <ion-input class="bg" type="tel" name="telefono" label="End" pattern="[0-9]*" inputmode="numeric"
             placeholder="Numero de telefono" [(ngModel)]="eventData.telefono" required></ion-input>
         </ion-item>
 

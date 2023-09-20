@@ -1,12 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ModalController } from "@ionic/angular";
 import { FiltrosModel } from "../../Modelos/FiltrosModel";
-import { Plugins } from '@capacitor/core';
 import { FiltrosService } from "../../api/filtros.service";
 import { CatTipoNegocioModel } from 'src/app/Modelos/CatTipoNegocioModel';
 import {CatDistintivosModel} from '../../Modelos/CatDistintivosModel';
+import { Geolocation } from '@capacitor/geolocation';
 
-const { Geolocation } = Plugins;
 declare var google: any;
 
 @Component({
@@ -192,7 +191,7 @@ export class FiltrosBusquedaComponent implements OnInit {
             this.filtros.idMunicipio = null;
             this.filtros.idLocalidad = null;
         }
-        //console.log("Los filtros de busqueda son: "+JSON.stringify(this.filtros))
+        console.log("Los filtros de busqueda son: ",this.filtros)
         this.buscarPorFiltros.emit(this.filtros);
     }
 
@@ -329,6 +328,7 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     setIonradiogroupEntregaDomicilio(opcion: number) {
+        console.log('entre')
         if (opcion === 1) {
             this.filtros.blnEntrega = true;
         } else if (opcion === 0) {

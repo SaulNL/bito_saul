@@ -17,15 +17,15 @@ import { CatLocalidadModel } from './../../../Modelos/CatLocalidadModel';
 import { CatMunicipioModel } from './../../../Modelos/CatMunicipioModel';
 import { CatEstadoModel } from './../../../Modelos/CatEstadoModel';
 import { Map, tileLayer, marker, Marker } from 'leaflet';
-import { Plugins } from '@capacitor/core';
-const { Geolocation } = Plugins;
 import { GeneralServicesService } from './../../../api/general-services.service';
 import { UbicacionMapa } from '../../../api/ubicacion-mapa.service';
 import { CatDistintivosModel } from 'src/app/Modelos/CatDistintivosModel';
 import { SeleccionarSucripcionComponent } from 'src/app/components/seleccionar-suscripcion/seleccionar-suscripcion.component';
 import { DetDomicilioModel } from 'src/app/Modelos/DetDomicilioModel';
 import { VigenciaPdfDistintivosComponent } from 'src/app/components/vigencia-pdf-distintivos/vigencia-pdf-distintivos.component';
-import { element } from 'protractor';
+import { Geolocation } from '@capacitor/geolocation';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
+
 
 @Component({
   selector: 'app-formulario-negocio',
@@ -54,6 +54,9 @@ export class FormularioNegocioPage implements OnInit {
   public resizeToWidth = 0;
   public resizeToHeight = 0;
   private usuario: any;
+  public mensaje = '';
+  public mensaje2: string;
+  public bandera: boolean;
   public entregas = [
     { id: true, respuesta: 'Si' },
     { id: false, respuesta: 'No' }
@@ -192,6 +195,7 @@ export class FormularioNegocioPage implements OnInit {
     this.btnEstado = false;
     this.btnMuncipio = true;
     this.btnLocalidad = true;
+    this.bandera = true;
     this.loaderSubCategoria = true;
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
@@ -590,7 +594,12 @@ export class FormularioNegocioPage implements OnInit {
       }
     );
   }
-  public subir_imagen_cuadrada(event) {
+
+  uploadPhoto(event: any) {
+
+   alert("upload")
+  }
+  public subir_imagen_cuadrada(event: any) {
     let nombre_archivo;
     if (event.target.files && event.target.files.length) {
       let height;
@@ -1044,12 +1053,10 @@ export class FormularioNegocioPage implements OnInit {
 
   }
   public locationPredeterminada() {
-    let latitude;
-    let longitude;
-    latitude = this.negocioTO.det_domicilio.latitud;
-    longitude = this.negocioTO.det_domicilio.longitud;
-    this.map.setView([latitude, longitude], 12);
-    this.marker.setLatLng([latitude, longitude]);
+    const estado = this.list_cat_estado.filter(estad => estad.id_estado === this.negocioTO.det_domicilio.id_estado)[0].nombre;
+    const municipio = this.list_cat_municipio.filter(municip => municip.id_municipio === this.negocioTO.det_domicilio.id_municipio)[0].nombre;
+    const address = this.negocioTO.det_domicilio.calle + ' ' + this.negocioTO.det_domicilio.numero_ext + ',' + this.negocioTO.det_domicilio.colonia + ',' + this.negocioTO.det_domicilio.codigo_postal + ' ' + municipio + ',' + estado;
+    this.getCoordinates(address);
   }
 
   /**
@@ -1486,10 +1493,14 @@ export class FormularioNegocioPage implements OnInit {
         const gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
         this.map.panTo([latitud, longitud]);
         this.marker.setLatLng([latitud, longitud]);
+        this.negocioTO.det_domicilio.latitud = latitud;
+        this.negocioTO.det_domicilio.longitud = longitud;
+        /*
         await Geolocation.getCurrentPosition(gpsOptions).then(res => {
           this.negocioTO.det_domicilio.latitud = res.coords.latitude;
           this.negocioTO.det_domicilio.longitud = res.coords.longitude;
         });
+         */
 
       });
   }
@@ -1696,5 +1707,70 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioTO.alcance_entrega = "";
     this.negocioTO.tiempo_entrega_kilometro = "";
     this.negocioTO.costo_entrega = "";
+  }
+
+  async subirNuevaImg(){
+    if (this.negocioTO.logo === null ||
+        this.negocioTO.logo === undefined ||
+        this.negocioTO.logo.archivo_64 === '' ||
+        this.negocioTO.logo.archivo_64 === null ||
+        this.negocioTO.logo.archivo_64 === undefined){
+      this.mensaje = "(Inténtelo de nuevo)";
+    }
+    const result = await FilePicker.pickImages({
+      multiple: false,
+      readData: true
+    });
+
+    this.mensaje = null;
+
+    let imgPrueba = `data:image/png;base64,${result.files[0].data}`
+
+    this.abrirModal(imgPrueba, 400, 400).then(r => {
+      if (r !== undefined) {
+        const archivo = new ArchivoComunModel();
+        archivo.nombre_archivo = result.files[0].name,
+          archivo.archivo_64 = r.data;
+        this.negocioTO.logo = archivo;
+        this.negocioTO.local = archivo;
+        // this.blnImgCuadrada = false;
+      }
+    }
+    );
+  }
+
+  async obtenerImg(){
+    if (this.bandera === true){
+      this.mensaje2 = "(Inténtelo de nuevo)";
+    }
+
+    const result = await FilePicker.pickImages({
+      multiple: false,
+      readData: true
+    });
+
+    this.bandera = false;
+    this.mensaje2 = null;
+
+    let imgPrueba = `data:image/png;base64,${result.files[0].data}`
+
+    if (!this.features10) {
+      this.notificaciones.alerta("No cuenta con la subscripción requerida para usar esta característica")
+    } else {
+      this.abrirModal(imgPrueba, 400, 400).then(r => {
+        if (r !== undefined) {
+          const archivo = new ArchivoComunModel();
+          archivo.nombre_archivo = result.files[0].name,
+            archivo.archivo_64 = r.data;
+          this.fotografiasArray.push(archivo);
+          this.numeroFotos++;
+          if (this.numeroFotos >= this.numeroFotosPermitidas) {
+            this.galeriaFull = true;
+          }
+        }
+      }
+      );
+    }
+
   }
 }

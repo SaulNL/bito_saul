@@ -2,14 +2,20 @@
 
 android {
   compileOptions {
-      sourceCompatibility JavaVersion.VERSION_1_8
-      targetCompatibility JavaVersion.VERSION_1_8
+      sourceCompatibility JavaVersion.VERSION_17
+      targetCompatibility JavaVersion.VERSION_17
   }
 }
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
-
+    implementation project(':capacitor-app')
+    implementation project(':capacitor-browser')
+    implementation project(':capacitor-filesystem')
+    implementation project(':capacitor-geolocation')
+    implementation project(':capacitor-push-notifications')
+    implementation project(':capacitor-share')
+    implementation project(':capawesome-capacitor-file-picker')
     implementation "com.facebook.android:facebook-android-sdk:11.3.0"
     implementation "com.facebook.android:facebook-android-sdk:11.3.0"
     implementation "com.google.android.gms:play-services-auth:15.0.1"

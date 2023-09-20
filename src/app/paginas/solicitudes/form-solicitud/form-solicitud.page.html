@@ -220,9 +220,9 @@
             </div>
           </div>
           <div class="avatar-upload">
-            <div class="avatar-edit">
-              <input #inputTarjeta id="cuadrado" type="file" accept="image/*" name="img_promo"
-                (change)="subir_imagen_cuadrada($event)" required />
+            <div class="avatar-edit" (click)="obtenerImg()">
+              <!-- <input #inputTarjeta id="cuadrado" type="file" accept="image/*" name="img_promo"
+                (change)="subir_imagen_cuadrada($event)" required /> -->
               <label for="cuadrado">
                 <ion-icon name="camera-outline" style="
                     position: relative;
@@ -233,6 +233,7 @@
               </label>
             </div>
           </div>
+          <p *ngIf="mensaje !== null && bandera" style="text-align: center; color: #ff4154">{{mensaje}}</p>
         </ion-list>
         <ion-button expand="block" type="submit" class="bg-naranja" [disabled]="formVariable.invalid">
           <span

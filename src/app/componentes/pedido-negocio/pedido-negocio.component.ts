@@ -13,7 +13,6 @@ import HttpStatusCode from '../../utils/https-status-code';
 import { error } from 'protractor';
 import { HttpParams } from '@angular/common/http';
 import { UbicacionMapa } from '../../api/ubicacion-mapa.service';
-import { Plugins } from "@capacitor/core";
 import { CatEstadoModel } from 'src/app/Modelos/CatEstadoModel';
 import { GeneralServicesService } from 'src/app/api/general-services.service';
 import { CatMunicipioModel } from 'src/app/Modelos/CatMunicipioModel';
@@ -24,9 +23,8 @@ import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms"
 import { PasarelasService } from "../../api/pasarelas/pasarelas.service";
 import Swal from "sweetalert2";
 import { IResponse } from "../../interfaces/pasarelas/IResponse";
+import { Geolocation } from '@capacitor/geolocation';
 
-
-const { Geolocation } = Plugins;
 declare var google: any;
 @Component({
     selector: 'app-pedido-negocio',

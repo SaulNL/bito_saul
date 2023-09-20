@@ -8,49 +8,34 @@ import Swal  from 'sweetalert2'
 export class ToadNotificacionService {
 
   constructor(
-    private toadController: ToastController
+    private toastController: ToastController
   ) { }
-  /**
-   * @author Juan Antonio Guevara Flores
-   * @description Muestra mensaje exito
-   * @param message
-   */
-  /*public toastSuccess(message: any) {
-    this.exito(message);
-  }*/
-  /**
-   * @author Juan Antonio Guevara Flores
-   * @description Muestra mensaje de alerta
-   * @param message
-   */
-  /*public alert(message: any) {
-    this.alerta(message);
-  }*/
-  /** 
-   * @author Juan Antonio Guevara Flores
-   * @description Muestra mensaje de error
-   * @param message
-   */
-  /*public toastError(message: any) {
-    this.configToad('danger', message);
-  }
-
-  public successExito(mensaje) {
-    this.configToad('success', mensaje);
-  }
-
-  public toastWarnig(mensaje) {
-    this.configToad('warning', mensaje);
-  }
-
-  async configToad(color, mensaje) {
-    const toast = await this.toadController.create({
-      color: color,
-      duration: 2000,
-      message: mensaje
+  
+  async toastWarningBottom(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 5000,
+      icon: 'warning',
+      color: 'warning',
+      mode: 'ios',
+      position: 'bottom'
     });
-    return await toast.present();
-  }*/
+
+    await toast.present();
+  }
+
+  async toastSuccessBottom(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 5000,
+      icon: 'checkmark',
+      color: 'success',
+      mode: 'ios',
+      position: 'bottom'
+    });
+
+    await toast.present();
+  }
 
   /*SWEET ALERT*/
   public exito(title:any/*, time:number,buttonText:any*/){
@@ -148,7 +133,7 @@ export class ToadNotificacionService {
   public toastInfo(title:any/*, time:number,buttonText:any*/){
     const Toast = Swal.mixin({
       toast: true,
-      position: 'top-right',
+      position: 'top-start',
       timer: 5000,
       timerProgressBar: true,
     })

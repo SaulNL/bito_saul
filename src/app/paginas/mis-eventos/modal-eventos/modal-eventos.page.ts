@@ -11,7 +11,7 @@ import { element } from 'protractor';
 import {ModalController, Platform} from '@ionic/angular';
 import { RecorteImagenComponent } from '../../../components/recorte-imagen/recorte-imagen.component';
 import { Router } from '@angular/router';
-import { async } from '@angular/core/testing';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 @Component({
   selector: 'app-modal-eventos',
@@ -55,6 +55,8 @@ export class ModalEventosPage implements OnInit {
   public galeriaFull = false;
   base64Video = null;
   public isIos: boolean;
+  public mensaje: string;
+  public bandera: boolean;
   numeroFotosPermitidas: number;
   slideOpts = {
     slidesPerView: 1.5,
@@ -79,6 +81,7 @@ export class ModalEventosPage implements OnInit {
     this.videosArrayAgregar = [];
     this.fotosArrayAgregar = [];
     this.isIos = this.platform.is("ios");
+    this.bandera = true;
   }
 
   ngOnInit() {
@@ -216,7 +219,6 @@ export class ModalEventosPage implements OnInit {
   }
 
   asignarValoresEvent(data) {
-    console.log("data", data)
     let pagos = [];
 
     setTimeout(async () => {
@@ -239,7 +241,8 @@ export class ModalEventosPage implements OnInit {
         }, 1500);
       }, 1500);
 
-      this.eventData.fecha = data.fecha;
+      this.eventData.fecha = data.fecha !== null ? new Date(data.fecha).toISOString() : null;
+
       this.eventData.tipo_pago_transferencia = data.tipo_pago_transferencia;
       this.eventData.tipo_pago_tarjeta_credito = data.tipo_pago_tarjeta_credito;
       this.eventData.tipo_pago_tarjeta_debito = data.tipo_pago_tarjeta_debito;
@@ -300,7 +303,6 @@ export class ModalEventosPage implements OnInit {
   }
 
   guardarEvento(data) {
-    console.log("datos a guardar", data)
     this.eventoService.guardarEvento(data).subscribe(res => {
       console.log(res)
       if (res.code == 200) {
@@ -436,6 +438,13 @@ export class ModalEventosPage implements OnInit {
 
   }
 
+  selectFechaEvento(event: any) {
+    let fecha = event.detail.value;
+    let ms = Date.parse(fecha);
+    fecha = new Date(ms).toISOString();
+    this.eventData.fecha = fecha;
+  }
+
   public agregarFoto(event) {
     let nombre_archivo;
     if (event.target.files && event.target.files.length) {
@@ -477,6 +486,7 @@ export class ModalEventosPage implements OnInit {
             } else {
               this.resizeToWidth = 400;
               this.resizeToHeight = 400;
+              console.log("img",img.src)
               this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
                     if (r !== undefined) {
                       const archivo = new ArchivoComunModel();
@@ -556,6 +566,65 @@ export class ModalEventosPage implements OnInit {
         this._notificacionService.alerta("Lo sentimos, el archivo supera los 100 MB");
       }
     }
+  }
+
+  async obtenerImg(){
+    if (this.bandera === true){
+      this.mensaje = "(Inténtelo de nuevo)"
+    }
+
+    const result = await FilePicker.pickImages({
+      multiple: false,
+      readData: true
+    });
+    this.bandera = false;
+    this.mensaje = null;
+
+    // const contents = await Filesystem.readFile({
+    //   path: result.files[0].path,
+    // });
+
+    let imgPrueba = `data:image/png;base64,${result.files[0].data}`
+
+    this.resizeToWidth = 400;
+    this.resizeToHeight = 400;
+    this.abrirModal(imgPrueba, this.resizeToWidth, this.resizeToHeight).then(r => {
+      if (r !== undefined) {
+        const archivo = new ArchivoComunModel();
+        archivo.nombre_archivo = result.files[0].name,
+        archivo.archivo_64 = r.data;
+        this.fotosArrayAgregar.push(archivo);
+        this.numeroFotos++;
+        if (this.numeroFotos >= this.numeroFotosPermitidas) {
+          this.galeriaFull = true;
+          }
+          }
+        }
+    );
+  }
+
+  async obtenerVideo(){
+    if (this.bandera === true){
+      this.mensaje = "(Inténtelo de nuevo)"
+    }
+    const result = await FilePicker.pickVideos({
+      multiple: false,
+      readData: true
+    });
+    this.bandera = false;
+    this.mensaje = null;
+    
+    if (result.files[0].size < 100000000) {
+      let video = new ArchivoComunModel();
+            video.nombre_archivo = result.files[0].name;
+            video.archivo_64 = `data:image/png;base64,${result.files[0].data}`
+            this.videosArrayAgregar.push(video);
+    }else {
+        this._notificacionService.alerta("Lo sentimos, el archivo supera los 100 MB");
+      }
+
+
+    // let videoPrueba = `data:image/png;base64,${contents.data}`
   }
 
 }

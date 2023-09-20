@@ -1,5 +1,5 @@
 import { ProductoModel } from "./../../Modelos/ProductoModel";
-import { Component, Input, OnInit } from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import { ProductosService } from "../../api/productos.service";
 import { ToadNotificacionService } from "../../api/toad-notificacion.service";
 import {AlertController} from '@ionic/angular';
@@ -14,6 +14,8 @@ export class DarLikeProductoComponent implements OnInit {
   @Input() public producto: any;
   @Input() public usuario: any;
   @Input() public mostrarLike: any;
+  @Output() banderaAlert: EventEmitter<boolean> = new EventEmitter<boolean>();
+
 
   public loaderLike = false;
 
@@ -25,34 +27,14 @@ export class DarLikeProductoComponent implements OnInit {
   ) {}
   ngOnInit() {}
 
-  public async alerta(){
-    const alert = await this.alertController.create({
-      header: 'Bituyú!',
-      message: "¿Ya tienes una cuenta?",
-      buttons: [
-        {
-          text: "Iniciar sesión",
-          cssClass: 'text-grey',
-          handler: () => {
-            this.router.navigate(['/tabs/login']);
-          }
-        },
-        {
-          text: "Registrate",
-          cssClass: 'text-rosa',
-          handler: () => {
-            this.router.navigate(["/tabs/login/sign-up"]);
-          },
-        },
-      ],
-    });
-
-    await alert.present();
+  abrirAlert(){
+    const isAlert = true;
+    this.banderaAlert.emit(isAlert);
   }
 
   public darLike(producto: ProductoModel) {
     if (!this.mostrarLike) {
-      this.alerta();
+      this.abrirAlert();
     } else {
       this.loaderLike = true;
       if (producto.usuario_dio_like !== 0){

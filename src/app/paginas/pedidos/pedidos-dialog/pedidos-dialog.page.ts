@@ -55,8 +55,8 @@ export class PedidosDialogPage implements OnInit {
   private longitud: number;
   pedidoAbierto: any;
   public selectTO: any;
-  public inicioFecha: String;
-  public finalFecha: String;
+  public inicioFecha: any;
+  public finalFecha: any;
   public subscribe;
   public navegacion: any;
   public loaderSearch = false;

@@ -13,12 +13,10 @@ import {AppSettings} from "../../../AppSettings";
 import {AlertController, ModalController} from "@ionic/angular";
 import {FiltrosModel} from "../../../Modelos/FiltrosModel";
 import {Auth0Service} from "../../../api/auth0.service";
-import {FilesystemDirectory, Plugins} from "@capacitor/core";
 import {ICupoon} from "../../../interfaces/ICupon";
 import QRCode from "easyqrcodejs";
 import html2canvas from "html2canvas";
-
-const { Filesystem } = Plugins;
+import { Filesystem, Directory} from '@capacitor/filesystem';
 
 @Component({
   selector: 'app-modal-info-promocion',
@@ -51,6 +49,7 @@ export class ModalInfoPromocionComponent implements OnInit {
   public promoPublico = false;
   public promoAfil = false;
   isOpen: boolean = false;
+  public isAlert: boolean = false;
 
   hoy: any;
   public diasArray = [
@@ -475,7 +474,7 @@ export class ModalInfoPromocionComponent implements OnInit {
         Filesystem.writeFile({
           path: fileName,
           data: canvas.toDataURL().toString(),
-          directory: FilesystemDirectory.Documents
+          directory: Directory.Documents
         }).then(() => {
           this.notificaciones.exito('Se descargo correctamente cupón de ' + promocion.nombre_comercial);
         }, error => {
@@ -493,28 +492,11 @@ export class ModalInfoPromocionComponent implements OnInit {
   }
 
   async mensajeRegistro() {
-    const alert = await this.alertController.create({
-      header: 'Bituyú!',
-      message: "¿Ya tienes una cuenta?",
-      buttons: [
-        {
-          text: "Iniciar sesión",
-          cssClass: 'text-grey',
-          handler: () => {
-            this.router.navigate(['/tabs/login']);
-          }
-        },
-        {
-          text: "Registrate",
-          cssClass: 'text-rosa',
-          handler: () => {
-            this.router.navigate(["/tabs/login/sign-up"]);
-          },
-        },
-      ],
-    });
-    await alert.present();
-  }
+      this.isAlert = true;
+    }
 
+  cerrarAlert(isAlert: boolean){
+    this.isAlert = isAlert;
+  }
 
 }

@@ -31,8 +31,8 @@ export class PedidosNegocioPage implements OnInit {
   public loaderBus = false;
   public loaderEst = false;
   public cargando = 'Cargando';
-  public inicioFecha: String;
-  public finalFecha: String;
+  public inicioFecha: any;
+  public finalFecha: any;
 
 
   constructor(

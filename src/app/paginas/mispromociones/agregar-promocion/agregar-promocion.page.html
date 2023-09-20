@@ -158,16 +158,31 @@
 
           <ion-label>Horario de promoción </ion-label>
           <ion-icon name="star" class="star" *ngIf="banderaPromocionCompleta"></ion-icon>
-          <ion-item [disabled]="banderaPromocionCompleta">
+
+          <ion-item [disabled]="banderaPromocionCompleta" id="open-modal-time-1-add-promo">
             <ion-label stacked> Horario Inicial </ion-label>
-            <ion-datetime display-format="H:mm" picker-format="H:mm" name="feInicio" #feInicio="ngModel"
-              [(ngModel)]="horarioini" (ionChange)="validarHoraInicio($event)"></ion-datetime>
+            <small>{{horarioini | date: 'H:mm'}}</small>
           </ion-item>
-          <ion-item [disabled]="banderaPromocionCompleta">
+          <ion-popover trigger="open-modal-time-1-add-promo" size="cover">
+            <ng-template>
+              <ion-datetime name="feInicio" #feInicio="ngModel" [(ngModel)]="horarioini" 
+                (ionChange)="validarHoraInicio($event)" presentation="time" [showDefaultButtons]="true" 
+                doneText="Ok" cancelText="Cancelar">
+              </ion-datetime>
+            </ng-template>
+          </ion-popover>
+          <ion-item [disabled]="banderaPromocionCompleta" id="open-modal-time-2-add-promo">
             <ion-label stacked> Horario Final </ion-label>
-            <ion-datetime [disabled]="blnActivaHoraF" display-format="H:mm" picker-format="H:mm" name="fechaFinal"
-              #fechaFinal="ngModel" [(ngModel)]="horariofin" (ionChange)="validarHoraFinal($event)"></ion-datetime>
+            <small>{{horariofin | date: 'H:mm'}}</small>
           </ion-item>
+          <ion-popover trigger="open-modal-time-2-add-promo" size="cover">
+            <ng-template>
+              <ion-datetime [disabled]="blnActivaHoraF" name="fechaFinal"
+                #fechaFinal="ngModel" [(ngModel)]="horariofin" (ionChange)="validarHoraFinal($event)"
+                presentation="time" [showDefaultButtons]="true" doneText="Ok" cancelText="Cancelar">
+              </ion-datetime>
+            </ng-template>
+          </ion-popover>
           <ion-item [disabled]="banderaPromocionCompleta">
             <ion-label position="stacked">Dias de la Semana</ion-label>
             <ion-select [disabled]="blnActivaDias" ok-text="Ok" cancel-text="Cancelar" multiple #dias="ngModel"
@@ -240,11 +255,8 @@
         </div>
         <div>
           <div>
-            <label *ngIf="blnImgCuadrada" style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              ">
+            <label *ngIf="blnImgCuadrada" style="display: flex; justify-content: center; align-items: center;"
+                   id="cuadrado" (click)="subir_imagen_cuadrada()">
               <div class="punteado" style="
                   display: flex;
                   justify-content: center;
@@ -274,23 +286,18 @@
               </div>
             </div>
           </div>
-          <input #inputTarjeta id="cuadrado" type="file" (change)="subir_imagen_cuadrada($event)" accept="image/*"
-            name="img_promo" />
         </div>
         <div *ngIf="!blnImgCuadrada">
           <div style="display: flex; justify-content: center; align-items: center">
             <ion-button color="warning" for="rectangulo">
-              <label for="cuadrado" style="
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                ">
+              <label for="cuadrado" style="display: flex; justify-content: center; align-items: center;"
+                     (click)="subir_imagen_cuadrada()">
                 Cambiar imagen<ion-icon name="image-outline" style="margin-left: 10px"></ion-icon></label>
             </ion-button>
           </div>
         </div>
         <!--? input de la imagen -->
-
+        <p *ngIf="mensaje !== null" style="text-align: center; color: #ff4154">{{mensaje}}</p>
         <!--? Input banner -->
         <div style="margin-top: 10px">
           <div style="display: flex; justify-content: center">
@@ -315,11 +322,8 @@
         </div>
         <div>
           <div>
-            <label *ngIf="blnImgRectangulo" style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              ">
+            <label *ngIf="blnImgRectangulo" style="display: flex; justify-content: center; align-items: center;"
+                   id="rectangulo" (click)="subir_imagen_rectangulo()">
               <div class="punteado2" style="
                   display: flex;
                   justify-content: center;
@@ -348,18 +352,13 @@
                 </div>
               </div>
             </div>
-            <input #inputBanner id="rectangulo" type="file" type="file" (change)="subir_imagen_rectangulo($event)"
-              accept="image/*" name="img_promo" />
           </div>
         </div>
         <div *ngIf="!blnImgRectangulo" style="display: flex; justify-content: center; align-items: center">
           <div>
             <ion-button color="warning" for="rectangulo">
-              <label for="rectangulo" style="
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                ">
+              <label for="rectangulo" style="display: flex; justify-content: center; align-items: center;"
+                     (click)="subir_imagen_rectangulo()">
                 Cambiar imagen<ion-icon name="image-outline" style="margin-left: 10px"></ion-icon></label>
             </ion-button>
           </div>
@@ -369,6 +368,7 @@
         <div>
           <div *ngIf="seleccionTo.id_tipo_promocion===1" class="btn btn-info btn-raised">
             <br>
+            <p *ngIf="mensaje1 !== null" style="text-align: center; color: #ff4154">{{mensaje1}}</p>
             <ion-card [disabled]="mostrarVideo">
               <div class="ion-text-center">Subir Video</div>
             </ion-card>
@@ -392,10 +392,9 @@
               </div>
             </div>
             <div>
+              <p *ngIf="mensaje2 !== null" style="text-align: center; color: #ff4154">{{mensaje2}}</p>
               <h6>El video es opcional.</h6>
-              <ion-button [disabled]="mostrarVideo" expand="full" class="bg-naranja">
-                <input type="file" name="video1" hidden accept="video/mp4" id="video"
-                  (change)="seleccionarVideo($event)" />
+              <ion-button [disabled]="mostrarVideo" expand="full" class="bg-naranja" (click)="seleccionarVideo()" id="video">
                 <label for="video" [ngClass]="isIos ? 'upload' : 'uploadAndroid'">
                   Seleccionar video
                 </label>

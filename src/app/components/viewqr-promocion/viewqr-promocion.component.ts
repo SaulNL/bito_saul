@@ -4,18 +4,13 @@ import { ToadNotificacionService } from '../../api/toad-notificacion.service';
 import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { ICupoon } from 'src/app/interfaces/ICupon';
-
-import { Plugins, FilesystemDirectory } from '@capacitor/core';
 import { File } from '@ionic-native/file/ngx';
 import QRCode from 'easyqrcodejs';
 import html2canvas from 'html2canvas';
 import { Auth0Service } from 'src/app/api/auth0.service';
 import { PromocionesService } from '../../api/promociones.service';
 import { FiltrosModel } from '../../Modelos/FiltrosModel';
-
-
-const { Filesystem } = Plugins;
-const { Share } = Plugins;
+import { Filesystem, Directory } from '@capacitor/filesystem';
 
 @Component({
   selector: 'app-viewqr-promocion',
@@ -172,7 +167,7 @@ export class ViewQrPromocionComponent implements OnInit {
       Filesystem.writeFile({
         path: fileName,
         data: canvas.toDataURL().toString(),
-        directory: FilesystemDirectory.Documents
+        directory: Directory.Documents
       }).then(() => {
         this.notifi.exito('Se descargo correctamente cupón de ' + promocion.nombre_comercial);
       }, error => {

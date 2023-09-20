@@ -16,7 +16,7 @@
         <ion-item>
             <ion-slides>
                 <ng-container *ngFor="let foto of fotografiasArray; let i = index">
-                    <ion-slide *ngIf="foto.url_imagen !== null">
+                    <ion-slide style="width: 310px" *ngIf="foto.url_imagen !== null">
                         <ion-card style="width: 70%; height: 231px">
                             <img src="{{foto.url_imagen}}"/>
                         </ion-card>
@@ -98,10 +98,19 @@
     <div *ngIf="mostrarLabel" style="display: flex; align-items: center; justify-content:center; flex-direction: column; margin-bottom: 9px; margin-top: 9px">
         <ion-label class="noPersonas" style="margin-bottom: 10px">Complete todos los campos <span style="color: red">*</span></ion-label>
 
-        <ion-item style="margin-bottom: 10px;" *ngIf="infoEvento[0]?.id_tipo_recurrencia == 2">
+        <ion-item style="margin-bottom: 10px;" *ngIf="infoEvento[0]?.id_tipo_recurrencia == 2" id="open-modal-date-reservaciones">
             <ion-label>Fecha <span style="color: red">*</span> </ion-label>
-            <ion-datetime display-format="DD/MM/YYYY" min="{{minFecha}}" max="{{maxFecha}}" [(ngModel)]="fechaSeleccionada"></ion-datetime>
+            <small>{{fechaSeleccionadaDiario | date: 'dd/MM/yyyy'}}</small>
         </ion-item>
+        <ion-modal trigger="open-modal-date-reservaciones">
+            <ng-template>
+                <ion-content>
+                    <ion-datetime [min]="minFecha" [max]="maxFecha" presentation="date" 
+                        [(ngModel)]="fechaSeleccionadaDiario" [showDefaultButtons]="true" doneText="Ok" cancelText="Cancelar">
+                    </ion-datetime>
+                </ion-content>
+            </ng-template>
+        </ion-modal>
 
         <ion-item style="margin-bottom: 10px; width: 68vw;" *ngIf="infoEvento[0]?.id_tipo_recurrencia == 3">
             <ion-label>Fecha: <span style="color: red">*</span></ion-label>
@@ -124,7 +133,7 @@
 
         <div style="display: flex; justify-content: center; align-items: center">
             <ion-button *ngIf="infoEvento[0]?.id_tipo_recurrencia == 2 || infoEvento[0]?.id_tipo_recurrencia == 3 || infoEvento[0]?.id_tipo_recurrencia == 4"
-                        class="buttonEvento" shape="round" [disabled]="!noPersonas || !fechaSeleccionada" (click)="guardar()">
+                        class="buttonEvento" shape="round" [disabled]="!noPersonas || !fechaSeleccionada && !fechaSeleccionadaDiario" (click)="guardar()">
                 <img src="assets/images/eventos/reservación.png" style="width: 35px; height: 35px">
                 Generar reservación
             </ion-button>

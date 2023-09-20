@@ -12,20 +12,22 @@ import { TabsPageModule } from '../tabs/tabs.module';
 import { Tab1PageRoutingModule } from './productos-routing.module';
 import { InfoProductosComponent } from '../../components/info-productos/info-productos.component';
 import { ModalProductosComponent } from '../../components/modal-productos/modal-productos.component';
+import {ModalInicioSesionPageModule} from "../modal-inicio-sesion/modal-inicio-sesion.module";
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    ExploreContainerComponentModule,
-    Tab1PageRoutingModule,
-    TabsPageModule,
-    DarLikeProductoModule,
-    InfinitoScrollModule,
-    RecargarModule,
-    SpinnerModule
-  ],
+    imports: [
+        IonicModule,
+        CommonModule,
+        FormsModule,
+        ExploreContainerComponentModule,
+        Tab1PageRoutingModule,
+        TabsPageModule,
+        DarLikeProductoModule,
+        InfinitoScrollModule,
+        RecargarModule,
+        SpinnerModule,
+        ModalInicioSesionPageModule
+    ],
   declarations: [ProductosPage,
     InfoProductosComponent,
     ModalProductosComponent

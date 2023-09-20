@@ -1,7 +1,7 @@
 import { PlazasAfiliacionesComponent } from '../../componentes/plazas-afiliaciones/plazas-afiliaciones.component';
 import { AfiliacionPlazaModel } from '../../Modelos/AfiliacionPlazaModel';
 import { Auth0Service } from '../../api/busqueda/auth0.service';
-import { AfterViewInit, Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import {
   IonContent,
   LoadingController,
@@ -23,13 +23,13 @@ import { ICategoriaNegocio } from 'src/app/interfaces/ICategoriaNegocio';
 import { INegocios } from 'src/app/interfaces/INegocios';
 import { throwError } from 'rxjs';
 import { AlertController } from '@ionic/angular';
-import { Plugins } from '@capacitor/core';
 import { PersonaService } from 'src/app/api/persona.service';
 import { FiltrosService } from 'src/app/api/filtros.service';
 import Swal from 'sweetalert2';
 import {ModalInicioComponent} from '../../componentes/modal-inicio/modal-inicio.component';
-
-const { Geolocation } = Plugins;
+import { Geolocation } from '@capacitor/geolocation';
+import { Filesystem, Directory, Encoding, } from '@capacitor/filesystem';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 declare var google: any;
 
 
@@ -40,7 +40,11 @@ declare var google: any;
   providers: [SideBarService],
 })
 export class InicioPage implements OnInit, AfterViewInit {
-
+  
+  @ViewChild("fileUpload", {
+    read: ElementRef
+  }) fileUpload: ElementRef;
+  
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -548,7 +552,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   async AlertActivarUbicacion() {
     const alert = await this.alertController.create({
-      header: 'Bituyú!',
+      header: 'Bituyú',
       message: 'Activa tu ubicación para poder ver los negocios cerca de ti',
       buttons: [
         {
@@ -603,7 +607,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     } catch (error) {
       this.loader = false;
       // this.notificaciones.error("Error al buscar los datos" + error.message);
-      this.notificaciones.error('No hay conexión a internet, conectate a una red');
+      //this.notificaciones.error('No hay conexión a internet, conectate a una red');
     }
   }
 
@@ -1251,11 +1255,8 @@ export class InicioPage implements OnInit, AfterViewInit {
       const texto = this.paginaPrevia == 0 ? 'Estas en la primera pagina' : 'Estas en la ultima pagina';
 
       this.paginaPrevia = this.paginaPrevia == 0 ? this.paginaPrevia + 1 : this.paginaPrevia - 1;
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: texto
-      });
+
+      this.notificaciones.toastInfo(texto);
     }
   }
 
@@ -1354,4 +1355,5 @@ export class InicioPage implements OnInit, AfterViewInit {
   closePopUp() {
     this.showPopUp = false;
   }
+
 }

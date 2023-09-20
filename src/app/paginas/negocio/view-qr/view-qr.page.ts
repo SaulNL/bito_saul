@@ -4,13 +4,11 @@ import { NegocioModel } from "./../../../Modelos/NegocioModel";
 import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
 import { AppSettings} from "../../../AppSettings";
 import { Platform } from '@ionic/angular';
-import { Plugins, FilesystemDirectory } from '@capacitor/core';
 import { File } from '@ionic-native/file/ngx';
-
 import  QRCode from 'easyqrcodejs';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
 
-const { Filesystem } = Plugins;
-const { Share } = Plugins;
 @Component({
   selector: 'app-view-qr',
   templateUrl: './view-qr.page.html',
@@ -52,7 +50,7 @@ export class ViewQrPage implements OnInit {
   ngAfterViewInit(): void {
     const options = {
 
-      title: 'BITUYÚ!',
+      title: 'BITUYÚ',
       titleFont: "normal normal bold 18px Arial", //font. default is "bold 16px Arial"
       titleColor: "#000000", // color. default is "#000"
       titleBackgroundColor: "#ffffff", // background color. default is "#fff"
@@ -114,7 +112,7 @@ export class ViewQrPage implements OnInit {
     Filesystem.writeFile({
       path: fileName,
       data: base64Ima,
-      directory: FilesystemDirectory.Documents
+      directory: Directory.Documents
     }).then(() => {
       this.notifi.exito('Se descargo correctamente qr de ' + negocio.nombre_comercial);
     }, error => {

@@ -12,6 +12,7 @@ import { Router } from "@angular/router";
 import { RecorteImagenComponent } from 'src/app/components/recorte-imagen/recorte-imagen.component';
 import { SessionUtil } from './../../utils/sessionUtil';
 import { ConvenioModel } from '../../Modelos/ConvenioModel';
+import {FilePicker} from "@capawesome/capacitor-file-picker";
 
 
 
@@ -37,6 +38,8 @@ export class DatosBasicosPage implements OnInit {
   resizeToHeight: number = 0;
   maintainAspectRatio: boolean = false;
   fechaSeleccionada: boolean = false;
+  public mensaje: string;
+  public bandera: boolean;
 
   public lstAfiliaciones: any;
   public tipoAfl: any;
@@ -71,6 +74,7 @@ export class DatosBasicosPage implements OnInit {
     this.minDate = moment.parseZone(this.minDate).format("YYYY-MM-DD");
     this.maxDate = moment.parseZone(this.maxDate).format("YYYY-MM-DD");
     this.loader = false;
+    this.bandera = true;
   }
 
   ngOnInit() {
@@ -83,7 +87,7 @@ export class DatosBasicosPage implements OnInit {
 
   private actualizarUsuario(user) {
     this.usuarioSistema = user;
-    this.usuarioSistema.fecha_nacimiento = this.usuarioSistema.fecha_nacimiento !== null ? new Date(this.usuarioSistema.fecha_nacimiento) : null;
+    this.usuarioSistema.fecha_nacimiento = this.usuarioSistema.fecha_nacimiento !== null ? new Date(this.usuarioSistema.fecha_nacimiento).toISOString() : null;
   }
 
   private setDataBasicUser() {
@@ -183,6 +187,8 @@ export class DatosBasicosPage implements OnInit {
     fecha = new Date(ms);
     this.usuarioSistema.fecha_nacimiento = fecha;
   }
+
+  /*
   public subir_imagen_cuadrado(event) {
     let nombre_archivo;
     if (event.target.files && event.target.files.length) {
@@ -236,6 +242,43 @@ export class DatosBasicosPage implements OnInit {
       }
     }
   }
+   */
+
+  async subir_imagen_cuadrado() {
+    if (this.bandera === true){
+      this.mensaje = "(Inténtelo de nuevo)"
+    }
+
+    const result = await FilePicker.pickImages({
+      multiple: false,
+      readData: true
+    })
+
+    this.bandera = false;
+    this.mensaje = null;
+
+    let nombre_archivo;
+    if (result.files && result.files.length) {
+      for (const archivo of result.files) {
+        nombre_archivo = archivo.name;
+        const img = new Image();
+        img.src = `data:image/png;base64,${archivo.data}`
+        img.onload = () => {
+          this.resizeToWidth = 200;
+          this.resizeToHeight = 200;
+          this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
+            if (r !== undefined) {
+              const archivo = new ArchivoComunModel();
+              archivo.nombre_archivo = nombre_archivo;
+              archivo.archivo_64 = `data:image/png;base64,${result.files[0].data}`;
+              this.usuarioSistema.selfie = archivo;
+            }
+          });
+        };
+      }
+    }
+  }
+
   async abrirModal(evento, width, heigh) {
     const modal = await this.modalController.create({
       component: RecorteImagenComponent,
@@ -341,5 +384,12 @@ export class DatosBasicosPage implements OnInit {
       this.lstAflUsuario = [];
       this.lstOrgUsuario = [];
     }
+  }
+
+  fechaNacimientoSeleccionada(event: any) {
+    let fecha = event.detail.value;
+    let ms = Date.parse(fecha);
+    fecha = new Date(ms).toISOString();
+    this.usuarioSistema.fecha_nacimiento = fecha;
   }
 }

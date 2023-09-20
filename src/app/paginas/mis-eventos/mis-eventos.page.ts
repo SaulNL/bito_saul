@@ -41,13 +41,14 @@ export class MisEventosPage implements OnInit {
 
   ionViewWillEnter() {
     this.loader = true;
-    let id_proveedor = localStorage.getItem("id_proveedor")
+    let id_proveedor = JSON.parse(localStorage.getItem('u_data'))
+    console.log('datos',id_proveedor)
     this.obtenerEventos(id_proveedor);
   }
 
   ngOnInit() {
     this.loader = true;
-    let id_proveedor = localStorage.getItem("id_proveedor")
+    let id_proveedor = JSON.parse(localStorage.getItem('u_data'))
     this.obtenerEventos(id_proveedor);
     // this.obtenerLstReservacion();
   }
@@ -58,12 +59,12 @@ export class MisEventosPage implements OnInit {
 
   obtenerEventos(id) {
     let body = {
-      id_proveedor: id
+      id_proveedor: id.proveedor.id_proveedor
     }
     this.eventoService.obtenerEvento(body).subscribe(Response => {
       this.eventos = Response.data
-
       this.loader = false
+      console.log("eventos",Response)
     }),
       error => {
         this.notificacionService.error(error);

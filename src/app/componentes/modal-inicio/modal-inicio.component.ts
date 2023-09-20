@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ModalController} from "@ionic/angular";
 
 @Component({
@@ -7,8 +7,6 @@ import {ModalController} from "@ionic/angular";
   styleUrls: ['./modal-inicio.component.scss'],
 })
 export class ModalInicioComponent implements OnInit {
-  @ViewChild('videoElement') videoElement: ElementRef;
-  video: any;
 
   constructor(
       public modalController: ModalController
@@ -17,7 +15,7 @@ export class ModalInicioComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       this.modalController.dismiss();
-    }, 12000);
+    }, 8500);
   }
 
   /*

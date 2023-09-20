@@ -65,6 +65,7 @@ export class ProductosPage {
   public lstProductosOriginal: any;
   public scroll: boolean;
   public mensaje: any;
+  public afi: boolean;
   public cargando = "Cargando";
   private plazaAfiliacion: AfiliacionPlazaModel | null;
   public isIOS: boolean = false;
@@ -77,6 +78,7 @@ export class ProductosPage {
     mensaje: "",
   };
   palabraBuqueda: any;
+  public isAlert: boolean = false;
 
   constructor(
     public loadingController: LoadingController,
@@ -100,9 +102,12 @@ export class ProductosPage {
     this.plazaAfiliacionNombre = "";
     this.selectionAP = false;
     this.isIOS = this.platform.is("ios");
+    this.afi = !localStorage.getItem('afi') ? false: true;
+    console.log("afi",this.afi)
   }
 
   ngOnInit(): void {
+    this.mostrarLoguearse();
     this.active.queryParams.subscribe((params: Params) => {
       if (params.byCloseProduct) {
         const product: ProductInterface = JSON.parse(params.byCloseProduct);
@@ -592,5 +597,25 @@ export class ProductosPage {
           }
         );
     }
+  }
+
+  public mostrarLoguearse() {
+    if (!this.existeSesion) {
+      setTimeout(() =>{
+        this.mensajeRegistro();
+      }, 500);
+    }
+  }
+
+  async mensajeRegistro() {
+    this.isAlert = true;
+  }
+
+  cerrarAlert(isAlert: boolean){
+    this.isAlert = isAlert;
+  }
+
+  abrirAlert(isAlert: boolean){
+    this.isAlert = isAlert;
   }
 }

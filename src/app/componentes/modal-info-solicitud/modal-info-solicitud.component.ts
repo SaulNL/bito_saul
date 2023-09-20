@@ -9,6 +9,7 @@ import { ArchivoComunModel } from '../../Modelos/ArchivoComunModel';
 import { Auth0Service } from '../../api/auth0.service';
 import { SolicitudesModel } from '../../Modelos/SolicitudesModel';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
+import {FilePicker} from "@capawesome/capacitor-file-picker";
 
 
 @Component({
@@ -35,7 +36,9 @@ export class ModalInfoSolicitudComponent implements OnInit {
   public nombreArchivo = '';
   public pesado: boolean = false;
   public isIos: boolean;
-
+  public type: any;
+  public data: any;
+  public mensaje: string;
   constructor(
     public modalController: ModalController,
     private servicioSolicitudes: SolicitudesService,
@@ -78,6 +81,7 @@ export class ModalInfoSolicitudComponent implements OnInit {
     this.postulacionModel.descripcion = '';
   }
 
+  /*
   public guardar(form: NgForm) {
     if (form.invalid) {
       return Object.values(form.controls).forEach(control => {
@@ -94,15 +98,43 @@ export class ModalInfoSolicitudComponent implements OnInit {
         let file64: any;
         const utl = new UtilsCls();
         utl.getBase64(file).then(
-          data => {
-            file64 = data;
-            const archivo = new ArchivoComunModel();
-            archivo.nombre_archivo = this._utils_cls.convertir_nombre(fileName);
-            archivo.archivo_64 = file64;
-            this.postulacionModel.archivo = archivo;
-            this.enviar();
-          }
+            data => {
+              file64 = data;
+              const archivo = new ArchivoComunModel();
+              archivo.nombre_archivo = this._utils_cls.convertir_nombre(fileName);
+              archivo.archivo_64 = file64;
+              this.postulacionModel.archivo = archivo;
+              this.enviar();
+            }
         );
+      } else {
+        this.enviar();
+      }
+    }
+  }
+   */
+
+  public guardar(form: NgForm) {
+    if (form.invalid) {
+      return Object.values(form.controls).forEach(control => {
+        if (control instanceof FormGroup) {
+          Object.values(control.controls).forEach(con => con.markAsTouched());
+        } else {
+          control.markAsTouched();
+        }
+      });
+    } else {
+      if (this.uploadedFiles !== undefined) {
+        const fileName = this.uploadedFiles.name;
+        const archivo = new ArchivoComunModel();
+        if (this.type === 'image/jpeg'){
+          archivo.archivo_64 = `data:image/jpeg;base64,${this.data}`
+        } else if ( this.type === 'application/pdf') {
+          archivo.archivo_64 = `data:application/pdf;base64,${this.data}`
+        }
+        archivo.nombre_archivo = fileName;
+        this.postulacionModel.archivo = archivo;
+        this.enviar();
       } else {
         this.enviar();
       }
@@ -144,8 +176,37 @@ export class ModalInfoSolicitudComponent implements OnInit {
 
   }
 
+  /*
   subir_archivo($event) {
     const file: any = $event.target.files[0];
+    if (this.esValidoElPeso(file) && this.esExtensionValida(file.name)) {
+      this.uploadedFiles = file;
+      this.pesado = false;
+      this.nombreArchivo = file.name;
+    } else {
+      this.uploadedFiles = undefined;
+      this.nombreArchivo = '';
+      this.pesado = true;
+    }
+  }
+
+   */
+
+  async subir_archivo(){
+    if (this.nombreArchivo === '' ){
+      this.mensaje = "(Intentalo de nuevo)"
+    }
+
+    const result = await FilePicker.pickFiles({
+      multiple: false,
+      readData: true
+    });
+
+    this.mensaje = null;
+
+    const file: any = result.files[0];
+    this.type = result.files[0].mimeType;
+    this.data = result.files[0].data;
     if (this.esValidoElPeso(file) && this.esExtensionValida(file.name)) {
       this.uploadedFiles = file;
       this.pesado = false;

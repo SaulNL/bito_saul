@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { SessionUtil } from '../../utils/sessionUtil';
 import { LoadingController } from '@ionic/angular';
 import {MenuController} from "@ionic/angular";
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 @Component({
   selector: 'app-quiero-vender',
@@ -46,6 +47,8 @@ export class QuieroVenderPage implements OnInit {
   public list_cat_municipio: Array<CatMunicipioModel>;
   public list_cat_localidad: Array<CatLocalidadModel>;
   public msj = 'Guardando';
+  public mensaje: string;
+  public bandera: boolean;
   public sexos = [
     { id: 1, sexo: 'Hombre' },
     { id: 2, sexo: 'Mujer' }
@@ -81,7 +84,9 @@ export class QuieroVenderPage implements OnInit {
     this.proveedorTO = new MsPersonaModel();
     this.proveedorTO.det_domicilio = new DetDomicilioModel();
     this.proveedorTO = JSON.parse(localStorage.getItem('u_data'));
-    this.proveedorTO.fecha_nacimiento = this.proveedorTO.fecha_nacimiento !== null ? new Date(this.proveedorTO.fecha_nacimiento) : null;
+    this.hImagen = this.proveedorTO.imagen ? true:false;
+    console.log("datosProvedor",this.proveedorTO)
+    this.proveedorTO.fecha_nacimiento = this.proveedorTO.fecha_nacimiento !== null ? new Date(this.proveedorTO.fecha_nacimiento).toISOString() : null;
     this.proveedorTO.det_domicilio = JSON.parse(localStorage.getItem('u_data')).domicilio !== null && undefined ? JSON.parse(localStorage.getItem('u_data')).domicilio : new DetDomicilioModel();
     if (this.proveedorTO.fecha_nacimiento !== null || this.proveedorTO.fecha_nacimiento !== undefined) {
       //    this.fechas = this.proveedorTO.fecha_nacimiento.toISOString();
@@ -259,7 +264,7 @@ export class QuieroVenderPage implements OnInit {
 
   guardar() {
     this.loader = true;
-    if (this.proveedorTO.selfie === null || this.proveedorTO.selfie === undefined) {
+    if (this.proveedorTO.selfie && this.proveedorTO.imagen) {
       this._notificacionService.alerta('Ingrese foto de perfil');
       this.loader = false;
     } else {
@@ -494,7 +499,40 @@ export class QuieroVenderPage implements OnInit {
   convercionFechaNac(event) {
     let fecha = event.detail.value;
     let ms = Date.parse(fecha);
-    fecha = new Date(ms);
+    fecha = new Date(ms).toISOString();
     this.proveedorTO.fecha_nacimiento = fecha;
+  }
+
+  async obtenerImg(){
+    if (this.bandera === true){
+      this.mensaje = "(Inténtelo de nuevo)"
+    }
+
+    const result = await FilePicker.pickImages({
+      multiple: false,
+      readData: true
+    });
+    this.bandera = false;
+    this.mensaje = null;
+
+    // const contents = await Filesystem.readFile({
+    //   path: result.files[0].path,
+    // });
+
+    let imgPrueba = `data:image/png;base64,${result.files[0].data}`
+
+    this.resizeToWidth = 400;
+    this.resizeToHeight = 400;
+    this.abrirModal(imgPrueba, this.resizeToWidth, this.resizeToHeight).then(r => {
+      if (r !== undefined) {
+        const archivo = new ArchivoComunModel();
+        archivo.nombre_archivo = result.files[0].name,
+        archivo.archivo_64 = r.data;
+        this.proveedorTO.selfie = archivo;
+        console.log(this.proveedorTO)
+        this.hImagen = true;
+      }
+    }
+    );
   }
 }

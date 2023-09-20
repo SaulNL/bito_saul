@@ -11,11 +11,10 @@ import {UtilsCls} from "../../utils/UtilsCls";
 import {ICupoon} from "../../interfaces/ICupon";
 import QRCode from "easyqrcodejs";
 import html2canvas from "html2canvas";
-import {FilesystemDirectory, Plugins} from "@capacitor/core";
 import {FiltrosModel} from "../../Modelos/FiltrosModel";
 import {Auth0Service} from "../../api/auth0.service";
+import { Filesystem, Directory } from '@capacitor/filesystem';
 
-const { Filesystem } = Plugins;
 
 /*
 declare var require: any;
@@ -57,6 +56,7 @@ export class InfoPromoComponent implements OnInit {
   id_cupon_promocion: number;
   isOpen: boolean = false;
   public existeSesion: boolean;
+  public isAlert: boolean = false;
 
   constructor(
       public modalController: ModalController,
@@ -194,27 +194,7 @@ export class InfoPromoComponent implements OnInit {
   }
 
   async mensajeRegistro() {
-    const alert = await this.alertController.create({
-      header: 'Bituyú!',
-      message: "¿Ya tienes una cuenta?",
-      buttons: [
-        {
-          text: "Iniciar sesión",
-          cssClass: 'text-grey',
-          handler: () => {
-            this.router.navigate(['/tabs/login']);
-          }
-        },
-        {
-          text: "Registrate",
-          cssClass: 'text-rosa',
-          handler: () => {
-            this.router.navigate(["/tabs/login/sign-up"]);
-          },
-        },
-      ],
-    });
-    await alert.present();
+    this.isAlert = true;
   }
 
   nombreOrgUsuario() {
@@ -260,7 +240,7 @@ export class InfoPromoComponent implements OnInit {
       Filesystem.writeFile({
         path: fileName,
         data: canvas.toDataURL().toString(),
-        directory: FilesystemDirectory.Documents
+        directory: Directory.Documents
       }).then(() => {
         this.notificaciones.exito('Se descargo correctamente cupón de ' + promocion.nombre_comercial);
       }, error => {
@@ -273,4 +253,14 @@ export class InfoPromoComponent implements OnInit {
     var num = Math.random() * (max - min);
     return num + min;
   }
+  cerrarAlert(isAlert: boolean){
+    this.isAlert = isAlert;
+  }
+
+  dismissModal(bandera: number) {
+    if (bandera === 2){
+      this.modalController.dismiss();
+    }
+  }
+
 }

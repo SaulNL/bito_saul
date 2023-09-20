@@ -10,14 +10,15 @@
 </ion-header>
 
 <app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
-<ion-content fullscreen *ngIf="loaderReservaciones">
+<ion-content fullscreen *ngIf="loaderReservaciones" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+  <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
 
   <ion-item>
       <div class="label_filtro" (click)="abrirModal()">
         <ion-label>Filtro</ion-label>
         <ion-icon name="caret-down-outline"></ion-icon>
       </div>
-    <div class="label_reservaciones" *ngIf="this.secion" (click)="misReservaciones()">
+    <div class="label_reservaciones" *ngIf="secion" (click)="misReservaciones()">
       <ion-label>Mis reservaciones</ion-label>
     </div>
 
@@ -128,5 +129,5 @@
       </ion-item>
     </ion-list>
   </div>
-
+  <app-modal-inicio-sesion [isAlert]="isAlert" (banderaAlert)="cerrarAlert($event)" (removeIdEvento)="borrarIdEvento($event)"></app-modal-inicio-sesion>
 </ion-content>

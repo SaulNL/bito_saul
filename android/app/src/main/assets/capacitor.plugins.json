@@ -1,5 +1,13 @@
 [
 	{
+		"pkg": "@capacitor/app",
+		"classpath": "com.capacitorjs.plugins.app.AppPlugin"
+	},
+	{
+		"pkg": "@capacitor/browser",
+		"classpath": "com.capacitorjs.plugins.browser.BrowserPlugin"
+	},
+	{
 		"pkg": "@capacitor/filesystem",
 		"classpath": "com.capacitorjs.plugins.filesystem.FilesystemPlugin"
 	},
@@ -16,7 +24,7 @@
 		"classpath": "com.capacitorjs.plugins.share.SharePlugin"
 	},
 	{
-		"pkg": "@rdlabo/capacitor-facebook-login",
-		"classpath": "jp.rdlabo.capacitor.plugin.facebook.FacebookLogin"
+		"pkg": "@capawesome/capacitor-file-picker",
+		"classpath": "io.capawesome.capacitorjs.plugins.filepicker.FilePickerPlugin"
 	}
 ]

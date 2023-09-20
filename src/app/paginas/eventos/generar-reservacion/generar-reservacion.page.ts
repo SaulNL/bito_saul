@@ -5,9 +5,7 @@ import { IEventoQr } from '../../../interfaces/IEventoQr';
 import { ToadNotificacionService } from '../../../api/toad-notificacion.service';
 import QRCode from 'easyqrcodejs';
 import html2canvas from 'html2canvas';
-import { FilesystemDirectory, Plugins } from '@capacitor/core';
-
-const { Filesystem } = Plugins;
+import { Filesystem, Directory } from '@capacitor/filesystem';
 
 @Component({
   selector: 'app-generar-reservacion',
@@ -121,7 +119,7 @@ export class GenerarReservacionPage implements OnInit {
       Filesystem.writeFile({
         path: fileName,
         data: canvas.toDataURL().toString(),
-        directory: FilesystemDirectory.Documents
+        directory: Directory.Documents
       }).then(() => {
         this.notifi.exito('Se descargó correctamente el qr de la reservación.');
         this.htmlDownload = false;

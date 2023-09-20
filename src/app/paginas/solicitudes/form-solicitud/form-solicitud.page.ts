@@ -12,13 +12,13 @@ import { SolicitudesService } from "./../../../api/solicitudes.service";
 import { ToadNotificacionService } from "../../../api/toad-notificacion.service";
 import { LoadingController } from "@ionic/angular";
 import { ModalController } from "@ionic/angular";
-import { Plugins } from "@capacitor/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { RecorteImagenComponent } from "../../../components/recorte-imagen/recorte-imagen.component";
 import { NegocioService } from "../../../api/negocio.service";
 import { UbicacionMapa } from '../../../api/ubicacion-mapa.service';
+import { Geolocation } from '@capacitor/geolocation';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 
-const { Geolocation } = Plugins;
 @Component({
   selector: "app-form-solicitud",
   templateUrl: "./form-solicitud.page.html",
@@ -44,6 +44,8 @@ export class FormSolicitudPage implements OnInit {
   public negoAux: any;
   public tipoGiroAux: any;
   public tipoSubAux: any;
+  public mensaje: string;
+  public bandera: boolean;
   public tipoOrg: any;
   public listTipoNegocio: any;
   public listMiNegocio: any;
@@ -80,6 +82,7 @@ export class FormSolicitudPage implements OnInit {
     this.btnMuncipio = true;
     this.btnLocalidad = true;
     this.loader = false;
+    this.bandera = true;
   }
   ngOnInit() {
     this.obtenerTipoNegocio();
@@ -533,5 +536,30 @@ export class FormSolicitudPage implements OnInit {
         })
 
       })
+  }
+
+  async obtenerImg(){
+    if (this.bandera === true){
+      this.mensaje = "(Inténtelo de nuevo)"
+    }
+
+    const result = await FilePicker.pickImages({
+      multiple: false,
+      readData: true
+    });
+    this.bandera = false;
+    this.mensaje = null;
+    
+    let imgPrueba = `data:image/png;base64,${result.files[0].data}`
+
+    this.abrirModal(imgPrueba, 500, 500).then((r) => {
+      if (r !== undefined) {
+        const archivo = new ArchivoComunModel();
+        (archivo.nombre_archivo = result.files[0].name),
+          (archivo.archivo_64 = r.data);
+        this.actualTO.imagen = archivo;
+        this.blnImgCuadrada = false;
+      }
+    });
   }
 }

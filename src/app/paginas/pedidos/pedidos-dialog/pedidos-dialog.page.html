@@ -38,16 +38,38 @@
       </ion-row> 
       <p class="ion-text-center">Rango de fechas:</p> 
       <ion-row class="ion-text-center">
-        <ion-col>
-          <ion-item>
-            <ion-datetime [(ngModel)]="inicioFecha"  name="fechaFinal" required displayFormat="YYYY-MM-DD" placeholder="yyyy-mm-dd" min="2015-01-01"></ion-datetime>            
+        <ion-col size="6">
+          <ion-item id="open-modal-date-1-pedidos">
+            <label position="stacked" *ngIf="!inicioFecha">yyyy-mm-dd</label>
+            <label position="stacked" *ngIf="inicioFecha">{{inicioFecha | date: 'yyyy-MM-dd'}} </label>
           </ion-item>
-        </ion-col> 
-        <ion-col>
-          <ion-item>
-            <ion-datetime [(ngModel)]="finalFecha" name="fechaFinal" required displayFormat="YYYY-MM-DD" placeholder="yyyy-mm-dd" min="2015-01-01"></ion-datetime>            
+          <ion-modal trigger="open-modal-date-1-pedidos">
+            <ng-template>
+              <ion-content>
+                <ion-datetime [(ngModel)]="inicioFecha"  name="fechainicio" required min="2015-01-01" 
+                  presentation="date" [showDefaultButtons]="true" doneText="Ok" cancelText="Cancelar">
+                </ion-datetime>
+              </ion-content>
+            </ng-template>
+          </ion-modal>
+        </ion-col>
+    
+        <ion-col size="6">
+          <ion-item id="open-modal-date-2-pedidos">
+            <label position="stacked" *ngIf="!finalFecha">yyyy-mm-dd</label>
+            <label position="stacked" *ngIf="finalFecha">{{finalFecha | date: 'yyyy-MM-dd'}} </label>
           </ion-item>
-        </ion-col> 
+          <ion-modal trigger="open-modal-date-2-pedidos">
+            <ng-template>
+              <ion-content>
+                <ion-datetime [(ngModel)]="finalFecha" name="fechaFinal" required min="2015-01-01" 
+                  presentation="date" [showDefaultButtons]="true" doneText="Ok" cancelText="Cancelar">
+                </ion-datetime>
+              </ion-content>
+            </ng-template>
+          </ion-modal>
+        </ion-col>
+        
         <ion-col>            
           <ion-button class="border text-format rosa" size="small" mode="ios" color="white" (click)="fechasRengo()">              
             <ion-icon slot="start" name="calendar-outline" slot="start"> </ion-icon>Buscar            

@@ -16,6 +16,7 @@ import { FormGroup } from "@angular/forms";
 import { DtosMogoModel } from "../../../Modelos/DtosMogoModel";
 import { RecorteImagenComponent } from "../../../components/recorte-imagen/recorte-imagen.component";
 import { GeneralServicesService } from "../../../api/general-services.service";
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 @Component({
   selector: "app-mis-productos-servicios",
@@ -75,6 +76,7 @@ export class MisProductosServiciosPage implements OnInit {
   public agregarImagen: boolean;
   public editar: boolean;
   public arrayFotos: any;
+  public mensaje = null;
 
   slidesOptions = {
     slidesPerView: 1.5,
@@ -277,31 +279,59 @@ export class MisProductosServiciosPage implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(oldURL);
   }
 
-  public subirCarta(event) {
-    this.fileImgGaleria = event.target.files;
-    const fileName = this.fileImgGaleria[0].name;
-    const file = this.fileImgGaleria[0];
-    if (file.size < 3145728) {
-      let file64: any;
-      const utl = new UtilsCls();
-      utl.getBase64(file).then((data) => {
-        file64 = data;
-        const archivo = new ArchivoComunModel();
-        archivo.nombre_archivo = this.utilscls.convertir_nombre(fileName);
-        archivo.archivo_64 = file64;
-        switch (this.iden) {
-          case 1:
-            this.datosNegocio.cartaProducto = archivo;
-            break;
-          case 2:
-            this.datosNegocio.cartaServicio = archivo;
-            break;
-        }
-        this.guardarDatos();
-      });
-    } else {
+  // public subirCarta(event) {
+  //   this.fileImgGaleria = event.target.files;
+  //   const fileName = this.fileImgGaleria[0].name;
+  //   const file = this.fileImgGaleria[0];
+  //   if (file.size < 3145728) {
+  //     let file64: any;
+  //     const utl = new UtilsCls();
+  //     utl.getBase64(file).then((data) => {
+  //       file64 = data;
+  //       const archivo = new ArchivoComunModel();
+  //       archivo.nombre_archivo = this.utilscls.convertir_nombre(fileName);
+  //       archivo.archivo_64 = file64;
+  //       switch (this.iden) {
+  //         case 1:
+  //           this.datosNegocio.cartaProducto = archivo;
+  //           break;
+  //         case 2:
+  //           this.datosNegocio.cartaServicio = archivo;
+  //           break;
+  //       }
+  //       this.guardarDatos();
+  //     });
+  //   } else {
+  //     this.notificacionService.alerta("El archivo sobrepasa los 3 MB");
+  //   }
+  // }
+
+  async subirPdf(){
+    this.mensaje = "(Inténtelo de nuevo)";
+    const result = await FilePicker.pickFiles({
+      types: ['application/pdf'],
+      multiple: false,
+      readData: true
+    });
+    this.mensaje = null;
+
+    if (result.files[0].size < 3145728) {
+      const archivo = new ArchivoComunModel();
+      archivo.nombre_archivo = result.files[0].name;
+      archivo.archivo_64 = `data:image/png;base64,${result.files[0].data}`
+      switch (this.iden) {
+        case 1:
+          this.datosNegocio.cartaProducto = archivo;
+          break;
+        case 2:
+          this.datosNegocio.cartaServicio = archivo;
+          break;
+      }
+      this.guardarDatos();
+    }else {
       this.notificacionService.alerta("El archivo sobrepasa los 3 MB");
     }
+    
   }
 
   guardarDatos() {
@@ -358,7 +388,7 @@ export class MisProductosServiciosPage implements OnInit {
   }
 
   eliminarCarta() {
-    (document.getElementById("imagenCarta") as HTMLInputElement).value = "";
+    // (document.getElementById("imagenCarta") as HTMLInputElement).value = "";
     this.carta = null;
     switch (this.iden) {
       case 1:
@@ -601,9 +631,11 @@ export class MisProductosServiciosPage implements OnInit {
                   }
 
                   if (!Array.isArray(this.productoNuevo.imagen)) {
+                    console.log("1")
                     this.productoNuevo.imagen = [imagen];
                     this.numeroFotos = 1;
                   } else {
+                    console.log("2")
                     this.productoNuevo.imagen.push(imagen)
                     this.numeroFotos++
                   }
@@ -1188,5 +1220,50 @@ export class MisProductosServiciosPage implements OnInit {
         });
 
     }
+  }
+
+  async obtenerImg(){
+    this.mensaje = "(Inténtelo de nuevo)";
+    const result = await FilePicker.pickImages({
+      multiple: false,
+      readData: true
+    });
+
+    this.mensaje = null;
+
+    let imgPrueba = `data:image/png;base64,${result.files[0].data}`
+
+      const imagen = new ArchivoComunModel();
+        imagen.nombre_archivo = result.files[0].name;
+        imagen.archivo_64 = result.files[0].data;
+        
+        if (this.numeroFotos >= this.fotosPermitidas) {
+          this.agregarImagen = true
+        }
+        this.procesando_img = false;
+        this.blnImgCuadrada = false;
+
+        this.abrirModalImagen(imgPrueba, 400, 400).then(r => {
+          if (r !== undefined) {
+            const imagen = new ArchivoComunModel();
+            imagen.nombre_archivo = result.files[0].name,
+              imagen.archivo_64 = r.data;
+            if (!Array.isArray(this.productoNuevo.imagen)) {
+              this.productoNuevo.imagen = [imagen];
+              this.numeroFotos = 1;
+              console.log(1,this.productoNuevo)
+            } else {
+              this.productoNuevo.imagen.push(imagen)
+              this.numeroFotos++
+              console.log(2,this.productoNuevo)
+            }
+
+            this.numeroFotos = this.productoNuevo.imagen.length;
+
+            if (this.numeroFotos >= this.fotosPermitidas) {
+              this.agregarImagen = true
+            }
+          }
+        });
   }
 }
