@@ -39,6 +39,7 @@ import { SliderImagesModule } from 'src/app/Bitoo/module/slider-images.module';
 import { MenuUsuarioComponent } from './components/menu-usuario/menu-usuario.component';
 import { UtilsCls } from './utils/UtilsCls';
 import { Auth0Service } from './api/busqueda/auth0.service';
+import {ModalInicioSesionPageModule} from "./paginas/modal-inicio-sesion/modal-inicio-sesion.module";
 
 @NgModule({
   declarations: [AppComponent, SeleccionarSucripcionComponent, ModalQuienVioRequerimientoComponent, PopOverVisitsComponent, ModalDetalleProductoComponent,
@@ -46,9 +47,9 @@ import { Auth0Service } from './api/busqueda/auth0.service';
     MenuUsuarioComponent
   ],
   entryComponents: [],
-  imports: [SpinnerModule,
-    SliderImagesModule,
-    LikeProductModule, CommonModule, BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule],
+    imports: [SpinnerModule,
+        SliderImagesModule,
+        LikeProductModule, CommonModule, BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule, ModalInicioSesionPageModule],
   providers: [
     LocalNotifications,
     StatusBar,

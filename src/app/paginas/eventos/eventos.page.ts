@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Output, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EventosService} from '../../api/eventos.service';
 import {CatEstadoModel} from '../../Modelos/CatEstadoModel';
@@ -8,7 +8,7 @@ import {ToadNotificacionService} from '../../api/toad-notificacion.service';
 import {CatMunicipioModel} from '../../Modelos/CatMunicipioModel';
 import {CatLocalidadModel} from '../../Modelos/CatLocalidadModel';
 import {FiltroEventosModel} from '../../Modelos/FiltroEventosModel';
-import {AlertController} from '@ionic/angular';
+import {AlertController, IonContent} from '@ionic/angular';
 import {AfiliacionPlazaModel} from '../../Modelos/AfiliacionPlazaModel';
 
 @Component({
@@ -17,6 +17,8 @@ import {AfiliacionPlazaModel} from '../../Modelos/AfiliacionPlazaModel';
   styleUrls: ['./eventos.page.scss'],
 })
 export class EventosPage implements OnInit {
+  @ViewChild(IonContent) content: IonContent;
+  public cordenada: number;
   public existeSesion: boolean;
   public user: any;
   opciones: string[] = ['Hoy', 'Mañana', 'Esta semana', 'Este mes'];
@@ -38,6 +40,7 @@ export class EventosPage implements OnInit {
   public loaderReservaciones: boolean;
   public msj = 'Cargando';
   isOpen: boolean = false;
+  public isAlert: boolean = false;
   public list_cat_estado: Array<CatEstadoModel>;
   public list_cat_municipio: Array<CatMunicipioModel>;
   public list_cat_localidad: Array<CatLocalidadModel>;
@@ -425,29 +428,19 @@ export class EventosPage implements OnInit {
     }
   }
 
+  cerrarAlert(isAlert: boolean){
+    this.isAlert = isAlert;
+  }
+
+  borrarIdEvento(idEvento: number){
+    if (idEvento === 1){
+      localStorage.removeItem('idEvento');
+    }
+  }
+
   async mensajeRegistro() {
-    const alert = await this.alertController.create({
-      header: 'Bituyú!',
-      message: "¿Ya tienes una cuenta?",
-      buttons: [
-        {
-          text: "Iniciar sesión",
-          cssClass: 'text-grey',
-          handler: () => {
-            localStorage.setItem('idEvento', JSON.stringify(this.objeto));
-            this.router.navigate(['/tabs/login']);
-          }
-        },
-        {
-          text: "Registrate",
-          cssClass: 'text-rosa',
-          handler: () => {
-            this.router.navigate(["/tabs/login/sign-up"]);
-          },
-        },
-      ],
-    });
-    await alert.present();
+    this.isAlert = true;
+    localStorage.setItem('idEvento', JSON.stringify(this.objeto));
   }
 
   private load() {

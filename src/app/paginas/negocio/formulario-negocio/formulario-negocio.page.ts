@@ -1053,12 +1053,10 @@ export class FormularioNegocioPage implements OnInit {
 
   }
   public locationPredeterminada() {
-    let latitude;
-    let longitude;
-    latitude = this.negocioTO.det_domicilio.latitud;
-    longitude = this.negocioTO.det_domicilio.longitud;
-    this.map.setView([latitude, longitude], 12);
-    this.marker.setLatLng([latitude, longitude]);
+    const estado = this.list_cat_estado.filter(estad => estad.id_estado === this.negocioTO.det_domicilio.id_estado)[0].nombre;
+    const municipio = this.list_cat_municipio.filter(municip => municip.id_municipio === this.negocioTO.det_domicilio.id_municipio)[0].nombre;
+    const address = this.negocioTO.det_domicilio.calle + ' ' + this.negocioTO.det_domicilio.numero_ext + ',' + this.negocioTO.det_domicilio.colonia + ',' + this.negocioTO.det_domicilio.codigo_postal + ' ' + municipio + ',' + estado;
+    this.getCoordinates(address);
   }
 
   /**
@@ -1495,10 +1493,14 @@ export class FormularioNegocioPage implements OnInit {
         const gpsOptions = { maximumAge: 30000000, timeout: 5000, enableHighAccuracy: true };
         this.map.panTo([latitud, longitud]);
         this.marker.setLatLng([latitud, longitud]);
+        this.negocioTO.det_domicilio.latitud = latitud;
+        this.negocioTO.det_domicilio.longitud = longitud;
+        /*
         await Geolocation.getCurrentPosition(gpsOptions).then(res => {
           this.negocioTO.det_domicilio.latitud = res.coords.latitude;
           this.negocioTO.det_domicilio.longitud = res.coords.longitude;
         });
+         */
 
       });
   }

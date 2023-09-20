@@ -552,7 +552,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   async AlertActivarUbicacion() {
     const alert = await this.alertController.create({
-      header: 'Bituyú!',
+      header: 'Bituyú',
       message: 'Activa tu ubicación para poder ver los negocios cerca de ti',
       buttons: [
         {
@@ -607,7 +607,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     } catch (error) {
       this.loader = false;
       // this.notificaciones.error("Error al buscar los datos" + error.message);
-      this.notificaciones.error('No hay conexión a internet, conectate a una red');
+      //this.notificaciones.error('No hay conexión a internet, conectate a una red');
     }
   }
 
@@ -1356,10 +1356,4 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.showPopUp = false;
   }
 
-  onFileSelected() {
-
-    alert("file angular")
-
-    let archivos = this.fileUpload.nativeElement.files;
-  }
 }

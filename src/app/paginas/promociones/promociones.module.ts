@@ -13,19 +13,21 @@ import { ModalPromocionComponent } from '../../components/modal-promocion/modal-
 import { InfoPromoComponent } from '../../components/info-promo/info-promo.component';
 import { ViewQrPromocionComponent } from 'src/app/components/viewqr-promocion/viewqr-promocion.component';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import {ModalInicioSesionPageModule} from "../modal-inicio-sesion/modal-inicio-sesion.module";
 
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    ExploreContainerComponentModule,
-    Tab2PageRoutingModule,
-    TabsPageModule,
-     RecargarModule,
-     SpinnerModule
-  ],
+    imports: [
+        IonicModule,
+        CommonModule,
+        FormsModule,
+        ExploreContainerComponentModule,
+        Tab2PageRoutingModule,
+        TabsPageModule,
+        RecargarModule,
+        SpinnerModule,
+        ModalInicioSesionPageModule
+    ],
   declarations: [
     PromocionesPage,
     PromocionComponent,
