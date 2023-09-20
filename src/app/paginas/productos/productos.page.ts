@@ -78,6 +78,7 @@ export class ProductosPage {
     mensaje: "",
   };
   palabraBuqueda: any;
+  public isAlert: boolean = false;
 
   constructor(
     public loadingController: LoadingController,
@@ -106,6 +107,7 @@ export class ProductosPage {
   }
 
   ngOnInit(): void {
+    this.mostrarLoguearse();
     this.active.queryParams.subscribe((params: Params) => {
       if (params.byCloseProduct) {
         const product: ProductInterface = JSON.parse(params.byCloseProduct);
@@ -595,5 +597,25 @@ export class ProductosPage {
           }
         );
     }
+  }
+
+  public mostrarLoguearse() {
+    if (!this.existeSesion) {
+      setTimeout(() =>{
+        this.mensajeRegistro();
+      }, 500);
+    }
+  }
+
+  async mensajeRegistro() {
+    this.isAlert = true;
+  }
+
+  cerrarAlert(isAlert: boolean){
+    this.isAlert = isAlert;
+  }
+
+  abrirAlert(isAlert: boolean){
+    this.isAlert = isAlert;
   }
 }

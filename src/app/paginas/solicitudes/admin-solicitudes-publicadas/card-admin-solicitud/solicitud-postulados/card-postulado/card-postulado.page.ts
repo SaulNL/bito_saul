@@ -44,7 +44,7 @@ export class CardPostuladoPage implements OnInit {
   ngOnInit() {
     if (localStorage.getItem("isRedirected") === "false" && !this.isIOS) {
       localStorage.setItem("isRedirected", "true");
-      location.reload();
+      //location.reload();
       // window.location.assign(this.router.url);
     }
     this.lstPostulados = new Array<PostuladosModel>();
@@ -68,7 +68,8 @@ export class CardPostuladoPage implements OnInit {
   cerrar() {
     this.loader = false;
     let navigationExtras = JSON.stringify(this.solicitudPostulado);
-    this.router.navigate(["/tabs/home/solicitudes/admin-solicitudes-publicadas/card-admin-solicitud/solicitud-postulados"], { queryParams: { special: navigationExtras } });
+    //this.router.navigate(["/tabs/home/solicitudes/admin-solicitudes-publicadas/card-admin-solicitud/solicitud-postulados"], { queryParams: { special: navigationExtras } });
+    this.router.navigate(["/tabs/home/solicitudes/admin-solicitudes-publicadas/card-admin-solicitud/solicitud-postulados"]);
   }
   descargarAndroid() {
     // this.extensionArchivo();

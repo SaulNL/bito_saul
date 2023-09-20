@@ -14,7 +14,7 @@
     <p style="padding-inline: 5%">
       ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA
       <img
-        style="width: 25px; margin-top: 2%"
+        style="width: 25px; margin-top: 1%"
         src="{{plazaAfiliacionNombre.icon}}"
       />
       {{plazaAfiliacionNombre.nombre}}
@@ -45,20 +45,18 @@
     <app-recargar (respuesta)="recargar($event)"></app-recargar>
     <ion-grid *ngFor="let categorias of lstPromociones; index as i" class="categoria">
       <ion-row class="categoria">
-        <h2 *ngIf="i == posicionRandom" id="imagenCarta">{{ categorias.nombre }}</h2>
-        <h2  *ngIf="i != posicionRandom">{{ categorias.nombre }}</h2>
+        <h2 style="margin-top: 5px" *ngIf="i == posicionRandom" id="imagenCarta">{{ categorias.nombre }}</h2>
+        <h2  style="margin-top: 5px" *ngIf="i != posicionRandom">{{ categorias.nombre }}</h2>
         <!--h2  *ngIf="(i+1 == lstPromociones.length)">{{this.scroll()}}</-->
       </ion-row>
-      <ion-row *ngFor="let promocion of categorias.promociones; index as k">
-        <ion-col size="12">
-          <app-promocion
-            [promocion]="promocion"
-            [idPersona]="idPersona"
-          ></app-promocion>
-        </ion-col>
-        <ion-col *ngIf="(i+1 == lstPromociones.length && k+1 == categorias.promociones.length)">{{this.scroll()}}                   
-        </ion-col>
-      </ion-row>
+
+      <div class="carousel-container">
+        <ng-container *ngFor="let promocion of categorias.promociones; index as k">
+          <app-promocion [promocion]="promocion" [idPersona]="idPersona" style="max-width: 62%"></app-promocion>
+        </ng-container>
+      </div>
+
     </ion-grid>
   </div>
+  <app-modal-inicio-sesion [isAlert]="isAlert" (banderaAlert)="cerrarAlert($event)"></app-modal-inicio-sesion>
 </ion-content>

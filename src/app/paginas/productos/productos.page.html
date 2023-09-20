@@ -17,25 +17,25 @@
   <ion-header collapse="condense"> </ion-header>
 
   <ion-item>
-    <ion-buttons *ngIf="filtroActivo" slot="end">
+    <ion-buttons *ngIf="filtroActivo" slot="start">
       <ion-chip (click)="borrarFiltros()" color="danger">
         <ion-icon name="trash-outline" color="danger"></ion-icon>
         <ion-label>Borrar Filtros</ion-label>
       </ion-chip>
     </ion-buttons>
-    <ion-buttons *ngIf="!selectionAP">
+    <ion-buttons slot="end" *ngIf="!selectionAP">
       <ion-button (click)="openPlazasAfiliacionesModal()">
         Plazas  <span *ngIf="afiliacion"> y Afiliaciones</span>
         <ion-icon name="caret-down-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons *ngIf="selectionAP">
+    <ion-buttons slot="end" *ngIf="selectionAP">
       <ion-chip (click)="regresarBitoo()" color="danger">
         <ion-icon name="log-out-outline"></ion-icon>
         <ion-label>Volver a Bituyú</ion-label>
       </ion-chip>
     </ion-buttons>
-    <ion-buttons slot="end" *ngIf="!filtroActivo">
+    <ion-buttons slot="start" *ngIf="!filtroActivo">
       <ion-button (click)="abrirFiltros()">Filtros
         <ion-icon name="filter-outline"></ion-icon>
       </ion-button>
@@ -75,12 +75,13 @@
         <p>
           {{producto.descripcion != null ? producto.descripcion:'Sin descripción'}}
         </p>
-        <ion-badge color="primary">{{producto.tipo}}</ion-badge>
+        <ion-badge *ngIf="producto.tipo == 'producto'" color="primary">PRODUCTO</ion-badge>
+        <ion-badge *ngIf="producto.tipo == 'servicio'" style="background-color: purple">SERVICIO</ion-badge>
         <ion-badge color="medium">{{producto.ubicacion !=null ? producto.ubicacion.nombre_localidad:'Sin ubicación'}}
         </ion-badge>
       </ion-label>
       <app-dar-like-producto [producto]="producto" [usuario]="user"
-        [mostrarLike]="existeSesion"></app-dar-like-producto>
+        [mostrarLike]="existeSesion" (banderaAlert)="abrirAlert($event)"></app-dar-like-producto>
     </ion-item>
   </ion-list>
   <ion-grid *ngIf="lstProductos.length === 0 && selectionAP === true && afi">
@@ -98,4 +99,5 @@
   </ion-grid>
   <app-infinito-scroll (respuesta)="cargarMasProductos($event)" [activado]="scroll" [msj]="mensaje">
   </app-infinito-scroll>
+  <app-modal-inicio-sesion [isAlert]="isAlert" (banderaAlert)="cerrarAlert($event)"></app-modal-inicio-sesion>
 </ion-content>

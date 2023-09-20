@@ -23,6 +23,7 @@ import {
 } from "../../componentes/modal-promocion-negocio/modal-info-promocion/modal-info-promocion.component";
 import {SpinnerModule} from "../../componentes/spinner/spinner.module";
 import {ModalInicioComponent} from "../../componentes/modal-inicio/modal-inicio.component";
+import {ModalInicioSesionPageModule} from "../modal-inicio-sesion/modal-inicio-sesion.module";
 
 @NgModule({
     imports: [
@@ -32,6 +33,7 @@ import {ModalInicioComponent} from "../../componentes/modal-inicio/modal-inicio.
         TabsPageRoutingModule,
         ImageCropperModule,
         SpinnerModule,
+        ModalInicioSesionPageModule,
     ],
     declarations: [
         TabsPage,

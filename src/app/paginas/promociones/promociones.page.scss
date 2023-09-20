@@ -1,3 +1,15 @@
 .categoria {
     justify-content: center;
 }
+
+.carousel-container {
+    display: flex;
+    overflow-x: auto; /* Permite desplazarse horizontalmente */
+    scroll-snap-type: x mandatory;
+}
+
+.carousel-container app-promocion {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    margin-right: 7px; /* Espacio entre los card */
+}

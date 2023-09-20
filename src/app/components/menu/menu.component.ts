@@ -15,6 +15,7 @@ export class MenuComponent implements OnInit {
   public nombreUsuario: string;
   public logeado: any;
   public preferencias: boolean;
+  public isAlert: boolean = false;
 
   constructor(
     private router: Router,
@@ -56,27 +57,11 @@ export class MenuComponent implements OnInit {
   }
 
   async mensajeRegistro() {
-    const alert = await this.alertController.create({
-      header: 'Bituyú!',
-      message: "¿Ya tienes una cuenta?",
-      buttons: [
-        {
-          text: "Iniciar sesión",
-          cssClass: 'text-grey',
-          handler: () => {
-            this.router.navigate(['/tabs/login']);
-          }
-        },
-        {
-          text: "Registrate",
-          cssClass: 'text-rosa',
-          handler: () => {
-            this.router.navigate(["/tabs/login/sign-up"]);
-          },
-        },
-      ],
-    });
-    await alert.present();
+    this.isAlert = true;
+  }
+
+  cerrarAlert(isAlert: boolean){
+    this.isAlert = isAlert;
   }
 
   async obtenerPreferencias(id_persona: number) {

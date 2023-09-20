@@ -7,16 +7,18 @@ import { SolicitudPageRoutingModule } from './solicitud-routing.module';
 import { SolicitudPage } from './solicitud.page';
 import { TabsPageModule } from '../tabs/tabs.module';
 import { ModalInfoSolicitudComponent } from '../../componentes/modal-info-solicitud/modal-info-solicitud.component';
+import {ModalInicioSesionPageModule} from "../modal-inicio-sesion/modal-inicio-sesion.module";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    SolicitudPageRoutingModule,
-    TabsPageModule,
-    SpinnerModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        SolicitudPageRoutingModule,
+        TabsPageModule,
+        SpinnerModule,
+        ModalInicioSesionPageModule
+    ],
   declarations: [
     SolicitudPage,
     ModalInfoSolicitudComponent
