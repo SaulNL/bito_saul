@@ -16,6 +16,7 @@ export class SolicitudPostuladosPage implements OnInit {
   public solicitudPostulado: SolicitudesModel;
   public msj = 'Cargando';
   public loader : any;
+  public postuladoSolicitud: SolicitudesModel;
   constructor(
     private solicitudesService: SolicitudesService,
     private activatedRoute: ActivatedRoute,
@@ -28,6 +29,7 @@ export class SolicitudPostuladosPage implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.special) {
         this.solicitudPostulado = JSON.parse(params.special);
+        this.postuladoSolicitud = this.solicitudPostulado;
       }
     });
     this.lstPostulados = new Array<PostuladosModel>();
@@ -53,7 +55,7 @@ export class SolicitudPostuladosPage implements OnInit {
   this.router.navigate(['/tabs/home/solicitudes/admin-solicitudes-publicadas/card-admin-solicitud/solicitud-postulados/card-postulado'] , { queryParams: { special: navigationExtras } });
  }
  regresar() {
-  let navigationExtras = JSON.stringify(this.solicitudPostulado);
+  let navigationExtras = JSON.stringify(this.postuladoSolicitud);
   this.router.navigate(['/tabs/home/solicitudes/admin-solicitudes-publicadas/card-admin-solicitud'], { queryParams: { special: navigationExtras } });
 }
 }
