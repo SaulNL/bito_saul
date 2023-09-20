@@ -83,7 +83,7 @@
         [mostrarLike]="existeSesion"></app-dar-like-producto>
     </ion-item>
   </ion-list>
-  <ion-grid *ngIf="lstProductos.length === 0 && selectionAP === true">
+  <ion-grid *ngIf="lstProductos.length === 0 && selectionAP === true && afi">
     <ion-text color="primary">
       <h2>
         No se encontraron productos relacionados en
@@ -91,7 +91,7 @@
       </h2>
     </ion-text>
   </ion-grid>
-  <ion-grid class="no-results" *ngIf="lstProductos.length < 1">
+  <ion-grid class="no-results" *ngIf="lstProductos.length < 1 && !afi">
     <ion-text color="primary">
       <h2>No se encontraron productos relacionados con su búsqueda</h2>
     </ion-text>
