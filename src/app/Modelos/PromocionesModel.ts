@@ -37,6 +37,7 @@ export class PromocionesModel {
   public proveedorNegocio: MsProveedorModel;
   public categoria:string;
   public id_giro:number;
+  public fecha_ultima_modificacion: Date;
   public fecha_inicio_public: Date;
   public fecha_fin_public: Date;
   public id_proveedor:number;
@@ -84,7 +85,7 @@ export class PromocionesModel {
      nombre_localidad: string='',
      nombre_municipio: string='',
      nombre_estado: string='',
-    id_promocion: number = 0, id_negocio: number=0, promocion: string = '',celular:string='',descripcion:string='', tags: Array<string> = [], terminos: string = '', imagen: any = '', video: any = '', imagenBanner: any = '', imagenPoster: any = '', url_imagen: string = '', url_imagen_banner: string = '', url_imagen_poster: string = '', url_video: string = '', activo: boolean = null, fecha_inicio: Date = null, fecha_fin: Date = null, proveedor: string = '', nombre_comercial: string = '', select = 0, id_tipo_promocion: any = '', id_alcance_promocion: any ='', minimo: any = '',maximo_red: any='',porcentaje: any='', productos: Array<any> = [], categorias: Array<any> = [], organizaciones: Array<any> = [], plazas: Array<any> = []) {
+    id_promocion: number = 0, id_negocio: number=0, promocion: string = '',celular:string='',descripcion:string='', tags: Array<string> = [], terminos: string = '', imagen: any = '', video: any = '', imagenBanner: any = '', imagenPoster: any = '', url_imagen: string = '', url_imagen_banner: string = '', url_imagen_poster: string = '', url_video: string = '', activo: boolean = null, fecha_inicio: Date = null, fecha_fin: Date = null, proveedor: string = '', nombre_comercial: string = '', select = 0, id_tipo_promocion: any = '', id_alcance_promocion: any ='', minimo: any = '',maximo_red: any='',porcentaje: any='', productos: Array<any> = [], categorias: Array<any> = [], organizaciones: Array<any> = [], plazas: Array<any> = [], fecha_ultima_modificacion: Date = null) {
     this.id_promocion = id_promocion; 
     this.promocion = promocion;
     this.celular=celular;
@@ -116,5 +117,6 @@ export class PromocionesModel {
     this.categorias = categorias;
     this.dias= new Array<HorarioPromocionModel>() ;
     this.id_negocio=id_negocio;
+    this.fecha_ultima_modificacion = fecha_ultima_modificacion;
   }
 }
