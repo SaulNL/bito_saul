@@ -53,9 +53,16 @@ export class MisReservacionesPage implements OnInit {
         res => {
           this.reservacionesAll = res.data;
           this.reservacionesAll.sort((a, b) => {
-            const fechaA = new Date(a.fc_evento_reservacion);
-            const fechaB = new Date(b.fc_evento_reservacion);
-            return fechaA.getTime() - fechaB.getTime();
+            const fechaA = a.fc_evento_reservacion ? new Date(a.fc_evento_reservacion) : null;
+            const fechaB = b.fc_evento_reservacion ? new Date(b.fc_evento_reservacion) : null;
+            if (!fechaA && !fechaB) {
+              return 0;
+            } else if (!fechaA) {
+              return 1;
+            } else if (!fechaB) {
+              return -1;
+            }
+            return fechaB.getTime() - fechaA.getTime();
           });
           this.loaderReservaciones = true;
         });
