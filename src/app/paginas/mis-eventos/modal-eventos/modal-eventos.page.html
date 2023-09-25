@@ -15,7 +15,7 @@
       <div class="titulo">
         <ion-item>
           <ion-label style="width: auto !important;">
-            EVENTO:
+            EVENTO<span class="requerido">*</span>:
           </ion-label>
           <ion-input name="Evento" placeholder="Nombre del evento" [(ngModel)]="eventData.evento" maxlength="100"
             required></ion-input>
@@ -119,7 +119,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-label>Asociar negocio</ion-label>
+          <ion-label>Asociar negocio<span class="requerido">*</span></ion-label>
           <ion-select class="bg" id="id_negocio" name="id_negocio" justify="end" label="End"
             placeholder="Asociar negocio" [(ngModel)]="eventData.id_negocio" required #asociarNegocio="ngModel">
             <ion-select-option *ngFor="let negocio of lstNegocios"
@@ -128,7 +128,7 @@
         </ion-item>
 
         <ion-item id="open-modal-date-eventos">
-          <ion-label>Fecha y hora</ion-label>
+          <ion-label>Fecha y hora<span class="requerido">*</span></ion-label>
           <div class="bg">
             <label position="stacked" *ngIf="!eventData.fecha">Seleccione...</label>
             <label position="stacked" *ngIf="eventData.fecha">{{eventData.fecha | date: 'dd/MM/yyyy'}} </label>
@@ -146,7 +146,7 @@
           </ng-template>
         </ion-modal>
         <ion-item>
-          <ion-label>Estado</ion-label>
+          <ion-label>Estado<span class="requerido">*</span></ion-label>
           <ion-select class="bg" name="estado" justify="end" label="End" placeholder="Seleccione un estado"
             [(ngModel)]="eventData.id_estado" (ionChange)="obtenerMunicipio($event)" required>
             <ion-select-option *ngFor="let estado of list_cat_estado"
@@ -154,7 +154,7 @@
           </ion-select>
         </ion-item>
         <ion-item>
-          <ion-label>Municipio</ion-label>
+          <ion-label>Municipio<span class="requerido">*</span></ion-label>
           <ion-select class="bg" name="municipio" justify="end" label="End" placeholder="Seleccione un municipio"
             [(ngModel)]="eventData.id_municipio" (ionChange)="obtenerLocalidad($event)" required>
             <ion-select-option *ngFor="let municipio of list_cat_municipio"
@@ -162,7 +162,7 @@
           </ion-select>
         </ion-item>
         <ion-item>
-          <ion-label>Localidad</ion-label>
+          <ion-label>Localidad<span class="requerido">*</span></ion-label>
           <ion-select class="bg" name="localidad" justify="end" label="End" placeholder="Seleccione una localidad"
             [(ngModel)]="eventData.id_localidad">
             <ion-select-option *ngFor="let localidad of list_cat_localidad"
@@ -171,13 +171,13 @@
         </ion-item>
 
         <ion-item>
-          <ion-label>Numero de teléfono</ion-label>
+          <ion-label>Numero de teléfono<span class="requerido">*</span></ion-label>
           <ion-input class="bg" type="tel" name="telefono" label="End" pattern="[0-9]*" inputmode="numeric"
             placeholder="Numero de telefono" [(ngModel)]="eventData.telefono" required></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label>Metodo de pago</ion-label>
+          <ion-label>Metodo de pago<span class="requerido">*</span></ion-label>
           <ion-select class="bg" name="tipo_pago_efectivo" multiple="true" justify="end" label="End"
             placeholder="Metodo de pago" [(ngModel)]="pagoSeleccionado" (ionChange)="onPagoSeleccionado()" required>
             <ion-select-option *ngFor="let pago of tipoPago" [value]="pago.id">{{pago.tipo}}</ion-select-option>
@@ -185,7 +185,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-label>Frecuencia</ion-label>
+          <ion-label>Frecuencia<span class="requerido">*</span></ion-label>
           <ion-select class="bg" name="id_tipo_recurrencia" justify="end" label="End" placeholder="Frecuencia"
             [(ngModel)]="eventData.id_tipo_recurrencia" required>
             <ion-select-option *ngFor="let recu of recurrencia"
@@ -193,7 +193,7 @@
           </ion-select>
         </ion-item>
         <ion-item>
-          <ion-label>Tipo de evento</ion-label>
+          <ion-label>Tipo de evento<span class="requerido">*</span></ion-label>
           <ion-select class="bg" name="tipo_evento" justify="end" multiple="true" label="End"
             placeholder="Tipo de evento" [(ngModel)]="eventoSelect" (ionChange)="onEventoSeleccionado()" required>
             <ion-select-option *ngFor="let evento of tipoEvento"

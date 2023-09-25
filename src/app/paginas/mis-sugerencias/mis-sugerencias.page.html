@@ -18,7 +18,7 @@
         <div class="promoCard" *ngFor="let promocion of sugerencias.promociones.slice(0, promoCantidad); let i = index"
           (click)="crearModalPromocion(promocion)">
           <div class="bodyPromo">
-            <div class="nombreNegocio">{{promocion.nombre_comercial}}</div>
+            <div class="nombreNegocio"><span>{{promocion.nombre_comercial}}</span></div>
             <img class="imgPromo" src="{{promocion.url_imagen}}" alt="UnaImagen">
             <div class="tagsPromo"><span>{{promocion.promocion}}</span></div>
             <div class="tipoPromo">{{promocion.tipo_promocion}}</div>
@@ -43,7 +43,7 @@
         <div class="productCard" (click)="CrearModalProducto(product)"
           *ngFor="let product of sugerencias.productos.slice(0, productCantidad); let i = index">
           <div class="bodyPromo">
-            <div class="nombreNegocio">{{product.negocio.nombre}}</div>
+            <div class="nombreNegocio"><span>{{product.negocio.nombre}}</span></div>
             <img class="imgPromo" [src]="getFirstImage(product.imagen)" alt="UnaImagen">
             <div class="tagsPromo"><span>{{product.nombre}}</span></div>
             <div class="productDescription"><span>{{product.descripcion}}</span></div>
@@ -63,7 +63,7 @@
         <div class="promoCard" (click)="abrirNego(negocio.url_negocio)"
           *ngFor="let negocio of sugerencias.negocios.slice(0, negoCantidad); let i = index">
           <div class="bodyPromo">
-            <div class="nombreNegocio">{{negocio.nombre_corto}}</div>
+            <div class="nombreNegocio"><span>{{negocio.nombre_corto}}</span></div>
             <img class="imgPromo" src="{{negocio.url_logo}}" alt="UnaImagen">
             <div class="tagsPromo"><span>{{negocio.giro}}</span></div>
             <!-- <div class="tipoPromo">{{negocio.tipo_promocion}}</div> -->
