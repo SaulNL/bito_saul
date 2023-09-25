@@ -25,9 +25,9 @@
                 <ion-label>
                     <p>Plazas</p>
                 </ion-label>
-                <ion-icon *ngIf="!showHidenPlaza;else iconNoEyePlaza" slot="end" name="eye-outline"></ion-icon>
+                <ion-icon *ngIf="!showHidenPlaza;else iconNoEyePlaza" slot="end" name="eye-off-outline"></ion-icon>
                 <ng-template #iconNoEyePlaza>
-                    <ion-icon slot="end" name="eye-off-outline"></ion-icon>
+                    <ion-icon slot="end" name="eye-outline"></ion-icon>
                 </ng-template>
             </ion-item>
         </ion-card-header>
@@ -62,10 +62,10 @@
                 <ion-label>
                     <p>Afiliaciones y Convenios</p>
                 </ion-label>
-                <ion-icon *ngIf="!showHidenAfiliacion; else iconNoEyeAfiliacion" slot="end" name="eye-outline">
+                <ion-icon *ngIf="!showHidenAfiliacion; else iconNoEyeAfiliacion" slot="end" name="eye-off-outline">
                 </ion-icon>
                 <ng-template #iconNoEyeAfiliacion>
-                    <ion-icon slot="end" name="eye-off-outline"></ion-icon>
+                    <ion-icon slot="end" name="eye-outline"></ion-icon>
                 </ng-template>
             </ion-item>
         </ion-card-header>
