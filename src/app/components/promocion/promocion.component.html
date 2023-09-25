@@ -27,8 +27,8 @@
         <ion-row class="ion-margin-top ion-justify-content-center" *ngIf="promocion.terminos?promocion.terminos.length<=21:''">
           <strong><p>{{ promocion.terminos }}</p></strong>
         </ion-row>
-        <ion-row class="ion-justify-content-end">
-          <ion-badge *ngIf="promocion.abierto == 'ABIERTO'" color="primary">{{ promocion.abierto }}</ion-badge>
+        <ion-row class="ion-justify-content-center">
+          <ion-badge *ngIf="promocion.abierto == 'ABIERTO'" color="success">{{ promocion.abierto }}</ion-badge>
           <ion-badge *ngIf="promocion.abierto == 'CERRADO'" color="danger">{{ promocion.abierto }}</ion-badge>
         </ion-row>
       </ion-grid>
@@ -73,8 +73,8 @@
           <strong><p>{{ promocion.terminos }}</p></strong>
         </ion-row>
         -->
-        <ion-row class="ion-justify-content-end">
-          <ion-badge *ngIf="promocion.abierto == 'ABIERTO'" color="primary">{{ promocion.abierto }}</ion-badge>
+        <ion-row class="ion-justify-content-center">
+          <ion-badge *ngIf="promocion.abierto == 'ABIERTO'" color="success">{{ promocion.abierto }}</ion-badge>
           <ion-badge *ngIf="promocion.abierto == 'CERRADO'" color="danger">{{ promocion.abierto }}</ion-badge>
         </ion-row>
       </ion-grid>
