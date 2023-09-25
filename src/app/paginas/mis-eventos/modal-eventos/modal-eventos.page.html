@@ -177,7 +177,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-label>Metodo de pago<span class="requerido">*</span></ion-label>
+          <ion-label>Método de pago<span class="requerido">*</span></ion-label>
           <ion-select class="bg" name="tipo_pago_efectivo" multiple="true" justify="end" label="End"
             placeholder="Metodo de pago" [(ngModel)]="pagoSeleccionado" (ionChange)="onPagoSeleccionado()" required>
             <ion-select-option *ngFor="let pago of tipoPago" [value]="pago.id">{{pago.tipo}}</ion-select-option>
