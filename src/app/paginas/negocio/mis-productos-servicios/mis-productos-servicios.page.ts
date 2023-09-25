@@ -341,6 +341,7 @@ export class MisProductosServiciosPage implements OnInit {
     if (this.datosNegocio.cartaServicio.archivo_64 !== undefined) {
       this.loadPdf = true;
     }
+    console.log("negociosDatos",this.datosNegocio)
     this.sercicioNegocio.guardarProductoServio(this.datosNegocio).subscribe(
       (repsuesta) => {
         this.datosNegocio = repsuesta.data;

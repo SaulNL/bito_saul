@@ -32,9 +32,9 @@ import { ComentariosNegocioComponent } from '../../componentes/comentarios-negoc
 import { OptionBackLogin } from 'src/app/Modelos/OptionBackLoginModel';
 import { FiltrosModel } from 'src/app/Modelos/FiltrosModel';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
-import { Share } from '@capacitor/share';
 import { Browser } from '@capacitor/browser';
 import { Geolocation } from '@capacitor/geolocation';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 const haversineCalculator = require('haversine-calculator');
 
@@ -157,8 +157,9 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     private navBarServiceService: NavBarServiceService,
     private servicioProductos: ProductosService,
     private iab: InAppBrowser,
-    private createObject: CreateObjects /* private document: DocumentViewer, */ /* private transfer: FileTransfer, */ /* private webview: WebView */
-  ) {
+    private createObject: CreateObjects, /* private document: DocumentViewer, */ /* private transfer: FileTransfer, */ /* private webview: WebView */
+    private socialSharing: SocialSharing,
+    ) {
     this.Filtros = new FiltrosModel();
     this.toProductDetail = false;
     this.motrarContacto = true;
@@ -716,16 +717,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   async compartir() {
-    this.url_negocio = this.url + this.informacionNegocio.url_negocio;
-    await Share.share({
-      title: 'Ver cosas interesantes',
-      text:
-        'Te recomiendo este negocio ' +
-        this.informacionNegocio.nombre_comercial,
-      url: this.url_negocio,
-      dialogTitle: 'Compartir con Amigos',
-    })
-      .then()
+  this.socialSharing.share(`Te recomiendo este negocio ${this.informacionNegocio.nombre_comercial}`, null, null, ` ${this.url}${this.informacionNegocio.url_negocio}`)
+    .then()
       .catch((error) => this.notificacionService.error(error));
   }
 
