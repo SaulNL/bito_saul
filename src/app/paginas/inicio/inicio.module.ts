@@ -12,21 +12,23 @@ import {FiltrosBusquedaModule} from "../../componentes/filtros-busqueda/filtros-
 import {TabsPageModule} from '../tabs/tabs.module';
 import { MapaNegociosComponent } from '../../componentes/mapa-negocios/mapa-negocios.component';
 import {InfinitoScrollModule} from '../../componentes/infinito-scroll/infinito-scroll.module';
+import {ModalInicioSesionPageModule} from "../modal-inicio-sesion/modal-inicio-sesion.module";
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    ExploreContainerComponentModule,
-    DarLikeNegocioModule,
-    SpinnerModule,
-    InfinitoScrollModule,
-    RouterModule.forChild([{ path: '', component: InicioPage }]),
-    Tab3PageRoutingModule,
-      FiltrosBusquedaModule,
-      TabsPageModule
-  ],
+    imports: [
+        IonicModule,
+        CommonModule,
+        FormsModule,
+        ExploreContainerComponentModule,
+        DarLikeNegocioModule,
+        SpinnerModule,
+        InfinitoScrollModule,
+        RouterModule.forChild([{path: '', component: InicioPage}]),
+        Tab3PageRoutingModule,
+        FiltrosBusquedaModule,
+        TabsPageModule,
+        ModalInicioSesionPageModule
+    ],
     declarations: [InicioPage, MapaNegociosComponent]
 })
 export class Tab3PageModule {}

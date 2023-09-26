@@ -160,7 +160,7 @@
                   <span style="margin-right: 20px"
                     [ngClass]="proveedor.abierto == 'ABIERTO' ? 'tag tag-green': 'tag tag-red'">{{proveedor.abierto}}</span>
 
-                  <app-dar-like-negocio [negocio]="proveedor" [usuario]="user" [mostrarLike]="existeSesion">
+                  <app-dar-like-negocio [negocio]="proveedor" [usuario]="user" [mostrarLike]="existeSesion" (banderaAlert)="abrirAlert($event)">
                   </app-dar-like-negocio>
                 </div>
                 <!--
@@ -267,6 +267,7 @@
       </ion-row>
     </ion-grid>
   </div>
+  <app-modal-inicio-sesion [isAlert]="isAlert" (banderaAlert)="cerrarAlert($event)"></app-modal-inicio-sesion>
   <app-banner-anuncios></app-banner-anuncios>
 
 </ion-content>
