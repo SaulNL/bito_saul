@@ -211,20 +211,24 @@ ion-card {
   background-color: #fff;
   border-radius: 10px;
   overflow: hidden;
-  width: 180px;
+  width: 175px;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
 }
 
 .logo-negocio img {
   width: 100%;
-  height: 150px;
-  object-fit: cover;
+  height: auto;
+  /*object-fit: cover;*/
   cursor: pointer;
+  margin: 0 auto;
+  display: block;
 }
 
 .header-card {
   margin: 8px 2px;
   text-align: center;
+  margin-top: 3px;
+  margin-bottom: -8px;
 }
 
 .body-card {
@@ -278,7 +282,7 @@ ion-card-title {
 .distintivos {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  margin-top: 20px; 
+  margin-top: -20px;
 }
 
 .distintivo{ 
