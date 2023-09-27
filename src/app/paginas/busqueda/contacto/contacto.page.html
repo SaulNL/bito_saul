@@ -1,21 +1,34 @@
-<form #formBasicos="ngForm" (ngSubmit)="enviarCorreo()">
+<form [formGroup]="contactanos">
   <ion-card>
     <ion-item>
       <ion-label position="floating">Nombre: </ion-label>
-      <ion-input type="text" #nombre="ngModel" required name="nombre" [(ngModel)]="contacto.nombre"></ion-input>
+      <ion-input type="text" formControlName="nombre"></ion-input>
+      <ion-text color="danger" *ngIf="contactanos.get('nombre').hasError('required') && contactanos.get('nombre').touched">
+        Por favor, rellena este campo.
+      </ion-text>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Teléfono: </ion-label>
-      <ion-input type="number" #telefono="ngModel" required name="telefono" [(ngModel)]="contacto.telefono"></ion-input>
+      <ion-input type="number" formControlName="telefono"></ion-input>
+      <ion-text color="danger" *ngIf="contactanos.get('telefono').hasError('required') && contactanos.get('telefono').touched">
+        Por favor, rellena este campo.
+      </ion-text>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Correo: </ion-label>
-      <ion-input type="email" #correo="ngModel" required name="correo" [(ngModel)]="contacto.correo"></ion-input>
+      <ion-input type="email" formControlName="correo"></ion-input>
+      <ion-text color="danger" *ngIf="contactanos.get('correo').hasError('email') && contactanos.get('correo').touched">
+        Correo electrónico no válido.
+      </ion-text>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Comentario:</ion-label>
-      <ion-input type="text" #comentario="ngModel" required name="comentario" [(ngModel)]="contacto.comentario"></ion-input>
+      <ion-input type="text" formControlName="comentario"></ion-input>
+      <ion-text color="danger"
+        *ngIf="contactanos.get('comentario').hasError('minlength') && contactanos.get('comentario').touched">
+        El comentario debe tener al menos 5 caracteres.
+      </ion-text>
     </ion-item>
-    <ion-button [disabled]=" loader || formBasicos.invalid" type="submit" color="danger">Enviar</ion-button>
+    <ion-button type="submit" [disabled]="!contactanos.valid" (click)="enviarCorreo()" color="danger">Enviar</ion-button>
   </ion-card>
 </form>

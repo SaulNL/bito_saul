@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {FormControl, FormGroup, NgForm} from '@angular/forms';
+import {FormControl, FormGroup, NgForm, Validators, FormBuilder } from '@angular/forms';
 import {GeneralServicesService} from "../../../api/general-services.service";
 import {ToadNotificacionService} from '../../../api/toad-notificacion.service';
 
@@ -10,51 +10,43 @@ import {ToadNotificacionService} from '../../../api/toad-notificacion.service';
 })
 export class ContactoPage implements OnInit {
   @ViewChild('formContacto') formContactoView: NgForm;
-  public contactanos: FormGroup;
+  public formBuilders = new FormBuilder();
+  public contactanos: any;
   public btnLoader = false;
-  public contacto={
-    nombre: '',
-    telefono: '',
-    correo: '',
-    comentario: ''
-  }
+
   constructor(
     private _general_service: GeneralServicesService,
     private notificaciones: ToadNotificacionService
   ) { }
 
   ngOnInit() {
-    //this.formularioContactanos();
+    this.formularioContactanos();
   }
 
   /**
    * Funcion para cargar el formulario
-   * @author Omar
+   * @author Yair
    */
   formularioContactanos(){
-    this.contactanos = new FormGroup({
-      nombre: new FormControl(''),
-      telefono: new FormControl(''),
-      correo: new FormControl(''),
-      comentario: new FormControl(''),
+    this.contactanos = this.formBuilders.group({
+      nombre: ['',Validators.required],
+      telefono: ['',Validators.required],
+      correo: ['',[Validators.required, Validators.email]],
+      comentario: ['',[Validators.required,Validators.minLength(5)]],
     });
   }
 
   /**
    * Funcion para enviar comentario
-   * @author Omar
+   * @author Yair
    */
   enviarCorreo(){
-      this.btnLoader = true;
-      this._general_service.enviarComentarioCorreo(this.contacto).subscribe(
+    this.btnLoader = true;
+    let formData = this.contactanos.value;
+      this._general_service.enviarComentarioCorreo(JSON.stringify(formData)).subscribe(
         response => {
           if (response.code === 200) {
-            //this.contactanos.reset();
-            //this.formContactoView.resetForm();
-            this.contacto.nombre='';
-            this.contacto.telefono='';
-            this.contacto.correo='';
-            this.contacto.comentario='';
+            this.contactanos.reset();
           }
           this.notificaciones.exito(response.message);          
         },

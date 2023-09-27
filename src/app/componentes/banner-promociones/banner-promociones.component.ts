@@ -2,7 +2,7 @@ import { Auth0Service } from './../../api/busqueda/auth0.service';
 import { AfiliacionPlazaModel } from './../../Modelos/AfiliacionPlazaModel';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { PromocionesService } from '../../api/busqueda/proveedores/promociones.service';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, ModalController } from '@ionic/angular';
 import { PromocionesModel } from '../../Modelos/busqueda/PromocionesModel';
 import { NavBarServiceService } from '../../../app/api/busqueda/nav-bar-service.service';
 import { Router } from '@angular/router';
@@ -10,6 +10,10 @@ import { UbicacionModel } from './../../Modelos/busqueda/UbicacionModel';
 import { AlertController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { RegistrarPromotionService } from "../../api/registrar-promotion.service";
+import { NegocioService } from 'src/app/api/negocio.service';
+import { ModalPromocionNegocioComponent } from '../modal-promocion-negocio/modal-promocion-negocio.component';
+import { icon, Map, Marker, marker, tileLayer } from 'leaflet';
+import { UtilsCls } from 'src/app/utils/UtilsCls';
 
 
 @Component({
@@ -38,6 +42,13 @@ export class BannerPromocionesComponent implements OnInit {
   public miUbicacionlongitud: number;
   public ubicacion = new UbicacionModel();
   private plazaAfiliacion: AfiliacionPlazaModel;
+  private map: Map;
+  public miLat = null;
+  public miLng = null;
+  private marker: Marker<any>;
+  public user: any;
+  public modalBanner: boolean;
+  @ViewChild('mapContainer') mapContainer: Map;
 
   constructor(
     private servicioPromociones: PromocionesService,
@@ -46,10 +57,15 @@ export class BannerPromocionesComponent implements OnInit {
     public alertController: AlertController,
     private geolocation: Geolocation,
     private autho: Auth0Service,
-    private vioPromo: RegistrarPromotionService
+    private vioPromo: RegistrarPromotionService,
+    private negocioService: NegocioService,
+    public modalController: ModalController,
+    private util: UtilsCls,
   ) {
     this.lstPromociones = [];
     this.lstAvisos = [];
+    this.user = this.util.getUserData();
+    this.modalBanner = false;
   }
   ionview
   ngOnInit() {
@@ -143,7 +159,15 @@ export class BannerPromocionesComponent implements OnInit {
   * @author Omar
   */
   accionPromocion(promocion) {
+    this.modalBanner = true;
     this.promocion = promocion;
+    if (this.map) {
+      try {
+        this.map.remove();
+      } catch (error) {
+        console.log(error)
+      }
+    }
     this.masInformacion(promocion);
     this.visteMiPromocion(promocion);
     this.quienNumeroVioPublicacion(promocion.id_promocion);
@@ -189,10 +213,71 @@ export class BannerPromocionesComponent implements OnInit {
 
   masInformacion(promocion: any) {
     let promo = promocion.id_promocion;
-    this._router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
-      queryParams: { route: true, clickBanner: true, promo: promo }
-    });
+    this.loadMap(promocion.latitud,promocion.longitud)
+    this.infoPromocionSelect(promocion.url_negocio,promocion.id_promocion);
+    // this._router.navigate(['/tabs/negocio/' + promocion.url_negocio], {
+    //   queryParams: { route: true, clickBanner: true, promo: promo }
+    // });
 
+
+  }
+
+  infoPromocionSelect(negocio,idPromocion) {
+    this.negocioService.obteneretalleNegocio(negocio, this.user.id_persona).subscribe((response) => {
+      let promocionSelect = response.data.promociones.find(res => res.id_promocion == idPromocion);
+      if (promocionSelect) {
+        this.abrirModalPromocion(promocionSelect, null,this.user.id_persona)
+      }
+        }
+        );
+  }
+
+  async abrirModalPromocion(promo: any, idPromo: any,idPersona) {  // aQUI SE ABRE MODAL DE PROMO
+    localStorage.setItem('modalPromo', idPromo);
+    this.modalBanner = false;
+    const modal = await this.modalController.create({
+      component: ModalPromocionNegocioComponent,
+      componentProps: {
+        promocionTO: promo,
+        idPersona: idPersona,
+        latitud: this.miLat,
+        longitud: this.miLng,
+        celular: promo.celular,
+        descripcion: promo.descripcion,
+
+      },
+    });
+    modal.present();
+  }
+
+  async loadMap(lt, lg) {
+    const lat = lt;
+    const lng = lg;
+    setTimeout((it) => {
+      this.map = new Map('mapIdPedido').setView([lat, lng], 14);
+      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '',
+      }).addTo(this.map);
+      this.map.on('', (respuesta) => {
+        this.getLatLong(respuesta);
+      });
+      const myIcon = icon({
+        iconUrl:
+          'https://ecoevents.blob.core.windows.net/comprandoando/marker.png',
+        iconSize: [45, 41],
+        iconAnchor: [13, 41],
+      });
+      this.marker = marker([lat, lng], { icon: myIcon, draggable: false }).addTo(
+        this.map
+      );
+    }, 500);
+  }
+
+  getLatLong(e) {
+    this.miLat = e.latlng.lat;
+    this.miLng = e.latlng.lng;
+    this.map.panTo([this.miLat, this.miLng]);
+    this.marker.setLatLng([this.miLat, this.miLng]);
   }
 
 }
