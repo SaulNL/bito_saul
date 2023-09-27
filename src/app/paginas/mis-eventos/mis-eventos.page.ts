@@ -42,7 +42,6 @@ export class MisEventosPage implements OnInit {
   ionViewWillEnter() {
     this.loader = true;
     let id_proveedor = JSON.parse(localStorage.getItem('u_data'))
-    console.log('datos',id_proveedor)
     this.obtenerEventos(id_proveedor);
   }
 
@@ -62,9 +61,8 @@ export class MisEventosPage implements OnInit {
       id_proveedor: id.proveedor.id_proveedor
     }
     this.eventoService.obtenerEvento(body).subscribe(Response => {
-      this.eventos = Response.data
-      this.loader = false
-      console.log("eventos",Response)
+      this.eventos = Response.data;
+      this.loader = false;
     }),
       error => {
         this.notificacionService.error(error);
@@ -121,7 +119,7 @@ export class MisEventosPage implements OnInit {
     this.noPersonas = this.reservacion[id].cantidad_persona;
     this.fechaDeReservacion = this.reservacion[id].fc_realizacion_reservacion;
     this.estatus = this.reservacion[id].estatus;
-    this.fechaConfirmacion = this.reservacion[id].fc_confirmacion
+    this.fechaConfirmacion = this.reservacion[id].fc_confirmacion;
   }
 
   cerrarInformacion(){
@@ -191,6 +189,20 @@ export class MisEventosPage implements OnInit {
 
       moveBackAnimation.play();
     }, 500);
+  }
+
+  convertirFecha(fecha: string): string{
+    const meses: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    const fechaObjeto = new Date(fecha);
+    const numeroDia = fechaObjeto.getDate();
+    const numeroMes = fechaObjeto.getMonth();
+    const anio = fechaObjeto.getFullYear();
+    const hora = fechaObjeto.getHours();
+    const minutos = fechaObjeto.getMinutes();
+    const segundos = fechaObjeto.getSeconds();
+
+    return `${numeroDia}-${meses[numeroMes]}-${anio} ${hora}:${minutos}:${segundos}`;
   }
 
 }
