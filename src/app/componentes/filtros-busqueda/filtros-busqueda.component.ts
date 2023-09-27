@@ -191,7 +191,6 @@ export class FiltrosBusquedaComponent implements OnInit {
             this.filtros.idMunicipio = null;
             this.filtros.idLocalidad = null;
         }
-        console.log("Los filtros de busqueda son: ",this.filtros)
         this.buscarPorFiltros.emit(this.filtros);
     }
 
@@ -267,33 +266,34 @@ export class FiltrosBusquedaComponent implements OnInit {
         this.filtros.idDistintivo = this.distintivo;
     }
 
-
     subCategorias() {
         // if (this.isProductPage) {
         //     this.categoria = null;
         // }
-        this.filtroServicio.obtenerCategoriasGiro(this.categoria).subscribe(
-            response => {
-                this.listaCategorias = response.data;
-                this.listaCategorias.map(item => {
-                    item.estaSeleccionado = false;
-                });
+        if ( this.categoria !== null && this.categoria !== undefined ){
+            this.filtroServicio.obtenerCategoriasGiro(this.categoria).subscribe(
+                response => {
+                    this.listaCategorias = response.data;
+                    this.listaCategorias.map(item => {
+                        item.estaSeleccionado = false;
+                    });
 
-                this.listaCategorias.forEach(element => {
-                    if (this.filtros.idCategoriaNegocio !== null) {
-                        this.filtros.idCategoriaNegocio.forEach(elementCategoria => {
-                            if (elementCategoria == element.id_categoria) {
-                                this.subCategoriaAux = element.nombre;
-                            }
-                        });
-                    }
+                    this.listaCategorias.forEach(element => {
+                        if (this.filtros.idCategoriaNegocio !== null) {
+                            this.filtros.idCategoriaNegocio.forEach(elementCategoria => {
+                                if (elementCategoria == element.id_categoria) {
+                                    this.subCategoriaAux = element.nombre;
+                                }
+                            });
+                        }
 
-                });
+                    });
 
-            },
-            error => {
-            }
-        );
+                },
+                error => {
+                }
+            );
+        }
     }
 
     selectSubCategoria() {
@@ -328,7 +328,6 @@ export class FiltrosBusquedaComponent implements OnInit {
     }
 
     setIonradiogroupEntregaDomicilio(opcion: number) {
-        console.log('entre')
         if (opcion === 1) {
             this.filtros.blnEntrega = true;
         } else if (opcion === 0) {
