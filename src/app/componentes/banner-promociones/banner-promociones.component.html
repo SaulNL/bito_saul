@@ -1,6 +1,6 @@
 <div
   *ngIf="(lstPromociones !== undefined && lstPromociones !== null && lstPromociones.length > 0) || (lstAvisos !== undefined && lstAvisos !== null && lstAvisos.length > 0) ">
-  <ion-slides [options]="slideOptsOne" #mySlider>
+  <ion-slides [options]="slideOptsOne" #mySlider *ngIf="!modalBanner">
     <ion-slide *ngFor="let promocion of lstPromociones">
       <img loading="eager"
         src="{{(promocion.url_imagen_banner)==='' || (promocion.url_imagen_banner)==null?promocionDefault:promocion.url_imagen_banner}}"
@@ -14,3 +14,8 @@
     </ion-slide>
   </ion-slides>
 </div>
+
+<div #mapContainerNuevo id="mapIdPedido" style="height: 200px; width: 100%; display:none;"></div>
+
+<div *ngIf="modalBanner" style="width: 100vw; height: 100vh; background-color: #fff;
+display: flex; align-items: center; justify-content: center;"><ion-spinner name="circles"></ion-spinner></div>

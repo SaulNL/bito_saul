@@ -10,6 +10,7 @@ import { ConocenosPage } from './conocenos.page';
 import { ContactoPage } from '../../contacto/contacto.page';
 import { FooterPage } from '../../footer/footer.page';
 import { TabsPageModule } from 'src/app/paginas/tabs/tabs.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { TabsPageModule } from 'src/app/paginas/tabs/tabs.module';
     FormsModule,
     IonicModule,
     ConocenosPageRoutingModule,
-    TabsPageModule
+    TabsPageModule,
+    ReactiveFormsModule
   ],
   declarations: [
     ConocenosPage,

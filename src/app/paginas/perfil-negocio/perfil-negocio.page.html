@@ -131,7 +131,8 @@
                                 {{ dia.dia }}
                               </small>
                             </ion-col>
-                            <ion-col class="ion-no-padding" *ngIf="dia.horarios.length > 0">
+                            <ion-col class="ion-no-padding" *ngIf="dia.horarios.length > 0"
+                              style="display: flex; justify-content: center; align-items: center;">
                               <span *ngFor="let h of dia.horarios ">
                                 <small class="negritas">
                                   {{h.texto}}
