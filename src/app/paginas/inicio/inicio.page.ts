@@ -44,7 +44,8 @@ export class InicioPage implements OnInit, AfterViewInit {
   @ViewChild("fileUpload", {
     read: ElementRef
   }) fileUpload: ElementRef;
-  
+
+  public isAlert: boolean = false;
   constructor(
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -1358,4 +1359,11 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.showPopUp = false;
   }
 
+  abrirAlert(isAlert: boolean){
+    this.isAlert = isAlert;
+  }
+
+  cerrarAlert(isAlert: boolean){
+    this.isAlert = isAlert;
+  }
 }

@@ -179,9 +179,16 @@ export class MispromocionesPage implements OnInit {
             (response) => {
                 this.listaPromoOriginal = response.data;
                 this.listaPromoOriginal.sort((a, b) => {
-                    const fechaA = new Date(a.fecha_inicio_public);
-                    const fechaB = new Date(b.fecha_inicio_public);
-                    return fechaA.getTime() - fechaB.getTime();
+                    const fechaA = a.fecha_ultima_modificacion ? new Date(a.fecha_ultima_modificacion) : null;
+                    const fechaB = b.fecha_ultima_modificacion ? new Date(b.fecha_ultima_modificacion) : null;
+                    if (!fechaA && !fechaB) {
+                        return 0;
+                    } else if (!fechaA) {
+                        return 1;
+                    } else if (!fechaB) {
+                        return -1;
+                    }
+                    return fechaB.getTime() - fechaA.getTime();
                 });
                 // this.listaPromociones = this.listaPromoOriginal.slice(0, 15);
                 this.filtro = '';

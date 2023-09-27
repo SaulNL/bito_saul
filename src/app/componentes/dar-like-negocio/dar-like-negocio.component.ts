@@ -1,6 +1,6 @@
 import { ProveedorServicioService } from "./../../api/busqueda/proveedores/proveedor-servicio.service";
 import { ToadNotificacionService } from "./../../api/toad-notificacion.service";
-import { Component, Input, OnInit } from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import { MsNegocioModel } from "../../Modelos/busqueda/MsNegocioModel";
 import { AlertController } from "@ionic/angular";
 import { Router } from "@angular/router";
@@ -14,6 +14,7 @@ export class DarLikeNegocioComponent implements OnInit {
   @Input() public negocio: any;
   @Input() public usuario: any;
   @Input() public mostrarLike: any;
+  @Output() banderaAlert: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public loaderLike = false;
 
@@ -27,28 +28,8 @@ export class DarLikeNegocioComponent implements OnInit {
   ngOnInit() {}
 
   public async alerta(){
-    const alert = await this.alertController.create({
-      header: 'Bituyú!',
-      message: "¿Ya tienes una cuenta?",
-        buttons: [
-            {
-                text: "Iniciar sesión",
-                cssClass: 'text-grey',
-                handler: () => {
-                    this.router.navigate(['/tabs/login']);
-                }
-            },
-            {
-                text: "Registrate",
-                cssClass: 'text-rosa',
-                handler: () => {
-                    this.router.navigate(["/tabs/login/sign-up"]);
-                },
-            },
-        ],
-    });
-
-    await alert.present();
+      const isAlert = true;
+      this.banderaAlert.emit(isAlert);
   }
 
   public darLike(negocio: any) {

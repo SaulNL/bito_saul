@@ -113,7 +113,7 @@
             (ionChange)="verificarActivo($event, true)"></ion-toggle>
         </ion-item>
         <ion-item>
-          <ion-label>Requiere confirmacion</ion-label>
+          <ion-label>Requiere confirmación</ion-label>
           <ion-toggle slot="end" [(ngModel)]="confirmacionBTN" name="confirmacion"
             (ionChange)="verificarActivo($event, false)"></ion-toggle>
         </ion-item>
@@ -171,13 +171,13 @@
         </ion-item>
 
         <ion-item>
-          <ion-label>Numero de teléfono<span class="requerido">*</span></ion-label>
+          <ion-label>Número de teléfono<span class="requerido">*</span></ion-label>
           <ion-input class="bg" type="tel" name="telefono" label="End" pattern="[0-9]*" inputmode="numeric"
             placeholder="Numero de telefono" [(ngModel)]="eventData.telefono" required></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label>Metodo de pago<span class="requerido">*</span></ion-label>
+          <ion-label>Método de pago<span class="requerido">*</span></ion-label>
           <ion-select class="bg" name="tipo_pago_efectivo" multiple="true" justify="end" label="End"
             placeholder="Metodo de pago" [(ngModel)]="pagoSeleccionado" (ionChange)="onPagoSeleccionado()" required>
             <ion-select-option *ngFor="let pago of tipoPago" [value]="pago.id">{{pago.tipo}}</ion-select-option>
