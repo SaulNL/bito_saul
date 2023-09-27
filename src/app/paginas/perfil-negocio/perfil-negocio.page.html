@@ -99,6 +99,15 @@
                 </div>
               </ion-text>
             </ion-col>
+
+            <div style="width: 100%">
+              <div style="display: flex; justify-content: center;">
+                <ion-button (click)="abrirGiro(informacionNegocio.id_giro)" class="buttonGiro" shape="round">
+                  {{informacionNegocio.giro}}
+                </ion-button>
+              </div>
+            </div>
+
             <ion-grid>
               <ion-row>
                 <ion-col size="12">

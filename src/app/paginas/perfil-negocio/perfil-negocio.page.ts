@@ -1538,4 +1538,9 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     }, 1000);
 
   }
+
+  abrirGiro(idGiro){
+    localStorage.setItem('idGiro', idGiro);
+    this.router.navigateByUrl('/tabs/inicio');
+  }
 }

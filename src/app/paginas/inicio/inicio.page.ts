@@ -46,7 +46,10 @@ export class InicioPage implements OnInit, AfterViewInit {
   }) fileUpload: ElementRef;
 
   public isAlert: boolean = false;
+  public listaCtgs: Array<any>;
+
   constructor(
+      private busquedaService: BusquedaService,
     public loadingController: LoadingController,
     private toadController: ToastController,
     private principalSercicio: BusquedaService,
@@ -401,6 +404,10 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   ionViewWillEnter() {
+    const idGiro = JSON.parse(localStorage.getItem('idGiro'));
+    if (idGiro !== null){
+      this.buscarByGiro(idGiro);
+    }
     this.subCAt = localStorage.getItem('subCat') != undefined ? true : false;
     // if (this.subCAt) {
     //   localStorage.removeItem('subCat')
@@ -1138,6 +1145,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.banderaVerMas = false;
     this.loaderNegocios = true;
     this.idGiro = event;
+    this.obtenerCategorias(this.idGiro);
     localStorage.setItem('idGiro', JSON.stringify(this.idGiro));
     this.Filtros.idGiro = [this.idGiro];
     this.selectionAP
@@ -1365,5 +1373,15 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   cerrarAlert(isAlert: boolean){
     this.isAlert = isAlert;
+  }
+
+  obtenerCategorias(giro) {
+    this.busquedaService.obtenerCategoriasGiros(giro).subscribe((response) => {
+          this.listaCtgs = response.data;
+        },
+        (error) => {
+          alert(error);
+        }
+    );
   }
 }

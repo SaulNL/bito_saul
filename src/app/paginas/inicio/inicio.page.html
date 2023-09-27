@@ -65,7 +65,7 @@
         </div>
       </ion-row>
     </ion-grid>
-    <ion-slides [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }" scrollbar="md">
+    <ion-slides [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }" scrollbar="md" style="margin-top: -10px;">
       <ion-slide>
 
         <li class="nav-item">
@@ -126,6 +126,14 @@
         </div>
       </ion-col>
     </ion-row>
+
+    <ion-grid *ngIf="loaderTop" style="margin-bottom: 12px;">
+      <div *ngFor="let nomCategoria of listaCtgs">
+        <ion-row>
+          <img id="{{nomCategoria.nombre}}" [src]="nomCategoria.url_imagen_movil" alt="Falla al cargar la imagen">
+        </ion-row>
+      </div>
+    </ion-grid>
 
     <div *ngIf="!loaderNegocios">
       <div *ngIf="listaCategorias.length !== 0">

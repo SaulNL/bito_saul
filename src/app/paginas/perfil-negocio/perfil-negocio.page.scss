@@ -478,3 +478,9 @@ p {
   -webkit-box-orient: vertical;
   word-break: break-word;
 }
+
+.buttonGiro{
+  --background: linear-gradient(90deg, #F761CC 0%, #FF7859 100%);
+  --color: #fff;
+  min-width: 55vw;
+}

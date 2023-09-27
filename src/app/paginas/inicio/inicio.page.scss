@@ -127,8 +127,10 @@ ion-slide{
 
 .paginacion{
   display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: -20px;
+  margin-bottom: -11px;
 }
 .contenedor_popup{
   width:98%; 
