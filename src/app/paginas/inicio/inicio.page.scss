@@ -203,11 +203,10 @@ ion-slide{
 
 
 .container-2{
-  /*margin-left: 15px;*/
-  margin-left: 9px;
+  margin-left: 15px;
   display: grid;
   grid-template-columns: repeat(auto-fit, 12rem);
-  justify-content: center;
+  /*justify-content: center;*/
 }
 
 ion-card {
@@ -322,7 +321,8 @@ ion-card-title {
   }
 
   .container-2 {
-    margin-left: 2px;
+    /*margin-left: 2px;*/
+    margin-left: -5px;
     grid-template-columns: repeat(2, 11.5rem);
   }
 

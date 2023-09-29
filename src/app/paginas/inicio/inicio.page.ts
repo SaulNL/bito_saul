@@ -1183,6 +1183,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   async activar() {
+    this.filtroBusqueda = false;
     this.banderaVerMas == false;
     this.listaCategorias = [];
     this.primeraPagRandom = 0;
@@ -1378,7 +1379,10 @@ export class InicioPage implements OnInit, AfterViewInit {
   cerrarAlert(isAlert: boolean){
     this.isAlert = isAlert;
     const idGiro = localStorage.getItem('idGiro');
+    const todo = localStorage.getItem('todo');
     if ( idGiro !== null){
+      this.loaderTop = true;
+    } else if ( todo !== null ){
       this.loaderTop = true;
     }
   }
