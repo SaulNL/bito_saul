@@ -166,6 +166,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   public actualGiro = 0;
   public totalDeNegocios = 0;
   public loaderTop = false;
+  public filtroBusqueda = false;
   public siguientePagina = this.actualPagina + 1;
   public siguienteGiro = this.actualGiro + 1;
   public mensaje = InicioPage.MENSAJE_CUANDO_CARGA;
@@ -933,6 +934,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.selectionAP = false;
     }
     this.loaderTop = false;
+    this.filtroBusqueda = false;
     this.isLoading = false;
     if (this.objectSelectAfiliacionPlaza !== null && this.objectSelectAfiliacionPlaza !== undefined) {
       localStorage.setItem('activarTodos', 'true');
@@ -1144,6 +1146,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.filtroActivo = true;
     this.banderaVerMas = false;
     this.loaderNegocios = true;
+    this.filtroBusqueda = true;
     this.idGiro = event;
     this.obtenerCategorias(this.idGiro);
     localStorage.setItem('idGiro', JSON.stringify(this.idGiro));
@@ -1369,10 +1372,15 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   abrirAlert(isAlert: boolean){
     this.isAlert = isAlert;
+    this.loaderTop = false;
   }
 
   cerrarAlert(isAlert: boolean){
     this.isAlert = isAlert;
+    const idGiro = localStorage.getItem('idGiro');
+    if ( idGiro !== null){
+      this.loaderTop = true;
+    }
   }
 
   obtenerCategorias(giro) {

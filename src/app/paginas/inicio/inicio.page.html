@@ -127,7 +127,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-grid *ngIf="loaderTop" style="margin-bottom: 12px;">
+    <ion-grid *ngIf="filtroBusqueda" style="margin-bottom: 12px;">
       <div *ngFor="let nomCategoria of listaCtgs">
         <ion-row>
           <img id="{{nomCategoria.nombre}}" [src]="nomCategoria.url_imagen_movil" alt="Falla al cargar la imagen">
