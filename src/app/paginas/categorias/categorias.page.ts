@@ -85,6 +85,7 @@ export class CategoriasPage implements OnInit {
   }
   ionViewWillEnter() {
     this.menuCtrl.close();
+    this.obtenerCategorias(null);
   }
 
   ngOnInit() {
@@ -99,7 +100,6 @@ export class CategoriasPage implements OnInit {
     } else {
       this.idTodo = false;
     }
-    this.obtenerCategorias(null);
     if (window.innerWidth <= 768) {
       this.imgMobil = true;
     } else {
@@ -117,6 +117,11 @@ export class CategoriasPage implements OnInit {
   }
 
   obtenerCategorias(giro) {
+    if ( giro == null ) {
+      giro = JSON.parse(localStorage.getItem('idGiro'));
+      localStorage.removeItem('idGiro');
+    }
+    this.idGiro = giro;
     this.busquedaService.obtenerCategoriasGiros(giro).subscribe((response) => {
       this.listaCategorias = response.data;
     },
@@ -176,12 +181,23 @@ export class CategoriasPage implements OnInit {
   }
 
   async buscarByGiro(nombre, giro) {
+    if ( giro !== null ) {
+      localStorage.setItem('idGiro', giro);
+      this.obtenerCategorias(giro);
+    } else {
+      this.categoriasTodos();
+    }
     this.idTodo = giro == null ? true : false;
-    this.obtenerCategorias(giro)
     this.filtros = true;
     this.nombreseleccion = nombre;
     // this.idTodo = true;
     this.idGiro = giro;
+  }
+
+  categoriasTodos() {
+    this.busquedaService.obtenerCategoriasGiros(null).subscribe((response) => {
+          this.listaCategorias = response.data;
+        });
   }
 
 }
