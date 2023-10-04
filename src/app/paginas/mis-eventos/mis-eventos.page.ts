@@ -149,7 +149,7 @@ export class MisEventosPage implements OnInit {
   }
 
   enviarReservacion(id,tipo){
-    let mensaje = tipo == true ? "Se guardo excitosamente": "Se elimino excitosamente"
+    let mensaje = tipo == true ? "Se guardó exitosamente": "Se elimino exitosamente"
     this.eventoService.confirmarReservacion(this.datosReservacion).subscribe(Response => {
       if(Response.code == 200){
         this.obtenerLstReservacion(id.id_evento,this.eventoImg)
