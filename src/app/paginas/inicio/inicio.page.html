@@ -237,7 +237,7 @@
         </div>
       </div>
     </div>
-    <ion-grid *ngIf="listaCategorias.length === 0 && selectionAP === false">
+    <ion-grid *ngIf="listaCategorias.length === 0 && selectionAP === false && subCatBandera === false">
       <ion-button expand="block" fill="outline" color="medium" size="small" shape="round" disabled={{buttonDisabled}}>
         <div class="spinner">
           <ion-spinner color="medium" name="lines-small"></ion-spinner>
@@ -254,6 +254,13 @@
         <h2>
           No se encontraron negocios relacionados en
           {{objectSelectAfiliacionPlaza.nombre}}
+        </h2>
+      </ion-text>
+    </ion-grid>
+    <ion-grid *ngIf="listaCategorias.length === 0  && selectionAP === false && subCatBandera === true">
+      <ion-text color="primary">
+        <h2>
+          No se encontraron negocios relacionados
         </h2>
       </ion-text>
     </ion-grid>

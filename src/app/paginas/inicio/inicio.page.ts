@@ -138,6 +138,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   public listaCompleta: any;
   private modal: any;
   public selectionAP = false;
+  public subCatBandera = false;
   public anyFiltros: FiltrosModel;
   strBuscar: any;
   private seleccionado: any;
@@ -603,6 +604,9 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
     try {
       const respuesta = await this.principalSercicio.obtenerNegocioPorCategoria(this.Filtros, this.siguientePagina);
+      if ( respuesta.data.lst_cat_negocios.data.length === 0 ){
+        this.subCatBandera = true;
+      }
       this.validarResultadosDeCategorias(respuesta);
 
       const byCategorias2 = localStorage.getItem('filtroactual');
@@ -932,6 +936,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     if (org === null) {
       this.selectionAP = false;
+      this.subCatBandera = false;
     }
     this.loaderTop = false;
     this.filtroBusqueda = false;
