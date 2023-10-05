@@ -35,7 +35,7 @@ export class NotificacionPage implements OnInit {
     this.interval = setInterval(() => {
       this.notificaciones = JSON.parse(localStorage.getItem('notificaciones'))
       this.loader = false;
-    },2000)
+    }, 10000); //Se le agrego 10 segundos para que se actualicen las notificaciones
 
     //this.obtenerNotificaciones();
   }

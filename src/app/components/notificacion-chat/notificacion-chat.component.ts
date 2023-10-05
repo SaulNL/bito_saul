@@ -20,6 +20,7 @@ export class NotificacionChatComponent implements OnInit {
   mensajes: any[] = [];
   mensajeEnviar: string = "";
   interval: any;
+  public idProveedorUsuario: boolean = false;
 
   constructor(
     private service: NotificacionesService,
@@ -34,6 +35,10 @@ export class NotificacionChatComponent implements OnInit {
   }
 
   obtenerMensajes() {
+    let usuario = JSON.parse(localStorage.getItem('u_data'));
+    if (usuario.proveedor) {
+      this.idProveedorUsuario = this.notificacion.id_proveedor === usuario.proveedor.id_proveedor ? true : false;
+    }
     this.idEnvia = null;
     this.idRecibe = null;
 
