@@ -235,7 +235,11 @@ ion-card {
 }
 
 .body-card {
-  margin: 0 12px 5px;
+  /*margin: 0 10px 5px;*/
+  margin-right: 10px;
+  margin-left: 8px;
+  width: 90%;
+  height: auto;
 }
 
 .tag-giro {
@@ -248,22 +252,36 @@ ion-card {
 }
 
 .tag {
+  margin-top: 15px;
   color: #fff;
   border-radius: 10px;
   font-size: 10px;
   padding: 2px 10px;
-  width: 100px;
-  text-transform: uppercase;
+  height: 15px;
+  text-align: center;
+}
+
+.body-sec{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.tag-orange {
+  background-color: orange;
+  width: 50px;
 }
 
 .tag-green {
-  margin-right: 10px;
   background-color: #2aac09d5;
+  width: 65px;
+  text-transform: uppercase;
 }
 
 .tag-red {
-  margin-right: 5px;
   background-color: #e11212c7;
+  width: 65px;
+  text-transform: uppercase;
 }
 
 ion-card-title {
@@ -285,7 +303,8 @@ ion-card-title {
 .distintivos {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  margin-top: -20px;
+  margin-top: -15px;
+  margin-bottom: 5px;
 }
 
 .distintivo{ 
@@ -340,4 +359,11 @@ ion-card-title {
   ion-card {
     width: 176px;
   }
+}
+
+.modalSucursal{
+  width: 30%;
+  height: 10%;
+  background-color: white;
+  border-radius: 3px;
 }

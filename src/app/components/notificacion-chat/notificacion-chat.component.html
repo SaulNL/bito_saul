@@ -26,18 +26,40 @@
       [class.left]="msg.remitente === 1"
       [class.right]="msg.remitente === 0"
     >
-      <ion-avatar class="user-img" *ngIf="msg.remitente === 1">
-        <ion-img
-          alt=""
-          [src]="
-            msg.logo_negocio.trim().length === 0
-              ? 'https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/Proveedor500.png'
-              : msg.logo_negocio
-          "
-        >
-        </ion-img>
-      </ion-avatar>
-      <div class="msg-detail">
+      <div class="msg-detail" *ngIf="msg.visible === 0 && msg.remitente === 1 && idProveedorUsuario">
+        <ion-avatar class="user-img" *ngIf="msg.remitente === 1">
+          <ion-img alt="" [src]="msg.logo_negocio.trim().length === 0
+              ? 'https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/Proveedor500.png' : msg.logo_negocio">
+          </ion-img>
+        </ion-avatar>
+        <div class="msg-info">
+          <p>{{ msg.fecha }}</p>
+        </div>
+        <div class="msg-content">
+          <span class="triangle"></span>
+          <p>{{ msg.mensaje }}<span *ngIf="msg.evento">. Descarga la reservación <a (click)="reservacion(msg.evento)">aqui</a></span></p>
+        </div>
+      </div>
+      <div class="msg-detail" *ngIf="msg.visible === 0 && msg.remitente === 1 && !idProveedorUsuario">
+        <ion-avatar class="user-img" *ngIf="msg.remitente === 1">
+          <ion-img alt="" [src]="msg.logo_negocio.trim().length === 0
+              ? 'https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/Proveedor500.png' : msg.logo_negocio">
+          </ion-img>
+        </ion-avatar>
+        <div class="msg-info">
+          <p>{{ msg.fecha }}</p>
+        </div>
+        <div class="msg-content">
+          <span class="triangle"></span>
+          <p>{{ msg.mensaje }}<span *ngIf="msg.evento">. Descarga la reservación <a (click)="reservacion(msg.evento)">aqui</a></span></p>
+        </div>
+      </div>
+      <div class="msg-detail" *ngIf="msg.visible === 1">
+        <ion-avatar class="user-img" *ngIf="msg.remitente === 1">
+          <ion-img alt="" [src]="msg.logo_negocio.trim().length === 0
+              ? 'https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/Proveedor500.png' : msg.logo_negocio">
+          </ion-img>
+        </ion-avatar>
         <div class="msg-info">
           <p>{{ msg.fecha }}</p>
         </div>
