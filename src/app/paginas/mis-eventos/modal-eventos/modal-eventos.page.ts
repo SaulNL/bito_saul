@@ -43,6 +43,7 @@ export class ModalEventosPage implements OnInit {
   loader: boolean;
   public diaSemana: any;
   public tipoEventoTxt: boolean = false;
+  public descripcionEvento: boolean = false;
   public msj = 'Cargando';
   public activoBTN: boolean = false;
   public confirmacionBTN: boolean = false;
@@ -254,6 +255,7 @@ export class ModalEventosPage implements OnInit {
       this.eventData.telefono = data.telefono;
       this.eventData.id_tipo_recurrencia = data.id_tipo_recurrencia;
       this.eventData.tipo_evento = data.tipo_evento;
+      this.eventData.descripcion_evento = data.descripcion_evento
       this.eventData.tags = data.tags;
       this.fotografiasArray = data.fotografias;
       this.videosArray = data.videos;
@@ -302,12 +304,16 @@ export class ModalEventosPage implements OnInit {
     this.eventData.fotografias.push(...this.fotosArrayAgregar);
     this.eventData.videos.push(...this.videosArray);
     this.eventData.videos.push(...this.videosArrayAgregar);
-    this.eventData.dias = this.diaSemana;
+    this.eventData.dias = JSON.stringify(this.diaSemana);
     console.log('guardarEvento', this.eventData);
     this.guardarEvento(this.eventData);
   }
-  inputEjemplo() {
+  inputTipoEvento() {
     this.tipoEventoTxt = this.eventData.tipo_evento.length >= 49 ? true : false;
+  }
+
+  inputDescripcion() {
+    this.descripcionEvento = this.eventData.descripcion_evento.length >= 99 ? true : false;
   }
 
   guardarEvento(data) {
