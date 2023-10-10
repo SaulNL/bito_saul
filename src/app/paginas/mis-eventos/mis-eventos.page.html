@@ -17,7 +17,7 @@
   <div class="eventosContent">
     <ion-label class="eventocreado">Eventos Creados</ion-label>
     <ion-list class="listaEvento">
-      <ion-item-sliding class="eventoContent" (click)="obtenerLstReservacion(evento.id_evento, evento.fotografias[0]?.url_imagen)" *ngFor="let evento of eventos; let i = index">
+      <ion-item-sliding class="eventoContent" (click)="obtenerLstReservacion(evento.id_evento, evento.fotografias[0]?.url_imagen,evento.activo)" *ngFor="let evento of eventos; let i = index">
         <ion-item (click)="onClickItem($event)">
           <img class="eventoImg" src="{{evento.fotografias[0]?.url_imagen}}" alt="{{evento.evento}}">
           <p class="eventTitle">{{evento.evento}}</p>
@@ -36,6 +36,12 @@
 
   <div class="confirmacionEventoContainer">
     <ion-label class="eventocreado">Validar reservación</ion-label>
+    
+    <ion-item *ngIf="reservacion">
+      <ion-label>Activo</ion-label>
+      <ion-toggle slot="end" [(ngModel)]="activoBTN" name="activo" (click)="verificarActivo()"></ion-toggle>
+    </ion-item>
+
     <div class="imgReservacion" *ngIf="eventoImg">
       <img [src]="eventoImg" alt="Imagen del evento">
     </div>

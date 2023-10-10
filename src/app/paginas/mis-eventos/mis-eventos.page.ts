@@ -25,6 +25,8 @@ export class MisEventosPage implements OnInit {
   public evReservacion: boolean = false;
   public caja: string;
   public cantidadFaltante: number;
+  public activoBTN: boolean = false;
+  public idEvento: any;
   public datosReservacion = {
     fc_confirmacion: null,
     id_estatus_reservacion: null,
@@ -62,6 +64,7 @@ export class MisEventosPage implements OnInit {
     }
     this.eventoService.obtenerEvento(body).subscribe(Response => {
       this.eventos = Response.data;
+      console.log('eventos',Response)
       this.loader = false;
     }),
       error => {
@@ -94,9 +97,12 @@ export class MisEventosPage implements OnInit {
     this._router.navigate(["/tabs/mis-eventos/modal-eventos"])
   }
 
-  obtenerLstReservacion(idReservacion, img){
+  obtenerLstReservacion(idReservacion, img, activo) {
+    console.log('entre')
     this.eventoService.obtenerReservaciones(idReservacion).subscribe(Response => {
       this.eventoImg = img;
+      this.activoBTN = activo == 1 || activo ? true : false;
+      this.idEvento = idReservacion;
       if (Response.code == 200) {
         this.evReservacion = false;
         this.reservacion = Response.data
@@ -139,7 +145,7 @@ export class MisEventosPage implements OnInit {
    async guardarReservacion(data){
     let dias =  new Date();
     let dia = dias.getDate();
-    let mes = dias.getMonth() + 1;
+    let mes = dias.toLocaleString('default', { month: 'long' });
     let anio = dias.getFullYear();
     let fecha = `${dia}/${mes}/${anio}`
     this.datosReservacion.fc_confirmacion = await fecha;
@@ -152,7 +158,7 @@ export class MisEventosPage implements OnInit {
     let mensaje = tipo == true ? "Se guardó exitosamente": "Se elimino exitosamente"
     this.eventoService.confirmarReservacion(this.datosReservacion).subscribe(Response => {
       if(Response.code == 200){
-        this.obtenerLstReservacion(id.id_evento,this.eventoImg)
+        this.obtenerLstReservacion(id.id_evento,this.eventoImg,this.activoBTN)
         this.notificacionService.exito(mensaje)
       }
     }),
@@ -203,6 +209,24 @@ export class MisEventosPage implements OnInit {
     const segundos = fechaObjeto.getSeconds();
 
     return `${numeroDia}-${meses[numeroMes]}-${anio} ${hora}:${minutos}:${segundos}`;
+  }
+
+  verificarActivo() {
+    let activo = this.activoBTN ? 0 : 1;
+    console.log('evento',activo,this.activoBTN)
+    // this.activoBTN = this.activoBTN ? false : true;
+    let body = {
+      "id_evento": this.idEvento,
+      "activo": activo
+    }
+
+    this.eventoService.activarDesactivarEvento(body).subscribe(response => {
+      console.log('activar',response)
+    }),
+      error => {
+        this.notificacionService.error(error);
+      }
+
   }
 
 }

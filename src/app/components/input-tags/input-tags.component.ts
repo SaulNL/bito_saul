@@ -42,7 +42,7 @@ export class InputTagsComponent implements OnInit {
           if(existTAg){
             this.notificaciones.error(`Ya tienes esta etiqueta.`)
           }else if(this.tagActual.length >= 5){
-            let mensaje = this.tagActual.length == 5 ? `Haz alcanzo el límite de etiquetas.` : `Superaste el limite de etiquetas. ${this.tagActual.length} de 5`
+            let mensaje = this.tagActual.length == 5 ? `Haz alcanzo el límite de etiquetas.` : `Superaste el limite de etiquetas.`
             this.notificaciones.error(mensaje)
           }
         }
@@ -71,7 +71,7 @@ export class InputTagsComponent implements OnInit {
     }
     this.tagActual = this.tags.split(", ")
     if(this.tagActual.length >5){
-      this.notificaciones.toastInfo(`Haz alcanzo el límite de etiquetas. ${this.tagActual.length} de 5`)
+      this.notificaciones.toastInfo(`Haz alcanzo el límite de etiquetas.`)
     }
     console.log("tagsActuales",this.tagActual)
   }

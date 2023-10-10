@@ -41,6 +41,8 @@ export class ModalEventosPage implements OnInit {
   public negtag: boolean;
   public tags: any;
   loader: boolean;
+  public diaSemana: any;
+  public tipoEventoTxt: boolean = false;
   public msj = 'Cargando';
   public activoBTN: boolean = false;
   public confirmacionBTN: boolean = false;
@@ -57,6 +59,7 @@ export class ModalEventosPage implements OnInit {
   public isIos: boolean;
   public mensaje: string;
   public bandera: boolean;
+  public frecuenciaSemanal: boolean;
   numeroFotosPermitidas: number;
   slideOpts = {
     slidesPerView: 1.5,
@@ -201,6 +204,7 @@ export class ModalEventosPage implements OnInit {
   obtenerRecurrencia() {
     this.eventoService.tipoRecurrencia().subscribe(
       res => {
+        console.log("frecuencia", res)
         this.recurrencia = res.data;
       }
     )
@@ -298,8 +302,12 @@ export class ModalEventosPage implements OnInit {
     this.eventData.fotografias.push(...this.fotosArrayAgregar);
     this.eventData.videos.push(...this.videosArray);
     this.eventData.videos.push(...this.videosArrayAgregar);
+    this.eventData.dias = this.diaSemana;
     console.log('guardarEvento', this.eventData);
     this.guardarEvento(this.eventData);
+  }
+  inputEjemplo() {
+    this.tipoEventoTxt = this.eventData.tipo_evento.length >= 49 ? true : false;
   }
 
   guardarEvento(data) {
@@ -622,9 +630,10 @@ export class ModalEventosPage implements OnInit {
     }else {
         this._notificacionService.alerta("Lo sentimos, el archivo supera los 100 MB");
       }
+  }
 
-
-    // let videoPrueba = `data:image/png;base64,${contents.data}`
+  tipoFrecuencia(tipo) {
+    this.frecuenciaSemanal = tipo.detail.value == 1 ? false : true ;
   }
 
 }

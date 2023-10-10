@@ -10,6 +10,7 @@ import { ModalEventosPageRoutingModule } from './modal-eventos-routing.module';
 import { ModalEventosPage } from './modal-eventos.page';
 import { TabsPageModule } from '../../tabs/tabs.module';
 import { SpinnerModule } from '../../../componentes/spinner/spinner.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { SpinnerModule } from '../../../componentes/spinner/spinner.module';
     IonicModule,
     ModalEventosPageRoutingModule,
     TabsPageModule,
-    SpinnerModule
+    SpinnerModule,
+    ReactiveFormsModule
   ],
   declarations: [ModalEventosPage]
 })

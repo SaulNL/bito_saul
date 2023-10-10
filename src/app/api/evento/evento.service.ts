@@ -101,4 +101,15 @@ export class EventoService {
         return error;
       }));
   }
+
+  activarDesactivarEvento(id): Observable<any> {
+    let body = JSON.stringify(id);
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(this.url + 'api/eventos/activarDesactivar', body, AppSettings.getHeadersToken()).then((data) => {
+      return JSON.parse(data.data);
+    })
+      .catch((error) => {
+        return error;
+      }));
+  }
 }

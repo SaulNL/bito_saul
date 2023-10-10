@@ -9,30 +9,6 @@
     </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true" style="--background-color: #EAEAEA;">
-    <!-- <ion-item style="width: 100%;">
-        <ion-slides [options]="slideOpts" style="width: 90%;">
-            <ion-slide *ngFor="let suscripcion of this.planes">
-                <ion-card class="plan_suscripcion">
-                    <p><strong>{{suscripcion.nombre}}</strong></p>
-                    <div *ngFor="let caracteristica of suscripcion.caracteristicas"
-                        style="width:100%; display:flex; justify-content: center; margin-bottom:3em">
-                        <ion-icon name='checkmark-circle' style="color:#ff1dbd"></ion-icon>
-                        <p style="margin-top: 0px; margin-bottom:0px; margin-left: 10px; width:fit-content">
-                            {{caracteristica.nombre}}</p>
-                    </div>
-                    <ion-item>
-                        <div
-                            style="width: 100%; display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
-                            <ion-button mode="ios" size="small" class="bg-naranja" shape="round"
-                                (click)="seleccionarSucripcion(suscripcion.id_perfil_caracteristica,suscripcion.nombre)">
-                                Seleccione su plan de suscrpción
-                            </ion-button>
-                        </div>
-                    </ion-item>
-                </ion-card>
-            </ion-slide>
-        </ion-slides>
-    </ion-item> -->
     <div style="text-align: center;">
         <h2 style="font-family: Poppins ; font-weight: bold;"> Elige el plan que más se adapte a tus
             necesidades </h2>
@@ -43,8 +19,8 @@
             Negocio</strong>
 
         <div class="contenedorAll">
-            <div class="perfil" *ngFor="let item of planes" >
-              <div class="perfilTitle" [id]="item.nombre === 'Basic Intermedio' ? 'BasicIntermedio' : item.nombre">
+            <div class="perfil" *ngFor="let item of planes, let i = index" >
+              <div class="perfilTitle" [style]="bgPerfiles[i].bg">
                 <h1><strong>{{item.nombre}}</strong></h1>
                 <div class="lineaTitle"></div>
               </div>
@@ -57,34 +33,16 @@
                 <p *ngFor="let itemAux of item.caracteristicas" style=" text-align: initial;">
                   <span style="height: 24px; border-radius: 50%; min-width: 24px; padding: 2px; margin: 0px 5px 0px 5px; display: flex;
                   align-items: center;
-                  justify-content: center;" [id]="item.nombre === 'Basic Intermedio' ? 'BasicIntermedio' : item.nombre">
+                  justify-content: center;" [style]="bgPerfiles[i].bg">
                     <ion-icon style="color: #fff;" name="checkmark-outline"></ion-icon> 
                   </span> 
                   {{itemAux.nombre}}</p>
               </div>
               <div class="seccionBoton">
-                <button [id]="item.nombre === 'Basic Intermedio' ? 'BasicIntermedio' : item.nombre" (click)="seleccionarSucripcion(item.id_perfil_caracteristica,item.nombre)" > Elegir </button>
+                <button [style]="bgPerfiles[i].bg" (click)="seleccionarSucripcion(item.id_perfil_caracteristica,item.nombre)" > Elegir </button>
               </div>
             </div>
           </div>
     </div>
 
 </ion-content>
-<!--div style="height:100%">
-</div-->
-<!--ion-header translucent>
-    <ion-toolbar class="tolbar">
-        <ion-title>Seleccione su plan</ion-title>
-    </ion-toolbar>
-</ion-header>
-<ion-content fullscreen="false">
-    <div class="container" style="display: flex; flex-direction: column;">    
-        <ion-slides [options]="slideOpts" style="width: 500px;">
-            <ion-slide *ngFor="let suscripcion of this.planes">               
-                <ion-card style="width:100%; height: 80%;">
-                    <p>{{suscripcion.nombre}}</p>                  
-                  </ion-card>
-            </ion-slide>
-        </ion-slides>            
-    </div>
-</ion-content-->

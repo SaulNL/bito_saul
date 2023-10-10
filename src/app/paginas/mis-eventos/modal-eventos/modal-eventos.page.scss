@@ -142,11 +142,14 @@ ion-modal {
     }
 }
 
+.wdht{
+    min-width: 50%;
+}
+
 .bg {
     background-color: antiquewhite;
     height: 90%;
-    max-width: 150px;
-    min-width: 150px;
+    min-width: 50%;
     display: flex;
     padding-left: 15px;
     align-items: center;
@@ -280,4 +283,10 @@ ion-modal {
 }
 .requerido{
     color: red;
+}
+
+.limiteTxt{
+    background-color: #ff8a8a;
+    color: #713535;
+    padding-left: 15px;
 }

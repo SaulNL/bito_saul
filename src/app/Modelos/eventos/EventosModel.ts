@@ -23,8 +23,9 @@ export class EventosModel {
     public fotografias: any;
     public url_video: string;
     public videos: any;
+    public dias: any;
 
-    constructor(activo = 0, requiere_confirmacion = 0, id_evento = null, evento = "", id_negocio = 0, fecha = "", id_estado = "", id_municipio = "", id_localidad = "", telefono = "", tipo_pago_transferencia = 0, tipo_pago_tarjeta_credito = 0, tipo_pago_tarjeta_debito = 0, tipo_pago_efectivo = 0, id_tipo_recurrencia = 0, tipo_evento = "", tags = "",fotografias=[], url_video: string = '', videos=[]) {
+    constructor(activo = 0, requiere_confirmacion = 0, id_evento = null, evento = "", id_negocio = 0, fecha = "", id_estado = "", id_municipio = "", id_localidad = "", telefono = "", tipo_pago_transferencia = 0, tipo_pago_tarjeta_credito = 0, tipo_pago_tarjeta_debito = 0, tipo_pago_efectivo = 0, id_tipo_recurrencia = 0, tipo_evento = "", tags = "",fotografias=[], url_video: string = '', videos=[], dias = "") {
         this.activo = activo;
         this.requiere_confirmacion = requiere_confirmacion;
         this.id_evento = id_evento;
@@ -45,5 +46,6 @@ export class EventosModel {
         this.fotografias = fotografias;
         this.url_video = url_video;
         this.videos = videos;
+        this.dias = dias;
     }
 }

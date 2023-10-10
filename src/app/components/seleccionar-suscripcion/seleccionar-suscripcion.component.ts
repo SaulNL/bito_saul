@@ -16,8 +16,8 @@ export class SeleccionarSucripcionComponent implements OnInit {
   @Input() public suscripciones;
   planes:any[]
   public planSeleccionado: any;
+  public bgPerfiles: any[];
   slideOpts = {
-    
     autoHeight: false,
     autoWidht:false,
     slidesPerView: 1,
@@ -32,11 +32,18 @@ export class SeleccionarSucripcionComponent implements OnInit {
     public modalController: ModalController,
     private _utils_cls: UtilsCls
   ) { 
+    this.bgPerfiles = []
   }
 
   ngOnInit() { 
-    this.planes=this.suscripciones
-    //console.log("LA DATA DE LOS PLANES"+JSON.stringify(this.suscripciones))
+    this.planes = this.suscripciones
+    console.log('plan', this.planes)
+    this.planes.forEach(element => {
+            let perfilesBg = {
+              bg: `background: linear-gradient(162deg, ${element.color_inicial} 0%, ${element.color_final} 63%);`
+            }
+            this.bgPerfiles.push(perfilesBg)
+          });
   }
 
   cerrar() {
