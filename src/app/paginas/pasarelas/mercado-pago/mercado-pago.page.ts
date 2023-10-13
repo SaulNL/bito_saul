@@ -73,6 +73,7 @@ export class MercadoPagoPage implements OnInit {
         this.loader = true;
         this.pasarelaServices.obtenerAT(parametro).subscribe(
             res => {
+                console.log('res', res);
                 const datos = {} as INegocioBrokerAT;
                 this.mensaje = "siiiiiiiiiiiiiiiii"
                 if (res.data !== null && res.data !== undefined) {
@@ -80,11 +81,12 @@ export class MercadoPagoPage implements OnInit {
                     datos.accessToken = res.data.negocio_broker.access_token;
                     datos.idBroker = res.data.negocio_broker.id_broker;
                     datos.idNegocio = res.data.negocio_broker.id_negocio;
-                }
-                this.datosGuardados = datos;
-                if (this.datosGuardados.idNegocioBrokers !== null) {
                     this.tokenGuardado = true;
                 }
+                this.datosGuardados = datos;
+                // if (this.datosGuardados.idNegocioBrokers !== null) {
+                //
+                // }
                 this.loader = false;
             },
             error => {
