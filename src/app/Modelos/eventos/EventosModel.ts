@@ -35,13 +35,13 @@ export class EventosModel {
 
     constructor(activo = 0, requiere_confirmacion = 0, id_evento = null, evento = "", id_negocio = 0, fecha = "", id_estado = "", id_municipio = "", id_localidad = "", telefono = "", tipo_pago_transferencia = 0, tipo_pago_tarjeta_credito = 0, tipo_pago_tarjeta_debito = 0, tipo_pago_efectivo = 0, id_tipo_recurrencia = 0, tipo_evento = "", tags = "", fotografias = [], url_video: string = '', videos = [], dias = "",
         descripcion_evento = "",
-        calle = "Morelos",
-        numero_ext = "1300",
-        numero_int = "Int A",
-        colonia = "Fatima",
-        codigo_postal = "90300",
-        latitud = 19.338291,
-        longitud = 98.18405871,
+        calle = "",
+        numero_ext = "",
+        numero_int = "",
+        colonia = "",
+        codigo_postal = "",
+        latitud = null,
+        longitud = null,
     ) {
         this.activo = activo;
         this.requiere_confirmacion = requiere_confirmacion;
