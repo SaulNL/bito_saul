@@ -113,7 +113,6 @@ export class ModalEventosPage implements OnInit {
     this.negocio_service.misNegocios(this.usuario.proveedor.id_proveedor).subscribe(
       response => {
         this.lstNegocios = response.data;
-        console.log('datosNegocio', this.lstNegocios);
       },
       error => {
         this._notificacionService.error(error);
@@ -130,7 +129,6 @@ export class ModalEventosPage implements OnInit {
   obtenerEstados() {
     if (this.edit == null) this.loader = false;
     this._general_service.getEstadosWS().subscribe(response => {
-      console.log("estado", response)
       if (this._utils_cls.is_success_response(response.code)) {
         this.list_cat_estado = response.data.list_cat_estado;
         // this.loader = false;
@@ -155,7 +153,6 @@ export class ModalEventosPage implements OnInit {
     }
     if (idE > 0) {
       this._general_service.getMunicipiosAll(idE).subscribe(response => {
-        console.log("municipio", response)
         if (this._utils_cls.is_success_response(response.code)) {
           this.list_cat_municipio = response.data.list_cat_municipio;
         }
@@ -185,7 +182,6 @@ export class ModalEventosPage implements OnInit {
     }
     if (idE > 0) {
       this._general_service.getLocalidadAll(idE).subscribe(response => {
-        console.log("localidad", response)
         if (this._utils_cls.is_success_response(response.code)) {
           this.list_cat_localidad = response.data.list_cat_localidad;
         }
@@ -205,7 +201,6 @@ export class ModalEventosPage implements OnInit {
   obtenerRecurrencia() {
     this.eventoService.tipoRecurrencia().subscribe(
       res => {
-        console.log("frecuencia", res)
         this.recurrencia = res.data;
       }
     )
@@ -217,7 +212,7 @@ export class ModalEventosPage implements OnInit {
     this.eventoService.eventoInfo(body).subscribe(
       res => {
         this.asignarValoresEvent(res.data[0])
-        // this.eventoInfo = res.data;
+        this.eventoInfo = res.data[0];
         // this.eventoInfo_imagen = res.data.url_imagens
       }
     )
@@ -254,6 +249,7 @@ export class ModalEventosPage implements OnInit {
       this.eventData.tipo_pago_efectivo = data.tipo_pago_efectivo;
       this.eventData.telefono = data.telefono;
       this.eventData.id_tipo_recurrencia = data.id_tipo_recurrencia;
+      this.frecuenciaSemanal = data.id_tipo_recurrencia == 3 ? true : false;
       this.eventData.tipo_evento = data.tipo_evento;
       this.eventData.descripcion_evento = data.descripcion_evento
       this.eventData.tags = data.tags;
@@ -272,8 +268,6 @@ export class ModalEventosPage implements OnInit {
       });
 
       this.numeroFotos = this.fotografiasArray.length;
-      console.log('fotografias', data.fotografias);
-      console.log('fotografias', this.fotografiasArray);
 
       if (data.tipo_pago_transferencia == 1) pagos.push(2);
       if (data.tipo_pago_tarjeta_credito == 1) pagos.push(3);
@@ -286,13 +280,30 @@ export class ModalEventosPage implements OnInit {
 
       // this.eventData.id_municipio = data.id_municipio;
       // this.eventData.id_localidad = data.id_localidad;
-      console.log("asignado", this.eventData)
       this.loader = false;
     }, 1000)
   }
 
+  asignarValoresMapa(event) {
+    this.eventData.codigo_postal = event.cP;
+    this.eventData.calle = event.calle;
+    this.eventData.colonia = event.colonia;
+    this.eventData.dias = event.dias ? JSON.stringify(event.dias) : null;
+    this.eventData.id_tipo_recurrencia = event.frecuencia
+    this.eventData.fecha = event.fecha;
+    this.eventData.tipo_evento = event.tipoEvento;
+    this.eventData.longitud = event.long;
+    this.eventData.latitud = event.lt;
+    this.eventData.numero_ext = event.numExterior;
+    this.eventData.numero_int = event.numInterior;
+    this.eventData.id_estado = event.estado;
+    this.eventData.id_municipio = event.municipio;
+    this.eventData.id_localidad = event.localidad;
+    this.eventData.tipo_evento = event.tipoEvento;
+  }
+
   async submit() {
-    this.loader = true;
+    // this.loader = true;
     let urlImg = new EventoUrlImagen;
     if (this.eventData.imagen.archivo_64 == null && this.eventoInfo_imagen != null) {
       urlImg.archivo_64 = null;
@@ -304,8 +315,6 @@ export class ModalEventosPage implements OnInit {
     this.eventData.fotografias.push(...this.fotosArrayAgregar);
     this.eventData.videos.push(...this.videosArray);
     this.eventData.videos.push(...this.videosArrayAgregar);
-    this.eventData.dias = JSON.stringify(this.diaSemana);
-    console.log('guardarEvento', this.eventData);
     this.guardarEvento(this.eventData);
   }
   inputTipoEvento() {
@@ -318,7 +327,6 @@ export class ModalEventosPage implements OnInit {
 
   guardarEvento(data) {
     this.eventoService.guardarEvento(data).subscribe(res => {
-      console.log(res)
       if (res.code == 200) {
         this.loader = false
         this._notificacionService.exito('Evento Guardado');
@@ -383,7 +391,6 @@ export class ModalEventosPage implements OnInit {
                       archivo.archivo_64 = file_64;
                     }
                     this.eventData.imagen = archivo;
-                    // console.log("esto se debe guardar", archivo)
                     /*  this.formGroup1.patchValue({
                         archivo: archivo
                       });*/
@@ -401,7 +408,6 @@ export class ModalEventosPage implements OnInit {
                   archivo.nombre_archivo = nombre_archivo,
                     archivo.archivo_64 = r.data;
                   this.eventData.imagen = archivo;
-                  // console.log("esto se debe guardar 2", archivo)
                   // this.blnImgCuadrada = false;
                 }
               }
@@ -433,16 +439,12 @@ export class ModalEventosPage implements OnInit {
   }
 
   agregarTags(tags: string[]) {
-    console.log("desde el Modal:", tags)
     this.negtag = true;
     this.tags = tags.join(', ');
-    console.log("tags?", tags)
     this.eventData.tags = this.tags;
   }
 
   verificarActivo(evento, tipo) {
-    console.log(evento.detail.checked)
-    console.log(this.activoBTN)
     if (tipo) {
       this.eventData.activo = evento.detail.checked == false ? 0 : 1;
     }
@@ -500,7 +502,6 @@ export class ModalEventosPage implements OnInit {
             } else {
               this.resizeToWidth = 400;
               this.resizeToHeight = 400;
-              console.log("img",img.src)
               this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
                     if (r !== undefined) {
                       const archivo = new ArchivoComunModel();
@@ -574,7 +575,6 @@ export class ModalEventosPage implements OnInit {
           video.archivo_64 = base64Video;
           this.base64Video = video;
           this.videosArrayAgregar.push(this.base64Video);
-          console.log('videos', this.videosArrayAgregar);
         });
       } else {
         this._notificacionService.alerta("Lo sentimos, el archivo supera los 100 MB");

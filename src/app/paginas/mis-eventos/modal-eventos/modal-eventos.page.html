@@ -129,12 +129,13 @@
 
         <ion-item>
           <ion-label class="wdht">Descripción<span class="requerido">*</span></ion-label>
+          <!-- <ion-label class="bg">{{eventData.descripcion_evento}}</ion-label> -->
           <ion-input type="text" class="bg" justify="end" label="End" placeholder="Descripcion del Evento" maxlength="100"
             [(ngModel)]="eventData.descripcion_evento" (input)="inputDescripcion()"></ion-input>
         </ion-item>
         <div class="limiteTxt" *ngIf="descripcionEvento">Has llegado al límite de 100 caracteres</div>
 
-        <ion-item>
+        <ion-item class="noVisual">
           <ion-label class="wdht">Estado<span class="requerido">*</span></ion-label>
           <ion-select class="bg" name="estado" justify="end" label="End" placeholder="Seleccione un estado"
             [(ngModel)]="eventData.id_estado" (ionChange)="obtenerMunicipio($event)" required>
@@ -142,7 +143,7 @@
               [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-item>
+        <ion-item class="noVisual">
           <ion-label class="wdht">Municipio<span class="requerido">*</span></ion-label>
           <ion-select class="bg" name="municipio" justify="end" label="End" placeholder="Seleccione un municipio"
             [(ngModel)]="eventData.id_municipio" (ionChange)="obtenerLocalidad($event)" required>
@@ -150,7 +151,7 @@
               [value]="municipio.id_municipio">{{municipio.nombre}}</ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-item>
+        <ion-item class="noVisual">
           <ion-label class="wdht">Localidad<span class="requerido">*</span></ion-label>
           <ion-select class="bg" name="localidad" justify="end" label="End" placeholder="Seleccione una localidad"
             [(ngModel)]="eventData.id_localidad">
@@ -173,7 +174,7 @@
           </ion-select>
         </ion-item>
 
-        <ion-item>
+        <!-- <ion-item>
           <ion-label class="wdht">Frecuencia<span class="requerido">*</span></ion-label>
           <ion-select class="bg" name="id_tipo_recurrencia" justify="end" label="End" placeholder="Frecuencia"
             [(ngModel)]="eventData.id_tipo_recurrencia" (ionChange)="tipoFrecuencia($event)" required>
@@ -182,7 +183,7 @@
           </ion-select>
         </ion-item>
 
-        <ion-item id="open-modal-date-eventos">
+        <ion-item id="open-modal-date-eventos" *ngIf="!frecuenciaSemanal">
           <ion-label class="wdht">Fecha y hora<span class="requerido">*</span></ion-label>
           <div class="bg">
             <label position="stacked" *ngIf="!eventData.fecha">Seleccione...</label>
@@ -211,20 +212,19 @@
             <ion-select-option value="Viernes">Todos los Viernes</ion-select-option>
             <ion-select-option value="Sabado">Todos los Sabado</ion-select-option>
           </ion-select>
-        </ion-item>
+        </ion-item> -->
 
-        <ion-item>
+        <!-- <ion-item>
           <ion-label class="wdht">Tipo de evento<span class="requerido">*</span></ion-label>
           <ion-input type="text" class="bg" justify="end" label="End" placeholder="Tipo de evento" 
           maxlength="50" [(ngModel)]="eventData.tipo_evento" (input)="inputTipoEvento()"></ion-input>
-          <!-- <ion-select class="bg" name="tipo_evento" justify="end" multiple="true" label="End"
-            placeholder="Tipo de evento" [(ngModel)]="eventoSelect" (ionChange)="onEventoSeleccionado()" required>
-            <ion-select-option *ngFor="let evento of tipoEvento"
-            [value]="evento.nombre">{{evento.nombre}}</ion-select-option>
-          </ion-select> -->
-        </ion-item>
+        </ion-item> -->
 
-        <div class="limiteTxt" *ngIf="tipoEventoTxt">Has llegado al límite de 50 caracteres</div>
+        <!-- <div class="limiteTxt" *ngIf="tipoEventoTxt">Has llegado al límite de 50 caracteres</div> -->
+
+        <app-formulario-mapa [recurrencia]="recurrencia" [datosEvento]="eventoInfo" [estado]="list_cat_estado" [municipio]="list_cat_municipio"
+        [localidad]="list_cat_localidad" (enviarDatosMapa)="asignarValoresMapa($event)"></app-formulario-mapa>
+
         <ion-item *ngIf="!loader">
           <app-input-tags [tipo]="false" [tags]="eventData.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
         </ion-item>

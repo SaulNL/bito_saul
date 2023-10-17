@@ -11,6 +11,7 @@ import { ModalEventosPage } from './modal-eventos.page';
 import { TabsPageModule } from '../../tabs/tabs.module';
 import { SpinnerModule } from '../../../componentes/spinner/spinner.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormularioMapaComponent } from './formulario-mapa/formulario-mapa.component';
 
 @NgModule({
   imports: [
@@ -20,8 +21,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     ModalEventosPageRoutingModule,
     TabsPageModule,
     SpinnerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  declarations: [ModalEventosPage]
+  declarations: [ModalEventosPage,
+  FormularioMapaComponent]
 })
 export class ModalEventosPageModule { }
