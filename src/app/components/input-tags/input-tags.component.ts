@@ -7,13 +7,15 @@ import { ToadNotificacionService } from 'src/app/api/toad-notificacion.service';
   styleUrls: ['./input-tags.component.scss'],
 })
 export class InputTagsComponent implements OnInit {
+  @Input() public tags;
+  @Input() public tipo: boolean;
+  @Output() _enviarTags: EventEmitter<any>;
 
   public tagActual: any[] = [];
   public nuevaTag: string;
   public placeHolder: string;
-  @Input() public tags;
-  @Input() public tipo: boolean;
-  @Output() _enviarTags: EventEmitter<any>;
+  public limiteTags: boolean;
+  
 
   constructor(
     private notificaciones: ToadNotificacionService,
@@ -36,15 +38,11 @@ export class InputTagsComponent implements OnInit {
           this.tagActual.splice(0)
         }
         let existTAg = this.tagActual.find(element => element == this.nuevaTag) ? true :false;
-        if(!existTAg && this.tagActual.length < 5){
+        if(this.tagActual.length < 5){
           this.tagActual.push(this.nuevaTag);
-        }else{
-          if(existTAg){
-            this.notificaciones.error(`Ya tienes esta etiqueta.`)
-          }else if(this.tagActual.length >= 5){
-            let mensaje = this.tagActual.length == 5 ? `Haz alcanzo el límite de etiquetas.` : `Superaste el limite de etiquetas.`
-            this.notificaciones.error(mensaje)
-          }
+          this.limiteTags = false;
+        } else {
+          this.limiteTags = true;
         }
         this._enviarTags.emit(this.tagActual);
       }

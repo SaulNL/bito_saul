@@ -43,8 +43,11 @@
   <ion-item>
     <ion-label class="wdht">Tipo de evento<span class="requerido">*</span></ion-label>
     <ion-input type="text" class="bg" justify="end" label="End" placeholder="Tipo de evento"
-    formControlName="tipoEvento" (ionChange)="enviarInformacion()"></ion-input>
+    formControlName="tipoEvento" (ionChange)="enviarInformacion()" maxlength="51"></ion-input>
   </ion-item>
+  <ion-text class="alertaColor" *ngIf="formularioMapa.get('tipoEvento').hasError('maxlength')">
+    Has llegado al límite de 50 caracteres.
+  </ion-text>
 
   <ion-item>
     <ion-label class="wdht">Estado</ion-label>
@@ -72,27 +75,27 @@
 
   <ion-item fill="solid" class="color">
     <ion-label position="floating">Colonia</ion-label>
-    <ion-input formControlName="colonia" placeholder="Enter text" (ionChange)="enviarInformacion()"></ion-input>
+    <ion-input formControlName="colonia" placeholder="Colonia" (ionChange)="enviarInformacion()"></ion-input>
   </ion-item>
 
   <ion-item fill="solid" class="color">
     <ion-label position="floating">Calle</ion-label>
-    <ion-input formControlName="calle" placeholder="Enter text" (ionChange)="enviarInformacion()"></ion-input>
+    <ion-input formControlName="calle" placeholder="Calle" (ionChange)="enviarInformacion()"></ion-input>
   </ion-item>
 
   <ion-item fill="solid" class="color">
     <ion-label position="floating">Numero exterior</ion-label>
-    <ion-input formControlName="numExterior" placeholder="Enter text" (ionChange)="enviarInformacion()"></ion-input>
+    <ion-input formControlName="numExterior" placeholder="Numero Exterior" (ionChange)="enviarInformacion()"></ion-input>
   </ion-item>
   
   <ion-item fill="solid" class="color">
-    <ion-label position="floating">Numero interioir</ion-label>
-    <ion-input formControlName="numInterior" placeholder="Enter text" (ionChange)="enviarInformacion()"></ion-input>
+    <ion-label position="floating">Numero interior</ion-label>
+    <ion-input formControlName="numInterior" placeholder="Numero Interior" (ionChange)="enviarInformacion()"></ion-input>
   </ion-item>
 
   <ion-item fill="solid" class="color">
-    <ion-label position="floating">Codigo postal</ion-label>
-    <ion-input formControlName="cP" placeholder="Enter text" (ionChange)="enviarInformacion()"></ion-input>
+    <ion-label position="floating">Código postal</ion-label>
+    <ion-input formControlName="cP" placeholder="Código postal" (ionChange)="enviarInformacion()"></ion-input>
   </ion-item>
 
 </form>

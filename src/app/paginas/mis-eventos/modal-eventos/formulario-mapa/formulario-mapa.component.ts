@@ -37,7 +37,7 @@ export class FormularioMapaComponent implements OnInit {
       frecuencia: ['', [Validators.required]],
       fecha: new FormControl(new Date()),
       dias: [''],
-      tipoEvento: ['', [Validators.maxLength(50)]],
+      tipoEvento: ['', [Validators.required, Validators.maxLength(50)]],
       estado: ['', [Validators.required]],
       municipio: ['', [Validators.required]],
       localidad: ['', [Validators.required]],
@@ -116,7 +116,9 @@ export class FormularioMapaComponent implements OnInit {
   }
 
   enviarInformacion() {
-    this.enviarDatosMapa.emit(this.formularioMapa.value)
+    if (this.formularioMapa.valid) {
+      this.enviarDatosMapa.emit(this.formularioMapa.value)
+    }
   }
 
   lugarMapa() {

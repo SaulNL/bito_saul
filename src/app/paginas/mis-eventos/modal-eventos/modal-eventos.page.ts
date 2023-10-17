@@ -60,6 +60,7 @@ export class ModalEventosPage implements OnInit {
   public isIos: boolean;
   public mensaje: string;
   public bandera: boolean;
+  public mapaForm: boolean = false;
   public frecuenciaSemanal: boolean;
   numeroFotosPermitidas: number;
   slideOpts = {
@@ -285,6 +286,7 @@ export class ModalEventosPage implements OnInit {
   }
 
   asignarValoresMapa(event) {
+    this.mapaForm = true;
     this.eventData.codigo_postal = event.cP;
     this.eventData.calle = event.calle;
     this.eventData.colonia = event.colonia;
@@ -299,7 +301,7 @@ export class ModalEventosPage implements OnInit {
     this.eventData.id_estado = event.estado;
     this.eventData.id_municipio = event.municipio;
     this.eventData.id_localidad = event.localidad;
-    this.eventData.tipo_evento = event.tipoEvento;
+    this.eventData.tipo_evento = event.tipoEvento; 
   }
 
   async submit() {
@@ -321,8 +323,8 @@ export class ModalEventosPage implements OnInit {
     this.tipoEventoTxt = this.eventData.tipo_evento.length >= 49 ? true : false;
   }
 
-  inputDescripcion() {
-    this.descripcionEvento = this.eventData.descripcion_evento.length >= 99 ? true : false;
+  inputDescripcion(event) {
+    this.descripcionEvento = event.target.value.length == 100 ? true : false;
   }
 
   guardarEvento(data) {
