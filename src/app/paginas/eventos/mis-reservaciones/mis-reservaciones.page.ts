@@ -2,7 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {UtilsCls} from '../../../utils/UtilsCls';
 import {EventosService} from '../../../api/eventos.service';
 import {Router} from '@angular/router';
-import {AlertController, IonContent} from '@ionic/angular';
+import {AlertController, IonContent, ModalController} from '@ionic/angular';
+import {DetallesReservaComponent} from "../detalles-reserva/detalles-reserva.component";
 
 @Component({
   selector: 'app-mis-reservaciones',
@@ -22,12 +23,14 @@ export class MisReservacionesPage implements OnInit {
   public numeroMes: number;
   public loaderReservaciones: boolean;
   public msj = 'Cargando';
+  openReservacion: number;
 
   constructor(
       private eventosService: EventosService,
       private utils: UtilsCls,
       private router: Router,
       public alertController: AlertController,
+      public modalController: ModalController
   ) {
     this.reservacionesAll = [];
     this.idPersona = null;
@@ -38,6 +41,11 @@ export class MisReservacionesPage implements OnInit {
   ngOnInit() {
     this.idPersona = (this.utils.existSession()) ? this.utils.getIdUsuario() : null;
     this.mostrarMisReservaciones();
+    this.openReservacion = JSON.parse(localStorage.getItem('openReser'));
+    if ( this.openReservacion == null){
+      this.openReservacion = 1;
+    }
+    localStorage.removeItem('openReser');
   }
 
   regresar(){
@@ -69,9 +77,12 @@ export class MisReservacionesPage implements OnInit {
   }
 
 
-  datosEventos(obj: any): void {
+  async datosEventos(obj: any): Promise<void> {
     this.eventosService.setSelectedObj(obj);
-    this.router.navigateByUrl(`/tabs/eventos/detalles-reservacion`);
+    const modal = await this.modalController.create({
+      component: DetallesReservaComponent
+    });
+    await modal.present();
   }
 
   convertirFecha(fecha: string): string{
@@ -108,5 +119,9 @@ export class MisReservacionesPage implements OnInit {
       ],
     });
     await alert.present();
+  }
+
+  regresarAjustes() {
+    this.router.navigate(['/tabs/home']);
   }
 }

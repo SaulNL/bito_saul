@@ -217,6 +217,7 @@ export class EventosPage implements OnInit {
     if (!this.existeSesion){
       this.mensajeRegistro();
     }else{
+      localStorage.setItem('openReser', '2');
       this.router.navigate(['/tabs/eventos/mis-reservaciones']);
     }
   }
