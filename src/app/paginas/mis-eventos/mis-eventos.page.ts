@@ -29,6 +29,7 @@ export class MisEventosPage implements OnInit {
   public cantidadFaltante: number;
   public activoBTN: boolean = false;
   public idEvento: any;
+  public clickEvento: boolean = false;
   public datosReservacion = {
     fc_confirmacion: null,
     id_estatus_reservacion: null,
@@ -99,6 +100,7 @@ export class MisEventosPage implements OnInit {
   }
 
   obtenerLstReservacion(idReservacion, img, activo) { 
+    this.clickEvento = true;
     this.eventoService.obtenerReservaciones(idReservacion).subscribe(Response => {
       this.eventoImg = img;
       this.activoBTN = activo == 1 || activo ? true : false;
