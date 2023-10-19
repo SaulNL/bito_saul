@@ -5,6 +5,7 @@ import { Map, tileLayer, marker, Marker, icon, latLng } from 'leaflet';
 import * as L from 'leaflet';
 import { UbicacionMapa } from 'src/app/api/ubicacion-mapa.service';
 import { ToadNotificacionService } from 'src/app/api/toad-notificacion.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-formulario-mapa',
@@ -24,8 +25,9 @@ export class FormularioMapaComponent implements OnInit {
   map: Map;
   public formularioMapa: FormGroup;
   public frecuenciaSemanal: boolean = false;
-  public vistaFecha: string;
-  public vistaDias: string;
+  public vistaFecha: string = 'none';
+  public vistaDias: string = 'none';
+  public horaEvento: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -48,6 +50,7 @@ export class FormularioMapaComponent implements OnInit {
       cP: ['', [Validators.required]],
       lt: [''],
       long: [''],
+      diasVista: ['']
     })
   }
 
@@ -70,12 +73,19 @@ export class FormularioMapaComponent implements OnInit {
   }
   
   asgnarValores() {
+    let dias = JSON.parse(this.datosEvento.dias)
     this.formularioMapa.get('frecuencia').setValue(this.datosEvento.id_tipo_recurrencia)
     this.frecuenciaSemanal = this.datosEvento.id_tipo_recurrencia == 3 ? true : false;
     this.vistaDias = this.datosEvento.id_tipo_recurrencia == 3 ? 'initial' : 'none';
     this.vistaFecha = this.datosEvento.id_tipo_recurrencia == 1 ? 'initial' : 'none';
     this.formularioMapa.get('fecha').setValue(this.datosEvento.fecha)
-    this.formularioMapa.get('dias').setValue(JSON.parse(this.datosEvento.dias))
+    if (dias) {
+      this.formularioMapa.get('dias').setValue(dias)
+      this.formularioMapa.get('diasVista').setValue(dias.dias)
+    } else {
+      this.formularioMapa.get('dias').setValue({ dias: [], hora: '' })
+      this.formularioMapa.get('diasVista').setValue('')
+    }
     this.formularioMapa.get('tipoEvento').setValue(this.datosEvento.tipo_evento)
     this.formularioMapa.get('estado').setValue(this.datosEvento.id_estado)
     this.formularioMapa.get('municipio').setValue(this.datosEvento.id_municipio)
@@ -171,10 +181,10 @@ export class FormularioMapaComponent implements OnInit {
     this.frecuenciaSemanal = tipo.detail.value == 1 ? false : true;
     this.vistaDias = tipo.detail.value == 3 ? 'initial' : 'none';
     this.vistaFecha = tipo.detail.value == 1 ? 'initial' : 'none';
-    let fechas = tipo.detail.value == 1 ? this.formularioMapa.get('fecha').value : null;
-    let dias = tipo.detail.value == 3 ? this.formularioMapa.get('dias').value : null;
-    this.formularioMapa.get('fecha').setValue(fechas)
-    this.formularioMapa.get('dias').setValue (dias)
+    // let fechas = tipo.detail.value == 1 ? this.formularioMapa.get('fecha').value : null;
+    // let dias = tipo.detail.value == 3 ? this.formularioMapa.get('dias').value : null;
+    // this.formularioMapa.get('fecha').setValue(fechas)
+    // this.formularioMapa.get('dias').setValue (dias)
     this.enviarInformacion();
   }
 
@@ -184,6 +194,27 @@ export class FormularioMapaComponent implements OnInit {
     fecha = new Date(ms).toISOString();
     this.formularioMapa.get('fecha').setValue(fecha);
     this.enviarInformacion()
+  }
+
+  seleccionarHora(event) {
+    let hora = moment(event.detail.value)
+    let horaFormateada = hora.format('HH:mm');
+    let dias = this.formularioMapa.get('dias').value;
+    let datosDias = { dias: [], hora: '' }
+    datosDias.dias = dias ? dias.dias : '';
+    datosDias.hora = horaFormateada;
+    this.horaEvento = horaFormateada;
+    this.formularioMapa.get('dias').setValue(datosDias);
+    this.enviarInformacion();
+  }
+
+  seleccionarDias(event) {
+    let horas = this.formularioMapa.get('dias').value;
+    let datosDias = { dias: [], hora: '' }
+    datosDias.dias = this.formularioMapa.get('diasVista').value;
+    datosDias.hora = horas ? horas.hora : '';
+    this.formularioMapa.get('dias').setValue(datosDias);
+    this.enviarInformacion();
   }
 
 }
