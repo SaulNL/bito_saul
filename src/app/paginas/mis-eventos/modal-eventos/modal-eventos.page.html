@@ -129,9 +129,8 @@
 
         <ion-item>
           <ion-label class="wdht">Descripción<span class="requerido">*</span></ion-label>
-          <!-- <ion-label class="bg">{{eventData.descripcion_evento}}</ion-label> -->
           <ion-input type="text" class="bg" justify="end" label="End" placeholder="Descripcion del Evento" maxlength="100"
-            [(ngModel)]="eventData.descripcion_evento" (input)="inputDescripcion()"></ion-input>
+            [(ngModel)]="eventData.descripcion_evento" (input)="inputDescripcion($event)"></ion-input>
         </ion-item>
         <div class="limiteTxt" *ngIf="descripcionEvento">Has llegado al límite de 100 caracteres</div>
 
@@ -174,54 +173,6 @@
           </ion-select>
         </ion-item>
 
-        <!-- <ion-item>
-          <ion-label class="wdht">Frecuencia<span class="requerido">*</span></ion-label>
-          <ion-select class="bg" name="id_tipo_recurrencia" justify="end" label="End" placeholder="Frecuencia"
-            [(ngModel)]="eventData.id_tipo_recurrencia" (ionChange)="tipoFrecuencia($event)" required>
-            <ion-select-option *ngFor="let recu of recurrencia"
-              [value]="recu.id_tipo_recurrencia">{{recu.nombre}}</ion-select-option>
-          </ion-select>
-        </ion-item>
-
-        <ion-item id="open-modal-date-eventos" *ngIf="!frecuenciaSemanal">
-          <ion-label class="wdht">Fecha y hora<span class="requerido">*</span></ion-label>
-          <div class="bg">
-            <label position="stacked" *ngIf="!eventData.fecha">Seleccione...</label>
-            <label position="stacked" *ngIf="eventData.fecha">{{eventData.fecha | date: 'dd/MM/yyyy'}} </label>
-          </div>
-        </ion-item>
-        <ion-modal trigger="open-modal-date-eventos">
-          <ng-template>
-            <ion-content>
-              <ion-datetime name="fecha" [value]="eventData.fecha" presentation="date-time" [showDefaultButtons]="true"
-                doneText="Ok" cancelText="Cancelar" (ionChange)="selectFechaEvento($event)" required>
-                <span slot="time-label">Hora:</span>
-              </ion-datetime>
-            </ion-content>
-          </ng-template>
-        </ion-modal>
-
-        <ion-item *ngIf="frecuenciaSemanal">
-          <ion-label class="wdht">Dias<span class="requerido">*</span></ion-label>
-          <ion-select class="bg" multiple="true" placeholder="Seleccione los dias de la semana" [(ngModel)]="diaSemana">
-            <ion-select-option value="Domingo">Todos los Domingo</ion-select-option>
-            <ion-select-option value="Lunes">Todos los Lunes</ion-select-option>
-            <ion-select-option value="Martes">Todos los Martes</ion-select-option>
-            <ion-select-option value="Miercoles">Todos los Miercoles</ion-select-option>
-            <ion-select-option value="Jueves">Todos los Jueves</ion-select-option>
-            <ion-select-option value="Viernes">Todos los Viernes</ion-select-option>
-            <ion-select-option value="Sabado">Todos los Sabado</ion-select-option>
-          </ion-select>
-        </ion-item> -->
-
-        <!-- <ion-item>
-          <ion-label class="wdht">Tipo de evento<span class="requerido">*</span></ion-label>
-          <ion-input type="text" class="bg" justify="end" label="End" placeholder="Tipo de evento" 
-          maxlength="50" [(ngModel)]="eventData.tipo_evento" (input)="inputTipoEvento()"></ion-input>
-        </ion-item> -->
-
-        <!-- <div class="limiteTxt" *ngIf="tipoEventoTxt">Has llegado al límite de 50 caracteres</div> -->
-
         <app-formulario-mapa [recurrencia]="recurrencia" [datosEvento]="eventoInfo" [estado]="list_cat_estado" [municipio]="list_cat_municipio"
         [localidad]="list_cat_localidad" (enviarDatosMapa)="asignarValoresMapa($event)"></app-formulario-mapa>
 
@@ -229,7 +180,7 @@
           <app-input-tags [tipo]="false" [tags]="eventData.tags" (_enviarTags)="agregarTags($event)"></app-input-tags>
         </ion-item>
 
-        <ion-button type="submit" class="bg-naranja" [disabled]="!eventForm.valid">Guardar</ion-button>
+        <ion-button type="submit" class="bg-naranja" [disabled]="!eventForm.valid && mapaForm">Guardar</ion-button>
       </div>
     </form>
   </div>

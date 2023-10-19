@@ -37,7 +37,7 @@
   <div class="confirmacionEventoContainer">
     <ion-label class="eventocreado">Validar reservación</ion-label>
     
-    <ion-item *ngIf="reservacion">
+    <ion-item *ngIf="reservacion" style="z-index: 0;">
       <ion-label>Activo</ion-label>
       <ion-toggle slot="end" [(ngModel)]="activoBTN" name="activo" (click)="verificarActivo()"></ion-toggle>
     </ion-item>
@@ -78,9 +78,11 @@
       <h2>Solicitante: {{solicitante}}</h2>
       <div class="informacionReservacion">
         <ion-label>No. Personas: {{noPersonas}}</ion-label>
-        <ion-label>Fecha de reservación: {{convertirFecha(fechaDeReservacion)}}</ion-label>
+        <ion-label>Fecha de reservación: <p style="text-transform: capitalize;color: #fff;
+    font-size: large;">{{fechaDeReservacion}}</p></ion-label>
         <ion-label>Estatus: {{estatus}}</ion-label>
-        <ion-label>Fecha confirmación: {{fechaConfirmacion}}</ion-label>
+        <ion-label>Fecha confirmación: <p style="text-transform: capitalize; color: #fff;
+    font-size: large;">{{fechaConfirmacion}}</p></ion-label>
       </div>
     </div>
   </div>

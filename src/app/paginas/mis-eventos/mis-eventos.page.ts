@@ -4,6 +4,8 @@ import { Router } from "@angular/router";
 import { EventoService } from '../../api/evento/evento.service';
 import { ToadNotificacionService } from '../../api/toad-notificacion.service';
 import { Platform, AnimationController } from '@ionic/angular';
+import moment from 'moment';
+import 'moment/locale/es';
 
 @Component({
   selector: 'app-mis-eventos',
@@ -38,7 +40,7 @@ export class MisEventosPage implements OnInit {
     private eventoService: EventoService,
     private notificacionService: ToadNotificacionService,
     private platform: Platform,
-    private animationCtrl: AnimationController
+    private animationCtrl: AnimationController,
   ) { }
 
   ionViewWillEnter() {
@@ -63,8 +65,7 @@ export class MisEventosPage implements OnInit {
       id_proveedor: id.proveedor.id_proveedor
     }
     this.eventoService.obtenerEvento(body).subscribe(Response => {
-      this.eventos = Response.data;
-      console.log('eventos',Response)
+      this.eventos = Response.data; 
       this.loader = false;
     }),
       error => {
@@ -97,8 +98,7 @@ export class MisEventosPage implements OnInit {
     this._router.navigate(["/tabs/mis-eventos/modal-eventos"])
   }
 
-  obtenerLstReservacion(idReservacion, img, activo) {
-    console.log('entre')
+  obtenerLstReservacion(idReservacion, img, activo) { 
     this.eventoService.obtenerReservaciones(idReservacion).subscribe(Response => {
       this.eventoImg = img;
       this.activoBTN = activo == 1 || activo ? true : false;
@@ -120,12 +120,13 @@ export class MisEventosPage implements OnInit {
   }
 
   mostrarInformacion(id) {
+    moment.locale('es')
     this.mostrarInfo = true;
     this.solicitante = `${this.reservacion[id].nombresolicitante} ${this.reservacion[id].paternosolicitante} ${this.reservacion[id].maternosolicitante}`;
     this.noPersonas = this.reservacion[id].cantidad_persona;
-    this.fechaDeReservacion = this.reservacion[id].fc_realizacion_reservacion;
+    this.fechaDeReservacion = moment(this.reservacion[id].fc_realizacion_reservacion).format('dddd D [de] MMMM [de] YYYY')
     this.estatus = this.reservacion[id].estatus;
-    this.fechaConfirmacion = this.reservacion[id].fc_confirmacion;
+    this.fechaConfirmacion = moment(this.reservacion[id].fc_confirmacion).format('dddd D [de] MMMM [de] YYYY')
   }
 
   cerrarInformacion(){
@@ -197,7 +198,7 @@ export class MisEventosPage implements OnInit {
     }, 500);
   }
 
-  convertirFecha(fecha: string): string{
+  convertirFecha(fecha: string): string{ 
     const meses: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
     const fechaObjeto = new Date(fecha);
@@ -212,8 +213,7 @@ export class MisEventosPage implements OnInit {
   }
 
   verificarActivo() {
-    let activo = this.activoBTN ? 0 : 1;
-    console.log('evento',activo,this.activoBTN)
+    let activo = this.activoBTN ? 0 : 1; 
     // this.activoBTN = this.activoBTN ? false : true;
     let body = {
       "id_evento": this.idEvento,
@@ -221,7 +221,6 @@ export class MisEventosPage implements OnInit {
     }
 
     this.eventoService.activarDesactivarEvento(body).subscribe(response => {
-      console.log('activar',response)
     }),
       error => {
         this.notificacionService.error(error);

@@ -60,6 +60,7 @@ export class ModalEventosPage implements OnInit {
   public isIos: boolean;
   public mensaje: string;
   public bandera: boolean;
+  public mapaForm: boolean = false;
   public frecuenciaSemanal: boolean;
   numeroFotosPermitidas: number;
   slideOpts = {
@@ -285,12 +286,18 @@ export class ModalEventosPage implements OnInit {
   }
 
   asignarValoresMapa(event) {
+    this.mapaForm = true;
     this.eventData.codigo_postal = event.cP;
     this.eventData.calle = event.calle;
     this.eventData.colonia = event.colonia;
-    this.eventData.dias = event.dias ? JSON.stringify(event.dias) : null;
     this.eventData.id_tipo_recurrencia = event.frecuencia
-    this.eventData.fecha = event.fecha;
+    if (event.frecuencia == 3) {
+      this.eventData.dias = event.dias ? JSON.stringify(event.dias) : null;
+      this.eventData.fecha = null;
+    } else {
+      this.eventData.dias = null;
+      this.eventData.fecha = event.fecha;
+    }
     this.eventData.tipo_evento = event.tipoEvento;
     this.eventData.longitud = event.long;
     this.eventData.latitud = event.lt;
@@ -299,11 +306,32 @@ export class ModalEventosPage implements OnInit {
     this.eventData.id_estado = event.estado;
     this.eventData.id_municipio = event.municipio;
     this.eventData.id_localidad = event.localidad;
-    this.eventData.tipo_evento = event.tipoEvento;
+    this.eventData.tipo_evento = event.tipoEvento; 
+  }
+
+  asignarValoresNoEdicion() {
+    if (!this.mapaForm) {
+      this.eventData.codigo_postal = this.eventoInfo.codigo_postal
+      this.eventData.calle = this.eventoInfo.calle
+      this.eventData.colonia = this.eventoInfo.colonia
+      this.eventData.dias = this.eventoInfo.dias
+      this.eventData.id_tipo_recurrencia = this.eventoInfo.id_tipo_recurrencia
+      this.eventData.fecha = this.eventoInfo.fecha
+      this.eventData.tipo_evento = this.eventoInfo.tipo_evento
+      this.eventData.longitud = this.eventoInfo.longitud
+      this.eventData.latitud = this.eventoInfo.latitud
+      this.eventData.numero_ext = this.eventoInfo.numero_ext
+      this.eventData.numero_int = this.eventoInfo.numero_int
+      this.eventData.id_estado = this.eventoInfo.id_estado
+      this.eventData.id_municipio = this.eventoInfo.id_municipio
+      this.eventData.id_localidad = this.eventoInfo.id_localidad
+      this.eventData.tipo_evento =  this.eventoInfo.tipo_evento
+    }
   }
 
   async submit() {
     // this.loader = true;
+    this.asignarValoresNoEdicion()
     let urlImg = new EventoUrlImagen;
     if (this.eventData.imagen.archivo_64 == null && this.eventoInfo_imagen != null) {
       urlImg.archivo_64 = null;
@@ -321,8 +349,8 @@ export class ModalEventosPage implements OnInit {
     this.tipoEventoTxt = this.eventData.tipo_evento.length >= 49 ? true : false;
   }
 
-  inputDescripcion() {
-    this.descripcionEvento = this.eventData.descripcion_evento.length >= 99 ? true : false;
+  inputDescripcion(event) {
+    this.descripcionEvento = event.target.value.length == 100 ? true : false;
   }
 
   guardarEvento(data) {
