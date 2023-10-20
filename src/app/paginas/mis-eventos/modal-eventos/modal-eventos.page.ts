@@ -299,14 +299,14 @@ export class ModalEventosPage implements OnInit {
       this.eventData.fecha = event.fecha;
     }
     this.eventData.tipo_evento = event.tipoEvento;
-    this.eventData.longitud = event.long;
-    this.eventData.latitud = event.lt;
+    this.eventData.longitud = event.long == ''? this.eventoInfo.longitud : event.long;
+    this.eventData.latitud = event.lt == ''? this.eventoInfo.latitud : event.lt;
     this.eventData.numero_ext = event.numExterior;
     this.eventData.numero_int = event.numInterior;
     this.eventData.id_estado = event.estado;
     this.eventData.id_municipio = event.municipio;
     this.eventData.id_localidad = event.localidad;
-    this.eventData.tipo_evento = event.tipoEvento; 
+    this.eventData.tipo_evento = event.tipoEvento;
   }
 
   asignarValoresNoEdicion() {

@@ -37,7 +37,7 @@
   <div class="confirmacionEventoContainer">
     <ion-label class="eventocreado">Validar reservación</ion-label>
     
-    <ion-item *ngIf="reservacion" style="z-index: 0;">
+    <ion-item style="z-index: 0;" *ngIf="clickEvento">
       <ion-label>Activo</ion-label>
       <ion-toggle slot="end" [(ngModel)]="activoBTN" name="activo" (click)="verificarActivo()"></ion-toggle>
     </ion-item>
