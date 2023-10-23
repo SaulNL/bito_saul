@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title mode="ios">Detalles de la reservación</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="regresar()" class="customExit">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <app-info-reservacion [eventoDetalle]="eventoDetalle"></app-info-reservacion>
+</ion-content>

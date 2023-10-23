@@ -11,77 +11,58 @@
 
 <app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
 <ion-content *ngIf="loaderReservaciones">
-  <ion-card>
-    <ion-card-content>
+  <div class="contendorCarrusel" #contendorCarrusel>
+    <div class="carrusel">
+      <div *ngFor="let item of arrayUnion; let i = index" class="carrusel-item">
+        <ng-container *ngIf="item.url_imagen !== null && item.url_imagen !== 'null'">
+          <img src="{{ item.url_imagen }}" alt="Image" class="carrusel-content">
+        </ng-container>
+        <ng-container *ngIf="item.url_video !== null && item.url_video !== 'null'">
+          <video controls class="carrusel-content">
+            <source type="video/mp4" [src]="item.url_video">
+          </video>
+        </ng-container>
+      </div>
+    </div>
+  </div>
 
-      <h1 class="labelEventos">
-        <strong>{{infoReservacion.evento}}</strong>
-      </h1>
+  <h1 class="titulo">{{infoEvento[0]?.evento}}</h1>
 
-      <div>
-        <ion-item>
-          <ion-slides style="width: 500px;">
-            <ng-container *ngFor="let foto of fotografiasArray; let i = index">
-              <ion-slide *ngIf="foto.url_imagen !== null">
-                <ion-card>
-                  <img src="{{foto.url_imagen}}"/>
-                </ion-card>
-              </ion-slide>
-            </ng-container>
-            <ng-container *ngFor="let foto of videosArray; let i = index">
-              <ion-slide *ngIf="foto.url_video !== null">
-                <ion-card>
-                  <video controls *ngIf="(foto.url_video !== null && foto.url_video !== '')" width="100%" height="258">
-                    <source type="video/mp4" src="{{foto.url_video}}">
-                  </video>
-                </ion-card>
-              </ion-slide>
-            </ng-container>
-          </ion-slides>
-        </ion-item>
-      </div>
-
-      <div style="display: flex; align-items: center; margin-bottom: 9px;">
-        <ion-label class="titulos">Fecha de reservación:</ion-label>
-        <div class="mostrarDatos">{{numeroDia}}/{{meses[numeroMes]}}/{{anio}}</div>
-      </div>
-      <div style="display: flex; align-items: center; margin-bottom: 9px;">
-        <ion-label class="titulos">Ubicación:</ion-label>
-        <div class="mostrarDatos">{{nombreLocalidad}}{{nombreMunicipio}}{{nombreEstado}}</div>
-      </div>
-      <div style="display: flex; align-items: center; margin-bottom: 9px;">
-        <ion-label class="titulos">Tipo de evento:</ion-label>
-        <div class="mostrarDatos">{{infoEvento[0]?.tipo_evento}}</div>
-      </div>
-      <div style="display: flex; align-items: center; margin-bottom: 9px;">
-        <ion-label class="titulos">Número de teléfono:</ion-label>
-        <div class="mostrarDatos">{{infoEvento[0]?.telefono}}</div>
-      </div>
-      <div style=" display: flex; align-items: center; margin-bottom: 9px;">
-        <ion-label class="titulos">Método de pago:</ion-label>
-        <div class="mostrarDatos">
-          <ng-container *ngIf="infoEvento[0]?.tipo_pago_transferencia === 1">Transferencia, </ng-container>
-          <ng-container *ngIf="infoEvento[0]?.tipo_pago_tarjeta_credito === 1">Tarjeta de credito, </ng-container>
-          <ng-container *ngIf="infoEvento[0]?.tipo_pago_tarjeta_debito === 1">Tarjeta de debito, </ng-container>
-          <ng-container *ngIf="infoEvento[0]?.tipo_pago_efectivo === 1">Efectivo</ng-container>
+  <div>
+    <ion-row>
+      <ion-col size="7">
+        <h1 style="text-align: center">{{usuario}}</h1>
+        <div style="display: flex; align-items: center; margin-top: -15px;">
+          <img src="assets/images/eventos/calendario.png" class="imgs">
+          <p>Fecha: {{numeroDia}}/{{meses[numeroMes]}}/{{anio}}</p>
         </div>
-      </div>
-      <div style="display: flex; align-items: center; margin-bottom: 9px;">
-        <ion-label class="titulos">Número de personas:</ion-label>
-        <div class="mostrarDatos">{{infoReservacion.cantidad_persona}}</div>
-      </div>
-
-      <div *ngIf="infoReservacion.generar_reservacion === 0" style="display: flex; justify-content: center; align-items: center">
-        <div class="mensajeReservacion">
-          <strong>En espera que confirmen tu reservación</strong>
+        <div style="display: flex; align-items: center; margin-top: -15px;">
+          <img src="assets/images/eventos/reloj.png" class="imgs">
+          <p style="display: inline-block;">{{hora12h}} Horas</p>
         </div>
-      </div>
+        <div style="display: flex; align-items: center; margin-top: -15px;">
+          <img src="assets/images/eventos/personas.png"
+               style="width: 25px; height: 25px; margin-left: 4px; margin-right: 11px;">
+          <p>Nº de personas: {{infoReservacion.cantidad_persona}}</p>
+        </div>
+        <div style="display: flex; align-items: center; margin-top: -15px">
+          <img src="assets/images/eventos/Ubicación.png" class="imgs">
+          <p style="display: inline-block;">Lugar: {{nombreLocalidad}}{{nombreMunicipio}}{{nombreEstado}}</p>
+        </div>
+      </ion-col>
+      <ion-col size="5">
+        <br><br><br><br>
+        <div #qrcode class="qrClass"></div>
+      </ion-col>
+    </ion-row>
+  </div>
+  <div class="buttonRe">
+    <div class="mensajeReservacion" *ngIf="infoReservacion.generar_reservacion === 0">
+      <strong>En espera que confirmen tu reservación</strong>
+    </div>
 
-      <div *ngIf="infoReservacion.generar_reservacion === 1" style="display: flex; justify-content: center; align-items: center">
-        <ion-button class="bg-naranja" (click)="reservacion()">
-          Descargar reservación
-        </ion-button>
-      </div>
-    </ion-card-content>
-  </ion-card>
+    <ion-button class="buttonReserva" shape="round" (click)="reservacion()" *ngIf="infoReservacion.generar_reservacion === 1">
+      Descargar
+    </ion-button>
+  </div>
 </ion-content>

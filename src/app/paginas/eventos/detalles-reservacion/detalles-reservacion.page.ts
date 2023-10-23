@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {EventosService} from '../../../api/eventos.service';
 import {GeneralServicesService} from '../../../api/general-services.service';
@@ -7,6 +7,7 @@ import {CatEstadoModel} from '../../../Modelos/CatEstadoModel';
 import {ToadNotificacionService} from '../../../api/toad-notificacion.service';
 import {CatMunicipioModel} from '../../../Modelos/CatMunicipioModel';
 import {CatLocalidadModel} from '../../../Modelos/CatLocalidadModel';
+import QRCode from 'easyqrcodejs';
 
 @Component({
   selector: 'app-detalles-reservacion',
@@ -15,6 +16,8 @@ import {CatLocalidadModel} from '../../../Modelos/CatLocalidadModel';
 })
 export class DetallesReservacionPage implements OnInit {
 
+  @ViewChild('qrcode', { static: false }) qrcode: ElementRef;
+  @ViewChild('contendorCarrusel', { static: false }) contendorCarrusel: ElementRef;
   public meses: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   public loaderReservaciones: boolean;
   public msj = 'Cargando';
@@ -34,6 +37,13 @@ export class DetallesReservacionPage implements OnInit {
   public base64Video = null;
   public fotografiasArray: any;
   public videosArray: any;
+  usuario: any;
+  public hora12h: string;
+  public qr: any;
+  arrayUnion: any;
+  public latitud: any;
+  public longitud: any;
+  public blnPermisoUbicacion: any;
 
   constructor(
       private router: Router,
@@ -50,6 +60,8 @@ export class DetallesReservacionPage implements OnInit {
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
     this.list_cat_localidad = new Array<CatLocalidadModel>();
+    const datosUsuario = JSON.parse(localStorage.getItem('u_data'));
+    this.usuario = `${datosUsuario.nombre} ${datosUsuario.paterno} ${datosUsuario.materno}`;
   }
 
   ngOnInit() {
@@ -57,9 +69,23 @@ export class DetallesReservacionPage implements OnInit {
     this.detallesReservacion = this.eventosService.getReservacionObj();
     this.fotografiasArray = this.infoReservacion.fotografias;
     this.videosArray = this.infoReservacion.videos;
+    this.arrayUnion = [...this.fotografiasArray, ...this.videosArray];
     this.base64Video = null;
     this.convertirFechaHora();
     this.obtenerListaEvento();
+    this.obtenerUbicacionActual();
+  }
+
+  ionViewWillEnter(){
+    setTimeout(() => {
+      const url = `https://www.google.com/maps/dir/${this.latitud},${this.longitud}/${this.infoEvento[0]?.latitud},${this.infoEvento[0]?.longitud}`;
+      const options = {
+        text: url,
+        width: 200,
+        height: 200,
+      };
+      this.qr = new QRCode(this.qrcode.nativeElement, options);
+    }, 1000);
   }
 
   regresar(){
@@ -76,6 +102,7 @@ export class DetallesReservacionPage implements OnInit {
     this.numeroDia = fechaObjeto.getDate();
     this.numeroMes = fechaObjeto.getMonth();
     this.anio = fechaObjeto.getFullYear();
+    this.hora12h = fechaObjeto.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' });
   }
 
   obtenerListaEvento(): void {
@@ -87,6 +114,23 @@ export class DetallesReservacionPage implements OnInit {
           this.obtenerNombreLocalidades();
         });
   }
+
+  obtenerUbicacionActual() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+          (position) => {
+            this.latitud = position.coords.latitude;
+            this.longitud = position.coords.longitude;
+          },
+          (error) => {
+            console.error('Error al obtener la ubicación:', error);
+          }
+      );
+    } else {
+      this.notificaciones.error('No se puede obtener la ubicación');
+    }
+  }
+
 
   public load_cat_estados() {
     this._general_service.getEstadosWS().subscribe(
