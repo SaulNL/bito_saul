@@ -8,6 +8,9 @@ import { NotificacionPageRoutingModule } from './notificacion-routing.module';
 
 import { NotificacionPage } from './notificacion.page';
 import { NotificacionChatComponent } from '../../components/notificacion-chat/notificacion-chat.component';
+import {DetallesReservaComponent} from "../eventos/detalles-reserva/detalles-reserva.component";
+import {InfoReservacionComponent} from "../eventos/info-reservacion/info-reservacion.component";
+import {SpinnerComponent} from "../../componentes/spinner/spinner.component";
 
 @NgModule({
   imports: [
@@ -16,6 +19,6 @@ import { NotificacionChatComponent } from '../../components/notificacion-chat/no
     IonicModule,
     NotificacionPageRoutingModule
   ],
-  declarations: [NotificacionPage, NotificacionChatComponent]
+  declarations: [NotificacionPage, NotificacionChatComponent, DetallesReservaComponent, InfoReservacionComponent, SpinnerComponent]
 })
 export class NotificacionPageModule {}

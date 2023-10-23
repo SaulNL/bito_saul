@@ -2,6 +2,7 @@ import { Router } from "@angular/router";
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { IonContent, ModalController, ToastController } from "@ionic/angular";
 import { NotificacionesService } from "../../api/usuario/notificaciones.service";
+import {DetallesReservaComponent} from "../../paginas/eventos/detalles-reserva/detalles-reserva.component";
 
 @Component({
   selector: "app-notificacion-chat",
@@ -126,8 +127,15 @@ export class NotificacionChatComponent implements OnInit {
     this.router.navigate(["/tabs/negocio/" + this.notificacion.url_negocio]);
   }
 
-  reservacion(evento: any) {
+  async reservacion(evento: any) {
     this.cerrarModal();
-    this.router.navigate(['/tabs/eventos/generar-reservacion'], { state: { cadena: evento } });
+    //this.router.navigate(['/tabs/eventos/generar-reservacion'], { state: { cadena: evento } });
+    const modal = await this.modalCtrl.create({
+      component: DetallesReservaComponent,
+      componentProps: {
+        eventoDetalle: evento,
+      },
+    });
+    modal.present();
   }
 }
