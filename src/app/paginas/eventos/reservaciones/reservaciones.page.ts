@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EventosService} from '../../../api/eventos.service';
 import {GeneralServicesService} from '../../../api/general-services.service';
@@ -9,7 +9,7 @@ import {UtilsCls} from '../../../utils/UtilsCls';
 import {ToadNotificacionService} from '../../../api/toad-notificacion.service';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import {AlertController} from '@ionic/angular';
+import {AlertController, ModalController} from '@ionic/angular';
 
 @Component({
   selector: 'app-reservaciones',
@@ -17,6 +17,7 @@ import {AlertController} from '@ionic/angular';
   styleUrls: ['./reservaciones.page.scss'],
 })
 export class ReservacionesPage implements OnInit {
+  @ViewChild('contendorCarrusel', { static: false }) contendorCarrusel: ElementRef;
   public meses: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   public idEvento: string;
   public infoEvento: any;
@@ -24,11 +25,11 @@ export class ReservacionesPage implements OnInit {
   public cadenaReservacion: any;
   mostrarLabel: boolean;
   public infoRecurrencia: any;
-  public nombreRecurrencia: any;
   public numeroDia: number;
   public numeroMes: number;
   public anio: number;
   public hora12h: string;
+  public horaSemana: string;
   public loaderReservaciones: boolean;
   public nombreEstado: any;
   public nombreMunicipio: string;
@@ -46,12 +47,16 @@ export class ReservacionesPage implements OnInit {
   public fotografiasArray: any;
   public videosArray: any;
 
+  indice: number = 0;
+  arrayUnion: any;
+  diasEvento: string[];
+  public isAlert: boolean = false;
+  diasEnviar: number[] = [];
+  diasValidos: number[] = [];
+  fechaFormat: string;
   fechaSeleccionadaDiario: string;
   fechaSeleccionada: string;
   mesSeleccionado: string;
-  minFecha: string;
-  maxFecha: string;
-  semanasArray: Date[];
   mesesArray: Date[] = [];
   fechaReservacion: any;
   fechaReservacionDiario: any;
@@ -63,9 +68,6 @@ export class ReservacionesPage implements OnInit {
     spaceBetween: 10,
   };
 
-
-  public fechaFormateada: any;
-
   constructor(
       private eventosService: EventosService,
       private route: ActivatedRoute,
@@ -74,6 +76,7 @@ export class ReservacionesPage implements OnInit {
       private _general_service: GeneralServicesService,
       private notificaciones: ToadNotificacionService,
       public alertController: AlertController,
+      public modalController: ModalController,
   ) {
     this.infoEvento = [];
     this.fotografiasArray = [];
@@ -89,6 +92,7 @@ export class ReservacionesPage implements OnInit {
     this.existeSesion = utils.existe_sesion();
     this.fechaSeleccionada = null;
     this.fechaSeleccionadaDiario = null;
+    this.fechaFormat = null;
     const idEvento = localStorage.getItem('idEvento');
     if (idEvento != null){
       localStorage.removeItem('idEvento');
@@ -97,25 +101,35 @@ export class ReservacionesPage implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  ionViewDidEnter(){
     this.route.paramMap.subscribe(params => {
       this.idEvento = params.get('id');
       this.obtenerListaEvento();
     });
+  }
+
+  ionViewDidEnter(){
     this.idPersona = (this.utils.existSession()) ? this.utils.getIdUsuario() : null;
     this.base64Video = null;
-    this.reservacionPorFechas();
-    this.mostrarSemanal();
   }
 
   obtenerListaEvento(): void {
     this.eventosService.eventoDetalle(this.idEvento).subscribe(
         res => {
-          this.infoEvento = res.data;
+          this.infoEvento = res.data[0];
+          this.loaderReservaciones = true;
+          if ( this.infoEvento.dias !== null ){
+            const dias = JSON.parse(this.infoEvento.dias);
+            const arrayDias = dias;
+            this.diasEvento = arrayDias.dias;
+            this.horaSemana = arrayDias.hora;
+            if ( this.diasEvento !== null ){
+              this.diasSemana(this.diasEvento);
+            }
+          }
+
           this.fotografiasArray = res.data[0].fotografias;
           this.videosArray = res.data[0].videos;
+          this.arrayUnion = [...this.fotografiasArray, ...this.videosArray];
           this.fotografiasArray = this.fotografiasArray.map(foto => {
             // Iteramos sobre cada propiedad del objeto
             for (const prop in foto) {
@@ -127,17 +141,12 @@ export class ReservacionesPage implements OnInit {
             return foto;
           });
           this.obtenerListaRecurrencia();
-          this.convertirFechaHora();
+          this.convertirFechaHora(this.infoEvento);
           this.load_cat_estados();
           this.obtenerNombreMunicipios();
           this.obtenerNombreLocalidades();
-          this.reservacionPorFechas();
-          this.mostrarSemanal();
-          this.mostrarMeses();
         });
   }
-
-
   regresar(){
     this.router.navigate(['/tabs/eventos'], {
       queryParams: {
@@ -150,19 +159,7 @@ export class ReservacionesPage implements OnInit {
     this.eventosService.recurrenciaLista().subscribe(
         res => {
           this.infoRecurrencia = res.data;
-          this.obtenerNombreRecurrencia();
         });
-
-  }
-
-  obtenerNombreRecurrencia(){
-    this.infoRecurrencia.forEach(response => {
-      if (response.id_tipo_recurrencia === this.infoEvento[0]?.id_tipo_recurrencia){
-        this.nombreRecurrencia = response.nombre;
-        this.loaderReservaciones = true;
-      }
-    });
-
   }
 
   public load_cat_estados() {
@@ -171,7 +168,7 @@ export class ReservacionesPage implements OnInit {
           if (this.utils.is_success_response(response.code)) {
             this.list_cat_estado = response.data.list_cat_estado;
             this.list_cat_estado.forEach(element => {
-              if (element.id_estado == this.infoEvento[0]?.id_estado) {
+              if (element.id_estado === this.infoEvento.id_estado) {
                 this.nombreEstado = element.nombre;
               }
             });
@@ -184,12 +181,12 @@ export class ReservacionesPage implements OnInit {
   }
 
   obtenerNombreMunicipios() {
-      this.eventosService.eventosMunicipios(this.infoEvento[0]?.id_estado).subscribe(
+      this.eventosService.eventosMunicipios(this.infoEvento.id_estado).subscribe(
           res => {
             if (this.utils.is_success_response(res.code)) {
               this.list_cat_municipio = res.data.list_cat_municipio;
               this.list_cat_municipio.forEach(element => {
-                if (element.id_municipio == this.infoEvento[0]?.id_municipio) {
+                if (element.id_municipio == this.infoEvento.id_municipio) {
                   this.nombreMunicipio = element.nombre + ', ';
                 }
               });
@@ -200,12 +197,13 @@ export class ReservacionesPage implements OnInit {
   }
 
   obtenerNombreLocalidades() {
-    this.eventosService.eventosLocalidadAll(this.infoEvento[0]?.id_municipio).subscribe(
+    this.eventosService.eventosLocalidadAll(this.infoEvento.id_municipio).subscribe(
         res => {
+          this.loaderReservaciones = true;
           if (this.utils.is_success_response(res.code)) {
             this.list_cat_localidad = res.data.list_cat_localidad;
             this.list_cat_localidad.forEach(element => {
-              if (element.id_localidad == this.infoEvento[0]?.id_localidad) {
+              if (element.id_localidad === this.infoEvento.id_localidad) {
                 this.nombreLocalidad = element.nombre + ', ';
               }
             });
@@ -215,93 +213,24 @@ export class ReservacionesPage implements OnInit {
         });
   }
 
-  convertirFechaHora(){
-    const fecha = this.infoEvento[0]?.fecha;
-    const fechaObjeto = new Date(fecha);
-    this.numeroDia = fechaObjeto.getDate();
-    this.numeroMes = fechaObjeto.getMonth();
-    this.anio = fechaObjeto.getFullYear();
-    this.hora12h = fechaObjeto.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric', hour12: true });
-  }
-
-  reservacionPorFechas(){
-  if ( this.infoEvento[0]?.id_tipo_recurrencia === 2){
-      const fechaReservacion = new Date(this.infoEvento[0]?.fecha);
-      const fechaActual = new Date();
-      if ( fechaReservacion < fechaActual){
-        this.minFecha = fechaActual.toISOString();
-        const fechaMaxima = new Date();
-        fechaMaxima.setFullYear(fechaMaxima.getFullYear() + 1);
-        this.maxFecha = fechaMaxima.toISOString();
-      }else{
-        this.minFecha = fechaReservacion.toISOString();
-        const fechaMaxima = new Date();
-        fechaMaxima.setFullYear(fechaMaxima.getFullYear() + 1);
-        this.maxFecha = fechaMaxima.toISOString();
-      }
-
-    }
-  }
-
-  mostrarSemanal() {
-    this.semanasArray = [];
-    const fechaEvento = new Date(this.infoEvento[0]?.fecha);
-    const fechaActual = new Date();
-
-    const anioActual = fechaActual.getFullYear();
-    const mesActual = fechaActual.getMonth();
-    const diaActual = fechaActual.getDate();
-
-    const numDia = fechaEvento.getDay();
-
-    let fecha = new Date(anioActual, mesActual, diaActual);
-
-    // Si la fecha ya pasó, avanzar a la siguiente semana
-    if (fecha < fechaEvento) {
-      fecha = new Date(fechaEvento.getFullYear(), fechaEvento.getMonth(), fechaEvento.getDate());
-    }
-
-    // Iterar mientras estemos en el mismo año
-    while (fecha.getFullYear() === anioActual) {
-      if (fecha.getDay() === numDia) {
-        this.fechaFormateada = format(fecha, 'dd/MMMM/yyyy', { locale: es });
-        this.semanasArray.push(this.fechaFormateada);
-      }
-
-      fecha.setDate(fecha.getDate() + 1); // Avanzar a la siguiente semana
-    }
-  }
-
-
-
-  mostrarMeses() {
-    const fechaActual = new Date(this.infoEvento[0]?.fecha);
-    const dia = fechaActual.getDate();
-    let año = fechaActual.getFullYear();
-    let mes = fechaActual.getMonth();
-
-    const fechaHoy = new Date(); // Obtener fecha actual
-
-    for (let i = 0; i < 12; i++) {
-      const date = new Date(año, mes, dia);
-      this.fechaFormateada = format(date, 'dd/MMMM/yyyy', { locale: es });
-
-      if (date >= fechaHoy) { // Comprobar si la fecha es igual o posterior a la fecha actual
-        this.mesesArray.push(this.fechaFormateada);
-      }
-
-      mes++;
-      if (mes > 11) {
-        mes = 0;
-        año++;
-      }
+  convertirFechaHora(infoEvento: any){
+    const fecha = infoEvento.fecha;
+    if ( fecha !== null){
+      const fechaObjeto = new Date(fecha);
+      this.numeroDia = fechaObjeto.getDate();
+      this.numeroMes = fechaObjeto.getMonth();
+      this.anio = fechaObjeto.getFullYear();
+      //this.hora12h = fechaObjeto.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric', hour12: true });
+      this.hora12h = fechaObjeto.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' });
+    } else if ( fecha === null){
+      this.hora12h = this.horaSemana;
     }
   }
 
 
   public guardar(){
     const nPersonas = this.noPersonas;
-    const eventoId = this.infoEvento[0]?.id_evento;
+    const eventoId = this.infoEvento.id_evento;
     if (this.fechaSeleccionadaDiario !== null){
       const fechaDiario = new Date(this.fechaSeleccionadaDiario);
       const anio = fechaDiario.getFullYear();
@@ -310,15 +239,8 @@ export class ReservacionesPage implements OnInit {
       this.fechaReservacionDiario = anio + '-' + mes + '-' + dia;
     }
 
-    if ( this.fechaSeleccionada !== null ){
-      const fechaStr = this.fechaSeleccionada;
-      const meses = {
-        enero: 1, febrero: 2, marzo: 3, abril: 4, mayo: 5, junio: 6, julio: 7, agosto: 8, septiembre: 9, octubre: 10, noviembre: 11, diciembre: 12,
-      };
-      const [day, month, year] = fechaStr.split('/');
-      this.fechaReservacion = year + '-' + meses[month] + '-' + day;
-    }else if (this.fechaSeleccionada === null || this.fechaSeleccionada === undefined || this.fechaSeleccionada === ''){
-      const fechaReservacion1 = new Date(this.infoEvento[0]?.fecha);
+    if (this.fechaSeleccionada === null || this.fechaSeleccionada === undefined || this.fechaSeleccionada === ''){
+      const fechaReservacion1 = new Date(this.infoEvento.fecha);
       const year = fechaReservacion1.getFullYear();
       const month = ('0' + (fechaReservacion1.getMonth() + 1)).slice(-2);
       const day = ('0' + fechaReservacion1.getDate()).slice(-2);
@@ -346,6 +268,7 @@ export class ReservacionesPage implements OnInit {
     this.router.navigate(['/tabs/eventos']);
     this.mostrarLabel = false;
     this.fechaSeleccionada = null;
+    this.fechaFormat = null;
     this.fechaSeleccionadaDiario = null;
     this.noPersonas = null;
   }
@@ -368,4 +291,53 @@ export class ReservacionesPage implements OnInit {
     this.mostrarLabel = false;
   }
 
+  diasSemana(dias) {
+    const diaToValor = {
+      'Domingo': 0,
+      'Lunes': 1,
+      'Martes': 2,
+      'Miercoles': 3,
+      'Jueves': 4,
+      'Viernes': 5,
+      'Sabado': 6
+    };
+
+    for (const dia of dias) {
+      if (diaToValor.hasOwnProperty(dia)) {
+        this.diasEnviar.push(diaToValor[dia]);
+      }
+    }
+  }
+
+  abrirCalendario(){
+    this.isAlert = true;
+  }
+  cerrarCalendario(isAlert: boolean){
+    this.isAlert = isAlert;
+    this.modalController.dismiss();
+  }
+  recibirFecha(fecha: string){
+    this.fechaSeleccionadaDiario = fecha;
+  }
+
+  obtenerPosicion() {
+    const container = this.contendorCarrusel.nativeElement;
+    const containerWidth = container.offsetWidth;
+    const scrollLeft = container.scrollLeft;
+
+    // Calcula el índice del elemento visible
+    const indiceVisible = Math.round(scrollLeft / containerWidth);
+    this.indice = indiceVisible;
+  }
+
+  indicadorPosicion(index: number) {
+    const container = this.contendorCarrusel.nativeElement;
+    const containerWidth = container.offsetWidth;
+    const nuevaPosicion = index * containerWidth;
+    container.scrollTo({
+      left: nuevaPosicion,
+      behavior: 'smooth'
+    });
+    this.indice = index;
+  }
 }

@@ -8,6 +8,8 @@ import { ReservacionesPageRoutingModule } from './reservaciones-routing.module';
 
 import { ReservacionesPage } from './reservaciones.page';
 import {SpinnerModule} from '../../../componentes/spinner/spinner.module';
+import {CalendarioReservacionPageModule} from "../calendario-reservacion/calendario-reservacion.module";
+import {ModalInicioSesionPageModule} from "../../modal-inicio-sesion/modal-inicio-sesion.module";
 
 @NgModule({
     imports: [
@@ -15,7 +17,9 @@ import {SpinnerModule} from '../../../componentes/spinner/spinner.module';
         FormsModule,
         IonicModule,
         ReservacionesPageRoutingModule,
-        SpinnerModule
+        SpinnerModule,
+        CalendarioReservacionPageModule,
+        ModalInicioSesionPageModule
     ],
   declarations: [ReservacionesPage]
 })

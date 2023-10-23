@@ -1,73 +1,9 @@
-.titulos{
-  width: 40% !important;
-  display: inline-block;
-  margin-left: -9px;
-}
-
-.colorInput{
-  width: 80% !important;
-  --background: antiquewhite;
-  border-radius: 3px;
-}
-
-.mostrarDatos{
-  background-color: #C8C8C8;
-  padding: 8px;
-  overflow: hidden;
-  resize: none;
-  pointer-events: none;
-  width: 51vw;
-  min-height: 10vw;
-  border-radius: 20px;
-  margin-right: 5px;
-}
-
-.styleInput{
-  padding-left: 10px;
-}
-
-.noPersonas{
-  background-color: #C8C8C8;
-  color: #1e1c1c;
-  text-align: center;
-  border-radius: 20px;
-  padding: 5px;
-  margin-right: 15px;
-}
-
-.noPersonas1{
-  background-color: #D8D8D8;
-  color: #1e1c1c;
-  border-radius: 3px;
-  width: 230px;
-  height: 30px;
-  text-align: center;
-  padding: 5px;
-  margin-bottom: 5px;
-}
-
-.selects{
- min-width: 69%;
-}
-
-.centro{
-  margin-left: 7px;
-}
 .inputP{
   text-align: center;
-  width: 110px;
-  height: 8vw;
-  --background: #C8C8C8;
+  width: 90%;
+  height: 29px;
+  --background: #EAEAEA;
   border-radius: 20px;
-
-}
-
-#miInput {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
 }
 
 ion-modal {
@@ -89,7 +25,6 @@ ion-modal {
   }
 }
 
-
 .customExit{
   font-size: 22px;
 }
@@ -103,24 +38,89 @@ ion-modal {
   backface-visibility: hidden;
 }
 
-.contenedorEvento{
-  background-color: #EAEAEA;
-  border-radius: 15px;
-  width: 95%;
-  min-height: 70px;
-}
-
 .buttonEvento{
   --background: linear-gradient(90deg, #F761CC 0%, #FF7859 100%);
   --color: #fff;
-  width: 65vw;
+  width: 90%;
+  font-size: 12px;
+  height: 29px;
+  margin-bottom: 40px;
+  text-transform: none;
 }
 
-.buttonEv{
+.contendorCarrusel {
+  display: flex;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth; /* Ralentiza el desplazamiento y lo hace más suave */
+}
+
+.carrusel {
+  display: flex;
+  flex-direction: row;
+  scroll-snap-align: start;
+  width: 100%;
+}
+
+.carrusel-item {
+  /*flex: 0 0 auto;*/
+  min-width: 100%;
+  height: 300px;
+  scroll-snap-align: start;
+}
+
+.carrusel-content {
+  width: 100%;
+  height: 100%;
+  /*object-fit: cover;*/
+}
+
+.titulo{
+  background-image:  linear-gradient(90deg, #F761CC 0%, #FF7859 100%);
+  color: transparent;
+  background-clip: text;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.ctndorReservacion{
+  background-color: #CCCCCC;
+  border-radius: 15px;
+  height: auto;
+  margin-top: 30px;
+}
+
+.mostrarDts{
+  background-color: #EAEAEA;
+  padding: 6px;
+  border-radius: 20px;
+  width: 90%;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.imgs{
+  width: 50px;
+  height: 50px;
+  margin-left: -10px;
+}
+
+.indicador {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-top: 9px;
-  margin-bottom: 9px;
+  margin-top: 10px;
 }
 
+.indicador span {
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  border-radius: 50%;
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+.indicador span.active {
+  background-color: #3171e0;
+}
