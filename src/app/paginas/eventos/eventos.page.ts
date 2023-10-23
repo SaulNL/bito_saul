@@ -83,7 +83,7 @@ export class EventosPage implements OnInit {
     this.btnLocalidad = true;
     this.loader = false;
     this.loaderReservaciones = false;
-    this.obtenerListaTipoEvento();
+    //this.obtenerListaTipoEvento();
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
     this.list_cat_localidad = new Array<CatLocalidadModel>();
@@ -139,7 +139,6 @@ export class EventosPage implements OnInit {
           this.fecha =  fechaActual;
           this.convertirFecha(this.fecha);
           this.eventosAll = res.data;
-
           this.eventosAll = this.eventosAll.filter((objeto) => {
             const fechaA = objeto.fecha > this.fecha;
             const recurrencia = objeto.id_tipo_recurrencia !== 1;
@@ -155,13 +154,14 @@ export class EventosPage implements OnInit {
         });
   }
 
+  /*
   obtenerListaTipoEvento() {
     this.eventosService.tipoEventoLista().subscribe(
         res => {
           this.tipoEvento = res.data;
         });
   }
-
+   */
 
   reservacion(){
     this.router.navigate(['/tabs/eventos/reservaciones'], {

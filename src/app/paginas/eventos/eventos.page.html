@@ -32,19 +32,11 @@
           </div>
 
           <ion-item>
-            <ion-label position="stacked">Recurrencia</ion-label>
+            <ion-label position="stacked">Ocurrencia</ion-label>
             <ion-select [(ngModel)]="fechaSeleccionada" (ionChange)="cargarFecha($event)">
               <ion-select-option value="Hoy">Hoy</ion-select-option>
-              <ion-select-option value="Mañana">Mañana</ion-select-option>
-              <ion-select-option value="Esta semana">Esta semana</ion-select-option>
-              <ion-select-option value="Este mes">Este mes</ion-select-option>
-            </ion-select>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="stacked">Tipo evento</ion-label>
-            <ion-select multiple="true"  [(ngModel)]="eventoSeleccionado">
-              <ion-select-option *ngFor="let evento of tipoEvento;" [value]="evento.nombre">{{evento.nombre}}</ion-select-option>
+              <ion-select-option value="Semana">Semana</ion-select-option>
+              <ion-select-option value="Mes actual">Esta semana</ion-select-option>
             </ion-select>
           </ion-item>
 

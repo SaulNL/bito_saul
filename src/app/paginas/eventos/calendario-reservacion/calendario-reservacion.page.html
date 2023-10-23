@@ -1,0 +1,51 @@
+<ion-item style="border-radius: 10px" *ngIf="isAlert">
+  <div class="contenedorCalendario">
+    <div class="contenedorArriba">
+      <div *ngIf="!banderaMes" style="margin-top: 10px" (click)="mostrarMeses()">{{ seleccionaMes }} del {{ anioActual }}
+        <ion-icon name="chevron-down-outline" style="font-size: 20px;"></ion-icon>
+      </div>
+      <div *ngIf="banderaMes" style="margin-top: 10px" (click)="ocultarMeses()">{{ seleccionaMes }} del {{ anioActual }}
+        <ion-icon name="chevron-up-outline" style="font-size: 20px;"></ion-icon>
+      </div>
+      <div>
+        <ion-button class="buttonCalen" (click)="cambioMeses(-1)">
+          <ion-icon name="chevron-back-outline" style="font-size: 20px;"></ion-icon>
+        </ion-button>
+        <ion-button class="buttonCalen" (click)="cambioMeses(1)">
+          <ion-icon name="chevron-forward-outline" style="font-size: 20px;"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+    <div *ngIf="banderaMes">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="4" *ngFor="let mes of arrayMeses">
+            <div style="margin-bottom: 5px" (click)="seleccionarMes(mes)">{{mes}}</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <div *ngIf="seleccionaMes && !banderaMes">
+      <!--<h2>{{ seleccionaMes }}</h2>-->
+      <ion-grid style="text-align: center">
+        <ion-row>
+          <ion-col style="color: gray" *ngFor="let dia of dias">{{ dia }}</ion-col>
+        </ion-row>
+        <ion-row *ngFor="let semana of diasPorSemana">
+          <ion-col *ngFor="let dia of semana"
+                   [ngClass]="{ 'current-day': fechaReserva(dia),
+                   'seleccionDia': diaSeleccion(dia),
+                   'deshabilitarDia': deshabilitarDias(dia)}"
+                   (click)="seleccionarDia(dia)">
+            {{ dia !== null ? dia : '' }}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <div class="contenedorButones">
+      <ion-button class="buttonOk" (click)="cerrarCalendario()">CANCELAR</ion-button>
+      <ion-button class="buttonOk" (click)="cerrarCalendario()">OK</ion-button>
+    </div>
+  </div>
+</ion-item>

@@ -1,0 +1,45 @@
+.buttonCalen{
+  --background: transparent;
+  color: #1e1c1c;
+}
+
+.buttonOk{
+  --background: transparent;
+  color: #3880ff;
+}
+
+.current-day {
+  outline: 1px solid #3880ff;
+  color: #3880ff;
+  border-radius: 46%;
+}
+
+.seleccionDia {
+  background-color: #3880ff;
+  color: #fff;
+  border-radius: 46%;
+}
+
+.deshabilitarDia {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.contenedorButones{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.contenedorCalendario{
+  width: 100%;
+  min-height: 100%;
+}
+
+.contenedorArriba{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
