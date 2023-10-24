@@ -29,7 +29,6 @@ export class ReservacionesPage implements OnInit {
   public numeroMes: number;
   public anio: number;
   public hora12h: string;
-  public horaSemana: string;
   public loaderReservaciones: boolean;
   public nombreEstado: any;
   public nombreMunicipio: string;
@@ -49,7 +48,7 @@ export class ReservacionesPage implements OnInit {
 
   indice: number = 0;
   arrayUnion: any;
-  diasEvento: string[];
+  diasEvento: string;
   public isAlert: boolean = false;
   diasEnviar: number[] = [];
   diasValidos: number[] = [];
@@ -117,14 +116,11 @@ export class ReservacionesPage implements OnInit {
         res => {
           this.infoEvento = res.data[0];
           this.loaderReservaciones = true;
-          if ( this.infoEvento.dias !== null ){
+          if ( this.infoEvento.dias !== null){
             const dias = JSON.parse(this.infoEvento.dias);
-            const arrayDias = dias;
-            this.diasEvento = arrayDias.dias;
-            this.horaSemana = arrayDias.hora;
-            if ( this.diasEvento !== null ){
-              this.diasSemana(this.diasEvento);
-            }
+            const diasComa: string = dias.join(", ");
+            this.diasEvento = diasComa;
+            this.diasSemana(dias);
           }
 
           this.fotografiasArray = res.data[0].fotografias;
@@ -223,7 +219,7 @@ export class ReservacionesPage implements OnInit {
       //this.hora12h = fechaObjeto.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric', hour12: true });
       this.hora12h = fechaObjeto.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' });
     } else if ( fecha === null){
-      this.hora12h = this.horaSemana;
+      this.hora12h = this.infoEvento.hora;
     }
   }
 
