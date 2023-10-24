@@ -29,7 +29,8 @@
   
   <ion-item [ngStyle]="{'display': vistaDias == 'none'? 'none' : 'initial'}">
     <ion-label class="wdht">Dias<span class="requerido">*</span></ion-label>
-    <ion-select class="bg" formControlName="diasVista" multiple="true" placeholder="Seleccione los dias de la semana" (ionChange)="seleccionarDias($event)">
+    <ion-select class="bg" formControlName="dias" multiple="true" placeholder="Seleccione los dias de la semana" 
+    (ionChange)="enviarInformacion()">
       <ion-select-option value="Domingo">Todos los Domingo</ion-select-option>
       <ion-select-option value="Lunes">Todos los Lunes</ion-select-option>
       <ion-select-option value="Martes">Todos los Martes</ion-select-option>
@@ -43,8 +44,8 @@
   <ion-item id="abrirModalHora" [ngStyle]="{'display': vistaDias == 'none'? 'none' : 'initial'}">
     <ion-label class="wdht">Hora del evento<span class="requerido">*</span></ion-label>
     <div class="bg">
-      <label position="stacked" *ngIf="!formularioMapa.get('dias').value.hora">Seleccione...</label>
-      <label position="stacked" *ngIf="formularioMapa.get('dias').value.hora">{{formularioMapa.get('dias').value.hora}} </label>
+      <label position="stacked" *ngIf="!formularioMapa.get('hora').value">Seleccione...</label>
+      <label position="stacked" *ngIf="formularioMapa.get('hora').value">{{formularioMapa.get('hora').value}}hrs </label>
     </div>
   </ion-item>
 
@@ -66,7 +67,7 @@
   </ion-text>
 
   <ion-item>
-    <ion-label class="wdht">Estado</ion-label>
+    <ion-label class="wdht">Estado<span class="requerido">*</span></ion-label>
     <ion-select class="bg" interface="popover" placeholder="Select One"
     formControlName="estado" (ionChange)="obtenerMunicipio($event)">
       <ion-select-option *ngFor="let edo of estado" [value]="edo.id_estado">{{edo.nombre}}</ion-select-option>
@@ -74,7 +75,7 @@
   </ion-item>
 
   <ion-item>
-    <ion-label class="wdht">Municipio</ion-label>
+    <ion-label class="wdht">Municipio<span class="requerido">*</span></ion-label>
     <ion-select class="bg" interface="popover" placeholder="Select One"
     formControlName="municipio" (ionChange)="obtenerLocalidad($event)">
       <ion-select-option *ngFor="let muni of municipio" [value]="muni.id_municipio">{{muni.nombre}}</ion-select-option>
@@ -82,7 +83,7 @@
   </ion-item>
   
   <ion-item>
-    <ion-label class="wdht">Localidad</ion-label>
+    <ion-label class="wdht">Localidad<span class="requerido">*</span></ion-label>
     <ion-select class="bg" interface="popover" placeholder="Select One"
     formControlName="localidad" (ionChange)="enviarInformacion()">
       <ion-select-option *ngFor="let loc of localidad" [value]="loc.id_localidad">{{loc.nombre}}</ion-select-option>
@@ -90,17 +91,17 @@
   </ion-item>
 
   <ion-item fill="solid" class="color">
-    <ion-label position="floating">Colonia</ion-label>
+    <ion-label position="floating">Colonia<span class="requerido">*</span></ion-label>
     <ion-input formControlName="colonia" placeholder="Colonia" (ionChange)="enviarInformacion()"></ion-input>
   </ion-item>
 
   <ion-item fill="solid" class="color">
-    <ion-label position="floating">Calle</ion-label>
+    <ion-label position="floating">Calle<span class="requerido">*</span></ion-label>
     <ion-input formControlName="calle" placeholder="Calle" (ionChange)="enviarInformacion()"></ion-input>
   </ion-item>
 
   <ion-item fill="solid" class="color">
-    <ion-label position="floating">Numero exterior</ion-label>
+    <ion-label position="floating">Numero exterior<span class="requerido">*</span></ion-label>
     <ion-input formControlName="numExterior" placeholder="Numero Exterior" (ionChange)="enviarInformacion()"></ion-input>
   </ion-item>
   
@@ -110,7 +111,7 @@
   </ion-item>
 
   <ion-item fill="solid" class="color">
-    <ion-label position="floating">Código postal</ion-label>
+    <ion-label position="floating">Código postal<span class="requerido">*</span></ion-label>
     <ion-input formControlName="cP" placeholder="Código postal" (ionChange)="enviarInformacion()"></ion-input>
   </ion-item>
 
@@ -119,5 +120,5 @@
   Buscar Dirección
 </ion-button>
 
-<div id="formularioMapa" (click)="lugarMapa()" style=" height: 300px; width: 100%;"></div>
+<div id="formularioMapa" style=" height: 300px; width: 100%;"></div>
 
