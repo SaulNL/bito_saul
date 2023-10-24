@@ -307,6 +307,7 @@ export class ModalEventosPage implements OnInit {
     this.eventData.id_municipio = event.municipio;
     this.eventData.id_localidad = event.localidad;
     this.eventData.tipo_evento = event.tipoEvento;
+    this.eventData.hora = event.hora;
   }
 
   asignarValoresNoEdicion() {
@@ -326,6 +327,7 @@ export class ModalEventosPage implements OnInit {
       this.eventData.id_municipio = this.eventoInfo.id_municipio
       this.eventData.id_localidad = this.eventoInfo.id_localidad
       this.eventData.tipo_evento =  this.eventoInfo.tipo_evento
+      this.eventData.hora =  this.eventoInfo.hora
     }
   }
 

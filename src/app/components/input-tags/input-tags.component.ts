@@ -43,7 +43,11 @@ export class InputTagsComponent implements OnInit {
           this.limiteTags = false;
         } else {
           this.limiteTags = true;
+          setTimeout(() => {
+            if(this.limiteTags) this.limiteTags = false;
+          }, 5000);
         }
+
         this._enviarTags.emit(this.tagActual);
       }
       this.nuevaTag =""
@@ -51,7 +55,6 @@ export class InputTagsComponent implements OnInit {
   }
 
   asignarValoresTAgs() {
-    console.log("queTiene:", this.tags)
     if (!this.tags || typeof this.tags == "object" && this.tags.length == 0) {
       this.tags = '';
     }
@@ -71,7 +74,6 @@ export class InputTagsComponent implements OnInit {
     if(this.tagActual.length >5){
       this.notificaciones.toastInfo(`Haz alcanzo el límite de etiquetas.`)
     }
-    console.log("tagsActuales",this.tagActual)
   }
 
   eliminarTag(index) {

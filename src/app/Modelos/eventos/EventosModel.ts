@@ -32,6 +32,7 @@ export class EventosModel {
     public codigo_postal: string;
     public latitud: number;
     public longitud: number;
+    public hora: string;
 
     constructor(activo = 0, requiere_confirmacion = 0, id_evento = null, evento = "", id_negocio = 0, fecha = "", id_estado = "", id_municipio = "", id_localidad = "", telefono = "", tipo_pago_transferencia = 0, tipo_pago_tarjeta_credito = 0, tipo_pago_tarjeta_debito = 0, tipo_pago_efectivo = 0, id_tipo_recurrencia = 0, tipo_evento = "", tags = "", fotografias = [], url_video: string = '', videos = [], dias = "",
         descripcion_evento = "",
@@ -42,6 +43,7 @@ export class EventosModel {
         codigo_postal = "",
         latitud = null,
         longitud = null,
+        hora = '',
     ) {
         this.activo = activo;
         this.requiere_confirmacion = requiere_confirmacion;
@@ -72,5 +74,6 @@ export class EventosModel {
         this.codigo_postal = codigo_postal;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.hora = hora;
     }
 }
