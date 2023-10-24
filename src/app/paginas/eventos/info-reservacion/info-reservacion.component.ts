@@ -69,25 +69,20 @@ export class InfoReservacionComponent implements OnInit {
     this.usuario = `${datosUsuario.nombre} ${datosUsuario.paterno} ${datosUsuario.materno}`;
 
     if ( this.eventoDetalle === undefined || this.eventoDetalle === null ){
-      console.log('entro1');
       this.infoReservacion = this.eventosService.getSelectedObj();
     } else {
-      console.log('entro2');
       this.infoReservacion = this.eventoDetalle;
     }
   }
 
   ngOnInit() {
-    console.log('eventoDetalle', this.eventoDetalle);
     this.fotografiasArray = this.infoReservacion.fotografias;
     this.videosArray = this.infoReservacion.videos;
     this.arrayUnion = [...this.fotografiasArray, ...this.videosArray];
     this.base64Video = null;
     this.obtenerListaEvento();
-    this.convertirFechaHora();
     //this.obtenerUbicacionActual();
     this.generarQr();
-    console.log('infoReservacion', this.infoReservacion);
   }
 
   ngOnChanges(): void {
@@ -110,7 +105,7 @@ export class InfoReservacionComponent implements OnInit {
     this.eventosService.eventoDetalle(this.infoReservacion.id_evento).subscribe(
         res => {
           this.infoEvento = res.data[0];
-          console.log('datosEvento', this.infoEvento);
+          this.convertirFechaHora(this.infoEvento);
           this.load_cat_estados();
           this.obtenerNombreMunicipios();
           this.obtenerNombreLocalidades();
@@ -118,23 +113,20 @@ export class InfoReservacionComponent implements OnInit {
   }
 
 
-  convertirFechaHora(){
+  convertirFechaHora(infoEvento: any){
+    const fecha1 = infoEvento.fecha;
     const fecha = this.infoReservacion.fc_evento_reservacion;
+    const nuevaFecha = new Date(infoEvento.fecha);
     const fechaObjeto = new Date(fecha);
     this.numeroDia = fechaObjeto.getDate();
     this.numeroMes = fechaObjeto.getMonth();
     this.anio = fechaObjeto.getFullYear();
-    const hora = fechaObjeto.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' });
-    if ( hora === '00:00'){
-      setTimeout(() => {
-        const dias = JSON.parse(this.infoEvento.dias);
-        const arrayDias = dias;
-        this.hora12h = arrayDias.hora;
-      }, 400);
-    } else {
+    if ( fecha1 !== null){
+      const hora = nuevaFecha.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' });
       this.hora12h = hora;
+    } else {
+      this.hora12h = infoEvento.hora;
     }
-    console.log('hora', this.hora12h);
   }
 
   /* Metodo para obtener la ubicacion actual

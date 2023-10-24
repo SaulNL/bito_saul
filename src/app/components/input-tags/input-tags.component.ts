@@ -70,9 +70,13 @@ export class InputTagsComponent implements OnInit {
       })
       this.tags = stringTag;
     }
-    this.tagActual = this.tags.split(", ")
-    if(this.tagActual.length >5){
-      this.notificaciones.toastInfo(`Haz alcanzo el límite de etiquetas.`)
+    if (typeof this.tags === 'string') {
+      this.tagActual = this.tags.split(", ");
+      if(this.tagActual.length >5){
+        this.notificaciones.toastInfo(`Haz alcanzo el límite de etiquetas.`);
+      }
+    } else {
+      this.tagActual = [];
     }
   }
 
