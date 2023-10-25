@@ -238,4 +238,8 @@ export class AjustesPage implements OnInit {
     this.menuCtrl.open('menuUsuario')
   }
 
+  abrirCarrito(){
+    this._router.navigate(['/tabs/carrito-compra']);
+  }
+
 }
