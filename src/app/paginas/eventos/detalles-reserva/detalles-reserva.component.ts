@@ -8,12 +8,10 @@ import {ModalController} from "@ionic/angular";
   styleUrls: ['./detalles-reserva.component.scss'],
 })
 export class DetallesReservaComponent implements OnInit {
-  @Input() eventoDetalle: any;
-
   constructor(
       private router: Router,
       public modalController: ModalController
-  ) { }
+  ) {}
 
   ngOnInit() {}
 

@@ -17,7 +17,6 @@ import {Directory, Filesystem} from "@capacitor/filesystem";
   styleUrls: ['./info-reservacion.component.scss'],
 })
 export class InfoReservacionComponent implements OnInit {
-  @Input() eventoDetalle: any;
   @ViewChild('qrcode', { static: false }) qrcode: ElementRef;
   @ViewChild('codeQr', { static: false }) codeQr: ElementRef;
   @ViewChild('contendorCarrusel', { static: false }) contendorCarrusel: ElementRef;
@@ -46,7 +45,7 @@ export class InfoReservacionComponent implements OnInit {
   public latitud: any;
   public longitud: any;
   public blnPermisoUbicacion: any;
-
+  eventoDetalle: any;
   loader = false;
   cupon = true;
 
@@ -67,12 +66,7 @@ export class InfoReservacionComponent implements OnInit {
     this.list_cat_localidad = new Array<CatLocalidadModel>();
     const datosUsuario = JSON.parse(localStorage.getItem('u_data'));
     this.usuario = `${datosUsuario.nombre} ${datosUsuario.paterno} ${datosUsuario.materno}`;
-
-    if ( this.eventoDetalle === undefined || this.eventoDetalle === null ){
-      this.infoReservacion = this.eventosService.getSelectedObj();
-    } else {
-      this.infoReservacion = this.eventoDetalle;
-    }
+    this.infoReservacion = this.eventosService.getSelectedObj();
   }
 
   ngOnInit() {

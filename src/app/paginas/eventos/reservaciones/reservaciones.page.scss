@@ -75,13 +75,15 @@ ion-modal {
   /*object-fit: cover;*/
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap');
+
 .titulo{
   background-image:  linear-gradient(90deg, #F761CC 0%, #FF7859 100%);
   color: transparent;
   background-clip: text;
   text-align: center;
   text-transform: uppercase;
-  font-weight: bold;
+  font-family: 'Tilt Warp', sans-serif;
 }
 
 .ctndorReservacion{

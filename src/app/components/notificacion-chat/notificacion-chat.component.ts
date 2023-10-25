@@ -3,6 +3,8 @@ import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { IonContent, ModalController, ToastController } from "@ionic/angular";
 import { NotificacionesService } from "../../api/usuario/notificaciones.service";
 import {DetallesReservaComponent} from "../../paginas/eventos/detalles-reserva/detalles-reserva.component";
+import {RecorteImagenComponent} from "../recorte-imagen/recorte-imagen.component";
+import {EventosService} from "../../api/eventos.service";
 
 @Component({
   selector: "app-notificacion-chat",
@@ -27,7 +29,8 @@ export class NotificacionChatComponent implements OnInit {
     private service: NotificacionesService,
     private toastController: ToastController,
     private modalCtrl: ModalController,
-    private router: Router
+    private router: Router,
+    private eventosService: EventosService,
   ) {}
 
   ngOnInit() {
@@ -129,13 +132,11 @@ export class NotificacionChatComponent implements OnInit {
 
   async reservacion(evento: any) {
     this.cerrarModal();
-    //this.router.navigate(['/tabs/eventos/generar-reservacion'], { state: { cadena: evento } });
+    this.eventosService.setSelectedObj(evento);
     const modal = await this.modalCtrl.create({
       component: DetallesReservaComponent,
-      componentProps: {
-        eventoDetalle: evento,
-      },
     });
-    modal.present();
+    await modal.present();
   }
+
 }
