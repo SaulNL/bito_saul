@@ -53,6 +53,8 @@ export class SolicitudPage implements OnInit {
   loaderSolicitud: boolean=true;
   idSolicitud: any;
   public isAlert: boolean = false;
+  fechaInicio: string;
+  fechaFin: string;
   constructor(
     private filtrosService: FiltrosService,
     private serviceProveedores: ProveedorServicioService,
@@ -68,10 +70,10 @@ export class SolicitudPage implements OnInit {
     this.isIos = this.platform.is("ios");
     this.existeSesion = _utils_cls.existe_sesion();
     this.typeLogin = new OptionBackLogin();
-    
+
     this.platform.backButton.subscribeWithPriority(85288880, () => {
     this.dismiss();
-    
+
   });
   }
 
@@ -176,12 +178,13 @@ export class SolicitudPage implements OnInit {
     if(this.user != null || this.user != undefined){
       this.anyFiltros.id_persona=this.user.id_persona;
     }
-    this.servicioSolicitudes    
-      .obtenerSolicitudesPublicadas(this.anyFiltros)          
+    this.servicioSolicitudes
+      .obtenerSolicitudesPublicadas(this.anyFiltros)
       .subscribe(
         (response) => {
           if (response.data !== null) {
             this.lstSolicitudes = response.data;
+            this.convertirFecha(this.lstSolicitudes);
           } else {
             this.lstSolicitudes = [];
           }
@@ -202,9 +205,9 @@ export class SolicitudPage implements OnInit {
     if (this.mostrarSolicitud) {
       this.loaderSolicitud = false;
       this.idSolicitud = solicitud.id_solicitud;
-      setTimeout(()=>{      
+      setTimeout(()=>{
       this.accionSolicitud(solicitud);
-      this.modalDetalleSolicitud(solicitud);                      
+      this.modalDetalleSolicitud(solicitud);
       }, 1000);
     } else {
       this.typeLogin.type = "requerimiento";
@@ -231,7 +234,7 @@ export class SolicitudPage implements OnInit {
       .then((data) => {
         const user = data['data'];
         this.loaderSolicitud=true;
-        
+
     });
     return await modal.present();
   }
@@ -241,7 +244,7 @@ export class SolicitudPage implements OnInit {
       'dismissed': true,
     });
   }
-  
+
   accionSolicitud(solicitud) {
     this.solicitud = solicitud;
     this.visteMiSolicitud(solicitud);
@@ -325,5 +328,27 @@ export class SolicitudPage implements OnInit {
        this.obj = JSON.parse(organ);
     }
     this.fuenteExclusiva=this.obj?.nombre;
+  }
+
+  convertirFecha(lstSolicitudes: any){
+    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'];
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    //Fecha inicio
+    const fechaInicio = new Date(lstSolicitudes[0].fecha_inicio_public);
+    const numDia1 = fechaInicio.getDate();
+    const numeroDia1 = fechaInicio.getDay();
+    const numeroMes = fechaInicio.getMonth();
+    const numAño = fechaInicio.getFullYear();
+
+    //Fecha fin
+    const fechaFin = new Date(lstSolicitudes[0].fecha_fin_public);
+    const numDia2 = fechaFin.getDate();
+    const numeroDia2 = fechaFin.getDay();
+    const numeroMes2 = fechaFin.getMonth();
+    const numAño2 = fechaFin.getFullYear();
+
+    this.fechaInicio = `${dias[numeroDia1]}, ${numDia1} de ${meses[numeroMes]} de ${numAño}`;
+    this.fechaFin = `${dias[numeroDia2]}, ${numDia2} de ${meses[numeroMes2]} de ${numAño2}`;
   }
 }
