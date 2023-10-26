@@ -26,6 +26,7 @@ export class ReservacionesPage implements OnInit {
   mostrarLabel: boolean;
   public infoRecurrencia: any;
   public numeroDia: number;
+  diaEscrito: string;
   public numeroMes: number;
   public anio: number;
   public hora12h: string;
@@ -211,11 +212,14 @@ export class ReservacionesPage implements OnInit {
 
   convertirFechaHora(infoEvento: any){
     const fecha = infoEvento.fecha;
+    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'];
     if ( fecha !== null){
       const fechaObjeto = new Date(fecha);
       this.numeroDia = fechaObjeto.getDate();
       this.numeroMes = fechaObjeto.getMonth();
       this.anio = fechaObjeto.getFullYear();
+      const diaNumero = fechaObjeto.getDay();
+      this.diaEscrito = dias[diaNumero];
       //this.hora12h = fechaObjeto.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric', hour12: true });
       this.hora12h = fechaObjeto.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' });
     } else if ( fecha === null){

@@ -50,7 +50,7 @@
                 </div>
                 <div *ngIf="this.infoEvento.dias === null" style="display: flex; align-items: center;">
                     <img src="assets/images/eventos/calendario.png" class="imgs">
-                    <p style="display: inline-block;">{{numeroDia}} de {{meses[numeroMes]}} del {{anio}}</p>
+                    <p style="display: inline-block;">{{diaEscrito}}, {{numeroDia}} de {{meses[numeroMes]}} del {{anio}}</p>
                 </div>
                 <div *ngIf="this.infoEvento.dias !== null" style="display: flex; align-items: center;">
                     <img src="assets/images/eventos/calendario.png" class="imgs">
