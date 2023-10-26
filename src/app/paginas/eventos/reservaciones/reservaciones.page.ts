@@ -119,9 +119,10 @@ export class ReservacionesPage implements OnInit {
           this.loaderReservaciones = true;
           if ( this.infoEvento.dias !== null){
             const dias = JSON.parse(this.infoEvento.dias);
-            const diasComa: string = dias.join(", ");
+            const diasArray = dias.dias ? dias.dias : dias;
+            const diasComa: string = diasArray.join(", ");
             this.diasEvento = diasComa;
-            this.diasSemana(dias);
+            this.diasSemana(diasArray);
           }
 
           this.fotografiasArray = res.data[0].fotografias;
