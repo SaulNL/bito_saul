@@ -412,13 +412,8 @@ export class EventosPage implements OnInit {
     const fecha = year + '-' + month + '-' + day;
 
     if ( seleccion === 'Hoy'){
-      opcion.setDate(opcion.getDate() + 1);
-      const year1 = opcion.getFullYear();
-      const month1 = ('0' + (opcion.getMonth() + 1)).slice(-2);
-      const day1 = ('0' + opcion.getDate()).slice(-2);
-      const fecha1 = year1 + '-' + month1 + '-' + day1;
       this.filtroEvento.fecha_inicio = fecha;
-      this.filtroEvento.fecha_fin = fecha1;
+      this.filtroEvento.fecha_fin = fecha;
     }else if ( seleccion === 'Semana'){
       // Agrego los 7 dias de mas
       opcion.setDate(opcion.getDate() + 7);
