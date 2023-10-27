@@ -26,6 +26,7 @@ export class InfoReservacionComponent implements OnInit {
   public idEventoReservacion: number | null;
   public infoReservacion: any;
   public numeroDia: number;
+  public diaEscrito: string;
   public numeroMes: number;
   public anio: number;
   public infoEvento: any;
@@ -108,6 +109,7 @@ export class InfoReservacionComponent implements OnInit {
 
 
   convertirFechaHora(infoEvento: any){
+    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'];
     const fecha1 = infoEvento.fecha;
     const fecha = this.infoReservacion.fc_evento_reservacion;
     const nuevaFecha = new Date(infoEvento.fecha);
@@ -115,6 +117,8 @@ export class InfoReservacionComponent implements OnInit {
     this.numeroDia = fechaObjeto.getDate();
     this.numeroMes = fechaObjeto.getMonth();
     this.anio = fechaObjeto.getFullYear();
+    const diaNum = fechaObjeto.getDay();
+    this.diaEscrito = dias[diaNum];
     if ( fecha1 !== null){
       const hora = nuevaFecha.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' });
       this.hora12h = hora;

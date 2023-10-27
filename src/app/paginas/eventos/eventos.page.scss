@@ -4,11 +4,29 @@
 
 .date-label {
   opacity: 0.5;
-  position: absolute;
-  top: 0;
-  right: 15px;
   font-size: 10px;
-  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.contendorPrincipal{
+  display: flex;
+  width: 100%;
+}
+
+.contenedorSe{
+  flex: 7;
+}
+.contenedorTer{
+  flex: 4;
+}
+.columna{
+  margin: 0;
+}
+.diasSemana{
+  font-size: 10px;
+  opacity: 0.5;
+  text-align: right;
 }
 
 .label_filtro{

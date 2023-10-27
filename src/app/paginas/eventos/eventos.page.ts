@@ -46,6 +46,7 @@ export class EventosPage implements OnInit {
   public list_cat_localidad: Array<CatLocalidadModel>;
   public objectSelectAfiliacionPlaza: AfiliacionPlazaModel;
   public filtroEvento: FiltroEventosModel;
+  public inicioFiltro: FiltroEventosModel;
   public btnEstado: boolean;
   public btnMuncipio: boolean;
   public btnLocalidad: boolean;
@@ -63,6 +64,9 @@ export class EventosPage implements OnInit {
   public filtroVacio: any;
   public secion: boolean;
   public fecha: any;
+  public fechaActual: string;
+  public fechaDosMeses: string;
+  public parametros: any;
 
   constructor(
       private eventosService: EventosService,
@@ -77,6 +81,7 @@ export class EventosPage implements OnInit {
     this.tipoEvento = [];
     this.eventosAll = [];
     this.filtroEvento = new FiltroEventosModel();
+    this.inicioFiltro = new FiltroEventosModel();
     this.eventoSeleccionado = [];
     this.btnEstado = false;
     this.btnMuncipio = true;
@@ -133,18 +138,26 @@ export class EventosPage implements OnInit {
 
   obtenerListaEvento(filtro: any): void {
     const idDetalle = filtro;
-    this.eventosService.eventosLista(idDetalle).subscribe(
+    const fechaActual = new Date();
+    this.fecha = fechaActual;
+    this.obtenerFechaActual(this.fecha);
+    if ( idDetalle !== null ){
+      this.inicioFiltro.organizacion = idDetalle;
+      this.inicioFiltro.fecha_inicio = this.fechaActual;
+      this.inicioFiltro.fecha_fin = this.fechaDosMeses;
+    } else {
+      this.inicioFiltro.fecha_inicio = this.fechaActual;
+      this.inicioFiltro.fecha_fin = this.fechaDosMeses;
+    }
+
+    this.eventosService.eventosLista(this.inicioFiltro).subscribe(
         res => {
-          const fechaActual = new Date();
-          this.fecha =  fechaActual;
-          this.convertirFecha(this.fecha);
           this.eventosAll = res.data;
           this.eventosAll = this.eventosAll.filter((objeto) => {
-            const fechaA = objeto.fecha > this.fecha;
-            const recurrencia = objeto.id_tipo_recurrencia !== 1;
+            const fechaA = objeto.fecha >= this.fechaActual;
+            const recurrencia = objeto.id_tipo_recurrencia === 1 || objeto.id_tipo_recurrencia === 3;
             return fechaA || recurrencia;
           });
-
           this.loaderReservaciones = true;
           this.eventosAll.sort((a, b) => {
             const fechaA = new Date(a.fecha);
@@ -196,6 +209,22 @@ export class EventosPage implements OnInit {
 
     return `${diaEscrito} ${diaNumero} de ${mesEscrito}`;
   }
+  obtenerFechaActual(fecha: string){
+    const fechaObjeto = new Date(fecha);
+    const numeroDia = fechaObjeto.getDate();
+    const numAño = fechaObjeto.getFullYear();
+    const numeroM = (fechaObjeto.getMonth() + 1).toString().padStart(2, '0');
+    const dosMeses = (fechaObjeto.getMonth() + 3).toString().padStart(2, '0');
+    this.fechaDosMeses = `${numAño}-${dosMeses}-${numeroDia}`;
+    this.fechaActual = `${numAño}-${numeroM}-${numeroDia}`;
+  }
+
+  convertirDias(dias: any){
+    const diasArray = JSON.parse(dias);
+    const diasArray2 = diasArray.dias ? diasArray.dias : diasArray;
+    const diasComa: string = diasArray2.join(", ");
+    return `${diasComa}`;
+  }
 
   abrirModal(){
     this.isOpen = true;
@@ -228,7 +257,7 @@ export class EventosPage implements OnInit {
           if (this._utils_cls.is_success_response(response.code)) {
             this.list_cat_estado = response.data.list_cat_estado;
             this.list_cat_estado.forEach(element => {
-              if (element.id_estado == this.filtroEvento.id_estado) {
+              if (element.id_estado === this.filtroEvento.id_estado) {
                 this.estadoAux = element.nombre;
               }
             });
@@ -262,7 +291,7 @@ export class EventosPage implements OnInit {
             if (this._utils_cls.is_success_response(response.code)) {
               this.list_cat_municipio = response.data.list_cat_municipio;
               this.list_cat_municipio.forEach(element => {
-                if (element.id_municipio == this.filtroEvento.id_municipio) {
+                if (element.id_municipio === this.filtroEvento.id_municipio) {
                   this.municiAux = element.nombre;
                 }
               });
@@ -305,7 +334,7 @@ export class EventosPage implements OnInit {
               this.btnLocalidad = false;
               this.list_cat_localidad = response.data.list_cat_localidad;
               this.list_cat_localidad.forEach(element => {
-                if (element.id_localidad == this.id_localidad) {
+                if (element.id_localidad === this.id_localidad) {
                   this.localiAux = element.nombre;
 
                 }
@@ -352,30 +381,18 @@ export class EventosPage implements OnInit {
       this.org = JSON.parse(localStorage.getItem('org'));
       this.filtroEvento.organizacion = this.org.id_organizacion;
     }
-    if ( this.eventoSeleccionado !== null && this.eventoSeleccionado !== undefined){
-      const cadena = this.eventoSeleccionado.join(',');
-      this.filtroEvento.tipo_evento = `${cadena}`;
-    }else{
-      this.filtroEvento.tipo_evento = null;
-    }
-
     if ( this.fechaSeleccionada == null){
-      this.filtroEvento.fecha_inicio = null;
-      this.filtroEvento.fecha_fin = null;
+      this.filtroEvento.fecha_inicio = this.fechaActual;
+      this.filtroEvento.fecha_fin = this.fechaDosMeses;
     }
     this.eventosService.buscarFiltroEvento(this.filtroEvento).subscribe(
         (response) => {
           this.eventosAll = response.data;
-          const fechaActual = new Date();
-          this.fecha =  fechaActual;
-          this.convertirFecha(this.fecha);
-
           this.eventosAll = this.eventosAll.filter((objeto) => {
-            const fechaA = objeto.fecha > this.fecha;
-            const recurrencia = objeto.id_tipo_recurrencia !== 1;
+            const fechaA = objeto.fecha >= this.fechaActual;
+            const recurrencia = objeto.id_tipo_recurrencia === 1 || objeto.id_tipo_recurrencia === 3;
             return fechaA || recurrencia;
           });
-
           this.eventosAll.sort((a, b) => {
             const fechaA = new Date(a.fecha);
             const fechaB = new Date(b.fecha);
@@ -396,33 +413,22 @@ export class EventosPage implements OnInit {
 
     if ( seleccion === 'Hoy'){
       this.filtroEvento.fecha_inicio = fecha;
-      this.filtroEvento.fecha_fin = null;
-    }else if (seleccion === 'Mañana'){
-      const opcion3 = new Date();
-      opcion3.setDate(opcion3.getDate() + 1);
-      const year3 = opcion3.getFullYear();
-      const month3 = ('0' + (opcion3.getMonth() + 1)).slice(-2);
-      const day3 = ('0' + opcion3.getDate()).slice(-2);
-      const fecha3 = year3 + '-' + month3 + '-' + day3;
-      this.filtroEvento.fecha_inicio = fecha;
-      this.filtroEvento.fecha_fin = fecha3;
-    }else if ( seleccion === 'Esta semana'){
+      this.filtroEvento.fecha_fin = fecha;
+    }else if ( seleccion === 'Semana'){
       // Agrego los 7 dias de mas
-      const opcion1 = new Date();
-      opcion1.setDate(opcion1.getDate() + 7);
-      const year1 = opcion1.getFullYear();
-      const month1 = ('0' + (opcion1.getMonth() + 1)).slice(-2);
-      const day1 = ('0' + opcion1.getDate()).slice(-2);
+      opcion.setDate(opcion.getDate() + 7);
+      const year1 = opcion.getFullYear();
+      const month1 = ('0' + (opcion.getMonth() + 1)).slice(-2);
+      const day1 = ('0' + opcion.getDate()).slice(-2);
       const fecha1 = year1 + '-' + month1 + '-' + day1;
       this.filtroEvento.fecha_inicio = fecha;
       this.filtroEvento.fecha_fin = fecha1;
-    }else if ( seleccion === 'Este mes'){
+    }else if ( seleccion === 'Mes actual'){
       // Agrego los 31 dias de mas
-      const opcion2 = new Date();
-      opcion2.setDate(opcion2.getDate() + 31);
-      const year2 = opcion2.getFullYear();
-      const month2 = ('0' + (opcion2.getMonth() + 1)).slice(-2);
-      const day2 = ('0' + opcion2.getDate()).slice(-2);
+      opcion.setDate(opcion.getDate() + 31);
+      const year2 = opcion.getFullYear();
+      const month2 = ('0' + (opcion.getMonth() + 1)).slice(-2);
+      const day2 = ('0' + opcion.getDate()).slice(-2);
       const fecha2 = year2 + '-' + month2 + '-' + day2;
       this.filtroEvento.fecha_inicio = fecha;
       this.filtroEvento.fecha_fin = fecha2;
