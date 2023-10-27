@@ -36,7 +36,7 @@
             <ion-select [(ngModel)]="fechaSeleccionada" (ionChange)="cargarFecha($event)">
               <ion-select-option value="Hoy">Hoy</ion-select-option>
               <ion-select-option value="Semana">Semana</ion-select-option>
-              <ion-select-option value="Mes actual">Esta semana</ion-select-option>
+              <ion-select-option value="Mes actual">Mes actual</ion-select-option>
             </ion-select>
           </ion-item>
 
@@ -109,15 +109,24 @@
     </ion-text>
   </ion-grid>
   <div *ngIf="filtroEvento">
-    <ion-list style="display: flex; flex-direction: column;" *ngIf="eventosAll.length > 0">
+    <ion-list *ngIf="eventosAll.length > 0">
       <ion-item *ngFor="let dato of eventosAll" (click)="datosEventos(dato.id_evento)">
-        <ion-label>
-          <div style="white-space: pre-wrap; width: 70%">
-            <strong>{{dato.evento}}</strong>
+        <div class="contendorPrincipal">
+          <div class="contenedorSe columna">
+            <div style="margin-top: 9px; margin-bottom: -10px">
+              <strong>{{dato.evento}}</strong>
+            </div>
+            <p style="opacity: 0.5">{{dato.negocio}}</p>
           </div>
-          <p style="opacity: 0.5">{{dato.negocio}}</p>
-        </ion-label>
-        <ion-label class="date-label">{{convertirFecha(dato.fecha)}}</ion-label>
+          <div class="contenedorTer columna">
+            <div *ngIf="dato.fecha !== null && dato.dias === null" class="date-label">
+              <p>{{convertirFecha(dato.fecha)}}</p>
+            </div>
+            <div class="diasSemana" *ngIf="dato.dias !== null && dato.fecha === null" >
+              <p>Todos los días {{convertirDias(dato.dias)}}</p>
+            </div>
+          </div>
+        </div>
       </ion-item>
     </ion-list>
   </div>
