@@ -332,7 +332,7 @@ export class ModalEventosPage implements OnInit {
   }
 
   async submit() {
-    // this.loader = true;
+    this.loader = true;
     this.asignarValoresNoEdicion()
     let urlImg = new EventoUrlImagen;
     if (this.eventData.imagen.archivo_64 == null && this.eventoInfo_imagen != null) {
@@ -363,8 +363,9 @@ export class ModalEventosPage implements OnInit {
         this._router.navigate(["/tabs/mis-eventos"])
       }
     }),
-      error => {
-        //   this._notificacionService.pushError(error);
+    error => {
+      //   this._notificacionService.pushError(error);
+        this.loader = false
         this._notificacionService.error(error);
       }
   }
