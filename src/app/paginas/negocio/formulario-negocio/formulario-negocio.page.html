@@ -420,7 +420,7 @@
                 <ion-button color="light" size="small" (click)="consumoSitioAlert()">
                   <ion-icon name="information-circle-outline"></ion-icon>
                 </ion-button>
-                <ion-label style="padding-left: 15px;">Consumo en sitio<span style="color: red">*</span></ion-label>
+                <ion-label style="padding-left: 15px;">Recoger en establecimiento<span style="color: red">*</span></ion-label>
                 <ion-select ok-text="Ok" cancel-text="Cancelar" name="idConsumoNegocio" required #consuNegocio="ngModel"
                   [(ngModel)]="negocioTO.consumo_sitio">
                   <ion-select-option *ngFor="let ent of entregas" [value]="ent.id">{{ent.respuesta}}</ion-select-option>
@@ -429,7 +429,7 @@
               <div *ngIf="consuNegocio.invalid" class="alert">
                 <div>Seleccione el campo consumo en sitio</div>
               </div>
-              <ion-item>
+              <!-- <ion-item>
                 <ion-button color="light" size="small" (click)="entregaSitioAlert()">
                   <ion-icon name="information-circle-outline"></ion-icon>
                 </ion-button>
@@ -441,13 +441,13 @@
               </ion-item>
               <div *ngIf="entregaNegocio.invalid" class="alert">
                 <div>Seleccione el campo entregas en sitio</div>
-              </div>
+              </div> -->
             </div>
             <ion-item>
               <ion-button color="light" size="small" (click)="entregaDomicilioAlert()">
                 <ion-icon name="information-circle-outline"></ion-icon>
               </ion-button>
-              <ion-label style="padding-left: 15px;">Entregas a Domicilio:
+              <ion-label style="padding-left: 15px;">Envió a domicilio:
                 <span style="color: red">*</span>
               </ion-label>
               <ion-select ok-text="Ok" cancel-text="Cancelar" name="idEntreDomNegocio" required
