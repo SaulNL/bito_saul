@@ -16,6 +16,7 @@ dependencies {
     implementation project(':capacitor-geolocation')
     implementation project(':capacitor-push-notifications')
     implementation project(':capacitor-share')
+    implementation project(':capacitor-splash-screen')
     implementation project(':capawesome-capacitor-file-picker')
     implementation "com.facebook.android:facebook-android-sdk:5.13.0"
     implementation "com.google.android.gms:play-services-auth:15.0.1"

@@ -23,6 +23,8 @@ PODS:
     - Capacitor
   - CapacitorShare (5.0.6):
     - Capacitor
+  - CapacitorSplashScreen (5.0.6):
+    - Capacitor
   - CapawesomeCapacitorFilePicker (5.1.1):
     - Capacitor
   - CordovaPlugins (5.3.0):
@@ -146,6 +148,7 @@ DEPENDENCIES:
   - "CapacitorGeolocation (from `../../node_modules/@capacitor/geolocation`)"
   - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
   - "CapacitorShare (from `../../node_modules/@capacitor/share`)"
+  - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - "CapawesomeCapacitorFilePicker (from `../../node_modules/@capawesome/capacitor-file-picker`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
   - CordovaPluginsResources (from `../capacitor-cordova-ios-plugins`)
@@ -192,6 +195,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/push-notifications"
   CapacitorShare:
     :path: "../../node_modules/@capacitor/share"
+  CapacitorSplashScreen:
+    :path: "../../node_modules/@capacitor/splash-screen"
   CapawesomeCapacitorFilePicker:
     :path: "../../node_modules/@capawesome/capacitor-file-picker"
   CordovaPlugins:
@@ -212,6 +217,7 @@ SPEC CHECKSUMS:
   CapacitorGeolocation: 7be5f77abc205c0efe319fff8587a7183e7b0240
   CapacitorPushNotifications: 7eb70469f1fcc3dec07126336d4896520e4991db
   CapacitorShare: cd41743331cb71d217c029de54b681cbd91e0fcc
+  CapacitorSplashScreen: 5fa2ab5e46cf5cc530cf16a51c80c7a986579ccd
   CapawesomeCapacitorFilePicker: 4a27a464c569de315738fcb7bdd3ad544ef3c7c2
   CordovaPlugins: 66a6936b78528b3f443ab9305f549a58f0237c04
   CordovaPluginsResources: 1b3992e05cb6336d2850cd77dd5e3054f2f76f96
@@ -234,6 +240,6 @@ SPEC CHECKSUMS:
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   SDWebImage: 96e0c18ef14010b7485210e92fac888587ebb958
 
-PODFILE CHECKSUM: 41452e79bfb1cdbb186cfe77969674bee45877fa
+PODFILE CHECKSUM: 884f66dbef376936475406515ab5224a741c50dd
 
 COCOAPODS: 1.12.1
