@@ -1,6 +1,6 @@
 {
 	"appId": "mx.com.softura.bitoo.produccion",
-	"appName": "TinBitoo",
+	"appName": "Bituyú",
 	"bundledWebRuntime": false,
 	"npmClient": "npm",
 	"webDir": "www",

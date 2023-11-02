@@ -1,5 +1,9 @@
 [
 	{
+		"pkg": "@capacitor-community/media",
+		"classpath": "com.getcapacitor.community.media.MediaPlugin"
+	},
+	{
 		"pkg": "@capacitor/app",
 		"classpath": "com.capacitorjs.plugins.app.AppPlugin"
 	},
