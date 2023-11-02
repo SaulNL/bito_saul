@@ -2,7 +2,6 @@ import {ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild} from
 import {CatEstadoModel} from "../../../Modelos/CatEstadoModel";
 import {CatMunicipioModel} from "../../../Modelos/CatMunicipioModel";
 import {CatLocalidadModel} from "../../../Modelos/CatLocalidadModel";
-import {Router} from "@angular/router";
 import {EventosService} from "../../../api/eventos.service";
 import {GeneralServicesService} from "../../../api/general-services.service";
 import {UtilsCls} from "../../../utils/UtilsCls";
@@ -10,6 +9,8 @@ import {ToadNotificacionService} from "../../../api/toad-notificacion.service";
 import QRCode from "easyqrcodejs";
 import html2canvas from "html2canvas";
 import {Directory, Filesystem} from "@capacitor/filesystem";
+import { ModalController } from '@ionic/angular';
+import { Media, MediaSaveOptions } from "@capacitor-community/media";
 
 @Component({
   selector: 'app-info-reservacion',
@@ -51,12 +52,12 @@ export class InfoReservacionComponent implements OnInit {
   cupon = true;
 
   constructor(
-      private router: Router,
       private eventosService: EventosService,
       private _general_service: GeneralServicesService,
       private utils: UtilsCls,
       private notificaciones: ToadNotificacionService,
-      private cdRef: ChangeDetectorRef
+      private cdRef: ChangeDetectorRef,
+      private modalController: ModalController,
   ) {
     this.loaderReservaciones = false;
     this.infoEvento = [];
@@ -222,17 +223,31 @@ export class InfoReservacionComponent implements OnInit {
   async crearImagen(evento) {
     this.loader = false;
     this.cupon = true;
-    html2canvas(document.querySelector("#contenidoCupon")).then(canvas => {
+    html2canvas(document.querySelector("#contenidoCupon")).then(async canvas => {
       const fileName = 'qr_promo' + this.numeroAleatorioDecimales(10, 1000) + evento.evento + '.png';
-      Filesystem.writeFile({
+
+      let opts: MediaSaveOptions = { path: canvas.toDataURL().toString(), fileName: fileName };
+      await Media.savePhoto(opts);
+
+      /* const modal = await this.modalController.create({
+        component: ModalImagenCuponComponent,
+        componentProps: {
+          imagenCupon: canvas.toDataURL().toString()
+        },
+      });
+      await modal.present(); */
+
+      this.notificaciones.exito('Se descargo correctamente cupón de ' + evento.evento);
+
+     /*  Filesystem.writeFile({
         path: fileName,
         data: canvas.toDataURL().toString(),
         directory: Directory.Documents
       }).then(() => {
-        this.notificaciones.exito('Se descargo correctamente cupón de ' + evento.evento);
       }, error => {
         this.notificaciones.error(error);
-      });
+      }); */
+      
     });
   }
 

@@ -24,6 +24,9 @@ import {
 import {SpinnerModule} from "../../componentes/spinner/spinner.module";
 import {ModalInicioComponent} from "../../componentes/modal-inicio/modal-inicio.component";
 import {ModalInicioSesionPageModule} from "../modal-inicio-sesion/modal-inicio-sesion.module";
+import { ModalImagenCuponComponent } from '../../components/modal-imagen-cupon/modal-imagen-cupon.component';
+import { DetallesReservaComponent } from '../eventos/detalles-reserva/detalles-reserva.component';
+import { InfoReservacionComponent } from '../eventos/info-reservacion/info-reservacion.component';
 
 @NgModule({
     imports: [
@@ -47,10 +50,13 @@ import {ModalInicioSesionPageModule} from "../modal-inicio-sesion/modal-inicio-s
         RecorteImagenComponent,
         FiltrosBusquedaComponent,
         PlazasAfiliacionesComponent,
+        DetallesReservaComponent,
+        InfoReservacionComponent,
         ModalLoguearseComponent,
         ModalPromocionNegocioComponent,
         ModalInfoPromocionComponent,
-        ModalInicioComponent
+        ModalInicioComponent,
+        ModalImagenCuponComponent
     ],
   exports: [
     BannerPromocionesComponent,

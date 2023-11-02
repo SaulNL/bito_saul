@@ -13,16 +13,8 @@ const routes: Routes = [
     loadChildren: () => import('./reservaciones/reservaciones.module').then( m => m.ReservacionesPageModule)
   },
   {
-    path: 'generar-reservacion',
-    loadChildren: () => import('./generar-reservacion/generar-reservacion.module').then( m => m.GenerarReservacionPageModule)
-  },
-  {
     path: 'mis-reservaciones',
     loadChildren: () => import('./mis-reservaciones/mis-reservaciones.module').then( m => m.MisReservacionesPageModule)
-  },
-  {
-    path: 'detalles-reservacion',
-    loadChildren: () => import('./detalles-reservacion/detalles-reservacion.module').then( m => m.DetallesReservacionPageModule)
   },
   {
     path: 'calendario-reservacion',

@@ -14,6 +14,8 @@ import html2canvas from "html2canvas";
 import {FiltrosModel} from "../../Modelos/FiltrosModel";
 import {Auth0Service} from "../../api/auth0.service";
 import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Media, MediaSaveOptions } from "@capacitor-community/media";
+import { ModalImagenCuponComponent } from '../modal-imagen-cupon/modal-imagen-cupon.component';
 
 
 /*
@@ -170,7 +172,7 @@ export class InfoPromoComponent implements OnInit {
           this.loader = false;
           this.cupon = true;
         }
-      }, 200);
+      }, 300);
     }
   }
 
@@ -235,9 +237,25 @@ export class InfoPromoComponent implements OnInit {
   async crearImagen(promocion) {
     this.loader = false;
     this.cupon = true;
-    html2canvas(document.querySelector("#contenidoCupon")).then(canvas => {
+    
+    html2canvas(document.querySelector("#contenidoCupon")).then(async canvas => {
       const fileName = 'qr_promo' + this.numeroAleatorioDecimales(10, 1000) + promocion.nombre_comercial + '.png';
-      Filesystem.writeFile({
+
+      let opts: MediaSaveOptions = { path: canvas.toDataURL().toString(), fileName: fileName };
+      await Media.savePhoto(opts);
+
+      const modal = await this.modalController.create({
+        component: ModalImagenCuponComponent,
+        componentProps: {
+          imagenCupon: canvas.toDataURL().toString()
+        },
+      });
+      await modal.present();
+
+      this.notificaciones.exito('Se descargo correctamente cupón de ' + promocion.nombre_comercial);
+
+
+      /* Filesystem.writeFile({
         path: fileName,
         data: canvas.toDataURL().toString(),
         directory: Directory.Documents
@@ -245,7 +263,7 @@ export class InfoPromoComponent implements OnInit {
         this.notificaciones.exito('Se descargo correctamente cupón de ' + promocion.nombre_comercial);
       }, error => {
         this.notificaciones.error(error);
-      });
+      }); */
     });
   }
 
