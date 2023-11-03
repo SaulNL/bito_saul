@@ -11,6 +11,7 @@ import html2canvas from "html2canvas";
 import {Directory, Filesystem} from "@capacitor/filesystem";
 import { ModalController } from '@ionic/angular';
 import { Media, MediaSaveOptions } from "@capacitor-community/media";
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-info-reservacion',
@@ -58,6 +59,7 @@ export class InfoReservacionComponent implements OnInit {
       private notificaciones: ToadNotificacionService,
       private cdRef: ChangeDetectorRef,
       private modalController: ModalController,
+      public platform: Platform
   ) {
     this.loaderReservaciones = false;
     this.infoEvento = [];
@@ -226,28 +228,21 @@ export class InfoReservacionComponent implements OnInit {
     html2canvas(document.querySelector("#contenidoCupon")).then(async canvas => {
       const fileName = 'qr_promo' + this.numeroAleatorioDecimales(10, 1000) + evento.evento + '.png';
 
-      let opts: MediaSaveOptions = { path: canvas.toDataURL().toString(), fileName: fileName };
-      await Media.savePhoto(opts);
-
-      /* const modal = await this.modalController.create({
-        component: ModalImagenCuponComponent,
-        componentProps: {
-          imagenCupon: canvas.toDataURL().toString()
-        },
-      });
-      await modal.present(); */
+      if ( this.platform.is("ios") ){
+        let opts: MediaSaveOptions = { path: canvas.toDataURL().toString(), fileName: fileName };
+        await Media.savePhoto(opts);
+      } else {
+        Filesystem.writeFile({
+          path: fileName,
+          data: canvas.toDataURL().toString(),
+          directory: Directory.Documents
+        }).then(() => {
+        }, error => {
+          this.notificaciones.error(error);
+        });
+      }
 
       this.notificaciones.exito('Se descargo correctamente cupón de ' + evento.evento);
-
-     /*  Filesystem.writeFile({
-        path: fileName,
-        data: canvas.toDataURL().toString(),
-        directory: Directory.Documents
-      }).then(() => {
-      }, error => {
-        this.notificaciones.error(error);
-      }); */
-      
     });
   }
 

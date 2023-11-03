@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, ViewChild, ElementRef, OnChanges, ChangeDetectorRef} from '@angular/core';
-import {AlertController, ModalController} from '@ionic/angular';
+import {AlertController, ModalController, Platform} from '@ionic/angular';
 import { Router } from '@angular/router';
 import { HaversineService, GeoCoord } from "ng2-haversine";
 import { ViewQrPromocionComponent } from '../viewqr-promocion/viewqr-promocion.component';
@@ -70,7 +70,8 @@ export class InfoPromoComponent implements OnInit {
       private _utils_cls: UtilsCls,
       public alertController: AlertController,
       private auth0: Auth0Service,
-      private cdRef: ChangeDetectorRef
+      private cdRef: ChangeDetectorRef,
+      public platform: Platform
   ) {
     this.existeSesion = _utils_cls.existe_sesion();
     this.usuario = this.auth0.getUserData();
@@ -241,8 +242,19 @@ export class InfoPromoComponent implements OnInit {
     html2canvas(document.querySelector("#contenidoCupon")).then(async canvas => {
       const fileName = 'qr_promo' + this.numeroAleatorioDecimales(10, 1000) + promocion.nombre_comercial + '.png';
 
-      let opts: MediaSaveOptions = { path: canvas.toDataURL().toString(), fileName: fileName };
-      await Media.savePhoto(opts);
+      if ( this.platform.is("ios") ){
+        let opts: MediaSaveOptions = { path: canvas.toDataURL().toString(), fileName: fileName };
+        await Media.savePhoto(opts);
+      } else {
+        Filesystem.writeFile({
+          path: fileName,
+          data: canvas.toDataURL().toString(),
+          directory: Directory.Documents
+        }).then(() => {
+        }, error => {
+          this.notificaciones.error(error);
+        });
+      }
 
       const modal = await this.modalController.create({
         component: ModalImagenCuponComponent,
@@ -254,16 +266,6 @@ export class InfoPromoComponent implements OnInit {
 
       this.notificaciones.exito('Se descargo correctamente cupón de ' + promocion.nombre_comercial);
 
-
-      /* Filesystem.writeFile({
-        path: fileName,
-        data: canvas.toDataURL().toString(),
-        directory: Directory.Documents
-      }).then(() => {
-        this.notificaciones.exito('Se descargo correctamente cupón de ' + promocion.nombre_comercial);
-      }, error => {
-        this.notificaciones.error(error);
-      }); */
     });
   }
 
