@@ -14,6 +14,7 @@ import { ComentariosNegocioComponent } from '../../componentes/comentarios-negoc
 import { DarLikeNegocioModule } from '../../componentes/dar-like-negocio/dar-like-negocio.module';
 import { MapaPerfilComponent } from './mapa-perfil/mapa-perfil.component';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { FormBuilder } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
     DenunciaNegocioPageModule
   ],
   providers: [
-    InAppBrowser
+    InAppBrowser,
+      FormBuilder
   ],
   declarations: [PerfilNegocioPage, ComentariosNegocioComponent,
     MapaPerfilComponent]

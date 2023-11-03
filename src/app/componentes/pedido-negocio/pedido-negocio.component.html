@@ -20,24 +20,27 @@
       </ion-list-header>
 
       <ion-item *ngIf="_entregaDomicilio === 1">
-        <ion-label>Envio a domicilio</ion-label>
+        <ion-label>Envió a domicilio</ion-label>
         <ion-radio slot="end" [value]="2"></ion-radio>
       </ion-item>
 
+      <!--
       <ion-item *ngIf="_entregaSitio === 1">
         <ion-label>Recoger en sucursal</ion-label>
         <ion-radio slot="end" [value]="3"></ion-radio>
       </ion-item>
+      -->
+
 
       <ion-item *ngIf="_consumoSitio === 1">
-        <ion-label>Consumo en sitio</ion-label>
+        <ion-label>Recoger en establecimiento</ion-label>
         <ion-radio slot="end" [value]="1"></ion-radio>
       </ion-item>
     </ion-radio-group>
   </ion-list>
 
   <!-- <ion-radio-group *ngIf="_entregaDomicilio !== 1"  (ionChange)="cambiarTipo($event)" [value]="tipoEnvio">
-     
+
       <ion-list-header>
         <ion-label>
           Tipo de entrega
@@ -218,7 +221,7 @@
 
 
     <h3 class="ion-text-center">Lista de artículos</h3>
-    <ion-item *ngFor="let p of lista; let i = index">
+    <ion-item *ngFor="let p of lista.productoInfo; let i = index">
       <ion-grid>
         <ion-row>
           <ion-col size="2">
@@ -275,8 +278,11 @@
     </ion-item>
   </ion-list>
   <div>
+    <!--
     <ion-button class="bg-naranja " (click)="realizarPedido()" *ngIf="tipoEnvio === 1" [disabled]="rTantidad(numeroMesa)"
                 expand="block">Realizar Pedido</ion-button>
+                -->
+    <ion-button class="bg-naranja " (click)="realizarPedido()" *ngIf="tipoEnvio === 1" expand="block">Realizar Pedido</ion-button>
     <ion-button class="bg-naranja " (click)="realizarPedido()" *ngIf="tipoEnvio !== 1" [disabled]="pagoSeleccion"
                 expand="block">Realizar Pedido</ion-button>
     <ion-button color="medium" (click)="presentAlertCancelar()" expand="block">Cancelar Pedido</ion-button>
