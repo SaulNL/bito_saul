@@ -11,14 +11,14 @@
 
 <app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
 <ion-content fullscreen *ngIf="loaderReservaciones">
-  <ion-grid *ngIf="productos !== null && productos.length === 0">
+  <ion-grid *ngIf="productos.length === 0 || false">
     <ion-text color="primary">
       <h2>
         Aun no has agregado articulos en tu carrito!!
       </h2>
     </ion-text>
   </ion-grid>
-  <div *ngIf="productos !== null && productos.length > 0">
+  <div *ngIf="productos.length > 0 || true">
     <ion-item *ngFor="let product of productos; let i = index">
       <div class="item-container">
         <div *ngFor="let producto of product.productoInfo">
@@ -26,7 +26,7 @@
             <div class="imagen-redonda">
               <img [src]="producto.imagen[0] || producto.imagen">
             </div>
-            <strong style="width: 165px; font-size: 13px;">{{producto.descripcion}}</strong>
+            <strong style="width: 165px; font-size: 13px;">{{producto.nombre}}</strong>
             <div style="display: flex">
               <ion-button class="buttonCantidad" [disabled]="producto.cantidad === 1" (click)="actualizarProducto(producto.idProducto, -1)"><ion-icon name="remove-outline"></ion-icon></ion-button>
               <div style="min-width: 20px; margin-top: 5px">

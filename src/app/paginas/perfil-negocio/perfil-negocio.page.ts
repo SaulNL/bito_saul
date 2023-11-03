@@ -1221,7 +1221,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     ); // && parseInt(precio) > 0
   }
 
-  aumentarDismuir(cantidad: number, index: number, operacion: number) {
+  /*aumentarDismuir(cantidad: number, index: number, operacion: number) {
     let valor = this.bolsa[index].productoInfo[0].cantidad;
     if (operacion === 1 && cantidad >= 1) {
       this.bolsa[index].productoInfo[0].cantidad = ++valor;
@@ -1229,7 +1229,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     if (operacion === 2 && cantidad > 1) {
       this.bolsa[index].productoInfo[0].cantidad = --valor;
     }
-  }
+  }*/
 
   mostrarOcultar() {
     this.motrarContacto = !this.motrarContacto;
@@ -1268,7 +1268,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     }
   }
 
-  eliminar(inde) {
+  /*eliminar(inde) {
     for (let index = 0; index < this.bolsa.length; index++) {
       const element = this.bolsa[index];
       if (element.idProducto === inde.idProducto) {
@@ -1278,7 +1278,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     if (Object.keys(this.bolsa).length === 0) {
       this.blockk.tf = true;
     }
-  }
+  }*/
 
   async detallePromocion(promocion: PromocionesModel) {
     if (promocion !== new PromocionesModel()) {

@@ -22,8 +22,7 @@ export class CarritoCompraPage implements OnInit {
     this.loaderReservaciones = false;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   regresar() {
     const abrirBolsa = JSON.parse(localStorage.getItem('abrirBolsa'));
@@ -41,14 +40,11 @@ export class CarritoCompraPage implements OnInit {
   }
 
   obtenerCarrito(){
-    setTimeout(() => {
-      this.productos =  JSON.parse(localStorage.getItem('cartProducts'));
-    }, 200);
+    this.productos =  JSON.parse(localStorage.getItem('cartProducts'));
     if ( this.productos === undefined || this.productos === null ){
       this.productos = [];
     }
     this.loaderReservaciones = true;
-    console.log('productos', this.productos);
   }
 
   eliminarProducto(idProducto: string){
@@ -79,8 +75,9 @@ export class CarritoCompraPage implements OnInit {
     localStorage.setItem('cartProducts', JSON.stringify(this.productos));
   }
 
-  obtenerTotal(cantidad, precio){
-    return cantidad * Number(precio);
+  obtenerTotal(cantidad, precio) {
+    var total = cantidad * Number(precio);
+    return total.toFixed(2);
   }
 
   precioTotal(id) {
@@ -93,7 +90,7 @@ export class CarritoCompraPage implements OnInit {
       if (producto && Array.isArray(producto.productoInfo)) {
         producto.productoInfo.forEach((dato) => {
           if (dato.precio !== undefined && dato.cantidad !== undefined) {
-            precio += parseInt(dato.precio) * parseInt(dato.cantidad);
+            precio += dato.precio * dato.cantidad;
           }
         });
       }
