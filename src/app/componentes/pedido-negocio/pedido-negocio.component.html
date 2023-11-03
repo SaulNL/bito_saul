@@ -225,7 +225,8 @@
       <ion-grid>
         <ion-row>
           <ion-col size="2">
-            <img [srcset]="productoImagen(p.imagen)">
+            <img *ngIf="p.imagen.length > 0" [srcset]="productoImagen(p.imagen)">
+            <img *ngIf="p.imagen.length == 0" src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/PROVEEDOR/Proveedor500.png">
             <ion-label class="ion-text-center" style="font-size: 10px; font-weight: 600;">{{p.nombre}}</ion-label>
             <ion-label class="ion-text-center" style="font-size: 10px; font-weight: 600;">{{ p.precio
               |currency}}</ion-label>
