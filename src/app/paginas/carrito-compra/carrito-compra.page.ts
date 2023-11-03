@@ -11,11 +11,16 @@ import {PedidoNegocioComponent} from "../../componentes/pedido-negocio/pedido-ne
 })
 export class CarritoCompraPage implements OnInit {
   productos: any;
+  public loaderReservaciones: boolean;
+  public msj = 'Cargando';
   constructor(
       private router: Router,
       private negocioService: NegocioService,
       public modalController: ModalController,
-  ) {}
+  ) {
+    this.productos = [];
+    this.loaderReservaciones = false;
+  }
 
   ngOnInit() {
   }
@@ -32,9 +37,18 @@ export class CarritoCompraPage implements OnInit {
   }
 
   ionViewWillEnter(){
+    this.obtenerCarrito();
+  }
+
+  obtenerCarrito(){
     setTimeout(() => {
       this.productos =  JSON.parse(localStorage.getItem('cartProducts'));
     }, 200);
+    if ( this.productos === undefined || this.productos === null ){
+      this.productos = [];
+    }
+    this.loaderReservaciones = true;
+    console.log('productos', this.productos);
   }
 
   eliminarProducto(idProducto: string){

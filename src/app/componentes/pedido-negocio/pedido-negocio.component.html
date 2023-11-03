@@ -278,8 +278,11 @@
     </ion-item>
   </ion-list>
   <div>
+    <!--
     <ion-button class="bg-naranja " (click)="realizarPedido()" *ngIf="tipoEnvio === 1" [disabled]="rTantidad(numeroMesa)"
                 expand="block">Realizar Pedido</ion-button>
+                -->
+    <ion-button class="bg-naranja " (click)="realizarPedido()" *ngIf="tipoEnvio === 1" expand="block">Realizar Pedido</ion-button>
     <ion-button class="bg-naranja " (click)="realizarPedido()" *ngIf="tipoEnvio !== 1" [disabled]="pagoSeleccion"
                 expand="block">Realizar Pedido</ion-button>
     <ion-button color="medium" (click)="presentAlertCancelar()" expand="block">Cancelar Pedido</ion-button>
