@@ -111,6 +111,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   public promocionDefault: any;
   public logo: any;
   public tipoPoS: any;
+  public cantidad: number;
   currentIndex: Number = 0;
   @ViewChild('carrusel') slides: IonSlides;
   @ViewChild('sucursalo') slides1: IonSlides;
@@ -332,6 +333,14 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   ionViewWillEnter() {
+    this.bolsa = JSON.parse(localStorage.getItem('cartProducts'));
+    if ( this.bolsa === null ){
+      this.bolsa = [];
+      this.cantidad = 0;
+    } else {
+      this.cantidad = this.bolsa.reduce((acumulador, elemento) => acumulador + elemento.productoInfo.length, 0);
+    }
+
     this.navBarServiceService.cambio.subscribe((respuesta) => {
       // this.detallePromocion(respuesta);
     });
@@ -665,6 +674,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     const modal = await this.modalController.create({
       component: DetalleProductoComponent,
       componentProps: {
+        datosInfoNegocio: this.informacionNegocio,
         datos: this.detalle,
         _entregaDomicilio: this.informacionNegocio.entrega_domicilio,
         _entregaSitio: this.informacionNegocio.entrega_sitio,
@@ -692,7 +702,9 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   async abrirModalpedido() {
-
+    this.router.navigate(['/tabs/carrito-compra']);
+    localStorage.setItem('abrirBolsa', '1');
+    /*
     const modal = await this.modalController.create({
       component: PedidoNegocioComponent,
       componentProps: {
@@ -714,6 +726,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         this.bolsa = r.data.data;
       }
     });
+     */
   }
 
   async compartir() {
@@ -947,17 +960,32 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   public llenarBolsa(dato) {
     let existe = false;
     this.bolsa.map((it) => {
-      if (it.idProducto === dato.idProducto) {
+      if (it.idProducto === dato.productoInfo[0].idProducto) {
         existe = true;
-        // if (dato.cantidad > 1) {
-        it.cantidad = dato.cantidad;
-        // } else {
-        // it.cantidad++;
-        // }
+        if (dato.productoInfo[0].cantidad > 1) {
+          it.cantidad = dato.productoInfo[0].cantidad;
+        } else {
+         it.cantidad++;
+        }
       }
     });
     if (!existe) {
-      this.bolsa.push(dato);
+      const existingProductIndex = this.bolsa.findIndex(p => p.infoNegocio.id_negocio === dato.infoNegocio.id_negocio);
+      if (existingProductIndex !== -1) {
+        const existingProduct = this.bolsa[existingProductIndex];
+        const existingSubProductIndex = existingProduct.productoInfo.findIndex(p => p.idProducto === dato.productoInfo[0].idProducto);
+        if (existingSubProductIndex !== -1) {
+          existingProduct.productoInfo[existingSubProductIndex].cantidad += dato.productoInfo[0].cantidad;
+        } else {
+          existingProduct.productoInfo.push(dato.productoInfo[0]);
+        }
+      } else {
+        this.bolsa.push(dato);
+        this.cantidad = this.bolsa.reduce((acumulador, elemento) => acumulador + elemento.productoInfo.length, 0);
+      }
+
+      localStorage.setItem('cartProducts', JSON.stringify(this.bolsa));
+      this.notificacionService.success('Producto agregado a la bolsa');
     }
     this.blockk.tf = false;
     this.blockk.url = this.negocio;
@@ -967,7 +995,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.msj = 'Cargando';
     localStorage.setItem('loaderNegocio', 'true');
     if (this.bolsa.length > 0) {
-      this.mensajeBolsa();
+      //this.mensajeBolsa();
+      this.router.navigate(['/tabs/inicio']);
     } else {
       if (this.vieneDeModal) {
         this.router.navigate(['/tabs/productos'], {
@@ -1004,38 +1033,10 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   async mensajeRuta() {
-    const alert = await this.alertController.create({
-      header: 'Advertencia',
-      message:
-        'Message <strong>¿Estas seguro de salir?... tu bolsa se perderá </strong>!!!',
-      buttons: [
-        {
-          text: 'Cancelar',
-          handler: () => {
-            this.blockk.tf = false;
-            this.router.navigate(['/tabs/negocio/' + this.negocio]);
-          },
-        },
-        {
-          text: 'Salir',
-          handler: () => {
-            this.blockk.tf = true;
-            this.bolsa = [];
-            if (this.ruta === '/tabs/home') {
-              this.router.navigate(['/tabs/home'], {
-                queryParams: { special: true },
-              });
-            } else {
-              this.router.navigate([this.ruta]);
-            }
-            // this.subscribe.unsubscribe();
-            // this.router.navigate(['/tabs/inicio'],{ queryParams: {special: true}  });
-          },
-        },
-      ],
+    this.router.navigate(['/tabs/inicio'], {
+      queryParams: { special: true },
     });
-
-    await alert.present();
+    this.blockk.tf = true;
   }
 
   async avisoNegocioCerrado() {
@@ -1065,7 +1066,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         {
           text: 'Salir',
           handler: () => {
-            this.bolsa = [];
+            //this.bolsa = [];
             this.blockk.tf = true;
             if (this.vieneDeModal) {
               this.router.navigate(['/tabs/productos'], {
@@ -1108,29 +1109,46 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   agregarBolsaDeta(pro: any, PoS: number) {
     if (this.existeSesion) {
       const producto = {
-        idProducto: pro.idProducto,
-        precio: pro.precio,
-        imagen: pro.imagen,
-        cantidad: 1,
-        idNegocio: pro.negocio.idNegocio,
-        nombre: pro.nombre,
-        descripcion: pro.descripcion,
-        cantidad_disponibles: pro.cantidad_disponibles,
-        tipoPoS: PoS,
+        infoNegocio: this.informacionNegocio,
+        productoInfo:  [{
+          idProducto: pro.idProducto,
+          precio: pro.precio,
+          imagen: pro.imagen,
+          cantidad: 1,
+          idNegocio: pro.negocio.idNegocio,
+          nombre: pro.nombre,
+          descripcion: pro.descripcion,
+          cantidad_disponibles: pro.cantidad_disponibles,
+          tipoPoS: PoS,
+        }]
       };
       let existe = false;
       this.bolsa.map((it) => {
-        if (it.idProducto === producto.idProducto) {
+        if (it.idProducto === producto.productoInfo[0].idProducto) {
           existe = true;
-          if (producto.cantidad > 1) {
-            it.cantidad = producto.cantidad;
+          if (producto.productoInfo[0].cantidad > 1) {
+            it.cantidad = producto.productoInfo[0].cantidad;
           } else {
             it.cantidad++;
           }
         }
       });
       if (!existe) {
-        this.bolsa.push(producto);
+        const existingProductIndex = this.bolsa.findIndex(p => p.infoNegocio.id_negocio === producto.infoNegocio.id_negocio);
+        if (existingProductIndex !== -1) {
+          const existingProduct = this.bolsa[existingProductIndex];
+          const existingSubProductIndex = existingProduct.productoInfo.findIndex(p => p.idProducto === producto.productoInfo[0].idProducto);
+          if (existingSubProductIndex !== -1) {
+            existingProduct.productoInfo[existingSubProductIndex].cantidad += producto.productoInfo[0].cantidad;
+          } else {
+            existingProduct.productoInfo.push(producto.productoInfo[0]);
+          }
+        } else {
+          this.bolsa.push(producto);
+          this.cantidad = this.bolsa.reduce((acumulador, elemento) => acumulador + elemento.productoInfo.length, 0);
+        }
+
+        localStorage.setItem('cartProducts', JSON.stringify(this.bolsa));
         this.notificacionService.success('Producto agregado a la bolsa');
       }
       this.blockk.tf = false;
@@ -1204,12 +1222,12 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   aumentarDismuir(cantidad: number, index: number, operacion: number) {
-    let valor = this.bolsa[index].cantidad;
+    let valor = this.bolsa[index].productoInfo[0].cantidad;
     if (operacion === 1 && cantidad >= 1) {
-      this.bolsa[index].cantidad = ++valor;
+      this.bolsa[index].productoInfo[0].cantidad = ++valor;
     }
     if (operacion === 2 && cantidad > 1) {
-      this.bolsa[index].cantidad = --valor;
+      this.bolsa[index].productoInfo[0].cantidad = --valor;
     }
   }
 

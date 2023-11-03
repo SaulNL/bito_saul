@@ -10,7 +10,7 @@
       <strong class="bolsita-pintada">
         <ion-button (click)="abrirModalpedido()" *ngIf="bolsa.length > 0">
           <ion-icon name="bag-handle-outline"></ion-icon>
-          <ion-badge>{{bolsa.length}}</ion-badge>
+          <ion-badge *ngIf="cantidad > 0">{{cantidad}}</ion-badge>
         </ion-button>
       </strong>
       <ion-button (click)="presentActionSheet()" *ngIf="existeSesion">
@@ -504,17 +504,17 @@
                 </div>
                 <div class="alado">
                   <div *ngFor="let item of bolsa; let i = index">
-                    <div *ngIf="item.idProducto === producto.idProducto">
+                    <div *ngIf="item.productoInfo[0].idProducto === producto.idProducto">
                       <ion-icon class="ion-text-center iconAla" name="trash-outline" style=" height:20px; width:20px;"
                         (click)="eliminar(item)"></ion-icon>
                       <ion-label class="arriba"><strong>Cantidad</strong></ion-label>
-                      <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.cantidad, i , 2)"
+                      <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.productoInfo[0].cantidad, i , 2)"
                         style="margin: 4px; background: #bbbbbb; height:20px; width:20px;" name="remove-outline">
                       </ion-icon>
                       <span class="ion-text-center" class="arriba">
-                        {{ item.cantidad }}
+                        {{ item.productoInfo[0].cantidad }}
                       </span>
-                      <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.cantidad, i , 1)"
+                      <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.productoInfo[0].cantidad, i , 1)"
                         style="margin: 4px; background: #bbbbbb; height:20px; width:20px;"
                         name="add-outline"></ion-icon>
                     </div>
@@ -570,17 +570,17 @@
                   </div>
                   <div class="alado">
                     <div *ngFor="let item of bolsa; let i = index">
-                      <div *ngIf="item.idProducto === producto.idProducto">
+                      <div *ngIf="item.productoInfo[0].idProducto === producto.idProducto">
                         <ion-icon class="ion-text-center iconAla" name="trash-outline" style=" height:20px; width:20px;"
                           (click)="eliminar(item)"></ion-icon>
                         <ion-label class="arriba"><strong>Cantidad</strong></ion-label>
-                        <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.cantidad, i , 2)"
+                        <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.productoInfo[0].cantidad, i , 2)"
                           style="margin: 4px; background: #bbbbbb; height:20px; width:20px;" name="remove-outline">
                         </ion-icon>
                         <span class="ion-text-center" class="arriba">
-                          {{ item.cantidad }}
+                          {{ item.productoInfo[0].cantidad }}
                         </span>
-                        <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.cantidad, i , 1)"
+                        <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.productoInfo[0].cantidad, i , 1)"
                           style="margin: 4px; background: #bbbbbb; height:20px; width:20px;"
                           name="add-outline"></ion-icon>
                       </div>
@@ -649,17 +649,17 @@
                 </div>
                 <div class="alado">
                   <div *ngFor="let item of bolsa; let i = index">
-                    <div *ngIf="item.idProducto === producto.idProducto">
+                    <div *ngIf="item.productoInfo[0].idProducto === producto.idProducto">
                       <ion-icon class="ion-text-center iconAla" name="trash-outline"
                         (click)="eliminar(item)"></ion-icon>
                       <ion-label class="arriba"><strong>Cantidad</strong></ion-label>
-                      <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.cantidad, i , 2)"
+                      <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.productoInfo[0].cantidad, i , 2)"
                         style="margin: 4px; background: #bbbbbb" name="remove-outline">
                       </ion-icon>
                       <span class="ion-text-center" class="arriba">
-                        {{ item.cantidad }}
+                        {{ item.productoInfo[0].cantidad }}
                       </span>
-                      <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.cantidad, i , 1)"
+                      <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.productoInfo[0].cantidad, i , 1)"
                         style="margin: 4px; background: #bbbbbb" name="add-outline"></ion-icon>
                     </div>
                   </div>
@@ -713,18 +713,18 @@
                 </div>
                 <div class="alado">
                   <div *ngFor="let item of bolsa; let i = index">
-                    <div *ngIf="item.idProducto === producto.idProducto">
+                    <div *ngIf="item.productoInfo[0].idProducto === producto.idProducto">
                       <ion-icon class="ion-text-center iconAla" name="trash-outline"
-                        (click)="eliminar(item)"></ion-icon>
+                                (click)="eliminar(item)"></ion-icon>
                       <ion-label class="arriba"><strong>Cantidad</strong></ion-label>
-                      <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.cantidad, i , 2)"
-                        style="margin: 4px; background: #bbbbbb" name="remove-outline">
+                      <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.productoInfo[0].cantidad, i , 2)"
+                                style="margin: 4px; background: #bbbbbb" name="remove-outline">
                       </ion-icon>
                       <span class="ion-text-center" class="arriba">
-                        {{ item.cantidad }}
+                        {{ item.productoInfo[0].cantidad }}
                       </span>
-                      <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.cantidad, i , 1)"
-                        style="margin: 4px; background: #bbbbbb" name="add-outline"></ion-icon>
+                      <ion-icon class="ion-text-center" (click)="aumentarDismuir(item.productoInfo[0].cantidad, i , 1)"
+                                style="margin: 4px; background: #bbbbbb" name="add-outline"></ion-icon>
                     </div>
                   </div>
                 </div>

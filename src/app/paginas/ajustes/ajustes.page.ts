@@ -38,6 +38,7 @@ export class AjustesPage implements OnInit {
   versionActualSistema: number;
   releaseDate: string;
   interval: any;
+  bolsa: number;
   constructor(
     private util: UtilsCls,
     public actionSheetController: ActionSheetController,
@@ -109,6 +110,15 @@ export class AjustesPage implements OnInit {
 
   ionViewWillLeave(){
     clearInterval(this.interval);
+  }
+
+  ionViewWillEnter(){
+    const bolsa1 = JSON.parse(localStorage.getItem('cartProducts'));
+    if ( bolsa1 !== null ){
+      this.bolsa = bolsa1.reduce((acumulador, elemento) => acumulador + elemento.productoInfo.length, 0);
+    } else if ( bolsa1 === null ){
+      this.bolsa = 0;
+    }
   }
 
   private validar(permisos: Array<PermisoModel>) {
@@ -240,6 +250,7 @@ export class AjustesPage implements OnInit {
 
   abrirCarrito(){
     this._router.navigate(['/tabs/carrito-compra']);
+    localStorage.setItem('abrirBolsa', '2');
   }
 
 }

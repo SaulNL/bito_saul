@@ -17,6 +17,7 @@ import { ProductosService } from "../../api/productos.service";
 })
 export class DetalleProductoComponent implements OnInit {
 
+    @Input() datosInfoNegocio: any;
     @Input() public _entregaDomicilio: any;
     @Input() public _entregaSitio: any;
     @Input() public _consumoSitio: any;
@@ -53,7 +54,7 @@ export class DetalleProductoComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        console.log('datos', this.datos);
         if (this.bolsa.length > 0) {
             this.bolsa.forEach(element => {
                 if (element.idProducto === this.datos.idProducto) {
@@ -102,13 +103,16 @@ export class DetalleProductoComponent implements OnInit {
     agragarproducto() {
         if (this.existeSesion) {
             const producto = {
-                idProducto: this.datos.idProducto,
-                precio: this.datos.precio,
-                imagen: this.datos.imagen,
-                cantidad: this.cantidad,
-                idNegocio: this.datos.negocio.idNegocio,
-                nombre: this.datos.nombre,
-                descripcion: this.datos.descripcion
+                infoNegocio: this.datosInfoNegocio,
+                productoInfo:  [{
+                    idProducto: this.datos.idProducto,
+                    precio: this.datos.precio,
+                    imagen: this.datos.imagen,
+                    cantidad: 1,
+                    idNegocio: this.datos.negocio.idNegocio,
+                    nombre: this.datos.nombre,
+                    descripcion: this.datos.descripcion,
+                }]
             };
             this.modalController.dismiss({
                 'data': producto

@@ -6,11 +6,12 @@
     </ion-buttons>
 
     <ion-buttons slot="end" class="btns-tool-end">
-      <ion-button (click)="abrirPaginaNotificaciones()">
+      <ion-button style="margin-right: -10px;" (click)="abrirPaginaNotificaciones()">
         <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
       </ion-button>
-      <ion-button (click)="abrirCarrito()">
+      <ion-button style="margin-right: -18px;" (click)="abrirCarrito()">
         <ion-icon name="bag-handle-outline"></ion-icon>
+        <ion-badge *ngIf="bolsa !== 0">{{bolsa}}</ion-badge>
       </ion-button>
       <ion-badge mode="md" class="badge" *ngIf="(numNotifiSinLeer != 0 && numNotifiSinLeer != undefined)">
         <span *ngIf="numNotifiSinLeer <= 99">{{numNotifiSinLeer}}</span>

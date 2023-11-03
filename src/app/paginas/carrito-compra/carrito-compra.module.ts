@@ -7,14 +7,18 @@ import { IonicModule } from '@ionic/angular';
 import { CarritoCompraPageRoutingModule } from './carrito-compra-routing.module';
 
 import { CarritoCompraPage } from './carrito-compra.page';
+import { FormBuilder } from '@angular/forms';
+import { PedidoNegocioModule } from '../../componentes/pedido-negocio/pedido-negocio.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CarritoCompraPageRoutingModule
+    CarritoCompraPageRoutingModule,
+      PedidoNegocioModule
   ],
-  declarations: [CarritoCompraPage]
+  declarations: [CarritoCompraPage],
+  providers: [FormBuilder]
 })
 export class CarritoCompraPageModule {}

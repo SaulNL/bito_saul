@@ -165,7 +165,7 @@
 
               <div class="body-card">
                 <div class="body-sec">
-                  <div *ngIf="proveedor.numero_sucursales >= 1" class="tag tag-orange">{{proveedor.numero_sucursales}} Sec.</div>
+                  <div *ngIf="proveedor.numero_sucursales >= 1" class="tag tag-orange">{{proveedor.numero_sucursales}} Suc.</div>
                   <div [ngClass]="proveedor.abierto == 'ABIERTO' ? 'tag tag-green': 'tag tag-red'">{{proveedor.abierto}}</div>
                   <app-dar-like-negocio [negocio]="proveedor" [usuario]="user" [mostrarLike]="existeSesion" (banderaAlert)="abrirAlert($event)">
                   </app-dar-like-negocio>
