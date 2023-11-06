@@ -106,6 +106,7 @@ export class PedidoNegocioComponent implements OnInit {
     tmp: number;
     infoNegocio: any;
     productos: any;
+    productos2: any;
     constructor(
         private utilsCls: UtilsCls,
         private modalController: ModalController,
@@ -218,9 +219,12 @@ export class PedidoNegocioComponent implements OnInit {
     }
 
     cerrarModal() {
-        this.modalController.dismiss({
-            data: this.lista
-        });
+        location.reload();
+        setTimeout(() => {
+            this.modalController.dismiss({
+                data: this.lista
+            });
+        }, 1000);
     }
 
     ionViewDidLeave() {
@@ -228,6 +232,16 @@ export class PedidoNegocioComponent implements OnInit {
     }
 
     eliminar(index) {
+        this.productos = JSON.parse(localStorage.getItem('cartProducts'));
+        const productIndex = this.productos.findIndex(p => p.infoNegocio.id_negocio === this.idNegocio);
+        if (productIndex !== -1) {
+            const productoInfo = this.productos[productIndex].productoInfo;
+            productoInfo.splice(index, 1);
+            if (productoInfo.length === 0) {
+                this.productos.splice(productIndex, 1);
+            }
+            this.saveCartProducts();
+        }
         this.lista.productoInfo.pop(index);
         this.sumarLista();
         if (this.suma === 0) {
