@@ -204,6 +204,15 @@ export class PedidosNegocioPage implements OnInit {
       .subscribe(
         (res) => {
           this.listaNegocioPedididos = res.data;
+          this.listaNegocioPedididos.forEach((negocio,index) => {
+            let cantidadPedido = 0;
+            negocio.pedidos.forEach(pedido => {
+              if (pedido.id_estatus_pedido == 1) {
+                cantidadPedido++;
+              }
+            });
+            this.listaNegocioPedididos[index].pedidosFaltantes = cantidadPedido
+          });
           this.loaderBus = false;
           this.loaderSearch = false;
         },

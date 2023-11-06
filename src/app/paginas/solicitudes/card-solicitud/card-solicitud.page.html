@@ -38,9 +38,13 @@
       </ion-grid>
       <ion-grid>
         <ion-row class="ion-text-center">
-          <ion-col size="6">
+          <ion-col size="6" *ngIf="solicitud.activo_public !== 1">
             <ion-button (click)="abrirModal()" color="success" expand="block">Publicar
               <ion-icon name="globe-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <ion-col size="6" *ngIf="solicitud.activo_public === 1">
+            <ion-button (click)="quitarPublicacion(solicitud)" color="danger" expand="block">Despublicar
             </ion-button>
           </ion-col>
           <ion-col size="6">
