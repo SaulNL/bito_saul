@@ -8,15 +8,16 @@ import {ToadNotificacionService} from "../../../api/toad-notificacion.service";
 import {HaversineService} from "ng2-haversine";
 import {SocialSharing} from "@ionic-native/social-sharing/ngx";
 import {Router} from "@angular/router";
-import {ViewQrPromocionComponent} from "../../../components/viewqr-promocion/viewqr-promocion.component";
 import {AppSettings} from "../../../AppSettings";
-import {AlertController, ModalController} from "@ionic/angular";
+import {AlertController, ModalController, Platform} from "@ionic/angular";
 import {FiltrosModel} from "../../../Modelos/FiltrosModel";
 import {Auth0Service} from "../../../api/auth0.service";
 import {ICupoon} from "../../../interfaces/ICupon";
 import QRCode from "easyqrcodejs";
 import html2canvas from "html2canvas";
 import { Filesystem, Directory} from '@capacitor/filesystem';
+import { Media, MediaSaveOptions } from "@capacitor-community/media";
+import { ModalImagenCuponComponent } from '../../../components/modal-imagen-cupon/modal-imagen-cupon.component';
 
 @Component({
   selector: 'app-modal-info-promocion',
@@ -93,6 +94,7 @@ export class ModalInfoPromocionComponent implements OnInit {
       private auth0: Auth0Service,
       private cdRef: ChangeDetectorRef,
       public alertController: AlertController,
+      public platform: Platform
   ) {
     this.existeSesion = this.util.existe_sesion();
     this.usuario = this.auth0.getUserData();
@@ -365,7 +367,7 @@ export class ModalInfoPromocionComponent implements OnInit {
           this.loader = false;
           this.cupon = true;
         }
-      }, 200);
+      }, 1000);
     }
   }
 
@@ -469,17 +471,33 @@ export class ModalInfoPromocionComponent implements OnInit {
 
   async crearImagen(promocion) {
     setTimeout(() => {
-      html2canvas(document.querySelector("#contenidoCupon")).then(canvas => {
+      html2canvas(document.querySelector("#contenidoCupon")).then(async canvas => {
         const fileName = 'qr_promo' + this.numeroAleatorioDecimales(10, 1000) + promocion.nombre_comercial + '.png';
-        Filesystem.writeFile({
-          path: fileName,
-          data: canvas.toDataURL().toString(),
-          directory: Directory.Documents
-        }).then(() => {
-          this.notificaciones.exito('Se descargo correctamente cupón de ' + promocion.nombre_comercial);
-        }, error => {
-          this.notificaciones.error(error);
+
+        if ( this.platform.is("ios") ){
+          let opts: MediaSaveOptions = { path: canvas.toDataURL().toString(), fileName: fileName };
+          await Media.savePhoto(opts);
+        } else {
+          Filesystem.writeFile({
+            path: fileName,
+            data: canvas.toDataURL().toString(),
+            directory: Directory.Documents
+          }).then(() => {
+          }, error => {
+            this.notificaciones.error(error);
+          });
+        }
+
+        const modal = await this.modalController.create({
+          component: ModalImagenCuponComponent,
+          componentProps: {
+            imagenCupon: canvas.toDataURL().toString()
+          },
         });
+        await modal.present();
+
+        this.notificaciones.exito('Se descargo correctamente cupón de ' + promocion.nombre_comercial);
+
       });
       this.loader = false;
       this.cupon = true;

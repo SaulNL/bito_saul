@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Bitoo</string>
+	<string>Bituyú</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -44,6 +44,16 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>capacitor</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
+			<key>CFBundleURLName</key>
+			<string>bituyu</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>bituyu</string>
 			</array>
 		</dict>
 	</array>

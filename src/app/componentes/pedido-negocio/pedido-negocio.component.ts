@@ -105,6 +105,7 @@ export class PedidoNegocioComponent implements OnInit {
     dstn: number;
     tmp: number;
     infoNegocio: any;
+    productos: any;
     constructor(
         private utilsCls: UtilsCls,
         private modalController: ModalController,
@@ -144,10 +145,12 @@ export class PedidoNegocioComponent implements OnInit {
         this.infoNegocio = this.negocioService.getSelectedObj();
         this.ObtenerDireccionPersonal();
         this.validarCosto();
-        if (this._entregaDomicilio === 1) {
+        if (this._consumoSitio) {
+            this.tipoEnvio = 1;
+        } else if (this._entregaDomicilio) {
             this.tipoEnvio = 2;
-        } else {
-            this.tipoEnvio = null;
+        } else if (this._entregaSitio) {
+            this.tipoEnvio = 3;
         }
         this.primeraVez = true;
         this.loadMap();
@@ -225,7 +228,7 @@ export class PedidoNegocioComponent implements OnInit {
     }
 
     eliminar(index) {
-        this.lista.pop(index);
+        this.lista.productoInfo.pop(index);
         this.sumarLista();
         if (this.suma === 0) {
             this.lista = [];
@@ -433,6 +436,7 @@ export class PedidoNegocioComponent implements OnInit {
                 this.loader = false;
                 this.guard.tf = true;
                 this.mesajes.exito('Pedido realizado con éxito');
+                this.completadoCompra();
                 this.lista = [];
                 this.cerrarModal();
             }, () => {
@@ -474,7 +478,7 @@ export class PedidoNegocioComponent implements OnInit {
                             this.pedidoOrdenMP(response.data);
                         } else {
                             // Validar que el usuario ya haya regisrado su informacion(se queda CARGANDO)
-                            this.enviarSms(telephoneUsuario, this.lista[0].idNegocio);
+                            this.enviarSms(telephoneUsuario, this.lista.infoNegocio.idNegocio);
                             this.loader = false;
                         }
                     } else if (response.code === 302) {
@@ -508,7 +512,7 @@ export class PedidoNegocioComponent implements OnInit {
 
     public realizarPedido() {
         this.loader = true;
-        this.pedido = new PedidoNegocioModel(this.lista[0].idNegocio, this.utilsCls.getIdPersona(), this.tipoEnvio, this.lista, this.idTipoDePago);
+        this.pedido = new PedidoNegocioModel(this.lista.infoNegocio.id_negocio, this.utilsCls.getIdPersona(), this.tipoEnvio, this.lista.productoInfo, this.idTipoDePago);
         this.pedido.detalle = this.detalle;
         if (this.tipoEnvio !== null) {
             switch (this.tipoEnvio) {
@@ -545,8 +549,8 @@ export class PedidoNegocioComponent implements OnInit {
     private sumarLista() {
         this.suma = 0
         this.sumaTotal = 0
-        this.lista.map(it => {
-            this.suma = this.suma + (it.precio * it.cantidad)
+        this.lista.productoInfo.map(it => {
+            this.suma = this.suma + (it.precio * it.cantidad);
         })
         this.sumaTotal = this.suma
 
@@ -595,13 +599,13 @@ export class PedidoNegocioComponent implements OnInit {
     }
 
     aumentarDismuir(cantidad: number, index: number, operacion: number) {
-        let valor = this.lista[index].cantidad;
+        let valor = this.lista.productoInfo[index].cantidad;
         if (operacion === 1 && cantidad >= 1) {
-            this.lista[index].cantidad = ++valor;
+            this.lista.productoInfo[index].cantidad = ++valor;
             this.sumarLista();
         }
         if (operacion === 2 && cantidad > 1) {
-            this.lista[index].cantidad = --valor;
+            this.lista.productoInfo[index].cantidad = --valor;
             this.sumarLista();
         }
     }
@@ -827,6 +831,18 @@ export class PedidoNegocioComponent implements OnInit {
         this.compraForm = new FormGroup({
 
         })
+    }
+    completadoCompra(){
+        this.productos = JSON.parse(localStorage.getItem('cartProducts'));
+        const productIndex = this.productos.findIndex(p => p.infoNegocio.id_negocio === this.idNegocio);
+        if (productIndex !== -1) {
+            this.productos.splice(productIndex, 1);
+            this.saveCartProducts();
+        }
+    }
+
+    saveCartProducts() {
+        localStorage.setItem('cartProducts', JSON.stringify(this.productos));
     }
 
 }

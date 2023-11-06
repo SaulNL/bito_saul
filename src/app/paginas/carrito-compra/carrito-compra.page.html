@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title  mode="ios">Bolsa de compras</ion-title>
+    <ion-buttons slot="end">
+      <ion-button style="font-size: 22px;" (click)="regresar()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
+<ion-content fullscreen *ngIf="loaderReservaciones">
+  <ion-grid *ngIf="productos.length === 0 || false">
+    <ion-text color="primary">
+      <h2>
+        Aun no has agregado articulos en tu carrito!!
+      </h2>
+    </ion-text>
+  </ion-grid>
+  <div *ngIf="productos.length > 0 || true">
+    <ion-item *ngFor="let product of productos; let i = index">
+      <div class="item-container">
+        <div *ngFor="let producto of product.productoInfo">
+          <div class="contenedorP">
+            <div class="imagen-redonda">
+              <img *ngIf="producto.imagen.length > 0" [src]="producto.imagen[0] || producto.imagen">
+              <img *ngIf="producto.imagen.length == 0" src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/PROVEEDOR/Proveedor500.png">
+            </div>
+            <strong style="width: 165px; font-size: 13px;">{{producto.nombre}}</strong>
+            <div style="display: flex">
+              <ion-button class="buttonCantidad" [disabled]="producto.cantidad === 1" (click)="actualizarProducto(producto.idProducto, -1)"><ion-icon name="remove-outline"></ion-icon></ion-button>
+              <div style="min-width: 20px; margin-top: 5px">
+                <span>{{producto.cantidad}}</span>
+              </div>
+              <ion-button class="buttonCantidad" (click)="actualizarProducto(producto.idProducto, 1)"><ion-icon name="add-outline"></ion-icon></ion-button>
+            </div>
+          </div>
+          <div class="contenedorS">
+            <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+              <ion-button style="--background: red; font-size: 10px; --border-radius: 7px; text-transform: none" (click)="eliminarProducto(producto.idProducto)">Eliminar</ion-button>
+              <p style="opacity: 0.5; font-size: 13px;">${{obtenerTotal(producto.precio, producto.cantidad)}}</p>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: -15px;">
+          <ion-button style="--background: orange; font-size: 10px; --border-radius: 20px; text-transform: none" (click)="completarCompra(i)">Comprar bolsa negocio</ion-button>
+          <p style="font-size: 13px;">Total ${{precioTotal(i)}} pesos</p>
+        </div>
+      </div>
+    </ion-item>
+  </div>
+</ion-content>

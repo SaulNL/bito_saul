@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {FiltrosModel} from "../../../Modelos/FiltrosModel";
-import {ModalController} from "@ionic/angular";
+import {ModalController, Platform} from "@ionic/angular";
 import {Router} from "@angular/router";
 import {PromocionesService} from "../../../api/promociones.service";
 import {HaversineService} from "ng2-haversine";
@@ -13,6 +13,9 @@ import {ICupoon} from "../../../interfaces/ICupon";
 import QRCode from "easyqrcodejs";
 import html2canvas from "html2canvas";
 import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Media, MediaSaveOptions } from "@capacitor-community/media";
+import { ModalImagenCuponComponent } from '../../../components/modal-imagen-cupon/modal-imagen-cupon.component';
+
 
 @Component({
   selector: 'app-modal-promociones-info',
@@ -66,7 +69,8 @@ export class ModalPromocionesInfoComponent implements OnInit {
       private notificaciones: ToadNotificacionService,
       private socialSharing: SocialSharing,
       private auth0: Auth0Service,
-      private cdRef: ChangeDetectorRef
+      private cdRef: ChangeDetectorRef,
+      public platform: Platform
   ) {
     this.usuario = this.auth0.getUserData();
   }
@@ -327,22 +331,36 @@ export class ModalPromocionesInfoComponent implements OnInit {
 
   async crearImagen(promocion) {
     setTimeout(() => {
-      html2canvas(document.querySelector("#contenidoCupon")).then(canvas => {
+      html2canvas(document.querySelector("#contenidoCupon")).then(async canvas => {
         const fileName = 'qr_promo' + this.numeroAleatorioDecimales(10, 1000) + promocion.nombre_comercial + '.png';
-        Filesystem.writeFile({
-          path: fileName,
-          data: canvas.toDataURL().toString(),
-          directory: Directory.Documents
-        }).then(() => {
-          this.notificaciones.exito('Se descargo correctamente cupón de ' + promocion.nombre_comercial);
-        }, error => {
-          this.notificaciones.error(error);
+
+        if ( this.platform.is("ios") ){
+          let opts: MediaSaveOptions = { path: canvas.toDataURL().toString(), fileName: fileName };
+          await Media.savePhoto(opts);
+        } else {
+          Filesystem.writeFile({
+            path: fileName,
+            data: canvas.toDataURL().toString(),
+            directory: Directory.Documents
+          }).then(() => {
+          }, error => {
+            this.notificaciones.error(error);
+          });
+        }
+
+        const modal = await this.modalController.create({
+          component: ModalImagenCuponComponent,
+          componentProps: {
+            imagenCupon: canvas.toDataURL().toString()
+          },
         });
+        await modal.present();
+
+        this.notificaciones.exito('Se descargo correctamente cupón de ' + promocion.nombre_comercial);
       });
       this.loader = false;
       this.cupon = true;
-      }, 1000);
-
+    }, 1000);
   }
 
   numeroAleatorioDecimales(min, max) {

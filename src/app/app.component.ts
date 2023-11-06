@@ -5,7 +5,7 @@ import { NotificationWithFirebaseService } from './api/notification-with-firebas
 import { AccessPermissionService } from './api/access-permission.service';
 import { Component } from '@angular/core';
 import { ModalController, NavController, Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+//import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -16,6 +16,7 @@ import { VersionAndroidService } from './api/version-android.service';
 import { AppSettings } from './AppSettings';
 import { Geolocation } from '@capacitor/geolocation';
 import { DeviceInfoModel } from "./Modelos/DeviceInfoModel";
+import { SplashScreen } from '@capacitor/splash-screen';
 import { App } from '@capacitor/app';
 
 @Component({
@@ -45,7 +46,7 @@ export class AppComponent {
 
     constructor(
         private platform: Platform,
-        private splashScreen: SplashScreen,
+        //private splashScreen: SplashScreen,
         private statusBar: StatusBar,
         private deeplinks: Deeplinks,
         private router: Router,
@@ -85,9 +86,9 @@ export class AppComponent {
 
 
     initializeApp() {
-        this.platform.ready().then(() => {
+        this.platform.ready().then(async () => {
             this.statusBar.styleDefault();
-            this.splashScreen.hide();
+            await SplashScreen.hide();
             //this.appLinks();
             this.obtenerVersion(this.device);
         });

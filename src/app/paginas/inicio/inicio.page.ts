@@ -954,6 +954,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   negocioRuta(negocioURL, proveedor) {
+    localStorage.setItem('urlNegocio1', negocioURL);
     this.idNegocio = proveedor;
     setTimeout(() => {
       if (negocioURL == '') {

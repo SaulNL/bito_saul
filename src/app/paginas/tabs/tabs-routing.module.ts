@@ -74,6 +74,10 @@ const routes: Routes = [
         loadChildren: () => import('../../paginas/notificacion/notificacion.module').then(m => m.NotificacionPageModule)
       },
       {
+        path: 'carrito-compra',
+        loadChildren: () => import('../carrito-compra/carrito-compra.module').then( m => m.CarritoCompraPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/inicio',
         pathMatch: 'full'
