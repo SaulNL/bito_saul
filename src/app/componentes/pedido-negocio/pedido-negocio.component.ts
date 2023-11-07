@@ -612,15 +612,17 @@ export class PedidoNegocioComponent implements OnInit {
         this.geocodeLatLng();
     }
 
-    aumentarDismuir(cantidad: number, index: number, operacion: number) {
-        let valor = this.lista.productoInfo[index].cantidad;
-        if (operacion === 1 && cantidad >= 1) {
-            this.lista.productoInfo[index].cantidad = ++valor;
-            this.sumarLista();
-        }
-        if (operacion === 2 && cantidad > 1) {
-            this.lista.productoInfo[index].cantidad = --valor;
-            this.sumarLista();
+    aumentarDismuir(index: number, operacion: number) {
+        this.productos = JSON.parse(localStorage.getItem('cartProducts'));
+        const productIndex = this.productos.findIndex(p => p.infoNegocio.id_negocio === this.idNegocio);
+        if (productIndex !== -1){
+            const productInfo = this.productos[productIndex].productoInfo;
+            if (index >= 0 && index < productInfo.length){
+                productInfo[index].cantidad += operacion;
+                this.lista.productoInfo[index].cantidad += operacion;
+                this.sumarLista();
+                this.saveCartProducts();
+            }
         }
     }
 
