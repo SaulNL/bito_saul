@@ -8,6 +8,7 @@ import { NotificacionPageRoutingModule } from './notificacion-routing.module';
 
 import { NotificacionPage } from './notificacion.page';
 import { NotificacionChatComponent } from '../../components/notificacion-chat/notificacion-chat.component';
+import { ModalInfoSolicitudComponent } from '../../componentes/modal-info-solicitud/modal-info-solicitud.component';
 //import {SpinnerComponent} from "../../componentes/spinner/spinner.component";
 
 @NgModule({
@@ -20,6 +21,7 @@ import { NotificacionChatComponent } from '../../components/notificacion-chat/no
   declarations: [
     NotificacionPage, 
     NotificacionChatComponent,
+      ModalInfoSolicitudComponent
   ]
 })
 export class NotificacionPageModule {}
