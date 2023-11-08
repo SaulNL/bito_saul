@@ -1143,6 +1143,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
           } else {
             existingProduct.productoInfo.push(producto.productoInfo[0]);
           }
+          this.cantidad = this.bolsa.reduce((acumulador, elemento) => acumulador + elemento.productoInfo.length, 0);
         } else {
           this.bolsa.push(producto);
           this.cantidad = this.bolsa.reduce((acumulador, elemento) => acumulador + elemento.productoInfo.length, 0);
