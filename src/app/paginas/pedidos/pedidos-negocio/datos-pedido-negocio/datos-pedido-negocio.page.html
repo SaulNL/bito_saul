@@ -87,7 +87,7 @@
           <ion-col>
             <p>{{producto.nombre_producto}}</p>
             <small class="d-block">Cantidad: {{producto.cantidad}}</small>
-            <small class="d-block">Precio unitario: $ {{
+            <small class="d-block">Precio unitario:<br>$ {{
               precioUnitarioParche(producto.cantidad,producto.costo)}}</small>
             <small class="d-block">Precio Total: </small> <strong><span> $ {{producto.costo}}</span></strong>
           </ion-col>
@@ -96,7 +96,7 @@
               <small *ngIf="pedido.detalle === null">
                 Sin observaciones
               </small>
-              <small *ngIf="pedido.detalle !== null">{{pedido.detalle}}</small>
+              <small *ngIf="pedido.detalle !== null">Comentario:<br>{{pedido.detalle}}</small>
             </div>
           </ion-col>
         </ion-row>
