@@ -11,8 +11,8 @@
       </ion-button>
       <ion-button style="margin-right: -15px;" (click)="abrirCarrito()">
         <ion-icon name="bag-handle-outline"></ion-icon>
-        <ion-badge *ngIf="bolsa !== 0">{{bolsa}}</ion-badge>
       </ion-button>
+      <ion-badge class="bolsa" *ngIf="bolsa !== 0">{{bolsa}}</ion-badge>
       <ion-badge mode="md" class="badge" *ngIf="(numNotifiSinLeer != 0 && numNotifiSinLeer != undefined)">
         <span *ngIf="numNotifiSinLeer <= 99">{{numNotifiSinLeer}}</span>
         <span *ngIf="numNotifiSinLeer > 99">99+</span>

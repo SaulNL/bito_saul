@@ -171,7 +171,7 @@ export class NotificacionChatComponent implements OnInit {
     setTimeout(() => {
       this.cerrarModal();
       this.modalDetalleSolicitud(this.solicitud);
-    }, 500);
+    }, 800);
   }
 
   async modalDetalleSolicitud(solicitud: any){
