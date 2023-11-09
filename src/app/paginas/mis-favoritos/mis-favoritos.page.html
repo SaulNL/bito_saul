@@ -1,33 +1,80 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    
-    <ion-title>Favoritos</ion-title>
+    <ion-title mode="ios">Favoritos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-
-<ion-header>
+<ion-header *ngIf="!loader">
   <ion-toolbar >
-    <ion-segment
-            value="productos"
-            scrollable="true"
-            [(ngModel)]="segmentModel"
-            (ionChange)="segmentChanged($event)"
-    >
+    <ion-segment value="productos" scrollable="true" [(ngModel)]="segmentModel">
       <ion-segment-button value="productos">Productos y servicios</ion-segment-button>
       <ion-segment-button value="negocios">Negocios</ion-segment-button>
     </ion-segment>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-      <app-productos-favoritos
-              *ngIf="segmentModel === 'productos'"
-      ></app-productos-favoritos>
-      <app-negocios-favoritos
-              *ngIf="segmentModel === 'negocios'"
-      ></app-negocios-favoritos>
+<app-spinner [loader]="loader" [message]="msj"></app-spinner>
+<ion-content *ngIf="segmentModel === 'productos' && !loader">
+    <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
+    <ion-grid style="background-color: white;" *ngIf="tamanoLista === 0">
+        <ion-row class="ion-align-items-center">
+            <ion-col size="12" class="ion-text-center">
+                <ion-badge color="warning">Aún no tienes productos favoritos</ion-badge>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-list>
+        <ion-item *ngFor="let producto of listaProductos" class="item  in-list ion-focusable hydrated item-label">
+            <ion-avatar #datos (click)="abrirProducto(producto)" slot="start">
+                <img src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/Proveedor500.png" [srcset]="productoImagen(producto.imagen)"/>
+            </ion-avatar>
+            <ion-label class="hydrated" #datos (click)="abrirProducto(producto)">
+                <h3>{{producto.nombre}}</h3>
+                <p> {{(producto.nombre_categoria1 != null) ? producto.nombre_categoria1 : 'Sin categoría'}} </p>
+                <p color="success">${{(producto.precio != '') ? ((producto.precio !=
+                    null) ? producto.precio : 'Sin precio') : 'Sin precio'}}</p>
+                <p>{{(producto.descripcion != null) ? producto.descripcion : 'Sin descripción'}}</p>
+                <ion-badge color="primary">{{producto.tipo}}</ion-badge>
+                <ion-badge color="medium">{{(producto.ubicacion !=
+                    null) ? producto.ubicacion.nombre_localidad : 'Sin ubicación'}}
+                </ion-badge>
+            </ion-label>
+
+            <ion-chip class="ion-margin-start  ion-activatable hydrated customChip" (click)="darDislike(producto)"
+                      *ngIf="motrarContacto">
+                <ion-icon class="text-rosa heartLike hydrated" role="img" name="heart" aria-label="dollar">
+                </ion-icon>
+                <ion-label class="hydrated">{{ producto.likes }}</ion-label>
+            </ion-chip>
+        </ion-item>
+    </ion-list>
 </ion-content>
-
-
-
+<ion-content *ngIf="segmentModel === 'negocios' && !loader">
+    <app-boton-top [content]="content" [cordenada]="cordenada" [platform]="isIOS"></app-boton-top>
+    <ion-grid style="background-color: white;" *ngIf="tamanioLista === 0">
+        <ion-row class="ion-align-items-center">
+            <ion-col size="12" class="ion-text-center">
+                <ion-badge color="warning">Aún no tienes negocios favoritos</ion-badge>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-list>
+        <ion-item *ngFor="let negocio of listaNegocios" class="item  in-list ion-focusable hydrated item-label">
+            <ion-avatar #datos (click)="abrirNegocio(negocio.url_negocio)" slot="start">
+                <img alt="default" src="https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/Proveedor500.png" [srcset]="negocio.url_logo">
+            </ion-avatar>
+            <ion-label class="hydrated" #datos (click)="abrirNegocio(negocio.url_negocio)">
+                <h3>{{negocio.nombre_comercial}}</h3>
+                <ion-badge color="primary">{{(negocio.nombre != null)?negocio.nombre:'Sin categoría'}}</ion-badge>
+                <p>{{(negocio.descripcion != null)?negocio.descripcion:'Sin descripción'}}</p>
+                <ion-badge color="{{ isTypeColor(negocio.abierto) }}"> {{ negocio.abierto }} </ion-badge>
+            </ion-label>
+            <ion-chip class="ion-margin-start  ion-activatable hydrated customChip" (click)="darDislikeNegocio(negocio)" *ngIf="motrarContacto">
+                <ion-icon class="text-rosa heartLike hydrated" role="img" name="heart" aria-label="dollar">
+                </ion-icon>
+                <ion-label class="hydrated">{{ negocio.likes }}</ion-label>
+            </ion-chip>
+        </ion-item>
+    </ion-list>
+</ion-content>
