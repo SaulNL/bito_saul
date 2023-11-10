@@ -16,7 +16,7 @@
 <app-spinner [loader]="loader" [message]="msj"></app-spinner>
 <ion-content *ngIf="segmentModel === 'productos' && !loader">
     <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
-    <ion-grid style="background-color: white;" *ngIf="tamanoLista === 0">
+    <ion-grid style="background-color: white;" *ngIf="listaProductos.length === 0 || false">
         <ion-row class="ion-align-items-center">
             <ion-col size="12" class="ion-text-center">
                 <ion-badge color="warning">Aún no tienes productos favoritos</ion-badge>
@@ -52,7 +52,7 @@
 </ion-content>
 <ion-content *ngIf="segmentModel === 'negocios' && !loader">
     <app-boton-top [content]="content" [cordenada]="cordenada" [platform]="isIOS"></app-boton-top>
-    <ion-grid style="background-color: white;" *ngIf="tamanioLista === 0">
+    <ion-grid style="background-color: white;" *ngIf="listaNegocios.length === 0 || false">
         <ion-row class="ion-align-items-center">
             <ion-col size="12" class="ion-text-center">
                 <ion-badge color="warning">Aún no tienes negocios favoritos</ion-badge>

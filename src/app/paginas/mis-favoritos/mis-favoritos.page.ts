@@ -23,8 +23,6 @@ export class MisFavoritosPage implements OnInit {
   public segmentModel = 'productos';
   public cordenada: number;
 
-  public tamanoLista: number;
-  public tamanioLista: number;
   public loader: boolean;
   public listaProductos: any;
   public msj = 'Cargando';
@@ -47,8 +45,8 @@ export class MisFavoritosPage implements OnInit {
       private serviceProveedores: ProveedorServicioService,
   ) {
     this.user = this.util.getUserData();
-    this.tamanoLista = 0;
-    this.tamanioLista = 0;
+    this.listaProductos = [];
+    this.listaNegocios = [];
     this.loader = false;
     this.existeSesion = util.existe_sesion();
     this.isIOS = this.platform.is('ios');
@@ -84,12 +82,10 @@ export class MisFavoritosPage implements OnInit {
                 if (response.code === 200) {
                   this.listaProductos = response.data.data;
                   localStorage.setItem('lstProductosOriginal', JSON.stringify(this.listaProductos));
-                  this.tamanoLista = this.listaProductos.length;
                 }
                 this.loader = false;
               },
               (error) => {
-                this.tamanoLista = 0;
                 this.loader = false;
               }
           );
@@ -164,11 +160,9 @@ export class MisFavoritosPage implements OnInit {
                 this.loader = false;
                 if (response.code === 200) {
                   this.listaNegocios = response.data;
-                  this.tamanioLista = this.listaNegocios ? this.listaNegocios.length : 0;
                 }
               },
               (error) => {
-                this.tamanioLista = 0;
                 this.loader = false;
               }
           );
