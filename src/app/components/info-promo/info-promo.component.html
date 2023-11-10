@@ -83,7 +83,6 @@
     <ion-row style="margin-top: -25px;">
       <ion-col size="12" class="ion-text-center" *ngIf="blnPermisoUbicacion">
         <h2 class="promocion">A {{ promocion.distanciaNegocio}} Km cerca de tí.</h2>
-        <ion-button size="small" color="danger"><a href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{promocion.latitud}},{{promocion.longitud}}" target="_blank">Ir al lugar</a></ion-button>
       </ion-col>
       <ion-col size="12" class="ion-text-center" *ngIf="!blnPermisoUbicacion">
         <h2 class="aDefault promocion" matTooltip="Bituyú no puede obtener tu ubicación. Por favor activa los permisos de ubicación del navegador para poder determinar la distancia a la que se encuentra el negocio">
@@ -93,6 +92,9 @@
     </ion-row>
     <ion-row style="margin-top: -25px;">
       <ion-col size="12" class="ion-text-center">
+        <ion-button size="small" color="danger" style="margin-top: 15px; margin-bottom: -19px;">
+          <a href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{promocion.latitud}},{{promocion.longitud}}" target="_blank">Ir al lugar</a>
+        </ion-button>
         <h2>Enviale un WhatsApp: <a href="https://api.whatsapp.com/send?phone=+52{{promocion.celular}}">
           <ion-icon name="logo-whatsapp" size="large" style="color: green;"></ion-icon>
         </a></h2>
