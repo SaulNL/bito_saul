@@ -68,7 +68,7 @@ export class DenunciaNegocioPage implements OnInit {
           data => {
             if (data.code === 200) {
               this.loaderFalse();
-              this.notificaciones.exito('se guardo correctamente la denuncia');
+              this.notificaciones.exito('Se guardo correctamente la denuncia');
               this.cerrarModal();
             } else {
               this.loader = false;
