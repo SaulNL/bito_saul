@@ -517,4 +517,10 @@ export class ModalInfoPromocionComponent implements OnInit {
     this.isAlert = isAlert;
   }
 
+  dismissModal(bandera: number) {
+    if (bandera === 2){
+      this.modalController.dismiss();
+    }
+  }
+
 }
