@@ -272,4 +272,8 @@ export class PromocionesPage implements OnInit {
     cerrarAlert(isAlert: boolean){
         this.isAlert = isAlert;
     }
+
+    abrirAlert(isAlert: boolean){
+        this.isAlert = isAlert;
+    }
 }
