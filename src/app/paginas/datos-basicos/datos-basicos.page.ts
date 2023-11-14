@@ -257,26 +257,17 @@ export class DatosBasicosPage implements OnInit {
     this.bandera = false;
     this.mensaje = null;
 
-    let nombre_archivo;
-    if (result.files && result.files.length) {
-      for (const archivo of result.files) {
-        nombre_archivo = archivo.name;
-        const img = new Image();
-        img.src = `data:image/png;base64,${archivo.data}`
-        img.onload = () => {
-          this.resizeToWidth = 200;
-          this.resizeToHeight = 200;
-          this.abrirModal(img.src, this.resizeToWidth, this.resizeToHeight).then(r => {
-            if (r !== undefined) {
-              const archivo = new ArchivoComunModel();
-              archivo.nombre_archivo = nombre_archivo;
-              archivo.archivo_64 = `data:image/png;base64,${result.files[0].data}`;
-              this.usuarioSistema.selfie = archivo;
-            }
-          });
-        };
+    let imgPrueba = `data:image/png;base64,${result.files[0].data}`
+
+    this.abrirModal(imgPrueba, 400, 400).then(r => {
+      if (r !== undefined) {
+        const archivo = new ArchivoComunModel();
+        archivo.nombre_archivo = result.files[0].name;
+        archivo.archivo_64 = r.data;
+        this.usuarioSistema.selfie = archivo;
+        // this.blnImgCuadrada = false;
       }
-    }
+    });
   }
 
   async abrirModal(evento, width, heigh) {
@@ -287,14 +278,13 @@ export class DatosBasicosPage implements OnInit {
         imageChangedEvent: evento,
         resizeToWidth: width,
         resizeToHeight: heigh,
-        IdInput: 'selfie'
+        IdInput: 'imageUpload'
       }
     });
-
     await modal.present();
     const { data } = await modal.onDidDismiss().then(r => {
-      return r;
-    }
+          return r;
+        }
     );
     return data;
   }
