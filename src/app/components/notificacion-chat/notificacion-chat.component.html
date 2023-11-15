@@ -37,7 +37,10 @@
         </div>
         <div class="msg-content">
           <span class="triangle"></span>
-          <p>{{ msg.mensaje }}<span *ngIf="msg.evento">. Descarga la reservación <a (click)="reservacion(msg.evento)">aqui</a></span></p>
+          <p>{{ msg.mensaje }}.
+            <span *ngIf="msg.evento"> Descarga la reservación <a (click)="reservacion(msg.evento)">aquí</a></span>
+            <span *ngIf="msg.id_solicitud"><br><br>Postúlate <a (click)="requerimiento(msg.id_solicitud)">aquí</a></span>
+          </p>
         </div>
       </div>
       <div class="msg-detail" *ngIf="msg.visible === 0 && msg.remitente === 1 && !idProveedorUsuario">
@@ -51,7 +54,10 @@
         </div>
         <div class="msg-content">
           <span class="triangle"></span>
-          <p>{{ msg.mensaje }}<span *ngIf="msg.evento">. Descarga la reservación <a (click)="reservacion(msg.evento)">aqui</a></span></p>
+          <p>{{ msg.mensaje }}.
+            <span *ngIf="msg.evento"> Descarga la reservación <a (click)="reservacion(msg.evento)">aquí</a></span>
+            <span *ngIf="msg.id_solicitud"><br><br>Postúlate <a (click)="requerimiento(msg.id_solicitud)">aquí</a></span>
+          </p>
         </div>
       </div>
       <div class="msg-detail" *ngIf="msg.visible === 1">
@@ -65,7 +71,10 @@
         </div>
         <div class="msg-content">
           <span class="triangle"></span>
-          <p>{{ msg.mensaje }}<span *ngIf="msg.evento">. Descarga la reservación <a (click)="reservacion(msg.evento)">aqui</a></span></p>
+          <p>{{ msg.mensaje }}.
+            <span *ngIf="msg.evento"> Descarga la reservación <a (click)="reservacion(msg.evento)">aquí</a></span>
+            <span *ngIf="msg.id_solicitud"><br><br>Postúlate <a (click)="requerimiento(msg.id_solicitud)">aquí</a></span>
+          </p>
         </div>
       </div>
     </div>

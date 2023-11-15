@@ -5,6 +5,11 @@ import { NotificacionesService } from "../../api/usuario/notificaciones.service"
 import {DetallesReservaComponent} from "../../paginas/eventos/detalles-reserva/detalles-reserva.component";
 import {RecorteImagenComponent} from "../recorte-imagen/recorte-imagen.component";
 import {EventosService} from "../../api/eventos.service";
+import {SolicitudesService} from "../../api/solicitudes.service";
+import {SolicitudesModel} from "../../Modelos/SolicitudesModel";
+import {ToadNotificacionService} from "../../api/toad-notificacion.service";
+import {FiltrosModel} from "../../Modelos/FiltrosModel";
+import {ModalInfoSolicitudComponent} from "../../componentes/modal-info-solicitud/modal-info-solicitud.component";
 
 @Component({
   selector: "app-notificacion-chat",
@@ -23,7 +28,10 @@ export class NotificacionChatComponent implements OnInit {
   mensajes: any[] = [];
   mensajeEnviar: string = "";
   interval: any;
+  solicitud: any;
   public idProveedorUsuario: boolean = false;
+  public lstSolicitudes: Array<SolicitudesModel>;
+  public anyFiltros: FiltrosModel;
 
   constructor(
     private service: NotificacionesService,
@@ -31,11 +39,16 @@ export class NotificacionChatComponent implements OnInit {
     private modalCtrl: ModalController,
     private router: Router,
     private eventosService: EventosService,
+    private servicioSolicitudes: SolicitudesService,
+    private _notificacionService: ToadNotificacionService,
   ) {}
 
   ngOnInit() {
     this.loader = true;
     this.obtenerMensajes();
+    this.lstSolicitudes = new Array<SolicitudesModel>();
+    this.anyFiltros = new FiltrosModel();
+    this.solicitud = [];
   }
 
   obtenerMensajes() {
@@ -78,6 +91,7 @@ export class NotificacionChatComponent implements OnInit {
         this.loader = false;
         if (res.data.length != this.mensajes.length) {
           this.mensajes = res.data;
+          console.log('datosMensaje', this.mensajes);
           this.obtenerMensajes();
         }
       }
@@ -139,4 +153,35 @@ export class NotificacionChatComponent implements OnInit {
     await modal.present();
   }
 
+  requerimiento(idSolicitud: number){
+    this.servicioSolicitudes.obtenerSolicitudesPublicadas(this.anyFiltros)
+        .subscribe(
+        (response) => {
+          if (response.data !== null) {
+            this.lstSolicitudes = response.data;
+            this.solicitud = this.lstSolicitudes.find(p => p.id_solicitud === idSolicitud);
+          } else {
+            this.lstSolicitudes = [];
+          }
+          }, (error) => {
+              this._notificacionService.error(error);
+              this.lstSolicitudes = [];
+            }
+        );
+    setTimeout(() => {
+      this.cerrarModal();
+      this.modalDetalleSolicitud(this.solicitud);
+    }, 800);
+  }
+
+  async modalDetalleSolicitud(solicitud: any){
+    const modal = await this.modalCtrl.create({
+      component: ModalInfoSolicitudComponent,
+      cssClass: "my-custom-class",
+      componentProps: {
+        solicitud: solicitud,
+      },
+    });
+    return await modal.present();
+  }
 }

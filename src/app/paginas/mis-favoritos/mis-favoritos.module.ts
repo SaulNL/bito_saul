@@ -1,15 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
 import { MisFavoritosPageRoutingModule } from './mis-favoritos-routing.module';
-
 import { MisFavoritosPage } from './mis-favoritos.page';
-import {ProductosFavoritosPageModule} from './productos-favoritos/productos-favoritos.module';
-import {NegociosFavoritosPageModule} from './negocios-favoritos/negocios-favoritos.module';
 import {TabsPageModule} from '../tabs/tabs.module';
+import {SpinnerModule} from "../../componentes/spinner/spinner.module";
 
 
 @NgModule({
@@ -18,9 +14,8 @@ import {TabsPageModule} from '../tabs/tabs.module';
         FormsModule,
         IonicModule,
         MisFavoritosPageRoutingModule,
-        ProductosFavoritosPageModule,
-        NegociosFavoritosPageModule,
         TabsPageModule,
+        SpinnerModule,
     ],
   declarations: [MisFavoritosPage]
 })

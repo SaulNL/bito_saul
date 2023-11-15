@@ -412,7 +412,7 @@ export class FormularioNegocioPage implements OnInit {
       message: 'Se cancelara todo el proceso?',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           cssClass: 'secondary',
           handler: (blah) => {
           }
@@ -1003,11 +1003,11 @@ export class FormularioNegocioPage implements OnInit {
   async presentAlertEliminar(i) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: '¿Esta seguro que desa Eliminar el registro?',
+      header: '¿Está seguro que desea eliminar el registro?',
       message: 'Recuerde que la acción es ireversible',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
@@ -1539,11 +1539,11 @@ export class FormularioNegocioPage implements OnInit {
   async presentAlertEliminarConvenio(i) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: '¿Esta seguro que desa Eliminar el registro?',
+      header: '¿Está seguro que desea eliminar el registro?',
       message: 'Recuerde que la acción es ireversible',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {

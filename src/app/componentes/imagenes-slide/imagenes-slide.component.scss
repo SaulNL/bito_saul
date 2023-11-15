@@ -2,25 +2,26 @@
   width: 100%;
   height: auto;
   box-shadow: none;
-  border-radius: 12px;
+  border-radius: 10px;
+
   img {
     object-fit: cover;
-    width: 100%;
-    transform: scale(1.1, 1.1) rotate(1deg);
-    transition: 600ms all ease-in-out;
-  }
-}
-
-.swiper-slide-active {
-  transition: scale(1.05, 1.5);
-  .ion-card-custom {
-    img {
-      transform: scale(1, 1);
-      height: 160px;
-    }
+    //width: 100%;
+    height: 160px;
+    transform: scale(1);
+    transition: 200ms all ease-in-out;
   }
 }
 
 .swiper-slide {
   transition: 400ms all ease-in-out;
+}
+
+.swiper-slide-active {
+  .ion-card-custom {
+    img {
+      transform: scale(1.1);
+      height: 100%;
+    }
+  }
 }

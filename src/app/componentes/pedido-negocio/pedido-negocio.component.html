@@ -236,10 +236,10 @@
           </ion-col>
           <ion-col size="3">
             <ion-label><strong>Cantidad</strong></ion-label>
-            <ion-icon class="ion-text-center" (click)="aumentarDismuir(p.cantidad, i , 2)"
+            <ion-icon class="ion-text-center" (click)="aumentarDismuir(i,-1)"
               style="margin: 4px; background: #bbbbbb;" name="remove-outline"></ion-icon>
             <span class="ion-text-center" style="position: relative; top: -7px;">{{p.cantidad}}</span>
-            <ion-icon class="ion-text-center" (click)="aumentarDismuir(p.cantidad, i , 1)"
+            <ion-icon class="ion-text-center" (click)="aumentarDismuir(i,1)"
               style="margin: 4px; background: #bbbbbb;" name="add-outline"></ion-icon>
           </ion-col>
           <ion-col size="2" class="ion-align-items-center">
