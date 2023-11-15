@@ -275,7 +275,10 @@ export class PromocionesPage implements OnInit {
     }
 
     filtroPromociones(evento) {
-        console.log('evento',evento)
+        console.log('evento', evento)
         this.lstPromociones = evento
+    }
+    abrirAlert(isAlert: boolean){
+        this.isAlert = isAlert;
     }
 }

@@ -18,8 +18,8 @@ export class ConocenosService {
   
   Imagenes(): Observable<any> {
     const body = JSON.stringify({});
-    return from(this.http.post( this.url + 'api/conocenos/list-public',body,
-    AppSettings.getHeadersToken())
+    return from(this.http.post( this.url + 'api/conocenos/list-public', body,
+        AppSettings.getHeaders())
     .then( data => {
         return JSON.parse(data.data);
     })

@@ -53,7 +53,8 @@
 
       <div class="carousel-container">
         <ng-container *ngFor="let promocion of categorias.promociones; index as k">
-          <app-promocion [promocion]="promocion" [idPersona]="idPersona" style="max-width: 62%"></app-promocion>
+          <app-promocion [promocion]="promocion" [idPersona]="idPersona" [mostrarLogueo]="existeSesion"
+                         (banderaAlert)="abrirAlert($event)" style="max-width: 62%"></app-promocion>
         </ng-container>
       </div>
 

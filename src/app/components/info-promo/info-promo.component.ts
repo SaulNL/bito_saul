@@ -156,25 +156,21 @@ export class InfoPromoComponent implements OnInit {
   }
 
   async crearModal() {
-    if (!this.existeSesion){
-      this.mensajeRegistro();
-    }else{
-      this.loader = true;
-      this.cupon = false;
-      await this.guardarCupon();
-      this.nombreOrgUsuario();
-      this.generateQRCode();
-      setTimeout(() => {
-        if (this.registro1 || this.registro2) {
-          this.crearImagen(this.promocion);
-        }
-        if (this.registro3) {
-          this.notificaciones.error('Este cupón no es valido para usted');
-          this.loader = false;
-          this.cupon = true;
-        }
-      }, 300);
-    }
+    this.loader = true;
+    this.cupon = false;
+    await this.guardarCupon();
+    this.nombreOrgUsuario();
+    this.generateQRCode();
+    setTimeout(() => {
+      if (this.registro1 || this.registro2) {
+        this.crearImagen(this.promocion);
+      }
+      if (this.registro3) {
+        this.notificaciones.error('Este cupón no es valido para usted');
+        this.loader = false;
+        this.cupon = true;
+      }
+    }, 300);
   }
 
   async guardarCupon() {
@@ -194,10 +190,6 @@ export class InfoPromoComponent implements OnInit {
   compartir(promocion) {
     let url = AppSettings.URL_FRONT + 'promocion/' + promocion.id_promocion;
     this.socialSharing.share('😃¡Te recomiendo esta promoción!😉', 'Promoción', promocion.url_imagen, url);
-  }
-
-  async mensajeRegistro() {
-    this.isAlert = true;
   }
 
   nombreOrgUsuario() {
@@ -272,15 +264,6 @@ export class InfoPromoComponent implements OnInit {
   numeroAleatorioDecimales(min, max) {
     var num = Math.random() * (max - min);
     return num + min;
-  }
-  cerrarAlert(isAlert: boolean){
-    this.isAlert = isAlert;
-  }
-
-  dismissModal(bandera: number) {
-    if (bandera === 2){
-      this.modalController.dismiss();
-    }
   }
 
 }

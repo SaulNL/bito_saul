@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ModalPromocionComponent } from '../modal-promocion/modal-promocion.component';
 import { PromocionesModel } from '../../Modelos/PromocionesModel';
@@ -12,6 +12,8 @@ export class PromocionComponent implements OnInit {
 
   @Input() promocion: PromocionesModel;
   @Input() idPersona: number | null;
+  @Input() mostrarLogueo: any;
+  @Output() banderaAlert: EventEmitter<boolean> = new EventEmitter<boolean>();
   idPromo: number;
   loader: boolean=true;
   listaDias: any;
@@ -24,12 +26,16 @@ export class PromocionComponent implements OnInit {
 
 
   modal(){
-    this.loader = false;
-    this.idPromo =this.promocion.id_promocion;
-    this.arreglarHorarios(this.promocion.dias)
-    setTimeout(()=>{                     
-      this.crearModal();
-    }, 1000);
+    if (!this.mostrarLogueo) {
+      this.abrirModal();
+    } else {
+      this.loader = false;
+      this.idPromo =this.promocion.id_promocion;
+      this.arreglarHorarios(this.promocion.dias)
+      setTimeout(()=>{
+        this.crearModal();
+      }, 1000);
+    }
   }
 
   arreglarHorarios(dias) {
@@ -79,6 +85,11 @@ export class PromocionComponent implements OnInit {
       this.loader=true;
   });
     return await modal.present();
+  }
+
+  abrirModal(){
+    const isAlert = true;
+    this.banderaAlert.emit(isAlert);
   }
 
 }
