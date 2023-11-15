@@ -190,6 +190,7 @@ export class PromocionesPage implements OnInit {
             this.anyFiltros.organizacion = this.plazaAfiliacion.id_organizacion;
         }
         this.anyFiltros.typeGetOption = true;
+        console.log('filtros1',this.anyFiltros)
         this._promociones.buscarPromocinesPublicadasModulo(this.anyFiltros)
             .subscribe(
                 (response) => {
@@ -197,7 +198,7 @@ export class PromocionesPage implements OnInit {
                     }
                     if (response.data !== null) {
                         this.lstPromociones = response.data;
-                        //console.log("lista promos de promos page"+JSON.stringify(this.lstPromociones));
+                        console.log("lista promos de promos page",this.lstPromociones);
                         this.loader = false;
                         this.posicionRandom = this.aleatorio(0, this.lstPromociones.length - 1)
                         // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}                                   
@@ -271,5 +272,10 @@ export class PromocionesPage implements OnInit {
 
     cerrarAlert(isAlert: boolean){
         this.isAlert = isAlert;
+    }
+
+    filtroPromociones(evento) {
+        console.log('evento',evento)
+        this.lstPromociones = evento
     }
 }

@@ -13,7 +13,9 @@ import { ModalPromocionComponent } from '../../components/modal-promocion/modal-
 import { InfoPromoComponent } from '../../components/info-promo/info-promo.component';
 import { ViewQrPromocionComponent } from 'src/app/components/viewqr-promocion/viewqr-promocion.component';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
-import {ModalInicioSesionPageModule} from "../modal-inicio-sesion/modal-inicio-sesion.module";
+import { ModalInicioSesionPageModule } from "../modal-inicio-sesion/modal-inicio-sesion.module";
+import { FiltroPromoComponent } from './filtro-promo/filtro-promo.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -26,14 +28,17 @@ import {ModalInicioSesionPageModule} from "../modal-inicio-sesion/modal-inicio-s
         TabsPageModule,
         RecargarModule,
         SpinnerModule,
-        ModalInicioSesionPageModule
+    ModalInicioSesionPageModule,
+        ReactiveFormsModule
+        
     ],
   declarations: [
     PromocionesPage,
     PromocionComponent,
     ModalPromocionComponent,
     ViewQrPromocionComponent,
-    InfoPromoComponent
+    InfoPromoComponent,
+    FiltroPromoComponent
   ],
   providers: [ SocialSharing ], 
 })

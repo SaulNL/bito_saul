@@ -41,6 +41,7 @@
     </ion-text>
   </ion-grid>
 
+  <app-filtro-promo (lstPromocionesFiltro)="filtroPromociones($event)"></app-filtro-promo>
   <div *ngIf="!loader">
     <app-recargar (respuesta)="recargar($event)"></app-recargar>
     <ion-grid *ngFor="let categorias of lstPromociones; index as i" class="categoria">

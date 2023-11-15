@@ -62,8 +62,9 @@ export class PromocionesService {
   }
 
 
-  buscarPromocinesPublicadasModulo(filtros: FiltrosModel): Observable<any> {
-    const body = JSON.stringify({filtros});
+  buscarPromocinesPublicadasModulo(filtros: any): Observable<any> {
+    const body = JSON.stringify({ filtros });
+    console.log('antes de enviar',body)
     this.http.setDataSerializer('utf8');
     const datos = from(this.http.post(this.url + 'api/promociones/buscar/publicadas', body,
     AppSettings.getHeaders())

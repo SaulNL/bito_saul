@@ -118,7 +118,7 @@
                     <ion-avatar>
                         <ion-img [src]="negocio.url_logo"></ion-img>
                     </ion-avatar>
-                    <ion-label>{{negocio.nombre_comercial}}</ion-label>
+                    <ion-label style="margin-left: 10px;">{{negocio.nombre_comercial}}</ion-label>
                     <ion-badge color="danger">{{negocio.pedidosFaltantes}}</ion-badge>
                 </ion-item>
                 <div class="ion-padding" slot="content" lines="none" *ngFor="let pedido of negocio.pedidos" 
@@ -126,7 +126,7 @@
                     <div style="display: flex; width: 100%;">
                         <div style="width: 20%; display: flex; align-items: center;">
                             Folio: {{pedido.folio}}<ion-badge color="danger" *ngIf="pedido.id_estatus_pedido === 1" 
-                            style="border-radius: 50%; width: 20px;  height: 20px; position: relative; bottom: 35%;">
+                            style="border-radius: 50%; width: 15px; height: 15px; position: relative; bottom: 35%; font-size: x-small;">
                             1</ion-badge>
                         </div>
                         <div style="width: 50%; display: flex; justify-content: center; align-items: center;">

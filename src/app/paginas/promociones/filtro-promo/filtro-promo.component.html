@@ -1,0 +1,67 @@
+  <ion-button id="modalPromo" expand="block">Filtro <ion-icon name="caret-down-outline"></ion-icon></ion-button>
+
+  <ion-modal #modal trigger="modalPromo">
+    <ng-template>
+      <ion-content>
+        <ion-toolbar>
+          <ion-title>Filtro</ion-title>
+          <ion-buttons slot="end">
+            <ion-button color="light" (click)="modal.dismiss()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+
+        <form [formGroup]="formularioPromo">
+          <ion-item>
+            <ion-label>Afiliaciones/Convenios</ion-label>
+            <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Afiliaciones">
+              <ion-select-option value="brown">Las afiliaciones</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label>Plazas</ion-label>
+            <ion-select formControlName="organizacion" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Plazas">
+              <ion-select-option [value]="null">Ninguno</ion-select-option>
+              <ion-select-option *ngFor="let plz of listPlazas" [value]="plz.id_organizacion">{{plz.nombre}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label>Estado</ion-label>
+            <ion-select formControlName="idEstado" [interfaceOptions]="customPopoverOptions" (ionChange)="obtenerCatMunicipio()" interface="popover" placeholder="Estado">
+              <ion-select-option *ngFor="let estado of lstEstados" [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label>Municipio</ion-label>
+            <ion-select formControlName="idMunicipio" [interfaceOptions]="customPopoverOptions" (ionChange)="obtenerCatLocalidad()" interface="popover" placeholder="Municipio">
+              <ion-select-option *ngFor="let mun of listCatMunicipio" [value]="mun.id_municipio">{{mun.nombre}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label>Localidad</ion-label>
+            <ion-select formControlName="idLocalidad" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Localidad">
+              <ion-select-option *ngFor="let local of listCaLocalidad" [value]="local.idLocalidad">{{local.nombre}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label> Negocios(s) abiertos/cerrados</ion-label>
+          </ion-item>
+          <ion-radio-group formControlName="abierto" (ionChange)="abiertoCerrado()" [allowEmptySelection]="true">
+            <ion-item>
+              <ion-label>Abierto</ion-label>
+              <ion-radio slot="end"  [value]="'1'"></ion-radio>
+            </ion-item>
+          
+            <ion-item>
+              <ion-label>Cerrado</ion-label>
+              <ion-radio slot="end"  [value]="'0'"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </form>
+
+        <div class="seccionBotones">
+          <ion-button (click)="buscarFiltros()" color="success"><ion-icon name="search-outline"></ion-icon> Buscar</ion-button>
+          <ion-button (click)="limpiarFiltro()" color="danger"><ion-icon name="trash-outline"></ion-icon> Limpiar</ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
