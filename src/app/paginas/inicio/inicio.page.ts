@@ -1148,9 +1148,11 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.totalPaginas = 0;
     localStorage.removeItem('activarTodos');
     localStorage.setItem('todo', 'todo');
+    localStorage.removeItem('byCategorias');
     this.idTodo = false;
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
+    this.Filtros.idCategoriaNegocio = null;
     this.filtroActivo = true;
     this.banderaVerMas = false;
     this.loaderNegocios = true;
@@ -1163,8 +1165,8 @@ export class InicioPage implements OnInit, AfterViewInit {
       ? (this.Filtros.organizacion =
         this.objectSelectAfiliacionPlaza.id_organizacion)
       : '';
-    const d1 = JSON.stringify(this.Filtros);
-    localStorage.setItem('filtroactual', d1);
+    // const d1 = JSON.stringify(this.Filtros);
+    // localStorage.setItem('filtroactual', d1);
 
     const noPaginas = await this.principalSercicio.obtenerNumeroPaginas(this.Filtros, 1);
     const rand = this.random(1, JSON.stringify(noPaginas.data.last_page));
