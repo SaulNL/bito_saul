@@ -11,10 +11,19 @@ import { map } from 'rxjs/operators';
 })
 export class ProveedorServicioService {
   private url: string;
+  selectedObj: any;
   constructor(
     private _http: HTTP
   ) {
     this.url = AppSettings.API_ENDPOINT;
+  }
+
+  setSelectedObj(obj: any) {
+    this.selectedObj = obj;
+  }
+
+  getSelectedObj() {
+    return this.selectedObj;
   }
   /**
    * Servicio para guardar los comentarios

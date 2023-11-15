@@ -30,6 +30,7 @@ import {ModalInicioComponent} from '../../componentes/modal-inicio/modal-inicio.
 import { Geolocation } from '@capacitor/geolocation';
 import { Filesystem, Directory, Encoding, } from '@capacitor/filesystem';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
+import {ProveedorServicioService} from "../../api/busqueda/proveedores/proveedor-servicio.service";
 declare var google: any;
 
 
@@ -49,6 +50,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   public listaCtgs: Array<any>;
 
   constructor(
+      private serviceProveedores: ProveedorServicioService,
       private busquedaService: BusquedaService,
     public loadingController: LoadingController,
     private toadController: ToastController,
@@ -407,8 +409,11 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   ionViewWillEnter() {
     const idGiro = JSON.parse(localStorage.getItem('idGiro'));
-    if (idGiro !== null) {
+    const giroId = this.serviceProveedores.getSelectedObj();
+    if (idGiro !== null && giroId !== undefined ) {
       this.buscarByGiro(idGiro);
+    } else if ( giroId !== undefined ){
+      this.buscarByGiro(giroId);
     }
     this.subCAt = localStorage.getItem('subCat') != undefined ? true : false;
     // if (this.subCAt) {
@@ -629,6 +634,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   public async cargarCargarNegociosMapas() {
+    console.log('filtro', this.Filtros);
     this.loader = true;
     try {
       if (this.Filtros.idCategoriaNegocio == null && this.Filtros.abierto == null && this.Filtros.blnEntrega == null
