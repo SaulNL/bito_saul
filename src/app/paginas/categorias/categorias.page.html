@@ -55,7 +55,7 @@
                 <img id="{{nomCategoria.nombre}}" *ngIf="nomCategoria.url_imagen !== null && imgMobil==false"
                     [src]="nomCategoria.url_imagen" alt="Falla al cargar la imagen">
                 <ion-col sizeLg="3" sizeXs="6" sizeSm="4" sizeMd="4"
-                    *ngFor="let subCategoria of nomCategoria.categorias" (click)="seleccionarCategoria(subCategoria)">
+                    *ngFor="let subCategoria of nomCategoria.categorias" (click)="seleccionarCategoria(subCategoria,nomCategoria.id_giro)">
                     <ion-badge class="md hydrated position-num">{{subCategoria.cantidad_negocios}}</ion-badge>
                     <img class="img-card-w" *ngIf="subCategoria.url_imagen !== null"
                         src="https://ecoevents.blob.core.windows.net/comprandoando/Categor%C3%ADas/Im%C3%A1genes%20Sub%20Categor%C3%ADas/Alimentos%20y%20Bebidas/Fondas%20y%20Cocinas%20Econ%C3%B3micas.png"

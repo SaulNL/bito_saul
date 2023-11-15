@@ -109,23 +109,6 @@
     <ion-refresher *ngIf="!isIOS" slot="fixed" (ionRefresh)="recargar($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <ion-row *ngIf="loaderTop" [ngClass]="loaderTop? 'loaderArribaShow' : 'loaderArribaHide'">
-      <ion-col size="12">
-        <div class="paginacion">
-          <!-- <ion-item *ngIf="variablePrueba"> -->
-            <div class="botonPag" (click)="cambiarPag(1)">
-              <ion-icon name="caret-back"></ion-icon>
-            </div>
-            <ion-select [(ngModel)]="pagSelect" (ionChange)="cargarMasPaginasArriba($event)" placeholder="Seleccione una pagina">
-              <ion-select-option *ngFor="let pag of paginacion" [value]="pag">{{pag}}</ion-select-option>
-            </ion-select>
-            <div class="botonPag" (click)="cambiarPag(2)">
-              <ion-icon name="caret-forward"></ion-icon>
-            </div>
-          <!-- </ion-item> -->
-        </div>
-      </ion-col>
-    </ion-row>
 
     <ion-grid *ngIf="filtroBusqueda" style="margin-bottom: 12px;">
       <div *ngFor="let nomCategoria of listaCtgs">
@@ -219,6 +202,24 @@
             </ion-button>
           </div>
         </div>
+        <ion-row *ngIf="loaderTop" [ngClass]="loaderTop? 'loaderArribaShow' : 'loaderArribaHide'">
+          <ion-col size="12">
+            <div class="paginacion">
+              <!-- <ion-item *ngIf="variablePrueba"> -->
+              <div class="botonPag" (click)="cambiarPag(1)">
+                <ion-icon name="caret-back"></ion-icon>
+              </div>
+              <ion-select [(ngModel)]="pagSelect" (ionChange)="cargarMasPaginasArriba($event)"
+                placeholder="Seleccione una pagina">
+                <ion-select-option *ngFor="let pag of paginacion" [value]="pag">{{pag}}</ion-select-option>
+              </ion-select>
+              <div class="botonPag" (click)="cambiarPag(2)">
+                <ion-icon name="caret-forward"></ion-icon>
+              </div>
+              <!-- </ion-item> -->
+            </div>
+          </ion-col>
+        </ion-row>
       </div>
 
       <div [ngClass]="showPopUp? 'bottom_info_distintivo_up' : 'bottom_info_distintivo'">

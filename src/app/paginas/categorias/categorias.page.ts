@@ -131,7 +131,7 @@ export class CategoriasPage implements OnInit {
     );
   }
 
-  seleccionarCategoria(subCategoria) {
+  seleccionarCategoria(subCategoria,idGiro) {
     if (localStorage.getItem("FiltroAct")) {
       localStorage.removeItem("FiltroAct")
       localStorage.removeItem("filter")
@@ -143,6 +143,7 @@ export class CategoriasPage implements OnInit {
     localStorage.removeItem('byCategorias');
     localStorage.setItem('byCategorias', JSON.stringify(subCategoria));
     localStorage.setItem('seleccionado', JSON.stringify(subCategoria));
+    localStorage.setItem('idGiro', idGiro);
     let seleccionado2 = localStorage.setItem(
       'seleccionado',
       JSON.stringify(subCategoria)
@@ -196,7 +197,7 @@ export class CategoriasPage implements OnInit {
 
   categoriasTodos() {
     this.busquedaService.obtenerCategoriasGiros(null).subscribe((response) => {
-          this.listaCategorias = response.data;
+      this.listaCategorias = response.data;
         });
   }
 

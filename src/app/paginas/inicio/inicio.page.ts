@@ -407,7 +407,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   ionViewWillEnter() {
     const idGiro = JSON.parse(localStorage.getItem('idGiro'));
-    if (idGiro !== null){
+    if (idGiro !== null) {
       this.buscarByGiro(idGiro);
     }
     this.subCAt = localStorage.getItem('subCat') != undefined ? true : false;
@@ -450,7 +450,9 @@ export class InicioPage implements OnInit, AfterViewInit {
       estatusFiltro = localStorage.getItem('resetFiltro');
       this.Filtros = new FiltrosModel();
       this.Filtros.idCategoriaNegocio = [dato.id_categoria];
-      this.buscarNegocios(true);
+      if (!localStorage.getItem('byCategorias')) {
+        this.buscarNegocios(true);
+      }
       localStorage.removeItem('seleccionado');
     }
     if (categoria === null && estatusFiltro === '0') {
@@ -1171,7 +1173,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.paginaPivote = rand;
     this.paginaPrevia = this.paginaPivote;
     const respuesta = await this.principalSercicio
-      .obtenerNegocioPorCategoria(this.Filtros, rand); // rand this.siguienteGiro);
+      .obtenerNegocioPorCategoria(this.Filtros, 1); // rand this.siguienteGiro);
     this.paginacion = [];
     this.pagSelect = respuesta.data.lst_cat_negocios.current_page;
     this.lastPage = respuesta.data.lst_cat_negocios.last_page;
