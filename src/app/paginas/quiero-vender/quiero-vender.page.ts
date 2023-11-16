@@ -85,7 +85,6 @@ export class QuieroVenderPage implements OnInit {
     this.proveedorTO.det_domicilio = new DetDomicilioModel();
     this.proveedorTO = JSON.parse(localStorage.getItem('u_data'));
     this.hImagen = this.proveedorTO.imagen ? true:false;
-    console.log("datosProvedor",this.proveedorTO)
     this.proveedorTO.fecha_nacimiento = this.proveedorTO.fecha_nacimiento !== null ? new Date(this.proveedorTO.fecha_nacimiento).toISOString() : null;
     this.proveedorTO.det_domicilio = JSON.parse(localStorage.getItem('u_data')).domicilio !== null && undefined ? JSON.parse(localStorage.getItem('u_data')).domicilio : new DetDomicilioModel();
     if (this.proveedorTO.fecha_nacimiento !== null || this.proveedorTO.fecha_nacimiento !== undefined) {
@@ -529,7 +528,6 @@ export class QuieroVenderPage implements OnInit {
         archivo.nombre_archivo = result.files[0].name,
         archivo.archivo_64 = r.data;
         this.proveedorTO.selfie = archivo;
-        console.log(this.proveedorTO)
         this.hImagen = true;
       }
     }

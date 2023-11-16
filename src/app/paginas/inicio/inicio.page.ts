@@ -634,7 +634,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   public async cargarCargarNegociosMapas() {
-    console.log('filtro', this.Filtros);
     this.loader = true;
     try {
       if (this.Filtros.idCategoriaNegocio == null && this.Filtros.abierto == null && this.Filtros.blnEntrega == null

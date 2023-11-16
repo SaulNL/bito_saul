@@ -174,7 +174,6 @@ export class MisSugerenciasPage implements OnInit {
   async CrearModalProducto(producto: ProductoModel) {
     this.loader = true
     var product: ProductInterface = this.createObject.createProduct(producto);
-    //console.log("palabraBuqueda MOdal: "+this.palabraBuqueda)
     const modal = await this.modalController.create({
       component: ModalDetalleProductoComponent,
       cssClass: 'my-custom-class',

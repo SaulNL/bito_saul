@@ -131,7 +131,6 @@ export class NegocioPage implements OnInit {
     this.selectTO = new NegocioModel();
     this.selectTO.det_domicilio = new DetDomicilioModel();
     let navigationExtras = JSON.stringify(this.selectTO);
-    console.log("agregarNegocio NegoPage+++++++++++++++++++ "+JSON.stringify(this.selectTO))
     this.router.navigate(['/tabs/home/negocio/card-negocio/formulario-negocio'], {
       queryParams: { nuevoNegocio: navigationExtras },
     });
@@ -148,7 +147,6 @@ export class NegocioPage implements OnInit {
       (response) => {
         this.negocioTO = response.data;
         this.btload = true;
-        console.log("negocioTO=", this.negocioTO)
 
         //const negocio = JSON.parse(this.negocioTO);    
         this.guard.activeForm = true;
@@ -166,7 +164,6 @@ export class NegocioPage implements OnInit {
           pys: this.negocioGuardar,
         };
         let navigationExtras = JSON.stringify(all);
-        console.log("card Negocio all---------"+navigationExtras)
         let clonar = "true"
 
         this.router.navigate(['/tabs/home/negocio/card-negocio/formulario-negocio'], {
@@ -185,9 +182,7 @@ export class NegocioPage implements OnInit {
     this.servicioNegocios.buscarNegocio(idNegocio).subscribe(
       (response) => {
         newNegocioTO= response.data;
-        console.log("buscarNegocio---------"+JSON.stringify(newNegocioTO))
-        /*this.negocioTO = response.data;
-        console.log("buscarNegocio this.negocioTO---------"+JSON.stringify(this.negocioTO))*/
+        /*this.negocioTO = response.data;*/
         this.btload = true;
 
         this.selectTO = JSON.parse(JSON.stringify(negocio));
@@ -195,14 +190,12 @@ export class NegocioPage implements OnInit {
         this.negocioTO = JSON.parse(navigationExtras);
         this.negocioTO=this.buscarNegocio(this.negocioTO.id_negocio, negocio)
         //this.negocioTO=this.buscarNegocio(this.negocioTO.id_negocio)
-        console.log("Negocio page negocioTO de buscarNegocio---------"+this.negocioTO)
         this.negocioGuardar = JSON.parse(JSON.stringify(this.negocioGuardar));
         let all = {
         info: this.negocioTO,
         pys: this.negocioGuardar,
         };
         let navigationExtras2 = JSON.stringify(all);
-        console.log("card Negocio navigationExtras2---------"+navigationExtras2)
         this.router.navigate(['/tabs/home/negocio/card-negocio/formulario-negocio'], {
           queryParams: { special: navigationExtras2 }  
         });               

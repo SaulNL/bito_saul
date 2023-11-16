@@ -37,7 +37,6 @@ export class SeleccionarSucripcionComponent implements OnInit {
 
   ngOnInit() { 
     this.planes = this.suscripciones
-    console.log('plan', this.planes)
     this.planes.forEach(element => {
             let perfilesBg = {
               bg: `background: linear-gradient(162deg, ${element.color_inicial} 0%, ${element.color_final} 63%);`
@@ -56,7 +55,6 @@ export class SeleccionarSucripcionComponent implements OnInit {
     this.infoSuscripcion=[]
     this.infoSuscripcion.push(idSuscripcion)
     this.infoSuscripcion.push(nombre)
-    console.log("Usted seleccionó esto: "+this.infoSuscripcion)
     this.modalController.dismiss({
       'data': this.infoSuscripcion
     });

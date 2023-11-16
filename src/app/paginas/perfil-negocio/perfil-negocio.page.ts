@@ -206,7 +206,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   ngOnInit() {
     if (localStorage.getItem('isRedirected') === 'false' && !this.isIOS) {
       localStorage.setItem('isRedirected', 'true');
-      //location.reload();
+      location.reload();
       // window.location.assign(this.router.url);
     }
     this.route.queryParams.subscribe((params) => {

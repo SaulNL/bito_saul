@@ -162,7 +162,6 @@ export class PedidoNegocioComponent implements OnInit {
     async obtenerFeatures() {
         await this._general_service.features(this.idNegocio).subscribe(
             response => {
-                //console.log("FEATURES del id_negocio " + this.idNegocio + ", " + JSON.stringify(response))
                 if (response.data.lenght != 0) {
                     response.data.forEach(feature => {
                         if (feature.id_caracteristica == 2) {

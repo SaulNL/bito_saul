@@ -25,14 +25,12 @@ export class ModalQuienVioRequerimientoComponent implements OnInit {
 
   ngOnInit() {
     this.obtenerQuienVioMiSolicitud()
-    //console.log("Aqui recibo la solicitud: "+JSON.stringify(this.solicitud))
   }
 
   async obtenerQuienVioMiSolicitud(){
     await this.solicitudesService.obtenerQuienVioMiSolicitud(this.solicitud).subscribe(
       response => {
         this.quienVioList = response.data
-        //console.log("Aqui obtengo lista de quien vio: "+JSON.stringify(this.quienVioList))
         this.loader = false;
       },
       error => {

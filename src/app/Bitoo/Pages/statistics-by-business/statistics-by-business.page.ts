@@ -135,7 +135,6 @@ export class StatisticsByBusinessPage implements OnInit {
 
   }
   genBarChartDynamic(data:any,tooltipTags?:any[]){
-    console.log("genBarChartDynamic")
     if(this.grafica){
       this.grafica.clear();
       this.grafica.destroy();
@@ -150,7 +149,6 @@ export class StatisticsByBusinessPage implements OnInit {
         tooltips: {
           callbacks: {
               label: (ctx)=>{
-                //console.log("index: "+(ctx.index!=0?ctx.index:0))
                 var tag = tooltipTags[ctx.index!=0?ctx.index:0]
                 return tag
               }
@@ -160,7 +158,6 @@ export class StatisticsByBusinessPage implements OnInit {
     });
   }
   genPieChartDynamic(data:any,tooltipTags?:any[]){
-    console.log("genPieChartDynamic")
     if(this.grafica){
       this.grafica.clear();
       this.grafica.destroy();
@@ -175,7 +172,6 @@ export class StatisticsByBusinessPage implements OnInit {
         tooltips: {
           callbacks: {
               label: (ctx)=>{
-                //console.log("index: "+(ctx.index!=0?ctx.index:0))
                 var tag = tooltipTags[ctx.index!=0?ctx.index:0]
                 return tag
               }
@@ -185,7 +181,6 @@ export class StatisticsByBusinessPage implements OnInit {
     });
   }
   genDoughnutChartDynamic(data:any,tooltipTags?:any[]){
-    console.log("genDoughnutChartDynamic")
     if(this.grafica){
       this.grafica.clear();
       this.grafica.destroy();
@@ -200,7 +195,6 @@ export class StatisticsByBusinessPage implements OnInit {
         tooltips: {
           callbacks: {
               label: (ctx)=>{
-                //console.log("index: "+(ctx.index!=0?ctx.index:0))
                 var tag = tooltipTags[ctx.index!=0?ctx.index:0]
                 return tag
               }
@@ -453,7 +447,6 @@ export class StatisticsByBusinessPage implements OnInit {
       this.grafica.clear();
     }
     this.tipoEstadistica =null;
-    console.log(JSON.stringify(filter))
     this.getVisitsByQr(filter);//ok
     this.getVisitsByUrl(filter);//ok
     this.getLikesBusiness(filter);//ok
@@ -478,7 +471,6 @@ export class StatisticsByBusinessPage implements OnInit {
         if(response.code == 200){
           this.statistics.totalVisitsByQr = this.create.anyToNumber(response.data.numero_visto);
           this.loader.loadingVisitsByQr = false;
-          //console.log("Estadisticas por visitas QR: "+JSON.stringify(response))
           var labels=[]
           var data = []
           var tags = []
@@ -575,7 +567,6 @@ export class StatisticsByBusinessPage implements OnInit {
         this.statistics.totalVisitsByUrl = this.create.anyToNumber(response.data.numero_visto);
         this.loader.loadingVisitsByUrl = false;
         this.vistaTipos = response.data.datos
-       //console.log("Estadisticas por visitas URL: "+JSON.stringify(response))
         var labels=[]
         var data = []
         var tags = []
@@ -674,7 +665,6 @@ export class StatisticsByBusinessPage implements OnInit {
         if(response.code == 200){
           this.statistics.totalLikesBusiness = this.create.anyToNumber(response.data.numero_likes);
           this.loader.loadingLikesBusiness = false;
-          //console.log("Estadisticas por likes NEGOCIO: "+JSON.stringify(response))
           
           var labels=[]
         var data = []
@@ -777,7 +767,6 @@ export class StatisticsByBusinessPage implements OnInit {
             this.statistics.lowRating = this.create.anyToNumber(response.data.calificacion_baja);
           }
           this.loader.loadingCompanyRating = false;
-          //console.log("Estadisticas por CALIFICACIONES: "+JSON.stringify(response))
 
           var totales=[]
           var labels=[]
@@ -840,8 +829,6 @@ export class StatisticsByBusinessPage implements OnInit {
             labels.push("Media")
             labels.push("Baja")
             }  
-        
-          //console.log(JSON.stringify(vistaTipos))
             var tags = []
             var tagsPie =[]
             var colors = []
@@ -853,7 +840,6 @@ export class StatisticsByBusinessPage implements OnInit {
             var bajasmujer = 0
             vistaTipos.forEach(tipo => {
                 if(filters.tipo == "localidad"){
-                  console.log("eleigio localidad")
                   if(tipo.calificacion=="Baja"){
                     labels.push(tipo.municipio+" - Baja")
                     totales.push(tipo.total)
@@ -924,7 +910,6 @@ export class StatisticsByBusinessPage implements OnInit {
                       }]
                   }
                 }else if(filters.tipo == "genero"){
-                  console.log("eleigio "+filters.tipo)
 
                   if(tipo.genero == "Hombre"){
                     if(tipo.calificacion=="Baja"){
@@ -934,11 +919,9 @@ export class StatisticsByBusinessPage implements OnInit {
                       mediasshombre=(tipo.total)
                     }
                     if(tipo.calificacion=="Buena"){
-                      console.log("L unica "+tipo.total)
                       buenashombre=(tipo.total)
                     }
                   }
-                  console.log("Hombre: "+buenashombre+", "+mediasshombre+", "+bajashombre)
                   if(tipo.genero == "Mujer"){
                     if(tipo.calificacion=="Baja"){
                       bajasmujer=(tipo.total)
@@ -950,7 +933,6 @@ export class StatisticsByBusinessPage implements OnInit {
                       buenasmujer=(tipo.total)
                     }
                   }
-                  console.log("Mujer: "+bajasmujer+", "+mediasmujer+", "+buenasmujer)
                   
                   objeto={
                     labels: labels,
@@ -1010,7 +992,7 @@ export class StatisticsByBusinessPage implements OnInit {
               }
             }); 
           }
-          else{console.log("se llena vacia")
+          else{
             var labels=[]
             var vistaTipos2 = response.data
 
@@ -1078,13 +1060,11 @@ export class StatisticsByBusinessPage implements OnInit {
           /*this.statistics.totalRequests = response.data.length;
           this.statistics.requests = response.data;*/
           this.loader.loadingTotalRequests = false;
-          //console.log("Estadisticas por REQUERIMIENTOS: "+JSON.stringify(response))
           var labels=[]
           var data = []
           var tags = []
           var tagsPie = []
           if(this.filter.tipo != null){
-            console.log("se llena con tipo")
             var vistaTipos = response.data.datos            
             vistaTipos.forEach(tipo => {
                 if(filters.tipo == "localidad"){
@@ -1128,7 +1108,6 @@ export class StatisticsByBusinessPage implements OnInit {
               tagsToolTipPie : tagsPie
             }
           }else{
-            console.log("se llena con null")
             var vistaTipos = response.data.solicitudes
             vistaTipos.forEach(tipo => {
                 tags.push("Visitas: "+tipo.cuantos_vieron)
@@ -1182,7 +1161,6 @@ export class StatisticsByBusinessPage implements OnInit {
           if(response.code == 200){
             this.promotions = await response.data.lenght != 0? response.data.promociones : []
             this.loader.loadingTotalPromotions = false;
-            //console.log("Etsadisticas por PROMOCIONES: "+JSON.stringify(response))
             var labels=[]
             var data = []
             var tags = []
@@ -1289,7 +1267,6 @@ export class StatisticsByBusinessPage implements OnInit {
           //this.statistics.products = response.data;
           this.products = response.data;
           this.loader.loadingLikesProducts = false;
-          //console.log("Estadisticas por likes PRODUCTOS: "+JSON.stringify(response))
           var labels=[]
           var data = []
           var tags = []
@@ -1369,8 +1346,6 @@ export class StatisticsByBusinessPage implements OnInit {
           }
             
         }else{
-          console.log("Filtro"+JSON.stringify(this.filter))
-          console.log("Algo ocurrió: "+JSON.stringify(response))
           this.loader.loadingLikesProducts = false;
         }              
       },
@@ -1385,7 +1360,6 @@ export class StatisticsByBusinessPage implements OnInit {
     await this.business.numero_interacciones(filters).subscribe(
       response => {
         if(response.code == 200){
-          console.log("Estadisticas por Interacciones: "+JSON.stringify(response))
         var labels=[]
         var data = []
         var tags = []
@@ -1524,8 +1498,7 @@ export class StatisticsByBusinessPage implements OnInit {
     this.loader.loadingVisitsByUrl = true;
     await this.business.numero_compras(filters).subscribe(
       response => {
-        if(response.code == 200){
-          console.log("Estadisticas por Numero de compras: "+JSON.stringify(response))          
+        if(response.code == 200){       
         var labels=[]
         var data = []
         var tags = []
@@ -1633,7 +1606,6 @@ export class StatisticsByBusinessPage implements OnInit {
     await this.business.numero_interacciones_mapa(filters).subscribe(
       response => {
         if(response.code == 200){
-          console.log("Estadisticas por Interacciones Mapa: "+JSON.stringify(response))
         var labels=[]
         var data = []
         var tags = []
@@ -1796,21 +1768,18 @@ export class StatisticsByBusinessPage implements OnInit {
   async obtenerFeatures(id_negocio: number){
     await this._general_service.features(id_negocio).subscribe(
         response => {
-            //console.log("FEATURES del id_negocio: "+id_negocio+",\n"+JSON.stringify(response))
             this.features16 = false;
             this.features17 = false
             if (response.data.lenght != 0){                    
                 response.data.forEach(feature => {
                     if(feature.id_caracteristica == 16){   
                       this.features16=true                    
-                      //console.log("\nEl negocio tiene el features 16? "+this.features16)
                     }  
                     if(feature.id_caracteristica == 17){   
                       this.features17=true                    
                     }          
                 });
             }else{
-              console.log("Features Vacío")  
               
             }
         },
@@ -1837,7 +1806,6 @@ export class StatisticsByBusinessPage implements OnInit {
       this.grafica.clear();
     }
     if(this.filter.tipo != null){
-      //console.log("Tipo"+this.filter.tipo)
       this.tipoEstadistica="Visitas a travéz de "+tipo+" por"
       if(tipo == "QR"){
         this.genBarChartDynamic(this.dataGraficas.dataVisistasQR.data,this.dataGraficas.dataVisistasQR.tagsTooltip)
@@ -1846,7 +1814,6 @@ export class StatisticsByBusinessPage implements OnInit {
       }
       
     }else{
-      //console.log("No selecciono tipo")
       this.tipoEstadistica="Visitas a travéz de "+tipo+" "
       if(tipo == "QR"){
         this.genBarChartDynamic(this.dataGraficas.dataVisistasQR.data,this.dataGraficas.dataVisistasQR.tagsTooltip)
@@ -1866,10 +1833,8 @@ export class StatisticsByBusinessPage implements OnInit {
     }
     this.genBarChartDynamic(this.dataGraficas.dataLikesNegocio.data,this.dataGraficas.dataLikesNegocio.tagsTooltip)
     if(this.filter.tipo != null){
-      //console.log("Tipo"+this.filter.tipo)
       this.tipoEstadistica="Likes de negocio por "
     }else{
-      //console.log("No selecciono tipo")
       this.tipoEstadistica="Likes de negocio "
     }
   }
@@ -1894,7 +1859,6 @@ export class StatisticsByBusinessPage implements OnInit {
       this.tipoEstadistica="Calificaciones del negocio por"
       this.genBarChartDynamic(this.ratingData.data,this.ratingData.tagsTooltip)
     }else{
-      //console.log("No selecciono tipo")
       this.tipoEstadistica="Calificaciones del negocio"
       this.genBarChartDynamic(this.ratingData.data,null)
     }
@@ -1926,12 +1890,9 @@ export class StatisticsByBusinessPage implements OnInit {
       this.grafica.clear();
     }
     if(this.filter.tipo != null){
-      //console.log("Tipo"+this.filter.tipo)
       this.tipoEstadistica="Visitas de promociónes por"
       this.genBarChartDynamic(this.dataGraficas.dataPromociones.data,this.dataGraficas.dataPromociones.tagsTooltip)
     }else{
-      //console.log("No selecciono tipo")
-      //console.log("Tipo "+this.filter.tipo)
       this.tipoEstadistica="Visitas de promociónes"
       this.genBarChartDynamic(this.dataGraficas.dataPromociones.data,this.dataGraficas.dataPromociones.tagsTooltip)
     }
@@ -1946,12 +1907,9 @@ export class StatisticsByBusinessPage implements OnInit {
       this.grafica.clear();
     }
     if(this.filter.tipo != null){
-      //console.log("Tipo"+this.filter.tipo)
       this.tipoEstadistica="Likes de productos por "
       this.genBarChartDynamic(this.dataGraficas.dataLikesProducts.data,this.dataGraficas.dataLikesProducts.tagsTooltip)
     }else{
-      //console.log("No selecciono tipo")
-      //console.log("Tipo"+this.filter.tipo)
       this.tipoEstadistica="Likes de productos "
       this.genBarChartDynamic(this.dataGraficas.dataLikesProducts.data,this.dataGraficas.dataLikesProducts.tagsTooltip)
     }
@@ -1987,8 +1945,7 @@ export class StatisticsByBusinessPage implements OnInit {
       if(tipo=="interactionsMapa"){
         this.tipoEstadistica="Interacciónes con el mapa por"
       }
-    }else{      
-      //console.log("No selecciono tipo")
+    }else{
       if(tipo=="redes"){
         this.tipoEstadistica="Interacción en redes sociales"
       }

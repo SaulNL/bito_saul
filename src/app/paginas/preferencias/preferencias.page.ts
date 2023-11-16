@@ -102,8 +102,7 @@ export class PreferenciasPage implements OnInit {
     this.loader = false;
   }
   async modalPrefByGiro(giro:number, activo:string, index:number) { 
-    if(this.totalGirosSeleccionados<5 || activo === "true"){   
-      console.log("giro: "+giro+" activo: "+activo)            
+    if(this.totalGirosSeleccionados<5 || activo === "true"){        
       if(activo == "false"){
         this.totalGirosSeleccionados++
         this.listaGirosColor[index].active="true"

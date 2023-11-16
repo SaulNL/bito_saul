@@ -70,11 +70,9 @@ export class FiltroPromoComponent implements OnInit {
   }
   
   public obtenerCatMunicipio() {
-    console.log('obtenerMun',this.formularioPromo.get('idEstado').value)
         this.filtroServicio.obtenerMunicipios(this.formularioPromo.get('idEstado').value).subscribe(
             response => {
             this.listCatMunicipio = response.data.list_cat_municipio;
-            console.log('Municipio',this.listCatMunicipio)
             },
             () => {
             }
@@ -82,11 +80,9 @@ export class FiltroPromoComponent implements OnInit {
   }
   
   public obtenerCatLocalidad() {
-    console.log('obtenerLoc',this.formularioPromo.get('idMunicipio').value)
         this.filtroServicio.getLocalidad(this.formularioPromo.get('idMunicipio').value).subscribe(
             response => {
             this.listCaLocalidad = response.data.list_cat_localidad;
-            console.log('Municipio',this.listCaLocalidad)
             },
             () => {
 
@@ -99,7 +95,6 @@ export class FiltroPromoComponent implements OnInit {
       response => {
         if (response.code === 200 && response.data.length > 0) {
           this.listPlazas = response.data;
-          console.log('plazas',this.listPlazas)
         }
       }, error => {
         console.log(error)
@@ -111,9 +106,7 @@ export class FiltroPromoComponent implements OnInit {
     let filtro = {
       filtros:this.formularioPromo.value
     }
-    console.log('guardarFiltros', filtro)
     this._promociones.buscarPromocinesPublicadasModulo(this.formularioPromo.value).subscribe( (response) => {
-      console.log('promocionesEncontradas',response)
       if (response.code === 402) {
       }
       if (response.data !== null) {
@@ -133,7 +126,6 @@ export class FiltroPromoComponent implements OnInit {
   }
 
   abiertoCerrado() {
-    console.log('enrteAbierto')
     let abierto = this.formularioPromo.get('abierto').value == undefined ? null : this.formularioPromo.get('abierto').value;
     this.formularioPromo.get('abierto').setValue(abierto)
   }

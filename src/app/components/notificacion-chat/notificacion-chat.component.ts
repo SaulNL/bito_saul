@@ -91,7 +91,6 @@ export class NotificacionChatComponent implements OnInit {
         this.loader = false;
         if (res.data.length != this.mensajes.length) {
           this.mensajes = res.data;
-          console.log('datosMensaje', this.mensajes);
           this.obtenerMensajes();
         }
       }

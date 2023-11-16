@@ -88,7 +88,6 @@ export class ModalClasificacionComponent implements OnInit {
   }
   async guardarCategoria() {
    /*  if (!this.modalEditarCat.activo) {
-      console.log("cat",this.modalEditarCat)
       if (
         this.modalEditarCat.productos !== undefined &&
         this.modalEditarCat.productos !== null
@@ -125,7 +124,6 @@ export class ModalClasificacionComponent implements OnInit {
       .buscarProductosServios(this.modalEditarCat.id_negocio, 0)
       .subscribe(
         (respuesta) => {
-         console.log("resp", respuesta)
          
         },
         (error) => {

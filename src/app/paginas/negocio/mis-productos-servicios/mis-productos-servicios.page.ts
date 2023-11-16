@@ -341,7 +341,6 @@ export class MisProductosServiciosPage implements OnInit {
     if (this.datosNegocio.cartaServicio.archivo_64 !== undefined) {
       this.loadPdf = true;
     }
-    console.log("negociosDatos",this.datosNegocio)
     this.sercicioNegocio.guardarProductoServio(this.datosNegocio).subscribe(
       (repsuesta) => {
         this.datosNegocio = repsuesta.data;
@@ -581,7 +580,6 @@ export class MisProductosServiciosPage implements OnInit {
   }
 
   public agregarProductos() {
-    console.log("agregar")
     this.verificacionProductosServicios();
     this.mostrarListaProductos = !this.mostrarListaProductos;
     this.agregarProducto = true;
@@ -632,11 +630,9 @@ export class MisProductosServiciosPage implements OnInit {
                   }
 
                   if (!Array.isArray(this.productoNuevo.imagen)) {
-                    console.log("1")
                     this.productoNuevo.imagen = [imagen];
                     this.numeroFotos = 1;
                   } else {
-                    console.log("2")
                     this.productoNuevo.imagen.push(imagen)
                     this.numeroFotos++
                   }
@@ -1252,11 +1248,9 @@ export class MisProductosServiciosPage implements OnInit {
             if (!Array.isArray(this.productoNuevo.imagen)) {
               this.productoNuevo.imagen = [imagen];
               this.numeroFotos = 1;
-              console.log(1,this.productoNuevo)
             } else {
               this.productoNuevo.imagen.push(imagen)
               this.numeroFotos++
-              console.log(2,this.productoNuevo)
             }
 
             this.numeroFotos = this.productoNuevo.imagen.length;

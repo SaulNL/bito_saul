@@ -22,7 +22,6 @@ export class ModalInicioComponent implements OnInit {
   getVideoDuration() {
     const video: HTMLVideoElement = this.videoElement.nativeElement;
     this.video = video.duration;
-    console.log('Duración del video:', this.video);
   }
 
    */
