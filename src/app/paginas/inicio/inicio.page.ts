@@ -412,8 +412,11 @@ export class InicioPage implements OnInit, AfterViewInit {
     const giroId = this.serviceProveedores.getSelectedObj();
     if (idGiro !== null && giroId !== undefined ) {
       this.buscarByGiro(idGiro);
-    } else if ( giroId !== undefined ){
+    } else if ( giroId !== undefined && idGiro === null ){
       this.buscarByGiro(giroId);
+      this.serviceProveedores.setSelectedObj(undefined);
+    } else if ( idGiro !== null && giroId === undefined ){
+      this.buscarByGiro(idGiro);
     }
     this.subCAt = localStorage.getItem('subCat') != undefined ? true : false;
     // if (this.subCAt) {
@@ -634,7 +637,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   public async cargarCargarNegociosMapas() {
-    console.log('filtro', this.Filtros);
     this.loader = true;
     try {
       if (this.Filtros.idCategoriaNegocio == null && this.Filtros.abierto == null && this.Filtros.blnEntrega == null
@@ -1154,11 +1156,11 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.totalPaginas = 0;
     localStorage.removeItem('activarTodos');
     localStorage.setItem('todo', 'todo');
-    localStorage.removeItem('byCategorias');
+    //localStorage.removeItem('byCategorias');
     this.idTodo = false;
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
-    this.Filtros.idCategoriaNegocio = null;
+    //this.Filtros.idCategoriaNegocio = null;
     this.filtroActivo = true;
     this.banderaVerMas = false;
     this.loaderNegocios = true;
@@ -1171,8 +1173,8 @@ export class InicioPage implements OnInit, AfterViewInit {
       ? (this.Filtros.organizacion =
         this.objectSelectAfiliacionPlaza.id_organizacion)
       : '';
-    // const d1 = JSON.stringify(this.Filtros);
-    // localStorage.setItem('filtroactual', d1);
+    const d1 = JSON.stringify(this.Filtros);
+    localStorage.setItem('filtroactual', d1);
 
     const noPaginas = await this.principalSercicio.obtenerNumeroPaginas(this.Filtros, 1);
     const rand = this.random(1, JSON.stringify(noPaginas.data.last_page));
