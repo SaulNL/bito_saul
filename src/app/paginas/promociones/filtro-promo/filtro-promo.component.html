@@ -4,24 +4,42 @@
         <ion-toolbar>
           <ion-title>Filtro</ion-title>
           <ion-buttons slot="end">
-            <ion-button color="light" (click)="modal.dismiss()">Cerrar</ion-button>
+            <ion-button color="light" (click)="modal.dismiss()"><ion-icon name="close-outline"></ion-icon></ion-button>
           </ion-buttons>
         </ion-toolbar>
 
         <form [formGroup]="formularioPromo">
           <ion-item>
-            <ion-label>Afiliaciones/Convenios</ion-label>
-            <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Afiliaciones">
+            <ion-label>Ocurrencia</ion-label>
+            <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Ocurrencia">
               <ion-select-option value="brown">Las afiliaciones</ion-select-option>
             </ion-select>
           </ion-item>
           <ion-item>
+            <ion-label>Tipo Negocio</ion-label>
+            <ion-select [interfaceOptions]="customPopoverOptions" (ionChange)="tipoNegocio($event)" interface="popover" placeholder="Tipo Negocio">
+              <ion-select-option *ngFor="let tipo of lstTipoNegocio" [value]="tipo.id_tipo_negocio">{{tipo.nombre}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label>Categorias</ion-label>
+            <ion-select [interfaceOptions]="customPopoverOptions" (ionChange)="subCategoria($event)" interface="popover" placeholder="Categorias" >
+              <ion-select-option *ngFor="let categoria of lstCategorias" [value]="categoria.id_giro">{{categoria.nombre}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label>SubCategorias</ion-label>
+            <ion-select [interfaceOptions]="customPopoverOptions" (ionChange)="categoriaSub($event)" interface="popover" placeholder="SubCategorias">
+              <ion-select-option *ngFor="let sub of lstSubCategoria" [value]="sub.id_categoria">{{sub.nombre}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <!-- <ion-item>
             <ion-label>Plazas</ion-label>
             <ion-select formControlName="organizacion" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Plazas">
               <ion-select-option [value]="null">Ninguno</ion-select-option>
               <ion-select-option *ngFor="let plz of listPlazas" [value]="plz.id_organizacion">{{plz.nombre}}</ion-select-option>
             </ion-select>
-          </ion-item>
+          </ion-item> -->
           <ion-item>
             <ion-label>Estado</ion-label>
             <ion-select formControlName="idEstado" [interfaceOptions]="customPopoverOptions" (ionChange)="obtenerCatMunicipio()" interface="popover" placeholder="Estado">

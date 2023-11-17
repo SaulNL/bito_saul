@@ -22,6 +22,9 @@ export class FiltroPromoComponent implements OnInit {
   public listCaLocalidad: any;
   public listPlazas: any;
   public lstPromociones: any;
+  public lstTipoNegocio: any;
+  public lstCategorias: any;
+  public lstSubCategoria: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,7 +33,7 @@ export class FiltroPromoComponent implements OnInit {
     private _promociones: PromocionesService,
     private modalController: ModalController
   ) { 
-    this.obtenerPlazas();
+    // this.obtenerPlazas();
     this.obtenerCatEstados();
     this.formularioPromo = this.formBuilder.group({
       abierto: [null],
@@ -40,8 +43,9 @@ export class FiltroPromoComponent implements OnInit {
       idEstado: [29],
       idMunicipio: [null],
       idLocalidad: [null],
-      idTipoNegocio: [null],
+      idTipoNegocio: [[null]],
       id_persona: [null],
+      idGiro:[[null]],
       intEstado: [0],
       kilometros: [1],
       latitud: [19.33836768406867],
@@ -53,6 +57,7 @@ export class FiltroPromoComponent implements OnInit {
       tipoBusqueda: [0],
       typeGetOption: [true],
     });
+    this.catalogo()
   }
 
   ngOnInit() { }
@@ -67,6 +72,33 @@ export class FiltroPromoComponent implements OnInit {
 
             }
         );
+  }
+  public catalogo() {
+        this.filtroServicio.tipoNegocios().subscribe(
+            response => {
+            let data = response.data;
+            this.lstTipoNegocio = data.catTipoNegocioProductosServicios;
+            this.lstCategorias = data.catTipoProducto;
+            console.log(this.lstCategorias)
+            },
+            () => {
+
+            }
+        );
+  }
+
+  subCategoria(event) {
+    let categoria = [event.detail.value]
+    this.formularioPromo.get('idGiro').setValue(categoria)
+    this.filtroServicio.obtenerCategoriasGiro(event.detail.value).subscribe( response => {
+      this.lstSubCategoria = response.data;
+    },() => {
+
+      });
+  }
+  categoriaSub(event) {
+    let categoria = [event.detail.value]
+    this.formularioPromo.get('idCategoriaNegocio').setValue(categoria)
   }
   
   public obtenerCatMunicipio() {
@@ -89,23 +121,28 @@ export class FiltroPromoComponent implements OnInit {
             }
         );
   }
-  
-  obtenerPlazas() {
-    this.generalService.obtenerPlazas().subscribe(
-      response => {
-        if (response.code === 200 && response.data.length > 0) {
-          this.listPlazas = response.data;
-        }
-      }, error => {
-        console.log(error)
-      }
-    );
+  tipoNegocio(event) {
+    let categoria = [event.detail.value]
+    this.formularioPromo.get('idTipoNegocio').setValue(categoria)
   }
+  
+  // obtenerPlazas() {
+  //   this.generalService.obtenerPlazas().subscribe(
+  //     response => {
+  //       if (response.code === 200 && response.data.length > 0) {
+  //         this.listPlazas = response.data;
+  //       }
+  //     }, error => {
+  //       console.log(error)
+  //     }
+  //   );
+  // }
 
   buscarFiltros() {
     let filtro = {
       filtros:this.formularioPromo.value
     }
+    console.log('filtros',this.formularioPromo.value)
     this._promociones.buscarPromocinesPublicadasModulo(this.formularioPromo.value).subscribe( (response) => {
       if (response.code === 402) {
       }
