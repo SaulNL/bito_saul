@@ -2,14 +2,30 @@
     justify-content: center;
 }
 
-.carousel-container {
+.lista-container{
     display: flex;
-    overflow-x: auto; /* Permite desplazarse horizontalmente */
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.lista-container app-promocion {
+    max-width: 72%;
+}
+
+.cuadricula-container {
+    display: flex;
+    overflow-x: auto;
     scroll-snap-type: x mandatory;
 }
 
-.carousel-container app-promocion {
+.cuadricula-container app-promocion {
     flex: 0 0 auto;
     scroll-snap-align: start;
-    margin-right: 7px; /* Espacio entre los card */
+    margin-right: 7px;
+    max-width: 62%;
+}
+
+.buttonCustom{
+    --background: transparent;
+    color: #1d1d1b
 }

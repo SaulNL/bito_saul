@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { FiltrosService } from 'src/app/api/filtros.service';
@@ -13,7 +13,7 @@ import { PromocionesService } from 'src/app/api/promociones.service';
 export class FiltroPromoComponent implements OnInit {
   customPopoverOptions = {
   };
-
+  @Input() isFiltro: boolean;
   @Output() lstPromocionesFiltro = new EventEmitter<string>();
 
   formularioPromo: FormGroup;

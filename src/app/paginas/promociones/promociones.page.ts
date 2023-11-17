@@ -46,6 +46,9 @@ export class PromocionesPage implements OnInit {
     public plazaAfiliacionNombre: any;
     private modal: any;
     public isAlert: boolean = false;
+    cuadricula = true;
+    cuadriLista = false;
+    isFiltro = false;
 
     constructor(
         private _promociones: PromocionesService,
@@ -277,5 +280,9 @@ export class PromocionesPage implements OnInit {
     }
     abrirAlert(isAlert: boolean){
         this.isAlert = isAlert;
+    }
+
+    abrirFiltro(){
+        this.isFiltro = true;
     }
 }

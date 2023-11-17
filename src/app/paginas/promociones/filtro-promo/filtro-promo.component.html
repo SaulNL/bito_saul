@@ -1,6 +1,4 @@
-  <ion-button id="modalPromo" expand="block">Filtro <ion-icon name="caret-down-outline"></ion-icon></ion-button>
-
-  <ion-modal #modal trigger="modalPromo">
+  <ion-modal #modal trigger="modalPromo" *ngIf="isFiltro">
     <ng-template>
       <ion-content>
         <ion-toolbar>

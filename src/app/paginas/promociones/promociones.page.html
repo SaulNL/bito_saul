@@ -6,6 +6,14 @@
   [scrollEvents]="true">
   <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
   <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
+  <div style="display: flex">
+    <ion-button id="modalPromo" class="buttonCustom" (click)="abrirFiltro()">Filtro <ion-icon name="caret-down-outline"></ion-icon></ion-button>
+    <ion-button *ngIf="cuadricula" (click)="cuadricula = !cuadricula; cuadriLista = !cuadriLista"
+                class="buttonCustom"><ion-icon name="list-sharp"></ion-icon>  Ver Lista</ion-button>
+    <ion-button *ngIf="cuadriLista" (click)="cuadriLista = !cuadriLista; cuadricula = !cuadricula;"
+                class="buttonCustom"><ion-icon name="grid-sharp"></ion-icon>  Ver Cuadrícula</ion-button>
+  </div>
+  <app-filtro-promo [isFiltro]="isFiltro" (lstPromocionesFiltro)="filtroPromociones($event)"></app-filtro-promo>
   <div
     *ngIf="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined"
     style="background-color: #3c3c3c; color: white; font-size: small"
@@ -41,7 +49,6 @@
     </ion-text>
   </ion-grid>
 
-  <app-filtro-promo (lstPromocionesFiltro)="filtroPromociones($event)"></app-filtro-promo>
   <div *ngIf="!loader">
     <app-recargar (respuesta)="recargar($event)"></app-recargar>
     <ion-grid *ngFor="let categorias of lstPromociones; index as i" class="categoria">
@@ -51,10 +58,10 @@
         <!--h2  *ngIf="(i+1 == lstPromociones.length)">{{this.scroll()}}</-->
       </ion-row>
 
-      <div class="carousel-container">
+      <div [ngClass]="{'lista-container': cuadriLista, 'cuadricula-container': cuadricula}">
         <ng-container *ngFor="let promocion of categorias.promociones; index as k">
           <app-promocion [promocion]="promocion" [idPersona]="idPersona" [mostrarLogueo]="existeSesion"
-                         (banderaAlert)="abrirAlert($event)" style="max-width: 62%"></app-promocion>
+                         (banderaAlert)="abrirAlert($event)"></app-promocion>
         </ng-container>
       </div>
 
