@@ -104,7 +104,7 @@
                         </div>
                         <div class="mostrarDts">No. de personas<span style="color: red">*</span></div>
                         <div style="display: flex; justify-content:center; align-items: center; width: 90%">
-                            <ion-input class="inputP" type="number" [(ngModel)]="noPersonas"></ion-input>
+                            <ion-input class="inputP" type="number" inputmode="numeric" [(ngModel)]="noPersonas"></ion-input>
                         </div>
                         <ion-button *ngIf="infoEvento.id_tipo_recurrencia == 3"
                                     class="buttonEvento" shape="round" [disabled]="!noPersonas || !fechaSeleccionada && !fechaSeleccionadaDiario" (click)="guardar()">

@@ -188,7 +188,7 @@ export class InfoPromoComponent implements OnInit {
   }
 
   compartir(promocion) {
-    let url = AppSettings.URL_FRONT + 'promocion/' + promocion.id_promocion;
+    let url = (this.platform.is("ios") ? 'bituyu://promocion/' : AppSettings.URL_FRONT + 'promocion/') + promocion.id_promocion;
     this.socialSharing.share('😃¡Te recomiendo esta promoción!😉', 'Promoción', promocion.url_imagen, url);
   }
 

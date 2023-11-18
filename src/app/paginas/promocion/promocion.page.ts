@@ -9,7 +9,7 @@ import { RegistrarPromotionService } from 'src/app/api/registrar-promotion.servi
 import { PromocionesModel } from 'src/app/Modelos/PromocionesModel';
 import { ViewQrPromocionComponent } from 'src/app/components/viewqr-promocion/viewqr-promocion.component';
 import { UtilsCls } from 'src/app/utils/UtilsCls';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { AppSettings } from 'src/app/AppSettings';
 
@@ -46,7 +46,9 @@ export class PromocionPage implements OnInit {
     private notificacionService: ToadNotificacionService, private route: ActivatedRoute,
     private _promociones: PromocionesService, private _haversineService: HaversineService,
     private vioPromotionL: RegistrarPromotionService, private utils: UtilsCls,
-    public modalController: ModalController, private socialSharing: SocialSharing) {
+    public modalController: ModalController, private socialSharing: SocialSharing,
+    private platform: Platform,
+  ) {
     this.miLat = null; this.miLng = null;
   }
 
@@ -217,7 +219,7 @@ export class PromocionPage implements OnInit {
   }
 
   compartir(promocion) {
-    let url = AppSettings.URL_FRONT + 'promocion/' + promocion.id_promocion;
+    let url = (this.platform.is("ios") ? 'bituyu://promocion/' : AppSettings.URL_FRONT + 'promocion/') + promocion.id_promocion;
     this.socialSharing.share('😃¡Te recomiendo esta promoción!😉', 'Promoción', promocion.url_imagen, url);
   }
 

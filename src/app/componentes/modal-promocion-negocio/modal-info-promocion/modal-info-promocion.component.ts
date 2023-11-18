@@ -377,7 +377,7 @@ export class ModalInfoPromocionComponent implements OnInit {
     this.modalController.dismiss();
   }
   compartir(promocion) {
-    let url = AppSettings.URL_FRONT + 'promocion/' + promocion.id_promocion;
+    let url = (this.platform.is("ios") ? 'bituyu://promocion/' : AppSettings.URL_FRONT + 'promocion/') + promocion.id_promocion;
     this.socialSharing.share('😃¡Te recomiendo esta promoción!😉', 'Promoción', promocion.url_imagen, url);
   }
   async guardarCupon() {

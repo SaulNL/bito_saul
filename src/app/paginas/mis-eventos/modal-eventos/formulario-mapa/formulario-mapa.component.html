@@ -59,7 +59,7 @@
 
   <ion-item>
     <ion-label class="wdht">Tipo de evento<span class="requerido">*</span></ion-label>
-    <ion-input type="text" class="bg" justify="end" label="End" placeholder="Tipo de evento"
+    <ion-input type="text" class="bg ion-padding" label="End" placeholder="Tipo de evento"
     formControlName="tipoEvento" (ionChange)="enviarInformacion()" maxlength="51"></ion-input>
   </ion-item>
   <ion-text class="alertaColor" *ngIf="formularioMapa.get('tipoEvento').hasError('maxlength')">
@@ -101,13 +101,13 @@
   </ion-item>
 
   <ion-item fill="solid" class="color">
-    <ion-label position="floating">Numero exterior<span class="requerido">*</span></ion-label>
-    <ion-input formControlName="numExterior" placeholder="Numero Exterior" (ionChange)="enviarInformacion()"></ion-input>
+    <ion-label position="floating">Número exterior<span class="requerido">*</span></ion-label>
+    <ion-input formControlName="numExterior" placeholder="Número Exterior" (ionChange)="enviarInformacion()"></ion-input>
   </ion-item>
   
   <ion-item fill="solid" class="color">
-    <ion-label position="floating">Numero interior</ion-label>
-    <ion-input formControlName="numInterior" placeholder="Numero Interior" (ionChange)="enviarInformacion()"></ion-input>
+    <ion-label position="floating">Número interior</ion-label>
+    <ion-input formControlName="numInterior" placeholder="Número Interior" (ionChange)="enviarInformacion()"></ion-input>
   </ion-item>
 
   <ion-item fill="solid" class="color">
