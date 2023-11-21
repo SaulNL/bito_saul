@@ -124,13 +124,13 @@
               <ion-grid>
                 <ion-row class="lista">
                   <ion-col><p [ngClass]="{'negritas':dia.id === hoy}">{{ dia.dia }}</p></ion-col>
-                  <ion-col *ngIf="dia.horarios.length > 0">
+                  <ion-col *ngIf="dia.horarios.length > 0" style="display: flex; align-items: center">
                     <div *ngIf="dia.id != hoy">
                       <span *ngFor="let h of dia.horarios "><p class="negritas">{{h.texto}}</p></span>
                     </div>
                     <span *ngIf="dia.id == hoy" class="lstAbierto">Abierto</span>
                   </ion-col>
-                  <ion-col *ngIf="dia.horarios.length === 0">
+                  <ion-col *ngIf="dia.horarios.length === 0" style="display: flex; align-items: center">
                     <ion-badge color="danger">Cerrado</ion-badge>
                   </ion-col>
                 </ion-row>
