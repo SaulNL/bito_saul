@@ -129,7 +129,7 @@
 
         <ion-item>
           <ion-label class="wdht">Descripción<span class="requerido">*</span></ion-label>
-          <ion-input type="text" class="bg" justify="end" label="End" placeholder="Descripcion del Evento" maxlength="100"
+          <ion-input type="text" class="bg ion-padding" label="End" placeholder="Descripción del Evento" maxlength="100"
             [(ngModel)]="eventData.descripcion_evento" (input)="inputDescripcion($event)"></ion-input>
         </ion-item>
         <div class="limiteTxt" *ngIf="descripcionEvento">Has llegado al límite de 100 caracteres</div>
@@ -161,14 +161,14 @@
 
         <ion-item>
           <ion-label class="wdht">Número de teléfono<span class="requerido">*</span></ion-label>
-          <ion-input class="bg" type="tel" name="telefono" label="End" pattern="[0-9]*" inputmode="numeric"
-            placeholder="Numero de telefono" [(ngModel)]="eventData.telefono" required></ion-input>
+          <ion-input class="bg ion-padding" type="tel" name="telefono" label="End" pattern="[0-9]*" inputmode="numeric"
+            placeholder="Número de teléfono" [(ngModel)]="eventData.telefono" required></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label class="wdht">Métodos de pago<span class="requerido">*</span></ion-label>
           <ion-select class="bg" name="tipo_pago_efectivo" multiple="true" justify="end" label="End"
-            placeholder="Metodo de pago" [(ngModel)]="pagoSeleccionado" (ionChange)="onPagoSeleccionado()" required>
+            placeholder="Método de pago" [(ngModel)]="pagoSeleccionado" (ionChange)="onPagoSeleccionado()" required>
             <ion-select-option *ngFor="let pago of tipoPago" [value]="pago.id">{{pago.tipo}}</ion-select-option>
           </ion-select>
         </ion-item>

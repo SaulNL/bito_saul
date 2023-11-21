@@ -730,9 +730,16 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   async compartir() {
-  this.socialSharing.share(`Te recomiendo este negocio ${this.informacionNegocio.nombre_comercial}`, null, null, ` ${this.url}${this.informacionNegocio.url_negocio}`)
+    this.socialSharing.share(
+      `Te recomiendo este negocio ${this.informacionNegocio.nombre_comercial}`, 
+      null, 
+      null, 
+      this.isIOS 
+      ? `${'bituyu://negocio/' + this.informacionNegocio.url_negocio}`
+      : ` ${this.url}${this.informacionNegocio.url_negocio}`
+    )
     .then()
-      .catch((error) => this.notificacionService.error(error));
+    .catch((error) => this.notificacionService.error(error));
   }
 
   async abrirModalCalifica() {

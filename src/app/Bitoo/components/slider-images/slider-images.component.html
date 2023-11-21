@@ -1,7 +1,7 @@
 <ion-slides *ngIf="images.length >= 1" [options]="slidesOptions" class="ion-margin-top">
   <ion-slide *ngFor="let image of images">
     <ion-card class="ion-card-custom">
-      <img [srcset]="image.image" />
+      <ion-img [src]="image.image"></ion-img>
     </ion-card>
   </ion-slide>
 </ion-slides>
