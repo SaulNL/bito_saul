@@ -9,10 +9,57 @@
         </ion-toolbar>
 
         <form [formGroup]="formularioPromo">
+          <ion-segment (ionChange)="cambiarSegmento($event)">
+            <ion-segment-button value="localidad">
+              <ion-label>Localidad</ion-label>
+            </ion-segment-button>
+            <ion-segment-button [disabled]="!blnUbicacion" value="ubicacion">
+              <ion-label>Ubicación</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+
+          <div class="localidad" *ngIf="segment == 'localidad'">
+            <ion-item>
+              <ion-label>Estado</ion-label>
+              <ion-select formControlName="idEstado" [interfaceOptions]="customPopoverOptions" (ionChange)="obtenerCatMunicipio()"
+                interface="popover" placeholder="Estado">
+                <ion-select-option *ngFor="let estado of lstEstados"
+                  [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label>Municipio</ion-label>
+              <ion-select formControlName="idMunicipio" [interfaceOptions]="customPopoverOptions"
+                (ionChange)="obtenerCatLocalidad()" interface="popover" placeholder="Municipio">
+                <ion-select-option *ngFor="let mun of listCatMunicipio"
+                  [value]="mun.id_municipio">{{mun.nombre}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label>Localidad</ion-label>
+              <ion-select formControlName="idLocalidad" [interfaceOptions]="customPopoverOptions" interface="popover"
+                placeholder="Localidad">
+                <ion-select-option *ngFor="let local of listCaLocalidad"
+                  [value]="local.idLocalidad">{{local.nombre}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </div>
+          <div class="ubicacion" *ngIf="segment == 'ubicacion'">
+            <ion-item>
+              <div>
+                <h2>Te encuentras en:</h2>
+                <p>{{estasUbicacion}}</p>
+                <h5>Radio de busqueda:</h5>
+                <h5>Kilometros a la redonda: <ion-badge color="medium">{{kilometrosSlider}} Km</ion-badge></h5>
+                <ion-range [value]="kilometrosSlider" (ionChange)="obtenerKilometrosRango($event)" min="1" max="10" step="1"
+                  snaps="true" color="danger" pin="true"></ion-range>
+              </div>
+            </ion-item>
+          </div>
           <ion-item>
             <ion-label>Ocurrencia</ion-label>
-            <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Ocurrencia">
-              <ion-select-option value="brown">Las afiliaciones</ion-select-option>
+            <ion-select [interfaceOptions]="customPopoverOptions" (ionChange)="ocurrenciaSelect($event)" interface="popover" placeholder="Ocurrencia">
+              <ion-select-option *ngFor="let ocurrencia of lstOcurrencia" [value]="ocurrencia.id_tipo_recurrencia_promocion">{{ocurrencia.nombre}}</ion-select-option>
             </ion-select>
           </ion-item>
           <ion-item>
@@ -40,24 +87,7 @@
               <ion-select-option *ngFor="let plz of listPlazas" [value]="plz.id_organizacion">{{plz.nombre}}</ion-select-option>
             </ion-select>
           </ion-item> -->
-          <ion-item>
-            <ion-label>Estado</ion-label>
-            <ion-select formControlName="idEstado" [interfaceOptions]="customPopoverOptions" (ionChange)="obtenerCatMunicipio()" interface="popover" placeholder="Estado">
-              <ion-select-option *ngFor="let estado of lstEstados" [value]="estado.id_estado">{{estado.nombre}}</ion-select-option>
-            </ion-select>
-          </ion-item>
-          <ion-item>
-            <ion-label>Municipio</ion-label>
-            <ion-select formControlName="idMunicipio" [interfaceOptions]="customPopoverOptions" (ionChange)="obtenerCatLocalidad()" interface="popover" placeholder="Municipio">
-              <ion-select-option *ngFor="let mun of listCatMunicipio" [value]="mun.id_municipio">{{mun.nombre}}</ion-select-option>
-            </ion-select>
-          </ion-item>
-          <ion-item>
-            <ion-label>Localidad</ion-label>
-            <ion-select formControlName="idLocalidad" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Localidad">
-              <ion-select-option *ngFor="let local of listCaLocalidad" [value]="local.idLocalidad">{{local.nombre}}</ion-select-option>
-            </ion-select>
-          </ion-item>
+          
           <ion-item>
             <ion-label> Negocios(s) abiertos/cerrados</ion-label>
           </ion-item>

@@ -166,4 +166,17 @@ export class FiltrosService {
                 return error;
             }));
     }
+    obtenerOcurrenciasPromo(): Observable<any> {
+        const body = JSON.stringify({});
+        this.http.setDataSerializer('utf8');
+        return from(this.http.post(
+            this.url + 'api/promociones/tiposRecurrencia/obtenerTodosActivos',
+            body, AppSettings.getHeaders())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
 }
