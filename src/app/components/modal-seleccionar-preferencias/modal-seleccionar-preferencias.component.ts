@@ -44,8 +44,6 @@ export class ModalSeleccionarPreferenciasComponent implements OnInit {
 
   ngOnInit() { 
     this.subcategorias=this.listaPreferencias
-    //console.log("id_giro modal: "+this.id_giro)
-    //console.log("Lista de prefs inicial: "+JSON.stringify(this.listaPreferencias))
     this.listaPreferencias.forEach(giro => {
       if(giro.id_giro==this.id_giro){
         this.categoriasActuales.push(giro)
@@ -69,7 +67,6 @@ export class ModalSeleccionarPreferenciasComponent implements OnInit {
       }
 
     }
-    console.log('Subcategorias elegidas en el giro '+this.id_giro+' = ', this.totalCategoriasSeleccionadas);
   }
 
   obtenerCategorias(id_giro:number){
@@ -106,7 +103,6 @@ export class ModalSeleccionarPreferenciasComponent implements OnInit {
   }
 
   selectSubcategory(id_categoria:number, activo:string, index:number){
-    console.log("id_cat: "+id_categoria+" activo: "+activo+" index: "+index)
     const addCatFavorita = {
       "id_giro": this.id_giro,
       "id_categoria": id_categoria,
@@ -129,7 +125,6 @@ export class ModalSeleccionarPreferenciasComponent implements OnInit {
       
          
     }else{
-      //console.log(this.totalCategoriasSeleccionadas)
       this.toadNotificacionService.alerta("Solo puedes agregar 5 Subcategorias");
     }
   }

@@ -161,7 +161,6 @@ export class CalendarioReservacionPage implements OnInit {
     const diaReservacion = fechaDiario.getDate();
 
     this.fechaFormat = `${diaReservacion}/${this.arrayMeses[mesReservacion]}/${anio}`;
-    console.log('fechaCompleta', this.fechaFormat);
   }
 
   mostrarMeses(){

@@ -193,11 +193,9 @@ export class CardNegocioPage implements OnInit {
   }
 
   solicitarValidacion(){
-    console.log(".negocioTO.id_negocio validacion : "+this.negocioTO.id_negocio)
     var body={ id_negocio: this.negocioTO.id_negocio }
     this.negocioServico.solicitarValidacionNegocio(JSON.stringify(body)).subscribe(
         response => {
-          console.log("response validacion"+JSON.stringify(response))
           if (response.code === 200) {
             if (response.data.code === 200){
               this.notification.exito('Tu negocio será revisado por un administrador de Bituyú. Recibirás una notificación para conocer el estatus de tu solicitud');

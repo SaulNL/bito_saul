@@ -54,7 +54,6 @@ export class DetalleProductoComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('datos', this.datos);
         if (this.bolsa.length > 0) {
             this.bolsa.forEach(element => {
                 if (element.idProducto === this.datos.idProducto) {

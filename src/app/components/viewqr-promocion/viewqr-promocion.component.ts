@@ -94,41 +94,30 @@ export class ViewQrPromocionComponent implements OnInit {
 
   nombreOrgUsuario() {
     // this.getAfiliacionesUsuario();
-    // console.log("AAA2 " + JSON.stringify(this.promocion));
-    // console.log("AAA AAA " + JSON.stringify(this.promocion.organizaciones));
     if (this.promocion.organizaciones === null || this.promocion.organizaciones === undefined || this.promocion.organizaciones.length === 0) {
       this.registro1 = true;
       this.loader = false;
     } else {
       this.anyFiltros = new FiltrosModel();
       this.arreglo = JSON.parse(localStorage.getItem('u_sistema'));
-      //   console.log("ARREGLO ", JSON.stringify(this.arreglo));
       this.id = this.arreglo.id_persona;
       this.anyFiltros.id_persona = this.id;
       // this.arreglo.push(this.id);
-      //console.log("ANY FILTROS ", JSON.stringify(this.anyFiltros));
       this.servicioPromociones.buscarPromocinesPublicadasModulo(this.anyFiltros).subscribe(
         response => {
-          //console.log("respuesta2 " + JSON.stringify(response))
-          //console.log("respuesta " + JSON.stringify(response.data))
           this.holi = response.data;
           this.holi.forEach(l => {
-            // console.log("PROMO" + JSON.stringify(l.promociones));
             l.promociones.forEach(organizacion => {
               this.organizaciones_cupon = organizacion.organizaciones;
-              // console.log("ORG USU" + JSON.stringify(this.organizaciones_cupon))
               if (organizacion.organizaciones_usuario.length > 0) {
                 this.lstOrganizaciones = organizacion.organizaciones_usuario;
-                // console.log("organiziiiiiiiiiiiiiiiiiii" + JSON.stringify(this.lstOrganizaciones))
               }
             })
             this.lstOrganizaciones.forEach(orgu => {
               this.org_usu = orgu
-              //console.log("ORGANIZACION2" + JSON.stringify(this.org_usu));
             });
 
           });
-          // console.log("ORGANIZACION" + JSON.stringify(this.org_usu));
           if (this.org_usu !== null && this.org_usu !== undefined) {
             this.registro2 = true;
             this.loader = false;

@@ -182,7 +182,6 @@ export class ModalPublicarComponent implements OnInit {
   }
 
   obtenerNumeroPublicacionesPromocion() {
-    //console.log(this.publicacion.id_negocio);
     this._promociones_service
         .obtenerNumeroPublicacionesPorNegocio(this.publicacion.id_negocio)
         .subscribe(

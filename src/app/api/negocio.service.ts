@@ -398,12 +398,10 @@ export class NegocioService {
             this.url + 'api/proveedor/guardar_negocio',
             body, AppSettings.getHeadersToken())
             .then((data) => {
-                console.log("HOLA--------SERVICIO" + JSON.stringify(data.data));
                 return JSON.parse(data.data);
 
             })
             .catch((error) => {
-                console.log("HOLA--------ERROR-" + JSON.stringify(error));
                 return error;
             }));
     }
@@ -560,7 +558,6 @@ export class NegocioService {
 
 
     solicitarValidacionNegocio(idNegocio: any): Observable<any> {
-        console.log("Body: " + idNegocio)
         this._http.setDataSerializer('utf8');
         return from(this._http.post(
             this.url + 'api/validar/validacionNegocio',

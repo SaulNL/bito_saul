@@ -1235,7 +1235,6 @@ export class FormularioNegocioPage implements OnInit {
         }
         if (valido) {
           this.negocioGuardar.productos = this.listaProductos;
-          console.log(1, this.negocioGuardar)
           this.negocioServico.guardar(this.negocioGuardar).subscribe(
             response => {
               if (response.code === 200) {
@@ -1274,7 +1273,6 @@ export class FormularioNegocioPage implements OnInit {
           valido = false
         }
         if (valido) {
-          console.log(2, this.negocioGuardar)
           this.negocioServico.guardar(this.negocioGuardar).subscribe(
             response => {
               if (response.code === 200) {
@@ -1682,7 +1680,6 @@ export class FormularioNegocioPage implements OnInit {
     this.negocioAplica = datos.negocio_fisico == false && datos.entrega_domicilio == false ? false : true;
     // if (datos.negocio_fisico == false) {
     // this.negocioAplica = false;
-    console.log(1, this.negocioAplica)
     // } else {
     //   this.negocioAplica = true;
     //   console.log(2, this.negocioAplica)
@@ -1691,11 +1688,9 @@ export class FormularioNegocioPage implements OnInit {
   activarAplica(aplica) {
     if (aplica) {
       this.negocioAplica = true;
-      console.log(3, this.negocioAplica)
       this.limpiarAplica();
     } else {
       this.negocioAplica = false;
-      console.log(4, this.negocioAplica)
       this.limpiarAplica();
     }
   }

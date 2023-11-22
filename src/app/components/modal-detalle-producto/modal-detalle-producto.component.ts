@@ -66,22 +66,16 @@ export class ModalDetalleProductoComponent implements OnInit {
       localStorage.setItem("detail", "product");
       this.inicializeModels();
       const product: ProductInterface = this.productObject;
-      console.log("ProductInterface B: "+JSON.stringify(product))
-      console.log("Payload B: "+this.productObject)
       this.init(product);
       if (this.producto) {
-        console.log("id_producto Payload B: "+this.producto)
         this.posicionProducto(this.producto);
       }
     }
     
     /*var productTO = this.productObject
-    console.log("Payload B: "+JSON.stringify(productTO))
     this.inicializeModels();
     const product: ProductInterface = productTO 
     
-    console.log("id_producto Payload B : "+this.producto)
-    console.log("init product: : "+JSON.stringify(product))
     this.init(product);
     this.posicionProducto(this.producto);*/
     
@@ -164,7 +158,6 @@ export class ModalDetalleProductoComponent implements OnInit {
    * @description Redirecciona al perfil del producto
    */
   public showMore() {
-    console.log("showMore business URL: "+JSON.stringify(this.business.url))
     if(this.business.url!="" && this.business.url!=undefined){
       this.modalController.dismiss();
       const content: byProductModel = new byProductModel(this.product);
@@ -221,7 +214,6 @@ export class ModalDetalleProductoComponent implements OnInit {
    * @param product
    */
   private init(product: ProductInterface) {
-    console.log("init: "+product.idBusiness)
     this.loaderTurnOff();
     this.purchaseMessage = "Agregar";
     this.getDetailBusinessProduct(product);
@@ -356,11 +348,9 @@ export class ModalDetalleProductoComponent implements OnInit {
         this.inicializeModels();
         this.prodEnPos--        
         let producto = this.lstProductos[this.prodEnPos] 
-        console.log("\nPosicion: "+(this.prodEnPos+1)+" de: "+this.lstProductos.length+"\nProductoTO: "+JSON.stringify(producto))
         const product: ProductInterface = this.createObject.createProduct(producto);
         this.init(product);
     }else{
-        console.log("No hay mas promos atras")
     }       
   }
 
@@ -368,12 +358,10 @@ export class ModalDetalleProductoComponent implements OnInit {
     if(this.prodEnPos < this.lstProductos.length-1){
         this.inicializeModels();
         this.prodEnPos++
-        console.log("Posicion: "+(this.prodEnPos+1)+" de: "+this.lstProductos.length)
         const product: ProductInterface = this.createObject.createProduct(this.lstProductos[this.prodEnPos]);
         this.product=product
         this.init(product);
     }else{
-      console.log("No hay mas productos adelante")
     }          
   }
 

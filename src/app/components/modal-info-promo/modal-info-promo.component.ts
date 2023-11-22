@@ -43,7 +43,6 @@ export class ModalInfoPromoComponent implements OnInit {
 
     listaPromocionesSolicitadas(id_promocion){
       this.btnLoaderModal = true;
-      console.log(id_promocion);
       this._promociones_service.obtenerListaPromocionesSolicitadas(id_promocion).subscribe(
           (response) => {
               this.lstPromocionesSolicitadas = response.data;

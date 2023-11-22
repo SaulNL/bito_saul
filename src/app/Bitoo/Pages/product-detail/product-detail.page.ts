@@ -334,11 +334,9 @@ export class ProductDetailPage implements OnInit {
         this.inicializeModels();
         this.prodEnPos--        
         let producto = this.lstProductos[this.prodEnPos] 
-        console.log("\nPosicion: "+(this.prodEnPos+1)+" de: "+this.lstProductos.length+"\nProductoTO: "+JSON.stringify(producto))
         const product: ProductInterface = this.createObject.createProduct(producto);
         this.init(product);
     }else{
-        console.log("No hay mas promos atras")
     }       
   }
 
@@ -346,12 +344,10 @@ export class ProductDetailPage implements OnInit {
     if(this.prodEnPos < this.lstProductos.length-1){
         this.inicializeModels();
         this.prodEnPos++
-        console.log("Posicion: "+(this.prodEnPos+1)+" de: "+this.lstProductos.length)
         const product: ProductInterface = this.createObject.createProduct(this.lstProductos[this.prodEnPos]);
         this.product=product
         this.init(product);
     }else{
-      console.log("No hay mas productos adelante")
     }          
   }
 }

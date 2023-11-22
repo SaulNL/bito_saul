@@ -21,8 +21,6 @@ export class MapaPerfilComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.latitudNeg)
-    console.log(this.longitudNeg)
     this.loadMap()
   }
 
@@ -53,7 +51,6 @@ export class MapaPerfilComponent implements OnInit {
   getLatLong(e) {
     this.miLat = e.latlng.lat;
     this.miLng = e.latlng.lng;
-    console.log("que tiene", this.miLat, this.miLng)
     this.map.panTo([this.miLat, this.miLng]);
     this.marker.setLatLng([this.miLat, this.miLng]);
   }

@@ -157,7 +157,6 @@ export class PromocionesPage implements OnInit {
         }
         if (this.rep<=1){           
             function scrolling() {                 
-                console.log("Mostrando elemento random.."+this.posicionRandom)
                 elem.scrollIntoView();             
             }   
             setTimeout(scrolling, 1000);                         
