@@ -30,7 +30,6 @@ export class DistanciaPromoComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('promociones', this.promociones);
     let origen: any;
     let destino: any;
     origen = this.ubicacionActual.lat + ',' + this.ubicacionActual.long;
@@ -38,10 +37,8 @@ export class DistanciaPromoComponent implements OnInit {
       element.promociones.forEach(async (element) => {
         destino = element.latitud + ',' + element.longitud;
         var responseDistKm = await this.getCoordinatesMap.getDistanciaKmTiempo(origen, destino).toPromise();
-        console.log('Distancia', responseDistKm)
         element.distancia = responseDistKm.status == "OK" ? parseInt(responseDistKm.routes[0].legs[0].distance.text) : 1000;
         this.promocionesDistancia.push(element)
-        console.log('promoDistancia',this.promocionesDistancia)
       });
 
     });
@@ -59,12 +56,9 @@ export class DistanciaPromoComponent implements OnInit {
   // Comparar por alguna propiedad, como el "id"
     return a.distancia - b.distancia;
   } );
-    console.log('Ordenamiento',this.promoOrdenada)
-    console.log('Ordenamiento2',this.promocionesDistancia)
   }
   
   compararDistancia(a, b): number {
-    console.log('elementosAB',a,b)
   const distanciaA = parseFloat(a.distancia.replace(' km', ''));
   const distanciaB = parseFloat(b.distancia.replace(' km', ''));
 

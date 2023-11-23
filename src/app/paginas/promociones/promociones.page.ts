@@ -186,12 +186,11 @@ export class PromocionesPage implements OnInit {
         }
         const gpsOptions = { maximumAge: 30000000, timeout: 2000, enableHighAccuracy: true };
         const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
-            console.log('ubicacion', res)
+
             this.ubicacionActiva = true;
             this.ubicacionActual.lat = res.coords.latitude;
             this.ubicacionActual.long = res.coords.longitude;
         }).catch(error => {
-            console.log('error', error)
             this.ubicacionActiva = false;
             this.ubicacionActual.lat = 0;
             this.ubicacionActual.long = 0;
@@ -225,7 +224,6 @@ export class PromocionesPage implements OnInit {
                     }
                     if (response.data !== null) {
                         this.lstPromociones = response.data;
-                        console.log('promociones',this.lstPromociones)
                         this.loader = false;
                         this.posicionRandom = this.aleatorio(0, this.lstPromociones.length - 1)
                         // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}                                   
@@ -319,7 +317,6 @@ export class PromocionesPage implements OnInit {
         this.loader = event;
         setTimeout(() => {
             this.loader = false;
-            console.log('cambie el loader', this.loader)
         }, 3000);
     }
 }
