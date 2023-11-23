@@ -17,6 +17,7 @@ export class FiltroPromoComponent implements OnInit {
   };
   @Input() isFiltro: boolean;
   @Output() lstPromocionesFiltro = new EventEmitter<string>();
+  @Output() filtroActivo = new EventEmitter<string>();
 
   formularioPromo: FormGroup;
   public lstEstados: any;
@@ -163,10 +164,12 @@ export class FiltroPromoComponent implements OnInit {
       if (response.data !== null) {
         this.lstPromociones = response.data;
         this.lstPromocionesFiltro.emit(this.lstPromociones)
+        this.filtroActivo.emit('true')
         this.modalController.dismiss();
       } else {
         this.lstPromociones = [];
         this.lstPromocionesFiltro.emit(this.lstPromociones)
+        this.filtroActivo.emit('true')
         this.modalController.dismiss();
       }
     }, () => {
@@ -194,6 +197,9 @@ export class FiltroPromoComponent implements OnInit {
     this.formularioPromo.get('typeGetOption').setValue(true);
     this.kilometrosSlider = 1;
     this.buscarFiltros();
+    setTimeout(() => {
+      this.filtroActivo.emit('false')
+    }, 1000);
   }
   
     public obtenerOcurrencia() {

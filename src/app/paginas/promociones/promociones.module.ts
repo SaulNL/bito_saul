@@ -16,6 +16,7 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { ModalInicioSesionPageModule } from "../modal-inicio-sesion/modal-inicio-sesion.module";
 import { FiltroPromoComponent } from './filtro-promo/filtro-promo.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DistanciaPromoComponent } from './distancia-promo/distancia-promo.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ModalPromocionComponent,
     ViewQrPromocionComponent,
     InfoPromoComponent,
-    FiltroPromoComponent
+    FiltroPromoComponent,
+    DistanciaPromoComponent
   ],
   providers: [ SocialSharing ], 
 })

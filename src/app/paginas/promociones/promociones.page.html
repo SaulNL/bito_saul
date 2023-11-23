@@ -13,7 +13,7 @@
     <ion-button *ngIf="cuadriLista" (click)="cuadriLista = !cuadriLista; cuadricula = !cuadricula;"
                 class="buttonCustom"><ion-icon name="grid-sharp"></ion-icon>  Ver Cuadrícula</ion-button>
   </div>
-  <app-filtro-promo [isFiltro]="isFiltro" (lstPromocionesFiltro)="filtroPromociones($event)"></app-filtro-promo>
+  <app-filtro-promo [isFiltro]="isFiltro" (lstPromocionesFiltro)="filtroPromociones($event)" (filtroActivo)="filtroActivos($event)"></app-filtro-promo>
   <div
     *ngIf="plazaAfiliacionNombre.nombre !== null && plazaAfiliacionNombre.nombre !== undefined"
     style="background-color: #3c3c3c; color: white; font-size: small"
@@ -49,7 +49,11 @@
     </ion-text>
   </ion-grid>
 
-  <div *ngIf="!loader">
+  <app-distancia-promo [promociones]="lstPromociones" [ubicacionActual]="ubicacionActual" [mostrarLogueo]="existeSesion" 
+  (banderaAlert)="abrirAlert($event)" [idPersona]="idPersona"
+  (loader)="cambiarLoader($event)" *ngIf="ubicacionActiva && !loader && filtroActivo == 'false'"></app-distancia-promo>
+
+  <div *ngIf="!loader && !ubicacionActiva || filtroActivo == 'true'">
     <app-recargar (respuesta)="recargar($event)"></app-recargar>
     <ion-grid *ngFor="let categorias of lstPromociones; index as i" class="categoria">
       <ion-row class="categoria">

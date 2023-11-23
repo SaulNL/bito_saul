@@ -12,6 +12,7 @@ import { AlertController, ModalController } from "@ionic/angular";
 import { PromocionesModel } from "../../Modelos/PromocionesModel";
 import { FiltrosModel } from "../../Modelos/FiltrosModel";
 import { UtilsCls } from "../../utils/UtilsCls";
+import { Geolocation } from '@capacitor/geolocation';
 import { ModalLoguearseComponent } from 'src/app/componentes/modal-loguearse/modal-loguearse.component';
 
 @Component({
@@ -45,10 +46,13 @@ export class PromocionesPage implements OnInit {
     public selectionAP: boolean;
     public plazaAfiliacionNombre: any;
     private modal: any;
+    public ubicacionActual: any;
     public isAlert: boolean = false;
+    public filtroActivo: any = 'false';
     cuadricula = true;
     cuadriLista = false;
     isFiltro = false;
+    ubicacionActiva: boolean;
 
     constructor(
         private _promociones: PromocionesService,
@@ -138,6 +142,7 @@ export class PromocionesPage implements OnInit {
         this.plazaAfiliacionNombre = "";
         localStorage.setItem('banderaCerrar', 'true');
         this.ngOnInit();
+        this.getCurrentPosition();
     }
 
     public recargar(event: any) {
@@ -173,6 +178,27 @@ export class PromocionesPage implements OnInit {
             }
         }
     }
+
+    async getCurrentPosition() {
+        this.ubicacionActual = {
+            lat: 0,
+            long: 0
+        }
+        const gpsOptions = { maximumAge: 30000000, timeout: 2000, enableHighAccuracy: true };
+        const coordinates = await Geolocation.getCurrentPosition(gpsOptions).then(res => {
+            console.log('ubicacion', res)
+            this.ubicacionActiva = true;
+            this.ubicacionActual.lat = res.coords.latitude;
+            this.ubicacionActual.long = res.coords.longitude;
+        }).catch(error => {
+            console.log('error', error)
+            this.ubicacionActiva = false;
+            this.ubicacionActual.lat = 0;
+            this.ubicacionActual.long = 0;
+        }
+        );
+  }
+
     public obtenerPromociones() {
         if (navigator.geolocation && this.anyFiltros.tipoBusqueda === 1) {
             navigator.geolocation.getCurrentPosition((posicion) => {
@@ -199,6 +225,7 @@ export class PromocionesPage implements OnInit {
                     }
                     if (response.data !== null) {
                         this.lstPromociones = response.data;
+                        console.log('promociones',this.lstPromociones)
                         this.loader = false;
                         this.posicionRandom = this.aleatorio(0, this.lstPromociones.length - 1)
                         // if(this.anyFiltros.strBuscar !== ""){this.modalMapBuscador()}                                   
@@ -283,5 +310,16 @@ export class PromocionesPage implements OnInit {
 
     abrirFiltro(){
         this.isFiltro = true;
+    }
+
+    filtroActivos(event) {
+        this.filtroActivo = event
+    }
+    cambiarLoader(event) {
+        this.loader = event;
+        setTimeout(() => {
+            this.loader = false;
+            console.log('cambie el loader', this.loader)
+        }, 3000);
     }
 }

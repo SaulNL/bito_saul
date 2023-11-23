@@ -1,0 +1,21 @@
+<div class="contenedorPromo">
+  <div class="cardPromo" *ngFor="let promo of promocionesDistancia" (click)="modal(promo)">
+    <div class="seccionImg">
+      <img src="{{promo.url_imagen}}" alt="error al cargar la imagen">
+    </div>
+    <div class="seccionContenido">
+      <ion-badge color="primary" style="margin-top: 10px;">{{promo.giro_negocio}}</ion-badge>
+      <br>
+      <strong>{{promo.tipo_promocion}}</strong>
+      <strong style="margin-top: 5px;"><p class="promocion">{{promo.promocion | slice:0:20}}...</p></strong>
+      <strong style="margin-top: 10px;">
+        <p *ngIf="promo.horarios.length != 0" class="promocion">{{promo.horarios[0].hora_inicio}} - {{promo.horarios[0].hora_inicio}}|{{promo.nombre_comercial | slice:0:20}}</p>
+        <p *ngIf="promo.horarios.length == 0" class="promocion">Sin horario</p>
+      </strong>
+    </div>
+    <div class="ultimaSeccion">
+      <ion-badge color="success" style="margin-bottom: 7px;" *ngIf="promo.abierto == 'ABIERTO'">{{promo.abierto}}</ion-badge>
+      <ion-badge color="danger" style="margin-bottom: 7px;" *ngIf="promo.abierto != 'ABIERTO'">{{promo.abierto}}</ion-badge>
+    </div>
+  </div>
+</div>
