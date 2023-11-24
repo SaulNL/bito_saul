@@ -979,7 +979,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
 
         } else {
-          localStorage.setItem('isRedirected', 'true');
+          localStorage.setItem('isRedirected', 'false');
           this.ruta.navigate(['/tabs/negocio/' + negocioURL]);
         }
 

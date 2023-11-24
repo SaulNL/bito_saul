@@ -206,7 +206,8 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   ngOnInit() {
     if (localStorage.getItem('isRedirected') === 'false' && !this.isIOS) {
       localStorage.setItem('isRedirected', 'true');
-      location.reload();
+      console.log('recargue')
+        location.reload();
       // window.location.assign(this.router.url);
     }
     this.route.queryParams.subscribe((params) => {
@@ -534,7 +535,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
                 response.data.servicios.length === 0) &&
               (this.promociones == undefined || this.promociones.length === 0)
             ) {
-              this.seccion = 'ubicacion';
+              // this.seccion = 'ubicacion';
             }
 
             this.informacionNegocio.cartaProducto = response.data.cartaProducto;
