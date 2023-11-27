@@ -21,9 +21,7 @@ export class PromocionComponent implements OnInit {
 
   constructor( public modalController: ModalController ) {}
 
-  ngOnInit() {
-    console.log('lista', this.bdrLista);
-  }
+  ngOnInit() {}
 
 
   modal(){
