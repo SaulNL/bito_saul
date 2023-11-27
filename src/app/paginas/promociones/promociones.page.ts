@@ -48,7 +48,7 @@ export class PromocionesPage implements OnInit {
     private modal: any;
     public ubicacionActual: any;
     public isAlert: boolean = false;
-    public filtroActivo: any = 'false';
+    public filtroActivo: any = false;
     cuadricula = true;
     cuadriLista = false;
     isFiltro = false;

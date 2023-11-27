@@ -17,7 +17,7 @@ export class FiltroPromoComponent implements OnInit {
   };
   @Input() isFiltro: boolean;
   @Output() lstPromocionesFiltro = new EventEmitter<string>();
-  @Output() filtroActivo = new EventEmitter<string>();
+  @Output() filtroActivo = new EventEmitter<boolean>();
 
   formularioPromo: FormGroup;
   public lstEstados: any;
@@ -75,7 +75,7 @@ export class FiltroPromoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.kilometrosSlider = 1;
+    this.kilometrosSlider = 10;
    }
   
   public obtenerCatEstados() {
@@ -153,23 +153,23 @@ export class FiltroPromoComponent implements OnInit {
   //   );
   // }
 
-  buscarFiltros() {
+  buscarFiltros(borrarFiltros) {
     this.getCurrentPosition();
     let filtro = {
       filtros:this.formularioPromo.value
     }
-    this._promociones.buscarPromocinesPublicadasModulo(this.formularioPromo.value).subscribe( (response) => {
+    this._promociones.buscarPromocinesPublicadasModulo(this.formularioPromo.value).subscribe((response) => {
       if (response.code === 402) {
       }
       if (response.data !== null) {
         this.lstPromociones = response.data;
         this.lstPromocionesFiltro.emit(this.lstPromociones)
-        this.filtroActivo.emit('true')
+        this.filtroActivo.emit(borrarFiltros)
         this.modalController.dismiss();
       } else {
         this.lstPromociones = [];
         this.lstPromocionesFiltro.emit(this.lstPromociones)
-        this.filtroActivo.emit('true')
+        this.filtroActivo.emit(borrarFiltros)
         this.modalController.dismiss();
       }
     }, () => {
@@ -195,11 +195,8 @@ export class FiltroPromoComponent implements OnInit {
     this.formularioPromo.get('strMunicipio').setValue("");
     this.formularioPromo.get('tipoBusqueda').setValue(0);
     this.formularioPromo.get('typeGetOption').setValue(true);
-    this.kilometrosSlider = 1;
-    this.buscarFiltros();
-    setTimeout(() => {
-      this.filtroActivo.emit('false')
-    }, 1000);
+    this.kilometrosSlider = 10;
+    this.buscarFiltros(false);
   }
   
     public obtenerOcurrencia() {
@@ -229,8 +226,23 @@ export class FiltroPromoComponent implements OnInit {
   }
 
   cambiarSegmento(event) {
-    
     this.segment = event.detail.value;
+    if (event.detail.value == 'localidad') {
+      this.formularioPromo.get('strMunicipio').setValue("");
+      this.formularioPromo.get('tipoBusqueda').setValue(0);
+      this.formularioPromo.get('kilometros').setValue(1);
+      this.formularioPromo.get('idEstado').setValue(null);
+      this.formularioPromo.get('idMunicipio').setValue(null);
+      this.formularioPromo.get('idLocalidad').setValue(null);
+    }
+    if (event.detail.value == 'ubicacion') {
+      this.formularioPromo.get('strMunicipio').setValue("");
+      this.formularioPromo.get('tipoBusqueda').setValue(1);
+      this.formularioPromo.get('kilometros').setValue(10);
+      this.formularioPromo.get('idEstado').setValue(null);
+      this.formularioPromo.get('idMunicipio').setValue(null);
+      this.formularioPromo.get('idLocalidad').setValue(null);
+    }
   }
 
   public geocodeLatLng() {

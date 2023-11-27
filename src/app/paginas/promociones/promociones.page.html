@@ -51,9 +51,9 @@
 
   <app-distancia-promo [promociones]="lstPromociones" [ubicacionActual]="ubicacionActual" [mostrarLogueo]="existeSesion" 
   (banderaAlert)="abrirAlert($event)" [idPersona]="idPersona"
-  (loader)="cambiarLoader($event)" *ngIf="ubicacionActiva && !loader && filtroActivo == 'false'"></app-distancia-promo>
+  (loader)="cambiarLoader($event)" *ngIf="ubicacionActiva && !loader && !filtroActivo"></app-distancia-promo>
 
-  <div *ngIf="!loader && !ubicacionActiva || filtroActivo == 'true'">
+  <div *ngIf="!loader && !ubicacionActiva || filtroActivo">
     <app-recargar (respuesta)="recargar($event)"></app-recargar>
     <ion-grid *ngFor="let categorias of lstPromociones; index as i" class="categoria">
       <ion-row class="categoria">

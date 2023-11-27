@@ -40,7 +40,7 @@
               <ion-select formControlName="idLocalidad" [interfaceOptions]="customPopoverOptions" interface="popover"
                 placeholder="Localidad">
                 <ion-select-option *ngFor="let local of listCaLocalidad"
-                  [value]="local.idLocalidad">{{local.nombre}}</ion-select-option>
+                  [value]="local.id_localidad">{{local.nombre}}</ion-select-option>
               </ion-select>
             </ion-item>
           </div>
@@ -105,7 +105,7 @@
         </form>
 
         <div class="seccionBotones">
-          <ion-button (click)="buscarFiltros()" color="success"><ion-icon name="search-outline"></ion-icon> Buscar</ion-button>
+          <ion-button (click)="buscarFiltros(true)" color="success"><ion-icon name="search-outline"></ion-icon> Buscar</ion-button>
           <ion-button (click)="limpiarFiltro()" color="danger"><ion-icon name="trash-outline"></ion-icon> Limpiar</ion-button>
         </div>
       </ion-content>
