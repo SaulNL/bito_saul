@@ -14,14 +14,14 @@
     border-radius: 15px;
 }
 .seccionImg{
-    height: 60%;
+    //height: 60%;
 }
 .seccionImg img{
     height: 100%;
     border-radius: 15px 15px 0px 0px;
 }
 .seccionContenido{
-    height: 30%;
+    min-height: 90px;
     text-align: center;
 }
 .promocion{
@@ -36,4 +36,57 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
+}
+
+img {
+    width: 100%;
+}
+
+.promocion {
+    color: black;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.customTitulo{
+    width: 170px;
+    color: black;
+    text-align: center;
+    background: #F5F5F5;
+    border-radius: 20px;
+    margin-bottom: 5px;
+}
+
+.customCard{
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    margin-right: 7px;
+    max-width: 62%;
+}
+
+.imagen-redonda {
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+.imagen-redonda img {
+    width: 100%;
+    height: 100%;
+}
+
+@media screen and (max-width: 720px) {
+    .claseResolucion{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .customCard{
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        margin-right: 6px;
+        max-width: 45%;
+    }
 }

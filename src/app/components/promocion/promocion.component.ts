@@ -14,14 +14,15 @@ export class PromocionComponent implements OnInit {
   @Input() idPersona: number | null;
   @Input() mostrarLogueo: any;
   @Output() banderaAlert: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() bdrLista: boolean;
   idPromo: number;
   loader: boolean=true;
   listaDias: any;
 
-  constructor( public modalController: ModalController ) {
-  }
+  constructor( public modalController: ModalController ) {}
 
   ngOnInit() {
+    console.log('lista', this.bdrLista);
   }
 
 
