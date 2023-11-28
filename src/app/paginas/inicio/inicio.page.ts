@@ -26,7 +26,6 @@ import { AlertController } from '@ionic/angular';
 import { PersonaService } from 'src/app/api/persona.service';
 import { FiltrosService } from 'src/app/api/filtros.service';
 import Swal from 'sweetalert2';
-import {ModalInicioComponent} from '../../componentes/modal-inicio/modal-inicio.component';
 import { Geolocation } from '@capacitor/geolocation';
 import { Filesystem, Directory, Encoding, } from '@capacitor/filesystem';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
