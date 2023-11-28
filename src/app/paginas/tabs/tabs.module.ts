@@ -22,7 +22,6 @@ import {
     ModalInfoPromocionComponent
 } from "../../componentes/modal-promocion-negocio/modal-info-promocion/modal-info-promocion.component";
 import {SpinnerModule} from "../../componentes/spinner/spinner.module";
-import {ModalInicioComponent} from "../../componentes/modal-inicio/modal-inicio.component";
 import {ModalInicioSesionPageModule} from "../modal-inicio-sesion/modal-inicio-sesion.module";
 import { ModalImagenCuponComponent } from '../../components/modal-imagen-cupon/modal-imagen-cupon.component';
 import { DetallesReservaComponent } from '../eventos/detalles-reserva/detalles-reserva.component';
@@ -55,7 +54,6 @@ import { InfoReservacionComponent } from '../eventos/info-reservacion/info-reser
         ModalLoguearseComponent,
         ModalPromocionNegocioComponent,
         ModalInfoPromocionComponent,
-        ModalInicioComponent,
         ModalImagenCuponComponent
     ],
   exports: [
