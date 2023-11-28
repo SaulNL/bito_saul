@@ -1,21 +1,58 @@
-<div class="contenedorPromo">
-  <div class="cardPromo" *ngFor="let promo of promocionesDistancia" (click)="modal(promo)">
-    <div class="seccionImg">
-      <img src="{{promo.url_imagen}}" alt="error al cargar la imagen">
-    </div>
-    <div class="seccionContenido">
-      <ion-badge color="primary" style="margin-top: 10px;">{{promo.giro_negocio}}</ion-badge>
-      <br>
-      <strong>{{promo.tipo_promocion}}</strong>
-      <strong style="margin-top: 5px;"><p class="promocion">{{promo.promocion | slice:0:20}}...</p></strong>
-      <strong style="margin-top: 10px;">
-        <p *ngIf="promo.horarios.length != 0" class="promocion">{{promo.horarios[0].hora_inicio}} - {{promo.horarios[0].hora_inicio}}|{{promo.nombre_comercial | slice:0:20}}</p>
-        <p *ngIf="promo.horarios.length == 0" class="promocion">Sin horario</p>
-      </strong>
-    </div>
-    <div class="ultimaSeccion">
-      <ion-badge color="success" style="margin-bottom: 7px;" *ngIf="promo.abierto == 'ABIERTO'">{{promo.abierto}}</ion-badge>
-      <ion-badge color="danger" style="margin-bottom: 7px;" *ngIf="promo.abierto != 'ABIERTO'">{{promo.abierto}}</ion-badge>
-    </div>
+<div *ngIf="bdrLista === undefined || bdrLista === true" [class.claseResolucion]="activarClase">
+  <ion-card *ngFor="let promo of promocionesDistancia" (click)="modal(promo)" class="customCard">
+    <img src="{{promo.url_imagen}}" alt="error al cargar la imagen">
+    <ion-card-content class="ion-no-padding ion-no-margin">
+      <div>
+        <ion-grid>
+          <div style="display: flex; justify-content: center">
+            <div class="customTitulo">{{promo.nombre_comercial}}</div>
+          </div>
+          <ion-row *ngIf="promo.giro_negocio !== null" class="ion-justify-content-center">
+            <ion-badge>{{ promo.giro_negocio }}</ion-badge>
+          </ion-row>
+          <ion-row class="ion-justify-content-center promocion" style="font-size: medium;" *ngIf="promo.id_tipo_promocion === 1">
+            <strong>Anuncio</strong>
+          </ion-row>
+          <ion-row class="ion-justify-content-center promocion" style="font-size: medium;" *ngIf="promo.id_tipo_promocion === 2">
+            <strong>Promoción</strong>
+          </ion-row>
+          <ion-row class="ion-justify-content-center">
+            <ion-badge *ngIf="promo.abierto == 'ABIERTO'" color="success">{{ promo.abierto }}</ion-badge>
+            <ion-badge *ngIf="promo.abierto == 'CERRADO'" color="danger">{{ promo.abierto }}</ion-badge>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: center;" *ngIf="bdrLista === false">
+  <div style="width: 96%; border-radius: 40px; background: white; margin-top: 5px; margin-bottom: 5px;"
+       *ngFor="let promo of promocionesDistancia" (click)="modal(promo)">
+    <ion-row style="margin: 0; padding: 0;">
+      <ion-col size="2.5" style="display: flex; align-items: center; margin: 0; padding: 0;">
+        <div class="imagen-redonda">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTrNdWOVG0us26NN-771ygyqcPWQ4T2KXQuiPJgSKyndpDiv5X_&usqp=CAU"
+               [srcset]="promo.url_imagen" alt="Falla al cargar imagen">
+        </div>
+      </ion-col>
+      <ion-col size="6.5" style="margin: 0; padding: 0;">
+        <div style="display: flex; justify-content: center; flex-wrap: wrap; margin-top: 5px;">
+          <div class="customTitulo">{{promo.nombre_comercial}}</div>
+          <strong style="margin-top: 1px;">{{ promo.giro_negocio }}</strong>
+        </div>
+        <div style="display: flex; justify-content: center; margin-top: 3px;">
+          <strong *ngIf="promo.id_tipo_promocion===2">Promoción</strong>
+          <strong *ngIf="promo.id_tipo_promocion===1">Anuncio</strong>
+        </div>
+      </ion-col>
+      <ion-col size="3" style="display: flex; align-items: flex-end; margin: 0; padding: 0;">
+        <div style="margin-bottom: 2px; margin-left: 2px">
+          <ion-badge *ngIf="promo.abierto == 'ABIERTO'" color="success">{{ promo.abierto }}</ion-badge>
+          <ion-badge *ngIf="promo.abierto == 'CERRADO'" color="danger">{{ promo.abierto }}</ion-badge>
+        </div>
+      </ion-col>
+    </ion-row>
   </div>
 </div>
+

@@ -8,9 +8,9 @@
   <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
   <div style="display: flex; justify-content: space-between;">
     <ion-button id="modalPromo" class="buttonCustom" (click)="abrirFiltro()">Filtro <ion-icon name="caret-down-outline"></ion-icon></ion-button>
-    <ion-button *ngIf="cuadricula" (click)="cuadricula = !cuadricula; cuadriLista = !cuadriLista"
+    <ion-button *ngIf="cuadricula" (click)="verLista()"
                 class="buttonCustom"><ion-icon name="list-sharp"></ion-icon>  Ver Lista</ion-button>
-    <ion-button *ngIf="cuadriLista" (click)="cuadriLista = !cuadriLista; cuadricula = !cuadricula;"
+    <ion-button *ngIf="cuadriLista" (click)="verCuadricula()"
                 class="buttonCustom"><ion-icon name="grid-sharp"></ion-icon>  Ver Cuadrícula</ion-button>
   </div>
   <app-filtro-promo [isFiltro]="isFiltro" (lstPromocionesFiltro)="filtroPromociones($event)" (filtroActivo)="filtroActivos($event)"></app-filtro-promo>
@@ -49,8 +49,8 @@
     </ion-text>
   </ion-grid>
 
-  <app-distancia-promo [promociones]="lstPromociones" [ubicacionActual]="ubicacionActual" [mostrarLogueo]="existeSesion" 
-  (banderaAlert)="abrirAlert($event)" [idPersona]="idPersona"
+  <app-distancia-promo [promociones]="lstPromociones" [ubicacionActual]="ubicacionActual" [mostrarLogueo]="existeSesion"
+  (banderaAlert)="abrirAlert($event)" [idPersona]="idPersona" [bdrLista]="bdrLista"
   (loader)="cambiarLoader($event)" *ngIf="ubicacionActiva && !loader && !filtroActivo"></app-distancia-promo>
 
   <div *ngIf="!loader && !ubicacionActiva || filtroActivo">
@@ -64,7 +64,7 @@
 
       <div [ngClass]="{'lista-container': cuadriLista, 'cuadricula-container': cuadricula}">
         <ng-container *ngFor="let promocion of categorias.promociones; index as k">
-          <app-promocion [promocion]="promocion" [idPersona]="idPersona" [mostrarLogueo]="existeSesion"
+          <app-promocion [promocion]="promocion" [idPersona]="idPersona" [mostrarLogueo]="existeSesion" [bdrLista]="bdrLista"
                          (banderaAlert)="abrirAlert($event)"></app-promocion>
         </ng-container>
       </div>

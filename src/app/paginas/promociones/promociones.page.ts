@@ -53,6 +53,7 @@ export class PromocionesPage implements OnInit {
     cuadriLista = false;
     isFiltro = false;
     ubicacionActiva: boolean;
+    bdrLista: boolean;
 
     constructor(
         private _promociones: PromocionesService,
@@ -318,5 +319,17 @@ export class PromocionesPage implements OnInit {
         setTimeout(() => {
             this.loader = false;
         }, 3000);
+    }
+
+    verLista(){
+        this.cuadricula = false;
+        this.cuadriLista = true;
+        this.bdrLista = false;
+    }
+
+    verCuadricula(){
+        this.cuadricula = true;
+        this.cuadriLista = false;
+        this.bdrLista = true;
     }
 }

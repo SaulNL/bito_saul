@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, HostListener } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { async } from 'rxjs/internal/scheduler/async';
 import { UbicacionMapa } from 'src/app/api/ubicacion-mapa.service';
@@ -15,12 +15,14 @@ export class DistanciaPromoComponent implements OnInit {
   @Input() ubicacionActual: any;
   @Input() mostrarLogueo: any;
   @Input() idPersona: number | null;
+  @Input() bdrLista: boolean;
   @Output() banderaAlert: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() loader: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public promocionesDistancia: any;
   public promoOrdenada
   listaDias: any;
+  activarClase = false;
 
   constructor(
     public getCoordinatesMap: UbicacionMapa,
@@ -29,7 +31,13 @@ export class DistanciaPromoComponent implements OnInit {
     this.promocionesDistancia = [];
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.verificarResolucion();
+  }
+
   ngOnInit() {
+    this.verificarResolucion();
     let origen: any;
     let destino: any;
     origen = this.ubicacionActual.lat + ',' + this.ubicacionActual.long;
@@ -45,6 +53,10 @@ export class DistanciaPromoComponent implements OnInit {
     setTimeout(() => {
       this.ordenarPorDistancia()
     }, 2000);
+  }
+
+  verificarResolucion(){
+    this.activarClase = window.innerWidth < 720;
   }
 
   ordenarPromo() {

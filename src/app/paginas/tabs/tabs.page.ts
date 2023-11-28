@@ -57,11 +57,6 @@ export class TabsPage implements OnInit {
     this.activedPage = "";
     this.isIos = this.platform.is('ios');
     this.isAndroid = (this.platform.is('android'));
-
-    setTimeout( () => {
-      this.initializeModal();
-    }, 2000);
-
   }
 
   ngOnInit(): void {
@@ -140,18 +135,6 @@ export class TabsPage implements OnInit {
     }
   }
 
-  async initializeModal() {
-    const modalShow = localStorage.getItem('modalShown');
-    if (this.router.url == '/tabs/inicio' && modalShow == null){
-      const modal = await this.modalController.create({
-        component: ModalInicioComponent,
-      });
-      await modal.present();
-
-    } else if (this.router.url == '/tabs/inicio' && modalShow == 'false'){
-      localStorage.removeItem('modalShown');
-    }
-  }
 
   promociones() {
     localStorage.removeItem("activedPage");
