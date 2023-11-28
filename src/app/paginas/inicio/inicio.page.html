@@ -5,6 +5,7 @@
     (buscarEmit)="buscarToolbar($event)" titulo="Bituyú"></app-toolbar-busqueda>
 
 </ion-toolbar>
+
 <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
   <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
   <app-boton-top [content]="content" [cordenada]="cordenada" [platform]="isIOS" *ngIf="!isIOS"></app-boton-top>
@@ -14,9 +15,12 @@
     </ion-fab-button>
   </ion-fab>
   <app-banner-promociones [anyFiltros]="Filtros" [tieneFiltro]="tFiltro"></app-banner-promociones>
+  <p>{{loader}}</p>
+  <br>
+  <br>
   <app-spinner [loader]="loader" [message]="msj"></app-spinner>
-  <app-spinner [loader]="loaderNegocios" [message]="msj"></app-spinner>
-  <app-spinner *ngIf="mostrarloaderInicio" [loader]="loaderInicio" [message]="msj"></app-spinner>
+  <!-- <app-spinner [loader]="loaderNegocios" [message]="msj"></app-spinner>
+  <app-spinner *ngIf="mostrarloaderInicio" [loader]="loaderInicio" [message]="msj"></app-spinner> -->
   <div *ngIf="!loader">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -65,6 +69,7 @@
         </div>
       </ion-row>
     </ion-grid>
+
     <ion-slides [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }" scrollbar="md" style="margin-top: -10px;">
       <ion-slide>
 
@@ -118,7 +123,8 @@
       </div>
     </ion-grid>
 
-    <div *ngIf="!loaderNegocios">
+    <!-- la seccion de abajo es el nuevo inicio la de loaderNegocio -->
+    <div *ngIf="!loader">
       <div *ngIf="listaCategorias.length !== 0">
         <div *ngFor="let cat of !banderaVerMas || listaVerMas.length === 0 ? listaCategorias : listaVerMas; index as a">
           <div class="container-1">
@@ -236,6 +242,8 @@
         </div>
       </div>
     </div>
+
+    <!-- esta es una seccion que solopone cargando negocios -->
     <ion-grid *ngIf="listaCategorias.length === 0 && selectionAP === false && subCatBandera === false">
       <ion-button expand="block" fill="outline" color="medium" size="small" shape="round" disabled={{buttonDisabled}}>
         <div class="spinner">
@@ -248,6 +256,8 @@
         <!--<h2>No se encontraron negocios relacionados</h2>-->
       </ion-text>
     </ion-grid>
+
+    <!-- este es un mensaje que sale cuando no se encontraron mensajes por afiliacion -->
     <ion-grid *ngIf="listaCategorias.length === 0  && selectionAP === true">
       <ion-text color="primary">
         <h2>
@@ -256,6 +266,8 @@
         </h2>
       </ion-text>
     </ion-grid>
+
+    <!-- mensaje que sale cuando no se encontraron negocio creo que es poe subCategorias -->
     <ion-grid *ngIf="listaCategorias.length === 0  && selectionAP === false && subCatBandera === true">
       <ion-text color="primary">
         <h2>
@@ -263,6 +275,8 @@
         </h2>
       </ion-text>
     </ion-grid>
+
+    <!-- esta seccion no se para que sirva ya que basicamente esta todo comentado -->
     <ion-grid *ngIf="!loader && filtroActivo || idTodo || selectionAP || buscador">
       <!-- <span>actual page = {{actualPagina}}</span>
       <span>total Paginas = {{totalPaginas}}</span>
@@ -283,6 +297,7 @@
         </ion-col> -->
       </ion-row>
     </ion-grid>
+
   </div>
   <app-modal-inicio-sesion [isAlert]="isAlert" (banderaAlert)="cerrarAlert($event)"></app-modal-inicio-sesion>
   <app-banner-anuncios></app-banner-anuncios>

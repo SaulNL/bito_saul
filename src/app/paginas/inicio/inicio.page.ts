@@ -120,7 +120,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.loaderNegocios = true;
     this.tFiltro = false;
     this.afiliacion = true;
-    this.mostrarloaderInicio = true;
+    this.loader = true;
     this.isIOS = this.platform.is('ios');
     this.route.queryParams.subscribe((params) => {
       this.subscribe = this.platform.backButton.subscribe(() => {
@@ -385,7 +385,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       );
     }
 
-    this.buscarNegocios(true);
+    // this.buscarNegocios(true,1);
     if (this.util.existSession()) {
       this.persona = this.util.getIdPersona();
       this.permisos = this.auth0Service.getUserPermisos();
@@ -409,6 +409,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   ionViewWillEnter() {
     const idGiro = JSON.parse(localStorage.getItem('idGiro'));
+    this.obtenerPrincipalInicio(undefined,1);
     const giroId = this.serviceProveedores.getSelectedObj();
     if (idGiro !== null && giroId !== undefined ) {
       this.buscarByGiro(idGiro);
@@ -459,7 +460,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.Filtros = new FiltrosModel();
       this.Filtros.idCategoriaNegocio = [dato.id_categoria];
       if (!localStorage.getItem('byCategorias')) {
-        this.buscarNegocios(true);
+        this.buscarNegocios(true,2);
       }
       localStorage.removeItem('seleccionado');
     }
@@ -482,7 +483,7 @@ export class InicioPage implements OnInit, AfterViewInit {
         this.Filtros.tipoBusqueda === 0
       ) {
       } else {
-        this.borrarFiltros();
+        this.borrarFiltrosP(false);
       }
     }
   }
@@ -510,9 +511,10 @@ export class InicioPage implements OnInit, AfterViewInit {
       } else {
 
         this.listaCategorias = await respuesta.data.lst_cat_negocios.data;
+        console.log(1)
         this.loader = false;
-        this.loaderInicio = false;
-        this.mostrarloaderInicio = false;
+        // this.loaderInicio = false;
+        // this.mostrarloaderInicio = false;
         this.negociosIdMapa();
       }
     } else {
@@ -666,7 +668,8 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   }
 
-  public async buscarNegocios(seMuestraElLoader: boolean) {
+  public async buscarNegocios(seMuestraElLoader: boolean, id: number) {
+    console.log('entreBNegocio',id)
     this.loader = seMuestraElLoader;
     this.listaIdsMapa = [];
     if (seMuestraElLoader === true) {
@@ -690,10 +693,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.filtroActivo = true;
       this.banderaVerMas = false;
     }
-    this.selectionAP
-      ? (this.Filtros.organizacion =
-        this.objectSelectAfiliacionPlaza.id_organizacion)
-      : '';
+    this.selectionAP ? (this.Filtros.organizacion = this.objectSelectAfiliacionPlaza.id_organizacion) : '';
     this.loaderNegocios = false;
     const todo = localStorage.getItem('todo');
 
@@ -706,7 +706,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     if (org === null && categorias === null && this.idGiro === null && localStorage.getItem('todo') === null) {
       this.loader = false;
       this.selectionAP = false;
-      this.obtenerPrincipalInicio(); // Abre el inicio cuando se abre la app por primera vez
+      this.obtenerPrincipalInicio(undefined,1); // Abre el inicio cuando se abre la app por primera vez
     }
 
     this.loader = false;
@@ -730,9 +730,10 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     if (event === null) {
       localStorage.removeItem('filtroactual');
-      this.obtenerPrincipalInicio();
+      console.log('a1');
+      this.obtenerPrincipalInicio(undefined,2);
     } else {
-      this.buscarNegocios(true);
+      this.buscarNegocios(true,3);
       this.selectionAP = false;
       this.buscador = true;
     }
@@ -760,7 +761,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       if (res == false) {
         this.borrarFiltrosP(true);
       } else {
-        this.buscarNegocios(true);
+        this.buscarNegocios(true,4);
       }
     });
 
@@ -800,7 +801,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.Filtros = new FiltrosModel();
     this.Filtros.idCategoriaNegocio = [seleccionado.id_categoria];
     this.Filtros.idGiro = [seleccionado.idGiro];
-    this.buscarNegocios(true);
+    this.buscarNegocios(true,5);
   }
 
   async abrirModalMapa() {
@@ -898,7 +899,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     localStorage.removeItem('activarTodos');
 
     this.objectSelectAfiliacionPlaza = null;
-    this.borrarFiltros();
+    // this.borrarFiltros();
     this.borrarFiltrosP(false);
     if (activacion) {
       localStorage.removeItem('afi');
@@ -907,59 +908,73 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
 
   }
-  borrarFiltros() {
-    this.isLoading = false;
-    this.loaderTop = false;
-    if (!this.subCAt) {
-      localStorage.removeItem('byCategorias');
-    }
-    this.Filtros = new FiltrosModel();
-    this.Filtros.idEstado = 29;
-    /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
-    this.filtroActivo = false;
-    this.buscarNegocios(true);
-  }
+  // borrarFiltros() {
+  //   this.isLoading = false;
+  //   this.loaderTop = false;
+  //   if (!this.subCAt) {
+  //     localStorage.removeItem('byCategorias');
+  //   }
+  //   this.Filtros = new FiltrosModel();
+  //   this.Filtros.idEstado = 29;
+  //   /* this.Filtros.idGiro = this.Filtros.idGiro != null ? this.Filtros.idGiro : [1];*/
+  //   this.filtroActivo = false;
+  //   this.buscarNegocios(true,6);
+  // }
   borrarFiltrosP(click) {
-    this.subCAt = click == true ? false : true;
-    this.loader = true;
+    //esto se ejecuta sin importar que
+    this.isLoading = false;
+    this.loaderTop = false;
     if (!this.subCAt) {
       localStorage.removeItem('byCategorias');
-      localStorage.removeItem('filtroactual');
-      localStorage.removeItem('FiltroAct');
-      localStorage.removeItem('subCat');
     }
-    localStorage.removeItem('filtroActivo');
-    localStorage.removeItem('idGiro');
-    this.idGiro = null;
     this.Filtros = new FiltrosModel();
-    this.Filtros.idEstado = 29;
     this.filtroActivo = false;
-    if (!this.subCAt || !this.afi) {
-      if (!localStorage.getItem('FiltroAct')) {
-        localStorage.removeItem('todo');
-      }
-    }
-    const org = localStorage.getItem('org');
-    if (org != null) {
-      this.activar();
-    }
-
-    if (org === null) {
-      this.selectionAP = false;
-      this.subCatBandera = false;
-    }
-    this.loaderTop = false;
-    this.filtroBusqueda = false;
-    this.isLoading = false;
-    if (this.objectSelectAfiliacionPlaza !== null && this.objectSelectAfiliacionPlaza !== undefined) {
-      localStorage.setItem('activarTodos', 'true');
-      localStorage.setItem('todo', 'todo');
+    //esto se ejecuta cuando click es verdadero
+    if (click) {
+      this.subCAt = click == true ? false : true;
       this.loader = true;
-      this.activar();
-      this.idTodo = false;
-    } else {
-      this.buscarNegocios(true);
-      this.obtenerPrincipalInicio();
+      if (!this.subCAt) {
+        // localStorage.removeItem('byCategorias');
+        localStorage.removeItem('filtroactual');
+        localStorage.removeItem('FiltroAct');
+        localStorage.removeItem('subCat');
+      }
+      localStorage.removeItem('filtroActivo');
+      localStorage.removeItem('idGiro');
+      this.idGiro = null;
+      
+      this.Filtros.idEstado = 29;
+      
+      if (!this.subCAt || !this.afi) {
+        if (!localStorage.getItem('FiltroAct')) {
+          localStorage.removeItem('todo');
+        }
+      }
+      const org = localStorage.getItem('org');
+      if (org != null) {
+        this.activar();
+      }
+  
+      if (org === null) {
+        this.selectionAP = false;
+        this.subCatBandera = false;
+      }
+      this.loaderTop = false;
+      this.filtroBusqueda = false;
+      
+      if (this.objectSelectAfiliacionPlaza !== null && this.objectSelectAfiliacionPlaza !== undefined) {
+        localStorage.setItem('activarTodos', 'true');
+        localStorage.setItem('todo', 'todo');
+        this.loader = true;
+        this.activar();
+        this.idTodo = false;
+      } else {
+        if (click) {
+          this.buscarNegocios(true,7);
+        }
+        console.log('a2');
+        // this.obtenerPrincipalInicio(undefined,3);
+      }
     }
   }
 
@@ -994,7 +1009,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   cargarMasPaginas() {
     this.loaderVerMas = true;
     if (this.totalDeNegocios >= this.totalDeNegociosPorConsulta) {
-      this.buscarNegocios(false);
+      this.buscarNegocios(false,8);
       setTimeout(() => {
         this.loaderVerMas = false;
 
@@ -1009,6 +1024,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       setTimeout(() => {
         this.mostrarNegocios += 4;
         this.listaVerMas = negocios.slice(0, this.mostrarNegocios);
+        console.log(1.1)
         event.target.complete();
 
       }, 800);
@@ -1018,7 +1034,8 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   }
 
-  public obtenerPrincipalInicio(nombre?: string) {
+  public obtenerPrincipalInicio(nombre?: string, id?:any) {
+    console.log('entreaObtenerPrincipal',id)
     this.isLoading = false;
     this.loaderTop = false;
     if (!this.subCAt || !this.afi) {
@@ -1028,22 +1045,22 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
     this.idTodo = false;
     this.loader = true;
-    this.loaderInicio = true;
+    // this.loaderInicio = true;
     this.banderaVerMas = false;
 
     if (nombre === undefined && !this.afi && !localStorage.getItem('subCat')) {
       if (!localStorage.getItem('FiltroAct')) {
-        this.principalSercicio.obtenerPrincipalInicio()
-          .subscribe(
-            (response) => {
+        this.principalSercicio.obtenerPrincipalInicio().subscribe((response) => {
               if (response.code === 200) {
                 this.listaCategorias = response.data;
+                console.log(2,response)
                 const uno = this.listaCategorias[0].negocios.slice(0, 10);
                 const dos = this.listaCategorias[1].negocios.slice(0, 10);
                 const tres = this.listaCategorias[2].negocios.slice(0, 10);
                 this.obtenerNegociosFav();
                 this.banderaVerMas = true;
                 this.listaVerMas = [{ nombre: 'Con convenio', negocios: uno }, { nombre: 'Con promociones', negocios: dos }, { nombre: 'Más Vistos', negocios: tres }];
+                console.log(2.1)
                 if (this.listaCategorias[0].negocios.length <= 10) { this.verMasNegociosConBtn = false; }
                 if (this.listaCategorias[1].negocios.length <= 10) { this.verMasNegociosPromoBtn = false; }
                 if (this.listaCategorias[2].negocios.length <= 10) { this.verMasNegociosVistosBtn = false; }
@@ -1052,21 +1069,21 @@ export class InicioPage implements OnInit, AfterViewInit {
                 if (this.listaVerMas[1].negocios.length <= 10) { this.verMasNegociosPromo = false; }
                 if (this.listaVerMas[2].negocios.length <= 10) { this.verMasNegociosVistos = false; }
 
-                setTimeout(() => {
-                  this.loader = false;
-                  this.loaderInicio = false;
-                  this.mostrarloaderInicio = false;
-                }, 800);
+                this.loader = false;
+                // this.loaderInicio = false;
+                // this.mostrarloaderInicio = false;
+                // setTimeout(() => {
+                // }, 800);
               }
             },
             (error) => {
               this.loader = false;
-              this.loaderInicio = false;
-              this.mostrarloaderInicio = false;
+              // this.loaderInicio = false;
+              // this.mostrarloaderInicio = false;
               // this._notificacionService.error(error);
             }
           );
-        return false;
+        // return false;
       }
     }
   }
@@ -1184,6 +1201,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.paginaPrevia = this.paginaPivote;
     const respuesta = await this.principalSercicio
       .obtenerNegocioPorCategoria(this.Filtros, 1); // rand this.siguienteGiro);
+    console.log('respuesta',respuesta)
     this.paginacion = [];
     this.pagSelect = respuesta.data.lst_cat_negocios.current_page;
     this.lastPage = respuesta.data.lst_cat_negocios.last_page;
@@ -1268,6 +1286,7 @@ export class InicioPage implements OnInit, AfterViewInit {
           this.negociosIdMapa();
         } else {
           this.listaCategorias = respuesta.lst_cat_negocios.data;
+          console.log(3)
           this.negociosIdMapa();
         }
       }
@@ -1338,7 +1357,8 @@ export class InicioPage implements OnInit, AfterViewInit {
     if (org === null && categorias === null && this.idGiro === null && localStorage.getItem('todo') === null) {
       this.loader = false;
       this.selectionAP = false;
-      this.obtenerPrincipalInicio();
+      console.log('a3');
+      this.obtenerPrincipalInicio(undefined,4);
     }
 
     this.loader = false;
@@ -1407,7 +1427,8 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   obtenerCategorias(giro) {
     this.busquedaService.obtenerCategoriasGiros(giro).subscribe((response) => {
-          this.listaCtgs = response.data;
+      this.listaCtgs = response.data;
+      console.log('lstCategorias',this.listaCtgs)
         },
         (error) => {
           alert(error);
