@@ -117,7 +117,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.user = this.util.getUserData();
     this.existeSesion = this.util.existe_sesion();
     // aqui para cargar
-    this.loaderNegocios = true;
+    this.loader = true;
     this.tFiltro = false;
     this.afiliacion = true;
     this.loader = true;
@@ -145,7 +145,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   strBuscar: any;
   private seleccionado: any;
   loader: any;
-  loaderNegocios: any;
   listaIdsMapa: any;
   filtroActivo = true;
   user: any;
@@ -203,7 +202,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   public idNegocio: number;
   public indice: number;
   mostrarloaderInicio: boolean;
-  loaderInicio: boolean;
   loaderVideo: boolean;
   buscador = false;
   banderaVerMas = false;
@@ -409,15 +407,18 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   ionViewWillEnter() {
     const idGiro = JSON.parse(localStorage.getItem('idGiro'));
-    this.obtenerPrincipalInicio(undefined,1);
     const giroId = this.serviceProveedores.getSelectedObj();
-    if (idGiro !== null && giroId !== undefined ) {
-      this.buscarByGiro(idGiro);
-    } else if ( giroId !== undefined && idGiro === null ){
-      this.buscarByGiro(giroId);
-      this.serviceProveedores.setSelectedObj(undefined);
-    } else if ( idGiro !== null && giroId === undefined ){
-      this.buscarByGiro(idGiro);
+    if (!idGiro && !giroId) {
+      this.obtenerPrincipalInicio(undefined,1);
+    } else {
+      if (idGiro !== null && giroId !== undefined ) {
+        this.buscarByGiro(idGiro);
+      } else if ( giroId !== undefined && idGiro === null ){
+        this.buscarByGiro(giroId);
+        this.serviceProveedores.setSelectedObj(undefined);
+      } else if ( idGiro !== null && giroId === undefined ){
+        this.buscarByGiro(idGiro);
+      }
     }
     this.subCAt = localStorage.getItem('subCat') != undefined ? true : false;
     // if (this.subCAt) {
@@ -694,7 +695,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.banderaVerMas = false;
     }
     this.selectionAP ? (this.Filtros.organizacion = this.objectSelectAfiliacionPlaza.id_organizacion) : '';
-    this.loaderNegocios = false;
+    this.loader = false;
     const todo = localStorage.getItem('todo');
 
     if (localStorage.getItem('subCat') || localStorage.getItem('org') != null || todo == 'todo') {
@@ -755,6 +756,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.filtroActivo = true;
       this.Filtros = res;
       const d1 = JSON.stringify(res);
+      console.log('otroFiltro',res)
       localStorage.setItem('filtroactual', d1);
       localStorage.setItem('FiltroAct', 'true');
       localStorage.setItem('todo', 'todo');
@@ -1178,21 +1180,19 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.Filtros = new FiltrosModel();
     this.Filtros.idEstado = 29;
     //this.Filtros.idCategoriaNegocio = null;
-    this.filtroActivo = true;
     this.banderaVerMas = false;
-    this.loaderNegocios = true;
+    this.loader = true;
     this.filtroBusqueda = true;
     this.idGiro = event;
     this.obtenerCategorias(this.idGiro);
     localStorage.setItem('idGiro', JSON.stringify(this.idGiro));
     this.Filtros.idGiro = [this.idGiro];
-    this.selectionAP
-      ? (this.Filtros.organizacion =
-        this.objectSelectAfiliacionPlaza.id_organizacion)
-      : '';
-    const d1 = JSON.stringify(this.Filtros);
-    localStorage.setItem('filtroactual', d1);
-
+    this.selectionAP ? (this.Filtros.organizacion = this.objectSelectAfiliacionPlaza.id_organizacion) : '';
+    const d1 = this.Filtros;
+    localStorage.setItem('filtroactual', JSON.stringify(this.Filtros));
+    
+    console.log('despues del LST', this.Filtros)
+    this.Filtros.idEstado = this.Filtros.idEstado == null ? 29 : this.Filtros.idEstado;
     const noPaginas = await this.principalSercicio.obtenerNumeroPaginas(this.Filtros, 1);
     const rand = this.random(1, JSON.stringify(noPaginas.data.last_page));
     this.totalPaginas = Math.ceil((this.totalDeNegocios / 20));
@@ -1200,8 +1200,9 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.paginaPivote = rand;
     this.paginaPrevia = this.paginaPivote;
     const respuesta = await this.principalSercicio
-      .obtenerNegocioPorCategoria(this.Filtros, 1); // rand this.siguienteGiro);
-    console.log('respuesta',respuesta)
+      .obtenerNegocioPorCategoria(d1, 1); // rand this.siguienteGiro);
+    console.log('respuesta', respuesta)
+    this.filtroActivo = true;
     this.paginacion = [];
     this.pagSelect = respuesta.data.lst_cat_negocios.current_page;
     this.lastPage = respuesta.data.lst_cat_negocios.last_page;
@@ -1214,7 +1215,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.listaCategorias = [];
       this.selectionAP = true;
     }
-    this.loaderNegocios = false;
+    this.loader = false;
 
   }
 
@@ -1344,7 +1345,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       ? (this.Filtros.organizacion =
         this.objectSelectAfiliacionPlaza.id_organizacion)
       : '';
-    this.loaderNegocios = false;
+    this.loader = false;
     const todo = localStorage.getItem('todo');
 
     if (todo === 'todo' || localStorage.getItem('org') != null) {
