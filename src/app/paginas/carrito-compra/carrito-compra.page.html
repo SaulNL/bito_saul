@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    <ion-title  mode="ios">Bolsa de compras</ion-title>
+    <ion-title  mode="ios">Lista de compra</ion-title>
     <ion-buttons slot="end">
       <ion-button style="font-size: 22px;" (click)="regresar()">
         <ion-icon name="close-outline"></ion-icon>
@@ -44,7 +44,7 @@
           </div>
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: -15px;">
-          <ion-button style="--background: orange; font-size: 10px; --border-radius: 20px; text-transform: none" (click)="completarCompra(i)">Comprar bolsa negocio</ion-button>
+          <ion-button style="--background: orange; font-size: 10px; --border-radius: 20px; text-transform: none" (click)="completarCompra(i)">Realizar compra</ion-button>
           <p style="font-size: 13px;">Total ${{precioTotal(i)}} pesos</p>
         </div>
       </div>

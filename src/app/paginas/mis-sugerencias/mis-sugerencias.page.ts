@@ -88,7 +88,7 @@ export class MisSugerenciasPage implements OnInit {
       .catch(error => {
         this.loader = false;
         console.error(error);
-        this.notificaciones.error("😭😭 Lo sentimos No encontramos sugerencias para ti 😭😭")
+        this.notificaciones.error("Lo sentimos No encontramos sugerencias para ti");
         this.ruta.navigateByUrl('/tabs/inicio');
       });
 
