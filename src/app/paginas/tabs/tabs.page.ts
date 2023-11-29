@@ -9,7 +9,6 @@ import { NotificacionesService } from "src/app/api/usuario/notificaciones.servic
 import moment from "moment";
 import { AdministracionService } from "src/app/api/administracion-service.service";
 import { FiltroCatVariableModel } from './../../Modelos/catalogos/FiltroCatVariableModel';
-import {ModalInicioComponent} from '../../componentes/modal-inicio/modal-inicio.component';
 import {DomUtil} from 'leaflet';
 import remove = DomUtil.remove;
 
