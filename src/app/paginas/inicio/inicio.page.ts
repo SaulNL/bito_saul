@@ -511,7 +511,6 @@ export class InicioPage implements OnInit, AfterViewInit {
       } else {
 
         this.listaCategorias = await respuesta.data.lst_cat_negocios.data;
-        console.log(1)
         this.loader = false;
         // this.loaderInicio = false;
         // this.mostrarloaderInicio = false;
@@ -657,6 +656,8 @@ export class InicioPage implements OnInit, AfterViewInit {
       } else {
         this.banderaInicio = false;
         this.loader = true;
+        let afiliacion = !localStorage.getItem('org') ? null : JSON.parse(localStorage.getItem('org'));
+        this.Filtros.organizacion = !afiliacion ? null : afiliacion.id_organizacion;
         const responseNegociosCategorias = await this.principalSercicio.obtenerNegociosTodosFiltroMapa(this.Filtros);
         await this.validarResultadosTodos(responseNegociosCategorias);
       }
@@ -669,7 +670,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   public async buscarNegocios(seMuestraElLoader: boolean, id: number) {
-    console.log('entreBNegocio',id)
     this.loader = seMuestraElLoader;
     this.listaIdsMapa = [];
     if (seMuestraElLoader === true) {
@@ -730,7 +730,6 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     if (event === null) {
       localStorage.removeItem('filtroactual');
-      console.log('a1');
       this.obtenerPrincipalInicio(undefined,2);
     } else {
       this.buscarNegocios(true,3);
@@ -755,7 +754,6 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.filtroActivo = true;
       this.Filtros = res;
       const d1 = JSON.stringify(res);
-      console.log('otroFiltro',res)
       localStorage.setItem('filtroactual', d1);
       localStorage.setItem('FiltroAct', 'true');
       localStorage.setItem('todo', 'todo');
@@ -973,7 +971,6 @@ export class InicioPage implements OnInit, AfterViewInit {
         if (click) {
           this.buscarNegocios(true,7);
         }
-        console.log('a2');
         // this.obtenerPrincipalInicio(undefined,3);
       }
     }
@@ -1025,7 +1022,6 @@ export class InicioPage implements OnInit, AfterViewInit {
       setTimeout(() => {
         this.mostrarNegocios += 4;
         this.listaVerMas = negocios.slice(0, this.mostrarNegocios);
-        console.log(1.1)
         event.target.complete();
 
       }, 800);
@@ -1036,7 +1032,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
 
   public obtenerPrincipalInicio(nombre?: string, id?:any) {
-    console.log('entreaObtenerPrincipal',id)
     this.isLoading = false;
     this.loaderTop = false;
     if (!this.subCAt || !this.afi) {
@@ -1054,14 +1049,12 @@ export class InicioPage implements OnInit, AfterViewInit {
         this.principalSercicio.obtenerPrincipalInicio().subscribe((response) => {
               if (response.code === 200) {
                 this.listaCategorias = response.data;
-                console.log(2,response)
                 const uno = this.listaCategorias[0].negocios.slice(0, 10);
                 const dos = this.listaCategorias[1].negocios.slice(0, 10);
                 const tres = this.listaCategorias[2].negocios.slice(0, 10);
                 this.obtenerNegociosFav();
                 this.banderaVerMas = true;
                 this.listaVerMas = [{ nombre: 'Con convenio', negocios: uno }, { nombre: 'Con promociones', negocios: dos }, { nombre: 'Más Vistos', negocios: tres }];
-                console.log(2.1)
                 if (this.listaCategorias[0].negocios.length <= 10) { this.verMasNegociosConBtn = false; }
                 if (this.listaCategorias[1].negocios.length <= 10) { this.verMasNegociosPromoBtn = false; }
                 if (this.listaCategorias[2].negocios.length <= 10) { this.verMasNegociosVistosBtn = false; }
@@ -1199,7 +1192,6 @@ export class InicioPage implements OnInit, AfterViewInit {
     const d1 = this.Filtros;
     localStorage.setItem('filtroactual', JSON.stringify(this.Filtros));
     
-    console.log('despues del LST', this.Filtros)
     this.Filtros.idEstado = this.Filtros.idEstado == null ? 29 : this.Filtros.idEstado;
     const noPaginas = await this.principalSercicio.obtenerNumeroPaginas(this.Filtros, 1);
     const rand = this.random(1, JSON.stringify(noPaginas.data.last_page));
@@ -1208,9 +1200,9 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.paginaPivote = rand;
     this.paginaPrevia = this.paginaPivote;
     //elementos que puedo utilizar byCategorias  id_categoria
+
     const respuesta = await this.principalSercicio
       .obtenerNegocioPorCategoria(d1, 1); // rand this.siguienteGiro);
-    console.log('respuesta', respuesta)
     this.filtroActivo = true;
     this.paginacion = [];
     this.pagSelect = respuesta.data.lst_cat_negocios.current_page;
@@ -1296,7 +1288,6 @@ export class InicioPage implements OnInit, AfterViewInit {
           this.negociosIdMapa();
         } else {
           this.listaCategorias = respuesta.lst_cat_negocios.data;
-          console.log(3)
           this.negociosIdMapa();
         }
       }
@@ -1367,7 +1358,6 @@ export class InicioPage implements OnInit, AfterViewInit {
     if (org === null && categorias === null && this.idGiro === null && localStorage.getItem('todo') === null) {
       this.loader = false;
       this.selectionAP = false;
-      console.log('a3');
       this.obtenerPrincipalInicio(undefined,4);
     }
 
@@ -1438,7 +1428,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   obtenerCategorias(giro) {
     this.busquedaService.obtenerCategoriasGiros(giro).subscribe((response) => {
       this.listaCtgs = response.data;
-      console.log('lstCategorias',this.listaCtgs)
         },
         (error) => {
           alert(error);
