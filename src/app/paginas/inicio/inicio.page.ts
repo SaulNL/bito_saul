@@ -706,7 +706,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     if (org === null && categorias === null && this.idGiro === null && localStorage.getItem('todo') === null) {
       this.loader = false;
       this.selectionAP = false;
-      this.obtenerPrincipalInicio(undefined,1); // Abre el inicio cuando se abre la app por primera vez
+      this.obtenerPrincipalInicio(undefined,10); // Abre el inicio cuando se abre la app por primera vez
     }
 
     this.loader = false;
@@ -1086,6 +1086,8 @@ export class InicioPage implements OnInit, AfterViewInit {
           );
         // return false;
       }
+    } else if (this.afi) {
+      this.buscarByGiro(null)
     }
   }
 
@@ -1183,13 +1185,17 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.loader = true;
     this.filtroBusqueda = true;
     this.idGiro = event;
-    this.obtenerCategorias(this.idGiro);
+    if (event) {
+      this.obtenerCategorias(this.idGiro);
+    }
     localStorage.setItem('idGiro', JSON.stringify(this.idGiro));
     this.Filtros.idGiro = [this.idGiro];
     this.selectionAP ? (this.Filtros.organizacion = this.objectSelectAfiliacionPlaza.id_organizacion) : '';
     let subCategoria = !localStorage.getItem('byCategorias') ? null : JSON.parse(localStorage.getItem('byCategorias'));
     localStorage.removeItem('byCategorias');
     this.Filtros.idCategoriaNegocio = !subCategoria ? null : [subCategoria.id_categoria];
+    let afiliacion = !localStorage.getItem('org') ? null : JSON.parse(localStorage.getItem('org'));
+    this.Filtros.organizacion = !afiliacion ? null : afiliacion.id_organizacion;
     const d1 = this.Filtros;
     localStorage.setItem('filtroactual', JSON.stringify(this.Filtros));
     
