@@ -258,7 +258,7 @@
     </ion-grid>
 
     <!-- este es un mensaje que sale cuando no se encontraron mensajes por afiliacion -->
-    <ion-grid *ngIf="listaCategorias.length === 0  && selectionAP === true">
+    <ion-grid *ngIf="listaCategorias.length === 0  && selectionAP === true && this.afi">
       <ion-text color="primary">
         <h2>
           No se encontraron negocios relacionados en

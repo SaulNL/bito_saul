@@ -1187,6 +1187,9 @@ export class InicioPage implements OnInit, AfterViewInit {
     localStorage.setItem('idGiro', JSON.stringify(this.idGiro));
     this.Filtros.idGiro = [this.idGiro];
     this.selectionAP ? (this.Filtros.organizacion = this.objectSelectAfiliacionPlaza.id_organizacion) : '';
+    let subCategoria = !localStorage.getItem('byCategorias') ? null : JSON.parse(localStorage.getItem('byCategorias'));
+    localStorage.removeItem('byCategorias');
+    this.Filtros.idCategoriaNegocio = !subCategoria ? null : [subCategoria.id_categoria];
     const d1 = this.Filtros;
     localStorage.setItem('filtroactual', JSON.stringify(this.Filtros));
     
@@ -1198,6 +1201,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.primeraPagRandom = rand;
     this.paginaPivote = rand;
     this.paginaPrevia = this.paginaPivote;
+    //elementos que puedo utilizar byCategorias  id_categoria
     const respuesta = await this.principalSercicio
       .obtenerNegocioPorCategoria(d1, 1); // rand this.siguienteGiro);
     console.log('respuesta', respuesta)
