@@ -14,15 +14,16 @@
 
 .cuadricula-container {
     display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .cuadricula-container app-promocion {
     flex: 0 0 auto;
     scroll-snap-align: start;
-    margin-right: 7px;
-    max-width: 62%;
+    margin-right: -6px;
+    margin-left: -7px;
+    max-width: 53%;
 }
 
 .buttonCustom{
