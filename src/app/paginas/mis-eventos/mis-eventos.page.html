@@ -65,8 +65,8 @@
 
         <ion-item-options side="end">
           <ion-item-option color="warning" (click)="mostrarInformacion(i)"><ion-icon name="alert-outline"></ion-icon></ion-item-option> <!-- agregar evento click-->
-          <ion-item-option color="danger" (click)="quitarReservacion(res)" *ngIf="res.fc_confirmacion"><ion-icon name="trash-outline"></ion-icon></ion-item-option>
-          <ion-item-option color="success" (click)="guardarReservacion(res)" *ngIf="!res.fc_confirmacion"><ion-icon name="add-outline"></ion-icon></ion-item-option>
+          <ion-item-option color="danger" (click)="quitarReservacion(res)" *ngIf="res.fc_confirmacion"><ion-icon name="close-outline"></ion-icon></ion-item-option>
+          <ion-item-option color="success" (click)="guardarReservacion(res)" *ngIf="!res.fc_confirmacion"><ion-icon name="checkmark-outline"></ion-icon></ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
     </ion-list>
