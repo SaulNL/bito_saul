@@ -20,6 +20,23 @@
 <ion-content>
   <ion-spinner *ngIf="loader" name="circular" class="loader"></ion-spinner>
   <div class="message-wrap" *ngIf="!loader">
+    <div class="message left" *ngIf="!loader" style="margin-bottom: -12px;">
+      <div class="msg-detail">
+        <ion-avatar class="user-img">
+          <ion-img alt="" [src]="notificacion.logo_negocio.trim().length === 0
+              ? 'https://ecoevents.blob.core.windows.net/comprandoando/tinBitoo/Web/PROVEEDOR/Proveedor500.png' : notificacion.logo_negocio">
+          </ion-img>
+        </ion-avatar>
+        <div class="msg-info">
+          <p>{{ notificacion.fecha }}</p>
+        </div>
+        <div class="msg-content">
+          <span class="triangle"></span>
+          <p *ngIf="notificacion.id_negocio_envia !== null && notificacion.id_negocio_envia !== 1">*A partir de este momento, puede interactuar con el proveedor*</p>
+          <p *ngIf="notificacion.id_persona_envia !== null">*A partir de este momento, puede interactuar con el cliente*</p>
+        </div>
+      </div>
+    </div>
     <div
       class="message"
       *ngFor="let msg of mensajes"
