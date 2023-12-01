@@ -89,13 +89,13 @@
                 <ion-col size="12">
                   <div style="text-align: center">
                     <h3 style="color: black" *ngIf="isIos; else androidView">
-                      Del {{solicitud.fecha_inicio_public }} al
-                      {{solicitud.fecha_fin_public}}
+                      Del: {{convertirFechaI(solicitud.fecha_inicio_public)}}.<br>
+                      Al: {{convertirFechaF(solicitud.fecha_fin_public)}}.
                     </h3>
                     <ng-template #androidView>
                       <h3 style="color: black">
-                        Del: {{fechaInicio}}.<br>
-                        Al: {{fechaFin}}.
+                        Del: {{convertirFechaI(solicitud.fecha_inicio_public)}}.<br>
+                        Al: {{convertirFechaF(solicitud.fecha_fin_public)}}.
                       </h3>
                     </ng-template>
                   </div>

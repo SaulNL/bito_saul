@@ -53,8 +53,9 @@ export class SolicitudPage implements OnInit {
   loaderSolicitud: boolean=true;
   idSolicitud: any;
   public isAlert: boolean = false;
-  fechaInicio: string;
-  fechaFin: string;
+  dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'];
+  meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
   constructor(
     private filtrosService: FiltrosService,
     private serviceProveedores: ProveedorServicioService,
@@ -184,7 +185,6 @@ export class SolicitudPage implements OnInit {
         (response) => {
           if (response.data !== null) {
             this.lstSolicitudes = response.data;
-            this.convertirFecha(this.lstSolicitudes);
           } else {
             this.lstSolicitudes = [];
           }
@@ -330,25 +330,23 @@ export class SolicitudPage implements OnInit {
     this.fuenteExclusiva=this.obj?.nombre;
   }
 
-  convertirFecha(lstSolicitudes: any){
-    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'];
-    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-
-    //Fecha inicio
-    const fechaInicio = new Date(lstSolicitudes[0].fecha_inicio_public);
+  convertirFechaI(fechaI){
+    const fechaInicio = new Date(fechaI);
     const numDia1 = fechaInicio.getDate();
     const numeroDia1 = fechaInicio.getDay();
     const numeroMes = fechaInicio.getMonth();
     const numAño = fechaInicio.getFullYear();
 
-    //Fecha fin
-    const fechaFin = new Date(lstSolicitudes[0].fecha_fin_public);
+    return `${this.dias[numeroDia1]}, ${numDia1} de ${this.meses[numeroMes]} de ${numAño}`;
+  }
+
+  convertirFechaF(fechaF){
+    const fechaFin = new Date(fechaF);
     const numDia2 = fechaFin.getDate();
     const numeroDia2 = fechaFin.getDay();
     const numeroMes2 = fechaFin.getMonth();
     const numAño2 = fechaFin.getFullYear();
 
-    this.fechaInicio = `${dias[numeroDia1]}, ${numDia1} de ${meses[numeroMes]} de ${numAño}`;
-    this.fechaFin = `${dias[numeroDia2]}, ${numDia2} de ${meses[numeroMes2]} de ${numAño2}`;
+    return `${this.dias[numeroDia2]}, ${numDia2} de ${this.meses[numeroMes2]} de ${numAño2}`;
   }
 }
