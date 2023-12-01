@@ -214,9 +214,15 @@ export class EventosPage implements OnInit {
     const numeroDia = fechaObjeto.getDate();
     const numAño = fechaObjeto.getFullYear();
     const numeroM = (fechaObjeto.getMonth() + 1).toString().padStart(2, '0');
-    //Se agregar la fecha del rango
-    const dosMeses = (fechaObjeto.getMonth() + 2).toString().padStart(2, '0');
-    this.fechaDosMeses = `${numAño}-${dosMeses}-${numeroDia}`;
+    //Se agregara la fecha del rango
+    const dosMeses = parseInt((fechaObjeto.getMonth() + 3).toString().padStart(2, '0'));
+    if (dosMeses > 12) {
+      const nuevoAño = dosMeses > 12 ? numAño + 1 : numAño;
+      const nuevoMes = (dosMeses % 12) || 12;
+      this.fechaDosMeses = `${nuevoAño}-${nuevoMes.toString().padStart(2, '0')}-${numeroDia}`;
+    } else {
+      this.fechaDosMeses = `${numAño}-${dosMeses.toString().padStart(2, '0')}-${numeroDia}`;
+    }
     this.fechaActual = `${numAño}-${numeroM}-${numeroDia}`;
   }
 
