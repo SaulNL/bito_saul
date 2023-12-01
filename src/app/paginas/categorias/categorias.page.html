@@ -13,20 +13,23 @@
 
     <ion-slides [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }" scrollbar="md">
         <ion-slide>
-            <li class="nav-item" (click)="buscarByGiro('todo',null)">
-                <a class="todas" id="pills-home-todos" role="tab" aria-selected="true">
-                    <ion-avatar *ngIf="idTodo" style="margin-bottom: 1.2rem;" class="image-center"> <img
-                            src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/IconosCategorias/todos.png">
+            <ion-row class="ion-text-center" (click)="buscarByGiro('todo',null)">
+                <ion-col>
+                    <ion-item color="none" lines="none">
+                    <ion-avatar *ngIf="idTodo" class="image-center"> <img
+                        src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/IconosCategorias/todos.png">
                     </ion-avatar>
-                    <ion-avatar *ngIf="!idTodo" style="margin-bottom: 1.2rem;" class="image-center"> <img
+                    <ion-avatar *ngIf="!idTodo" class="image-center"> <img
                             class="img-gris"
                             src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/IconosCategorias/todos.png">
                     </ion-avatar>
-                    <p *ngIf="!idTodo" class="text-black" style="font-size: 10.5px;">Mostrar Todos los Negocios
-                    </p>
-                    <p *ngIf="idTodo" class="giro-color" style="font-size: 10.5px;">Selecciona una Categoria </p>
-                </a>
-            </li>
+                    </ion-item>
+                    <ion-item class="ion-text-center" color="none" lines="none">
+                        <small *ngIf="!idTodo"class="text-black" style="font-size: 10px;">Todas las Categorias</small>
+                        <small *ngIf="idTodo" class="giro-color" style="font-size: 10px;">Selecciona una Categoria </small>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
         </ion-slide>
         <ion-slide *ngFor="let giro of this.lstCatTipoGiro">
             <ion-row class="ion-text-center" (click)="buscarByGiro(giro.nombre, giro.id_giro)">

@@ -38,10 +38,11 @@ ion-card-content div ion-icon {
 }
 
 .total-vistos {
-  width: 25%;
-  position: relative;
-  top: 10px;
-  left: 15px;
+  position: absolute;
+  top: 2px;
+  left: 1px;
+  font-size: 12px;
+  border-radius: 50px;
 }
 
 .tamanioCard {

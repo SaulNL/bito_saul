@@ -9,7 +9,7 @@
     </ion-item>
     <ion-item>
       <ion-label position="floating">Teléfono: </ion-label>
-      <ion-input type="number" formControlName="telefono"></ion-input>
+      <ion-input type="tel" formControlName="telefono" ></ion-input>
       <ion-text color="danger" *ngIf="contactanos.get('telefono').hasError('required') && contactanos.get('telefono').touched">
         Por favor, rellena este campo.
       </ion-text>

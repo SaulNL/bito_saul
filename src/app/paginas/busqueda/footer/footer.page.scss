@@ -133,3 +133,14 @@
   #detail, #speakers, #sponsors, footer {
     text-align: center;
   }
+
+  .redes-sociales {
+    display: flex; 
+    justify-content:center; 
+    align-items: center;
+
+    a {
+      width: 30px;
+      margin: 0 10px 0 10px;
+    }
+  }
