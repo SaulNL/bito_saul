@@ -160,6 +160,9 @@ export class MisFavoritosPage implements OnInit {
                 this.loader = false;
                 if (response.code === 200) {
                   this.listaNegocios = response.data;
+                  if ( this.listaNegocios === undefined ){
+                    this.listaNegocios = [];
+                  }
                 }
               },
               (error) => {
