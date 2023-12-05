@@ -447,7 +447,7 @@
               <ion-button color="light" size="small" (click)="entregaDomicilioAlert()">
                 <ion-icon name="information-circle-outline"></ion-icon>
               </ion-button>
-              <ion-label style="padding-left: 15px;">Envió a domicilio:
+              <ion-label style="padding-left: 15px;">Envío a domicilio:
                 <span style="color: red">*</span>
               </ion-label>
               <ion-select ok-text="Ok" cancel-text="Cancelar" name="idEntreDomNegocio" required
@@ -655,12 +655,12 @@
         <ion-list>
           <ion-item>
             <ion-label position="floating">Teléfono oficina :</ion-label>
-            <ion-input id="idTelefonoNegocio" name="idTelefonoNegocio" #telefonoNegocio="ngModel"
+            <ion-input type="tel" id="idTelefonoNegocio" name="idTelefonoNegocio" #telefonoNegocio="ngModel"
               [(ngModel)]="negocioTO.telefono"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label position="floating">Célular/Whatsapp<span style="color: red">*</span> :</ion-label>
-            <ion-input id="idCelularNegocio" name="idCelularNegocio" #celularNegocio="ngModel" required
+            <ion-label position="floating">Célular/WhatsApp<span style="color: red">*</span> :</ion-label>
+            <ion-input type="tel" id="idCelularNegocio" name="idCelularNegocio" #celularNegocio="ngModel" required
               [(ngModel)]="negocioTO.celular" required></ion-input>
           </ion-item>
           <div *ngIf="celularNegocio.touched  && celularNegocio.invalid" class="alert">

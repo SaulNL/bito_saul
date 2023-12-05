@@ -69,23 +69,24 @@
 
     <ion-slides [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }" scrollbar="md" style="margin-top: -10px;">
       <ion-slide>
-
-        <li class="nav-item">
-          <a class="todas" id="pills-home-todos" role="tab" aria-selected="true">
-            <ion-avatar *ngIf="idTodo !=true" style="margin-bottom: 1.2rem;" class="image-center"> <img
+        <ion-row class="ion-text-center">
+          <ion-col>
+            <ion-item color="none" lines="none">
+              <ion-avatar *ngIf="idTodo !=true" class="image-center"> <img
                 (click)="activar()" class="img-gris"
                 src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/IconosCategorias/todos.png">
-            </ion-avatar>
-            <ion-avatar *ngIf="idTodo ===true" style="margin-bottom: 1.2rem;" class="image-center"> <img
+              </ion-avatar>
+              <ion-avatar *ngIf="idTodo ===true" class="image-center"> <img
                 (click)="borrarFiltrosP(true)"
                 src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/IconosCategorias/todos.png">
-            </ion-avatar>
-
-
-            <p *ngIf="idTodo ===true" class="giro-color" style="font-size: 10.5px;">Regresar al inicio </p>
-            <p *ngIf="idTodo !=true" style="font-size: 10.5px;">Todos los negocios </p>
-          </a>
-        </li>
+              </ion-avatar>
+            </ion-item>
+            <ion-item class="ion-text-center" color="none" lines="none">
+              <small *ngIf="idTodo ===true" class="giro-color" style="font-size: 10px;">Regresar al inicio </small>
+              <small *ngIf="idTodo !=true" style="font-size: 10px;">Todos los negocios </small>
+            </ion-item>
+          </ion-col>
+        </ion-row>
       </ion-slide>
       <ion-slide *ngFor="let giro of this.lstCatTipoGiro">
 

@@ -1,5 +1,5 @@
 <div *ngIf="bdrLista === undefined || bdrLista === true" [class.claseResolucion]="activarClase">
-  <ion-card *ngFor="let promo of promocionesDistancia" (click)="modal(promo)" class="customCard">
+  <ion-card *ngFor="let promo of promocionesDistancia" (click)="modal(promo)" class="customCard" mode="md">
     <img src="{{promo.url_imagen}}" alt="error al cargar la imagen">
     <ion-card-content class="ion-no-padding ion-no-margin">
       <div>
