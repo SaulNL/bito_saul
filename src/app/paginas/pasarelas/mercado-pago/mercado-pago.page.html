@@ -11,14 +11,22 @@
     <ion-list class="my-ion-list">
       <ion-row>
         <ion-col>
-          <span style="font-size: small" class="">Para activar los pagos en linea por medio de Mercado pago, es necesario que registre en nuestra plataforma el Access token de su cuenta, presione aquí para conocer como obtenerla *</span>
+          <span style="font-size: small" class="">Para activar los pagos en linea por medio de Mercado pago, es necesario que registre en nuestra plataforma el Access token de su cuenta, presione <a (click)="descargarPdf()">aquí</a> para conocer como obtenerla *</span>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
           <ion-item fill="solid">
             <ion-label position="floating">Accesstoken</ion-label>
-            <ion-input name="token" [(ngModel)]="accessToken"  [clearInput] = "true"  ></ion-input>
+            <div style="display: flex; align-items: center">
+              <ion-input [type]="showPassword?'text':'password'" name="token" [(ngModel)]="accessToken"  [clearInput] = "true"  ></ion-input>
+              <ion-icon
+                      item-right
+                      [name]="showPassword ? 'eye' : 'eye-off'"
+                      (click)="showPassword = !showPassword"
+                      class="iconsLogin"
+              ></ion-icon>
+            </div>
           </ion-item>
         </ion-col>
       </ion-row>

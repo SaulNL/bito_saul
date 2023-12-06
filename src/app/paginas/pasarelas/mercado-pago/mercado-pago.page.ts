@@ -22,6 +22,7 @@ export class MercadoPagoPage implements OnInit {
     public respuesta: any;
     public loader: boolean;
     public mensaje = '';
+    public showPassword: boolean;
 
     constructor(
         private pasarelaServices: PasarelasService,
@@ -99,6 +100,16 @@ export class MercadoPagoPage implements OnInit {
                 this.loader = false;
             }
         );
+    }
+
+    descargarPdf(){
+        const link = document.createElement('a');
+        link.setAttribute('type', 'hidden');
+        link.href = 'assets/doc/Manual MercadoPago Bituyú.pdf';
+        link.download = 'Manual MercadoPago Bituyú';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
     }
 
 }

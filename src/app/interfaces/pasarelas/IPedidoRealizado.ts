@@ -11,4 +11,5 @@ export interface IPedidoRealizado{
     materno: string|null;
     pago: string|null;
     detalle: Array<IDetallePedido>;
+    url_negocio: string|null;
 }

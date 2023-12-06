@@ -1,15 +1,15 @@
 <ion-header>
 
   <ion-toolbar class="tolbar">
-<!--    <ion-buttons slot="start">-->
-<!--      <ion-back-button text=""></ion-back-button>-->
-<!--    </ion-buttons>-->
-    <ion-title>Informacion de pago</ion-title>
+    <ion-buttons slot="start">
+      <ion-button [routerLink]="['/tabs/negocio/'+informacionPedido.url_negocio]">Regresar</ion-button>
+    </ion-buttons>
+    <ion-title mode="ios">Información de pago</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-row>
+  <ion-row id="recibo">
     <ion-col size-sm="12" size-md="6" class="card-pago ">
       <ion-row>
         <ion-col size="12" class="ion-text-center text-white" [ngClass]="informacionvista.clase">
@@ -60,4 +60,5 @@
       </ion-row>
     </ion-col>
   </ion-row>
+  <ion-button (click)="descargar()">Descargar</ion-button>
 </ion-content>

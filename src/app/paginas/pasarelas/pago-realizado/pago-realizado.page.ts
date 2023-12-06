@@ -4,6 +4,8 @@ import {TextVistaPagoModel} from '../../../Modelos/pasarelas/TextVistaPagoModel'
 import {ActivatedRoute} from '@angular/router';
 import {PedidosService} from '../../../api/pedidos.service';
 import {AppSettings} from '../../../AppSettings';
+import * as htmlToImage from 'html-to-image';
+import {ToadNotificacionService} from "../../../api/toad-notificacion.service";
 
 @Component({
   selector: 'app-pago-realizado',
@@ -20,7 +22,8 @@ export class PagoRealizadoPage implements OnInit {
 
   constructor(
       private route: ActivatedRoute,
-      private pedidoServicio: PedidosService
+      private pedidoServicio: PedidosService,
+      private notificaciones: ToadNotificacionService,
   ) { }
 
   ngOnInit() {
@@ -142,4 +145,18 @@ export class PagoRealizadoPage implements OnInit {
     );
   }
 
+  public descargar() {
+    const node: any = document.getElementById('recibo');
+    htmlToImage.toPng(node)
+        .then((dataUrl) => {
+          const link: any = document.createElement('a');
+
+          link.download = 'Recibo de compra.png';
+          link.href = dataUrl;
+          link.click();
+        })
+        .catch( (error) => {
+          this.notificaciones.error('Se produjo un error. Vuelve a intentarlo.');
+        });
+  }
 }
