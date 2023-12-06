@@ -128,7 +128,8 @@ export class MisEventosPage implements OnInit {
     this.noPersonas = this.reservacion[id].cantidad_persona;
     this.fechaDeReservacion = moment(this.reservacion[id].fc_realizacion_reservacion).format('dddd D [de] MMMM [de] YYYY')
     this.estatus = this.reservacion[id].estatus;
-    this.fechaConfirmacion = moment(this.reservacion[id].fc_confirmacion).format('dddd D [de] MMMM [de] YYYY')
+    let fechaSeteada2 = moment(this.reservacion[id].fc_confirmacion, ['DD/MMM/YYYY', 'DD/M/YYYY', 'D/MMM/YYYY', 'D/M/YYYY,','DD/MM/YYYY']);
+    this.fechaConfirmacion = moment(fechaSeteada2).format('dddd D [de] MMMM [de] YYYY')
   }
 
   cerrarInformacion(){
