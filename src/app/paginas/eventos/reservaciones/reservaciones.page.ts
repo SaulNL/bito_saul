@@ -233,11 +233,12 @@ export class ReservacionesPage implements OnInit {
     const nPersonas = this.noPersonas;
     const eventoId = this.infoEvento.id_evento;
     if (this.fechaSeleccionadaDiario !== null){
-      const fechaDiario = new Date(this.fechaSeleccionadaDiario);
-      const anio = fechaDiario.getFullYear();
-      const mes =  fechaDiario.getMonth() + 1;
-      const dia = fechaDiario.getDate();
-      this.fechaReservacionDiario = anio + '-' + mes + '-' + dia;
+      const numeroMes: { [key: string]: number } = {
+        Enero: 1, Febrero: 2, Marzo: 3, Abril: 4, Mayo: 5, Junio: 6,
+        Julio: 7, Agosto: 8, Septiembre: 9, Octubre: 10, Noviembre: 11, Diciembre: 12
+      };
+      const [dia, mes, anio] = this.fechaSeleccionadaDiario.split('/');
+      this.fechaReservacionDiario = anio + '-' + numeroMes[mes] + '-' + dia;
     }
 
     if (this.fechaSeleccionada === null || this.fechaSeleccionada === undefined || this.fechaSeleccionada === ''){
@@ -283,13 +284,6 @@ export class ReservacionesPage implements OnInit {
       });
       await alert.present();
     }, 400);
-  }
-
-  filtro(){
-    this.fechaSeleccionadaDiario = null;
-    this.fechaSeleccionada = null;
-    this.noPersonas = null;
-    this.mostrarLabel = false;
   }
 
   diasSemana(dias) {
