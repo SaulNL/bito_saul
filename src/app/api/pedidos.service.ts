@@ -173,6 +173,7 @@ export class PedidosService {
   }
     obetenerDatosPedido(idPedidoNegocio: string) {
         const body = JSON.stringify({idPedidoNegocio});
+        console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
         return from(this._http.post(
             this.url + 'api/obtener/informacion/pedido', body,
             AppSettings.getHeadersToken()

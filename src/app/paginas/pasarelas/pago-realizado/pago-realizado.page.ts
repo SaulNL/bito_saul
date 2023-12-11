@@ -31,7 +31,7 @@ export class PagoRealizadoPage implements OnInit {
       this.pedido = params.pedido;
       this.obtenerPedido();
 
-    })
+    });
     /* this.route.queryParams
         .subscribe(params => {
               //this.pedido = params.pedido;

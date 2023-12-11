@@ -7,6 +7,7 @@ export class AppSettings {
     public static URL_REGISTRO = AppSettings.ENTORNO.URL_REGISTRO;
 
     public static URL = 'tabs/negocio/';
+    public static URL_BLOB = 'https://ecoevents.blob.core.windows.net/comprandoando/';
     public static IMG_ERROR_PRODUCTO = 'https://ecoevents.blob.core.windows.net/comprandoando/img_default/Producto.png';
     public static IMG_ERROR_SERVICIO = 'https://ecoevents.blob.core.windows.net/comprandoando/img_default/Servicio.png';
     public static IMG_ERROR_PROMOCION = 'https://ecoevents.blob.core.windows.net/comprandoando/img_default/Promo%20cuadrada.png';

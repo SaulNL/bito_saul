@@ -2,7 +2,7 @@
 
   <ion-toolbar class="tolbar">
     <ion-buttons slot="start">
-      <ion-button [routerLink]="['/tabs/negocio/'+informacionPedido.url_negocio]">Regresar</ion-button>
+      <ion-button *ngif="informacionPedido != undefined && informacionPedido != null" [routerLink]="['/tabs/negocio/'+informacionPedido.url_negocio]">Regresar</ion-button>
     </ion-buttons>
     <ion-title mode="ios">Información de pago</ion-title>
   </ion-toolbar>
@@ -60,5 +60,5 @@
       </ion-row>
     </ion-col>
   </ion-row>
-  <ion-button (click)="descargar()">Descargar</ion-button>
+  <ion-button  *ngIf="informacionvista.vistaDetalle" expand="block" (click)="descargar()">Descargar</ion-button>
 </ion-content>

@@ -19,13 +19,14 @@
           <ion-item fill="solid">
             <ion-label position="floating">Accesstoken</ion-label>
             <div style="display: flex; align-items: center">
-              <ion-input [type]="showPassword?'text':'password'" name="token" [(ngModel)]="accessToken"  [clearInput] = "true"  ></ion-input>
               <ion-icon
                       item-right
                       [name]="showPassword ? 'eye' : 'eye-off'"
                       (click)="showPassword = !showPassword"
                       class="iconsLogin"
+                      style="margin-right: 1em"
               ></ion-icon>
+              <ion-input  style="width: 100%" [type]="showPassword?'text':'password'" name="token" [(ngModel)]="accessToken"  [clearInput] = "true"  ></ion-input>
             </div>
           </ion-item>
         </ion-col>
