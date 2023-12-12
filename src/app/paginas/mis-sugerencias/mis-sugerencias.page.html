@@ -31,9 +31,12 @@
           </div>
         </div>
       </div>
-      <ion-button *ngIf="cantidadPromo > 4" expand="block" shape="round" color="medium" (click)="verMas(1)">
-        <span *ngIf="masMenos">Ver mas promociones</span>
-        <span *ngIf="!masMenos">Ver menos promociones</span>
+      <ion-button shape="round" expand="full" size="small" style="text-transform: none;" class="boton-ver-mas"
+                  *ngIf="cantidadProduct > 4" (click)="verMas(1)">
+        <span style="font-size: 14px;" *ngIf="masMenos">Ver más promociones</span>
+        <ion-icon *ngIf="masMenos" class="icono-ver-mas" name="arrow-down-outline"></ion-icon>
+        <span style="font-size: 14px;" *ngIf="!masMenos">Ver menos promociones</span>
+        <ion-icon *ngIf="!masMenos" class="icono-ver-mas" name="arrow-up-outline"></ion-icon>
       </ion-button>
     </div>
 
@@ -51,9 +54,12 @@
           </div>
         </div>
       </div>
-      <ion-button *ngIf="cantidadProduct > 4" expand="block" shape="round" color="medium" (click)="verMas(2)">
-        <span *ngIf="masMenos">Ver mas productos</span>
-        <span *ngIf="!masMenos">Ver menos productos</span>
+      <ion-button shape="round" expand="full" size="small" style="text-transform: none;" class="boton-ver-mas"
+                  *ngIf="cantidadProduct > 4" (click)="verMas(2)">
+        <span style="font-size: 14px;" *ngIf="masMenos">Ver más productos</span>
+        <ion-icon *ngIf="masMenos" class="icono-ver-mas" name="arrow-down-outline"></ion-icon>
+        <span style="font-size: 14px;" *ngIf="!masMenos">Ver menos productos</span>
+        <ion-icon *ngIf="!masMenos" class="icono-ver-mas" name="arrow-up-outline"></ion-icon>
       </ion-button>
     </div>
 
@@ -76,9 +82,12 @@
           </div>
         </div>
       </div>
-      <ion-button *ngIf="cantidadNego > 4" expand="block" shape="round" color="medium" (click)="verMas(3)">
-        <span *ngIf="masMenos">Ver mas negocios</span>
-        <span *ngIf="!masMenos">Ver menos negocios</span>
+      <ion-button shape="round" expand="full" size="small" style="text-transform: none;" class="boton-ver-mas"
+                  *ngIf="cantidadProduct > 4" (click)="verMas(3)">
+        <span style="font-size: 14px;" *ngIf="masMenos">Ver más negocios</span>
+        <ion-icon *ngIf="masMenos" class="icono-ver-mas" name="arrow-down-outline"></ion-icon>
+        <span style="font-size: 14px;" *ngIf="!masMenos">Ver menos negocios</span>
+        <ion-icon *ngIf="!masMenos" class="icono-ver-mas" name="arrow-up-outline"></ion-icon>
       </ion-button>
     </div>
 
