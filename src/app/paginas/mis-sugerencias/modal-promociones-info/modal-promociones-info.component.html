@@ -132,7 +132,7 @@
                     <span *ngIf="dia.id == hoy" class="lstAbierto">Abierto</span>
                   </ion-col>
                   <ion-col *ngIf="dia.horarios.length === 0" style="display: flex; align-items: center">
-                    <ion-badge color="danger">Cerrado</ion-badge>
+                    <span class="lstCerrado">Cerrado</span>
                   </ion-col>
                 </ion-row>
               </ion-grid>
