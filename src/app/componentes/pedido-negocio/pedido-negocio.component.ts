@@ -518,6 +518,7 @@ export class PedidoNegocioComponent implements OnInit {
         this.pasarelaServicies.pedidoOrdenMP(data).subscribe(
             response => {
                 this.cerrarModal();
+                this.completadoCompra();
                 window.open(JSON.parse(response).data.init_point, '_system');
             }
         );

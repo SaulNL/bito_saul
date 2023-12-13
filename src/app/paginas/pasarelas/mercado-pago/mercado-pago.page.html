@@ -16,9 +16,9 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-item fill="solid">
-            <ion-label position="floating">Accesstoken</ion-label>
-            <div style="display: flex; align-items: center">
+          <ion-label position="floating">Accesstoken</ion-label>
+          <ion-item>
+              <ion-input [type]="showPassword?'text':'password'" name="token" [(ngModel)]="accessToken"  [clearInput] = "true"  ></ion-input>
               <ion-icon
                       item-right
                       [name]="showPassword ? 'eye' : 'eye-off'"
@@ -26,8 +26,6 @@
                       class="iconsLogin"
                       style="margin-right: 1em"
               ></ion-icon>
-              <ion-input  style="width: 100%" [type]="showPassword?'text':'password'" name="token" [(ngModel)]="accessToken"  [clearInput] = "true"  ></ion-input>
-            </div>
           </ion-item>
         </ion-col>
       </ion-row>
