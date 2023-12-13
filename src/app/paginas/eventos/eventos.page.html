@@ -24,12 +24,12 @@
 
       <div class="modal-overlay" *ngIf="isOpen">
         <div class="modal">
-
-          <div style="display: flex; justify-content: flex-end;">
-            <ion-button style="--background:#eb445a;" (click)="cerrarModal()">
-              <ion-icon name="close-outline" ></ion-icon>
-            </ion-button>
-          </div>
+          <ion-toolbar>
+            <ion-title>Filtro</ion-title>
+            <ion-buttons slot="end">
+              <ion-button color="light" (click)="cerrarModal()"><ion-icon name="close-outline"></ion-icon></ion-button>
+            </ion-buttons>
+          </ion-toolbar>
 
           <ion-item>
             <ion-label position="stacked">Ocurrencia</ion-label>
@@ -77,13 +77,11 @@
           </ion-item>
 
           <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 2px">
-            <ion-button size="small" class="colorButton" (click)="buscarEvento()">
+            <ion-button color="success" (click)="buscarEvento()">
               <ion-icon name="search-outline"></ion-icon>Buscar
             </ion-button>
-          </div>
-          <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 5px">
-            <ion-button size="small" class="colorButton" (click)="limpiarFiltro()">
-              <ion-icon name="trash-outline"></ion-icon>Limpiar filtro
+            <ion-button color="danger" (click)="limpiarFiltro()">
+              <ion-icon name="trash-outline"></ion-icon>Limpiar
             </ion-button>
           </div>
 
