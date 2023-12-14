@@ -155,7 +155,7 @@ export class PagoRealizadoPage implements OnInit {
 
     html2canvas(document.querySelector('#recibo'), { allowTaint: true, useCORS : true}).then(async canvas => {
 
-      const fileName = 'recibo.png';
+      const fileName = 'recibo_' + this.pedido + '.png';
 
 
 
