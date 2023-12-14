@@ -76,6 +76,7 @@
     "firebase": "^7.7.0",
     "haversine": "^1.1.1",
     "haversine-calculator": "^1.0.3",
+    "html-to-image": "^1.11.11",
     "html2canvas": "^1.4.1",
     "integrator-cordova-plugin-downloader": "^1.1.0",
     "ionic-plugin-deeplinks": "^1.0.22",

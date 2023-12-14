@@ -5,6 +5,7 @@ import {INegocioBrokerAT} from '../../../interfaces/pasarelas/INegocioBrokerAT';
 import {ITokenNegocio} from '../../../interfaces/pasarelas/ITokenNegocio';
 import {ActivatedRoute} from '@angular/router';
 import {ToadNotificacionService} from '../../../api/toad-notificacion.service';
+import {AppSettings} from '../../../AppSettings';
 
 @Component({
     selector: 'app-mercado-pago',
@@ -22,6 +23,8 @@ export class MercadoPagoPage implements OnInit {
     public respuesta: any;
     public loader: boolean;
     public mensaje = '';
+    public showPassword: boolean;
+    public urlBlob: string = AppSettings.URL_BLOB;
 
     constructor(
         private pasarelaServices: PasarelasService,
@@ -99,6 +102,10 @@ export class MercadoPagoPage implements OnInit {
                 this.loader = false;
             }
         );
+    }
+
+    descargarPdf(){
+        window.open(this.urlBlob + 'documentos/Manual%20MercadoPago%20Bituyú.pdf', '_blank');
     }
 
 }

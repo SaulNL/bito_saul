@@ -4,6 +4,13 @@ import {TextVistaPagoModel} from '../../../Modelos/pasarelas/TextVistaPagoModel'
 import {ActivatedRoute} from '@angular/router';
 import {PedidosService} from '../../../api/pedidos.service';
 import {AppSettings} from '../../../AppSettings';
+import * as htmlToImage from 'html-to-image';
+import {ToadNotificacionService} from "../../../api/toad-notificacion.service";
+import html2canvas from "html2canvas";
+import {Media, MediaSaveOptions} from '@capacitor-community/media';
+import {Directory, Filesystem} from '@capacitor/filesystem';
+import {ModalImagenCuponComponent} from '../../../components/modal-imagen-cupon/modal-imagen-cupon.component';
+import {Platform} from '@ionic/angular';
 
 @Component({
   selector: 'app-pago-realizado',
@@ -16,11 +23,14 @@ export class PagoRealizadoPage implements OnInit {
   public loader = false;
   public informacionvista: TextVistaPagoModel;
 
+
   public productoDefault = AppSettings.IMG_ERROR_PRODUCTO;
 
   constructor(
       private route: ActivatedRoute,
-      private pedidoServicio: PedidosService
+      private pedidoServicio: PedidosService,
+      private notificaciones: ToadNotificacionService,
+      public platform: Platform
   ) { }
 
   ngOnInit() {
@@ -28,7 +38,7 @@ export class PagoRealizadoPage implements OnInit {
       this.pedido = params.pedido;
       this.obtenerPedido();
 
-    })
+    });
     /* this.route.queryParams
         .subscribe(params => {
               //this.pedido = params.pedido;
@@ -42,7 +52,6 @@ export class PagoRealizadoPage implements OnInit {
   private obtenerPedido() {
 
     this.informacionvista = this.procesando();
-    this.loader = true;
     this.pedidoServicio.obetenerDatosPedido(this.pedido).subscribe(
         resp => {
           resp = JSON.parse(resp);
@@ -77,7 +86,6 @@ export class PagoRealizadoPage implements OnInit {
           console.error(error);
         },
         () => {
-          this.loader = false;
         }
     );
   }
@@ -142,4 +150,32 @@ export class PagoRealizadoPage implements OnInit {
     );
   }
 
+  public descargar() {
+    this.loader = true;
+
+    html2canvas(document.querySelector('#recibo'), { allowTaint: true, useCORS : true}).then(async canvas => {
+
+      const fileName = 'recibo_' + this.pedido + '.png';
+
+
+
+      if ( this.platform.is('ios') ){
+        const opts: MediaSaveOptions = { path: canvas.toDataURL().toString(), fileName };
+        await Media.savePhoto(opts);
+      } else {
+        Filesystem.writeFile({
+          path: fileName,
+          data: canvas.toDataURL().toString(),
+          directory: Directory.Documents
+        }).then(() => {
+          this.notificaciones.exito('Archivo guardado en galería');
+          this.loader = false;
+        }, error => {
+          this.notificaciones.error(error);
+        });
+      }
+    }).finally(() => {
+      this.loader = false;
+    });
+  }
 }
