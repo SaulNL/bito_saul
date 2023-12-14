@@ -191,7 +191,7 @@
                   </div> -->
 
           <ion-col size="12">
-            <div *ngIf="existeSesion" style="display: flex; justify-content: center">
+            <div *ngIf="existeSesion" style="display: flex; justify-content: center; flex-wrap: wrap;">
               <ion-fab-button size="small" color="light"
                 *ngIf="informacionNegocio.tipo_negocio || informacionNegocio.tipo_negocio === null;"
                 href="https://www.google.com/maps/dir/?api=1&origin={{miLat}},{{miLng}}&destination={{informacionNegocio.det_domicilio.latitud}},{{informacionNegocio.det_domicilio.longitud}}"
