@@ -7,7 +7,7 @@
       <ion-icon (click)="eliminarTag(i)" name="close-circle-outline"></ion-icon>
     </ion-chip>
   </div>
-  <ion-input placeholder="{{placeHolder}}" [(ngModel)]="nuevaTag" (keyup)="agregartag($event)"></ion-input>
+  <ion-input placeholder="{{placeHolder}}" style="min-width: 350px;" [(ngModel)]="nuevaTag" (keyup)="agregartag($event)"></ion-input>
   <br>
 </div>
 <div class="limitTag" *ngIf="limiteTags">
