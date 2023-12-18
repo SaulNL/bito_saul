@@ -81,7 +81,11 @@ const routes: Routes = [
         path: '',
         redirectTo: '/tabs/inicio',
         pathMatch: 'full'
-      }
+      },
+      {
+        path: 'mis-experiencias-turisticas',
+        loadChildren: () => import('../mis-experiencias-turisticas/mis-experiencias-turisticas.module').then( m => m.MisExperienciasTuristicasPageModule)
+      },
     ]
   },
   {
