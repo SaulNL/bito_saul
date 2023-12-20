@@ -1,0 +1,56 @@
+<form [formGroup]="ubicacionForm">
+  <ion-item>
+    <ion-label class="wdht">Estado<span class="requerido">*</span></ion-label>
+    <ion-select class="bg" interface="popover" placeholder="Estado" formControlName="id_estado"
+      (ionChange)="obtenerMunicipio($event)">
+      <ion-select-option *ngFor="let edo of list_cat_estado" [value]="edo.id_estado">{{edo.nombre}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  
+  <ion-item>
+    <ion-label class="wdht">Municipio<span class="requerido">*</span></ion-label>
+    <ion-select class="bg" interface="popover" placeholder="Municipio" formControlName="id_municipio"
+      (ionChange)="obtenerLocalidad($event)">
+      <ion-select-option *ngFor="let muni of municipio" [value]="muni.id_municipio">{{muni.nombre}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  
+  <ion-item>
+    <ion-label class="wdht">Localidad<span class="requerido">*</span></ion-label>
+    <ion-select class="bg" interface="popover" placeholder="Localidad" formControlName="id_localidad"
+      (ionChange)="enviarInformacion()">
+      <ion-select-option *ngFor="let loc of localidad" [value]="loc.id_localidad">{{loc.nombre}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  
+  <ion-item fill="solid" class="color">
+    <ion-label position="floating">Colonia<span class="requerido">*</span></ion-label>
+    <ion-input formControlName="colonia" placeholder="Colonia" (ionChange)="enviarInformacion()"></ion-input>
+  </ion-item>
+  
+  <ion-item fill="solid" class="color">
+    <ion-label position="floating">Calle<span class="requerido">*</span></ion-label>
+    <ion-input formControlName="calle" placeholder="Calle" (ionChange)="enviarInformacion()"></ion-input>
+  </ion-item>
+  
+  <ion-item fill="solid" class="color">
+    <ion-label position="floating">Número exterior<span class="requerido">*</span></ion-label>
+    <ion-input formControlName="numero_ext" placeholder="Número Exterior" (ionChange)="enviarInformacion()"></ion-input>
+  </ion-item>
+  
+  <ion-item fill="solid" class="color">
+    <ion-label position="floating">Número interior</ion-label>
+    <ion-input formControlName="numero_int" placeholder="Número Interior" (ionChange)="enviarInformacion()"></ion-input>
+  </ion-item>
+  
+  <ion-item fill="solid" class="color">
+    <ion-label position="floating">Código postal<span class="requerido">*</span></ion-label>
+    <ion-input formControlName="codigo_postal" placeholder="Código postal" (ionChange)="enviarInformacion()"></ion-input>
+  </ion-item>
+</form>
+
+<ion-button (click)="buscarMapa()" class="bg-naranja">
+  Buscar Dirección
+</ion-button>
+
+<div id="formularioMapa" style=" height: 300px; width: 100%;"></div>

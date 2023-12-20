@@ -1,0 +1,20 @@
+.wdht {
+    min-width: 50%;
+}
+
+.color {
+    --background: antiquewhite;
+}
+
+.bg {
+    background-color: antiquewhite;
+    height: 90%;
+    min-width: 50%;
+    display: flex;
+    padding-left: 15px;
+    align-items: center;
+}
+
+.requerido {
+    color: red;
+}

@@ -8,6 +8,8 @@ import { FermularioExperienciasPageRoutingModule } from './fermulario-experienci
 
 import { FermularioExperienciasPage } from './fermulario-experiencias.page';
 import { SpinnerModule } from 'src/app/componentes/spinner/spinner.module';
+import { UbicacionFormularioComponent } from 'src/app/components/ubicacion-formulario/ubicacion-formulario.component';
+import { TabsPageModule } from '../../tabs/tabs.module';
 
 @NgModule({
   imports: [
@@ -17,7 +19,9 @@ import { SpinnerModule } from 'src/app/componentes/spinner/spinner.module';
     FermularioExperienciasPageRoutingModule,
     ReactiveFormsModule,
     SpinnerModule,
+    TabsPageModule
   ],
-  declarations: [FermularioExperienciasPage]
+  declarations: [
+    FermularioExperienciasPage]
 })
 export class FermularioExperienciasPageModule {}

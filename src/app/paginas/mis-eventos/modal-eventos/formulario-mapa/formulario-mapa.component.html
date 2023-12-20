@@ -68,7 +68,7 @@
 
   <ion-item>
     <ion-label class="wdht">Estado<span class="requerido">*</span></ion-label>
-    <ion-select class="bg" interface="popover" placeholder="Select One"
+    <ion-select class="bg" interface="popover" placeholder="Estado"
     formControlName="estado" (ionChange)="obtenerMunicipio($event)">
       <ion-select-option *ngFor="let edo of estado" [value]="edo.id_estado">{{edo.nombre}}</ion-select-option>
     </ion-select>
@@ -76,7 +76,7 @@
 
   <ion-item>
     <ion-label class="wdht">Municipio<span class="requerido">*</span></ion-label>
-    <ion-select class="bg" interface="popover" placeholder="Select One"
+    <ion-select class="bg" interface="popover" placeholder="Municipio"
     formControlName="municipio" (ionChange)="obtenerLocalidad($event)">
       <ion-select-option *ngFor="let muni of municipio" [value]="muni.id_municipio">{{muni.nombre}}</ion-select-option>
     </ion-select>
@@ -84,7 +84,7 @@
   
   <ion-item>
     <ion-label class="wdht">Localidad<span class="requerido">*</span></ion-label>
-    <ion-select class="bg" interface="popover" placeholder="Select One"
+    <ion-select class="bg" interface="popover" placeholder="Localidad"
     formControlName="localidad" (ionChange)="enviarInformacion()">
       <ion-select-option *ngFor="let loc of localidad" [value]="loc.id_localidad">{{loc.nombre}}</ion-select-option>
     </ion-select>

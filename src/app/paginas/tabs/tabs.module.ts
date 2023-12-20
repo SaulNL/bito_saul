@@ -3,10 +3,11 @@ import { BotonTopComponent } from "../../componentes/boton-top/boton-top.compone
 import { IonicModule } from "@ionic/angular";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BannerPromocionesComponent } from "../../componentes/banner-promociones/banner-promociones.component";
 import { ToolbarBusquedaComponent } from "../../componentes/toolbar-busqueda/toolbar-busqueda.component";
 import { InputTagsComponent } from "../../components/input-tags/input-tags.component";
+import { UbicacionFormularioComponent } from 'src/app/components/ubicacion-formulario/ubicacion-formulario.component';
 import { TabsPageRoutingModule } from "./tabs-routing.module";
 import { ModalClasificacionComponent } from "../../componentes/modal-clasificacion/modal-clasificacion.component";
 import { RecorteImagenComponent } from "../../components/recorte-imagen/recorte-imagen.component";
@@ -36,6 +37,7 @@ import { InfoReservacionComponent } from '../eventos/info-reservacion/info-reser
         ImageCropperModule,
         SpinnerModule,
         ModalInicioSesionPageModule,
+        ReactiveFormsModule
     ],
     declarations: [
         TabsPage,
@@ -44,6 +46,7 @@ import { InfoReservacionComponent } from '../eventos/info-reservacion/info-reser
         ToolbarBusquedaComponent,
         BotonTopComponent,
         InputTagsComponent,
+        UbicacionFormularioComponent,
         InputLugaresEntregaComponent,
         ModalClasificacionComponent,
         RecorteImagenComponent,
@@ -54,7 +57,7 @@ import { InfoReservacionComponent } from '../eventos/info-reservacion/info-reser
         ModalLoguearseComponent,
         ModalPromocionNegocioComponent,
         ModalInfoPromocionComponent,
-        ModalImagenCuponComponent
+        ModalImagenCuponComponent,
     ],
   exports: [
     BannerPromocionesComponent,
@@ -62,6 +65,7 @@ import { InfoReservacionComponent } from '../eventos/info-reservacion/info-reser
     ToolbarBusquedaComponent,
     BotonTopComponent,
     InputTagsComponent,
+    UbicacionFormularioComponent,
     InputLugaresEntregaComponent,
     ModalClasificacionComponent,
     RecorteImagenComponent,
