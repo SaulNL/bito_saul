@@ -35,4 +35,24 @@ export class ExperienciasTuristicasService {
         return error;
       }));
   }
+
+  experienciasLista(): Observable<any> {
+    const body = JSON.stringify({});
+    return from(this._http.post( this.url + 'api/experiencias/publicadas', body, AppSettings.getHeadersToken()).then( data => {
+      return JSON.parse(data.data);
+    }).catch((error) => {
+      return error;
+    }));
+  }
+
+  experienciaDetalle(id: any): Observable<any>{
+    const body = JSON.stringify({id_experiencia_turistica: id});
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(this.url + 'api/experiencias/obtenerExperiencia', body, AppSettings.getHeadersToken()).then((data) => {
+      return JSON.parse(data.data);
+    })
+        .catch((error) => {
+          return error;
+        }));
+  }
 }

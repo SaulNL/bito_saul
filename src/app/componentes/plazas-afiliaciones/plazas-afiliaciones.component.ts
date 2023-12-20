@@ -194,4 +194,9 @@ export class PlazasAfiliacionesComponent implements OnInit {
       }
     );
   }
+
+  abrirExperiencias(){
+    this.router.navigate(['/tabs/experiencias-turisticas']);
+    this.modalCtr.dismiss();
+  }
 }
