@@ -87,6 +87,23 @@
             </div>
         </ion-card-content>
     </ion-card>
+
+    <ion-card>
+        <ion-card-content>
+            <ion-item *ngIf="!loaderOrg">
+                <ion-label>
+                    <p>Experiencias Turisticas</p>
+                </ion-label>
+                <ion-spinner *ngIf="!loaderOrg" class="spinner-color"></ion-spinner>
+            </ion-item>
+            <ion-item *ngIf="loaderOrg" lines="none" (click)="abrirExperiencias()" class="fondo-buttom-border">
+                <ion-label>
+                    <p>Experiencias Turisticas</p>
+                </ion-label>
+                <ion-icon slot="end" name="eye-off-outline"></ion-icon>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
     
     <ion-card *ngIf="vip && listNegociosVip">
         <ion-card-content *ngIf="vip">

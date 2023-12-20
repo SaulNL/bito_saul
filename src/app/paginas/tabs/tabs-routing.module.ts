@@ -78,6 +78,10 @@ const routes: Routes = [
         loadChildren: () => import('../carrito-compra/carrito-compra.module').then( m => m.CarritoCompraPageModule)
       },
       {
+        path: 'experiencias-turisticas',
+        loadChildren: () => import('../../paginas/experiencias-turisticas/experiencias-turisticas.module').then( m => m.ExperienciasTuristicasPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/inicio',
         pathMatch: 'full'

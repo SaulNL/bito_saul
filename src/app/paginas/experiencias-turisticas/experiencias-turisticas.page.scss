@@ -1,0 +1,122 @@
+#btnRegresar {
+  text-transform: capitalize;
+}
+
+.date-label {
+  opacity: 0.5;
+  font-size: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.contendorPrincipal{
+  display: flex;
+  width: 100%;
+}
+
+.contenedorSe{
+  flex: 7;
+}
+.contenedorTer{
+  flex: 4;
+}
+.columna{
+  margin: 0;
+}
+.diasSemana{
+  font-size: 10px;
+  opacity: 0.5;
+  text-align: right;
+}
+
+.label_filtro{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e1e1e2;
+  width: 23vw;
+  border-radius: 10px;
+  height: 9vw;
+  padding: 5px;
+  text-align: center;
+}
+
+.label_filtro:active {
+  background-color: #f2f2f2;
+}
+
+.label_reservaciones{
+  background-color: #e1e1e2;
+  width: 40vw;
+  border-radius: 10px;
+  position: absolute;
+  right: 3%;
+  height: 9vw;
+  padding: 5px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.label_reservaciones:active{
+  background-color: #f2f2f2;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background-color: white;
+  border-radius: 3px;
+  width: 68%;
+}
+
+.colorButton{
+  --background: linear-gradient(90deg,  #FF9925 0%,  #FFCE00 100%) !important;
+  --color: white;
+}
+
+.gray-background {
+  background-color: lightgray;
+}
+
+.white-background {
+  background-color: white;
+}
+
+.my-section {
+  position: relative;
+  z-index: 9999;
+  opacity: 0.9; /* Ajusta el valor de opacidad según sea necesario */
+}
+
+.contenedor{
+  background-color: #3c3c3c;
+  color: white;
+  font-size: small;
+  display: flex;
+  width: 100%;
+}
+.sinNegocios{
+  width: 100vw;
+  background: bisque;
+  display: flex;
+  height: 30px;
+  justify-content: center;
+  align-items: center
+}
+
+ion-toolbar {
+  --background: linear-gradient(90deg, #ff1dbd 0%, rgb(255, 206, 0) 100%);
+  --color: white;
+}

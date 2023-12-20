@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title  mode="ios">Experiencias-turisticas</ion-title>
+    <ion-buttons slot="start">
+      <ion-button id="btnRegresar" (click)="regresar()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
+<ion-content fullscreen *ngIf="loaderReservaciones" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+  <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
+
+  <ion-item>
+    <div class="label_filtro" (click)="abrirModal()">
+      <ion-label>Filtro</ion-label>
+      <ion-icon name="caret-down-outline"></ion-icon>
+    </div>
+    <div class="label_reservaciones">
+      <ion-label>Mis reservaciones</ion-label>
+    </div>
+
+    <div class="modal-overlay" *ngIf="isOpen">
+      <div class="modal">
+        <ion-toolbar>
+          <ion-title>Filtro</ion-title>
+          <ion-buttons slot="end">
+            <ion-button color="light" (click)="cerrarModal()"><ion-icon name="close-outline"></ion-icon></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+
+        <ion-item>
+          <ion-label position="stacked">Ocurrencia</ion-label>
+          <ion-select [(ngModel)]="fechaSeleccionada" (ionChange)="cargarFecha($event)">
+            <ion-select-option value="Hoy">Hoy</ion-select-option>
+            <ion-select-option value="Semana">Semana</ion-select-option>
+            <ion-select-option value="Mes actual">Mes actual</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Tipo experiencia</ion-label>
+          <ion-input type="text" [(ngModel)]="tipoExperiencia"></ion-input>
+        </ion-item>
+
+        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 2px">
+          <ion-button color="success" (click)="buscarExperiencia()">
+            <ion-icon name="search-outline"></ion-icon>Buscar
+          </ion-button>
+          <ion-button color="danger" (click)="limpiarFiltro()">
+            <ion-icon name="trash-outline"></ion-icon>Limpiar
+          </ion-button>
+        </div>
+
+      </div>
+    </div>
+
+  </ion-item>
+
+  <div>
+    <ion-list *ngIf="experienciasAll.length > 0">
+      <ion-item *ngFor="let dato of experienciasAll" (click)="datosExperiencia(dato.id_experiencia_turistica)">
+        <div class="contendorPrincipal">
+          <div class="contenedorSe columna">
+            <div style="margin-top: 9px; margin-bottom: -10px">
+              <strong>{{dato.titulo_experiencia}}</strong>
+            </div>
+            <p style="opacity: 0.5">{{dato.negocio}}</p>
+          </div>
+          <div class="contenedorTer columna">
+            <div class="date-label">
+              <p>{{convertirFecha(dato.fecha_fin_experiencia)}}</p>
+            </div>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+
+</ion-content>
