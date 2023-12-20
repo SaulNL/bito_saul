@@ -71,30 +71,30 @@ export class FermularioExperienciasPage implements OnInit {
     this.experienciasForm = this.formBuilder.group({
       titulo_experiencia: ['', [Validators.required,Validators.maxLength(50)]],
       id_experiencia_turistica: [''],
-      id_negocio: [''],
+      id_negocio: ['', [Validators.required]],
       descripcion_experiencia: ['', [Validators.required,Validators.maxLength(100)]],
-      id_estado: [''],
-      id_municipio: [''],
-      id_localidad: [''],
-      calle: [''],
-      numero_ext: [''],
+      id_estado: ['', [Validators.required]],
+      id_municipio: ['', [Validators.required]],
+      id_localidad: ['', [Validators.required]],
+      calle: ['', [Validators.required]],
+      numero_ext: ['', [Validators.required]],
       numero_int: [''],
-      colonia: [''],
-      codigo_postal: [''],
-      latitud: [''],
-      longitud: [''],
+      colonia: ['', [Validators.required]],
+      codigo_postal: ['', [Validators.required]],
+      latitud: ['', [Validators.required]],
+      longitud: ['', [Validators.required]],
       fecha_inicio_experiencia: [''],
-      fecha_fin_experiencia: [''],
-      hora_inicio_experiencia: [''],
-      hora_fin_experiencia: [''],
-      telefono_experiencia: [''],
+      fecha_fin_experiencia: [null],
+      hora_inicio_experiencia: ['', [Validators.required]],
+      hora_fin_experiencia: [null],
+      telefono_experiencia: ['', [Validators.required]],
       tags_experiencia: [''],
-      tipo_experiencia: [''],
-      tipo_pago_transferencia: [''],
-      tipo_pago_tarjeta_debito: [''],
-      tipo_pago_tarjeta_credito: [''],
-      tipo_pago_efectivo: [''],
-      id_tipo_recurrencia_experiencia: [''],
+      tipo_experiencia: ['', [Validators.required,Validators.maxLength(50)]],
+      tipo_pago_transferencia: ['', [Validators.required]],
+      tipo_pago_tarjeta_debito: ['', [Validators.required]],
+      tipo_pago_tarjeta_credito: ['', [Validators.required]],
+      tipo_pago_efectivo: ['', [Validators.required]],
+      id_tipo_recurrencia_experiencia: ['', [Validators.required]],
       requiere_confirmacion: [''],
       activo: [''],
       eliminado: [''],
@@ -449,6 +449,10 @@ export class FermularioExperienciasPage implements OnInit {
         this.notificaciones.error(error);
       }
     );
+  }
+
+  validarFormulario() {
+    console.log(this.experienciasForm.valid,this.experienciasForm.value)
   }
 
   // tipoFrecuencia(tipo) {

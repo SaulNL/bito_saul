@@ -102,9 +102,7 @@ export class UbicacionFormularioComponent implements OnInit {
   }
 
   enviarInformacion() {
-    if (this.ubicacionForm.valid) {
       this.enviarUbicacion.emit(this.ubicacionForm.value)
-    }
   }
 
   buscarMapa() {
@@ -146,7 +144,7 @@ export class UbicacionFormularioComponent implements OnInit {
 
   initializeMap(lat,lng) {
     setTimeout(() => {
-      this.map = new Map("formularioMapa").setView([lat, lng],14 );
+      this.map = new Map("formularioUbicacionMapa").setView([lat, lng],14 );
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '' }).addTo(this.map);
       L.marker([lat, lng]).addTo(this.map);
     }, 1000);

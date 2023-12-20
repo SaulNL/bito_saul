@@ -117,11 +117,17 @@
         <ion-label position="floating">Titulo</ion-label>
         <ion-input formControlName="titulo_experiencia" type="text"></ion-input>
       </ion-item>
+      <ion-text class="alertaColor" *ngIf="experienciasForm.get('titulo_experiencia').hasError('maxlength')">
+        Has llegado al límite de 50 caracteres.
+      </ion-text>
   
       <ion-item>
         <ion-label position="floating">Descripción</ion-label>
         <ion-input formControlName="descripcion_experiencia" type="text"></ion-input>
       </ion-item>
+      <ion-text class="alertaColor" *ngIf="experienciasForm.get('descripcion_experiencia').hasError('maxlength')">
+        Has llegado al límite de 100 caracteres.
+      </ion-text>
 
       <ion-item>
         <ion-label class="wdht">Asociar negocio<span class="requerido">*</span></ion-label>
@@ -158,7 +164,7 @@
         <ng-template>
           <ion-content>
             <ion-datetime name="fecha" presentation="date" [showDefaultButtons]="true" doneText="Ok"
-              cancelText="Cancelar" (ionChange)="selectFechaEvento($event)" required>
+              cancelText="Cancelar" (ionChange)="selectFechaEvento($event)">
               <!-- <span slot="time-label">Hora:</span> -->
             </ion-datetime>
           </ion-content>
@@ -196,7 +202,7 @@
       </ion-modal>
       
       <ion-item>
-        <ion-label class="wdht">Tipo de evento<span class="requerido">*</span></ion-label>
+        <ion-label class="wdht">Tipo de Experiencia<span class="requerido">*</span></ion-label>
         <ion-input type="text" class="bg ion-padding" label="End" placeholder="Tipo de evento" formControlName="tipo_experiencia" maxlength="51"></ion-input>
       </ion-item>
       <ion-text class="alertaColor" *ngIf="experienciasForm.get('tipo_experiencia').hasError('maxlength')">
@@ -206,13 +212,13 @@
       <ion-item>
         <ion-label class="wdht">Número de teléfono<span class="requerido">*</span></ion-label>
         <ion-input class="bg ion-padding" type="tel" name="telefono" label="End" placeholder="Número de teléfono"
-          formControlName="telefono_experiencia" required></ion-input>
+          formControlName="telefono_experiencia"></ion-input>
       </ion-item>
       
       <ion-item>
         <ion-label class="wdht">Métodos de pago<span class="requerido">*</span></ion-label>
         <ion-select class="bg" name="tipo_pago_efectivo" multiple="true" justify="end" label="End"
-          placeholder="Método de pago" (ionChange)="onPagoSeleccionado($event)" required>
+          placeholder="Método de pago" (ionChange)="onPagoSeleccionado($event)">
           <ion-select-option *ngFor="let pago of tipoPago" [value]="pago.id">{{pago.tipo}}</ion-select-option>
         </ion-select>
       </ion-item>
@@ -220,7 +226,9 @@
       <ion-item *ngIf="!loader">
         <app-input-tags [tipo]="false" [tags]="experienciasForm.get('tags_experiencia').value" (_enviarTags)="agregarTags($event)"></app-input-tags>
       </ion-item>
-      <ion-button type="submit" style="width: 100%;" class="bg-naranja" (click)="guardarExperiencia()">Guardar</ion-button>
+      <ion-button type="button" style="width: 100%;" class="bg-naranja" (click)="validarFormulario()">Validar</ion-button>
+      <ion-button type="button" style="width: 100%;" class="bg-naranja" [disabled]="!experienciasForm.valid" (click)="guardarExperiencia()">Guardar</ion-button>
+
     </form>
   </div>
 
