@@ -25,6 +25,7 @@ export class ExperienciasTuristicasService {
         return error;
       }));
   }
+
   guardarExperiencia(Data): Observable<any> {
     let body = JSON.stringify(Data);
     this._http.setDataSerializer('utf8');
@@ -35,4 +36,81 @@ export class ExperienciasTuristicasService {
         return error;
       }));
   }
+
+  obtenerExperienciasPersona(Data): Observable<any> {
+    let body = JSON.stringify(Data);
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(this.url + 'api/experiencias/persona', body, AppSettings.getHeadersToken()).then((data) => {
+      return JSON.parse(data.data);
+    })
+      .catch((error) => {
+        return error;
+      }));
+  }
+
+  eliminarExperiencia(Data): Observable<any> {
+    let body = JSON.stringify(Data);
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(this.url + 'api/experiencias/eliminar', body, AppSettings.getHeadersToken()).then((data) => {
+      return JSON.parse(data.data);
+    })
+      .catch((error) => {
+        return error;
+      }));
+  }
+
+  activarDesactivarExperiencia(Data): Observable<any> {
+    let body = JSON.stringify(Data);
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(this.url + 'api/experiencias/activarDesactivar', body, AppSettings.getHeadersToken()).then((data) => {
+      return JSON.parse(data.data);
+    })
+      .catch((error) => {
+        return error;
+      }));
+  }
+
+  reservacionesExperiencias(Data): Observable<any> {
+    let body = JSON.stringify(Data);
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(this.url + 'api/experiencias/listaReservaciones', body, AppSettings.getHeadersToken()).then((data) => {
+      return JSON.parse(data.data);
+    })
+      .catch((error) => {
+        return error;
+      }));
+  }
+
+  visualiceExperiencia(Data): Observable<any> {
+    let body = JSON.stringify(Data);
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(this.url + 'api/visitas/experiencias/registrar', body, AppSettings.getHeadersToken()).then((data) => {
+      return JSON.parse(data.data);
+    })
+      .catch((error) => {
+        return error;
+      }));
+  }
+
+  reservarExperiencia(Data): Observable<any> {
+    let body = JSON.stringify(Data);
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(this.url + 'api/experiencias/reservar', body, AppSettings.getHeadersToken()).then((data) => {
+      return JSON.parse(data.data);
+    })
+      .catch((error) => {
+        return error;
+      }));
+  }
+  reservacionesUsuario(Data): Observable<any> {
+    let body = JSON.stringify(Data);
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post(this.url + 'api/experiencias/listaReservacionesUsuario', body, AppSettings.getHeadersToken()).then((data) => {
+      return JSON.parse(data.data);
+    })
+      .catch((error) => {
+        return error;
+      }));
+  }
+  
 }
