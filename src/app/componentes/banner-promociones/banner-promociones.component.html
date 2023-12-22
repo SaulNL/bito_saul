@@ -1,7 +1,7 @@
 <div
-  *ngIf="(lstPromociones !== undefined && lstPromociones !== null && lstPromociones.length > 0) || (lstAvisos !== undefined && lstAvisos !== null && lstAvisos.length > 0) ">
+  *ngIf="(lstPromocionesAnuncios !== undefined && lstPromocionesAnuncios !== null && lstPromocionesAnuncios.length > 0) || (lstAvisos !== undefined && lstAvisos !== null && lstAvisos.length > 0) ">
   <ion-slides [options]="slideOptsOne" #mySlider *ngIf="!modalBanner">
-    <ion-slide *ngFor="let promocion of lstPromociones">
+    <ion-slide *ngFor="let promocion of lstPromocionesAnuncios">
       <img loading="eager"
         src="{{(promocion.url_imagen_banner)==='' || (promocion.url_imagen_banner)==null?promocionDefault:promocion.url_imagen_banner}}"
         class="d-block img-fluid" alt="Cargando imagen..." onerror="this.onerror=null;this.src=promocionDefault;"

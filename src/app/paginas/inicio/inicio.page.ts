@@ -219,8 +219,9 @@ export class InicioPage implements OnInit, AfterViewInit {
   loaderVerMas = false;
   favoritos: any[] = [];
   buttonDisabled: boolean;
-  public subCAt: boolean;
-  public afi: boolean;
+  subCAt: boolean;
+  afi: boolean;
+  soloAnuncios: boolean = true;
 
   public backPhysicalBottom() {
     const option = localStorage.getItem('filter');

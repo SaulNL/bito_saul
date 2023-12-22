@@ -4,7 +4,7 @@
 ></app-toolbar-busqueda>
 <ion-content [fullscreen]="true" 
   [scrollEvents]="true">
-  <app-banner-promociones [anyFiltros]="Filtros"></app-banner-promociones>
+  <app-banner-promociones [anyFiltros]="Filtros" [soloAnuncios]="soloAnuncios"></app-banner-promociones>
   <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
   <div style="display: flex; justify-content: space-between;">
     <ion-button id="modalPromo" class="buttonCustom" (click)="abrirFiltro()">Filtro <ion-icon name="caret-down-outline"></ion-icon></ion-button>

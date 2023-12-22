@@ -24,7 +24,7 @@
         <div *ngFor="let producto of product.productoInfo">
           <div class="contenedorP">
             <div class="imagen-redonda">
-              <img *ngIf="producto.imagen.length > 0" [src]="producto.imagen[0] || producto.imagen">
+              <img *ngIf="producto.imagen.length > 0" [src]="producto.imagen[0]">
               <img *ngIf="producto.imagen.length == 0" src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/PROVEEDOR/Proveedor500.png">
             </div>
             <strong style="width: 165px; font-size: 13px;">{{producto.nombre}}</strong>

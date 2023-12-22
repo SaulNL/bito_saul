@@ -22,12 +22,13 @@ import { UtilsCls } from 'src/app/utils/UtilsCls';
   styleUrls: ['./banner-promociones.component.scss'],
 })
 export class BannerPromocionesComponent implements OnInit {
+  @Input() afi: boolean;
   @Input() anyFiltros: any;
   @Input() tieneFiltro: any;
-  @Input() afi: boolean;
+  @Input() soloAnuncios: boolean;
   filtro: any;
-  lstPromociones: any;
-  public lstAvisos: any;
+  lstPromocionesAnuncios: any;
+  lstAvisos: any;
   promocionDefault: any;
   slideOptsOne = {
     initialSlide: 0,
@@ -62,17 +63,18 @@ export class BannerPromocionesComponent implements OnInit {
     public modalController: ModalController,
     private util: UtilsCls,
   ) {
-    this.lstPromociones = [];
+    this.lstPromocionesAnuncios = [];
     this.lstAvisos = [];
     this.user = this.util.getUserData();
     this.modalBanner = false;
   }
-  ionview
+
   ngOnInit() {
     this.obtenerGeolocalizacion();
-    this.obtenerPromociones(this.anyFiltros);
+    this.obtenerPromocionesAnuncios(this.anyFiltros);
     this.obtenerAvisos();
   }
+
   async presentAlert() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -98,8 +100,6 @@ export class BannerPromocionesComponent implements OnInit {
       this.miUbicacionlatitud = reponse.coords.latitude;
       this.miUbicacionlongitud = reponse.coords.longitude;
 
-
-
     }).catch((error) => {
 
     });
@@ -108,7 +108,7 @@ export class BannerPromocionesComponent implements OnInit {
      * Funcion para obtener las promociones
      * @author Omar
      */
-  public obtenerPromociones(filtro: any) {
+  public obtenerPromocionesAnuncios(filtro: any) {
     if (!this.tieneFiltro) {
       filtro.strBuscar = '';
       filtro.intEstado = 0;
@@ -133,12 +133,16 @@ export class BannerPromocionesComponent implements OnInit {
     if (this.plazaAfiliacion != null) {
       filtro.organizacion = this.plazaAfiliacion.id_organizacion;
     }
-    this.servicioPromociones.buscarPromocinesPublicadasFiltros(filtro).subscribe(response => {
-      this.lstPromociones = response.data;
-    },
-      error => {
-      }
-    );
+
+    if (this.soloAnuncios) {
+      this.servicioPromociones.buscarAnunciosPublicadosFiltros(this.user.id_persona).subscribe(response => {
+        this.lstPromocionesAnuncios = response.data;
+      })
+    } else {
+      this.servicioPromociones.buscarPromocinesPublicadasFiltros(filtro).subscribe(response => {
+        this.lstPromocionesAnuncios = response.data;
+      });
+    }
   }
   /**
    * Funcion para obtener avisos

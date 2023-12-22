@@ -41,6 +41,12 @@ export class CarritoCompraPage implements OnInit {
 
   obtenerCarrito(){
     this.productos =  JSON.parse(localStorage.getItem('cartProducts'));
+    this.productos.forEach(res => {
+      res.productoInfo.forEach(element => {
+        if (!Array.isArray(element.imagen)) element.imagen = [element.imagen];
+      });
+    });
+    
     if ( this.productos === undefined || this.productos === null ){
       this.productos = [];
     }
