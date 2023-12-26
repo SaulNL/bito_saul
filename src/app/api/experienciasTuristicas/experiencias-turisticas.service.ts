@@ -3,6 +3,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 import { HttpClient } from '@angular/common/http';
 import { AppSettings } from '../../AppSettings';
 import { from, Observable } from 'rxjs';
+import {FiltroExperienciasModel} from "../../Modelos/FiltroExperienciasModel";
 
 @Injectable({
   providedIn: 'root'
@@ -112,10 +113,12 @@ export class ExperienciasTuristicasService {
         return error;
       }));
   }
-  
-  experienciasLista(): Observable<any> {
-    const body = JSON.stringify({});
-    return from(this._http.post( this.url + 'api/experiencias/publicadas', body, AppSettings.getHeadersToken()).then( data => {
+
+  experienciasLista(filtroModel: FiltroExperienciasModel): Observable<any> {
+    let body = JSON.stringify(filtroModel);
+    console.log('body' , body);
+    this._http.setDataSerializer('utf8');
+    return from(this._http.post( this.url + 'api/experiencias/publicadas', body, AppSettings.getHeaders()).then( data => {
       return JSON.parse(data.data);
     }).catch((error) => {
       return error;

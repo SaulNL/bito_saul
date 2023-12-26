@@ -92,7 +92,7 @@ export class CalendarioReservacionPage implements OnInit {
     this.diasDeshabilitar = [];
   }
 
-  // Obtiene la fecha de reservacion del evento o fecha actual
+  // Obtiene la fecha de reservacion o fecha actual
   fechaReserva(dia: number): boolean {
     const diaReservacion = new Date().getDate();
     return dia === diaReservacion && this.meses.indexOf(this.seleccionaMes) === new Date().getMonth();

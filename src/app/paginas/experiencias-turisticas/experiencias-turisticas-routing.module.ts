@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'reservacion-experiencia/:id',
     loadChildren: () => import('./reservacion-experiencia/reservacion-experiencia.module').then( m => m.ReservacionExperienciaPageModule)
+  },
+  {
+    path: 'lista-reservacion-experiencias',
+    loadChildren: () => import('./lista-reservacion-experiencias/lista-reservacion-experiencias.module').then( m => m.ListaReservacionExperienciasPageModule)
   }
 ];
 
