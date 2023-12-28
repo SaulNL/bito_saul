@@ -6,7 +6,7 @@
 
 </ion-toolbar>
 
-<ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
+<ion-content mode="md" [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop">
   <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
   <app-boton-top [content]="content" [cordenada]="cordenada" [platform]="isIOS" *ngIf="!isIOS"></app-boton-top>
   <ion-fab *ngIf="isIOS" horizontal="end" vertical="bottom" slot="fixed" class="btn-flotante" (click)="scrollToTop()">
@@ -297,7 +297,6 @@
     </ion-grid>
 
   </div>
-  <app-modal-inicio-sesion [isAlert]="isAlert" (banderaAlert)="cerrarAlert($event)"></app-modal-inicio-sesion>
   <app-banner-anuncios></app-banner-anuncios>
-
+  <app-modal-inicio-sesion [isAlert]="isAlert" (banderaAlert)="cerrarAlert($event)"></app-modal-inicio-sesion>
 </ion-content>

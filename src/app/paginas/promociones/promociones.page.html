@@ -3,7 +3,7 @@
   (buscarEmit)="buscarToolbar($event)" titulo="Promociones"
 ></app-toolbar-busqueda>
 <ion-content [fullscreen]="true" 
-  [scrollEvents]="true">
+  [scrollEvents]="true" mode="md">
   <app-banner-promociones [anyFiltros]="Filtros" [soloAnuncios]="soloAnuncios"></app-banner-promociones>
   <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
   <div style="display: flex; justify-content: space-between;">
