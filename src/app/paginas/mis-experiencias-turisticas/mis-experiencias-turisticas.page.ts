@@ -32,7 +32,7 @@ export class MisExperienciasTuristicasPage implements OnInit {
   public datosReservacion = {
     fc_confirmacion: null,
     id_estatus_reservacion: null,
-    id_evento_reservacion: null
+    id_experiencia_turistica_reservacion: null
   }
 
   constructor(
@@ -73,6 +73,7 @@ export class MisExperienciasTuristicasPage implements OnInit {
           "id_experiencia_turistica": idReservacion
     }
     this.experienciasService.reservacionesExperiencias(eniarIdReservacion).subscribe(Response => {
+      console.log('resReservaciones',Response)
       this.experienciaImg = img;
       this.activoBTN = activo == 1 || activo ? true : false;
       this.idExperiencia = idReservacion;
@@ -182,14 +183,16 @@ export class MisExperienciasTuristicasPage implements OnInit {
     this.mostrarInfo = false;
   }
 
-  async quitarReservacion(data){
+  async quitarReservacion(data) {
+    console.log(data)
     this.datosReservacion.fc_confirmacion = await null;
     this.datosReservacion.id_estatus_reservacion = await 1 ;
-    this.datosReservacion.id_evento_reservacion = await data.id_evento_reservacion;
+    this.datosReservacion.id_experiencia_turistica_reservacion = await data.id_experiencia_turistica_reservacion;
     this.enviarReservacion(data,false)
   }
 
-  async guardarReservacion(data){
+  async guardarReservacion(data) {
+    console.log(data)
     let dias =  new Date();
     let dia = dias.getDate();
     let mes = dias.toLocaleString('default', { month: 'long' });
@@ -197,21 +200,21 @@ export class MisExperienciasTuristicasPage implements OnInit {
     let fecha = `${dia}/${mes}/${anio}`
     this.datosReservacion.fc_confirmacion = await fecha;
     this.datosReservacion.id_estatus_reservacion = await 2 ;
-    this.datosReservacion.id_evento_reservacion = await data.id_evento_reservacion;
+    this.datosReservacion.id_experiencia_turistica_reservacion = await data.id_experiencia_turistica_reservacion;
     this.enviarReservacion(data,true)
   }
 
   enviarReservacion(id,tipo){
     let mensaje = tipo == true ? "Se guardó exitosamente": "Se elimino exitosamente"
-    // this.eventoService.confirmarReservacion(this.datosReservacion).subscribe(Response => {
-    //   if(Response.code == 200){
-    //     this.obtenerLstReservacion(id.id_evento,this.eventoImg,this.activoBTN)
-    //     this.notificacionService.exito(mensaje)
-    //   }
-    // }),
-    //   error => {
-    //     this.notificacionService.error(error);
-    //   }
+    this.experienciasService.confirmarExperiencia(this.datosReservacion).subscribe(Response => {
+      if(Response.code == 200){
+        this.obtenerLstReservacion(id.id_experiencia_turistica,this.experienciaImg,this.activoBTN)
+        this.notificacionService.exito(mensaje)
+      }
+    }),
+      error => {
+        this.notificacionService.error(error);
+      }
   }
 
 }
