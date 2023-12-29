@@ -45,15 +45,16 @@ export class UbicacionFormularioComponent implements OnInit {
     }
 
   ngOnInit() { 
+    this.obtenerEstados();
     let lat = this.datosUbicacion && this.datosUbicacion.latitud ? this.datosUbicacion.latitud : 19.316935492666076;
     let long = this.datosUbicacion && this.datosUbicacion.longitud ? this.datosUbicacion.longitud : 261.76180609661117;
+    console.log(this.datosUbicacion)
     if (this.datosUbicacion) {
       this.asgnarValores(lat,long)
     }
-    this.obtenerEstados();
     this.initializeMap(lat, long);
   }
-  asgnarValores(lat,long) {
+  asgnarValores(lat, long) {
     this.ubicacionForm.get('id_estado').setValue(this.datosUbicacion.id_estado)
     this.ubicacionForm.get('id_municipio').setValue(this.datosUbicacion.id_municipio)
     this.ubicacionForm.get('id_localidad').setValue(this.datosUbicacion.id_localidad)
@@ -67,9 +68,13 @@ export class UbicacionFormularioComponent implements OnInit {
   }
   
   obtenerEstados() {
-    this.generalService.getEstadosWS().subscribe(response => {
+    console.log('entre')
+    this.generalService.getEstadosWS().subscribe(async response => {
       if (this._utils_cls.is_success_response(response.code)) {
-        this.list_cat_estado = response.data.list_cat_estado;
+        this.list_cat_estado = await response.data.list_cat_estado;
+        if (this.datosUbicacion) {
+          this.obtenerMunicipio(this.datosUbicacion.id_estado);
+        }
         // this.loader = false;
       }
     },
@@ -80,8 +85,17 @@ export class UbicacionFormularioComponent implements OnInit {
   }
 
   obtenerMunicipio(idMuni) {
-    this.generalService.getMunicipiosAll(idMuni.detail.value).subscribe(res => {
-      this.municipio = res.data.list_cat_municipio;
+    let municipio 
+    try {
+      municipio= !idMuni.detail.value ? idMuni : idMuni.detail.value
+    } catch (error) {
+      municipio = idMuni
+    }
+    this.generalService.getMunicipiosAll(municipio).subscribe(async res => {
+      this.municipio = await res.data.list_cat_municipio;
+      if (this.datosUbicacion) {
+        this.obtenerLocalidad(this.datosUbicacion.id_municipio);
+      }
     }),error => {
           console.log(error)
     }
@@ -89,8 +103,15 @@ export class UbicacionFormularioComponent implements OnInit {
   }
 
   obtenerLocalidad(idLoc) {
-    this.generalService.getLocalidadAll(idLoc.detail.value).subscribe(response => {
-          this.localidad = response.data.list_cat_localidad;
+    let loc 
+    try {
+      loc = !idLoc.detail.value ? idLoc : idLoc.detail.value
+    } catch (error) {
+      loc = idLoc      
+    }
+    console.log(idLoc)
+    this.generalService.getLocalidadAll(loc).subscribe(async response => {
+          this.localidad = await response.data.list_cat_localidad;
       },
         error => {
           console.log(error)

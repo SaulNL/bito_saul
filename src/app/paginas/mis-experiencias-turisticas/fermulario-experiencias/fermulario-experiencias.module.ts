@@ -10,6 +10,7 @@ import { FermularioExperienciasPage } from './fermulario-experiencias.page';
 import { SpinnerModule } from 'src/app/componentes/spinner/spinner.module';
 import { UbicacionFormularioComponent } from 'src/app/components/ubicacion-formulario/ubicacion-formulario.component';
 import { TabsPageModule } from '../../tabs/tabs.module';
+import { FormularioEtProductoComponent } from './formulario-et-producto/formulario-et-producto.component';
 
 @NgModule({
   imports: [
@@ -19,9 +20,12 @@ import { TabsPageModule } from '../../tabs/tabs.module';
     FermularioExperienciasPageRoutingModule,
     ReactiveFormsModule,
     SpinnerModule,
-    TabsPageModule
+    TabsPageModule,
   ],
   declarations: [
-    FermularioExperienciasPage]
+    FermularioExperienciasPage,
+    FormularioEtProductoComponent,
+  ]
+    
 })
 export class FermularioExperienciasPageModule {}

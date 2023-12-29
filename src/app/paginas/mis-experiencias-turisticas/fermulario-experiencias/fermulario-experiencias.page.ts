@@ -10,6 +10,7 @@ import { RecorteImagenComponent } from 'src/app/components/recorte-imagen/recort
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { NegocioService } from 'src/app/api/negocio.service';
 import { Router } from '@angular/router';
+import { FormularioEtProductoComponent } from './formulario-et-producto/formulario-et-producto.component';
 
 @Component({
   selector: 'app-fermulario-experiencias',
@@ -46,6 +47,7 @@ export class FermularioExperienciasPage implements OnInit {
   public base64Video = null;
   public datosUsuario: any;
   public lstNegocios: any;
+  public sihayImg: any;
 
   experienciasForm: FormGroup;
   pagoSelect: FormGroup;
@@ -95,12 +97,13 @@ export class FermularioExperienciasPage implements OnInit {
       tipo_pago_tarjeta_credito: ['', [Validators.required]],
       tipo_pago_efectivo: ['', [Validators.required]],
       id_tipo_recurrencia_experiencia: ['', [Validators.required]],
-      requiere_confirmacion: [''],
-      activo: [''],
+      requiere_confirmacion: false,
+      activo: false,
       eliminado: [''],
       fotografias: [''],
       videos: [''],
-      dias:['']
+      dias: null ,
+      conceptos:[null,[Validators.required]],
     });
     this.pagoSelect = this.formBuilder.group({
       pagoSelect: [''],
@@ -123,15 +126,54 @@ export class FermularioExperienciasPage implements OnInit {
     }
 
   ngOnInit() {
+    if (localStorage.getItem('editExperiencias')) {
+      this.loader = true;
+      let id = localStorage.getItem('editExperiencias')
+      this.obtenerInformacionExperiencia(id)
+      localStorage.removeItem('editExperiencias')
+    }
     this.obtenerTipoRecuerrencia();
     this.obtenerNegocios();
   }
   asignarValores(data) {
+    this.experienciasForm.patchValue({
+      titulo_experiencia: data.titulo_experiencia,
+      id_experiencia_turistica: data.id_experiencia_turistica,
+      id_negocio: data.id_negocio,
+      descripcion_experiencia: data.descripcion_experiencia,
+      fecha_inicio_experiencia: data.fecha_inicio_experiencia,
+      fecha_fin_experiencia: data.fecha_fin_experiencia,
+      hora_inicio_experiencia: data.hora_inicio_experiencia,
+      hora_fin_experiencia: data.hora_fin_experiencia,
+      telefono_experiencia: data.telefono_experiencia,
+      tags_experiencia: data.tags_experiencia,
+      tipo_experiencia: data.tipo_experiencia,
+      tipo_pago_transferencia: data.tipo_pago_transferencia,
+      tipo_pago_tarjeta_debito: data.tipo_pago_tarjeta_debito,
+      tipo_pago_tarjeta_credito: data.tipo_pago_tarjeta_credito,
+      tipo_pago_efectivo: data.tipo_pago_efectivo,
+      id_tipo_recurrencia_experiencia: data.id_tipo_recurrencia_experiencia,
+      requiere_confirmacion: data.requiere_confirmacion == 1 ? true : false,
+      activo: data.activo == 1 ? true : false,
+      // eliminado: data.eliminado,
+      // fotografias: data.fotografias,
+      // videos: data.videos,
+      dias: JSON.parse(data.dias),
+      conceptos: data.conceptos,
+    })
     this.frecuenciaSemanal = this.datosExperiencias.id_tipo_recurrencia_experiencia == 3 ? true : false;
     this.vistaDias = this.datosExperiencias.id_tipo_recurrencia_experiencia == 3 ? 'initial' : 'none';
     this.vistaFecha = this.datosExperiencias.id_tipo_recurrencia_experiencia == 1 ? 'initial' : 'none';
-    this.fotografiasArray = this.datosExperiencias.fotografias;
-    this.videosArray = this.datosExperiencias.videos;
+    this.experienciasForm.addControl('metodosPago', this.formBuilder.control(''))
+    let metodoDePago = [];
+    metodoDePago.push(data.tipo_pago_efectivo == 1 ? 1:0)
+    metodoDePago.push(data.tipo_pago_transferencia == 1 ? 2:0)
+    metodoDePago.push(data.tipo_pago_tarjeta_credito == 1 ? 3:0)
+    metodoDePago.push(data.tipo_pago_tarjeta_debito == 1 ? 4:0)
+
+    this.experienciasForm.get('metodosPago').setValue(metodoDePago)
+    this.fotografiasArray = data.fotografias;
+    this.videosArray = data.videos;
     this.fotografiasArray = this.fotografiasArray.map(foto => {
         // Iteramos sobre cada propiedad del objeto
         for (const prop in foto) {
@@ -143,6 +185,8 @@ export class FermularioExperienciasPage implements OnInit {
         return foto;
     });
     this.numeroFotos = this.fotografiasArray.length;
+    this.sihayImg = this.fotografiasArray.length > 0 || this.fotosArrayAgregar.length > 0 ? true : false;
+    this.loader = false
   }
 
   asignarUbicacion(datosUbicacion) {
@@ -161,6 +205,11 @@ export class FermularioExperienciasPage implements OnInit {
   }
 
   guardarExperiencia() {
+    let dias = this.experienciasForm.get('dias').value != null ? JSON.stringify(this.experienciasForm.get('dias').value) : null;
+    let Activo = this.experienciasForm.get('activo').value ? 1 : 0;
+    this.experienciasForm.get('activo').setValue(Activo);
+    let Confirmacion = this.experienciasForm.get('requiere_confirmacion').value ? 1 : 0;
+    this.experienciasForm.get('requiere_confirmacion').setValue(Confirmacion);
     let fotos = [];
     fotos.push(...this.fotografiasArray);
     fotos.push(...this.fotosArrayAgregar)
@@ -169,19 +218,42 @@ export class FermularioExperienciasPage implements OnInit {
     videos.push(...this.videosArray);
     videos.push(...this.videosArrayAgregar);
     this.experienciasForm.get('videos').setValue(videos);
-    console.log('guardadoEx', this.experienciasForm.value)
     this.loader = true;
+    this.experienciasForm.get('dias').setValue(dias)
+    console.log('guardadoEx', this.experienciasForm.value)
+    this.experienciasForm.removeControl('metodosPago');
     this.experienciaGuardar(this.experienciasForm.value);
   }
 
+  obtenerInformacionExperiencia(body) {
+    try {
+      this.experienciasService.experienciaDetalle(body).subscribe(res => {
+        console.log('Asignar',res)
+        if (res.code == 200) {
+          this.datosExperiencias = res.data[0]
+          this.asignarValores(res.data[0]);
+        } else if (res.code == 500) {
+          this.loader = false
+          this.notificaciones.error('Error al obtener la experiencia');
+        }
+      }),error => {
+        console.log(error)
+      }
+    } catch (error) {
+      this.loader = false
+      this.notificaciones.error('Error al obtener la experiencia');
+    }
+  }
+
   tipoFrecuencia(tipo) {
+    console.log('Frecuencia',tipo)
     this.frecuenciaSemanal = tipo.detail.value == 1 ? false : true;
     this.vistaDias = tipo.detail.value == 3 ? 'initial' : 'none';
     this.vistaFecha = tipo.detail.value == 1 ? 'initial' : 'none';
-    let fechas = tipo.detail.value == 1 ? this.experienciasForm.get('fecha').value : null;
-    let dias = tipo.detail.value == 3 ? this.experienciasForm.get('dias').value : null;
-    this.experienciasForm.get('fecha').setValue(fechas)
-    this.experienciasForm.get('dias').setValue (dias)
+    let fechas = tipo.detail.value == 1 ? this.experienciasForm.get('fecha_inicio_experiencia').value : null;
+    let dias = tipo.detail.value == 3 ? JSON.stringify(this.experienciasForm.get('dias').value) : null;
+    this.experienciasForm.get('fecha_inicio_experiencia').setValue(fechas)
+    this.experienciasForm.get('dias').setValue(dias)
   }
 
   obtenerTipoRecuerrencia() {
@@ -195,15 +267,21 @@ export class FermularioExperienciasPage implements OnInit {
     }
   }
   experienciaGuardar(body) {
-    this.experienciasService.guardarExperiencia(body).subscribe(res => {
-      console.log('guardar',res)
-      if (res.code == 200) {
-        this.loader = false
-        this.notificaciones.exito('Evento Guardado');
-        this._router.navigate(["/tabs/mis-experiencias-turisticas"])
+    try {
+      this.experienciasService.guardarExperiencia(body).subscribe(res => {
+        console.log('guardar',res)
+        if (res.code == 200) {
+          this.loader = false
+          this.notificaciones.exito('Experiencia Guardada');
+          this._router.navigate(["/tabs/mis-experiencias-turisticas"])
+        } else if (res.code == 500) {
+          this.loader = false
+          this.notificaciones.error('Error al Guardar');
+        }
+      }),error => {
+        console.log(error)
       }
-    }),error => {
-      console.log(error)
+    } catch (error) {
       this.loader = false
       this.notificaciones.error('Error al Guardar');
     }
@@ -247,6 +325,7 @@ export class FermularioExperienciasPage implements OnInit {
 
   public borrarFotoEdit(posicion: number) {
     this.fotografiasArray.splice(posicion, 1);
+    this.sihayImg = this.fotografiasArray.length > 0 || this.fotosArrayAgregar.length > 0 ? true : false;
     this.numeroFotosEdit--;
     if (this.numeroFotosEdit < 3) {
       this.galeriaFull = false;
@@ -282,6 +361,7 @@ export class FermularioExperienciasPage implements OnInit {
                         archivo.archivo_64 = file_64;
                       }
                       this.fotosArrayAgregar.push(archivo);
+                      this.sihayImg = this.fotografiasArray.length > 0 || this.fotosArrayAgregar.length > 0 ? true : false;
                       this.numeroFotos++;
                       if (this.numeroFotos >= this.numeroFotosPermitidas) {
                         this.galeriaFull = true;
@@ -300,6 +380,7 @@ export class FermularioExperienciasPage implements OnInit {
                       archivo.nombre_archivo = nombre_archivo,
                           archivo.archivo_64 = r.data;
                       this.fotosArrayAgregar.push(archivo);
+                      this.sihayImg = this.fotografiasArray.length > 0 || this.fotosArrayAgregar.length > 0 ? true : false;
                       this.numeroFotos++;
                       if (this.numeroFotos >= this.numeroFotosPermitidas) {
                         this.galeriaFull = true;
@@ -316,6 +397,7 @@ export class FermularioExperienciasPage implements OnInit {
 
    public borrarFoto(posicion: number) {
     this.fotosArrayAgregar.splice(posicion, 1);
+    this.sihayImg = this.fotografiasArray.length > 0 || this.fotosArrayAgregar.length > 0 ? true : false;
     this.numeroFotos--;
    }
   
@@ -345,6 +427,7 @@ export class FermularioExperienciasPage implements OnInit {
         archivo.nombre_archivo = result.files[0].name,
         archivo.archivo_64 = r.data;
         this.fotosArrayAgregar.push(archivo);
+        this.sihayImg = this.fotografiasArray.length > 0 || this.fotosArrayAgregar.length > 0 ? true : false;
         this.numeroFotos++;
         if (this.numeroFotos >= this.numeroFotosPermitidas) {
           this.galeriaFull = true;
@@ -452,7 +535,61 @@ export class FermularioExperienciasPage implements OnInit {
   }
 
   validarFormulario() {
+    let dias = JSON.stringify(this.experienciasForm.get('dias').value)
+    let Activo = this.experienciasForm.get('activo').value ? 1 : 0;
+    this.experienciasForm.get('activo').setValue(Activo);
+    let Confirmacion = this.experienciasForm.get('requiere_confirmacion').value ? 1 : 0;
+    this.experienciasForm.get('requiere_confirmacion').setValue(Confirmacion);
+    let fotos = [];
+    fotos.push(...this.fotografiasArray);
+    fotos.push(...this.fotosArrayAgregar)
+    this.experienciasForm.get('fotografias').setValue(fotos);
+    let videos = []
+    videos.push(...this.videosArray);
+    videos.push(...this.videosArrayAgregar);
+    this.experienciasForm.get('videos').setValue(videos);
+    this.experienciasForm.get('dias').setValue(dias)
+    console.log('guardadoEx', this.experienciasForm.value)
+    this.experienciasForm.removeControl('metodosPago');
     console.log(this.experienciasForm.valid,this.experienciasForm.value)
+  }
+
+  async agregarProducto(productoInfo, id) {
+    const modal = await this.modalController.create({
+      component: FormularioEtProductoComponent,
+      componentProps: {
+        productoDatos: {
+          data: productoInfo,
+          id: id,
+        }
+      }
+    });
+    modal.present();
+
+    const { data, role, posicion } = await (modal.onWillDismiss() as Promise<{
+      data?: any;
+      role?: string;
+      posicion?: any;
+    }>)
+    console.log(data)
+    if (data.role === 'confirm') {
+      let productos = []
+      productos = this.experienciasForm.get('conceptos').value ? this.experienciasForm.get('conceptos').value : [];
+      if (data.posicion == null) {
+        productos.push(data.data)
+      } else {
+        console.log('cambiar',data.posicion)
+        productos.splice( data.posicion, 1, data.data )
+      }
+      this.experienciasForm.get('conceptos').setValue(productos)
+      console.log('guardeProducot',this.experienciasForm.value)
+    }
+  }
+
+  eliminarProducto(posicion) {
+    let productos = this.experienciasForm.get('conceptos').value;
+    productos.splice(posicion, 1)
+    this.experienciasForm.get('conceptos').setValue(productos)
   }
 
   // tipoFrecuencia(tipo) {

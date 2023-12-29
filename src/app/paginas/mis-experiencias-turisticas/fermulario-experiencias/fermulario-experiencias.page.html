@@ -105,11 +105,11 @@
       <p *ngIf="mensaje !== null && bandera" style="text-align: center; color: #ff4154">{{mensaje}}</p>
       <ion-item>
         <ion-label>Activo</ion-label>
-        <ion-toggle slot="end" name="activo" (ionChange)="verificarActivo($event, true)"></ion-toggle>
+        <ion-toggle slot="end" name="activo" formControlName="activo" (ionChange)="verificarActivo($event, true)"></ion-toggle>
       </ion-item>
       <ion-item>
         <ion-label>Requiere confirmación</ion-label>
-        <ion-toggle slot="end" name="confirmacion"
+        <ion-toggle slot="end" name="confirmacion" formControlName="requiere_confirmacion"
           (ionChange)="verificarActivo($event, false)"></ion-toggle>
       </ion-item>
   
@@ -143,6 +143,7 @@
       
       <!--Esta seccion es para la seguna parde del formulario-->
   
+
       <ion-item>
         <ion-label class="wdht">Frecuencia<span class="requerido">*</span></ion-label>
         <ion-select class="bg" name="id_tipo_recurrencia" justify="end" label="End" placeholder="Frecuencia"
@@ -218,7 +219,7 @@
       <ion-item>
         <ion-label class="wdht">Métodos de pago<span class="requerido">*</span></ion-label>
         <ion-select class="bg" name="tipo_pago_efectivo" multiple="true" justify="end" label="End"
-          placeholder="Método de pago" (ionChange)="onPagoSeleccionado($event)">
+          placeholder="Método de pago" formControlName="metodosPago" (ionChange)="onPagoSeleccionado($event)">
           <ion-select-option *ngFor="let pago of tipoPago" [value]="pago.id">{{pago.tipo}}</ion-select-option>
         </ion-select>
       </ion-item>
@@ -226,8 +227,40 @@
       <ion-item *ngIf="!loader">
         <app-input-tags [tipo]="false" [tags]="experienciasForm.get('tags_experiencia').value" (_enviarTags)="agregarTags($event)"></app-input-tags>
       </ion-item>
+
+      <ion-accordion-group>
+        <ion-accordion value="first">
+          <ion-item slot="header">
+            <ion-label>Productos</ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+            <div style="width: 100%;">
+              <ion-button (click)="agregarProducto(null,null)" style="width: 100%;" class="bg-naranja">Agregar</ion-button>
+            </div>
+      
+            <ion-item *ngIf="!experienciasForm.get('conceptos').value">NO se encuentro productos</ion-item>
+            <ion-list *ngIf="experienciasForm.get('conceptos').value">
+              <ion-item *ngFor="let producto of experienciasForm.get('conceptos').value; let i = index">
+                <ion-avatar slot="start">
+                  <ion-img [src]="!producto.url_imagen ? producto.fotografia[0].archivo_64 : producto.url_imagen"></ion-img>
+                </ion-avatar>
+                <ion-label>
+                  <h2>{{producto.concepto}}</h2>
+                  <p>Disponibles: {{producto.cantidad_disponibles}}</p>
+                </ion-label>
+                <ion-label slot="end" class="editEliminar">
+                  <ion-button color="warning" (click)="agregarProducto(producto,i)"><ion-icon name="create-outline"></ion-icon></ion-button>
+                  <ion-button color="danger" (click)="eliminarProducto(i)"><ion-icon name="trash-outline"></ion-icon></ion-button>
+                </ion-label>
+              </ion-item>
+      
+            </ion-list>
+      
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
       <ion-button type="button" style="width: 100%;" class="bg-naranja" (click)="validarFormulario()">Validar</ion-button>
-      <ion-button type="button" style="width: 100%;" class="bg-naranja" [disabled]="!experienciasForm.valid" (click)="guardarExperiencia()">Guardar</ion-button>
+      <ion-button type="button" style="width: 100%;" class="bg-naranja" [disabled]="experienciasForm.valid && sihayImg ? false: true" (click)="guardarExperiencia()">Guardar</ion-button>
 
     </form>
   </div>
