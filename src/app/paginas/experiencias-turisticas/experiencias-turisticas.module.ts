@@ -9,6 +9,7 @@ import { ExperienciasTuristicasPageRoutingModule } from './experiencias-turistic
 import { ExperienciasTuristicasPage } from './experiencias-turisticas.page';
 import {SpinnerModule} from "../../componentes/spinner/spinner.module";
 import {TabsPageModule} from "../tabs/tabs.module";
+import {ModalInicioSesionPageModule} from "../modal-inicio-sesion/modal-inicio-sesion.module";
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import {TabsPageModule} from "../tabs/tabs.module";
         IonicModule,
         ExperienciasTuristicasPageRoutingModule,
         SpinnerModule,
-        TabsPageModule
+        TabsPageModule,
+        ModalInicioSesionPageModule
     ],
   declarations: [ExperienciasTuristicasPage]
 })

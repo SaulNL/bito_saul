@@ -116,6 +116,7 @@ export class ReservacionesPage implements OnInit {
     this.eventosService.eventoDetalle(this.idEvento).subscribe(
         res => {
           this.infoEvento = res.data[0];
+          console.log('infoEvento', this.infoEvento);
           this.loaderReservaciones = true;
           if ( this.infoEvento.dias !== null){
             const dias = JSON.parse(this.infoEvento.dias);

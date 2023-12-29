@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    <ion-title  mode="ios">Experiencias-turisticas</ion-title>
+    <ion-title  mode="ios">Experiencias Turisticas</ion-title>
     <ion-buttons slot="start">
       <ion-button id="btnRegresar" (click)="regresar()">
         <ion-icon name="chevron-back-outline"></ion-icon>
@@ -18,7 +18,7 @@
       <ion-label>Filtro</ion-label>
       <ion-icon name="caret-down-outline"></ion-icon>
     </div>
-    <div class="label_reservaciones">
+    <div class="label_reservaciones" (click)="misReservaciones()">
       <ion-label>Mis reservaciones</ion-label>
     </div>
 
@@ -41,8 +41,39 @@
         </ion-item>
 
         <ion-item>
-          <ion-label position="stacked">Tipo experiencia</ion-label>
-          <ion-input type="text" [(ngModel)]="tipoExperiencia"></ion-input>
+          <ion-label position="stacked">Estado <span style="color: red">*</span></ion-label>
+          <ion-select placeholder="{{ estadoAux }}" [disabled]="btnEstado" ok-text="Ok" cancel-text="Cancelar"
+                      name="estado" required #compEstado="ngModel" [(ngModel)]="filtroExperiencias.id_estado"
+                      (ionChange)="get_list_cat_municipio($event)">
+            <ion-select *ngFor="let e of list_cat_estado">
+              <ion-select-option [value]="e.id_estado">{{e.nombre}}</ion-select-option>
+            </ion-select>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Municipio <span style="color: red">*</span></ion-label>
+          <ion-select placeholder="{{ municiAux }}" [disabled]="btnMuncipio" ok-text="Ok" cancel-text="Cancelar"
+                      name="municipio" required #compMunicipio="ngModel" [(ngModel)]="filtroExperiencias.id_municipio"
+                      (ionChange)="get_list_cat_localidad($event)">
+            <ion-select *ngFor="let mun of list_cat_municipio">
+              <ion-select-option [value]="mun.id_municipio">
+                {{mun.nombre}}
+              </ion-select-option>
+            </ion-select>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Localidad</ion-label>
+          <ion-select placeholder="{{ localiAux }}" [disabled]="btnLocalidad" ok-text="Ok" cancel-text="Cancelar"
+                      name="localidad" required #compLocalidad="ngModel" [(ngModel)]="filtroExperiencias.id_localidad">
+            <ng-container *ngFor="let loc of list_cat_localidad">
+              <ion-select-option [value]="loc.id_localidad">
+                {{loc.nombre}}
+              </ion-select-option>
+            </ng-container>
+          </ion-select>
         </ion-item>
 
         <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 2px">
@@ -59,7 +90,24 @@
 
   </ion-item>
 
-  <div>
+  <div *ngIf="objectSelectAfiliacionPlaza !== null && objectSelectAfiliacionPlaza !== undefined"
+       class="ion-text-center; contenedor">
+    <p style="padding-inline: 5%">
+      ESTE ES UN ESPACIO CREADO EXCLUSIVAMENTE PARA
+      <img style="width: 25px; margin-top: 2%" src="{{objectSelectAfiliacionPlaza.icon}}" />
+      {{objectSelectAfiliacionPlaza.nombre}}
+    </p>
+  </div>
+
+  <ion-grid *ngIf="experienciasAll.length == 0">
+    <ion-text color="primary">
+      <h2>
+        No se encontraron experiencias turisticas relacionados
+      </h2>
+    </ion-text>
+  </ion-grid>
+
+  <div *ngIf="filtroExperiencias">
     <ion-list *ngIf="experienciasAll.length > 0">
       <ion-item *ngFor="let dato of experienciasAll" (click)="datosExperiencia(dato.id_experiencia_turistica)">
         <div class="contendorPrincipal">
@@ -70,8 +118,11 @@
             <p style="opacity: 0.5">{{dato.negocio}}</p>
           </div>
           <div class="contenedorTer columna">
-            <div class="date-label">
-              <p>{{convertirFecha(dato.fecha_fin_experiencia)}}</p>
+            <div *ngIf="dato.fecha_inicio_experiencia !== null" class="date-label">
+              <p>{{convertirFecha(dato.fecha_inicio_experiencia)}}</p>
+            </div>
+            <div class="diasSemana" *ngIf="dato.dias !== null && dato.fecha_inicio_experiencia === null" >
+              <p>Todos los días {{convertirDias(dato.dias)}}</p>
             </div>
           </div>
         </div>
@@ -79,4 +130,5 @@
     </ion-list>
   </div>
 
+  <app-modal-inicio-sesion [isAlert]="isAlert" (banderaAlert)="cerrarAlert($event)"></app-modal-inicio-sesion>
 </ion-content>
