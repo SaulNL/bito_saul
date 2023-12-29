@@ -62,6 +62,8 @@ export class CategoriasPage implements OnInit {
   public isIOS: boolean = false;
   public filtros: boolean;
   public totalDeNegociosPorConsulta = 0;
+  public soloAnuncios: boolean = true;
+  
   constructor(
     private busquedaService: BusquedaService,
     private sideBarService: SideBarService,

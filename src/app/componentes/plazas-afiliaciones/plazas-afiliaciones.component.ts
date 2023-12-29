@@ -67,6 +67,11 @@ export class PlazasAfiliacionesComponent implements OnInit {
     this.obtenerPlazas();
     if (this.idUsuario != null) {
       this.obtenerOrganizacion();
+    } else {
+      setTimeout(() => {
+        this.cerrarModal();
+        this.router.navigate(['/tabs/login']);
+      }, 1000);
     }
   }
 
@@ -163,7 +168,7 @@ export class PlazasAfiliacionesComponent implements OnInit {
     this.loaderPlz = false;
     this.generalService.obtenerPlazas().subscribe(
       response => {
-        if (response.code === 200 && response.data.length > 0) {
+        if (response.code === 200) {
           this.listPlazas = response.data;
         } else {
           this.plaza = false;

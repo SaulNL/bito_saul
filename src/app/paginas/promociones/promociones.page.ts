@@ -54,7 +54,8 @@ export class PromocionesPage implements OnInit {
     isFiltro = false;
     ubicacionActiva: boolean;
     bdrLista: boolean;
-
+    soloAnuncios: boolean = false;
+    
     constructor(
         private _promociones: PromocionesService,
         public loadingController: LoadingController,

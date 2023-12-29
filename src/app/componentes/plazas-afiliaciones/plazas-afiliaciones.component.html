@@ -10,10 +10,14 @@
 </ion-header>
 <ion-content fullscreen>
     <Span style="width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;" *ngIf="!listPlazas && !listAfiliacines && !listNegociosVip">No hay Afiliaciones ,Convenios Y Negocios VIP</Span>
-    <ion-card *ngIf="plaza">
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;" 
+        *ngIf="listPlazas.length == 0 && listAfiliacines.length == 0 && listNegociosVip.length == 0"
+    >
+        No hay Afiliaciones, Convenios Y Negocios VIP
+    </Span>
+    <ion-card *ngIf="plaza && listPlazas.length > 0">
         <ion-card-header>
             <ion-item *ngIf="!loaderPlz">
                 <ion-label slot="start">
@@ -49,7 +53,7 @@
             </div>
         </ion-card-content>
     </ion-card>
-    <ion-card *ngIf="afiliacion && (idUsuario !=null || idUsuario !=undefined)">
+    <ion-card *ngIf="afiliacion && listAfiliacines.length > 0">
         <ion-card-header>
             <ion-item *ngIf="!loaderOrg">
                 <ion-label>
@@ -105,7 +109,7 @@
         </ion-card-content>
     </ion-card>
     
-    <ion-card *ngIf="vip && listNegociosVip">
+    <ion-card *ngIf="vip && listNegociosVip.length > 0">
         <ion-card-content *ngIf="vip">
             <ion-list *ngIf="loaderVip">
                 <ion-item *ngFor="let negocios of listNegociosVip" (click)="selectOptionVip(negocios)">

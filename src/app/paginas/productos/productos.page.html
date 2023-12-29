@@ -5,7 +5,7 @@
 </ion-toolbar>
 
 <app-spinner [loader]="loader" [message]="cargando"></app-spinner>
-<ion-content *ngIf="!loader" [fullscreen]="true" [scrollEvents]="true"
+<ion-content mode="md" *ngIf="!loader" [fullscreen]="true" [scrollEvents]="true"
   (ionScroll)="cordenada = $event.detail.scrollTop">
   <app-recargar (respuesta)="recargar($event)"></app-recargar>
   <!--No lo detecta como un boton flotante si no como un elemento propio de content en IOS-->
