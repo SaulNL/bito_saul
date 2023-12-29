@@ -131,6 +131,8 @@ export class FermularioExperienciasPage implements OnInit {
       let id = localStorage.getItem('editExperiencias')
       this.obtenerInformacionExperiencia(id)
       localStorage.removeItem('editExperiencias')
+    } else {
+      this.experienciasForm.addControl('metodosPago', this.formBuilder.control(''))
     }
     this.obtenerTipoRecuerrencia();
     this.obtenerNegocios();
@@ -222,6 +224,25 @@ export class FermularioExperienciasPage implements OnInit {
     this.experienciasForm.get('dias').setValue(dias)
     console.log('guardadoEx', this.experienciasForm.value)
     this.experienciasForm.removeControl('metodosPago');
+    let concepto = this.experienciasForm.get('conceptos').value
+    concepto.forEach((element , index)=> {
+      console.log('index', index)
+      console.log('elment',element)
+      let nuevoProducto = element
+      if (!element.fotografia) {
+        let foto = {
+          "id_det_experiencia_turistica_concepto": element.id_det_experiencia_turistica_concepto,
+          "url_imagen": element.url_imagen
+        }  
+        
+        nuevoProducto.fotografia = []
+        nuevoProducto.id_organizacion = !element.id_organizacion ? null : element.id_organizacion;
+        nuevoProducto.fotografia.push(foto)
+        concepto.splice(index, 1, nuevoProducto)
+        this.experienciasForm.get('conceptos').setValue(concepto)
+      }
+    });
+    console.log('antes de guardar',this.experienciasForm.value)
     this.experienciaGuardar(this.experienciasForm.value);
   }
 

@@ -118,8 +118,7 @@ export class FormularioEtProductoComponent implements OnInit {
       id_organizacion: this.productoDatos.data.id_organizacion,
       activo: this.productoDatos.data.activo == 1 ? true : false,
     })
-    
-    this.fotografiasArray = this.productoDatos.data.fotografia;
+    this.fotografiasArray = this.productoDatos.data.fotografia ? this.productoDatos.data.fotografia : [{"url_imagen":this.productoDatos.data.url_imagen}];
     this.fotografiasArray = this.fotografiasArray.map(foto => {
         // Iteramos sobre cada propiedad del objeto
         for (const prop in foto) {
