@@ -80,34 +80,44 @@
             </ng-template>
           </ion-modal>
         </div>
-        <div class="inputDos">No. de personas<span style="color: red">*</span></div>
-        <div style="display: flex; align-items: center; justify-content: center;">
-          <div class="inputTres">Adultos:</div>
-          <ion-item>
-            <ion-input type="number" style="text-align: center"></ion-input>
-          </ion-item>
-          <div class="inputTres">Niños:</div>
-          <ion-item>
-            <ion-input type="number" style="text-align: center"></ion-input>
+        <div *ngIf="conceptos.length > 0 || true" style="display: flex; flex-wrap: wrap; justify-content: center; width: 100%">
+          <div class="inputDos" style="margin-top: 10px; margin-bottom: 10px;">Promociones disponibles:</div>
+          <ion-item *ngFor="let concepto of conceptos; let i = index">
+            <div class="contenedorImg">
+              <div class="contenedorP">
+                <div class="imagen-redonda">
+                  <img [src]="concepto.url_imagen">
+                </div>
+                <strong style="width: 165px; font-size: 13px;">{{concepto.concepto}}</strong>
+                <div style="display: flex">
+                  <ion-button class="buttonCantidad" (click)="actualizarBoleto(concepto, -1)">
+                    <ion-icon name="remove-outline"></ion-icon></ion-button>
+                  <div style="min-width: 20px; margin-top: 5px">
+                    <span>{{ mostrarCantidad(concepto.id_det_experiencia_turistica_concepto) }}</span>
+                  </div>
+                  <ion-button class="buttonCantidad" (click)="actualizarBoleto(concepto, 1)">
+                    <ion-icon name="add-outline"></ion-icon></ion-button>
+                </div>
+              </div>
+              <div class="contenedorS">
+                <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                  <p *ngIf="concepto.porcentaje_descuento != null" style="opacity: 0.5; font-size: 13px;">Descuento %{{concepto.porcentaje_descuento}}</p>
+                  <p style="opacity: 0.5; font-size: 13px;">Precio ${{concepto.precio}}</p>
+                </div>
+              </div>
+              <div>
+                <div style="width: 100%; display: flex; justify-content: flex-end; align-items: center;">
+                  <p style="font-size: 13px;">Total ${{mostrarPrecioTtotal(concepto.id_det_experiencia_turistica_concepto)}} pesos</p>
+                </div>
+              </div>
+            </div>
           </ion-item>
         </div>
-        <div class="inputDos" style="margin-top: 10px;">Promociones disponibles:</div>
-        <div style="display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 10px;">
-          <ion-item style="width: 50%;">
-            <ion-label>Adultos:</ion-label>
-            <ion-select class="selects" style="width: 100%;">
-              <ion-select-option></ion-select-option>
-            </ion-select>
-          </ion-item>
-          <ion-item style="width: 50%;">
-            <ion-label>Niños:</ion-label>
-            <ion-select class="selects" style="width: 100%;">
-              <ion-select-option></ion-select-option>
-            </ion-select>
-          </ion-item>
-        </div>
-        <ion-button class="bg-naranja">Generar pago de reservación</ion-button>
-        <ion-button class="bg-naranja">Cancelar reservación</ion-button>
+
+        <ion-button class="bg-naranja" *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 1" [disabled]="!cantidd" (click)="guardar()">
+          Generar pago de reservación</ion-button>
+        <ion-button class="bg-naranja" *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 3" [disabled]="!cantidd || !fechaSeleccionadaDiario" (click)="guardar()">
+          Generar pago de reservación</ion-button>
       </div>
     </ion-card-content>
   </ion-card>

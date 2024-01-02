@@ -9,6 +9,27 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
+<ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="cordenada = $event.detail.scrollTop" *ngIf="loaderReservaciones">
+  <app-boton-top [content]="content" [cordenada]="cordenada"></app-boton-top>
+
+  <ion-grid *ngIf="reservacionesAll.length == 0">
+    <ion-text color="primary">
+      <h2>
+        No se encontraron reservaciones relacionadas
+      </h2>
+    </ion-text>
+  </ion-grid>
+  <ion-list style="display: flex; flex-direction: column;" *ngIf="reservacionesAll.length > 0">
+    <ion-item *ngFor="let dato of reservacionesAll" (click)="datosExperiencia(dato)">
+      <ion-label>
+        <div style="white-space: pre-wrap; width: 70%">
+          <strong>{{dato.titulo_experiencia}}</strong>
+        </div>
+        <p style="opacity: 0.5">{{dato.negocio}}</p>
+      </ion-label>
+      <ion-label class="date-label">{{convertirFecha(dato.fechaexperiencia)}}</ion-label>
+    </ion-item>
+  </ion-list>
 
 </ion-content>

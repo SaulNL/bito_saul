@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef  } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ExperienciasTuristicasService} from "../../../api/experienciasTuristicas/experiencias-turisticas.service";
+import {ExperienciasTuristicasService} from '../../../api/experienciasTuristicas/experiencias-turisticas.service';
 import {GeneralServicesService} from "../../../api/general-services.service";
 import {EventosService} from "../../../api/eventos.service";
 import {ToadNotificacionService} from "../../../api/toad-notificacion.service";
@@ -9,6 +9,7 @@ import {CatEstadoModel} from "../../../Modelos/CatEstadoModel";
 import {CatMunicipioModel} from "../../../Modelos/CatMunicipioModel";
 import {CatLocalidadModel} from "../../../Modelos/CatLocalidadModel";
 import {AlertController, ModalController} from '@ionic/angular';
+import {ConceptosModel} from "../../../Modelos/ConceptosModel";
 
 @Component({
   selector: 'app-reservacion-experiencia',
@@ -29,6 +30,7 @@ export class ReservacionExperienciaPage implements OnInit {
   public nombreEstado: string;
   public nombreMunicipio: string;
   public nombreLocalidad: string;
+  public conceptosModel: ConceptosModel;
   public list_cat_estado: Array<CatEstadoModel>;
   public list_cat_municipio: Array<CatMunicipioModel>;
   public list_cat_localidad: Array<CatLocalidadModel>;
@@ -43,6 +45,12 @@ export class ReservacionExperienciaPage implements OnInit {
   public isAlert: boolean = false;
   diasEnviar: number[] = [];
   diasExperiencias: string;
+  conceptos: any;
+  arrayTemporal: any;
+  public cantidd: any;
+  public idPersona: number | null;
+  fechaSeleccionada: string;
+  public detalleReser: any;
   constructor(
       private router: Router,
       private route: ActivatedRoute,
@@ -52,20 +60,29 @@ export class ReservacionExperienciaPage implements OnInit {
       private notificaciones: ToadNotificacionService,
       private utils: UtilsCls,
       public modalController: ModalController,
+      public alertController: AlertController,
   ) {
     this.infoExperiencia = [];
     this.recurrencia = [];
     this.tiposPago = [];
     this.fotografiasArray = [];
     this.videosArray = [];
+    this.conceptos = [];
+    this.arrayTemporal = [];
+    this.conceptosModel = new ConceptosModel();
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
     this.list_cat_localidad = new Array<CatLocalidadModel>();
     this.loaderReservaciones = false;
     this.fechaSeleccionadaDiario = null;
+    this.idPersona = (this.utils.existSession()) ? this.utils.getIdUsuario() : null;
   }
 
   ngOnInit() {
+
+  }
+
+  ionViewWillEnter(){
     this.route.paramMap.subscribe(params => {
       this.idExperiencia = params.get('id');
       this.obtenerListaExperiencia(this.idExperiencia);
@@ -82,13 +99,18 @@ export class ReservacionExperienciaPage implements OnInit {
         res => {
           this.infoExperiencia = res.data[0];
           if ( this.infoExperiencia.dias !== null){
-            const dias = JSON.parse(this.infoExperiencia.dias);
-            const diasArray = dias.dias ? dias.dias : dias;
-            const diasComa: string = diasArray.join(', ');
-            this.diasExperiencias = diasComa;
-            this.diasSemana(diasArray);
+            let dias = this.infoExperiencia.dias;
+            if ( dias.includes(',') ){
+              dias = this.infoExperiencia.dias.split(',').map(dia => dia.trim());
+              this.diasExperiencias = dias.join(', ');
+            } else {
+              dias = JSON.parse(dias);
+              this.diasExperiencias = dias.join(', ');
+            }
+            this.diasSemana(dias);
           }
           this.tipoPago();
+          this.conceptos = this.infoExperiencia.conceptos;
           this.fotografiasArray = this.infoExperiencia.fotografias;
           this.videosArray = this.infoExperiencia.videos;
           this.arrayUnion = [...this.fotografiasArray, ...this.videosArray];
@@ -106,8 +128,6 @@ export class ReservacionExperienciaPage implements OnInit {
           this.obtenerNombreMunicipios();
           this.obtenerNombreLocalidades();
           this.convertirFechaHora(this.infoExperiencia);
-          console.log('array', this.arrayUnion);
-          console.log('dtos', this.infoExperiencia);
         });
   }
 
@@ -250,4 +270,120 @@ export class ReservacionExperienciaPage implements OnInit {
     }
   }
 
+  actualizarBoleto(concepto: any, cantidad: number) {
+    const porcentajeDes = concepto.porcentaje_descuento / 100;
+    const precioDes = concepto.precio - (concepto.precio * porcentajeDes);
+    if (this.arrayTemporal.length === 0) {
+      // Crea un nuevoConceptoModel
+      const nuevoConceptoModel = {
+        id_det_experiencia_turistica_concepto: concepto.id_det_experiencia_turistica_concepto,
+        cantidad: 1,
+        precio_unitario: concepto.precio,
+        porcentaje_descuento: concepto.porcentaje_descuento,
+        precio_total: precioDes
+      };
+
+      this.arrayTemporal.push(nuevoConceptoModel);
+    } else {
+      const elementoExistente = this.arrayTemporal.find(item => item.id_det_experiencia_turistica_concepto === concepto.id_det_experiencia_turistica_concepto);
+
+      if (elementoExistente) {
+        elementoExistente.cantidad += cantidad;
+        if (cantidad === 1 || cantidad === -1) {
+          elementoExistente.precio_total += cantidad * precioDes;
+        }
+      } else {
+        // Si el elemento no existe, crea uno nuevo y se añade al arrayTemporal
+        const nuevoConceptoModel = {
+          id_det_experiencia_turistica_concepto: concepto.id_det_experiencia_turistica_concepto,
+          cantidad: 1,
+          precio_unitario: concepto.precio,
+          porcentaje_descuento: concepto.porcentaje_descuento,
+          precio_total: precioDes
+        };
+        this.arrayTemporal.push(nuevoConceptoModel);
+      }
+      this.arrayTemporal = this.arrayTemporal.filter(item => item.cantidad !== 0);
+    }
+  }
+
+  mostrarCantidad(idExperiencia: number): number {
+    let cantidad = 0;
+    if ( this.arrayTemporal.length > 0) {
+      this.arrayTemporal.forEach(item => {
+        if ( item.id_det_experiencia_turistica_concepto === idExperiencia){
+          cantidad = item.cantidad;
+          this.cantidd = cantidad;
+        }
+      });
+    } else {
+      cantidad = 0;
+      this.cantidd = 0;
+    }
+    return cantidad;
+  }
+
+  mostrarPrecioTtotal(idExperiencia: number): number{
+    var precioTotal = 0;
+    if ( this.arrayTemporal.length > 0) {
+      this.arrayTemporal.forEach(item => {
+        if ( item.id_det_experiencia_turistica_concepto === idExperiencia){
+          precioTotal = item.precio_total;
+        }
+      });
+    } else {
+      precioTotal = 0;
+    }
+    return precioTotal;
+  }
+
+  guardar(){
+    if ( this.infoExperiencia.id_tipo_recurrencia_experiencia === 3){
+      const numeroMes: { [key: string]: number } = {
+        Enero: 1, Febrero: 2, Marzo: 3, Abril: 4, Mayo: 5, Junio: 6,
+        Julio: 7, Agosto: 8, Septiembre: 9, Octubre: 10, Noviembre: 11, Diciembre: 12
+      };
+      const [dia, mes, anio] = this.fechaSeleccionadaDiario.split('/');
+      this.fechaSeleccionada = anio + '-' + numeroMes[mes] + '-' + dia;
+    } else if (this.infoExperiencia.id_tipo_recurrencia_experiencia === 1){
+      const fechaReservacion1 = new Date(this.infoExperiencia.fecha_inicio_experiencia);
+      const year = fechaReservacion1.getFullYear();
+      const month = ('0' + (fechaReservacion1.getMonth() + 1)).slice(-2);
+      const day = ('0' + fechaReservacion1.getDate()).slice(-2);
+      this.fechaSeleccionada = year + '-' + month + '-' + day;
+    }
+    const jsonGuardar = {
+      id_experiencia_turistica: this.infoExperiencia.id_experiencia_turistica,
+      id_persona: this.idPersona,
+      fc_experiencia_reservacion: this.fechaSeleccionada,
+      conceptos: this.arrayTemporal
+    };
+
+    this.generarReservacion(jsonGuardar);
+    this.mensajeRegistro();
+  }
+
+  generarReservacion(jsonGuardar: any): void{
+    this.experienciasService.reservarExperiencia(jsonGuardar).subscribe(res => {
+      this.detalleReser = res.data;
+    });
+  }
+
+  async mensajeRegistro() {
+    setTimeout(async () => {
+      this.limpiarFiltro();
+      const alert = await this.alertController.create({
+        header: 'Bituyú',
+        message: 'Su reservación ya fue realizada \n espere su confirmación',
+      });
+      await alert.present();
+    }, 400);
+  }
+
+  limpiarFiltro(){
+    this.router.navigate(['/tabs/experiencias-turisticas']);
+    this.fechaSeleccionada = null;
+    this.fechaSeleccionadaDiario = null;
+    this.arrayTemporal = [];
+  }
 }

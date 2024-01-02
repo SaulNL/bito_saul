@@ -164,15 +164,15 @@ export class ExperienciasTuristicasPage implements OnInit {
             const recurrencia = objeto.id_tipo_recurrencia_experiencia === 1 || objeto.id_tipo_recurrencia_experiencia === 3;
             return fechaA || recurrencia;
           });
-          console.log('dts', this.experienciasAll);
         });
   }
 
   convertirDias(dias: any){
-    const diasArray = JSON.parse(dias);
-    const diasArray2 = diasArray.dias ? diasArray.dias : diasArray;
-    const diasComa: string = diasArray2.join(', ');
-    return `${diasComa}`;
+    if (dias.includes(',')){}
+    const arregloDias = dias.includes(',')
+        ? dias.split(',').join(', ')
+        : JSON.parse(dias).join(', ');
+    return `${arregloDias}`;
   }
 
   datosExperiencia(id: number): void {
@@ -317,7 +317,6 @@ export class ExperienciasTuristicasPage implements OnInit {
             const recurrencia = objeto.id_tipo_recurrencia_experiencia === 1 || objeto.id_tipo_recurrencia_experiencia === 3;
             return fechaA || recurrencia;
           });
-          console.log('dts2', this.experienciasAll);
         },
         (error) => {
         });

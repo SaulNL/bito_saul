@@ -10,11 +10,20 @@ import {FiltroExperienciasModel} from "../../Modelos/FiltroExperienciasModel";
 })
 export class ExperienciasTuristicasService {
   url = `${AppSettings.API_ENDPOINT}`;
+  selectedObj: any;
 
   constructor(
     private http: HttpClient,
     private _http: HTTP
   ) { }
+
+  setSelectedObj(obj: any) {
+    this.selectedObj = obj;
+  }
+
+  getSelectedObj() {
+    return this.selectedObj;
+  }
 
   tipoRecurrencia(): Observable<any> {
     let body = "";
@@ -103,8 +112,8 @@ export class ExperienciasTuristicasService {
         return error;
       }));
   }
-  reservacionesUsuario(Data): Observable<any> {
-    let body = JSON.stringify(Data);
+  reservacionesUsuario(idPersona: number): Observable<any> {
+    let body = JSON.stringify({id_persona: idPersona});
     this._http.setDataSerializer('utf8');
     return from(this._http.post(this.url + 'api/experiencias/listaReservacionesUsuario', body, AppSettings.getHeadersToken()).then((data) => {
       return JSON.parse(data.data);

@@ -118,7 +118,7 @@
             <p style="opacity: 0.5">{{dato.negocio}}</p>
           </div>
           <div class="contenedorTer columna">
-            <div *ngIf="dato.fecha_inicio_experiencia !== null" class="date-label">
+            <div *ngIf="dato.fecha_inicio_experiencia !== null && dato.dias === null" class="date-label">
               <p>{{convertirFecha(dato.fecha_inicio_experiencia)}}</p>
             </div>
             <div class="diasSemana" *ngIf="dato.dias !== null && dato.fecha_inicio_experiencia === null" >

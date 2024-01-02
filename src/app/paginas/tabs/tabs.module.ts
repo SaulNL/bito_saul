@@ -27,6 +27,12 @@ import {ModalInicioSesionPageModule} from "../modal-inicio-sesion/modal-inicio-s
 import { ModalImagenCuponComponent } from '../../components/modal-imagen-cupon/modal-imagen-cupon.component';
 import { DetallesReservaComponent } from '../eventos/detalles-reserva/detalles-reserva.component';
 import { InfoReservacionComponent } from '../eventos/info-reservacion/info-reservacion.component';
+import {
+    DetallesReservacionExComponent
+} from "../experiencias-turisticas/detalles-reservacion-ex/detalles-reservacion-ex.component";
+import {
+    InfoExperienciasReserComponent
+} from "../experiencias-turisticas/info-experiencias-reser/info-experiencias-reser.component";
 
 @NgModule({
     imports: [
@@ -54,6 +60,8 @@ import { InfoReservacionComponent } from '../eventos/info-reservacion/info-reser
         PlazasAfiliacionesComponent,
         DetallesReservaComponent,
         InfoReservacionComponent,
+        DetallesReservacionExComponent,
+        InfoExperienciasReserComponent,
         ModalLoguearseComponent,
         ModalPromocionNegocioComponent,
         ModalInfoPromocionComponent,

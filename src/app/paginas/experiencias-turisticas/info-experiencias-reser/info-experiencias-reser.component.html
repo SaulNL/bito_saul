@@ -1,0 +1,96 @@
+<div class="contendorCarrusel" #contendorCarrusel>
+  <div class="carrusel">
+    <div *ngFor="let item of arrayUnion; let i = index" class="carrusel-item">
+      <ng-container *ngIf="item.url_imagen !== null && item.url_imagen !== 'null'">
+        <img src="{{ item.url_imagen }}" alt="Image" class="carrusel-content">
+      </ng-container>
+      <ng-container *ngIf="item.url_video !== null && item.url_video !== 'null'">
+        <video controls class="carrusel-content">
+          <source type="video/mp4" [src]="item.url_video">
+        </video>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<h1 class="titulo">{{infoReservacion.titulo_experiencia}}</h1>
+<div>
+  <ion-row>
+    <ion-col size="7">
+      <h1 style="text-align: center">{{usuario}}</h1>
+      <div style="display: flex; align-items: center; margin-top: -15px;">
+        <img src="assets/images/eventos/calendario.png" class="imgs">
+        <p>Fecha: {{diaEscrito}}, {{numeroDia}} de {{meses[numeroMes]}} del {{anio}}</p>
+      </div>
+      <div style="display: flex; align-items: center; margin-top: -15px;">
+        <img src="assets/images/eventos/reloj.png" class="imgs">
+        <p style="display: inline-block;">{{hora12h}} Horas</p>
+      </div>
+      <div style="display: flex; align-items: center; margin-top: -15px">
+        <img src="assets/images/eventos/Ubicación.png" class="imgs">
+        <p style="display: inline-block;">Lugar: {{nombreLocalidad}}{{nombreMunicipio}}{{nombreEstado}}</p>
+      </div>
+    </ion-col>
+    <ion-col size="5">
+      <br><br><br><br>
+      <div #qrcode class="qrClass"></div>
+    </ion-col>
+  </ion-row>
+  <!-- Conceptos
+  <div *ngIf="infoReservacion.conceptos.length > 0 || true" style="display: flex; flex-wrap: wrap; justify-content: center; width: 100%">
+    <div style="margin-top: 5px; margin-bottom: 10px;">Conceptos</div>
+    <ion-item *ngFor="let concepto of infoReservacion.conceptos; let i = index">
+      <div class="contenedorImg">
+        <div class="contenedorP">
+          <div class="imagen-redonda">
+            <img [src]="concepto.url_imagen">
+          </div>
+          <strong style="width: 165px; font-size: 13px;">{{concepto.concepto}}</strong>
+          <span>{{concepto.cantidad}}</span>
+          <span style="font-size: 13px;">${{concepto.precio_total}}</span>
+        </div>
+      </div>
+    </ion-item>
+  </div>
+  -->
+</div>
+<div class="buttonRe">
+  <div class="mensajeReservacion" *ngIf="infoReservacion.generar_reservacion === 0">
+    <strong>En espera que confirmen tu reservación</strong>
+  </div>
+
+  <ion-button class="buttonReserva" shape="round" (click)="reservacion()" *ngIf="infoReservacion.generar_reservacion === 1">
+    Descargar
+  </ion-button>
+</div>
+
+<app-spinner [loader]="loader" [message]="msj" class="block-screen"></app-spinner>
+
+<!---Parte del cupón de la reservacion--->
+
+<div *ngIf="!cupon" id="contenidoCupon">
+  <div>
+    <h1 class="titulo2">{{infoReservacion.titulo_experiencia}}</h1>
+    <ion-row>
+      <ion-col size="7">
+        <h1 style="text-align: center">{{usuario}}</h1>
+        <div style="display: flex; align-items: center; margin-top: -15px;">
+          <img src="assets/images/eventos/calendario.png" class="imgs">
+          <p>Fecha: {{diaEscrito}}, {{numeroDia}} de {{meses[numeroMes]}} del {{anio}}</p>
+        </div>
+        <div style="display: flex; align-items: center; margin-top: -15px;">
+          <img src="assets/images/eventos/reloj.png" class="imgs">
+          <p style="display: inline-block;">{{hora12h}} Horas</p>
+        </div>
+        <div style="display: flex; align-items: center; margin-top: -15px">
+          <img src="assets/images/eventos/Ubicación.png" class="imgs">
+          <p style="display: inline-block;">Lugar: {{nombreLocalidad}}{{nombreMunicipio}}{{nombreEstado}}</p>
+        </div>
+      </ion-col>
+      <ion-col size="5">
+        <br><br><br><br>
+        <div #codeQr id="cQr"></div>
+      </ion-col>
+    </ion-row>
+  </div>
+</div>
+
