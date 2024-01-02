@@ -9,7 +9,6 @@ import {CatEstadoModel} from "../../../Modelos/CatEstadoModel";
 import {CatMunicipioModel} from "../../../Modelos/CatMunicipioModel";
 import {CatLocalidadModel} from "../../../Modelos/CatLocalidadModel";
 import {AlertController, ModalController} from '@ionic/angular';
-import {ConceptosModel} from "../../../Modelos/ConceptosModel";
 
 @Component({
   selector: 'app-reservacion-experiencia',
@@ -30,7 +29,6 @@ export class ReservacionExperienciaPage implements OnInit {
   public nombreEstado: string;
   public nombreMunicipio: string;
   public nombreLocalidad: string;
-  public conceptosModel: ConceptosModel;
   public list_cat_estado: Array<CatEstadoModel>;
   public list_cat_municipio: Array<CatMunicipioModel>;
   public list_cat_localidad: Array<CatLocalidadModel>;
@@ -69,7 +67,6 @@ export class ReservacionExperienciaPage implements OnInit {
     this.videosArray = [];
     this.conceptos = [];
     this.arrayTemporal = [];
-    this.conceptosModel = new ConceptosModel();
     this.list_cat_estado = new Array<CatEstadoModel>();
     this.list_cat_municipio = new Array<CatMunicipioModel>();
     this.list_cat_localidad = new Array<CatLocalidadModel>();
