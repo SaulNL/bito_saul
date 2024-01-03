@@ -96,14 +96,8 @@ export class ReservacionExperienciaPage implements OnInit {
         res => {
           this.infoExperiencia = res.data[0];
           if ( this.infoExperiencia.dias !== null){
-            let dias = this.infoExperiencia.dias;
-            if ( dias.includes(',') ){
-              dias = this.infoExperiencia.dias.split(',').map(dia => dia.trim());
-              this.diasExperiencias = dias.join(', ');
-            } else {
-              dias = JSON.parse(dias);
-              this.diasExperiencias = dias.join(', ');
-            }
+            const dias = JSON.parse((this.infoExperiencia.dias));
+            this.diasExperiencias = dias.join(", ");
             this.diasSemana(dias);
           }
           this.tipoPago();
