@@ -160,7 +160,7 @@ export class FermularioExperienciasPage implements OnInit {
       eliminado: 0,
       // fotografias: data.fotografias,
       // videos: data.videos,
-      dias: JSON.parse(data.dias),
+      dias: data.dias ? JSON.parse(data.dias) : null,
       conceptos: data.conceptos,
     })
     this.frecuenciaSemanal = this.datosExperiencias.id_tipo_recurrencia_experiencia == 3 ? true : false;
