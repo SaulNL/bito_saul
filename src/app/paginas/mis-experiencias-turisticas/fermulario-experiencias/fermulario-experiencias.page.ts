@@ -207,7 +207,7 @@ export class FermularioExperienciasPage implements OnInit {
   }
 
   guardarExperiencia() {
-    let dias = this.experienciasForm.get('dias').value == 'null' ? null : JSON.stringify(this.experienciasForm.get('dias').value);
+    let dias = this.experienciasForm.get('dias').value == 'null' || this.experienciasForm.get('dias').value == null ? null : JSON.stringify(this.experienciasForm.get('dias').value);
     let Activo = this.experienciasForm.get('activo').value ? 1 : 0;
     this.experienciasForm.get('activo').setValue(Activo);
     let Confirmacion = this.experienciasForm.get('requiere_confirmacion').value ? 1 : 0;
