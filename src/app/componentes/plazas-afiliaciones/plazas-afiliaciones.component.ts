@@ -8,6 +8,7 @@ import { GeneralServicesService } from 'src/app/api/general-services.service';
 import { UtilsCls } from 'src/app/utils/UtilsCls';
 import { NegocioModel } from 'src/app/Modelos/NegocioModel';
 import { Router } from '@angular/router';
+import {ExperienciasTuristicasService} from "../../api/experienciasTuristicas/experiencias-turisticas.service";
 
 @Component({
   selector: 'app-plazas-afiliaciones',
@@ -43,7 +44,8 @@ export class PlazasAfiliacionesComponent implements OnInit {
     private router: Router,
     private validarPermiso: ValidarPermisoService,
     private generalService: GeneralServicesService,
-    private notificaciones: ToadNotificacionService
+    private notificaciones: ToadNotificacionService,
+    private experienciasService: ExperienciasTuristicasService,
   ) {
     this.showHidenPlaza = false;
     this.showHidenAfiliacion = false;
@@ -76,6 +78,11 @@ export class PlazasAfiliacionesComponent implements OnInit {
   }
 
   public cerrarModal() {
+    const bandera = this.experienciasService.getBanderaExp();
+    if (bandera === 1){
+      this.experienciasService.setBanderaExp(0);
+      this.router.navigate(['/tabs/inicio/']);
+    }
     this.modalCtr.dismiss();
   }
 
@@ -202,6 +209,9 @@ export class PlazasAfiliacionesComponent implements OnInit {
 
   abrirExperiencias(){
     this.router.navigate(['/tabs/experiencias-turisticas']);
-    this.modalCtr.dismiss();
+
+    setTimeout(() => {
+      this.modalCtr.dismiss();
+    }, 500);
   }
 }

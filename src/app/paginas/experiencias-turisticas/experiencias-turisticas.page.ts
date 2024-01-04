@@ -114,6 +114,7 @@ export class ExperienciasTuristicasPage implements OnInit {
   }
 
   async regresar(){
+    this.experienciasService.setBanderaExp(1);
     this.modal = await this.modalController.create({
       component: PlazasAfiliacionesComponent,
       cssClass: 'custom-modal-plazas-afiliaciones',
@@ -159,7 +160,6 @@ export class ExperienciasTuristicasPage implements OnInit {
         res => {
           this.loaderReservaciones = true;
           this.experienciasAll = res.data;
-          console.log('tdsExperiencias', this.experienciasAll);
           this.experienciasAll = this.experienciasAll.filter((objeto) => {
             const fechaA = objeto.fecha_inicio_experiencia >= this.fechaActual;
             const recurrencia = objeto.id_tipo_recurrencia_experiencia === 1 || objeto.id_tipo_recurrencia_experiencia === 3;
