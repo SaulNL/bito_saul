@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar class="tolbar">
-    <ion-title mode="ios">{{infoExperiencia.titulo_experiencia}}</ion-title>
+    <ion-title mode="ios">Experiencias</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="regresar()" class="customExit">
         <ion-icon name="close-outline"></ion-icon>
@@ -11,114 +11,128 @@
 
 <app-spinner [loader]="!loaderReservaciones" [message]="msj"></app-spinner>
 <ion-content *ngIf="loaderReservaciones">
-  <ion-card>
-    <ion-card-content>
-      <div class="contendorCarrusel" #contendorCarrusel (scroll)="obtenerPosicion()">
-        <div class="carrusel">
-          <div *ngFor="let item of arrayUnion; let i = index" class="carrusel-item">
-            <ng-container *ngIf="item.url_imagen !== null && item.url_imagen !== 'null'">
-              <img src="{{ item.url_imagen }}" alt="Image" class="carrusel-content">
-            </ng-container>
-            <ng-container *ngIf="item.url_video !== null && item.url_video !== 'null'">
-              <video controls class="carrusel-content">
-                <source type="video/mp4" [src]="item.url_video">
-              </video>
-            </ng-container>
-          </div>
-        </div>
+
+  <div class="contendorCarrusel" #contendorCarrusel (scroll)="obtenerPosicion()">
+    <div class="carrusel">
+      <div *ngFor="let item of arrayUnion; let i = index" class="carrusel-item">
+        <ng-container *ngIf="item.url_imagen !== null && item.url_imagen !== 'null'">
+          <img src="{{ item.url_imagen }}" alt="Image" class="carrusel-content">
+        </ng-container>
+        <ng-container *ngIf="item.url_video !== null && item.url_video !== 'null'">
+          <video controls class="carrusel-content">
+            <source type="video/mp4" [src]="item.url_video">
+          </video>
+        </ng-container>
       </div>
-      <div *ngIf="arrayUnion.length > 1" class="indicador">
+    </div>
+  </div>
+  <div *ngIf="arrayUnion.length > 1" class="indicador">
         <span *ngFor="let item of arrayUnion; let i = index"
               [class.active]="i === indice" (click)="indicadorPosicion(i)">
         </span>
-      </div>
+  </div>
 
-      <div style="display: flex; align-items: center; margin-bottom: 5px; margin-top: 10px;">
-        <ion-label style="width: 40%">Ubicación:</ion-label>
-        <div class="inputEx">{{nombreLocalidad}}{{nombreMunicipio}}{{nombreEstado}}</div>
-      </div>
-      <div style="display: flex; align-items: center; margin-bottom: 5px">
-        <ion-label style="width: 40%">Fecha y hora:</ion-label>
-        <div class="inputEx" *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 1">
-          {{diaEscrito}}, {{numeroDia}} de {{meses[numeroMes]}} del {{anio}}
-        </div>
-        <div class="inputEx" *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 3">
-          Todos los días {{diasExperiencias}}
-        </div>
-      </div>
-      <div style="display: flex; align-items: center; margin-bottom: 5px">
-        <ion-label style="width: 40%">Tipo de evento:</ion-label>
-        <div class="inputEx">{{infoExperiencia.tipo_experiencia}}</div>
-      </div>
-      <div style="display: flex; align-items: center; margin-bottom: 5px">
-        <ion-label style="width: 40%">Número telefonico:</ion-label>
-        <div class="inputEx">{{infoExperiencia.telefono_experiencia}}</div>
-      </div>
-      <div style="display: flex; align-items: center; margin-bottom: 5px">
-        <ion-label style="width: 40%">Método de pago:</ion-label>
-        <div class="inputEx">{{tiposPago}}</div>
-      </div>
-      <div style="display: flex; align-items: center; margin-bottom: 10px">
-        <ion-label style="width: 40%">Se repite:</ion-label>
-        <div class="inputEx" *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 1">Una vez</div>
-        <div class="inputEx" *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 3">Semanal</div>
-      </div>
-      <div style="display: flex; justify-content: center; flex-wrap: wrap;">
-        <div class="inputDos">Complete todos los campos<span style="color: red">*</span></div>
-        <ion-item style="margin-bottom: 10px;" *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 1">
-          <ion-label>{{numeroDia}}/{{meses[numeroMes]}}/{{anio}}</ion-label>
-        </ion-item>
-        <div class="mostrarDts" style="height: 29px" (click)="abrirCalendario()" id="open-modal"  *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 3">
-          <small>{{fechaSeleccionadaDiario}}</small>
-          <ion-modal trigger="open-modal">
-            <ng-template>
-              <ion-content>
-                <app-calendario-reservacion [isAlert]="isAlert" [diasRecibidos]="diasEnviar" (banderaCalendario)="cerrarCalendario($event)"
-                                            (fechaReservacion)="recibirFecha($event)">
-                </app-calendario-reservacion>
-              </ion-content>
-            </ng-template>
-          </ion-modal>
-        </div>
-        <div *ngIf="conceptos.length > 0 || true" style="display: flex; flex-wrap: wrap; justify-content: center; width: 100%">
-          <div class="inputDos" style="margin-top: 10px; margin-bottom: 10px;">Promociones disponibles:</div>
-          <ion-item *ngFor="let concepto of conceptos; let i = index">
-            <div class="contenedorImg">
-              <div class="contenedorP">
-                <div class="imagen-redonda">
-                  <img [src]="concepto.url_imagen">
-                </div>
-                <strong style="width: 165px; font-size: 13px;">{{concepto.concepto}}</strong>
-                <div style="display: flex">
-                  <ion-button class="buttonCantidad" (click)="actualizarBoleto(concepto, -1)">
-                    <ion-icon name="remove-outline"></ion-icon></ion-button>
-                  <div style="min-width: 20px; margin-top: 5px">
-                    <span>{{ mostrarCantidad(concepto.id_det_experiencia_turistica_concepto) }}</span>
+  <div style="margin-top: -15px">
+    <div style="display: flex; justify-content: center; margin-top: 10px;">
+      <h1 class="titulo">{{infoExperiencia.titulo_experiencia}}</h1>
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: -5px; text-align: center;">
+      <p>{{infoExperiencia.descripcion_experiencia}}</p>
+    </div>
+    <div>
+      <ion-row>
+        <ion-col size="6">
+          <div *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 1" style="display: flex; align-items: center;">
+            <img src="assets/images/eventos/calendario.png" class="imgs">
+            <p style="display: inline-block;">{{diaEscrito}}, {{numeroDia}} de {{meses[numeroMes]}} del {{anio}}</p>
+          </div>
+          <div *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 3" style="display: flex; align-items: center;">
+            <img src="assets/images/eventos/calendario.png" class="imgs">
+            <p style="width: 68%">Todos los días {{diasExperiencias}}</p>
+          </div>
+          <div style="display: flex; align-items: center; margin-top: -15px">
+            <img src="assets/images/eventos/reloj.png" class="imgs">
+            <p style="display: inline-block;">{{infoExperiencia.hora_inicio_experiencia}} Hrs.</p>
+          </div>
+          <div style="display: flex; align-items: center; margin-top: -15px">
+            <img src="assets/images/eventos/Ubicación.png" class="imgs">
+            <p>{{nombreLocalidad}}{{nombreMunicipio}}{{nombreEstado}}</p>
+          </div>
+        </ion-col>
+        <ion-col size="6">
+          <div style="display: flex; align-items: center;">
+            <img src="assets/images/eventos/tipo%20de%20evento.png" class="imgs">
+            <p>{{infoExperiencia.tipo_experiencia}}</p>
+          </div>
+          <div style="display: flex; align-items: center; margin-top: -15px">
+            <img src="assets/images/eventos/telefono.png" class="imgs">
+            <p>{{infoExperiencia.telefono_experiencia}}</p>
+          </div>
+          <div style=" display: flex; align-items: center; margin-top: -15px">
+            <img src="assets/images/eventos/metodo%20de%20pago.png" class="imgs">
+            <p>{{tiposPago}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div style="display: flex; justify-content: center; width: 100%">
+      <div class="ctndorReservacion">
+        <h1 class="titulo" style="font-size: 22px;">Reserva ahora</h1>
+        <p style="text-align: center; margin-top: -5px">Complete todos los campos<span style="color: red">*</span></p>
+        <div style="display: flex; justify-content: center; flex-wrap: wrap;">
+          <div class="mostrarDts2">Fecha<span style="color: red">*</span></div>
+          <div class="mostrarDts2" style="height: 29px" *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 1">{{numeroDia}}/{{meses[numeroMes]}}/{{anio}}</div>
+          <div class="mostrarDts2" style="height: 29px" (click)="abrirCalendario()" id="open-modal"  *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 3">
+            <small>{{fechaSeleccionadaDiario}}</small>
+            <ion-modal trigger="open-modal">
+              <ng-template>
+                <ion-content>
+                  <app-calendario-reservacion [isAlert]="isAlert" [diasRecibidos]="diasEnviar" (banderaCalendario)="cerrarCalendario($event)"
+                                              (fechaReservacion)="recibirFecha($event)">
+                  </app-calendario-reservacion>
+                </ion-content>
+              </ng-template>
+            </ion-modal>
+          </div>
+          <div class="mostrarDts2">Promociones disponibles</div>
+          <div *ngIf="conceptos.length > 0 || true" style="display: flex; flex-wrap: wrap; justify-content: center; width: 100%">
+            <div *ngFor="let concepto of conceptos; let i = index">
+              <div class="contenedorImg">
+                <div class="contenedorP">
+                  <div class="imagen-redonda">
+                    <img [src]="concepto.url_imagen">
                   </div>
-                  <ion-button class="buttonCantidad" (click)="actualizarBoleto(concepto, 1)">
-                    <ion-icon name="add-outline"></ion-icon></ion-button>
+                  <strong style="width: 165px; font-size: 13px;">{{concepto.concepto}}</strong>
+                  <div style="display: flex">
+                    <ion-button class="buttonCantidad" (click)="actualizarBoleto(concepto, -1)">
+                      <ion-icon name="remove-outline"></ion-icon></ion-button>
+                    <div style="min-width: 20px; margin-top: 5px">
+                      <span>{{ mostrarCantidad(concepto.id_det_experiencia_turistica_concepto) }}</span>
+                    </div>
+                    <ion-button class="buttonCantidad" (click)="actualizarBoleto(concepto, 1)">
+                      <ion-icon name="add-outline"></ion-icon></ion-button>
+                  </div>
                 </div>
-              </div>
-              <div class="contenedorS">
-                <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                  <p *ngIf="concepto.porcentaje_descuento != null" style="opacity: 0.5; font-size: 13px;">Descuento %{{concepto.porcentaje_descuento}}</p>
-                  <p style="opacity: 0.5; font-size: 13px;">Precio ${{concepto.precio}}</p>
+                <div class="contenedorS">
+                  <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-top: -10px">
+                    <p *ngIf="concepto.porcentaje_descuento != null" style="opacity: 0.5; font-size: 13px;">Descuento {{concepto.porcentaje_descuento}}%</p>
+                    <p style="opacity: 0.5; font-size: 13px;">Precio ${{concepto.precio}}</p>
+                  </div>
                 </div>
-              </div>
-              <div>
-                <div style="width: 100%; display: flex; justify-content: flex-end; align-items: center;">
-                  <p style="font-size: 13px;">Total ${{mostrarPrecioTtotal(concepto.id_det_experiencia_turistica_concepto)}} pesos</p>
+                <div>
+                  <div style="width: 100%; display: flex; justify-content: flex-end; align-items: center; margin-top: -20px">
+                    <p style="font-size: 13px;">Total ${{mostrarPrecioTtotal(concepto.id_det_experiencia_turistica_concepto)}} pesos</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </ion-item>
+          </div>
+          <ion-button class="bg-naranja" style="margin-bottom: 10px" *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 1" [disabled]="!cantidd" (click)="guardar()">
+            Generar reservación</ion-button>
+          <ion-button class="bg-naranja" style="margin-bottom: 10px;" *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 3" [disabled]="!cantidd || !fechaSeleccionadaDiario" (click)="guardar()">
+            Generar reservación</ion-button>
         </div>
-
-        <ion-button class="bg-naranja" *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 1" [disabled]="!cantidd" (click)="guardar()">
-          Generar pago de reservación</ion-button>
-        <ion-button class="bg-naranja" *ngIf="infoExperiencia.id_tipo_recurrencia_experiencia == 3" [disabled]="!cantidd || !fechaSeleccionadaDiario" (click)="guardar()">
-          Generar pago de reservación</ion-button>
       </div>
-    </ion-card-content>
-  </ion-card>
+    </div>
+  </div>
 </ion-content>

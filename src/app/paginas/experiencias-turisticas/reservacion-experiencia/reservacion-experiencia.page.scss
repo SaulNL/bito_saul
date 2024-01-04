@@ -114,8 +114,8 @@ ion-modal {
 }
 
 .imagen-redonda {
-  width: 75px;
-  height: 65px;
+  width: 70px;
+  height: 70px;
   overflow: hidden;
   border-radius: 50%;
 }
@@ -142,4 +142,38 @@ ion-modal {
   font-size: 8px;
   --background: #F9F9F9;
   color: black;
+  height: 18px;
+}
+
+.imgs{
+  width: 50px;
+  height: 50px;
+  margin-left: -10px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap');
+
+.titulo{
+  background-image:  linear-gradient(90deg, #F761CC 0%, #FF7859 100%);
+  color: transparent;
+  background-clip: text;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: 'Tilt Warp', sans-serif;
+}
+
+.mostrarDts2{
+  background-color: #EAEAEA;
+  padding: 6px;
+  border-radius: 20px;
+  width: 75%;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.ctndorReservacion{
+  background-color: #CCCCCC;
+  border-radius: 15px;
+  height: auto;
+  width: 95%;
 }

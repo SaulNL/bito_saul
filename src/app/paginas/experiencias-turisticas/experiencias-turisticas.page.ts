@@ -114,6 +114,7 @@ export class ExperienciasTuristicasPage implements OnInit {
   }
 
   async regresar(){
+    this.experienciasService.setBanderaExp(1);
     this.modal = await this.modalController.create({
       component: PlazasAfiliacionesComponent,
       cssClass: 'custom-modal-plazas-afiliaciones',
@@ -168,11 +169,9 @@ export class ExperienciasTuristicasPage implements OnInit {
   }
 
   convertirDias(dias: any){
-    if (dias.includes(',')){}
-    const arregloDias = dias.includes(',')
-        ? dias.split(',').join(', ')
-        : JSON.parse(dias).join(', ');
-    return `${arregloDias}`;
+    const arregloDias = JSON.parse(dias);
+    const diasArray: string = arregloDias.join(', ');
+    return `${diasArray}`;
   }
 
   datosExperiencia(id: number): void {

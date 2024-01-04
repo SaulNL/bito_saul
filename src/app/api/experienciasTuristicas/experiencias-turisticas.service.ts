@@ -11,11 +11,20 @@ import {FiltroExperienciasModel} from "../../Modelos/FiltroExperienciasModel";
 export class ExperienciasTuristicasService {
   url = `${AppSettings.API_ENDPOINT}`;
   selectedObj: any;
+  banderaExp: number;
 
   constructor(
     private http: HttpClient,
     private _http: HTTP
   ) { }
+
+  setBanderaExp(ban: number){
+    this.banderaExp = ban;
+  }
+
+  getBanderaExp(){
+    return this.banderaExp;
+  }
 
   setSelectedObj(obj: any) {
     this.selectedObj = obj;
@@ -125,7 +134,6 @@ export class ExperienciasTuristicasService {
 
   experienciasLista(filtroModel: FiltroExperienciasModel): Observable<any> {
     let body = JSON.stringify(filtroModel);
-    console.log('body' , body);
     this._http.setDataSerializer('utf8');
     return from(this._http.post( this.url + 'api/experiencias/publicadas', body, AppSettings.getHeaders()).then( data => {
       return JSON.parse(data.data);

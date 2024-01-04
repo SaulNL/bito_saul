@@ -81,7 +81,7 @@
         <ion-label>Fecha de reservación: <p style="text-transform: capitalize;color: #fff;
     font-size: large;">{{fechaDeReservacion}}</p></ion-label>
         <ion-label>Estatus: {{estatus}}</ion-label>
-        <ion-label>Fecha confirmación: <p style="text-transform: capitalize; color: #fff;
+        <ion-label *ngIf="fechaConfirmacion !== 'Fecha inválida'">Fecha confirmación: <p style="text-transform: capitalize; color: #fff;
     font-size: large;">{{fechaConfirmacion}}</p></ion-label>
       </div>
     </div>

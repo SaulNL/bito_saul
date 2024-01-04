@@ -59,7 +59,6 @@ export class MisExperienciasTuristicasPage implements OnInit {
     console.log('entre')
     this.experienciasService.obtenerExperienciasPersona({id_proveedor:this.datosUsuario.proveedor.id_proveedor}).subscribe(res => {
       if (res.code == 200) {
-        console.log('tipoRecuerrencia', res)
         this.experienciasPublicadas = res.data;
       }
     }),error => {
@@ -169,14 +168,14 @@ export class MisExperienciasTuristicasPage implements OnInit {
   }
 
   mostrarInformacion(id) {
-    moment.locale('es')
+    moment.locale('es');
     this.mostrarInfo = true;
     this.solicitante = `${this.reservacion[id].nombresolicitante} ${this.reservacion[id].paternosolicitante} ${this.reservacion[id].maternosolicitante}`;
     this.noPersonas = this.reservacion[id].cantidad_persona;
     this.fechaDeReservacion = moment(this.reservacion[id].fc_realizacion_reservacion).format('dddd D [de] MMMM [de] YYYY')
     this.estatus = this.reservacion[id].estatus;
-    let fechaSeteada2 = moment(this.reservacion[id].fc_confirmacion, ['DD/MMM/YYYY', 'DD/M/YYYY', 'D/MMM/YYYY', 'D/M/YYYY,','DD/MM/YYYY']);
-    this.fechaConfirmacion = moment(fechaSeteada2).format('dddd D [de] MMMM [de] YYYY')
+    let fechaSeteada2 = moment(this.reservacion[id].fc_confirmacion);
+    this.fechaConfirmacion = moment(fechaSeteada2).format('dddd D [de] MMMM [de] YYYY');
   }
 
   cerrarInformacion(){
@@ -192,16 +191,15 @@ export class MisExperienciasTuristicasPage implements OnInit {
   }
 
   async guardarReservacion(data) {
-    console.log(data)
     let dias =  new Date();
-    let dia = dias.getDate();
-    let mes = dias.toLocaleString('default', { month: 'long' });
-    let anio = dias.getFullYear();
-    let fecha = `${dia}/${mes}/${anio}`
+    const anio = dias.getFullYear();
+    const mes = ('0' + (dias.getMonth() + 1)).slice(-2);
+    const dia = ('0' + dias.getDate()).slice(-2);
+    let fecha = `${anio}-${mes}-${dia}`
     this.datosReservacion.fc_confirmacion = await fecha;
     this.datosReservacion.id_estatus_reservacion = await 2 ;
     this.datosReservacion.id_experiencia_turistica_reservacion = await data.id_experiencia_turistica_reservacion;
-    this.enviarReservacion(data,true)
+    this.enviarReservacion(data,true);
   }
 
   enviarReservacion(id,tipo){
