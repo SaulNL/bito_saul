@@ -32,10 +32,12 @@
       </label>
     </ion-item>
   </ion-list>
-  
-  <ion-item *ngIf="!loader && notificaciones.length == 0" class="tolbar item-warning ion-padding">
-    <ion-icon name="alert-circle-outline"></ion-icon>
-    <ion-label>Aún no cuenta con notificaciones</ion-label>
-  </ion-item>
+
+  <div *ngIf="!loader && notificaciones.length == 0">
+    <ion-chip color="warning">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <ion-label>Aún no cuenta con notificaciones</ion-label>
+    </ion-chip>
+  </div>
   
 </ion-content>
