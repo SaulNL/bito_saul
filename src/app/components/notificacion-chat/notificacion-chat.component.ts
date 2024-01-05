@@ -10,6 +10,10 @@ import {SolicitudesModel} from "../../Modelos/SolicitudesModel";
 import {ToadNotificacionService} from "../../api/toad-notificacion.service";
 import {FiltrosModel} from "../../Modelos/FiltrosModel";
 import {ModalInfoSolicitudComponent} from "../../componentes/modal-info-solicitud/modal-info-solicitud.component";
+import {ExperienciasTuristicasService} from "../../api/experienciasTuristicas/experiencias-turisticas.service";
+import {
+  DetallesReservacionExComponent
+} from "../../paginas/experiencias-turisticas/detalles-reservacion-ex/detalles-reservacion-ex.component";
 
 @Component({
   selector: "app-notificacion-chat",
@@ -41,6 +45,7 @@ export class NotificacionChatComponent implements OnInit {
     private eventosService: EventosService,
     private servicioSolicitudes: SolicitudesService,
     private _notificacionService: ToadNotificacionService,
+    private experienciasService: ExperienciasTuristicasService,
   ) {}
 
   ngOnInit() {
@@ -148,6 +153,15 @@ export class NotificacionChatComponent implements OnInit {
     this.eventosService.setSelectedObj(evento);
     const modal = await this.modalCtrl.create({
       component: DetallesReservaComponent,
+    });
+    await modal.present();
+  }
+
+  async reservacionExp(experiencia: any){
+    this.cerrarModal();
+    this.experienciasService.setSelectedObj(experiencia);
+    const modal = await this.modalCtrl.create({
+      component: DetallesReservacionExComponent,
     });
     await modal.present();
   }

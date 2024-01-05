@@ -56,7 +56,6 @@ export class MisExperienciasTuristicasPage implements OnInit {
   }
 
   obtenerExperienciasRegistradas() {
-    console.log('entre')
     this.experienciasService.obtenerExperienciasPersona({id_proveedor:this.datosUsuario.proveedor.id_proveedor}).subscribe(res => {
       if (res.code == 200) {
         this.experienciasPublicadas = res.data;
