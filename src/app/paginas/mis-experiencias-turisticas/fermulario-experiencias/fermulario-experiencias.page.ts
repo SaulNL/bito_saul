@@ -206,7 +206,7 @@ export class FermularioExperienciasPage implements OnInit {
     })
   }
 
-  guardarExperiencia() {
+  async guardarExperiencia() {
     let dias = this.experienciasForm.get('dias').value == 'null' || this.experienciasForm.get('dias').value == null ? null : JSON.stringify(this.experienciasForm.get('dias').value);
     let Activo = this.experienciasForm.get('activo').value ? 1 : 0;
     this.experienciasForm.get('activo').setValue(Activo);
@@ -222,34 +222,51 @@ export class FermularioExperienciasPage implements OnInit {
     this.experienciasForm.get('videos').setValue(videos);
     this.loader = true;
     this.experienciasForm.get('dias').setValue(dias)
-    console.log('guardadoEx', this.experienciasForm.value)
     this.experienciasForm.removeControl('metodosPago');
-    let concepto = this.experienciasForm.get('conceptos').value
-    concepto.forEach((element , index)=> {
-      console.log('index', index)
-      console.log('elment',element)
-      let nuevoProducto = element
+    let conceptos = await this.asignarFotografiaProductos(this.experienciasForm.get('conceptos').value)
+    this.experienciasForm.get('conceptos').setValue(await conceptos)
+    this.experienciaGuardar(this.experienciasForm.value);
+  }
+
+
+  async asignarFotografiaProductos(conceptos) {
+    const conceptosModificados = [];
+
+    for (const [index, element] of conceptos.entries()) {
       if (!element.fotografia) {
+        let nuevoProducto = { ...element };
+        let nuevoJson = {
+            concepto: element.concepto,
+            descripcion_concepto: element.descripcion_concepto,
+            precio: element.precio,
+            existencia: element.existencia,
+            cantidad_disponibles: element.cantidad_disponibles,
+            activo: element.activo,
+            porcentaje_descuento: element.porcentaje_descuento,
+            id_organizacion: null,
+            fotografia: null
+        }
+        
         let foto = {
           "id_det_experiencia_turistica_concepto": element.id_det_experiencia_turistica_concepto,
           "url_imagen": element.url_imagen
-        }  
+        };
         
-        nuevoProducto.fotografia = []
-        nuevoProducto.id_organizacion = !element.id_organizacion ? null : element.id_organizacion;
-        nuevoProducto.fotografia.push(foto)
-        concepto.splice(index, 1, nuevoProducto)
-        this.experienciasForm.get('conceptos').setValue(concepto)
+        nuevoJson.fotografia = [foto];
+        nuevoJson.id_organizacion = !element.id_organizacion ? null : element.id_organizacion;
+
+        conceptosModificados.push(nuevoJson);
+      } else {
+        conceptosModificados.push(element);
       }
-    });
-    console.log('antes de guardar',this.experienciasForm.value)
-    this.experienciaGuardar(this.experienciasForm.value);
+    }
+
+    return conceptosModificados;
   }
 
   obtenerInformacionExperiencia(body) {
     try {
       this.experienciasService.experienciaDetalle(body).subscribe(res => {
-        console.log('Asignar',res)
         if (res.code == 200) {
           this.datosExperiencias = res.data[0]
           this.asignarValores(res.data[0]);
@@ -267,7 +284,6 @@ export class FermularioExperienciasPage implements OnInit {
   }
 
   tipoFrecuencia(tipo) {
-    console.log('Frecuencia',tipo)
     this.frecuenciaSemanal = tipo.detail.value == 1 ? false : true;
     this.vistaDias = tipo.detail.value == 3 ? 'initial' : 'none';
     this.vistaFecha = tipo.detail.value == 1 ? 'initial' : 'none';
@@ -281,7 +297,6 @@ export class FermularioExperienciasPage implements OnInit {
     this.experienciasService.tipoRecurrencia().subscribe(res => {
       if (res.code == 200) {
         this.recurrencia = res.data;
-        console.log('tipoRecuerrencia',res)
       }
     }),error => {
           console.log(error)
@@ -290,7 +305,6 @@ export class FermularioExperienciasPage implements OnInit {
   experienciaGuardar(body) {
     try {
       this.experienciasService.guardarExperiencia(body).subscribe(res => {
-        console.log('guardar',res)
         if (res.code == 200) {
           this.loader = false
           this.notificaciones.exito('Experiencia Guardada');
@@ -322,7 +336,6 @@ export class FermularioExperienciasPage implements OnInit {
   }
 
   onPagoSeleccionado(evento) {
-    console.log(evento)
     this.experienciasForm.get('tipo_pago_efectivo').setValue(evento.detail.value.find(element => element == 1) ? 1 : 0);
     this.experienciasForm.get('tipo_pago_transferencia').setValue(evento.detail.value.find(element => element == 2) ? 1 : 0);
     this.experienciasForm.get('tipo_pago_tarjeta_credito').setValue(evento.detail.value.find(element => element == 3) ? 1 : 0);
@@ -570,9 +583,7 @@ export class FermularioExperienciasPage implements OnInit {
     videos.push(...this.videosArrayAgregar);
     this.experienciasForm.get('videos').setValue(videos);
     this.experienciasForm.get('dias').setValue(dias)
-    console.log('guardadoEx', this.experienciasForm.value)
     this.experienciasForm.removeControl('metodosPago');
-    console.log(this.experienciasForm.valid,this.experienciasForm.value)
   }
 
   async agregarProducto(productoInfo, id) {
@@ -592,18 +603,15 @@ export class FermularioExperienciasPage implements OnInit {
       role?: string;
       posicion?: any;
     }>)
-    console.log(data)
     if (data.role === 'confirm') {
       let productos = []
       productos = this.experienciasForm.get('conceptos').value ? this.experienciasForm.get('conceptos').value : [];
       if (data.posicion == null) {
         productos.push(data.data)
       } else {
-        console.log('cambiar',data.posicion)
         productos.splice( data.posicion, 1, data.data )
       }
       this.experienciasForm.get('conceptos').setValue(productos)
-      console.log('guardeProducot',this.experienciasForm.value)
     }
   }
 
