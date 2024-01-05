@@ -55,8 +55,9 @@
         <div class="msg-content">
           <span class="triangle"></span>
           <p *ngIf="msg.id_solicitud">Hola {{msg.nombre_negocio_solicitud}} en {{msg.nombre_negocio}}. </p><p>{{ msg.mensaje }}.
-            <span *ngIf="msg.evento"> Descarga la reservación <a (click)="reservacion(msg.evento)">aquí</a></span>
-            <span *ngIf="msg.id_solicitud"><br><br>Postúlate <a (click)="requerimiento(msg.id_solicitud)">aquí</a></span>
+          <span *ngIf="msg.evento"> Descarga la reservación <a (click)="reservacion(msg.evento)">aquí</a></span>
+          <span *ngIf="msg.experiencia"> Descarga la reservación <a (click)="reservacionExp(msg.experiencia)">aquí</a></span>
+          <span *ngIf="msg.id_solicitud"><br><br>Postúlate <a (click)="requerimiento(msg.id_solicitud)">aquí</a></span>
           </p>
         </div>
       </div>
@@ -73,6 +74,7 @@
           <span class="triangle"></span>
           <p *ngIf="msg.id_solicitud">Hola {{msg.nombre_negocio_solicitud}} en {{msg.nombre_negocio}}. </p><p>{{ msg.mensaje }}.
             <span *ngIf="msg.evento"> Descarga la reservación <a (click)="reservacion(msg.evento)">aquí</a></span>
+            <span *ngIf="msg.experiencia"> Descarga la reservación <a (click)="reservacionExp(msg.experiencia)">aquí</a></span>
             <span *ngIf="msg.id_solicitud"><br><br>Postúlate <a (click)="requerimiento(msg.id_solicitud)">aquí</a></span>
           </p>
         </div>
@@ -89,8 +91,9 @@
         <div class="msg-content">
           <span class="triangle"></span>
           <p *ngIf="msg.id_solicitud">Hola {{msg.nombre_negocio_solicitud}} en {{msg.nombre_negocio}}. </p><p>{{ msg.mensaje }}.
-            <span *ngIf="msg.evento"> Descarga la reservación <a (click)="reservacion(msg.evento)">aquí</a></span>
-            <span *ngIf="msg.id_solicitud"><br><br>Postúlate <a (click)="requerimiento(msg.id_solicitud)">aquí</a></span>
+          <span *ngIf="msg.evento"> Descarga la reservación <a (click)="reservacion(msg.evento)">aquí</a></span>
+          <span *ngIf="msg.experiencia"> Descarga la reservación <a (click)="reservacionExp(msg.experiencia)">aquí</a></span>
+          <span *ngIf="msg.id_solicitud"><br><br>Postúlate <a (click)="requerimiento(msg.id_solicitud)">aquí</a></span>
           </p>
         </div>
       </div>
