@@ -1020,7 +1020,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
           // this.router.navigate(['/tabs/inicio']);
           localStorage.removeItem('modalPromo');
           //this.serviceProveedores.setSelectedObj(this.informacionNegocio.id_giro);
-          this.router.navigateByUrl('/tabs/inicio');
+          this.router.navigate(['/tabs/inicio']);
           // this.router.navigate(['/tabs/inicio'], { queryParams: { special: true } });
           this.contador = 0;
         }

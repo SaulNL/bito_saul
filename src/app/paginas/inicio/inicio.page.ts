@@ -756,7 +756,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.Filtros = res;
       const d1 = JSON.stringify(res);
       localStorage.setItem('filtroactual', d1);
-      localStorage.setItem('FiltroAct', 'true');
+      //localStorage.setItem('FiltroAct', 'true');
       localStorage.setItem('todo', 'todo');
       if (res == false) {
         this.borrarFiltrosP(true);

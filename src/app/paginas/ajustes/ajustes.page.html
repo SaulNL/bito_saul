@@ -29,7 +29,7 @@
 <ion-content fullscreen *ngIf="usuario !== null">
   <ion-card style="margin-bottom: 3%">
     <div class="ion-text-center ion-margin-top" [routerLink]="['/tabs/home/datos-basicos']">
-      <img *ngIf="usuario.imagen !== ''" class="rounded-circle" [src]="usuario.imagen" alt="" />
+      <img *ngIf="usuario.imagen !== ''" class="circulo-redondo" [src]="usuario.imagen" alt="" />
       <img *ngIf="usuario.imagen === ''" class="imagen" alt="" />
     </div>
     <ion-card-header class="ion-text-center">
@@ -163,7 +163,7 @@
             <ion-card>
               <ion-card-content class="tamanioCard" >
                 <div class="ion-text-center" [routerLink]="['/tabs/mis-experiencias-turisticas']">
-                  <ion-icon name="today-outline"></ion-icon>
+                  <img src="assets/images/experiencias.png" class="imgs">
                   <h2>Experiencias Turisticas</h2>
                 </div>
               </ion-card-content>
