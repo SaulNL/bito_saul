@@ -604,6 +604,11 @@ export class FermularioExperienciasPage implements OnInit {
       posicion?: any;
     }>)
     if (data.role === 'confirm') {
+      if (data.data.fotografia[0].url_imagen) {
+        data.data.url_imagen = data.data.fotografia[0].url_imagen
+        data.data.id_det_experiencia_turistica_concepto = data.data.fotografia[0].id_det_experiencia_turistica_concepto
+        data.data.fotografia = null;
+      }
       let productos = []
       productos = this.experienciasForm.get('conceptos').value ? this.experienciasForm.get('conceptos').value : [];
       if (data.posicion == null) {

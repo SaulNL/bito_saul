@@ -30,6 +30,8 @@ export class FormularioEtProductoComponent implements OnInit {
   public mensaje: string;
   public lstOrg: any;
   public subioimg: boolean = false;
+  public subirOtraImg: boolean;
+  public setExistencia: number = null;
 
   productoForm: FormGroup;
   slideOpts = {
@@ -63,10 +65,16 @@ export class FormularioEtProductoComponent implements OnInit {
     this.fotosArrayAgregar = [];
     this.bandera = true;
     this.productoDatos = this.navParams.get('productoDatos');
-    console.log('datosProductos',this.productoDatos)
   }
 
   ngOnInit() {
+    console.log(this.productoDatos)
+    if (!this.productoDatos.data) {
+      this.subirOtraImg = true
+    } else {
+      this.subirOtraImg = this.productoDatos.data.url_imagen || this.productoDatos.data.fotografia.length != 0 ? false : true;
+    }
+
     if (this.productoDatos.data) {
       this.asignarValores();
     }
@@ -84,15 +92,24 @@ export class FormularioEtProductoComponent implements OnInit {
     let fotos = [];
     fotos.push(...this.fotografiasArray);
     fotos.push(...this.fotosArrayAgregar)
+    if (fotos[0].url_imagen) {
+      fotos[0].id_det_experiencia_turistica_concepto = this.productoDatos.data.id_det_experiencia_turistica_concepto
+    }
     this.productoForm.get('fotografia').setValue(fotos);
 
-    this.productoForm.get('cantidad_disponibles').setValue(this.productoDatos.data ? this.productoDatos.data.cantidad_disponibles : this.productoForm.get('existencia').value);
+    if (this.productoForm.get('existencia').value != this.setExistencia) {
+      this.productoForm.get('cantidad_disponibles').setValue(this.productoForm.get('existencia').value);
+    } else {
+      this.productoForm.get('cantidad_disponibles').setValue(this.productoDatos.data ? this.productoDatos.data.cantidad_disponibles : this.productoForm.get('existencia').value);
+    }
+
 
     if (this.productoForm.valid) {
       return this.modalCtrl.dismiss({
         data: this.productoForm.value,
         role:'confirm',
-        posicion: this.productoDatos.id
+        posicion: this.productoDatos.id,
+        edit: true
       });
     }
   }
@@ -104,8 +121,7 @@ export class FormularioEtProductoComponent implements OnInit {
   }
 
   asignarValores() {
-    console.log('estoy asignando')
-    
+    this.setExistencia = this.productoDatos.data.existencia,
     this.productoForm.patchValue({
       concepto: this.productoDatos.data.concepto,
       precio: this.productoDatos.data.precio,
@@ -132,7 +148,6 @@ export class FormularioEtProductoComponent implements OnInit {
     
     this.subioimg = this.fotografiasArray.length > 0 || this.fotosArrayAgregar.length > 0 ? true : false;
     this.numeroFotos = this.fotografiasArray.length;
-    console.log('asignados',this.fotografiasArray,this.productoForm.value)
   }
 
   public borrarFotoEdit(posicion: number) {
@@ -141,6 +156,7 @@ export class FormularioEtProductoComponent implements OnInit {
     if (this.numeroFotosEdit < 3) {
       this.galeriaFull = false;
     }
+    this.subirOtraImg = this.fotografiasArray.length != 0 ? false : true;
   }
 
   public agregarFoto(event) {
@@ -208,7 +224,8 @@ export class FormularioEtProductoComponent implements OnInit {
   public borrarFoto(posicion: number) {
     this.fotosArrayAgregar.splice(posicion, 1);
     this.numeroFotos--;
-    this.subioimg = this.fotografiasArray.length > 0 || this.fotosArrayAgregar.length > 0? true : false;
+    this.subioimg = this.fotografiasArray.length > 0 || this.fotosArrayAgregar.length > 0 ? true : false;
+    this.subirOtraImg = this.fotosArrayAgregar.length != 0 ? false : true;
   }
   
   async obtenerImg(){
@@ -239,7 +256,7 @@ export class FormularioEtProductoComponent implements OnInit {
         this.fotosArrayAgregar.push(archivo);
         this.numeroFotos++;
         this.subioimg = this.fotografiasArray.length > 0 || this.fotosArrayAgregar.length > 0 ? true : false;
-        console.log('asdfasdfa',this.fotografiasArray,this.fotosArrayAgregar)
+        this.subirOtraImg = this.fotosArrayAgregar.length != 0 ? false : true;
         if (this.numeroFotos >= this.numeroFotosPermitidas) {
           this.galeriaFull = true;
         }
@@ -271,7 +288,6 @@ export class FormularioEtProductoComponent implements OnInit {
   obtenerAfiliaciones() {
     this.personaService.obtenerAfiliaciones().subscribe(res => {
       if (res.code == 200) {
-        console.log('Afiliaciones', res)
         this.lstOrg = res.data;
       }
     }),error => {
