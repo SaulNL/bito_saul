@@ -48,6 +48,8 @@ export class FermularioExperienciasPage implements OnInit {
   public datosUsuario: any;
   public lstNegocios: any;
   public sihayImg: any;
+  public existReservacion: any;
+  public requierConfirm: any;
 
   experienciasForm: FormGroup;
   pagoSelect: FormGroup;
@@ -138,6 +140,8 @@ export class FermularioExperienciasPage implements OnInit {
     this.obtenerNegocios();
   }
   asignarValores(data) {
+    this.obtenerReservaciones(data.id_experiencia_turistica)
+    this.requierConfirm = data.requiere_confirmacion == 1 ? true : false;
     this.experienciasForm.patchValue({
       titulo_experiencia: data.titulo_experiencia,
       id_experiencia_turistica: data.id_experiencia_turistica,
@@ -207,6 +211,10 @@ export class FermularioExperienciasPage implements OnInit {
   }
 
   async guardarExperiencia() {
+    if (this.existReservacion) {
+      this.loader = false;
+      this.notificaciones.error('Lo sentimos, usted ya cuenta con una reservación registrada')
+    } else {
     let dias = this.experienciasForm.get('dias').value == 'null' || this.experienciasForm.get('dias').value == null ? null : JSON.stringify(this.experienciasForm.get('dias').value);
     let Activo = this.experienciasForm.get('activo').value ? 1 : 0;
     this.experienciasForm.get('activo').setValue(Activo);
@@ -225,7 +233,8 @@ export class FermularioExperienciasPage implements OnInit {
     this.experienciasForm.removeControl('metodosPago');
     let conceptos = await this.asignarFotografiaProductos(this.experienciasForm.get('conceptos').value)
     this.experienciasForm.get('conceptos').setValue(await conceptos)
-    this.experienciaGuardar(this.experienciasForm.value);
+      this.experienciaGuardar(this.experienciasForm.value);
+    }
   }
 
 
@@ -351,10 +360,9 @@ export class FermularioExperienciasPage implements OnInit {
     if (tipo) {
       this.experienciasForm.get('activo').setValue(evento.detail.checked == false ? 0 : 1);
     }
-    if (!tipo) {
+    if (!tipo ) {
       this.experienciasForm.get('requiere_confirmacion').setValue(evento.detail.checked == false ? 0 : 1);
     }
-
   }
 
   public borrarFotoEdit(posicion: number) {
@@ -629,4 +637,17 @@ export class FermularioExperienciasPage implements OnInit {
   // tipoFrecuencia(tipo) {
   //   this.frecuenciaSemanal = tipo.detail.value == 1 ? false : true ;
   // }
+  obtenerReservaciones(idReservacion) {
+    let eniarIdReservacion = {
+          "id_experiencia_turistica": idReservacion
+    }
+  this.experienciasService.reservacionesExperiencias(eniarIdReservacion).subscribe(Response => {
+    this.existReservacion = Response.data.length != 0 ? true : false;
+    }),
+      error => {
+        this.notificaciones.error(error);
+      }
 }
+}
+
+

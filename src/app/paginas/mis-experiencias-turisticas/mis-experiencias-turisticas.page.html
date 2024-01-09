@@ -59,8 +59,10 @@
   
       <ion-item-sliding class="eventoContent" *ngFor="let res of reservacion let i = index">
         <ion-item (click)="onClickItem($event)">
-          <div style="width: 40px; height: 100%;"
+          <div style="width: 40px; height: 100%;" *ngIf="res.requiere_confirmacion == 1"
             [ngClass]="{'color-1': res.fc_confirmacion != null, 'color-0': res.fc_confirmacion === null}"></div>
+          <div style="width: 40px; height: 100%;" *ngIf="res.requiere_confirmacion == 0"
+            class ="color-1"></div>
           <p class="eventTitleRes">{{res.nombresolicitante}} {{res.paternosolicitante}} {{res.maternosolicitante}}</p>
           <ion-icon class="moveLeft" style="color: #000;" name="chevron-back-outline"></ion-icon>
         </ion-item>
@@ -82,7 +84,7 @@
     <div class="seccion-informacion" *ngIf="mostrarInfo">
       <h2>Solicitante: {{solicitante}}</h2>
       <div class="informacionReservacion">
-        <ion-label>No. Personas: {{noPersonas}}</ion-label>
+        <!-- <ion-label>No. Personas: {{noPersonas}}</ion-label> -->
         <ion-label>Fecha de reservación: <p style="text-transform: capitalize;color: #fff;
       font-size: large;">{{fechaDeReservacion}}</p></ion-label>
         <ion-label>Estatus: {{estatus}}</ion-label>

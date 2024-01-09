@@ -71,7 +71,6 @@ export class MisExperienciasTuristicasPage implements OnInit {
           "id_experiencia_turistica": idReservacion
     }
     this.experienciasService.reservacionesExperiencias(eniarIdReservacion).subscribe(Response => {
-      console.log('resReservaciones',Response)
       this.experienciaImg = img;
       this.activoBTN = activo == 1 || activo ? true : false;
       this.idExperiencia = idReservacion;
@@ -182,7 +181,6 @@ export class MisExperienciasTuristicasPage implements OnInit {
   }
 
   async quitarReservacion(data) {
-    console.log(data)
     this.datosReservacion.fc_confirmacion = await null;
     this.datosReservacion.id_estatus_reservacion = await 1 ;
     this.datosReservacion.id_experiencia_turistica_reservacion = await data.id_experiencia_turistica_reservacion;
@@ -190,15 +188,19 @@ export class MisExperienciasTuristicasPage implements OnInit {
   }
 
   async guardarReservacion(data) {
-    let dias =  new Date();
-    const anio = dias.getFullYear();
-    const mes = ('0' + (dias.getMonth() + 1)).slice(-2);
-    const dia = ('0' + dias.getDate()).slice(-2);
-    let fecha = `${anio}-${mes}-${dia}`
-    this.datosReservacion.fc_confirmacion = await fecha;
-    this.datosReservacion.id_estatus_reservacion = await 2 ;
-    this.datosReservacion.id_experiencia_turistica_reservacion = await data.id_experiencia_turistica_reservacion;
-    this.enviarReservacion(data,true);
+    if (data.requiere_confirmacion == 1) {
+      let dias =  new Date();
+      const anio = dias.getFullYear();
+      const mes = ('0' + (dias.getMonth() + 1)).slice(-2);
+      const dia = ('0' + dias.getDate()).slice(-2);
+      let fecha = `${anio}-${mes}-${dia}`
+      this.datosReservacion.fc_confirmacion = await fecha;
+      this.datosReservacion.id_estatus_reservacion = await 2 ;
+      this.datosReservacion.id_experiencia_turistica_reservacion = await data.id_experiencia_turistica_reservacion;
+      this.enviarReservacion(data,true);
+    } else {
+      this.notificacionService.alerta('Esta Experiencia no requiere Confirmación')
+    }
   }
 
   enviarReservacion(id,tipo){
