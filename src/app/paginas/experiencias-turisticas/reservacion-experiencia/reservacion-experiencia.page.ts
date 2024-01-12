@@ -315,11 +315,11 @@ export class ReservacionExperienciaPage implements OnInit {
   }
 
   mostrarPrecioTtotal(idExperiencia: number): number{
-    var precioTotal = 0;
+    let precioTotal = 0;
     if ( this.arrayTemporal.length > 0) {
       this.arrayTemporal.forEach(item => {
         if ( item.id_det_experiencia_turistica_concepto === idExperiencia){
-          precioTotal = item.precio_total;
+          precioTotal = parseInt(item.precio_total);
         }
       });
     } else {
