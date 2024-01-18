@@ -10,6 +10,7 @@ import {FiltroEventosModel} from '../Modelos/FiltroEventosModel';
 export class EventosService {
     selectedObj: any;
     reservacionObj: any;
+    productoSugerencias: any;
 
   constructor(
       private _http: HTTP
@@ -31,6 +32,14 @@ export class EventosService {
 
     getReservacionObj(){
         return this.reservacionObj;
+    }
+
+    setProductoSugerencia(obj: any){
+        this.productoSugerencias = obj;
+    }
+
+    getProductoSugerencia(){
+        return this.productoSugerencias;
     }
 
   eventosLista(filtroEvento: FiltroEventosModel): Observable<any>{
