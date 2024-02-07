@@ -6,6 +6,7 @@ import { AlertController, ModalController, Platform } from "@ionic/angular";
 import { UtilsCls } from "../../utils/UtilsCls";
 import { ProductoModel } from "../../Modelos/ProductoModel";
 import { ProductosService } from "../../api/productos.service";
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 
 @Component({
     selector: 'app-detalle-producto',
@@ -27,6 +28,7 @@ export class DetalleProductoComponent implements OnInit {
     @Input() bolsa: any;
     @Input() user: any;
     @Input() url: string;
+    @Input() isContenido: boolean;
     public subscribe;
     public modal;
     public existeSesion: boolean;
@@ -34,6 +36,10 @@ export class DetalleProductoComponent implements OnInit {
     public activeSelectedProduct: boolean;
     public typeLogin: OptionBackLogin;
     public isAlert: boolean = false;
+    showFullDescription: boolean = false;
+    descripcionTruncada: string;
+    maxLength: number = 100;
+
     constructor(
         private utilsCls: UtilsCls,
         private modalController: ModalController,
@@ -42,7 +48,8 @@ export class DetalleProductoComponent implements OnInit {
         private platform: Platform,
         private router: Router,
         private servicioProductos: ProductosService,
-        public alertController: AlertController
+        public alertController: AlertController,
+        private iab: InAppBrowser
     ) {
         this.typeLogin = new OptionBackLogin();
         this.existeSesion = utilsCls.existe_sesion();
@@ -63,8 +70,14 @@ export class DetalleProductoComponent implements OnInit {
             });
         }
         if (this.existeSesion) {
-            this.loVio(this.datos);
+            if ( this.isContenido){
+                this.vistasContenido(this.datos);
+            }else{
+                this.loVio(this.datos);
+
+            }
         }
+        this.truncarDescripcion();
     }
 
     cerrarModal() {
@@ -124,6 +137,34 @@ export class DetalleProductoComponent implements OnInit {
             });
         }
     }
+
+    agregarContenido() {
+        if (this.existeSesion) {
+          const producto = {
+            infoNegocio: this.datosInfoNegocio,
+            productoInfo: [
+              {
+                idProducto: this.datos.id_contenido,
+                precio: this.datos.precio,
+                imagen: this.datos.fotografias[0].url_imagen,
+                cantidad: 1,
+                idNegocio: this.datosInfoNegocio.idNegocio,
+                nombre: this.datos.titulo_contenido,
+                descripcion: this.datos.descripcion_contenido,
+              },
+            ],
+          };
+          this.modalController.dismiss({
+            data: producto,
+          });
+        } else {
+          this.typeLogin.type = "perfil";
+          this.typeLogin.url = this.url;
+          this.modalController.dismiss({
+            goLogin: this.typeLogin,
+          });
+        }
+      }
     public darLike(producto: ProductoModel) {
         this.servicioProductos.darLike(producto, this.user).subscribe(
             (response) => {
@@ -150,6 +191,21 @@ export class DetalleProductoComponent implements OnInit {
             response => { if (response.code === 200) { } }, error => { });
     }
 
+    public vistasContenido(contenido) {
+        let objectoVio = {
+          id_persona: this.user.id_persona, //usuario
+          id_contenido: contenido.id_contenido, //contenido
+        };
+        this.servicioProductos.quienVioContenido(objectoVio).subscribe(
+          (response) => {
+            if (response.code === 200) {
+              console.log(response);
+            }
+          },
+          (error) => {}
+        );
+      }
+
     async avisoNegocioCerrado() {
         const alert = await this.alertController.create({
             header: 'Aviso',
@@ -173,5 +229,26 @@ export class DetalleProductoComponent implements OnInit {
 
     abrirAlert(isAlert: boolean){
         this.isAlert = isAlert;
+    }
+
+    verContenido(ruta) {
+        this.iab.create('https://docs.google.com/viewer?url=' + ruta);
+    }
+
+    truncarDescripcion() {
+        if (this.datos.descripcion_contenido.length > this.maxLength) {
+            this.descripcionTruncada = this.datos.descripcion_contenido.slice(0, this.maxLength) + '... ';
+        } else {
+            this.descripcionTruncada = this.datos.descripcion_contenido;
+        }
+    }
+
+    toggleDescription() {
+        if (this.showFullDescription)
+        {
+            this.showFullDescription = false
+        }else{
+            this.showFullDescription = true;
+        }
     }
 }

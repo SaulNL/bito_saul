@@ -32,3 +32,51 @@ ion-item {
 .texto-titulo{
   color: #ff1dbd ;
 }
+
+ion-card {
+  box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+  border-radius: 20px;
+}
+
+.custom-card-content {
+  padding: 5px;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.content-description {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.icon-wrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(90deg, #ff9925 0%, #ffce00 100%);
+  box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+  margin-bottom: 10px;
+}
+
+.icon-wrapper ion-icon {
+  font-size: 30px;
+  color: white;
+}
+
+.show-full {
+  overflow: visible !important; /* Forzar el despliegue completo */
+  text-align: justify;
+}
+
+.btnDescripcion {
+  display: inline-block;
+  margin: 0;
+}

@@ -167,4 +167,26 @@ export class ProductosService {
       })
     );
   }
+
+  public quienVioContenido(contenido): Observable<any> {
+    const body = JSON.stringify(contenido);
+    return from(
+      this.http
+        .post(
+          this.url + "api/visitas/contenidos/registrar",
+          body,
+          AppSettings.getHeadersToken()
+        )
+        .then((data) => {
+          return JSON.parse(data.data);
+        })
+        .catch((error) => {
+          return error;
+        })
+    ).pipe(
+      map((data) => {
+        return data;
+      })
+    );
+  }
 }
