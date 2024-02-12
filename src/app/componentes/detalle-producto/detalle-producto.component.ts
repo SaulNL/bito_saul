@@ -7,6 +7,8 @@ import { UtilsCls } from "../../utils/UtilsCls";
 import { ProductoModel } from "../../Modelos/ProductoModel";
 import { ProductosService } from "../../api/productos.service";
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { PedidoNegocioComponent } from '../pedido-negocio/pedido-negocio.component';
+import { NegocioService } from 'src/app/api/negocio.service';
 
 @Component({
     selector: 'app-detalle-producto',
@@ -49,7 +51,8 @@ export class DetalleProductoComponent implements OnInit {
         private router: Router,
         private servicioProductos: ProductosService,
         public alertController: AlertController,
-        private iab: InAppBrowser
+        private iab: InAppBrowser,
+        private negocioService: NegocioService
     ) {
         this.typeLogin = new OptionBackLogin();
         this.existeSesion = utilsCls.existe_sesion();
@@ -250,5 +253,48 @@ export class DetalleProductoComponent implements OnInit {
         }else{
             this.showFullDescription = true;
         }
+    }
+
+    async finalizarCompra(){
+        const infoNegocio = this.obtenerInfoNegocio();
+        const productoInfo = this.obtenerProductoInfo();
+        let listaProductos: any[] = [];
+        listaProductos.push(productoInfo);
+        this.negocioService.setSelectedObj(this.datosInfoNegocio);
+        const modal = await this.modalController.create({
+          component: PedidoNegocioComponent,
+          componentProps: {
+            idNegocio: this.datosInfoNegocio.id_negocio,
+            lista: {infoNegocio: infoNegocio, productoInfo: listaProductos },
+            _entregaDomicilio: this.datosInfoNegocio.entrega_domicilio,
+            _entregaSitio: this.datosInfoNegocio.entrega_sitio,
+            _consumoSitio: this.datosInfoNegocio.consumo_sitio,
+            _costoEntrega: this.datosInfoNegocio.costo_entrega,
+            negocioNombre: this.datosInfoNegocio.nombre_comercial,
+            latNegocio: this.datosInfoNegocio.latitud,
+            logNegocio: this.datosInfoNegocio.longitud,
+            convenio: this.datosInfoNegocio.convenio_entrega,
+            contenidoCompleto : this.datos.url_contenido_completo
+          },
+        });
+        await modal.present();
+      }
+
+      obtenerInfoNegocio() {
+        return this.datosInfoNegocio;
+    }
+    
+    obtenerProductoInfo() {
+        return {
+            cantidad: 1,
+            cantidad_disponibles: null,
+            descripcion: this.datos.descripcion_contenido,
+            idNegocio: this.datosInfoNegocio.id_negocio,
+            idProducto: this.datos.id_contenido,
+            imagen: this.datos.fotografias[0].url_imagen,
+            nombre: this.datos.titulo_contenido,
+            precio: this.datos.precio ? this.datos.precio : 0,
+            tipoPoS: 2
+        };
     }
 }

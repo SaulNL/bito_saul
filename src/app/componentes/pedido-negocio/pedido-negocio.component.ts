@@ -43,6 +43,7 @@ export class PedidoNegocioComponent implements OnInit {
     @Input() public latNegocio: number;
     @Input() public logNegocio: number;
     @Input() public convenio: number;
+    @Input() public contenidoCompleto: string;
     compraForm: FormGroup;
     features: boolean = false;
     public static readonly TIPO_DE_PAGO_INVALIDO = -1; // Puede ser cualquier numero menor a 0;
@@ -849,11 +850,16 @@ export class PedidoNegocioComponent implements OnInit {
         })
     }
     completadoCompra(){
+        if(this.contenidoCompleto !== null && this.contenidoCompleto !== undefined){
+            window.open(this.contenidoCompleto, '_blank');
+        }
         this.productos = JSON.parse(localStorage.getItem('cartProducts'));
-        const productIndex = this.productos.findIndex(p => p.infoNegocio.id_negocio === this.idNegocio);
-        if (productIndex !== -1) {
-            this.productos.splice(productIndex, 1);
-            this.saveCartProducts();
+        if (this.productos) {
+            const productIndex = this.productos.findIndex(p => p.infoNegocio.id_negocio === this.idNegocio);
+            if (productIndex !== -1) {
+                this.productos.splice(productIndex, 1);
+                this.saveCartProducts();
+            }
         }
     }
 
