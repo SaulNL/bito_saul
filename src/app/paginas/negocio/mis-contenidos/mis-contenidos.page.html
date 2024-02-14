@@ -4,7 +4,10 @@
       <span> Contenidos </span>
     </ion-title>
     <ion-buttons slot="start">
-      <ion-button (click)="regresar()" class="blanco">
+      <ion-button *ngIf="blnMostrarListaContenidos && !blnAgregarContenidos" (click)="regresar()" class="blanco">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="!blnMostrarListaContenidos && blnAgregarContenidos" (click)="regresarLista()" class="blanco">
         <ion-icon name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -220,6 +223,7 @@
                   <ion-textarea
                     name="descripcion"
                     formControlName="descripcion_contenido"
+                    [autoGrow]="true"
                   ></ion-textarea>
                 </ion-item>
                 <div
@@ -258,7 +262,7 @@
             </ion-row>
 
             <ion-item>
-              <app-input-tags
+              <app-input-tags style="width: -webkit-fill-available;"
                 [tipo]="false"
                 [tags]="formRegistro.get('tags_contenido').value"
                 (_enviarTags)="agregarTags($event)"
@@ -272,7 +276,7 @@
               >
               <!-- Visualizar contenido desde URL -->
               <div
-                *ngIf="(contenidoReducidoUrl !== null && contenidoReducidoUrl !== undefined && contenidoReducido == undefined) && !loadPdf"
+                *ngIf="contenidoReducidoUrl !== null && contenidoReducidoUrl !== undefined && contenidoReducido == undefined"
                 style="
                   display: flex;
                   justify-content: center;
@@ -304,17 +308,7 @@
               </div>
 
               <div *ngIf="!loader">
-                <div
-                  *ngIf="loadPdf"
-                  style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                  "
-                >
-                  <ion-spinner name="dots"></ion-spinner>
-                </div>
-
+            
                 <div
                   style="
                     display: flex;
@@ -324,7 +318,7 @@
                 >
                   <label
                     for="imagenCarta"
-                    *ngIf="(contenidoReducido === null || contenidoReducido === undefined) && !loadPdf"
+                    *ngIf="(contenidoReducido === null || contenidoReducido === undefined) && (contenidoReducidoUrl === null || contenidoReducidoUrl === undefined)"
                   >
                     <div class="boton" (click)="subirContenidoReducido()">
                       Agregar
@@ -334,7 +328,7 @@
 
                   <label
                     for="imagenCarta"
-                    *ngIf="contenidoReducido !== null && contenidoReducido !== undefined"
+                    *ngIf="(contenidoReducido !== null && contenidoReducido !== undefined) || (contenidoReducidoUrl !== null && contenidoReducidoUrl !== undefined)"
                   >
                     <div class="boton" (click)="subirContenidoReducido()">
                       Editar<ion-icon
@@ -356,7 +350,7 @@
               >
               <!-- Visualizar contenido desde URL -->
               <div
-                *ngIf="(contenidoCompletoUrl !== null && contenidoCompletoUrl !== undefined && contenidoCompleto == undefined) && !loadPdf"
+                *ngIf="(contenidoCompletoUrl !== null && contenidoCompletoUrl !== undefined && contenidoCompleto == undefined)"
                 style="
                   display: flex;
                   justify-content: center;
@@ -389,17 +383,6 @@
 
               <div *ngIf="!loader">
                 <div
-                  *ngIf="loadPdf"
-                  style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                  "
-                >
-                  <ion-spinner name="dots"></ion-spinner>
-                </div>
-
-                <div
                   style="
                     display: flex;
                     justify-content: center;
@@ -408,7 +391,7 @@
                 >
                   <label
                     for="imagenCarta"
-                    *ngIf="(contenidoCompleto === null || contenidoCompleto === undefined) && !loadPdf"
+                    *ngIf="(contenidoCompleto === null || contenidoCompleto === undefined) && (contenidoCompletoUrl === null || contenidoCompletoUrl === undefined)"
                   >
                     <div class="boton" (click)="subirContenidoCompleto()">
                       Agregar
@@ -418,7 +401,7 @@
 
                   <label
                     for="imagenCarta"
-                    *ngIf="contenidoCompleto !== null && contenidoCompleto !== undefined"
+                    *ngIf="(contenidoCompleto !== null && contenidoCompleto !== undefined) || (contenidoCompletoUrl !== null && contenidoCompletoUrl !== undefined)"
                   >
                     <div class="boton" (click)="subirContenidoCompleto()">
                       Editar<ion-icon
@@ -474,7 +457,7 @@
                 <ion-button
                   color="danger"
                   expand="full"
-                  (click)="regresarLista()"
+                  (click)="alertContentCancelar()"
                   >Cancelar</ion-button
                 >
               </ion-col>

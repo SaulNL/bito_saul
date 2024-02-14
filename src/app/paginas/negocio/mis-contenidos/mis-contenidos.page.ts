@@ -97,8 +97,7 @@ export class MisContenidosPage implements OnInit {
     this.negocioService.obtenerContenidosNegocio(this.negocioTO.id_negocio)
       .subscribe(
         (respuesta) => {
-          this.listaContenidos = respuesta.data;
-          console.log(this.listaContenidos);
+          this.listaContenidos = respuesta.data.filter(contenido => contenido.eliminado === 0);
         },
         (error) => {
           
@@ -167,7 +166,6 @@ export class MisContenidosPage implements OnInit {
         this.regresarLista();
         
         this.obtenerContenidos();
-        console.log(respuesta);
       },
       (error) => {
         console.log(error);
@@ -196,6 +194,7 @@ export class MisContenidosPage implements OnInit {
       activo: new FormControl(null)
     });
 
+    console.log(this.contenidoCompleto, this.contenidoCompletoUrl , this.contenidoReducido, this.contenidoReducidoUrl);
   
 
     return formTmp;
@@ -327,7 +326,6 @@ export class MisContenidosPage implements OnInit {
       
       this.formRegistro.get('fecha_contenido').setValue(fechaFormateada);
       
-      console.log(this.formRegistro.value);
 
       this.negocioService.guardarContenidoNegocio(this.formRegistro.value).subscribe(
         (respuesta) => {
@@ -378,6 +376,28 @@ export class MisContenidosPage implements OnInit {
   verContenido(ruta) {
     this.iab.create('https://docs.google.com/viewer?url=' + ruta);
   }
+
+  async alertContentCancelar(){
+    const alert = await this.alertController.create({
+      header: "¿Estas seguro?",
+      message: `Se cancelara todo el proceso`,
+      buttons: [
+        {
+          text: "Cancelar",
+          role: "cancel",
+          handler: () => { },
+        },
+        {
+          text: "Aceptar",
+          handler: () => {
+            this.regresarLista();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+}
   
 
 }

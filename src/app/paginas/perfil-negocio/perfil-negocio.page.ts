@@ -1585,7 +1585,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
 
     this.serviceProveedores.obtenerContenidosNegocio(id).subscribe(
       response => {
-        this.lstContenidos = response.data;
+        this.lstContenidos = response.data.filter(contenido => contenido.eliminado === 0);
         console.log(this.lstContenidos);
         if (this.lstContenidos?.length > 0) {
           this.seccion = 'Contenidos';

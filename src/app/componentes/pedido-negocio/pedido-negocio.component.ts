@@ -851,7 +851,7 @@ export class PedidoNegocioComponent implements OnInit {
     }
     completadoCompra(){
         if(this.contenidoCompleto !== null && this.contenidoCompleto !== undefined){
-            window.open(this.contenidoCompleto, '_blank');
+            window.location.href = this.contenidoCompleto;
         }
         this.productos = JSON.parse(localStorage.getItem('cartProducts'));
         if (this.productos) {
