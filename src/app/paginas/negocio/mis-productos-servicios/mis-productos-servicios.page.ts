@@ -17,6 +17,7 @@ import { DtosMogoModel } from "../../../Modelos/DtosMogoModel";
 import { RecorteImagenComponent } from "../../../components/recorte-imagen/recorte-imagen.component";
 import { GeneralServicesService } from "../../../api/general-services.service";
 import { FilePicker } from '@capawesome/capacitor-file-picker';
+import { InAppBrowser } from "@awesome-cordova-plugins/in-app-browser/ngx";
 
 @Component({
   selector: "app-mis-productos-servicios",
@@ -95,7 +96,8 @@ export class MisProductosServiciosPage implements OnInit {
     private notificacionService: ToadNotificacionService,
     public modalController: ModalController,
     public alertController: AlertController,
-    private generalServicio: GeneralServicesService
+    private generalServicio: GeneralServicesService,
+    private iab: InAppBrowser
   ) {
     this.carta = null;
     this.listaVista = [];
@@ -252,7 +254,8 @@ export class MisProductosServiciosPage implements OnInit {
               this.datosNegocio.cartaProducto !== null &&
               this.datosNegocio.cartaProducto !== ""
             ) {
-              this.carta = this.cleanURL(this.datosNegocio.cartaProducto);
+              //this.carta = this.cleanURL(this.datosNegocio.cartaProducto);
+              this.carta = this.datosNegocio.cartaProducto;
             } else {
               this.carta = null;
             }
@@ -263,7 +266,8 @@ export class MisProductosServiciosPage implements OnInit {
               this.datosNegocio.cartaServicio !== null &&
               this.datosNegocio.cartaServicio !== ""
             ) {
-              this.carta = this.cleanURL(this.datosNegocio.cartaServicio);
+              //this.carta = this.cleanURL(this.datosNegocio.cartaServicio);
+              this.carta = this.datosNegocio.cartaServicio;
             } else {
               this.carta = null;
             }
@@ -1260,5 +1264,9 @@ export class MisProductosServiciosPage implements OnInit {
             }
           }
         });
+  }
+
+  verCartaProductos(ruta) {
+    this.iab.create('https://docs.google.com/viewer?url=' + ruta);
   }
 }
