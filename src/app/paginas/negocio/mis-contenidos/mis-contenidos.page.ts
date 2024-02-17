@@ -266,7 +266,7 @@ export class MisContenidosPage implements OnInit {
     if (result.files[0].size < 3145728) {
       const archivo = new ArchivoComunModel();
       archivo.nombre_archivo = result.files[0].name;
-      archivo.archivo_64 = `data:image/png;base64,${result.files[0].data}`
+      archivo.archivo_64 = `data:application/pdf;base64,${result.files[0].data}`
       this.contenidoReducido = {
         nombre_archivo : archivo.nombre_archivo,
         archivo_64 : archivo.archivo_64
@@ -287,7 +287,7 @@ export class MisContenidosPage implements OnInit {
     if (result.files[0].size < 23145728) {
       const archivo = new ArchivoComunModel();
       archivo.nombre_archivo = result.files[0].name;
-      archivo.archivo_64 = `data:image/png;base64,${result.files[0].data}`
+      archivo.archivo_64 = `data:application/pdf;base64,${result.files[0].data}`
       this.contenidoCompleto = {
         nombre_archivo : archivo.nombre_archivo,
         archivo_64 : archivo.archivo_64

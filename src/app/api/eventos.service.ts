@@ -135,8 +135,8 @@ export class EventosService {
     }
 
 
-    mostrarReservaciones(idPersona: number): Observable<any>{
-        const body = JSON.stringify({id_persona: idPersona});
+    mostrarReservaciones(idPersona: number, currentPage: number , pageSize: number): Observable<any>{
+        const body = JSON.stringify({id_persona: idPersona , per_page: pageSize, page: currentPage});
         this._http.setDataSerializer('utf8');
         return from(this._http.post(this.url + 'api/eventos/listaReservacionesUsuario', body, AppSettings.getHeadersToken()).then((data) => {
             return JSON.parse(data.data);

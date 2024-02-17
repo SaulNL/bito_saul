@@ -322,7 +322,7 @@ export class MisProductosServiciosPage implements OnInit {
     if (result.files[0].size < 3145728) {
       const archivo = new ArchivoComunModel();
       archivo.nombre_archivo = result.files[0].name;
-      archivo.archivo_64 = `data:image/png;base64,${result.files[0].data}`
+      archivo.archivo_64 = `data:application/pdf;base64,${result.files[0].data}`
       switch (this.iden) {
         case 1:
           this.datosNegocio.cartaProducto = archivo;
@@ -364,7 +364,8 @@ export class MisProductosServiciosPage implements OnInit {
               this.datosNegocio.cartaProducto !== null &&
               this.datosNegocio.cartaProducto !== ""
             ) {
-              this.carta = this.cleanURL(this.datosNegocio.cartaProducto);
+              //this.carta = this.cleanURL(this.datosNegocio.cartaProducto);
+              this.carta = this.datosNegocio.cartaProducto;
             }
             if (this.loadPdf) {
               this.notificacionService.exito("Carta guardada con éxito");
@@ -376,7 +377,8 @@ export class MisProductosServiciosPage implements OnInit {
               this.datosNegocio.cartaServicio !== null &&
               this.datosNegocio.cartaServicio !== ""
             ) {
-              this.carta = this.cleanURL(this.datosNegocio.cartaServicio);
+              //this.carta = this.cleanURL(this.datosNegocio.cartaServicio);
+              this.carta = this.datosNegocio.cartaServicio;
             }
             if (this.loadPdf) {
               this.notificacionService.exito("Carta guardada con éxito");

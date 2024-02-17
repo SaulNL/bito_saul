@@ -24,6 +24,9 @@ export class MisReservacionesPage implements OnInit {
   public loaderReservaciones: boolean;
   public msj = 'Cargando';
   openReservacion: number;
+  lastPage: any;
+  currentPage = 1;
+  pageSize = 10;
 
   constructor(
       private eventosService: EventosService,
@@ -57,23 +60,36 @@ export class MisReservacionesPage implements OnInit {
   }
 
   mostrarMisReservaciones(): void{
-    this.eventosService.mostrarReservaciones(this.idPersona).subscribe(
+    this.eventosService.mostrarReservaciones(this.idPersona , this.currentPage , this.pageSize).subscribe(
         res => {
-          this.reservacionesAll = res.data;
-          this.reservacionesAll.sort((a, b) => {
-            const fechaA = a.fc_evento_reservacion ? new Date(a.fc_evento_reservacion) : null;
-            const fechaB = b.fc_evento_reservacion ? new Date(b.fc_evento_reservacion) : null;
-            if (!fechaA && !fechaB) {
-              return 0;
-            } else if (!fechaA) {
-              return 1;
-            } else if (!fechaB) {
-              return -1;
-            }
-            return fechaB.getTime() - fechaA.getTime();
-          });
+          console.log(res.data);
+          this.reservacionesAll = [...this.reservacionesAll, ...res.data.data]; // Agregar nuevas reservaciones a las existentes
+          this.lastPage = res.data.last_page;
+          // if (this.currentPage === this.lastPage) {
+          //   // Ordenar solo cuando se hayan agregado todas las páginas
+          //   this.reservacionesAll.sort((a, b) => {
+          //     const fechaA = a.fc_evento_reservacion ? new Date(a.fc_evento_reservacion) : null;
+          //     const fechaB = b.fc_evento_reservacion ? new Date(b.fc_evento_reservacion) : null;
+          //     if (!fechaA && !fechaB) {
+          //       return 0;
+          //     } else if (!fechaA) {
+          //       return 1;
+          //     } else if (!fechaB) {
+          //       return -1;
+          //     }
+          //     return fechaB.getTime() - fechaA.getTime();
+          //   });
+          // }
           this.loaderReservaciones = true;
         });
+  }
+
+  cargarMas(event) {
+    this.currentPage++; 
+    if (this.currentPage <= this.lastPage ) {
+      this.mostrarMisReservaciones(); 
+    }// Cargar más reservaciones
+    event.target.complete(); // Indicar que se ha completado la carga
   }
 
 
