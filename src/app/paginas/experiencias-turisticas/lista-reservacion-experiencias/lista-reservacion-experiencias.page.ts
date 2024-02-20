@@ -48,7 +48,9 @@ export class ListaReservacionExperienciasPage implements OnInit {
     this.experienciasService.reservacionesUsuario(this.idPersona, this.currentPage, this.pageSize).subscribe(
       res => {
         this.loaderReservaciones = true;
-        this.reservacionesAll = [...this.reservacionesAll, ...res.data.data]; // Agregar nuevas reservaciones a las existentes
+        if (res.data.data && Array.isArray(res.data.data)) {
+          this.reservacionesAll = [...this.reservacionesAll, ...res.data.data]; // Agregar nuevas reservaciones a las existentes
+        }
         this.lastPage = res.data.last_page;
       });
   }

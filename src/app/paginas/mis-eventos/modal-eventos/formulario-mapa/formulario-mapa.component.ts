@@ -193,8 +193,15 @@ export class FormularioMapaComponent implements OnInit {
   selectFechaEvento(event: any) {
     let fecha = event.detail.value;
     let ms = Date.parse(fecha);
-    fecha = new Date(ms).toISOString();
-    this.formularioMapa.get('fecha').setValue(fecha);
+    let fechaFormateada = new Date(ms);
+    // Formatear la fecha manualmente
+    let formattedDate = fechaFormateada.getFullYear() + '-' + 
+                        ('0' + (fechaFormateada.getMonth() + 1)).slice(-2) + '-' + 
+                        ('0' + fechaFormateada.getDate()).slice(-2) + ' ' + 
+                        ('0' + fechaFormateada.getHours()).slice(-2) + ':' + 
+                        ('0' + fechaFormateada.getMinutes()).slice(-2) + ':' + 
+                        ('0' + fechaFormateada.getSeconds()).slice(-2);
+    this.formularioMapa.get('fecha').setValue(formattedDate);
     this.enviarInformacion()
   }
 
