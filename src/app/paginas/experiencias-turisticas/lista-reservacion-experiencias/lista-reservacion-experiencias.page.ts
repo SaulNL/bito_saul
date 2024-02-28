@@ -20,6 +20,9 @@ export class ListaReservacionExperienciasPage implements OnInit {
   public loaderReservaciones: boolean;
   public msj = 'Cargando';
   public cordenada: number;
+  currentPage = 1;
+  pageSize = 10;
+  lastPage: any;
   constructor(
       private router: Router,
       private experienciasService: ExperienciasTuristicasService,
@@ -41,12 +44,23 @@ export class ListaReservacionExperienciasPage implements OnInit {
     this.router.navigate(['/tabs/experiencias-turisticas']);
   }
 
-  mostrarMisReservaciones(): void{
-    this.experienciasService.reservacionesUsuario(this.idPersona).subscribe(
-        res => {
-          this.loaderReservaciones = true;
-          this.reservacionesAll = res.data;
-        });
+  mostrarMisReservaciones() {
+    this.experienciasService.reservacionesUsuario(this.idPersona, this.currentPage, this.pageSize).subscribe(
+      res => {
+        this.loaderReservaciones = true;
+        if (res.data.data && Array.isArray(res.data.data)) {
+          this.reservacionesAll = [...this.reservacionesAll, ...res.data.data]; // Agregar nuevas reservaciones a las existentes
+        }
+        this.lastPage = res.data.last_page;
+      });
+  }
+
+  cargarMas(event) {
+    this.currentPage++; 
+    if (this.currentPage <= this.lastPage ) {
+      this.mostrarMisReservaciones(); 
+    }// Cargar más reservaciones
+    event.target.complete(); // Indicar que se ha completado la carga
   }
 
   convertirFecha(fecha: string): string{

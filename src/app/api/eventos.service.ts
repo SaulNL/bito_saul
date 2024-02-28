@@ -10,6 +10,7 @@ import {FiltroEventosModel} from '../Modelos/FiltroEventosModel';
 export class EventosService {
     selectedObj: any;
     reservacionObj: any;
+    productoSugerencias: any;
 
   constructor(
       private _http: HTTP
@@ -31,6 +32,14 @@ export class EventosService {
 
     getReservacionObj(){
         return this.reservacionObj;
+    }
+
+    setProductoSugerencia(obj: any){
+        this.productoSugerencias = obj;
+    }
+
+    getProductoSugerencia(){
+        return this.productoSugerencias;
     }
 
   eventosLista(filtroEvento: FiltroEventosModel): Observable<any>{
@@ -126,8 +135,8 @@ export class EventosService {
     }
 
 
-    mostrarReservaciones(idPersona: number): Observable<any>{
-        const body = JSON.stringify({id_persona: idPersona});
+    mostrarReservaciones(idPersona: number, currentPage: number , pageSize: number): Observable<any>{
+        const body = JSON.stringify({id_persona: idPersona , per_page: pageSize, page: currentPage});
         this._http.setDataSerializer('utf8');
         return from(this._http.post(this.url + 'api/eventos/listaReservacionesUsuario', body, AppSettings.getHeadersToken()).then((data) => {
             return JSON.parse(data.data);

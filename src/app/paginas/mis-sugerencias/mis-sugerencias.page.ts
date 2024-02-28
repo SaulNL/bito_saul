@@ -9,6 +9,7 @@ import { CreateObjects } from "./../../Bitoo/helper/create-object";
 import { ModalDetalleProductoComponent } from "src/app/components/modal-detalle-producto/modal-detalle-producto.component";
 import { Router } from '@angular/router';
 import { ToadNotificacionService } from 'src/app/api/toad-notificacion.service';
+import { EventosService} from "../../api/eventos.service";
 
 @Component({
   selector: 'app-mis-sugerencias',
@@ -44,6 +45,7 @@ export class MisSugerenciasPage implements OnInit {
     private ruta: Router,
     private notificaciones: ToadNotificacionService,
     private menuCtrl: MenuController,
+    private eventoService: EventosService
   ) {
     this.tagsPromo = []
     this.bgPromo = []
@@ -80,6 +82,7 @@ export class MisSugerenciasPage implements OnInit {
         let data = JSON.stringify(res);
         let json = JSON.parse(data);
         this.sugerencias = json;
+        console.log('sugerencias', this.sugerencias);
         this.cantidadPromo = json.promociones.length;
         this.cantidadProduct = json.productos.length;
         this.cantidadNego = json.negocios.length;
@@ -172,7 +175,10 @@ export class MisSugerenciasPage implements OnInit {
   }
 
   async CrearModalProducto(producto: ProductoModel) {
-    this.loader = true
+    this.loader = true;
+    if ( this.sugerencias.productos.length >= 0){
+      this.eventoService.setProductoSugerencia(this.sugerencias.productos);
+    }
     var product: ProductInterface = this.createObject.createProduct(producto);
     const modal = await this.modalController.create({
       component: ModalDetalleProductoComponent,

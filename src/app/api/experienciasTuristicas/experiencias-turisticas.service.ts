@@ -121,8 +121,8 @@ export class ExperienciasTuristicasService {
         return error;
       }));
   }
-  reservacionesUsuario(idPersona: number): Observable<any> {
-    let body = JSON.stringify({id_persona: idPersona});
+  reservacionesUsuario(idPersona: number , currentPage: number , pageSize: number): Observable<any> {
+    let body = JSON.stringify({id_persona: idPersona, per_page: pageSize, page: currentPage});
     this._http.setDataSerializer('utf8');
     return from(this._http.post(this.url + 'api/experiencias/listaReservacionesUsuario', body, AppSettings.getHeadersToken()).then((data) => {
       return JSON.parse(data.data);

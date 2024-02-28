@@ -76,6 +76,20 @@ export class ProveedorServicioService {
       }));
   }
 
+  obtenerContenidosNegocio(id): Observable<any> {
+    const body = JSON.stringify({ id_negocio: id });
+    this._http.setDataSerializer("utf8");
+    return from(this._http.post(
+      `${this.url}api/contenidos/contenidosNegocio`,
+      body, AppSettings.getHeaders())
+      .then((data) => {
+        return JSON.parse(data.data);
+      })
+      .catch((error) => {
+        return error;
+      }));
+  }
+
   public darLike(proveedor: MsNegocioModel, usuario: UsuarioSistemaModel): Observable<any> {
     const body = JSON.stringify({ proveedor: proveedor, usuario: usuario });
     return from(this._http.post(

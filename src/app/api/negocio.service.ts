@@ -9,6 +9,7 @@ import { NegocioModel } from '../Modelos/NegocioModel';
 import { HTTP } from '@ionic-native/http/ngx';
 import { FiltroEstadisticaModel } from '../Modelos/FiltroEstadisticaModel';
 import { StatisticsFilterInterface } from '../Bitoo/models/filters-model';
+import { IContenidosNegocio } from '../interfaces/IContenidosNegocio';
 
 @Injectable({
     providedIn: 'root'
@@ -734,6 +735,48 @@ export class NegocioService {
                 (respuesta) => {
                     return JSON.parse(respuesta.data);
                 })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
+    obtenerContenidosNegocio(id: number): Observable<any> {
+        const body = JSON.stringify({ id_negocio: id });
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/contenidos/contenidosNegocio',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
+    guardarContenidoNegocio(contenido: IContenidosNegocio): Observable<any> {
+        const body = JSON.stringify(contenido);
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/contenidos/guardar',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
+            .catch((error) => {
+                return error;
+            }));
+    }
+
+    eliminarContenidoNegocio(id_contenido: number): Observable<any> {
+        const body = JSON.stringify({id_contenido: id_contenido});
+        this._http.setDataSerializer('utf8');
+        return from(this._http.post(
+            this.url + 'api/contenidos/eliminar',
+            body, AppSettings.getHeadersToken())
+            .then((data) => {
+                return JSON.parse(data.data);
+            })
             .catch((error) => {
                 return error;
             }));

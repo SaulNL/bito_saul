@@ -1,98 +1,290 @@
 <ion-header>
-    <ion-toolbar class="tolbar">
-        <ion-title mode="ios">Información</ion-title>
-        <ion-buttons slot="end" (click)="cerrarModal()">
-            <ion-button>
-                <ion-icon name="close-outline"></ion-icon>
-            </ion-button>
-        </ion-buttons>
-    </ion-toolbar>
+  <ion-toolbar class="tolbar">
+    <ion-title mode="ios">Información</ion-title>
+    <ion-buttons slot="end" (click)="cerrarModal()">
+      <ion-button>
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content>
-    <ion-grid>
-        <ion-row>
-            <ion-col class="ion-text-center">
-                <ion-text class="texto-titulo">
-                    <h1>{{datos.nombre}}</h1>
-                </ion-text>
-            </ion-col>
+<ion-content *ngIf="!isContenido">
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <ion-text class="texto-titulo">
+          <h1>{{ datos.nombre }}</h1>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <app-imagenes-slide [imagen]="datos"></app-imagenes-slide>
+        <p class="restriccion">
+          *Algunas imágenes sólamente son usadas con fines ilustrativos. El
+          producto final puede no estár representado con exactitud por las
+          mismas
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-badge *ngIf="datos.existencia === true" color="primary"
+          >Aun con existencia</ion-badge
+        >
+        <ion-badge *ngIf="datos.exitencia === false" color="danger"
+          >Sin existencia</ion-badge
+        >
+      </ion-col>
+      <ion-col class="ion-text-right">
+        <h1 style="margin: 0px">{{ datos.precio | currency }}</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-justify">
+        <p>{{ datos.descripcion }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <app-dar-like-producto
+        [producto]="datos"
+        [usuario]="user"
+        [mostrarLike]="existeSesion"
+        (banderaAlert)="abrirAlert($event)"
+      >
+      </app-dar-like-producto>
+    </ion-row>
+    <!-- <ion-row *ngIf="mostrarComponente"> -->
+    <ion-row *ngIf="opciones && estaAbierto">
+      <ion-grid>
+        <ion-row *ngIf="activeSelectedProduct">
+          <div class="alado">
+            <div>
+              <ion-label class="arriba"><strong>Cantidad</strong></ion-label>
+              <ion-icon
+                class="ion-text-center"
+                (click)="disminuir()"
+                style="
+                  margin: 4px;
+                  background: #bbbbbb;
+                  height: 20px;
+                  width: 20px;
+                "
+                name="remove-outline"
+              ></ion-icon>
+              <span class="ion-text-center" class="arriba">
+                {{ cantidad }}
+              </span>
+              <ion-icon
+                class="ion-text-center"
+                (click)="aumentar()"
+                style="
+                  margin: 4px;
+                  background: #bbbbbb;
+                  height: 20px;
+                  width: 20px;
+                "
+                name="add-outline"
+              ></ion-icon>
+            </div>
+          </div>
         </ion-row>
         <ion-row>
-            <ion-col class="ion-text-center">
-                <app-imagenes-slide [imagen]="datos"></app-imagenes-slide>
-                <p class="restriccion">*Algunas imágenes sólamente son usadas con fines ilustrativos. El producto final
-                    puede no estár representado con exactitud por las mismas</p>
-            </ion-col>
+          <ion-col *ngIf="!activeSelectedProduct">
+            <ion-button
+              expand="block"
+              (click)="agragarproducto()"
+              class="bg-naranja"
+            >
+              <span *ngIf="!activeSelectedProduct">Agregar a la bolsa </span>
+              <ion-icon
+                *ngIf="!activeSelectedProduct"
+                name="bag-add-outline"
+              ></ion-icon>
+            </ion-button>
+          </ion-col>
         </ion-row>
+      </ion-grid>
+    </ion-row>
+    <!-- <ion-row *ngIf="!mostrarComponente"> -->
+    <ion-row *ngIf="opciones && !estaAbierto">
+      <ion-grid>
+        <ion-row>
+          <ion-col (click)="avisoNegocioCerrado()">
+            <ion-button disabled="true" expand="block" class="bg-naranja"
+              >Agregar a la Bolsa
+              <ion-icon name="bag-add-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-row>
+    <ion-row *ngIf="!existeSesion">
+      <ion-grid>
+        <ion-row>
+          <ion-col (click)="login()">
+            <ion-button disabled="true" expand="block" class="bg-naranja"
+              >Agregar a la Bolsa
+              <ion-icon name="bag-add-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-row>
+  </ion-grid>
+  <app-modal-inicio-sesion
+    [isAlert]="isAlert"
+    (banderaAlert)="cerrarAlert($event)"
+  ></app-modal-inicio-sesion>
+</ion-content>
+
+<ion-content *ngIf="isContenido">
+  <ion-card>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col class="ion-text-center">
+            <ion-text class="texto-titulo">
+              <h1>{{ datos.titulo_contenido }}</h1>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-grid>
         <ion-row>
             <ion-col>
-                <ion-badge *ngIf="datos.existencia === true" color="primary">Aun con existencia</ion-badge>
-                <ion-badge *ngIf="datos.exitencia === false" color="danger">Sin existencia</ion-badge>
+                <p style="font-weight: 800; font-size: larger;">Descripción del contenido:</p>
+                <div [innerHTML]="showFullDescription ? datos.descripcion_contenido : descripcionTruncada" [ngClass]="{'show-full': showFullDescription}"></div>
+                <p class="btnDescripcion" *ngIf="datos.descripcion_contenido.length > maxLength" (click)="toggleDescription()">
+                    <ion-icon *ngIf="!showFullDescription" name="add-outline"></ion-icon>
+                    <ion-icon *ngIf="showFullDescription" name="remove-outline"></ion-icon>
+                    {{ showFullDescription ? ' Ver menos' : ' Ver más' }}
+                </p>
             </ion-col>
-            <ion-col class="ion-text-right">
-                <h1 style="margin: 0px">{{datos.precio | currency}}</h1>
-            </ion-col>
+            
         </ion-row>
         <ion-row>
-            <ion-col class="ion-text-justify">
-                <p>{{datos.descripcion}}</p>
+          <ion-col class="ion-text-center">
+            <img
+              class="img-card-w"
+              src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/PROVEEDOR/LA%20IMAGEN%20NO%20ESTA%20DISPONIBLE%20700%20X%20700.png"
+              [srcset]="datos.fotografias[0]?.url_imagen"
+              alt="Falla al cargar la imagen"
+            />
+            <p class="restriccion">
+              *Algunas imágenes sólamente son usadas con fines ilustrativos. El
+              producto final puede no estár representado con exactitud por las
+              mismas
+            </p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid style="margin-top: -15px; margin-bottom: -15px;">
+    <ion-row>
+      <ion-col size="6">
+        <ion-card>
+          <ion-card-content
+            style="background: #2dd36f; text-align: center"
+            *ngIf="datos.activo == 1"
+          >
+            <p style="color: white; font-size: 15px; font-weight: 800; margin: -2px;">
+              Con existencia
+            </p>
+          </ion-card-content>
+          <ion-card-content 
+          style="background: #eb445a; text-align: center"
+          *ngIf="datos.activo == 0">
+            <p style="color: white; font-size: 15px; font-weight: 800">Sin existencia</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card>
+          <ion-card-content>
+            <h1 style="margin: 0px; font-size: 15px;
+            font-weight: 900; text-align: center;">
+              Precio: {{ datos.precio ? datos.precio : (0 | currency) }}
+            </h1>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-card>
+        <ion-card-content class="custom-card-content">
+          <ion-grid>
+            <div *ngIf="datos.url_contenido_reducido !== null && datos.url_contenido_reducido !== undefined" class="content-wrapper">
+              <p class="content-description">Visualizar contenido reducido</p>
+      
+              <div class="icon-wrapper">
+                <a (click)="verContenido(datos.url_contenido_reducido)" target="_blank">
+                  <ion-icon name="document-text-outline"></ion-icon>
+                </a>
+              </div>
+              <p class="restriccion">*Comprar para visualizar contenido completo</p>
+            </div>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+      
+
+    <div *ngIf="estaAbierto == true">
+      <ion-row>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-button
+                expand="block"
+                (click)="finalizarCompra()"
+                class="bg-naranja" style="--border-radius: 20px !important;"
+              >
+                <span>Finalizar compra </span>
+                <ion-icon name="bag-add-outline"></ion-icon>
+              </ion-button>
             </ion-col>
-        </ion-row>
+          </ion-row>
+        </ion-grid>
+      </ion-row>
+    </div>
+
+    <ion-row *ngIf="!estaAbierto">
+      <ion-grid>
         <ion-row>
-            <app-dar-like-producto [producto]="datos" [usuario]="user" [mostrarLike]="existeSesion" (banderaAlert)="abrirAlert($event)">
-            </app-dar-like-producto>
+          <ion-col (click)="avisoNegocioCerrado()">
+            <ion-button disabled="true" expand="block" class="bg-naranja" style="--border-radius: 20px !important;"
+              >Finalizar compra
+              <ion-icon name="bag-add-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
         </ion-row>
-        <!-- <ion-row *ngIf="mostrarComponente"> -->
-        <ion-row *ngIf="opciones && estaAbierto">
-            <ion-grid>
-                <ion-row *ngIf="activeSelectedProduct">
-                    <div class="alado">
-                        <div>
-                            <ion-label class="arriba"><strong>Cantidad</strong></ion-label>
-                            <ion-icon class="ion-text-center" (click)="disminuir()"
-                                style="margin: 4px; background: #bbbbbb; height:20px; width:20px;"
-                                name="remove-outline"></ion-icon>
-                            <span class="ion-text-center" class="arriba"> {{ cantidad }} </span>
-                            <ion-icon class="ion-text-center" (click)="aumentar()"
-                                style="margin: 4px; background: #bbbbbb; height:20px; width:20px;"
-                                name="add-outline"></ion-icon>
-                        </div>
-                    </div>
-                </ion-row>
-                <ion-row>
-                    <ion-col *ngIf="!activeSelectedProduct">
-                        <ion-button expand="block" (click)="agragarproducto()" class="bg-naranja">
-                            <span *ngIf="!activeSelectedProduct">Agregar a la bolsa </span>
-                            <ion-icon *ngIf="!activeSelectedProduct" name="bag-add-outline"></ion-icon>
-                        </ion-button>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
+      </ion-grid>
+    </ion-row>
+    <ion-row *ngIf="!existeSesion">
+      <ion-grid>
+        <ion-row>
+          <ion-col (click)="login()">
+            <ion-button disabled="true" expand="block" class="bg-naranja" style="--border-radius: 20px !important;"
+              >Finalizar compra
+              <ion-icon name="bag-add-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
         </ion-row>
-        <!-- <ion-row *ngIf="!mostrarComponente"> -->
-        <ion-row *ngIf="opciones && !estaAbierto">
-            <ion-grid>
-                <ion-row>
-                    <ion-col (click)="avisoNegocioCerrado()">
-                        <ion-button disabled="true" expand="block" class="bg-naranja">Agregar a la Bolsa
-                            <ion-icon name="bag-add-outline"></ion-icon>
-                        </ion-button>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-        </ion-row>
-        <ion-row *ngIf="!existeSesion">
-            <ion-grid>
-                <ion-row>
-                    <ion-col (click)="login()">
-                        <ion-button disabled="true" expand="block" class="bg-naranja">Agregar a la Bolsa
-                            <ion-icon name="bag-add-outline"></ion-icon>
-                        </ion-button>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-        </ion-row>
-    </ion-grid>
-    <app-modal-inicio-sesion [isAlert]="isAlert" (banderaAlert)="cerrarAlert($event)"></app-modal-inicio-sesion>
+      </ion-grid>
+    </ion-row>
+  </ion-grid>
+  <app-modal-inicio-sesion
+    [isAlert]="isAlert"
+    (banderaAlert)="cerrarAlert($event)"
+  ></app-modal-inicio-sesion>
 </ion-content>
