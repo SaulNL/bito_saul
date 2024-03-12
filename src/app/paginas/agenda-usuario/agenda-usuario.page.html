@@ -1,0 +1,16 @@
+<ion-header>
+    <ion-toolbar class="tolbar">
+        <ion-buttons (click)="regresar()" slot="start">
+            <ion-button>
+                <ion-icon class="ion-float-left" name="chevron-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title mode="ios">Mi agenda <br> Usuario</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="ion-padding">
+    <app-calendario-agendas *ngIf="mostrarCalendario" [lstAgenda]="lstAgendaUsuario"
+                            (cancelarUnaCita)="cancelarCita($event)"></app-calendario-agendas>
+</ion-content>

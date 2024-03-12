@@ -9,7 +9,11 @@ const routes: Routes = [
   {
     path: 'modal-inicio-sesion',
     loadChildren: () => import('./paginas/modal-inicio-sesion/modal-inicio-sesion.module').then( m => m.ModalInicioSesionPageModule)
+  },  {
+    path: 'calendario-agendas',
+    loadChildren: () => import('./paginas/calendario-agendas/calendario-agendas.module').then( m => m.CalendarioAgendasPageModule)
   }
+
 
 
 ];

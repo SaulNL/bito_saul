@@ -1,0 +1,121 @@
+
+
+<ion-content>
+        <ion-item lines="none" class="ion-text-end" style="line-height: 10vw;">
+            <ion-label></ion-label>
+            <ion-select placeholder="Filtro"  style="width: 30vw; --placeholder-opacity: 1; color: black;"
+                        (ionChange)="filtrarAgendaPorFecha($event)">
+                <ion-select-option value="3">Hoy</ion-select-option>
+                <ion-select-option value="4">Mañana</ion-select-option>
+                <ion-select-option value="2">Esta semana</ion-select-option>
+                <ion-select-option value="1">Este mes</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+    <ion-item class="fondoBlanco">
+        <ion-label class="nombreMes">{{ (lstMeses[fechaSeleccionada.mes - 1].nombre) | uppercase }}</ion-label>
+
+        <ion-select placeholder="{{fechaSeleccionada.anio}}" (click)="abrirSelect()" (ionChange)="seleccionarMes($event)" [(ngModel)]="fechaSeleccionada">
+            <ion-select-option *ngFor="let fecha of mesesAnios" [value]="fecha">
+                {{ mostrarSelect ? lstMeses[fecha.mes - 1].nombre : '' }} {{ fecha.anio }}
+            </ion-select-option>
+        </ion-select>
+
+    </ion-item>
+
+
+
+
+    <ion-grid class="gridCalendario fondoBlanco">
+        <!-- Fila para los nombres de los dias de la semana -->
+
+        <ion-row>
+            <ion-col *ngFor="let dia of diasSemana">
+                <div class="contenedorDiaSemana">{{ dia }}</div>
+            </ion-col>
+        </ion-row>
+
+        <!-- Filas para los dias del mes -->
+        <ion-row *ngFor="let semana of diasMes" class="filasDiasMes">
+            <ion-col *ngFor="let day of semana"  class="ion-text-center ion-align-items-center">
+                <div [ngClass]="{'contenedorDia': day.day !== '',
+                 'contenedorDiaVacio': day.day === '',
+                 'sinCita': day.citaAgendada === 0 && day.day !== '',
+                 'citaAgendada': day.citaAgendada === 1,
+                 'citaConfirmada': day.citaAgendada === 2,
+                 'citaCanceladaUsuario': day.citaAgendada === 3,
+                 'citaCanceladaProveedor': day.citaAgendada === 4}">
+                    {{ day.day }}
+                </div>
+
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
+    <div *ngFor="let cita of citasPaginadas; let i = index" class="listadoCitasDeUsuario">
+
+    <ion-accordion-group class="itemCitaAgenda">
+        <ion-accordion value="first">
+            <ion-item slot="header">
+                <ion-label><b>{{(i + (paginaActual - 1) * citasPorPagina) + 1}}.</b> {{cita.negocio}}</ion-label>
+            </ion-item>
+            <div slot="content">
+
+
+                <ion-list>
+                   <ul>
+
+                       <li class="itemDetalleCitaAgenda">
+                           <b>Fecha:</b> {{cita.fecha_servicio}}
+                       </li>
+                       <li class="itemDetalleCitaAgenda">
+                           <b>Hora:</b> {{cita.hora_servicio}}
+                       </li>
+                       <li class="itemDetalleCitaAgenda">
+                           <b>Asunto:</b> {{cita.nombre_producto}}
+                       </li>
+                       <li class="itemDetalleCitaAgenda">
+                           <b>Negocio:</b> {{(cita.negocio) | uppercase}}
+                       </li>
+                       <li class="itemDetalleCitaAgenda">
+                           <b>Status:</b> {{(cita.estatus_agenda) | uppercase}}
+                       </li>
+                   </ul>
+
+                    <div style="display: flex; justify-content: center; align-items: center;"
+                         *ngIf="cita.id_estatus_agenda === 1 || cita.id_estatus_agenda === 2">
+                        <ion-button style="color: black; --background: lightgrey;"
+                        (click)="abrirModalCancelarCita(cita)">CANCELAR CITA</ion-button>
+                    </div>
+
+                </ion-list>
+
+            </div>
+        </ion-accordion>
+    </ion-accordion-group>
+    </div>
+    <div style="display: flex; justify-content: space-between; margin-top: 10px;" *ngIf="lstAgendaFiltrada.length > citasPorPagina">
+        <ion-button *ngIf="paginaActual > 1"
+                    style="color: black; --background: lightgrey;"
+                    (click)="cambiarPagina(paginaActual - 1)">Anterior</ion-button>
+
+        <ion-button *ngIf="citasPaginadas.length === citasPorPagina && paginaActual * citasPorPagina < lstAgendaFiltrada.length"
+                    style="color: black; --background: lightgrey;"
+                    (click)="cambiarPagina(paginaActual + 1)">Siguiente</ion-button>
+    </div>
+
+
+    <div *ngIf="mostrarConfirmacion" [ngClass]="{'confirmacion-overlay visible': mostrarConfirmacion}">
+        <div [ngClass]="{'confirmacion-container visible': mostrarConfirmacion}">
+            <p>¿Desea cancelar su cita?</p>
+            <div style="display: flex; justify-content: space-between;">
+                <ion-button style="color: black; --background: lightgrey;" (click)="confirmarAccion(true)">Sí</ion-button>
+                <ion-button style="color: black; --background: lightgrey;" (click)="confirmarAccion(false)">No</ion-button>
+            </div>
+        </div>
+    </div>
+
+
+
+</ion-content>
