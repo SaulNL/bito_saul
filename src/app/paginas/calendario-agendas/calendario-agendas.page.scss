@@ -1,0 +1,114 @@
+.gridCalendario{
+  width: 100%;
+  text-align: center;
+
+}
+.contenedorDia, .contenedorDiaVacio, .contenedorDiaSemana {
+  width: 9vw;
+  height: 9vw;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 9vw;
+  font-size: 4.5vw; /* Tamaño del texto */
+  font-weight: bold;
+
+
+
+}
+.contenedorDia {
+
+  filter: drop-shadow(0 1vw 1vw #000);
+  border: 0.4vw solid #000;
+  background-color: white;
+}
+
+
+
+.contenedorDiaSemana {
+  font-size: 3.5vw; /* Tamaño del texto */
+  font-weight: bold;
+}
+
+.sinCita {
+  background-color: white;
+}
+
+.citaAgendada {
+  background-color: rgb(255,222,137);
+  color: rgb(206,173,88);
+
+}
+
+.citaConfirmada {
+  background-color: rgb(194,247,181);
+  color: rgb(69,122,56);
+
+}
+
+.citaCanceladaUsuario,
+.citaCanceladaProveedor {
+  background-color: rgb(255,88,70);
+  color: rgb(171,37,26);
+}
+
+
+
+.mesActual {
+  background-color: #CCF7FF;
+  color: #000;
+}
+
+.filasDiasMes {
+  margin-top: 0.5vw; /* Espaciado entre filas */
+  width: 100%;
+}
+
+.nombreMes {
+  font-weight: bold;
+  font-size: 6.5vw; /* Ajusta el tamaño del nombre del mes */
+}
+.fondoBlanco{
+  background-color: white;
+}
+.listadoCitasDeUsuario{
+  margin-top: 4vw;
+}
+.itemCitaAgenda{
+  border: 1px solid #000;
+}
+.itemDetalleCitaAgenda{
+  margin-top:10px;
+}
+
+.confirmacion-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Fondo oscuro transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0; /* Inicialmente invisible */
+  transition: opacity 3s ease; /* Agregamos una transición suave de 0.3 segundos */
+
+  &.visible {
+    opacity: 1; /* Hacer visible cuando la clase 'visible' está presente */
+  }
+}
+
+.confirmacion-container {
+  border: none;
+  box-shadow: 0 0 5px 0px #FBDDED;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s ease; /* Agregamos una transición suave de 0.3 segundos para el contenedor */
+
+  &.visible {
+    transform: scale(1); /* Hacer visible cuando la clase 'visible' está presente */
+  }
+}
+

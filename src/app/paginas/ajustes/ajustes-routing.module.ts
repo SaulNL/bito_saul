@@ -63,6 +63,14 @@ const routes: Routes = [
   {
     path: 'privacidad',
     loadChildren: () => import('../aviso-privacidad-cuenta/aviso-privacidad-cuenta.module').then(m => m.AvisoPrivacidadCuentaPageModule)
+  },
+  {
+    path: 'agendaUsuario',
+    loadChildren: () => import('../agenda-usuario/agenda-usuario.module').then(m => m.AgendaUsuarioPageModule)
+  },
+  {
+    path: 'agendaNegocio',
+    loadChildren: () => import('../agenda-negocio/agenda-negocio.module').then(m => m.AgendaNegocioPageModule)
   }
 ];
 
