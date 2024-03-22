@@ -1,0 +1,470 @@
+<ion-header>
+  <ion-toolbar class="tolbar">
+    <ion-title mode="ios">
+      <span> Contenidos </span>
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-button *ngIf="blnMostrarListaContenidos && !blnAgregarContenidos" (click)="regresar()" class="blanco">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="!blnMostrarListaContenidos && blnAgregarContenidos" (click)="regresarLista()" class="blanco">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="blnMostrarListaContenidos">
+    <ion-card>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-button
+                color="success"
+                expand="full"
+                (click)="agregarContenidos()"
+                >Agregar contenido
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <div
+                style="
+                  width: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  flex-direction: column;
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  <div style="width: 10%; text-align: left">
+                    <strong>No.</strong>
+                  </div>
+                  <div style="width: 25%; text-align: left">
+                    <strong>Nombre</strong>
+                  </div>
+                  <div style="width: 25%; text-align: left">
+                    <strong>Activo</strong>
+                  </div>
+                  <div style="width: 40%"><strong>Acciones</strong></div>
+                </div>
+                <div
+                  style="
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 10px 0;
+                  "
+                  *ngFor="let contenido of listaContenidos; index as i"
+                >
+                  <div style="width: 10%">{{ i + 1 }}</div>
+                  <div style="width: 25%">{{ contenido.titulo_contenido }}</div>
+                  <div style="width: 25%; text-align: center">
+                    <ion-toggle
+                      style="width: 20"
+                      name="existencia"
+                      disabled
+                      #existencia="ngModel"
+                      [(ngModel)]="contenido.activo"
+                      color="success"
+                    ></ion-toggle>
+                  </div>
+                  <div style="width: 40%">
+                    <ion-button
+                      color="warning"
+                      (click)="editarRegistro(contenido)"
+                    >
+                      <ion-icon name="create"></ion-icon>
+                    </ion-button>
+                    <ion-button color="danger" (click)="alertContentDelete(contenido)">
+                      <ion-icon name="trash"></ion-icon>
+                    </ion-button>
+                  </div>
+                </div>
+                <div
+                  style="
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                ></div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!--Agregar contenido -->
+  <div *ngIf="blnAgregarContenidos">
+    <ion-card>
+      <ion-card-content>
+        <form [formGroup]="formRegistro" (ngSubmit)="guardarSubmit()">
+          <ion-grid>
+            <ion-item>
+              <div style="width: -webkit-fill-available;
+              display: flex;
+              justify-content: center;">
+                <!---------Agregar Imagen---------->
+                <div style="height: 100%; margin-bottom: 5px; width: fit-content;">
+                  <ion-card>
+                    <!-- For para mostrar fotos que se editen -->
+                    <ng-container
+                      *ngIf="fotografiasUrl !== null && fotografiasUrl !== undefined && fotografiasArray == null && fotografiasArray == undefined"
+                    >
+                      <ion-card>
+                        <img src="{{ fotografiasUrl.url_imagen}}" />
+                        <ion-label
+                          (click)="subirImagen()"
+                          class="borrar-botom"
+                          type="button"
+                          >Borrar Imagen</ion-label
+                        >
+                      </ion-card>
+                    </ng-container>
+
+                    <!-- For para mostrar fotos que se suben -->
+                    <ng-container
+                      *ngIf="fotografiasArray !== undefined && fotografiasArray !== null && fotografiasArray.archivo_64 !== null && fotografiasArray.archivo_64 !== undefined"
+                    >
+                      <ion-card
+                        *ngIf="fotografiasArray.archivo_64 != null && fotografiasArray.archivo_64 !== '' && fotografiasArray.archivo_64 !== undefined"
+                      >
+                        <img src="{{ fotografiasArray.archivo_64 }}" />
+                        <ion-label
+                          (click)="subirImagen()"
+                          class="borrar-botom"
+                          type="button"
+                          >Borrar Imagen</ion-label
+                        >
+                      </ion-card>
+                    </ng-container>
+
+                    <ion-icon
+                      *ngIf="fotografiasArray == null && fotografiasArray == undefined && fotografiasUrl == null && fotografiasUrl == undefined"
+                      name="image"
+                      role="img"
+                      class="md hydrated size-icon"
+                      aria-label="image"
+                    ></ion-icon>
+                    <label
+                      class="custom-file-input"
+                      *ngIf="fotografiasArray == null && fotografiasArray == undefined  && fotografiasUrl == null && fotografiasUrl == undefined"
+                    >
+                      <div
+                        class="custom-file-input"
+                        style="
+                          height: 100%;
+                          width: 100%;
+                          position: relative;
+                          z-index: 1;
+                        "
+                        id="imagen-producto-uno"
+                        (click)="subirImagen()"
+                      >
+                        Este es mi botón
+                      </div>
+                    </label>
+                  </ion-card>
+                </div>
+              </div>
+              <p
+                  *ngIf="mensaje !== null && bandera"
+                  style="text-align: center; color: #ff4154"
+                >
+                  {{mensaje}}
+                </p>
+            </ion-item>
+
+            <ion-row>
+              <ion-col size="12">
+                <ion-item>
+                  <ion-label position="floating"
+                    >Titulo contenido
+                    <span style="color: red">*</span></ion-label
+                  >
+                  <ion-input
+                    name="titulo contenido"
+                    formControlName="titulo_contenido"
+                  ></ion-input>
+                </ion-item>
+                <div
+                  *ngIf="tituloContenidoForm.touched  && tituloContenidoForm.invalid"
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="tituloContenidoForm.errors.required">
+                    El titulo del contenido es requerido
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12">
+                <ion-item>
+                  <ion-label position="floating"
+                    >Descripcion <span style="color: red">*</span></ion-label
+                  >
+                  <ion-textarea
+                    name="descripcion"
+                    formControlName="descripcion_contenido"
+                    [autoGrow]="true"
+                  ></ion-textarea>
+                </ion-item>
+                <div
+                  *ngIf="descripcionContenidoForm.touched  && descripcionContenidoForm.invalid"
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="descripcionContenidoForm.errors.required">
+                    La descripcion del contenido es requerido
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12">
+                <ion-item>
+                  <ion-label position="floating"
+                    >Precio <span style="color: red">*</span></ion-label
+                  >
+                  <ion-input
+                    type="number"
+                    name="precio"
+                    formControlName="precio"
+                  >
+                  </ion-input>
+                </ion-item>
+                <div
+                  *ngIf="precioContenidoForm.touched  && precioContenidoForm.invalid"
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="precioContenidoForm.errors.required">
+                    El precio es requerido
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-item>
+              <app-input-tags style="width: -webkit-fill-available;"
+                [tipo]="false"
+                [tags]="formRegistro.get('tags_contenido').value"
+                (_enviarTags)="agregarTags($event)"
+              ></app-input-tags>
+            </ion-item>
+
+            <div style="text-align: center">
+              <h4 style="margin-top: 5px">Contenido Reducido</h4>
+              <small id="emailHelp" class="form-text text-muted"
+                >Tamaño máximo de archivo 3 MB</small
+              >
+              <!-- Visualizar contenido desde URL -->
+              <div
+                *ngIf="contenidoReducidoUrl !== null && contenidoReducidoUrl !== undefined && contenidoReducido == undefined"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  flex-direction: column;
+                  margin-bottom: 20px;
+                "
+              >
+                <div
+                  style="
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    background-color: yellow;
+                    border: 1px solid black;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: linear-gradient(90deg, #ff1dbd, #ffce00);
+                  "
+                >
+                  <a (click)="verContenido(contenidoReducidoUrl)" target="_blank">
+                    <ion-icon
+                      name="document-text-outline"
+                      style="font-size: 30px"
+                    ></ion-icon>
+                  </a>
+                </div>
+              </div>
+
+              <div *ngIf="!loader">
+            
+                <div
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  <label
+                    for="imagenCarta"
+                    *ngIf="(contenidoReducido === null || contenidoReducido === undefined) && (contenidoReducidoUrl === null || contenidoReducidoUrl === undefined)"
+                  >
+                    <div class="boton" (click)="subirContenidoReducido()">
+                      Agregar
+                    </div>
+                    <p *ngIf="mensaje" style="color: #ff4154">{{mensaje}}</p>
+                  </label>
+
+                  <label
+                    for="imagenCarta"
+                    *ngIf="(contenidoReducido !== null && contenidoReducido !== undefined) || (contenidoReducidoUrl !== null && contenidoReducidoUrl !== undefined)"
+                  >
+                    <div class="boton" (click)="subirContenidoReducido()">
+                      Editar<ion-icon
+                        name="create-outline"
+                        style="margin-left: 5px"
+                      ></ion-icon>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <ion-item></ion-item>
+
+            <div style="text-align: center">
+              <h4 style="margin-top: 5px">Contenido completo</h4>
+              <small id="emailHelp" class="form-text text-muted"
+                >Tamaño máximo de archivo 20 MB</small
+              >
+              <!-- Visualizar contenido desde URL -->
+              <div
+                *ngIf="(contenidoCompletoUrl !== null && contenidoCompletoUrl !== undefined && contenidoCompleto == undefined)"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  flex-direction: column;
+                  margin-bottom: 20px;
+                "
+              >
+                <div
+                  style="
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    background-color: yellow;
+                    border: 1px solid black;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: linear-gradient(90deg, #ff1dbd, #ffce00);
+                  "
+                >
+                  <a (click)="verContenido(contenidoCompletoUrl)" target="_blank">
+                    <ion-icon
+                      name="document-text-outline"
+                      style="font-size: 30px"
+                    ></ion-icon>
+                  </a>
+                </div>
+              </div>
+
+              <div *ngIf="!loader">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  <label
+                    for="imagenCarta"
+                    *ngIf="(contenidoCompleto === null || contenidoCompleto === undefined) && (contenidoCompletoUrl === null || contenidoCompletoUrl === undefined)"
+                  >
+                    <div class="boton" (click)="subirContenidoCompleto()">
+                      Agregar
+                    </div>
+                    <p *ngIf="mensaje" style="color: #ff4154">{{mensaje}}</p>
+                  </label>
+
+                  <label
+                    for="imagenCarta"
+                    *ngIf="(contenidoCompleto !== null && contenidoCompleto !== undefined) || (contenidoCompletoUrl !== null && contenidoCompletoUrl !== undefined)"
+                  >
+                    <div class="boton" (click)="subirContenidoCompleto()">
+                      Editar<ion-icon
+                        name="create-outline"
+                        style="margin-left: 5px"
+                      ></ion-icon>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div
+              *ngIf="loader"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <ion-spinner name="dots"></ion-spinner>
+            </div>
+
+            <ion-item></ion-item>
+
+            <ion-row>
+              <ion-col size="12">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  <label style="color: black; font-size: 15px">Activo</label>
+                  <ion-toggle
+                    name="activo"
+                    formControlName="activo"
+                    color="success"
+                  ></ion-toggle>
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="6">
+                <ion-button color="success" expand="full" type="submit"
+                  >Guardar
+                  <ion-spinner name="dots" *ngIf="loaderGuardar"></ion-spinner>
+                </ion-button>
+              </ion-col>
+              <ion-col size="6">
+                <ion-button
+                  color="danger"
+                  expand="full"
+                  (click)="alertContentCancelar()"
+                  >Cancelar</ion-button
+                >
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

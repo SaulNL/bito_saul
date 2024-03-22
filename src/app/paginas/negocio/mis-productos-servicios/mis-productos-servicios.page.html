@@ -57,7 +57,7 @@
                 align-items: center;
                 background: linear-gradient(90deg, #ff1dbd, #FFCE00);
               ">
-              <a [href]="carta" target="_blank">
+              <a (click)="verCartaProductos(carta)" target="_blank">
                 <ion-icon name="document-text-outline" style="font-size: 30px"></ion-icon>
               </a>
             </div>
@@ -249,7 +249,7 @@
                   <div style="width: 25%">{{ producto.nombre }}</div>
                   <div style="width: 25%; text-align: center">
                     <ion-toggle style="width: 20" name="existencia" disabled #existencia="ngModel"
-                      [(ngModel)]="producto.existencia" color="danger"></ion-toggle>
+                      [(ngModel)]="producto.existencia" color="success"></ion-toggle>
                   </div>
                   <div style="width: 40%">
                     <ion-button color="warning" (click)="editarRegistro(producto)">
@@ -298,7 +298,7 @@
                   <div style="width: 25%">{{ producto.nombre }}</div>
                   <div style="width: 25%; text-align: center">
                     <ion-toggle style="width: 20" name="existencia" disabled #existencia="ngModel"
-                      [(ngModel)]="producto.existencia" color="danger"></ion-toggle>
+                      [(ngModel)]="producto.existencia" color="success"></ion-toggle>
                   </div>
                   <div style="width: 40%">
                     <ion-button color="warning" (click)="editarRegistro(producto)">
@@ -434,7 +434,7 @@
                   ">
                   <label style="color: black; font-size: 15px">Existencia</label>
                   <ion-toggle name="existencia" #existencia="ngModel" [(ngModel)]="productoNuevo.existencia"
-                    color="danger"></ion-toggle>
+                  color="success"></ion-toggle>
                 </div>
               </ion-col>
             </ion-row>

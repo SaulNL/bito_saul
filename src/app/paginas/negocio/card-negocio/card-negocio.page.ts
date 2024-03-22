@@ -213,4 +213,18 @@ export class CardNegocioPage implements OnInit {
 
   }
 
+  cargarContenidos(negocio: NegocioModel) {
+    this.negocioTO = JSON.parse(JSON.stringify(negocio));
+    let all = {
+      info: this.negocioTO,
+    };
+    let navigationExtras = JSON.stringify(all);
+    this.router.navigate(
+      ["/tabs/home/negocio/card-negocio/mis-contenidos"],
+      {
+        queryParams: { special: navigationExtras },
+      }
+    );
+  }
+
 }

@@ -24,6 +24,7 @@ import { ActivatedRoute, Params } from "@angular/router";
 import { Subscription } from "rxjs";
 import { LoaderComponent } from 'src/app/Bitoo/components/loader/loader.component';
 import { ProductoModel } from "src/app/Modelos/ProductoModel";
+import { EventosService} from "../../api/eventos.service";
 
 @Component({
   selector: 'app-modal-detalle-producto',
@@ -58,6 +59,7 @@ export class ModalDetalleProductoComponent implements OnInit {
     private productService: ProductosService,
     private platform: Platform,
     public modalController: ModalController,
+    public eventoService: EventosService,
   ) {
     this.inicializeModels();
   }
@@ -124,12 +126,18 @@ export class ModalDetalleProductoComponent implements OnInit {
   }
 
   posicionProducto(idProducto) {
-    this.lstProductos = JSON.parse(localStorage.getItem('lstProductosOriginal'))
+    const listaProducto = this.eventoService.getProductoSugerencia();
+    if ( listaProducto !== undefined){
+      this.lstProductos = listaProducto;
+      this.eventoService.setProductoSugerencia(undefined);
+    } else {
+      this.lstProductos = JSON.parse(localStorage.getItem('lstProductosOriginal'));
+    }
     let productoid = idProducto;
 
     this.lstProductos.forEach((producto, i) => {
-      if(producto.idProducto == productoid) {
-          this.prodEnPos=i;
+      if(producto.idProducto === productoid) {
+          this.prodEnPos = i;
       }
     });
   }

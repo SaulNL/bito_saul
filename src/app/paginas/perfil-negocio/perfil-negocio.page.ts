@@ -139,6 +139,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   activedPage: string;
   palabraBuqueda: any;
   carrito = false;
+  lstContenidos: any;
   constructor(
     private navctrl: NavController,
     private route: ActivatedRoute,
@@ -413,6 +414,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
               this.horarios(this.informacionNegocio);
               this.calcularDistancia();
               this.obtenerSucursaleslst(this.informacionNegocio.id_negocio);
+              this.obtenerContenidosNegocio(this.informacionNegocio.id_negocio);
             }
           } else {
             this.presentError();
@@ -425,10 +427,6 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         }
       );
     // this.loader = false;
-  }
-  verDatos(){
-    console.log('esto tiene informacion negocio:', this.informacionNegocio);
-      this.banderaAgendarUnServicio = true;
   }
 
   async buscarDetalleNegocio(filtro: any, pagina: any) {
@@ -608,6 +606,11 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.abrirModaldetalle();
   }
 
+  verDetalleContenido(contenido) {
+    this.detalle = contenido;
+    this.abrirModaldetalleContenido();
+  }
+
   enviarWhasapp(celular: any, Rsocial) {
     this.abrirVentana('https://api.whatsapp.com/send?phone=+52' + celular);
     this.clickRedSocial(Rsocial);
@@ -692,6 +695,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         bolsa: this.bolsa,
         user: this.user,
         url: this.informacionNegocio.url_negocio,
+        isContenido: false
       },
     });
     await modal.present();
@@ -1593,4 +1597,53 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
 
+
+  public obtenerContenidosNegocio(id) {
+
+    this.serviceProveedores.obtenerContenidosNegocio(id).subscribe(
+      response => {
+        this.lstContenidos = response.data.filter(contenido => contenido.eliminado === 0);
+        console.log(this.lstContenidos);
+        if (this.lstContenidos?.length > 0) {
+          this.seccion = 'Contenidos';
+        }
+        else {
+          this.seccion = 'productos';
+          this.lstContenidos = [];
+        }
+      }
+    );
+  }
+
+  async abrirModaldetalleContenido() {
+    const modal = await this.modalController.create({
+      component: DetalleProductoComponent,
+      componentProps: {
+        datosInfoNegocio: this.informacionNegocio,
+        datos: this.detalle,
+        _entregaDomicilio: this.informacionNegocio.entrega_domicilio,
+        _entregaSitio: this.informacionNegocio.entrega_sitio,
+        _consumoSitio: this.informacionNegocio.consumo_sitio,
+        _costoEntrega: this.informacionNegocio.costo_entrega,
+        _abierto: this.informacionNegocio.abierto,
+        bolsa: this.bolsa,
+        user: this.user,
+        url: this.informacionNegocio.url_negocio,
+        isContenido: true
+      },
+    });
+    await modal.present();
+    await modal.onDidDismiss().then((r) => {
+      if (r.data.data != undefined && r.data.data !== null) {
+        this.llenarBolsa(r.data.data);
+      }
+      if (r.data.goLogin != undefined) {
+        localStorage.setItem('isRedirected', 'false');
+        const body = JSON.stringify(r.data.goLogin);
+        this.router.navigate(['/tabs/login'], {
+          queryParams: { perfil: body },
+        });
+      }
+    });
+  }
 }

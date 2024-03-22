@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { MisProductosServiciosPageRoutingModule } from './mis-productos-servicios-routing.module';
 import { MisProductosServiciosPage } from './mis-productos-servicios.page';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { MisProductosServiciosPage } from './mis-productos-servicios.page';
     TabsPageModule,
     CargarImagenesSlideModule
   ],
+  providers: [InAppBrowser],
   declarations: [
     MisProductosServiciosPage
   ]

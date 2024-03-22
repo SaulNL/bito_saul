@@ -444,6 +444,7 @@
           <ion-segment (ionChange)="segmentChanged($event)" value="{{seccion}}" color="tertiary" [scrollable]="true"
             mode="md">
             <ion-segment-button value="Sucursales" *ngIf="lstSucursales?.length > 0">Sucursales</ion-segment-button>
+            <ion-segment-button value="Contenidos" *ngIf="lstContenidos?.length > 0">Contenidos</ion-segment-button>
             <ion-segment-button value="productos" *ngIf="informacionNegocio.catProductos?.length > 0 || informacionNegocio.productosMatris">
               Productos
             </ion-segment-button>
@@ -871,6 +872,22 @@
                   [srcset]="sucursalImagen(sucursal.url_logo)" alt="Falla al cargar la imagen" />
                 <ion-card-header>
                   <ion-card-title class="nomCard text-center">{{sucursal.nombre_comercial}}</ion-card-title>
+                </ion-card-header>
+              </ion-card>
+            </ion-col>
+          </ng-container>
+        </ion-row>
+      </ion-grid>
+      <ion-grid *ngIf="seccion === 'Contenidos'">
+        <ion-row>
+          <ng-container>
+            <ion-col size="6" *ngFor="let contenido of lstContenidos">
+              <ion-card class="cardsps fixed" (click)="verDetalleContenido(contenido)">
+                <img class="img-card-w"
+                  src="https://ecoevents.blob.core.windows.net/comprandoando/bituyu/Web/PROVEEDOR/LA%20IMAGEN%20NO%20ESTA%20DISPONIBLE%20700%20X%20700.png"
+                  [srcset]="contenido.fotografias[0]?.url_imagen" alt="Falla al cargar la imagen" />
+                <ion-card-header>
+                  <ion-card-title class="nomCard text-center">{{contenido.titulo_contenido}}</ion-card-title>
                 </ion-card-header>
               </ion-card>
             </ion-col>

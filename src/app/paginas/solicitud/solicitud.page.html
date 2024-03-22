@@ -61,7 +61,7 @@
       <div style="width: 100%" *ngFor="let solicitud of lstSolicitudes">
         <ion-card (click)="masInformacion(solicitud)">
           <img
-            src="{{(solicitud.url_imagen==null || solicitud.imagen == '')?productoDefault:solicitud.url_imagen}}"
+            [src]="productoDefault" [srcset]="solicitud.url_imagen"
             style="width: 100%"
           />
           <ion-card-content>
