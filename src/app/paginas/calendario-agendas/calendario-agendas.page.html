@@ -3,7 +3,7 @@
 <ion-content>
         <ion-item lines="none" class="ion-text-end" style="line-height: 10vw;">
             <ion-label></ion-label>
-            <ion-select placeholder="Filtro"  style="width: 30vw; --placeholder-opacity: 1; color: black;"
+            <ion-select interface="popover" placeholder="Filtro"  style="width: 30vw; --placeholder-opacity: 1; color: black;"
                         (ionChange)="filtrarAgendaPorFecha($event)">
                 <ion-select-option value="3">Hoy</ion-select-option>
                 <ion-select-option value="4">Mañana</ion-select-option>
@@ -67,10 +67,10 @@
                    <ul>
 
                        <li class="itemDetalleCitaAgenda">
-                           <b>Fecha:</b> {{cita.fecha_servicio}}
+                           <b>Fecha:</b> {{formatearFechaServicio(cita.fecha_servicio)}}
                        </li>
                        <li class="itemDetalleCitaAgenda">
-                           <b>Hora:</b> {{cita.hora_servicio}}
+                           <b>Hora:</b> {{cita.hora_servicio}} Hrs.
                        </li>
                        <li class="itemDetalleCitaAgenda">
                            <b>Asunto:</b> {{cita.nombre_producto}}
@@ -79,13 +79,13 @@
                            <b>Negocio:</b> {{(cita.negocio) | uppercase}}
                        </li>
                        <li class="itemDetalleCitaAgenda">
-                           <b>Status:</b> {{(cita.estatus_agenda) | uppercase}}
+                           <b>Estatus:</b> {{(cita.estatus_agenda) | uppercase}}
                        </li>
                    </ul>
 
                     <div style="display: flex; justify-content: center; align-items: center;"
                          *ngIf="cita.id_estatus_agenda === 1 || cita.id_estatus_agenda === 2">
-                        <ion-button style="color: black; --background: lightgrey;"
+                        <ion-button style="color: white; --background: rgb(235,68,90);"
                         (click)="abrirModalCancelarCita(cita)">CANCELAR CITA</ion-button>
                     </div>
 

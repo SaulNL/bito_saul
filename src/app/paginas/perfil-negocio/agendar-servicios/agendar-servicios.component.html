@@ -1,0 +1,122 @@
+
+<ion-header>
+    <ion-toolbar class="tolbar headerPage">
+        <ion-title mode="ios" class="titlePage">Agendar cita</ion-title>
+        <ion-buttons slot="end" (click)="cerrarModal()">
+            <ion-button>
+                <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content style="background-color: red;">
+    <ion-item class="fondoBlanco">
+        <ion-label class="nombreMes">{{ (lstMeses[fechaSeleccionada.mes - 1].nombre) | uppercase }}</ion-label>
+
+        <ion-select placeholder="{{fechaSeleccionada.anio}}" (click)="abrirSelect()" (ionChange)="seleccionarMes($event)" [(ngModel)]="fechaSeleccionada">
+            <ion-select-option *ngFor="let fecha of mesesAnios" [value]="fecha">
+                {{ mostrarSelect ? lstMeses[fecha.mes - 1].nombre : '' }} {{ fecha.anio }}
+            </ion-select-option>
+        </ion-select>
+
+    </ion-item>
+    <ion-grid class="gridCalendario fondoBlanco">
+        <!-- Fila para los nombres de los dias de la semana -->
+
+        <ion-row>
+            <ion-col *ngFor="let dia of diasSemana">
+                <div class="contenedorDiaSemana">{{ dia }}</div>
+            </ion-col>
+        </ion-row>
+
+        <!-- Filas para los dias del mes -->
+        <ion-row *ngFor="let semana of diasMes" class="filasDiasMes">
+            <ion-col *ngFor="let day of semana"  class="ion-text-center ion-align-items-center">
+                <div [ngClass]="{'contenedorDia': day.day !== '',
+                 'contenedorDiaVacio': day.day === '',
+                 'diaSinServicio': day.diaHabil === 0 && day.day !== '',
+                 'diaNoDisponible':  day.cantidadAgendados >= lstFechasPasadas[day.dayOfWeek].horasAtencion && day.day !== '',
+                 'diaPasado':  day.diaPasado === 1,
+                 'diaCompletamenteDisponible': day.diaHabil === 1 && day.cantidadAgendados < lstFechasPasadas[day.dayOfWeek].horasAtencion && day.day !== '' && day.diaPasado === 0,
+                 'diaSabado': day.dayOfWeek === 6,
+                 'diaDomingo': day.dayOfWeek === 0,
+                  'diaSeleccionado': day.date === diaSeleccionado}"
+                  (click)="day.diaHabil === 1 && day.cantidadAgendados < lstFechasPasadas[day.dayOfWeek].horasAtencion && day.day !== '' && day.diaPasado === 0 ? obtenerHorasDelDia(day) : null">
+                    {{ day.day }}
+                </div>
+
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-item lines="none" style="width: 100%;">
+
+        <!--  Disponible -->
+        <div style="display: flex; align-items: center;">
+            <div style="width: 16px; height: 16px; border-radius: 50%; background-color:  rgb(194,247,181); border: 1px solid black; margin-right: 8px;"></div>
+            <ion-label>Disponible</ion-label>
+        </div>
+        <!--  No disponible -->
+        <div style="display: flex; align-items: center; margin-left: 15px;">
+            <div style="width: 16px; height: 16px; border-radius: 50%; background-color: white; border: 1px solid black; margin-right: 8px;"></div>
+            <ion-label>No disponible</ion-label>
+        </div>
+
+        <!--  Sin servicio -->
+        <div style="display: flex; align-items: center; margin-left: 15px;">
+            <div style="width: 16px; height: 16px; border-radius: 50%; background-color: rgb(233,233,233); border: 1px solid black; margin-right: 8px;"></div>
+            <ion-label>Sin servicio</ion-label>
+        </div>
+    </ion-item>
+    <div style="background-color: white; width: 100%;">
+    <ion-item lines="none" *ngIf=" lstHorasDiaSeleccionado.length <= 0" class="itemRegistroAgenda">
+
+        <ion-label position="stacked">Horario</ion-label>
+        <ion-select interface="popover" placeholder="  Selecciona un día en el calendario" disabled>
+            <ion-select-option>
+
+            </ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-item lines="none" *ngIf=" lstHorasDiaSeleccionado.length > 0" class="itemRegistroAgenda">
+
+        <ion-label position="stacked">Horario</ion-label>
+        <ion-select interface="popover" placeholder="Seleccionar" [(ngModel)]="horaGuardar">
+            <ion-select-option *ngFor="let hora of lstHorasDiaSeleccionado" [value]="hora">
+                {{ hora }} Hrs
+            </ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item lines="none" class="itemRegistroAgenda">
+        <ion-label position="stacked">Servicio</ion-label>
+        <ion-select interface="popover" placeholder="  Seleccionar" [(ngModel)]="servicioGuardar">
+            <ion-select-option *ngFor="let servicio of lstServiciosIndividuales" [value]="servicio">
+                {{ servicio.nombre }}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-item lines="none" class="itemRegistroAgenda">
+        <ion-label position="stacked">Modalidad</ion-label>
+        <ion-select interface="popover" placeholder="  Seleccionar"  [(ngModel)]="idModalidadGuardar">
+            <ion-select-option *ngFor="let modalidad of lstModalidades" [value]="modalidad.id_modalidad_servicio">
+                {{ modalidad.modalidad_servicio }}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-item class="itemRegistroAgenda">
+        <ion-label position="stacked">Teléfono</ion-label>
+        <ion-input type="tel" maxlength="10" (ionInput)="validarTelefono($event)"
+                   placeholder = "  Ingrese su número de teléfono"
+                   [(ngModel)]="telefonoGuardar">
+        </ion-input>
+    </ion-item>
+
+
+        <ion-item class="botonesInferiores">
+            <ion-button slot="start" expand="block" class="button-agendar bg-naranja"
+                        (click)="guardarAgenda()">Agendar</ion-button>
+            <ion-button slot="end" expand="block" class="button-cancelar"
+                        (click)="cerrarModal()">Cancelar</ion-button>
+        </ion-item>
+    </div>
+
+
+</ion-content>
