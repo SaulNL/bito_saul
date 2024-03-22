@@ -425,10 +425,20 @@
               (click)="verCarta(informacionNegocio.cartaServicio)" expand="full" class="bg-naranja">
               Ver carta de servicios
             </ion-button>
+
           </ion-col>
         </ion-row>
-      </ion-grid>
 
+      </ion-grid>
+        <ion-grid style="margin-bottom: 2%" *ngIf="informacionNegocio.catServicos.length > 0">
+            <ion-row>
+                <ion-col>
+                    <ion-button (click)="mostrarAgendarServiciosModal()" shape="round" expand="block" class="bg-naranja">
+                        AGENDAR SERVICIO
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
       <ion-grid style="margin-top: 1em">
         <ion-row style="background: white">
           <ion-segment (ionChange)="segmentChanged($event)" value="{{seccion}}" color="tertiary" [scrollable]="true"

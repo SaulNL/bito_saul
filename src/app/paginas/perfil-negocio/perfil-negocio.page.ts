@@ -35,6 +35,7 @@ import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { Browser } from '@capacitor/browser';
 import { Geolocation } from '@capacitor/geolocation';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import {AgendarServiciosComponent} from "./agendar-servicios/agendar-servicios.component";
 
 const haversineCalculator = require('haversine-calculator');
 
@@ -112,6 +113,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   public logo: any;
   public tipoPoS: any;
   public cantidad: number;
+  public banderaAgendarUnServicio: boolean;
   currentIndex: Number = 0;
   @ViewChild('carrusel') slides: IonSlides;
   @ViewChild('sucursalo') slides1: IonSlides;
@@ -204,6 +206,7 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.banderaAgendarUnServicio = false;
     if (localStorage.getItem('isRedirected') === 'false') {
       localStorage.setItem('isRedirected', 'true');
       console.log('recargue')
@@ -422,6 +425,10 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
         }
       );
     // this.loader = false;
+  }
+  verDatos(){
+    console.log('esto tiene informacion negocio:', this.informacionNegocio);
+      this.banderaAgendarUnServicio = true;
   }
 
   async buscarDetalleNegocio(filtro: any, pagina: any) {
@@ -1572,4 +1579,18 @@ export class PerfilNegocioPage implements OnInit, AfterViewInit {
     this.serviceProveedores.setSelectedObj(idGiro);
     this.router.navigateByUrl('/tabs/inicio');
   }
+
+
+  async mostrarAgendarServiciosModal() {
+    const modal = await this.modalController.create({
+      component: AgendarServiciosComponent,
+      componentProps: {
+        informacionNegocio: this.informacionNegocio // Servicios del negocio
+      },
+      cssClass: 'modal-fullscreen'
+    });
+    return await modal.present();
+  }
+
+
 }

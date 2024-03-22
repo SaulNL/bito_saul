@@ -15,6 +15,7 @@ import { DarLikeNegocioModule } from '../../componentes/dar-like-negocio/dar-lik
 import { MapaPerfilComponent } from './mapa-perfil/mapa-perfil.component';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { FormBuilder } from '@angular/forms';
+import {AgendarServiciosComponent} from "./agendar-servicios/agendar-servicios.component";
 
 @NgModule({
   imports: [
@@ -35,6 +36,6 @@ import { FormBuilder } from '@angular/forms';
       FormBuilder
   ],
   declarations: [PerfilNegocioPage, ComentariosNegocioComponent,
-    MapaPerfilComponent]
+    MapaPerfilComponent, AgendarServiciosComponent]
 })
 export class PerfilNegocioPageModule { }

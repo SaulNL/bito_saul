@@ -353,5 +353,13 @@ export class CalendarioAgendasPage implements OnChanges {
   cambiarPagina(pagina: number): void {
     this.paginaActual = pagina;
   }
+  formatearFechaServicio(fechaString: string): string {
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const fecha = new Date(fechaString);
+    const dia = fecha.getDate();
+    const mes = meses[fecha.getMonth()];
+    const anio = fecha.getFullYear();
+    return `${dia} de ${mes} del ${anio}`;
+  }
 
 }
