@@ -35,9 +35,9 @@ export const URLS_ENTORNOS =
     URL_FRONT: 'https://132.145.168.176:8081/'
   },
   betatinbitoo:{
-    API_ENDPOINT:'https://beta-back.tinbitoo.com.mx/',
-    URL_REGISTRO:'https://beta-front.tinbitoo.com.mx/registro',
-    URL_FRONT:'https://beta-front.tinbitoo.com.mx/'
+    API_ENDPOINT:'https://beta-back.bituyu.com.mx/',
+    URL_REGISTRO:'https://beta-front.bituyu.com.mx/registro',
+    URL_FRONT:'https://beta-front.bituyu.com.mx/'
   },
   local:{
     API_ENDPOINT:'http://192.168.1.72/',

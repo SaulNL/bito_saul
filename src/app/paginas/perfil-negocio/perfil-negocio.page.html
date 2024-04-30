@@ -558,7 +558,7 @@
                     <ion-card-header class="ion-card-cara">
                       <ion-card-subtitle class="limiteTexto">{{formatoNombreProd(producto.nombre)}}</ion-card-subtitle>
                       <ion-badge *ngIf="producto.precio !== null" color="success">
-                        $ {{producto.precio}}</ion-badge>
+                        $ {{producto.precio | number:'1.0-2'}}</ion-badge>
                     </ion-card-header>
                     <ion-card-content>
                       <div class="ui-search-item__title">

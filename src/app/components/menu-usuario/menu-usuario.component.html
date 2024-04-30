@@ -14,11 +14,11 @@
       </ion-menu-toggle>
     </ion-list>
     <ion-list id="labels-list">
-      <ion-item *ngIf="misNegocios" menuclose lines="none" [routerLink]="['/tabs/home/negocio']">
+      <ion-menu-toggle auto-hide="false">
+       <ion-item *ngIf="misNegocios" menuclose lines="none" [routerLink]="['/tabs/home/negocio']">
         <ion-icon slot="start" ios="briefcase-outline" md="briefcase"></ion-icon>
         Mis negocios
-      </ion-item>
-      <ion-menu-toggle auto-hide="false">
+       </ion-item>
         <ion-item *ngIf="misSolicitudes" lines="none" [routerLink]="['/tabs/home/solicitudes']">
           <ion-icon slot="start" ios="document-text-outline" md="document-text-outline"></ion-icon>
           Mis requerimientos de compra
